@@ -14,7 +14,7 @@
         </div>
         <div class="col-12 w-100">
           <h2 class="font-weight-bold py-3 mb-3">
-            {{ tenantCurrency ? tenantCurrency.currency : "" }}
+            {{ tenantCurrency ? tenantCurrency.currencySymbol : "" }}
             {{ chartData ? amountWithCommas(Math.round(chartData.income)) : 0 }}
           </h2>
         </div>

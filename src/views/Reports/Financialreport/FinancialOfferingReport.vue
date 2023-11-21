@@ -4,10 +4,7 @@
       <div class="head-text">Offering And Contribution Report</div>
       <div class="c-pointer my-sm-0 my-2">
         <el-dropdown trigger="click" class="w-100">
-          <div
-            class="d-flex justify-content-between default-btn text-dark w-100"
-            size="large"
-          >
+          <div class="d-flex justify-content-between default-btn text-dark w-100" size="large">
             <span class="mt-1">Export</span>
             <div class="mt-1">
               <el-icon class="el-icon--right">
@@ -17,14 +14,8 @@
           </div>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item
-                v-for="(bookType, index) in bookTypeList"
-                :key="index"
-              >
-                <a
-                  class="no-decoration text-dark"
-                  @click="downloadFile(bookType)"
-                >
+              <el-dropdown-item v-for="(bookType, index) in bookTypeList" :key="index">
+                <a class="no-decoration text-dark" @click="downloadFile(bookType)">
                   {{ bookType.name }}
                 </a>
               </el-dropdown-item>
@@ -46,17 +37,9 @@
           <div class="col-md-6 col-sm-12 pr-md-0">
             <div class="p-field p-col-12 pt-md-2 pb-2">
               <div>
-                <label for="icon" class="mb-0 font-weight-bold"
-                  >Start Date</label
-                >
+                <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
               </div>
-              <el-date-picker
-                v-model="startDate"
-                type="date"
-                format="DD/MM/YYYY"
-                size="large"
-                class="w-100"
-              />
+              <el-date-picker v-model="startDate" type="date" format="DD/MM/YYYY" size="large" class="w-100" />
             </div>
           </div>
 
@@ -65,28 +48,17 @@
               <div>
                 <label for="icon" class="mb-0 font-weight-bold">End Date</label>
               </div>
-              <el-date-picker
-                v-model="endDate"
-                type="date"
-                format="DD/MM/YYYY"
-                size="large"
-                class="w-100"
-              />
+              <el-date-picker v-model="endDate" type="date" format="DD/MM/YYYY" size="large" class="w-100" />
             </div>
           </div>
 
           <div class="col-md-6 col-sm-12 pr-md-0">
             <div class="p-field pt-md-2 p-col-12">
               <div>
-                <label for="icon" class="mb-0 font-weight-bold"
-                  >Select Categories</label
-                >
+                <label for="icon" class="mb-0 font-weight-bold">Select Categories</label>
               </div>
               <div>
-                <SelectAllDropdown
-                  :items="Categories"
-                  @selected-item="setSelectedAgeGroup"
-                />
+                <SelectAllDropdown :items="Categories" @selected-item="setSelectedAgeGroup" />
               </div>
 
               <!-- <MultiSelect
@@ -123,59 +95,32 @@
             <div>
               <label for="" class="mb-0 font-weight-bold">Select Member</label>
             </div>
-            <MembersSearch
-              @memberdetail="chooseContact"
-              :currentMember="selectedContact"
-            />
+            <MembersSearch @memberdetail="chooseContact" :currentMember="selectedContact" />
           </div>
         </div>
       </div>
       <div class="col-9 col-md-6 col-lg-3 d-flex align-items-center">
-        <el-button
-          class="c-pointer mt-4"
-          :color="primarycolor"
-          round
-          :loading="loading"
-          @click="genarateReport"
-        >
+        <el-button class="c-pointer mt-4" :color="primarycolor" round :loading="loading" @click="genarateReport">
           Generate Report
         </el-button>
       </div>
     </div>
   </div>
   <div id="element-to-print" class="">
-    <div
-      class="container-fluid d-flex justify-content-center my-2"
-      v-if="displayTitle"
-    >
+    <div class="container-fluid d-flex justify-content-center my-2" v-if="displayTitle">
       <div class="head-text">Offering And Contribution Report</div>
     </div>
     <div class="container-fluid">
-      <div
-        class="row"
-        :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-      >
+      <div class="row" :class="{ 'show-report': showReport, 'hide-report': !showReport }">
         <div class="col-12 round-border container-fluid d-flex mt-3 flex-wrap">
           <div class="col-12 col-md-6 col-lg-6">
-            <OfferingColumnChart
-              domId="chart1"
-              title="Offering Report"
-              distance="5"
-              :titleMargin="10"
-              :data="offeringDetail"
-              subtitle="Offering And Giving Data"
-              :series="mappedOfferingCol"
-              yAxisText="Offering"
-            />
+            <OfferingColumnChart domId="chart1" title="Offering Report" distance="5" :titleMargin="10"
+              :data="offeringDetail" subtitle="Offering And Giving Data" :series="mappedOfferingCol"
+              yAxisText="Offering" />
           </div>
 
           <div class="col-12 col-md-6 mt-3 col-lg-6">
-            <OfferingPieChart
-              domId="chart3"
-              distance="5"
-              :titleMargin="10"
-              :summary="mappedOffering"
-            />
+            <OfferingPieChart domId="chart3" distance="5" :titleMargin="10" :summary="mappedOffering" />
           </div>
         </div>
       </div>
@@ -183,17 +128,12 @@
     <section class="container-fluid">
       <!-- table header -->
       <div class="row">
-        <div
-          v-if="offeringInChurch.length > 0"
+        <div v-if="offeringInChurch.length > 0"
           class="mt-3 container-fluid table-main px-0 remove-styles2 remove-border responsiveness"
-          :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-        >
+          :class="{ 'show-report': showReport, 'hide-report': !showReport }">
           <table class="table remove-styles mt-0 table-header-area" id="table">
             <thead class="table-header-area-main">
-              <tr
-                class="small-text text-capitalize text-nowrap"
-                style="border-bottom: 0"
-              >
+              <tr class="small-text text-capitalize text-nowrap" style="border-bottom: 0">
                 <th scope="col">Offering name</th>
                 <th scope="col">Event name</th>
                 <th scope="col">Contact name</th>
@@ -202,36 +142,27 @@
                 <th scope="col">Channel</th>
               </tr>
             </thead>
-            <tbody
-              class="font-weight-bold text-nowrap"
-              style="font-size: small"
-            >
-              <tr
-                v-for="(OfferingList, index) in offeringInChurch"
-                :key="index"
-              >
+            <tbody class="font-weight-bold text-nowrap" style="font-size: small">
+              <tr v-for="(OfferingList, index) in offeringInChurch" :key="index">
                 <td>{{ OfferingList.contributionName }}</td>
                 <td>{{ OfferingList.eventName }}</td>
                 <td>{{ OfferingList.contactName }}</td>
-                <td>{{ OfferingList.amount.toLocaleString() }}.00</td>
+                <td>{{ OfferingList.currency ? OfferingList.currency.symbol : "" }} {{ OfferingList.amount.toLocaleString() }}.00</td>
                 <td>{{ formatDate(OfferingList.date) }}</td>
                 <td>{{ OfferingList.channel }}</td>
               </tr>
             </tbody>
-            <tbody
-              class="font-weight-bolder text-nowrap"
-              style="font-size: small"
-            >
+            <tbody class="font-weight-bolder text-nowrap" style="font-size: small">
               <tr class="answer-row2">
                 <td class="gross-total">Total</td>
                 <td></td>
                 <td></td>
                 <td class="gross-total responsive-horizontalrule">
-                  NGN
+                  {{ currentUser.currencySymbol }}
                   {{
                     sumTotal && sumTotal.amount
-                      ? sumTotal.amount.toLocaleString()
-                      : 0
+                    ? sumTotal.amount.toLocaleString()
+                    : 0
                   }}.00
                   <hr class="horizontal-rule" />
                 </td>
@@ -260,6 +191,7 @@ import SelectAllDropdown from "../ReportsDropdown.vue";
 import MembersSearch from "../../../components/membership/MembersSearch.vue";
 import exportService from "../../../services/exportFile/exportservice";
 import groupArray from "../../../services/groupArray/groupResponse";
+import { useStore } from "vuex";
 
 export default {
   components: {
@@ -270,6 +202,7 @@ export default {
     groupArray,
   },
   setup() {
+    const store = useStore();
     const Categories = ref([]);
     const selectedCategories = ref([]);
     const showReport = ref(false);
@@ -469,6 +402,12 @@ export default {
       return dateFormatter.normalDate(date);
     };
 
+    const currentUser = computed(() => {
+      if (store && Object.keys(store.getters.currentUser).length > 0)
+        return store.getters.currentUser;
+      return "";
+    });
+
     return {
       mainOfferingData,
       displayTitle,
@@ -480,7 +419,6 @@ export default {
       mappedOfferingCol,
       offeringChartResult,
       setSelectedAgeGroup,
-
       startDate,
       formatDate,
       selectedContact,
@@ -488,7 +426,6 @@ export default {
       primarycolor,
       selectedCategories,
       Categories,
-
       offeringPersonID,
       offeringInChurch,
       endDate,
@@ -499,16 +436,14 @@ export default {
       fileToExport,
       fileHeaderToExport,
       sumTotal,
-
       printJS,
-
       downloadFile,
-
       genarateReport,
       showReport,
       selectedofferingCategory,
       offeringColumnChartResult,
       columnData,
+      currentUser
     };
   },
 };
@@ -518,6 +453,7 @@ export default {
 * {
   box-sizing: border-box;
 }
+
 .gross-total {
   font-weight: bolder;
   font-size: large;
@@ -527,6 +463,7 @@ export default {
 .answer-row2 {
   background-color: #136acd;
 }
+
 .horizontal-rule {
   border-radius: 5px;
   margin: 0.125rem 0;
@@ -542,6 +479,7 @@ export default {
   font-weight: bolder;
   color: rgb(0, 0, 0);
 }
+
 .answer-row {
   background-color: #d5d5d5;
   border-radius: 30px !important;
@@ -553,24 +491,30 @@ export default {
 .answer-row:hover {
   background-color: #d1d1d1;
 }
+
 .table-row-bg {
   background: #ebeff4;
 }
+
 .show-report {
   display: block;
 }
+
 .hide-report {
   display: none;
 }
+
 .round-border {
   border-radius: 0.5rem;
   box-shadow: 0 0.063rem 0.25rem #02172e45;
   border: 0.063rem solid #dde2e6;
 }
+
 .responsiveness {
   max-width: 100%;
   /* overflow-y: scroll; */
 }
+
 .table-main {
   width: 100% !important;
   box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
@@ -609,7 +553,7 @@ export default {
 .generate-report {
   font-size: 1rem;
   color: #fff;
-  background-color: #136acd !important ;
+  background-color: #136acd !important;
   border: none;
   min-width: 7rem;
 }
@@ -638,6 +582,7 @@ export default {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
 .table-header-area-main {
   background-color: #ebeff4;
 }
@@ -667,17 +612,21 @@ export default {
   border-top-right-radius: 0 !important;
   overflow-x: scroll;
 }
+
 .move-enter-active {
   animation: move-in 0.8s;
 }
+
 .move-leave-active {
   animation: move-in 0.8s reverse;
 }
+
 @keyframes move-in {
   0% {
     transform: translateX(-100px);
     opacity: 0;
   }
+
   100% {
     transform: translateX(0);
     opacity: 1;
@@ -706,6 +655,7 @@ export default {
   /* background-color: var(--primary-color); */
   /* color: var(--primary-color-text); */
 }
+
 img.flag {
   width: 17px;
 }

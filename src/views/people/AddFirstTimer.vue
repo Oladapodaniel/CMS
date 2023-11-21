@@ -113,8 +113,31 @@
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <label for="firstName" class="mr-3 font-weight-600">Which Group[s] Do You Belong To?</label>
-                <div class="input-width">
-                  <div class="p-2 border add-group bg-white">
+                <div class="input-width d-flex">
+                  <el-tabs type="border-card" class="w-100">
+                    <div class="  add-group bg-white">
+                      <div
+                        v-for="(item, index) in firstTimerInGroup"
+                        :key="index"
+                      >
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div class="pt-1"><span class="text-secondary">{{ index + 1 }}.</span> <span class="font-weight-700">{{ item.name }}</span></div>
+                        <el-icon class="text-danger" @click="showConfirmModal(index, item)"><CircleClose /></el-icon>
+                      </div>
+                      </div>
+                      <div v-if="firstTimerInGroup.length === 0">
+                        No group added yet
+                      </div>
+                      <div
+                        class="pt-2 mt-2 font-weight-700 text-primary border-top text-center c-pointer"
+                        data-toggle="modal"
+                        data-target="#addToGroup"
+                      >
+                        Choose group
+                      </div>
+                    </div>
+                  </el-tabs>
+                  <!-- <div class="p-2 border add-group bg-white">
                     <div v-for="(item, index) in firstTimerInGroup" :key="index">
                       <div class="pt-1">{{ index + 1 }}. {{ item.name }}</div>
                     </div>
@@ -130,7 +153,7 @@
                     " data-toggle="modal" data-target="#addToGroup">
                       Choose group
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
@@ -425,7 +448,7 @@ import GroupTree from "../groups/component/GroupTree.vue";
 import collector from "../../services/groupArray/mapTree";
 import flatten from "../../services/groupArray/flatTree";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
-import { ElMessage } from 'element-plus'
+import {ElMessageBox , ElMessage } from 'element-plus'
 
 export default {
   components: {
@@ -886,6 +909,48 @@ export default {
         })
       }
     };
+    const removeFromGroup = (index, item) => {
+      if (!route.params.personId) {
+        firstTimerInGroup.value.splice(index, 1);
+      } else {
+        let body = {
+          groupId: item.groupId,
+          personIds: [item.personInGroupID],
+        };
+
+        grousService
+          .removeFromGroup(item.groupId, body)
+          .then((res) => {
+            if (res !== false) {
+              firstTimerInGroup.value.splice(index, 1);
+              ElMessage({
+                type: "success",
+                message: `${person.firstName} is removed from ${item.name} group`,
+              });
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    };
+
+    const showConfirmModal = (index, item) => {
+      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "error",
+      })
+        .then(() => {
+          removeFromGroup(index, item);
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Delete canceled",
+          });
+        });
+    };
 
     const createNewEvent = async () => {
       invalidEventDetails.value = false;
@@ -1307,6 +1372,7 @@ export default {
       eventsSearchString,
       eventAttendedSelected,
       preventTying,
+      removeFromGroup,
       newEvent,
       createNewEvent,
       invalidEventDetails,
@@ -1361,6 +1427,7 @@ export default {
       groupMappedTree,
       sourceId,
       setSelectedSource,
+      showConfirmModal,
       showAddInfo,
       uploadImage,
       customFileLoading,

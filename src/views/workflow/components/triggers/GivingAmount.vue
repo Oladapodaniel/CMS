@@ -11,7 +11,9 @@
                 <label for="" class="font-weight-600">Match an individual who is a member of</label>
             </div>
             <div class="col-md-12 mb-2">
-                <MultiSelect @change="groupSelected" v-model="selectedGroup" :options="groups" optionLabel="name" placeholder="Select groups" class="w-100"  display="chip" />
+                <el-tree-select v-model="data.groups" :data="groupMappedTree" :render-after-expand="false" check-strictly
+                    multiple show-checkbox check-on-click-node class="w-100" @change="groupSelected" />
+                <!-- <MultiSelect @change="groupSelected" v-model="selectedGroup" :options="groups" optionLabel="name" placeholder="Select groups" class="w-100"  display="chip" /> -->
             </div>
         </div>
 
@@ -20,7 +22,31 @@
                 <label for="" class="font-weight-600">And who gives</label>
             </div>
             <div class="col-md-12 mb-2">
-                <Dropdown @change="rangeSelected" v-model="selectedRange" :options="[ 'Greater than', 'Less than' ]" class="w-100" />
+                <el-dropdown trigger="click" class="w-100">
+                    <span class="el-dropdown-link w-100">
+                        <div class="d-flex justify-content-between border-eldropdown  w-100" size="large">
+                            <span class="text-secondary">{{
+                                selectedLogicalOperator &&
+                                Object.keys(selectedLogicalOperator).length > 0
+                                ? selectedLogicalOperator.name
+                                : "Select amount range"
+                            }}</span>
+                            <div>
+                                <el-icon class="el-icon--right">
+                                    <arrow-down />
+                                </el-icon>
+                            </div>
+                        </div>
+                    </span>
+                    <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item v-for="(item, index) in logicalOperatorList" :key="index"
+                                @click="handleLogicalOperator(item)">{{ item.name }}
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
+                <!-- <Dropdown @change="rangeSelected" v-model="selectedRange" :options="[ 'Greater than', 'Less than' ]" class="w-100" /> -->
             </div>
         </div>
 
@@ -58,12 +84,12 @@ import Dropdown from "primevue/dropdown"
 import MultiSelect from "primevue/multiselect"
 import TriggerDescription from "../TriggerDescription.vue"
 import { reactive, ref } from '@vue/reactivity'
-import { computed, watch } from '@vue/runtime-core'
+import { computed, watchEffect } from '@vue/runtime-core'
 import { useStore } from "vuex";
 import workflow_util from '../../utlity/workflow_util'
 
 export default {
-    props: [ "groups", "selectedTriggerIndex", "contributionItems", "condition" ],
+    props: [ "groups", "selectedTriggerIndex", "contributionItems", "condition", "groupMappedTree" ],
     components: { Dropdown, TriggerDescription, MultiSelect },
 
     setup (props, { emit }) {
@@ -71,18 +97,26 @@ export default {
 
         const currentUser = ref(store.getters.currentUser);
 
-        const data = reactive({ });
+        const data = ref({ });
         const selectedGroup = ref([ ])
+        const logicalOperatorList = ref([
+            { name: 'Greater than', id: 1 },
+            { name: 'Less than', id: 2 },
+            { name: 'Any amount', id: 3 },
+        ])
+
         const groupSelected = (e) => {
-            const allGroupsIndex = selectedGroup.value.findIndex(i => i.id === "00000000-0000-0000-0000-000000000000");
-            data.groups = allGroupsIndex < 0 ? e.value.map(i => i.id).join(',') : "00000000-0000-0000-0000-000000000000";
-            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex);
+            // const allGroupsIndex = selectedGroup.value.findIndex(i => i === "00000000-0000-0000-0000-000000000000");
+            emit('updatetrigger', JSON.stringify(data.value), props.selectedTriggerIndex);
         }
 
-        const selectedRange = ref('')
-        const rangeSelected = (e) => {
+        // const selectedRange = ref('')
+        const selectedLogicalOperator = ref({})
+        const rangeSelected = (item) => {
             // data.logicalOperator = e.value === 'Greater than' ? '>' : '<';
-            data.logicalOperator = e.value;
+            // data.logicalOperator = e.value;
+            selectedLogicalOperator.value = item
+            data.logicalOperator = logicalOperatorList.value.find(i => i.id == item.id).name;
             emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex);
         }
 
@@ -110,7 +144,7 @@ export default {
         const description = computed(() => {
             return {
                 groups: selectedGroup.value ? selectedGroup.value.map(i => i.name) : ['_____'],
-                range: selectedRange.value === 'Greater than' ? '>' : '<',
+                range: selectedLogicalOperator.value.name === 'Greater than' ? '>' : '<',
                 category: category.value && category.value.name ? category.value.name : '____',
                 amount: amount.value ? amount.value : '',
                 time: givingTime.value ? givingTime.value : '____',
@@ -127,10 +161,10 @@ export default {
             emit("removetrigger")
         }
 
-        watch(() => {
+        watchEffect(() => {
             if (props.condition.jsonCondition) {
                 parsedData.value = JSON.parse(props.condition.jsonCondition);
-                selectedRange.value = parsedData.value.logicalOperator;
+                selectedLogicalOperator.value = logicalOperatorList.value.find(i => i.name == parsedData.value.logicalOperator);
                 data.logicalOperator = parsedData.value.logicalOperator;
 
                 amount.value = parsedData.value.amount;
@@ -148,9 +182,10 @@ export default {
         }) 
 
         return {
+            data,
             groupSelected,
             selectedGroup,
-            selectedRange,
+            selectedLogicalOperator,
             rangeSelected,
             handleAmount,
             amount,
@@ -161,6 +196,7 @@ export default {
             description,
             currency,
             removeTrigger,
+            logicalOperatorList
         }
     }
 }

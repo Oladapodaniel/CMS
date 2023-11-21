@@ -154,7 +154,7 @@
                   <td></td>
                   <!-- <td></td> -->
                   <td class="subtotal">
-                    NGN{{ total(fund.value).toLocaleString() }}.00
+                    {{ currentUser.currencySymbol }}{{ total(fund.value).toLocaleString() }}.00
                   </td>
                   <td></td>
                 </tr>
@@ -168,7 +168,7 @@
                   <!-- <td></td> -->
                   <td></td>
                   <td class="total responsive-horizontalrule">
-                    NGN{{ fundSum.toLocaleString() }}.00
+                    {{ currentUser.currencySymbol }} {{ fundSum.toLocaleString() }}.00
                     <hr class="horizontal-rule" />
                   </td>
                   <td></td>
@@ -190,6 +190,7 @@ import dateFormatter from "../../../services/dates/dateformatter";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportserviceforbasicexpense.js";
 import groupResponse from "../../../services/groupArray/groupResponse.js";
+import { useStore } from "vuex";
 
 export default {
   components: {
@@ -197,6 +198,7 @@ export default {
     BasicExpenseColumnChart,
   },
   setup() {
+    const store = useStore();
     const startDate = ref("");
     const endDate = ref("");
     const accountTransaction = ref([]);
@@ -349,6 +351,12 @@ export default {
       return dateFormatter.monthDayYear(activityDate);
     };
 
+    const currentUser = computed(() => {
+      if (store && Object.keys(store.getters.currentUser).length > 0)
+        return store.getters.currentUser;
+      return "";
+    });
+
     return {
       primarycolor,
       columnChartArray,
@@ -379,6 +387,7 @@ export default {
       expencesDetails,
       itemName,
       expenseChart,
+      currentUser
     };
   },
 };

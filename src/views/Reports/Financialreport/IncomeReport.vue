@@ -113,7 +113,7 @@
             </div>
           </div>
         </div>
-        <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
           <div class="col-12 text-center">
             <!-- <div class="col-12 font-weight-bold pt-3">Membership By Marital Status</div> -->
             <!-- <div class="col-12">No Data Available</div> -->

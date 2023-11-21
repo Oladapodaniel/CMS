@@ -139,9 +139,19 @@
                   <td>{{ AccountList.refNumber }}</td>
                   <td>{{ AccountList.description }}</td>
                   <td class="text-success">
+                    {{
+                      AccountList && AccountList.currency
+                        ? AccountList.currency.symbol
+                        : ""
+                    }}
                     {{ Math.abs(AccountList.debit).toLocaleString() }}.00
                   </td>
                   <td class="text-danger">
+                    {{
+                      AccountList && AccountList.currency
+                        ? AccountList.currency.symbol
+                        : ""
+                    }}
                     {{ Math.abs(AccountList.credit).toLocaleString() }}.00
                   </td>
                   <td class="text-dark font-weight-bolder">

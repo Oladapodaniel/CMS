@@ -15,7 +15,7 @@
           </el-icon>
       </div>
       <div class="row">
-        <div class="col-md-10 col-lg-8">
+        <div class="col-md-10 col-lg-9">
           <!-- Contribution item -->
           <div class="row mt-5">
             <div class="col-md-10 offset-md-2">

@@ -60,7 +60,11 @@
                 >
                   <div class="col-md-4 text-md-right">Account Currency</div>
                   <div class="col-md-7" id="currencySelect">
-                    <el-select-v2
+                    <el-select v-model="selectedCurrencyID" placeholder="Select account currency" class="w-100"
+                      @change="setSelectedCurrency" filterable>
+                      <el-option v-for="item in accountCurrencies" :label="item.displayName" :value="item.id"  :key="item.id" />
+                    </el-select>
+                    <!-- <el-select-v2
                         v-model="selectedCurrencyID"
                         class="w-100 font-weight-normal"
                         :options="
@@ -72,21 +76,8 @@
                         placeholder="Select account currency"
                         @change="setSelectedCurrency"
                         size="large"
-                      />
+                      /> -->
 
-                      <!-- <button class="  btn d-flex justify-content-between  col-12 border  " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <span class="ofering">
-                              &nbsp;&nbsp;&nbsp; {{ selectedCurrency.name ?  selectedCurrency.name : 'Select account currency' }}
-                          </span>
-                          <span>
-                              <i class="pi pi-angle-down offset-sm-2 ofering"></i>
-                          </span>
-                      </button>
-                      <div class="dropdown-menu scroll w-100 " aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item" v-for="(itm, indx) in accountCurrencies" :key="indx">
-                              <div class="cursor-pointer" @click="selectCurrency(itm)"> {{itm.name}}</div> 
-                          </a>
-                      </div> -->
                   </div>
                 </div>
                 <div
@@ -255,11 +246,12 @@ export default {
       selectedCurrency.value = item;
     };
 
-    const selectAccountType = (account) => {
-      selectedAccountType.value = account;
-    };
+    // const selectAccountType = (account) => {
+    //   selectedAccountType.value = account;
+    //   console.log(selectedAccountType.value , 'gffgg');
+    // };
     const setSelectedAccountType = () => {
-      selectedAccountType.value = transactionalAccounts.value.find((i) => i.id == selectedAccountTypeID.value)
+      selectedAccountType.value = props.transactionalAccounts.find((i) => i.id == selectedAccountTypeID.value)
       console.log(selectedAccountType.value, "jlkjkljiouiuoo");
     }
 
@@ -423,7 +415,7 @@ export default {
       selectedAccountTypeID,
       setSelectedAccountType,
       selectCurrency,
-      selectAccountType,
+      // selectAccountType,
       selectedAccountType,
       funds,
       primarycolor,
