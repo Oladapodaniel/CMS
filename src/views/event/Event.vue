@@ -965,7 +965,7 @@
               Cancel
             </el-button>
             <el-button :color="primarycolor" class="text-white" round size="large" ref="closeFirstTimers" @click="save">
-              Save
+              Add
             </el-button>
           </div>
         </div>
@@ -1142,7 +1142,7 @@
               Cancel
             </el-button>
             <el-button round :color="primarycolor" class="" size="large" ref="closeNewConverts" @click="saveNewConvert">
-              Save
+              Add
             </el-button>
           </div>
         </div>
