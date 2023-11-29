@@ -81,9 +81,7 @@
             style="width: 100%"
           >
             <el-form-item>
-              <div
-                class="d-flex flex-column flex-lg-row justify-content-end w-100"
-              >
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <label for="firstName" class="mr-3 font-weight-600"
                   >Firstname<span style="color: red"> *</span></label
                 >
@@ -96,12 +94,8 @@
               </div>
             </el-form-item>
             <el-form-item>
-              <div
-                class="d-flex flex-column flex-lg-row justify-content-end w-100"
-              >
-                <label for="firstName" class="mr-3 font-weight-600"
-                  >Surname</label
-                >
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="firstName" class="mr-3 font-weight-600">Surname</label>
                 <el-input
                   type="text"
                   class="input-width"
@@ -111,12 +105,8 @@
               </div>
             </el-form-item>
             <el-form-item prop="phoneNumber" class="validate-phone">
-              <div
-                class="d-flex flex-column flex-lg-row justify-content-end w-100"
-              >
-                <label for="firstName" class="mr-3 font-weight-600"
-                  >Phone number</label
-                >
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="firstName" class="mr-3 font-weight-600">Phone number</label>
                 <el-input
                   type="number"
                   ref="validatePhone"
@@ -128,12 +118,8 @@
               </div>
             </el-form-item>
             <el-form-item prop="email" class="validate-email">
-              <div
-                class="d-flex flex-column flex-lg-row justify-content-end w-100"
-              >
-                <label for="firstName" class="mr-3 font-weight-600"
-                  >Email</label
-                >
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="firstName" class="mr-3 font-weight-600">Email</label>
                 <el-input
                   type="text"
                   class="input-width"
@@ -143,9 +129,7 @@
               </div>
             </el-form-item>
             <el-form-item>
-              <div
-                class="d-flex flex-column flex-lg-row justify-content-end w-100"
-              >
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <div class="input-width d-flex">
                   <el-select-v2
                     v-model="maritalStatusId"
@@ -179,9 +163,7 @@
               </div>
             </el-form-item>
             <el-form-item>
-              <div
-                class="d-flex flex-column flex-lg-row justify-content-end w-100"
-              >
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <label for="firstName" class="mr-3 font-weight-600"
                   >Event or service attended</label
                 >
@@ -217,12 +199,8 @@
               </div>
             </el-form-item>
             <el-form-item>
-              <div
-                class="d-flex flex-column flex-lg-row justify-content-end w-100"
-              >
-                <label for="firstName" class="mr-3 font-weight-600"
-                  >Address</label
-                >
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="firstName" class="mr-3 font-weight-600">Address</label>
                 <el-input
                   type="text"
                   class="input-width"
@@ -232,9 +210,7 @@
               </div>
             </el-form-item>
             <el-form-item>
-              <div
-                class="d-flex flex-column flex-lg-row justify-content-end w-100"
-              >
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <div class="mr-3 font-weight-600">Birthday</div>
                 <div class="input-width d-flex">
                   <el-select-v2
@@ -277,25 +253,18 @@
               </div>
             </el-form-item> -->
             <el-form-item>
-              <div
-                class="d-flex flex-column flex-lg-row justify-content-end w-100"
-              >
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <label for="firstName" class="mr-3 font-weight-600"
                   >Which Group[s] Do You Belong To?</label
                 >
-                <div class="input-width  border">
-                  <div class="p-2  add-group bg-white">
-                    <div
-                      v-for="(item, index) in firstTimerInGroup"
-                      :key="index"
-                    >
+                <div class="input-width border">
+                  <div class="p-2 add-group bg-white">
+                    <div v-for="(item, index) in firstTimerInGroup" :key="index">
                       <div class="pt-1">{{ index + 1 }}. {{ item.name }}</div>
                     </div>
-                    <div v-if="firstTimerInGroup.length === 0">
-                      No group added yet
-                    </div>
+                    <div v-if="firstTimerInGroup.length === 0">No group added yet</div>
                     <div
-                      class="font-weight-700 primary--text  border-top text-center c-pointer"
+                      class="font-weight-700 primary--text border-top text-center c-pointer"
                       data-toggle="modal"
                       data-target="#addToGroup"
                     >
@@ -305,13 +274,8 @@
                 </div>
               </div>
             </el-form-item>
-            <el-form-item
-              v-for="(item, index) in dynamicCustomFields"
-              :key="index"
-            >
-              <div
-                class="d-flex flex-column flex-lg-row justify-content-end w-100"
-              >
+            <el-form-item v-for="(item, index) in dynamicCustomFields" :key="index">
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <label for="occupation" class="mr-3 font-weight-600">{{
                   item.label
                 }}</label>
@@ -319,9 +283,7 @@
                   <el-select-v2
                     v-model="item.data"
                     :options="
-                      item.parameterValues
-                        .split(',')
-                        .map((i) => ({ label: i, value: i }))
+                      item.parameterValues.split(',').map((i) => ({ label: i, value: i }))
                     "
                     :placeholder="item.label"
                     size="large"
@@ -360,10 +322,7 @@
                   size="default"
                   v-if="item.controlType == 3"
                 />
-                <div
-                  class="d-flex align-items-center"
-                  v-if="item.controlType == 6"
-                >
+                <div class="d-flex align-items-center" v-if="item.controlType == 6">
                   <input
                     type="file"
                     class="form-control input-width"
@@ -391,9 +350,7 @@
             <el-collapse-transition>
               <div v-show="showAddInfo">
                 <el-form-item>
-                  <div
-                    class="d-flex flex-column flex-lg-row justify-content-end w-100"
-                  >
+                  <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                     <div class="input-width">
                       <el-select-v2
                         v-model="sourceId"
@@ -412,15 +369,11 @@
                   </div>
                 </el-form-item>
                 <el-form-item>
-                  <div
-                    class="d-flex flex-column flex-lg-row justify-content-end w-100"
-                  >
+                  <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                     <div class="input-width">
                       <el-select-v2
                         v-model="selectedCommunicationMeans"
-                        :options="
-                          comMeansArr.map((i) => ({ label: i, value: i }))
-                        "
+                        :options="comMeansArr.map((i) => ({ label: i, value: i }))"
                         placeholder="Means of communication"
                         size="large"
                         class="w-100 mr-1"
@@ -429,15 +382,11 @@
                   </div>
                 </el-form-item>
                 <el-form-item>
-                  <div
-                    class="d-flex flex-column flex-lg-row justify-content-end w-100"
-                  >
+                  <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                     <div class="input-width">
                       <el-select-v2
                         v-model="selectedJoinInterest"
-                        :options="
-                          joinInterestArr.map((i) => ({ label: i, value: i }))
-                        "
+                        :options="joinInterestArr.map((i) => ({ label: i, value: i }))"
                         placeholder="Interested in joining us?"
                         size="large"
                         class="w-100 mr-1"
@@ -446,15 +395,11 @@
                   </div>
                 </el-form-item>
                 <el-form-item>
-                  <div
-                    class="d-flex flex-column flex-lg-row justify-content-end w-100"
-                  >
+                  <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                     <div class="input-width">
                       <el-select-v2
                         v-model="selectedVisitOption"
-                        :options="
-                          wantVisitArr.map((i) => ({ label: i, value: i }))
-                        "
+                        :options="wantVisitArr.map((i) => ({ label: i, value: i }))"
                         placeholder="Want to be visited?"
                         size="large"
                         class="w-100 mr-1"
@@ -465,9 +410,7 @@
               </div>
             </el-collapse-transition>
             <el-form-item>
-              <div
-                class="d-flex flex-column flex-lg-row justify-content-end w-100"
-              >
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <div class="input-width">
                   <div class="d-flex flex-column">
                     <!-- <el-button
@@ -502,7 +445,7 @@
           <div class="grey-bg d-none d-md-block">
             <div class="grey-bg">
               <div>
-                <div class="person-img ">
+                <div class="person-img">
                   <!-- <ImageForm @pictureurl="setImageToUrl" /> -->
                   <img
                     v-if="!url"
@@ -709,15 +652,9 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header" style="background: #ebeff4">
-            <h5 class="modal-title font-weight-bold" id="addToGroup">
-              Group Membership
-            </h5>
-            <el-button
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-            <el-icon class="mt-0"><Close /></el-icon>
+            <h5 class="modal-title font-weight-bold" id="addToGroup">Group Membership</h5>
+            <el-button class="close" data-dismiss="modal" aria-label="Close">
+              <el-icon class="mt-0"><Close /></el-icon>
               <!-- <span aria-hidden="true">&times;</span> -->
             </el-button>
           </div>
@@ -1295,7 +1232,7 @@ import flatten from "../../services/groupArray/flatTree";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useStore } from "vuex";
 import swal from "sweetalert";
-import { ElMessage } from 'element-plus'
+import { ElMessage } from "element-plus";
 
 export default {
   components: { Dropdown, Dialog, ImageForm, InputText, Calendar },
@@ -1306,12 +1243,41 @@ export default {
     const churchLogo2 = ref("");
     const churchName = ref("");
     const newEvents = ref([]);
-    const flattenedTree = ref([])
-    const groupMappedTree = ref([])
+    const flattenedTree = ref([]);
+    const groupMappedTree = ref([]);
 
     const day = ref([
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-      22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
     ]);
     const month = ref([
       "January",
@@ -1327,7 +1293,7 @@ export default {
       "November",
       "December",
     ]);
-    const primarycolor = inject('primarycolor')
+    const primarycolor = inject("primarycolor");
     const maritalStatusArr = ref([]);
     const selectedMaritalStatus = ref(null);
     const genderArr = ref([]);
@@ -1342,7 +1308,7 @@ export default {
     const selectedEventAttended = ref({});
     const searchGroupText = ref("");
     const howDidYouAboutUs = ref([]);
-    const selectedAboutUsSource = ref('');
+    const selectedAboutUsSource = ref("");
     const searchRef = ref(null);
     const selectedFollowUp = ref(null);
     const maritalStatusId = ref(null);
@@ -1359,7 +1325,7 @@ export default {
     const selectEvent = ref("Select Event");
     const isPhoneValid = ref(true);
     const isEmailValid = ref(true);
-    const customFileLoading = ref(false)
+    const customFileLoading = ref(false);
     const validatePhone = ref("");
     const validateEmail = ref("");
     const firstTimerPhone = ref("");
@@ -1374,7 +1340,7 @@ export default {
     const showAddInfo = ref(false);
     const dismissAddToGroupModal = ref("");
     const route = useRoute();
-    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
 
     const eventName = computed(() => {
       return newEvents.value.map((i) => i.name);
@@ -1392,8 +1358,6 @@ export default {
     };
     getCustomFields();
 
-    
-
     const getFirstTimer = async () => {
       try {
         const res = await axios.get(`/TenantInfo?tenantID=${route.params.id}`);
@@ -1407,24 +1371,24 @@ export default {
     getFirstTimer();
 
     const setSelectedMaritalStatus = () => {
-      selectedMaritalStatus.value = maritalStatusArr.value.find(i => {
-        return i.id == maritalStatusId.value
-      })
-    }
+      selectedMaritalStatus.value = maritalStatusArr.value.find((i) => {
+        return i.id == maritalStatusId.value;
+      });
+    };
 
     const setSelectedGender = () => {
-      selectedGender.value = genderArr.value.find(i => {
-        return i.id == genderId.value
-      })
-    }
+      selectedGender.value = genderArr.value.find((i) => {
+        return i.id == genderId.value;
+      });
+    };
 
     const setSelectedSource = () => {
-      selectedAboutUsSource.value = howDidYouAboutUs.value.find(i => {
-        return i.id === sourceId.value
-      })
-    }  
-    
-     const closeManualModalIfOpen = (e) => {
+      selectedAboutUsSource.value = howDidYouAboutUs.value.find((i) => {
+        return i.id === sourceId.value;
+      });
+    };
+
+    const closeManualModalIfOpen = (e) => {
       if (!e.target.classList.contains("dd")) {
         // showEventList.value = false;
         eventsSearchString.value = "";
@@ -1447,12 +1411,12 @@ export default {
     };
 
     const setGroupValue = () => {
-      const response = flattenedTree.value.find(i => i.value == selectedTree.value)
+      const response = flattenedTree.value.find((i) => i.value == selectedTree.value);
       groupToAddTo.value = {
         name: response.label,
-        id: response.value
-      }
-    }
+        id: response.value,
+      };
+    };
 
     const filterEventCategory = computed(() => {
       // let x;
@@ -1487,7 +1451,8 @@ export default {
       newEvent.value.activity.eventCategoryId = obj.id;
       showCategory.value = false;
     };
-    const filterNodeMethod = (value, data) => data.label.toLowerCase().includes(value.toLowerCase())
+    const filterNodeMethod = (value, data) =>
+      data.label.toLowerCase().includes(value.toLowerCase());
 
     const birthMonth = ref(null);
     const hideCelebTab = ref(true);
@@ -1496,39 +1461,35 @@ export default {
     const showAddInfoTab = () => (hideAddInfoTab.value = !hideAddInfoTab.value);
 
     const loading = ref(false);
-    const url = ref("")
+    const url = ref("");
 
     const uploadImage = async (e, index) => {
-      customFileLoading.value = true
-      let formData = new FormData()
-      formData.append("mediaFileImage", e.target.files[0])
+      customFileLoading.value = true;
+      let formData = new FormData();
+      formData.append("mediaFileImage", e.target.files[0]);
 
       try {
-        await axios.post("/api/Media/UploadProfilePicture", formData).then(res => {
+        await axios.post("/api/Media/UploadProfilePicture", formData).then((res) => {
           if (index) {
-              customFileLoading.value = false
-              dynamicCustomFields.value[index].data = res.data.pictureUrl
-            }
-            firstTimersObj.value.imageUrl = res.data.pictureUrl;
-        })
+            customFileLoading.value = false;
+            dynamicCustomFields.value[index].data = res.data.pictureUrl;
+          }
+          firstTimersObj.value.imageUrl = res.data.pictureUrl;
+        });
+      } catch (err) {
+        console.error(err);
+        customFileLoading.value = false;
       }
-      catch (err) {
-        console.error(err)
-        customFileLoading.value = false
-      }
-    }
+    };
 
-    const imageSelected = async(e) => {
+    const imageSelected = async (e) => {
       url.value = URL.createObjectURL(e.target.files[0]);
-      await uploadImage(e)
-    }
+      await uploadImage(e);
+    };
 
     const onSubmit = async () => {
       const formData = new FormData();
-      formData.append(
-        "genderId",
-        selectedGender.value ? selectedGender.value.id : 0
-      );
+      formData.append("genderId", selectedGender.value ? selectedGender.value.id : 0);
 
       formData.append(
         "maritalStatusId",
@@ -1567,7 +1528,12 @@ export default {
           : 0
       );
       formData.append("tenantId", route.params.id);
-      formData.append("imageUrl", firstTimersObj.value && firstTimersObj.value.imageUrl ? firstTimersObj.value.imageUrl : "");
+      formData.append(
+        "imageUrl",
+        firstTimersObj.value && firstTimersObj.value.imageUrl
+          ? firstTimersObj.value.imageUrl
+          : ""
+      );
       // formData.append("imageUrl", formdatImage.value ? formdatImage.value : "");
       formData.append(
         "phoneNumber",
@@ -1678,16 +1644,16 @@ export default {
           loading.value = false;
           if (err.response) {
             ElMessage({
-              type: 'warning',
+              type: "warning",
               message: err.response.data,
-              duration: 3000
-            })
+              duration: 3000,
+            });
           } else {
             ElMessage({
-              type: 'error',
+              type: "error",
               message: "Please ensure you have a strong internet  connection",
-              duration: 3000
-            })
+              duration: 3000,
+            });
           }
         });
       // router.push('/onboarding')
@@ -1709,9 +1675,7 @@ export default {
       } else {
         return allGroups.value.filter((i) => {
           if (i.name)
-            return i.name
-              .toLowerCase()
-              .includes(searchGroupText.value.toLowerCase());
+            return i.name.toLowerCase().includes(searchGroupText.value.toLowerCase());
         });
       }
     });
@@ -1720,27 +1684,24 @@ export default {
     const savingNewEvent = ref(false);
     const firstTimer = ref({});
 
-    
-
     const createNewCat = async (eventParams) => {
       try {
         let data;
-        const theText =
-          eventParams === 1 ? eventText.value : newEventCategoryName.value;
+        const theText = eventParams === 1 ? eventText.value : newEventCategoryName.value;
         data = await axios.post(`/api/EventCategory?name=${theText}`);
         newEvents.value = data.data;
 
         ElMessage({
-              type: 'success',
-              message: "Your new event was created successfully",
-              duration: 3000
-            })
+          type: "success",
+          message: "Your new event was created successfully",
+          duration: 3000,
+        });
       } catch (error) {
         ElMessage({
-              type: 'error',
-              message: error.response.data,
-              duration: 3000
-            })
+          type: "error",
+          message: error.response.data,
+          duration: 3000,
+        });
       }
       displayModal.value = false;
       newEventCategoryName.value = "";
@@ -1836,13 +1797,11 @@ export default {
           }
         });
 
-      axios
-        .get(`/howYouHeardAboutUs?tenantId=${route.params.id}`)
-        .then((res) => {
-          howDidYouAboutUs.value = res.data.map((i) => {
-            return { name: i.name, id: i.id };
-          });
+      axios.get(`/howYouHeardAboutUs?tenantId=${route.params.id}`).then((res) => {
+        howDidYouAboutUs.value = res.data.map((i) => {
+          return { name: i.name, id: i.id };
         });
+      });
     });
 
     const year = computed(() => {
@@ -1873,9 +1832,11 @@ export default {
             `api/People/checkDuplicate?phoneNumber=${firstTimersObj.value.phoneNumber}`
           );
           if (data === "phone number") {
-            return callback(new Error('Phone number already exist, try another'))
+            return callback(new Error("Phone number already exist, try another"));
           } else if (data === "email and phone number") {
-            return callback(new Error('Phone number and email already exist, try another'))
+            return callback(
+              new Error("Phone number and email already exist, try another")
+            );
           }
           // if (data === "phone number") {
           //   isPhoneValid.value = false;
@@ -1910,9 +1871,11 @@ export default {
             `api/People/checkDuplicate?email=${firstTimersObj.value.email}`
           );
           if (data === "email") {
-            return callback(new Error('Email already exist, try another'))
+            return callback(new Error("Email already exist, try another"));
           } else if (data === "email and phone number") {
-            return callback(new Error('Email and phone number already exist, try another'))
+            return callback(
+              new Error("Email and phone number already exist, try another")
+            );
           }
           // if (data === "email") {
           //   isEmailValid.value = false;
@@ -1930,13 +1893,11 @@ export default {
     };
 
     const validateRules = reactive({
-      email: [
-        { validator: checkForDuplicateEmail, required: false, trigger: 'blur' },
-      ],
+      email: [{ validator: checkForDuplicateEmail, required: false, trigger: "blur" }],
       phoneNumber: [
-        { validator: checkForDuplicatePhone, required: true, trigger: 'blur' },
+        { validator: checkForDuplicatePhone, required: true, trigger: "blur" },
       ],
-    })
+    });
     const setImageToUrl = (payload) => {
       firstTimersObj.value.imageUrl = payload;
       formdatImage.value = payload;
@@ -1945,10 +1906,11 @@ export default {
     const setContact = (payload) => {
       if (!payload.email) {
         ElMessage({
-              type: 'warning',
-              message: "This contact does not have any email records, communicate with this person to create him as a user",
-              duration: 3000
-            })
+          type: "warning",
+          message:
+            "This contact does not have any email records, communicate with this person to create him as a user",
+          duration: 3000,
+        });
       }
       firstTimersObj.value.contactOwnerId = payload.id;
     };
@@ -1959,9 +1921,9 @@ export default {
 
         if (groups && groups.length > 0) {
           allGroups.value = groups;
-          let data = { children: allGroups.value }
+          let data = { children: allGroups.value };
           const { children } = collector(data);
-          groupMappedTree.value = children
+          groupMappedTree.value = children;
           if (groupMappedTree.value && groupMappedTree.value.length > 0) {
             flattenedTree.value = groupMappedTree.value.flatMap(flatten());
           }
@@ -1970,9 +1932,9 @@ export default {
           let group = await grousService.getGroups();
           if (group) {
             allGroups.value = group.response.groupResonseDTO;
-             let data = { children: allGroups.value }
+            let data = { children: allGroups.value };
             const { children } = collector(data);
-            groupMappedTree.value = children
+            groupMappedTree.value = children;
             if (groupMappedTree.value && groupMappedTree.value.length > 0) {
               flattenedTree.value = groupMappedTree.value.flatMap(flatten());
             }
@@ -2065,7 +2027,10 @@ export default {
       maritalStatusId,
       genderId,
       setGroupValue,
-      mdAndUp, lgAndUp, xlAndUp, xsOnly,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      xsOnly,
       eventText,
       displayModal,
       openModal,
@@ -2096,7 +2061,7 @@ export default {
       selectedTree,
       dismissAddToGroupModal,
       addMemberToGroup,
-      setSelectedSource
+      setSelectedSource,
     };
   },
 };
@@ -2151,7 +2116,7 @@ export default {
 .submit-div {
   /* margin-left: 14em; */
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .inputs {
@@ -2302,18 +2267,17 @@ export default {
 }
 
 .input-width {
-  width: 100%
+  width: 100%;
 }
 
 .input-width {
-  width: 100%
+  width: 100%;
 }
 
 @media (min-width: 992px) {
   .input-width {
-    width: 350px
+    width: 350px;
   }
-
 }
 
 @media (max-width: 620px) {
