@@ -51,17 +51,21 @@
         </el-form>
         <div class="bottom-container">
           <div>
-            <p class="sign-up-prompt">
+            <div class="sign-up-prompt">
               Don't have an account yet?
-              <router-link to="/register" class="sign-up primary--text"><strong>Sign up now</strong></router-link>
-            </p>
+            </div>
           </div>
+
+          <div class="mt-2"><router-link to="/register"
+              class="sign-up primary--text text-decoration-none"><el-button color="#17c5cf"
+                @click="register" class="w-50"  :loading="loading" round><strong>Sign up now</strong>
+              </el-button></router-link></div>
         </div>
         <div class="row">
           <el-divider>
             Download the App
           </el-divider>
-          <div class="col-md-12 col-12 d-flex justify-content-start   ">
+          <div class="col-md-12 col-12 d-flex justify-content-center   ">
             <a class="text-decoration-none googleplay  " target="_blank"
               href="https://play.google.com/store/apps/details?id=com.complustech.co">
               <img src="../../assets/mobileonboarding/Google-play-logo.png" alt="">
