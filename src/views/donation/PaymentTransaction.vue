@@ -445,7 +445,6 @@ export default {
         const getGateWays = () => {
                 axios.get('/api/Financials/GetPaymentGateways')
                 .then(res => {
-                    console.log(res)
                     paymentGateWaysDb.value = res.data.map(i => {
                         return {
                             countryCoverageArea: i.countryCoverageArea,
@@ -453,7 +452,7 @@ export default {
                             isActive: i.isActive,
                             isSubAccountSupported: i.isSubAccountSupported,
                             name: i.name,
-                            isChecked: false
+                            isChecked: true
                         }
                     })
                 finish()

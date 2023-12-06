@@ -200,14 +200,17 @@
                             Delete
                           </div>
                         </el-dropdown-item>
-                      </el-dropdown-menu>
-                      <!-- <el-dropdown-menu>
-                        <el-dropdown-item>
+                        <!-- <el-dropdown-item>
                           <div @click.prevent="showReciept" class="text-color">
                             Upload reciept
                           </div>
                         </el-dropdown-item>
-                      </el-dropdown-menu> -->
+                        <el-dropdown-item>
+                          <div @click.prevent="showReciept" class="text-color">
+                            View reciept
+                          </div>
+                        </el-dropdown-item> -->
+                      </el-dropdown-menu>
                     </template>
                   </el-dropdown>
                 </template>
@@ -253,20 +256,22 @@
               />
             </div>
           </div>
-          <!-- <el-dialog v-model="displayReciept" title="Print Tag" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
-            <div class="row">
-              <div class="col-md-8">
-                <el-upload  class="upload-demo"
-                  multiple
-                   :on-change="chooseFile" :on-remove="handleRemove" :auto-upload="false"  :limit="3">
-                  <el-button type="primary">Click to upload</el-button>
+          <el-dialog v-model="displayReciept" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+            <div class="row mt-3">
+              <div v-if="selectedFileUrl" class="col-md-12 mb-2 d-flex justify-content-center reciept-image">
+                <img :src="selectedFileUrl" v-show="fileImage" alt="">
+              </div>
+              <div class="col-md-12  d-flex justify-content-center ">
+                <el-upload class="upload-demo " multiple :show-file-list="false" :on-change="chooseFile" :on-remove="handleRemove"
+                  :auto-upload="false" >
+                  <el-button :color="primarycolor">Click to upload</el-button>
                   <template #tip>
-                    <div class="el-upload__tip">
-                      jpg/png files with a size less than 500KB.
-                    </div>
+                    <el-icon class="ml-2" style="font-size: 20px; color: #7d7d7d">
+                      <Paperclip />
+                    </el-icon>
                   </template>
                 </el-upload>
-                <el-upload v-model:file-list="fileList" class="upload-demo"
+                <!-- <el-upload v-model:file-list="fileList" class="upload-demo"
                   action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" multiple
                   :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" :limit="3"
                   :on-exceed="handleExceed">
@@ -276,26 +281,27 @@
                       jpg/png files with a size less than 500KB.
                     </div>
                   </template>
-                </el-upload>
+                </el-upload> -->
               </div>
             </div>
             <template #footer>
               <span class="dialog-footer">
                 <el-button @click="displayReciept = false">Cancel</el-button>
-                <el-button @click="displayReciept = false">Change</el-button>
-                <el-button type="primary" @click="displayReciept = false">
+                <el-button @change="chooseFile">Change</el-button>
+                <el-button :color="primarycolor" @click="saveReciept">
                   Save
                 </el-button>
               </span>
             </template>
-          </el-dialog> -->
+          </el-dialog>
+
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { ref, computed, onMounted, watchEffect, watch } from "vue";
+import { ref, computed, inject, onMounted, watchEffect, watch } from "vue";
 import axios from "@/gateway/backendapi";
 import finish from "../../services/progressbar/progress";
 import TransactionForm from "../../views/accounting/transaction/EditTransaction";
@@ -323,13 +329,16 @@ export default {
   },
   setup(props, { emit }) {
     const transactions = ref([]);
+    const primarycolor = inject("primarycolor");
     const allTransactions = ref(store.getters["transaction/gettransactions"].records);
     const totalTransaction = ref(store.getters["transaction/gettransactions"].totalItems);
     const datete = ref("");
     const { lgAndUp, xlAndUp, mdAndUp } = deviceBreakpoint();
     const searchingMember = ref(true);
     const paginatedTableLoading = ref(false);
+    const fileImage = ref(false);
     const displayReciept = ref(false);
+    const selectedFileUrl = ref("");
     // const totalTransaction = ref(0)
     const transactionHeaders = ref([
       { name: "DATE", value: "date" },
@@ -348,11 +357,28 @@ export default {
       displayReciept.value = true;
     };
 
-    const handleRemove = () => {};
+    const handleRemove = () => {
+      selectedFileUrl.value = "";
+    }
+
+    const saveReciept = () => {
+
+    }
 
     const chooseFile = (e) => {
-      console.log(e);
-    };
+      selectedFileUrl.value = ""
+      console.log(e)
+      if (e.raw.type.includes("image")) {
+        selectedFileUrl.value = URL.createObjectURL(e.raw);
+        fileImage.value = true;
+        console.log(selectedFileUrl.value, 'hhhhh');
+      } else {
+        fileImage.value = false;
+      }
+
+    }
+
+
 
     const serverOptions = ref({
       page: 1,
@@ -751,7 +777,6 @@ export default {
       toggleAccount,
       hideModals,
       handleRemove,
-
       searchingMember,
       selectedTransaction,
       transactionItem,
@@ -760,10 +785,14 @@ export default {
       closeModal,
       showAccount,
       totalTransaction,
+      fileImage,
       accountType,
       liabilities,
       displayReciept,
+      primarycolor,
+      saveReciept,
       getCurrenciesFromCountries,
+      selectedFileUrl,
       currencyList,
       showCurrency,
       selectAccount,
@@ -805,6 +834,13 @@ html {
   scroll-behavior: smooth;
 }
 
+<<<<<<< HEAD
+=======
+.reciept-image img {
+  height: 13rem;
+}
+
+>>>>>>> development
 .events {
   font: normal normal 800 29px Nunito sans;
 }

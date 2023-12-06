@@ -1330,6 +1330,7 @@ export default {
         addToGroupError.value = true;
         return false;
       }
+      dismissAddToGroupModal.value = "modal";
       if (route.params.personId) {
         addToGroupLoading.value = true;
         let personInfo = {
