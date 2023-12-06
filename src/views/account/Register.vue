@@ -76,7 +76,7 @@
           Download the app
         </el-divider>
         <div class="row ">
-          <div class="col-md-12 col-12  ">
+          <div class="col-md-12 col-12 d-flex justify-content-center  ">
             <div>
               <a class="text-decoration-none googleplay  " target="_blank"
                 href="https://play.google.com/store/apps/details?id=com.complustech.co">

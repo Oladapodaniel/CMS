@@ -26,7 +26,7 @@
     </div>
 
     <div class="row">
-      <h3 class="col-12 header-text font-weight-bold">Add New Converts </h3>
+      <h3 class="col-12 header-text font-weight-bold">Add New Converts</h3>
       <div class="mt-3 col-12">Bio:</div>
     </div>
     <div class="row">
@@ -140,25 +140,21 @@
           </div>
         </div>
         <div>
-          <div class="d-md-flex justify-content-md-end mt-3 ">
+          <div class="d-md-flex justify-content-md-end mt-3">
             <label for="" class="label">Which Group[s] Do You Belong To?</label>
-              <div class="p-2 border   add-group bg-white">
-                <div v-for="(item, index) in firstTimerInGroup" :key="index">
-                  <div class="pt-1">{{ index + 1 }}. {{ item.name }}</div>
-                </div>
-                <div v-if="firstTimerInGroup.length === 0">
-                  No group added yet
-                </div>
-                <div class="
-                  font-weight-700
-                  text-primary
-                  border-top
-                  text-center
-                  c-pointer
-                " data-toggle="modal" data-target="#addToGroup">
-                  Choose group
-                </div>
+            <div class="p-2 border add-group bg-white">
+              <div v-for="(item, index) in firstTimerInGroup" :key="index">
+                <div class="pt-1">{{ index + 1 }}. {{ item.name }}</div>
               </div>
+              <div v-if="firstTimerInGroup.length === 0">No group added yet</div>
+              <div
+                class="font-weight-700 text-primary border-top text-center c-pointer"
+                data-toggle="modal"
+                data-target="#addToGroup"
+              >
+                Choose group
+              </div>
+            </div>
           </div>
         </div>
         <!-- Additional field -->
@@ -181,11 +177,7 @@
             />
             <!-- <div class="cstm-select"  v-else-if="item.controlType == 2"> -->
             <div v-else-if="item.controlType == 2" style="width: 330px">
-              <Checkbox
-                v-model="item.data"
-                :binary="true"
-                style="width: 100%"
-              />
+              <Checkbox v-model="item.data" :binary="true" style="width: 100%" />
             </div>
             <!-- </div> -->
             <!-- <Checkbox class="" v-else-if="item.controlType == 2" v-model="item.data" :binary="true"/> -->
@@ -338,21 +330,11 @@
                     Cancel
                     </button> -->
             <button
-              class="
-                primary-bg
-                px-md-4
-                outline-none
-                default-btn
-                text-white
-                border-0
-              "
+              class="primary-bg px-md-4 outline-none default-btn text-white border-0"
               @click.prevent="onSubmit"
               :disabled="loading || !newConvertObj.firstName"
             >
-              <i
-                class="pi pi-spin pi-spinner text-white mr-2"
-                v-if="loading"
-              ></i>
+              <i class="pi pi-spin pi-spinner text-white mr-2" v-if="loading"></i>
               Save
             </button>
           </div>
@@ -373,7 +355,7 @@
         </div>
       </div>
     </div>
-      <div
+    <div
       class="modal fade"
       id="addToGroup"
       tabindex="-1"
@@ -384,15 +366,8 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header" style="background: #ebeff4">
-            <h5 class="modal-title font-weight-bold" id="addToGroup">
-              Group Membership
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
+            <h5 class="modal-title font-weight-bold" id="addToGroup">Group Membership</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -473,9 +448,7 @@
                 </div>
                 <div class="row mt-2">
                   <div class="col-md-6 d-md-flex justify-content-end">
-                    <button class="default-btn" data-dismiss="modal">
-                      Cancel
-                    </button>
+                    <button class="default-btn" data-dismiss="modal">Cancel</button>
                   </div>
                   <div class="col-md-6">
                     <button
@@ -522,13 +495,41 @@ export default {
     const store = useStore();
     const showError = ref(false);
     const churchLogo2 = ref("");
-    const churchName = ref("")
+    const churchName = ref("");
     const newEvents = ref([]);
-    
 
     const day = ref([
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-      22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
     ]);
     const month = ref([
       "January",
@@ -652,7 +653,7 @@ export default {
     // const birthMonth = ref(null)
 
     const hideCelebTab = ref(true);
-    const searchGroupText = ref('');
+    const searchGroupText = ref("");
     const hideAddInfoTab = ref(true);
     const showCelebTab = () => (hideCelebTab.value = !hideCelebTab.value);
     const showAddInfoTab = () => (hideAddInfoTab.value = !hideAddInfoTab.value);
@@ -665,9 +666,7 @@ export default {
       } else {
         return allGroups.value.filter((i) => {
           if (i.name)
-            return i.name
-              .toLowerCase()
-              .includes(searchGroupText.value.toLowerCase());
+            return i.name.toLowerCase().includes(searchGroupText.value.toLowerCase());
         });
       }
     });
@@ -676,15 +675,14 @@ export default {
     };
 
     const onSubmit = async () => {
-      newConvertObj.value.genderId = selectedGender.value
-        ? selectedGender.value.id
-        : 0;
+      newConvertObj.value.genderId = selectedGender.value ? selectedGender.value.id : 0;
       newConvertObj.value.maritalStatusId = selectedMaritalStatus.value
         ? selectedMaritalStatus.value.id
         : 0;
-      newConvertObj.value.activityId = selectedEventAttended.value && selectedEventAttended.value.activityID
-        ? selectedEventAttended.value.activityID
-        : "00000000-0000-0000-0000-000000000000";
+      newConvertObj.value.activityId =
+        selectedEventAttended.value && selectedEventAttended.value.activityID
+          ? selectedEventAttended.value.activityID
+          : "00000000-0000-0000-0000-000000000000";
       newConvertObj.value.howDidYouAboutUsId = selectedAboutUsSource.value
         ? selectedAboutUsSource.value.id
         : "00000000-0000-0000-0000-000000000000";
@@ -741,21 +739,19 @@ export default {
           break;
       }
 
-      newConvertObj.value.customAttributeData = dynamicCustomFields.value.map(
-        (i) => ({
-          customAttributeID: i.id,
-          data: i.data,
-          entityID: route.params.personId,
-        })
-      );
+      newConvertObj.value.customAttributeData = dynamicCustomFields.value.map((i) => ({
+        customAttributeID: i.id,
+        data: i.data,
+        entityID: route.params.personId,
+      }));
       newConvertObj.value.groups =
         firstTimerInGroup.value.length > 0
           ? firstTimerInGroup.value.map((i) => {
-            return {
-              groupId: i.groupId,
-              position: i.position,
-            };
-          })
+              return {
+                groupId: i.groupId,
+                position: i.position,
+              };
+            })
           : [];
 
       newConvertObj.value.tenantId = route.params.id;
@@ -823,8 +819,7 @@ export default {
     const createNewCat = async (eventParams) => {
       try {
         let data;
-        const theText =
-          eventParams === 1 ? eventText.value : newEventCategoryName.value;
+        const theText = eventParams === 1 ? eventText.value : newEventCategoryName.value;
         data = await axios.post(`/api/EventCategory?name=${theText}`);
         console.log(data.data);
         newEvents.value = data.data;
@@ -939,14 +934,12 @@ export default {
           }
         });
 
-      axios
-        .get(`/howYouHeardAboutUs?tenantId=${route.params.id}`)
-        .then((res) => {
-          howDidYouAboutUs.value = res.data.map((i) => {
-            return { name: i.name, id: i.id };
-          });
-          console.log(res.data, "HYH");
+      axios.get(`/howYouHeardAboutUs?tenantId=${route.params.id}`).then((res) => {
+        howDidYouAboutUs.value = res.data.map((i) => {
+          return { name: i.name, id: i.id };
         });
+        console.log(res.data, "HYH");
+      });
     });
     const year = computed(() => {
       const arrOfYears = [];
@@ -1195,7 +1188,7 @@ export default {
 .submit-div {
   /* margin-left: 14em; */
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .inputs {

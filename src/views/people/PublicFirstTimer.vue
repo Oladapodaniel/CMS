@@ -299,7 +299,7 @@
           <div class="grey-bg d-none d-md-block">
             <div class="grey-bg">
               <div>
-                <div class="person-img ">
+                <div class="person-img">
                   <!-- <ImageForm @pictureurl="setImageToUrl" /> -->
                   <img v-if="!url" src="../../assets/people/phone-import.svg" alt="Uploaded Image" />
                   <img v-else :src="url" alt="Uploaded Image" style="
@@ -1058,12 +1058,41 @@ export default {
     const churchLogo2 = ref("");
     const churchName = ref("");
     const newEvents = ref([]);
-    const flattenedTree = ref([])
-    const groupMappedTree = ref([])
+    const flattenedTree = ref([]);
+    const groupMappedTree = ref([]);
 
     const day = ref([
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-      22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
     ]);
     const month = ref([
       "January",
@@ -1079,7 +1108,7 @@ export default {
       "November",
       "December",
     ]);
-    const primarycolor = inject('primarycolor')
+    const primarycolor = inject("primarycolor");
     const maritalStatusArr = ref([]);
     const selectedMaritalStatus = ref(null);
     const genderArr = ref([]);
@@ -1094,7 +1123,7 @@ export default {
     const selectedEventAttended = ref({});
     const searchGroupText = ref("");
     const howDidYouAboutUs = ref([]);
-    const selectedAboutUsSource = ref('');
+    const selectedAboutUsSource = ref("");
     const searchRef = ref(null);
     const selectedFollowUp = ref(null);
     const maritalStatusId = ref(null);
@@ -1111,7 +1140,7 @@ export default {
     const selectEvent = ref("Select Event");
     const isPhoneValid = ref(true);
     const isEmailValid = ref(true);
-    const customFileLoading = ref(false)
+    const customFileLoading = ref(false);
     const validatePhone = ref("");
     const validateEmail = ref("");
     const firstTimerPhone = ref("");
@@ -1126,7 +1155,7 @@ export default {
     const showAddInfo = ref(false);
     const dismissAddToGroupModal = ref("");
     const route = useRoute();
-    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
 
     const eventName = computed(() => {
       return newEvents.value.map((i) => i.name);
@@ -1159,16 +1188,16 @@ export default {
     getFirstTimer();
 
     const setSelectedMaritalStatus = () => {
-      selectedMaritalStatus.value = maritalStatusArr.value.find(i => {
-        return i.id == maritalStatusId.value
-      })
-    }
+      selectedMaritalStatus.value = maritalStatusArr.value.find((i) => {
+        return i.id == maritalStatusId.value;
+      });
+    };
 
     const setSelectedGender = () => {
-      selectedGender.value = genderArr.value.find(i => {
-        return i.id == genderId.value
-      })
-    }
+      selectedGender.value = genderArr.value.find((i) => {
+        return i.id == genderId.value;
+      });
+    };
 
     const setSelectedSource = () => {
       selectedAboutUsSource.value = howDidYouAboutUs.value.find(i => {
@@ -1199,12 +1228,12 @@ export default {
     };
 
     const setGroupValue = () => {
-      const response = flattenedTree.value.find(i => i.value == selectedTree.value)
+      const response = flattenedTree.value.find((i) => i.value == selectedTree.value);
       groupToAddTo.value = {
         name: response.label,
-        id: response.value
-      }
-    }
+        id: response.value,
+      };
+    };
 
     const filterEventCategory = computed(() => {
       // let x;
@@ -1239,7 +1268,8 @@ export default {
       newEvent.value.activity.eventCategoryId = obj.id;
       showCategory.value = false;
     };
-    const filterNodeMethod = (value, data) => data.label.toLowerCase().includes(value.toLowerCase())
+    const filterNodeMethod = (value, data) =>
+      data.label.toLowerCase().includes(value.toLowerCase());
 
     const birthMonth = ref(null);
     const hideCelebTab = ref(true);
@@ -1248,7 +1278,7 @@ export default {
     const showAddInfoTab = () => (hideAddInfoTab.value = !hideAddInfoTab.value);
 
     const loading = ref(false);
-    const url = ref("")
+    const url = ref("");
 
     const removeFromGroup = (index, item) => {
       if (!route.params.personId) {
@@ -1294,36 +1324,32 @@ export default {
     };
 
     const uploadImage = async (e, index) => {
-      customFileLoading.value = true
-      let formData = new FormData()
-      formData.append("mediaFileImage", e.target.files[0])
+      customFileLoading.value = true;
+      let formData = new FormData();
+      formData.append("mediaFileImage", e.target.files[0]);
 
       try {
-        await axios.post("/api/Media/UploadProfilePicture", formData).then(res => {
+        await axios.post("/api/Media/UploadProfilePicture", formData).then((res) => {
           if (index) {
-            customFileLoading.value = false
-            dynamicCustomFields.value[index].data = res.data.pictureUrl
+            customFileLoading.value = false;
+            dynamicCustomFields.value[index].data = res.data.pictureUrl;
           }
           firstTimersObj.value.imageUrl = res.data.pictureUrl;
-        })
+        });
+      } catch (err) {
+        console.error(err);
+        customFileLoading.value = false;
       }
-      catch (err) {
-        console.error(err)
-        customFileLoading.value = false
-      }
-    }
+    };
 
     const imageSelected = async (e) => {
       url.value = URL.createObjectURL(e.target.files[0]);
-      await uploadImage(e)
-    }
+      await uploadImage(e);
+    };
 
     const onSubmit = async () => {
       const formData = new FormData();
-      formData.append(
-        "genderId",
-        selectedGender.value ? selectedGender.value.id : 0
-      );
+      formData.append("genderId", selectedGender.value ? selectedGender.value.id : 0);
 
       formData.append(
         "maritalStatusId",
@@ -1362,7 +1388,12 @@ export default {
           : 0
       );
       formData.append("tenantId", route.params.id);
-      formData.append("imageUrl", firstTimersObj.value && firstTimersObj.value.imageUrl ? firstTimersObj.value.imageUrl : "");
+      formData.append(
+        "imageUrl",
+        firstTimersObj.value && firstTimersObj.value.imageUrl
+          ? firstTimersObj.value.imageUrl
+          : ""
+      );
       // formData.append("imageUrl", formdatImage.value ? formdatImage.value : "");
       formData.append(
         "phoneNumber",
@@ -1473,16 +1504,16 @@ export default {
           loading.value = false;
           if (err.response) {
             ElMessage({
-              type: 'warning',
+              type: "warning",
               message: err.response.data,
-              duration: 3000
-            })
+              duration: 3000,
+            });
           } else {
             ElMessage({
-              type: 'error',
+              type: "error",
               message: "Please ensure you have a strong internet  connection",
-              duration: 3000
-            })
+              duration: 3000,
+            });
           }
         });
       // router.push('/onboarding')
@@ -1504,9 +1535,7 @@ export default {
       } else {
         return allGroups.value.filter((i) => {
           if (i.name)
-            return i.name
-              .toLowerCase()
-              .includes(searchGroupText.value.toLowerCase());
+            return i.name.toLowerCase().includes(searchGroupText.value.toLowerCase());
         });
       }
     });
@@ -1520,8 +1549,7 @@ export default {
     const createNewCat = async (eventParams) => {
       try {
         let data;
-        const theText =
-          eventParams === 1 ? eventText.value : newEventCategoryName.value;
+        const theText = eventParams === 1 ? eventText.value : newEventCategoryName.value;
         data = await axios.post(`/api/EventCategory?name=${theText}`);
         newEvents.value = data.data;
 
@@ -1631,13 +1659,11 @@ export default {
           }
         });
 
-      axios
-        .get(`/howYouHeardAboutUs?tenantId=${route.params.id}`)
-        .then((res) => {
-          howDidYouAboutUs.value = res.data.map((i) => {
-            return { name: i.name, id: i.id };
-          });
+      axios.get(`/howYouHeardAboutUs?tenantId=${route.params.id}`).then((res) => {
+        howDidYouAboutUs.value = res.data.map((i) => {
+          return { name: i.name, id: i.id };
         });
+      });
     });
 
     const year = computed(() => {
@@ -1668,9 +1694,11 @@ export default {
             `api/People/checkDuplicate?phoneNumber=${firstTimersObj.value.phoneNumber}`
           );
           if (data === "phone number") {
-            return callback(new Error('Phone number already exist, try another'))
+            return callback(new Error("Phone number already exist, try another"));
           } else if (data === "email and phone number") {
-            return callback(new Error('Phone number and email already exist, try another'))
+            return callback(
+              new Error("Phone number and email already exist, try another")
+            );
           }
           // if (data === "phone number") {
           //   isPhoneValid.value = false;
@@ -1705,9 +1733,11 @@ export default {
             `api/People/checkDuplicate?email=${firstTimersObj.value.email}`
           );
           if (data === "email") {
-            return callback(new Error('Email already exist, try another'))
+            return callback(new Error("Email already exist, try another"));
           } else if (data === "email and phone number") {
-            return callback(new Error('Email and phone number already exist, try another'))
+            return callback(
+              new Error("Email and phone number already exist, try another")
+            );
           }
           // if (data === "email") {
           //   isEmailValid.value = false;
@@ -1725,13 +1755,11 @@ export default {
     };
 
     const validateRules = reactive({
-      email: [
-        { validator: checkForDuplicateEmail, required: false, trigger: 'blur' },
-      ],
+      email: [{ validator: checkForDuplicateEmail, required: false, trigger: "blur" }],
       phoneNumber: [
-        { validator: checkForDuplicatePhone, required: true, trigger: 'blur' },
+        { validator: checkForDuplicatePhone, required: true, trigger: "blur" },
       ],
-    })
+    });
     const setImageToUrl = (payload) => {
       firstTimersObj.value.imageUrl = payload;
       formdatImage.value = payload;
@@ -1754,9 +1782,9 @@ export default {
 
         if (groups && groups.length > 0) {
           allGroups.value = groups;
-          let data = { children: allGroups.value }
+          let data = { children: allGroups.value };
           const { children } = collector(data);
-          groupMappedTree.value = children
+          groupMappedTree.value = children;
           if (groupMappedTree.value && groupMappedTree.value.length > 0) {
             flattenedTree.value = groupMappedTree.value.flatMap(flatten());
           }
@@ -1767,7 +1795,7 @@ export default {
             allGroups.value = group.response.groupResonseDTO;
             let data = { children: allGroups.value }
             const { children } = collector(data);
-            groupMappedTree.value = children
+            groupMappedTree.value = children;
             if (groupMappedTree.value && groupMappedTree.value.length > 0) {
               flattenedTree.value = groupMappedTree.value.flatMap(flatten());
             }
@@ -1862,7 +1890,10 @@ export default {
       maritalStatusId,
       genderId,
       setGroupValue,
-      mdAndUp, lgAndUp, xlAndUp, xsOnly,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      xsOnly,
       eventText,
       displayModal,
       openModal,
@@ -1893,7 +1924,7 @@ export default {
       selectedTree,
       dismissAddToGroupModal,
       addMemberToGroup,
-      setSelectedSource
+      setSelectedSource,
     };
   },
 };
@@ -1949,7 +1980,7 @@ export default {
 .submit-div {
   /* margin-left: 14em; */
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .inputs {
@@ -2103,18 +2134,17 @@ export default {
 }
 
 .input-width {
-  width: 100%
+  width: 100%;
 }
 
 .input-width {
-  width: 100%
+  width: 100%;
 }
 
 @media (min-width: 992px) {
   .input-width {
-    width: 350px
+    width: 350px;
   }
-
 }
 
 @media (max-width: 620px) {
