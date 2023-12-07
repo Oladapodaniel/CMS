@@ -49,7 +49,7 @@
                         <template #prepend>
                           <el-select v-model="selectedCurrency" placeholder="Select" style="width: 115px"
                             @change="resetCountryPricing" filterable>
-                            <el-option v-for="item in FLWupportedCurrencies" :label="item.value" :value="item.value" />
+                            <el-option v-for="item in FLWupportedCurrencies" :label="item.value" :value="item.value" :key="item.value" />
                           </el-select>
                         </template>
                       </el-input>
@@ -132,28 +132,14 @@
                   <img style="width: 150px" src="../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
                 </div>
               </div>
-              <div class="row row-button mb-1 c-pointer d-flex justify-content-center">
-                <div class="font-weight-bold" @click="directTransfer">
-                  Direct Transfer
-                </div>
-              </div>
-              <div class="row justify-content-center">
-                
-                <div class="col-md-8 rounded  shadow" :class="{ 'showDropdownMenu': showTransferDetail, 'hideDropdownMenu': !showTransferDetail }">
-                  <div class="col-md-12 d-flex justify-content-center"> <el-icon :size="18"><Bottom /></el-icon> </div>
-                  <div class="row   ">
-                    <div class="col-md-12 d-flex justify-content-between ">
-                      <div>Account Name: </div> <span class="font-weight-bold ">Complustech Limited</span>
-                    </div>
-                    <div class="col-md-12 d-flex justify-content-between">
-                      <div>Account Number: </div> <span class="font-weight-bold ">0017934252</span>
-                    </div>
-                    <div class="col-md-12 d-flex justify-content-between ">
-                      <div>Bank: </div> <span class="font-weight-bold ">Access</span>
-                    </div>
+              <div class="row row-button c-pointer d-flex justify-content-center">
+                <a href="https://www.paypal.me/GeorgeOnyeama?locale.x=en_GB" target="_blank" >
+                  <div>
+                    <img style="width: 150px; height: 2rem;" src="../../assets/PayPal2.png" alt="paypal" />
                   </div>
-                </div>
+                </a>
               </div>
+              
             </div>
           </div>
         </div>
@@ -164,6 +150,34 @@
         </div>
         <div class="col-12 col-lg-8 offset-lg-2 pb-3">
           <img src="../../assets/payment-type.jpeg" class="px-1 w-100" alt="Image" />
+        </div>
+      </div>
+      <div class="row  mb-1  justify-content-center">
+        <div class="font-weight-bold col-md-8">
+          Direct Bank Transfer
+        </div>
+        <!-- <div class="font-weight-bold col-md-8" @click="directTransfer">
+          Direct Bank Transfer
+        </div> -->
+      </div>
+      <div class="row justify-content-center">
+
+        <div class="col-md-8 rounded bg-white  shadow"
+          :class="{ 'showDropdownMenu': showTransferDetail, 'hideDropdownMenu': !showTransferDetail }">
+          <div class="col-md-12 d-flex justify-content-start"> <el-icon :size="18">
+              <Bottom />
+            </el-icon> </div>
+          <div class="row   ">
+            <div class="col-md-12 d-flex justify-content-between ">
+              <div>Account Name: </div> <span class="font-weight-bold ">Complustech Limited</span>
+            </div>
+            <div class="col-md-12 d-flex justify-content-between">
+              <div>Account Number: </div> <span class="font-weight-bold ">0017934252</span>
+            </div>
+            <div class="col-md-12 d-flex justify-content-between ">
+              <div>Bank: </div> <span class="font-weight-bold ">Access</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -191,7 +205,7 @@ export default {
     const smsUnits = ref(0);
     const invalidAmount = ref(false);
     const purchaseIsSuccessful = ref(false);
-    const showTransferDetail = ref(false);
+    const showTransferDetail = ref(true);
     const isProduction = true
     const churchLogo = ref('');
     const close = ref(null);

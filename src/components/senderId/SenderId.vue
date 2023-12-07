@@ -30,6 +30,11 @@
                 </el-dropdown-menu>
             </template>
         </el-dropdown>
+        <div class="c-pointer mt-1 d-flex primary--text small font-weight-bold" data-toggle="modal" data-target="#senderIdModal">
+            <el-icon class=" pt-1">
+                <CirclePlusFilled />
+            </el-icon> <span class="mt-0"  >Request new sender ID</span>
+        </div>
 
         <!-- Create sender id modal -->
         <!-- Modal -->

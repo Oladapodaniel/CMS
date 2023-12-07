@@ -2,7 +2,7 @@
   <div>
     <div class="main-section">
       <div class="logo-con">
-        <a class="logo-link"><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo" /></a>
+        <a class="logo-link"><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" /></a>
       </div>
       <div class="header">
         <h1>Sign in</h1>
@@ -19,7 +19,7 @@
             <a href="/register" class="primary-text font-weight-bold text-decoration-none">Register now</a>
           </p>
         </div>
-        <el-form :model="state" class="mt-3" @keyup.enter.native="login">
+        <el-form :model="state" class="mt-3" @keyup.enter="login">
           <el-form-item>
             <el-input type="email" placeholder="Email" v-model="state.credentials.userName" />
           </el-form-item>
@@ -56,9 +56,8 @@
             </div>
           </div>
 
-          <div class="mt-2"><router-link to="/register"
-              class="sign-up primary--text text-decoration-none"><el-button color="#17c5cf"
-                @click="register" class="w-50"  :loading="loading" round><strong>Sign up now</strong>
+          <div class="mt-2"><router-link to="/register" class="sign-up primary--text text-decoration-none"><el-button
+                color="#17c5cf" class="w-50" round><strong>Sign up now</strong>
               </el-button></router-link></div>
         </div>
         <div class="row">
@@ -259,6 +258,11 @@ export default {
 .logo-link {
   width: 100%;
   text-align: center;
+}
+
+.logo-link img {
+  width: 9rem;
+  height: 6rem;
 }
 
 .header {
