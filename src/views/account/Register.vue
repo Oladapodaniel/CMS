@@ -2,7 +2,7 @@
   <div>
     <div class="main-section">
       <div class="logo-con">
-        <a class="logo-link"><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo" /></a>
+        <a class="logo-link"><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" /></a>
       </div>
       <div class="header">
         <div class="top-con">
@@ -30,7 +30,7 @@
             </span>
           </p>
         </div>
-        <el-form :model="credentials" class="mt-3" @keyup.enter.native="register">
+        <el-form :model="credentials" class="mt-3" @keyup.enter="register">
           <el-form-item>
             <el-input type="email" placeholder="Email" v-model="credentials.email" />
           </el-form-item>
@@ -257,6 +257,11 @@ export default {
   text-align: center;
   margin-top: 36px;
 }
+.logo-link img {
+  width: 9rem;
+  height: 6rem;
+}
+
 
 .header {
   text-align: center;
