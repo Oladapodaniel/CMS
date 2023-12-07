@@ -29,14 +29,84 @@
         >
         <span> You can use this as a template for creating your Excel/CSV file.</span>
       </div>
+      <div class="col-12 col-md-6 mb-3">
+        <span class="font-weight-700">Select event attended</span>
+        <div class="mt-2">
+          <el-dropdown class="w-100" trigger="click">
+            <span class="el-dropdown-link w-100">
+              <div
+                class="d-flex justify-content-between border-contribution w-100"
+                size="large"
+              >
+                <span class="text-secondary">{{
+                  selectedEventAttended.name
+                    ? selectedEventAttended.name
+                    : "Select event or service attended"
+                }}</span>
+                <div>
+                  <el-icon class="el-icon--right">
+                    <arrow-down />
+                  </el-icon>
+                </div>
+              </div>
+            </span>
+            <template #dropdown>
+              <div class="p-2">
+                <el-input
+                class="w-100"
+                placeholder="Search for events"
+                v-model="eventsSearchString"
+              />
+              </div>
+              <el-dropdown-menu class="menu-height">
+                <el-dropdown-item
+                  v-for="(event, index) in filteredEvents"
+                  :key="index"
+                  @click="eventAttendedSelected(event)"
+                  >{{ event.name }}</el-dropdown-item
+                >
+                <el-dropdown-item
+                  class="d-flex justify-content-center text-primary font-weight-700"
+                  data-toggle="modal"
+                  data-target="#eventModal"
+                  divided
+                  ><el-icon>
+                    <CirclePlus />
+                  </el-icon>
+                  Create new event</el-dropdown-item
+                >
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+      </div>
       <div class="col-12">
-        <div class="py-2 rounded bg-white light-shadow">
+        <div class="py-2 rounded bg-white">
           <div class="col-md-12 col-12 col-lg-12 mt-3">
-            <input
+            <el-upload
+                class="upload-demo"
+                :limit="1"
+                :on-change="imageSelected"
+                :on-remove="handleRemove" 
+                :auto-upload="false"
+                accept="text/csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                drag
+              >
+                <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+                <div class="el-upload__text">
+                  Drop file here or <em>click to upload</em>
+                </div>
+                <template #tip>
+                  <div class="el-upload__tip">
+                    csv/xlsx files with a size less than 3mb
+                  </div>
+                </template>
+              </el-upload>
+            <!-- <input
               type="file"
               @change="imageSelected"
               class="form-control w-100 c-pointer"
-            />
+            /> -->
           </div>
           <div class="col-12 d-flex justify-content-center text-center my-4">
             <el-button
@@ -49,7 +119,7 @@
             >
           </div>
           <div class="border-bottom w-100 my-2 col-md-12"></div>
-          <div class="col-12 col-md-7 col-lg-7 my-3 small">Maximum 5MB file size.</div>
+          <!-- <div class="col-12 col-md-7 col-lg-7 my-3 small">Maximum 5MB file size.</div> -->
         </div>
       </div>
       <div class="col-lg-12 col-md-12">
@@ -212,7 +282,7 @@
 </template>
 
 <script>
-import { ref, inject } from "vue";
+import { ref, inject, onMounted, computed } from "vue";
 import axios from "@/gateway/backendapi";
 import finish from "../../services/progressbar/progress";
 import { useRoute } from "vue-router";
@@ -241,9 +311,11 @@ export default {
     const loading = ref(false);
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
     const uploadLoading = ref(false);
+    const selectedEventAttended = ref({});
+    const eventsSearchString = ref("");
 
     const imageSelected = async (e) => {
-      image.value = e.target.files[0];
+      image.value = e.raw;
     };
 
     const uploadFile = async () => {
@@ -472,6 +544,33 @@ export default {
       addInstructionClass.value = !addInstructionClass.value;
     };
 
+    const eventsAttended = ref([]);
+    onMounted(() => {
+      axios
+        .get("/api/Events/EventActivity")
+        .then((res) => {
+          eventsAttended.value = res.data;
+        })
+        .catch((err) => console.error(err));
+    });
+
+    const filteredEvents = computed(() => {
+      if (!selectedEventAttended.value.name) return eventsAttended.value;
+      return eventsAttended.value.filter((i) =>
+        i.name.toLowerCase().includes(eventsSearchString.value.toLowerCase())
+      );
+    });
+
+    const eventAttendedSelected = (eventObj) => {
+      selectedEventAttended.value = eventObj;
+      //   showEventList.value = false;
+      //   eventsSearchString.value = "";
+    };
+
+    const handleRemove = () => {
+        image.value = null
+    }
+
     return {
       imageSelected,
       image,
@@ -488,6 +587,12 @@ export default {
       xlAndUp,
       uploadLoading,
       primarycolor,
+      filteredEvents,
+      selectedEventAttended,
+      eventsAttended,
+      eventAttendedSelected,
+      eventsSearchString,
+      handleRemove
     };
   },
 };
