@@ -132,6 +132,28 @@
                   <img style="width: 150px" src="../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
                 </div>
               </div>
+              <div class="row row-button mb-1 c-pointer d-flex justify-content-center">
+                <div class="font-weight-bold" @click="directTransfer">
+                  Direct Transfer
+                </div>
+              </div>
+              <div class="row justify-content-center">
+                
+                <div class="col-md-8 rounded  shadow" :class="{ 'showDropdownMenu': showTransferDetail, 'hideDropdownMenu': !showTransferDetail }">
+                  <div class="col-md-12 d-flex justify-content-center"> <el-icon :size="18"><Bottom /></el-icon> </div>
+                  <div class="row   ">
+                    <div class="col-md-12 d-flex justify-content-between ">
+                      <div>Account Name: </div> <span class="font-weight-bold ">Complustech Limited</span>
+                    </div>
+                    <div class="col-md-12 d-flex justify-content-between">
+                      <div>Account Number: </div> <span class="font-weight-bold ">0017934252</span>
+                    </div>
+                    <div class="col-md-12 d-flex justify-content-between ">
+                      <div>Bank: </div> <span class="font-weight-bold ">Access</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -169,6 +191,7 @@ export default {
     const smsUnits = ref(0);
     const invalidAmount = ref(false);
     const purchaseIsSuccessful = ref(false);
+    const showTransferDetail = ref(false);
     const isProduction = true
     const churchLogo = ref('');
     const close = ref(null);
@@ -186,6 +209,11 @@ export default {
       if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
       return store.getters.currentUser
     })
+
+    const directTransfer = () => {
+      showTransferDetail.value = !showTransferDetail.value
+    }
+
 
     const setCurrentUser = async () => {
       membershipService.getSignedInUser()
@@ -425,6 +453,7 @@ export default {
       totalSMSUnits,
       invalidAmount,
       purchaseIsSuccessful,
+      showTransferDetail,
       closeModal,
       currentUser,
       payWithFlutterwave,
@@ -436,6 +465,7 @@ export default {
       selectedCurrency,
       UserSMSPricing,
       UserProductPricing,
+      directTransfer,
       resetCountryPricing,
       countries,
       checkingCoutryData,
@@ -482,6 +512,18 @@ export default {
   background: transparent;
   color: #fff;
   font-weight: 700;
+}
+
+.showDropdownMenu {
+  overflow: hidden;
+  height: 100px;
+  transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.hideDropdownMenu {
+  overflow: hidden;
+  height: 0px;
+  transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 .text-field {

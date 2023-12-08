@@ -44,28 +44,11 @@
             <el-button size="large" color="#17c5cf" @click="register" class="w-100" :loading="loading" round>
               Get Started
             </el-button>
-            <el-divider>
-              or
-            </el-divider>
-            <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
-              <img src="../../assets/facebook-small.png" class="fb-icon" alt="Facebook Icon" />
-              <span>Sign in with Facebook</span>
-              <span></span>
-            </div>
+
+
           </el-form-item>
         </el-form>
-
-        <div class="terms">
-          <p>
-            By signing up, you are indicating that you have read and agree to
-            the
-            <router-link to="/termsofuse" class="terms-link">Terms of Use</router-link>
-            and
-            <router-link to="/termsofuse" class="terms-link">Privacy Policy.</router-link>
-          </p>
-        </div>
-
-        <div class="bottom-container">
+        <div class="bottom-container mt-1">
           <div>
             <p class="sign-up-prompt">
               Already have an account?
@@ -73,6 +56,47 @@
             </p>
           </div>
         </div>
+
+
+        <!-- <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
+              <img src="../../assets/facebook-small.png" class="fb-icon" alt="Facebook Icon" />
+              <span>Sign in with Facebook</span>
+              <span></span>
+            </div> -->
+        <div class="terms">
+          <div>
+            By signing up, you are indicating that you have read and agree to
+            the
+            <router-link to="/termsofuse" class="terms-link">Terms of Use</router-link>
+            and
+            <router-link to="/termsofuse" class="terms-link">Privacy Policy.</router-link>
+          </div>
+        </div>
+        <el-divider>
+          Download the app
+        </el-divider>
+        <div class="row ">
+          <div class="col-md-12 col-12 d-flex justify-content-center  ">
+            <div>
+              <a class="text-decoration-none googleplay  " target="_blank"
+                href="https://play.google.com/store/apps/details?id=com.complustech.co">
+                <img src="../../assets/mobileonboarding/Google-play-logo.png" alt="">
+              </a>
+            </div>
+          </div>
+        </div>
+
+
+
+        <!-- <div class="bottom-container">
+          <div>
+            <p class="sign-up-prompt">
+              Already have an account?
+              <router-link to="/" class="sign-up"><span class="primary--text"> Sign in now</span></router-link>
+            </p>
+          </div>
+        </div> -->
+
         <el-dialog v-model="displayModal" title="Please enter your email" width="80%" align-center>
           <div class="container">
             <div class="row mt-2">
@@ -119,7 +143,7 @@ export default {
     const show = ref(false)
     const loading = ref(false)
     const showResetLink = ref(true)
-    const {facebookLogin, displayModal, saveEmail, emailLoading, invalidEmailObj} = FBlogin()
+    const { facebookLogin, displayModal, saveEmail, emailLoading, invalidEmailObj } = FBlogin()
 
 
 
@@ -163,7 +187,7 @@ export default {
         });
     }
 
-    const resetPassword = async() => {
+    const resetPassword = async () => {
       try {
         const { data } = await axios.post(
           `/forgotpassword/${credentials.email}`
@@ -201,9 +225,31 @@ export default {
 </script>
 
 <style scoped>
+.apple-store img {
+  width: 170px;
+  cursor: pointer;
+  height: 3.4rem;
+}
+
+.googleplay img {
+  width: 170px;
+  cursor: pointer;
+}
+
 .logo-con {
   display: flex;
   margin-top: 42px 0;
+}
+
+.apple-store img {
+  width: 170px;
+  cursor: pointer;
+  height: 3.4rem;
+}
+
+.googleplay img {
+  width: 170px;
+  cursor: pointer;
 }
 
 .logo-link {
@@ -359,7 +405,7 @@ export default {
   color: #4d6575;
   font-size: 14px;
   line-height: 1.4;
-  margin-top: 24px;
+  /* margin-top: 24px; */
   font-weight: lighter;
 }
 
@@ -423,9 +469,10 @@ export default {
 
 .terms {
   text-align: center;
-  margin-top: 40px;
+  /* margin-top: 10px; */
   color: #718fa2;
   font-weight: lighter;
+  /* font-size: 14.5px; */
 }
 
 .terms-link {

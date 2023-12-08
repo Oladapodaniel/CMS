@@ -34,44 +34,55 @@
             <span>What would you like to do in churchplus</span>
           </div>
 
-
           <div class="all-options">
-            <div class=" w-100 ml-2 ">
+            <div class="w-100 ml-2">
               <el-dropdown class="w-100" trigger="click">
                 <el-button type="primary" class="start-option">
-                  <span class="icon  ">
-                    <img class="link-icon " src="../../assets/claim-sms-offer.png" alt="Sms Icon" />
+                  <span class="icon">
+                    <img
+                      class="link-icon"
+                      src="../../assets/claim-sms-offer.png"
+                      alt="Sms Icon"
+                    />
                   </span>
                   <span class="font-weight-bold text-warning">
-
                     <a class="start-link text-success">Claim your 500 unit now</a>
                   </span>
-                  <span class="d-flex justify-content-end  font-weight-bold adjust-width">
+                  <span class="d-flex justify-content-end font-weight-bold adjust-width">
                     <!-- <i class="fas fa-angle-down "></i> -->
-                    <i class="fas fa-angle-right " :class="{ 'tbb-icon-rotate': smsOfferDropped }"></i>
+                    <i
+                      class="fas fa-angle-right"
+                      :class="{ 'tbb-icon-rotate': smsOfferDropped }"
+                    ></i>
                   </span>
                   <!-- Dropdown List<el-icon class="el-icon--right"><arrow-down /></el-icon> -->
                 </el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <p class="font-weight-bold px-3 pt-3" style="font-size: 1.2em">Terms and Conditions</p>
+                    <p class="font-weight-bold px-3 pt-3" style="font-size: 1.2em">
+                      Terms and Conditions
+                    </p>
                     <p style="font-size: 1.2em" class="px-3">
                       <el-icon color="green">
                         <CircleCheck />
-                      </el-icon> Buy 1000 units or above and get 500units free <br> <br>
+                      </el-icon>
+                      Buy 1000 units or above and get 500units free <br />
+                      <br />
                       <el-icon color="green">
                         <CircleCheck />
-                      </el-icon> Offer is
-                      open
-                      to both new and existing customers <br> <br>
+                      </el-icon>
+                      Offer is open to both new and existing customers <br />
+                      <br />
                       <el-icon color="green">
                         <CircleCheck />
-                      </el-icon> This is a one time offer for the duration of this
-                      campaign
+                      </el-icon>
+                      This is a one time offer for the duration of this campaign
                     </p>
                     <el-dropdown-item>
-                      <router-link :to="{ name: 'BuyUnits', params: { option: '/tenant/units' } }"
-                        class="d-flex justify-content-between text-primary font-weight-bold w-100 align-items-center">
+                      <router-link
+                        :to="{ name: 'BuyUnits', params: { option: '/tenant/units' } }"
+                        class="d-flex justify-content-between text-primary font-weight-bold w-100 align-items-center"
+                      >
                         <span>Buy SMS now</span>
                         <el-icon class="el-icon--right">
                           <arrow-right />
@@ -82,8 +93,10 @@
                 </template>
               </el-dropdown>
             </div>
-            <router-link :to="{ name: 'ProcessRequest', params: { option: '/tenant/sms/compose' } }"
-              class="start-option">
+            <router-link
+              :to="{ name: 'ProcessRequest', params: { option: '/tenant/sms/compose' } }"
+              class="start-option"
+            >
               <div class="icon">
                 <img class="link-icon" src="../../assets/sms-email.svg" alt="Sms Icon" />
               </div>
@@ -93,11 +106,16 @@
               </div>
             </router-link>
 
-            <router-link class="start-option"
-              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/add' } }">
+            <router-link
+              class="start-option"
+              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/add' } }"
+            >
               <div class="icon">
-                <img class="link-icon link-icon-no-bg" src="../../assets/people/add-church-members.svg"
-                  alt="Add member Icon" />
+                <img
+                  class="link-icon link-icon-no-bg"
+                  src="../../assets/people/add-church-members.svg"
+                  alt="Add member Icon"
+                />
               </div>
               <div class="link-n-icon">
                 <a class="start-link">Add church members</a>
@@ -105,10 +123,19 @@
               </div>
             </router-link>
 
-            <router-link class="start-option"
-              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/addfirsttimer' } }">
+            <router-link
+              class="start-option"
+              :to="{
+                name: 'ProcessRequest',
+                params: { option: '/tenant/people/addfirsttimer' },
+              }"
+            >
               <div class="icon">
-                <img class="link-icon" src="../../assets/first-timers.svg" alt="First Timers Icon" />
+                <img
+                  class="link-icon"
+                  src="../../assets/first-timers.svg"
+                  alt="First Timers Icon"
+                />
               </div>
               <div class="link-n-icon">
                 <a class="start-link">Add first timers</a>
@@ -116,9 +143,16 @@
               </div>
             </router-link>
 
-            <router-link class="start-option" :to="{ name: 'ProcessRequest', params: { option: '/next' } }">
+            <router-link
+              class="start-option"
+              :to="{ name: 'ProcessRequest', params: { option: '/next' } }"
+            >
               <div class="icon">
-                <img class="link-icon" src="../../assets/not-sure.svg" alt="Question Icon" />
+                <img
+                  class="link-icon"
+                  src="../../assets/not-sure.svg"
+                  alt="Question Icon"
+                />
               </div>
               <div class="link-n-icon">
                 <a class="start-link">Not sure yet</a>
@@ -139,7 +173,7 @@
 import axios from "@/gateway/backendapi";
 export default {
   beforeRouteEnter(to, from, next) {
-    if (localStorage.getItem("userSetup")) return next('/');
+    if (localStorage.getItem("userSetup")) return next("/");
     return next(true);
   },
 
@@ -149,13 +183,13 @@ export default {
       processing: false,
       screenWidth: window.innerWidth,
       userId: "",
-      userDetails: {}
+      userDetails: {},
     };
   },
 
   methods: {
     toggleSmsOffer() {
-      this.smsOfferDropped = !this.smsOfferDropped
+      this.smsOfferDropped = !this.smsOfferDropped;
     },
     onboardUser(url) {
       const userData = this.$store.getters.onboardingData;
@@ -178,7 +212,7 @@ export default {
   },
 
   async created() {
-    this.userDetails = this.$store.getters.onboardingData
+    this.userDetails = this.$store.getters.onboardingData;
   },
 
   mounted() {
@@ -302,7 +336,7 @@ a {
 .start-option {
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   justify-self: center;
   width: 97%;
   text-align: center;

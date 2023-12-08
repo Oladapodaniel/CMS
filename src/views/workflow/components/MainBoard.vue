@@ -1,36 +1,28 @@
 <template>
-  <div class="container-fluid  mb-4">
+  <div class="container-fluid mb-4">
     <div class="row">
       <div class="col-md-12 mb-3 px-0">
-          <div class="text-primary c-pointer px-0 col-md-2" @click="previousPage">
+        <div class="text-primary c-pointer px-0 col-md-2 mt-3" @click="previousPage">
+          <el-button class="text-primary" plain>
             <el-icon><DArrowLeft /></el-icon> Back
-          </div>
+          </el-button>
+        </div>
       </div>
-      <Toast></Toast>
       <div class="col-md-12">
         <div class="row">
-          <div class="col-md-6 pl-md-0">
+          <div class="col-md-6 px-0 pr-md-2">
             <label for="name" class="font-weight-600">Name</label>
-            <input type="text" class="form-control border" v-model="name" />
+            <el-input type="text" v-model="name" />
             <div class="row mt-2">
               <div class="col-md-12">
-                <input
-                  type="checkbox"
-                  class="mr-2 border"
-                  v-model="isActive"
-                  name=""
-                  id=""
-                />
+                <el-checkbox class="mr-2" size="large" v-model="isActive" />
                 Active
               </div>
             </div>
           </div>
-          <div class="col-md-6 pr-md-0">
+          <div class="col-md-6 px-0 pl-md-2">
             <label for="name" class="font-weight-600">Description</label>
-            <input type="text" class="form-control" />
-            <!-- <textarea name="" id="" class="w-100 border" rows="3" 
-                            style="border-color: #ced4da"
-                        ></textarea> -->
+            <el-input type="text" />
           </div>
         </div>
 
@@ -39,10 +31,9 @@
             <div class="row">
               <div
                 class="border animate col-12 scroll-div scr-height our-grey-bg"
-                :style="`min-height: ${ showTriggers ? '400px' : '80px'}`"
+                :style="`min-height: ${showTriggers ? '400px' : '80px'}`"
                 :class="{
-                  'col-md-4':
-                    showTriggers || done || selectedTriggerIndex === null,
+                  'col-md-4': showTriggers || done || selectedTriggerIndex === null,
                   'col-md-1': !showTriggers && workflow.triggers.length > 0,
                 }"
               >
@@ -51,7 +42,7 @@
                     class="col-4 col-md-12 py-3 c-pointer border"
                     :class="{
                       'active-trigger': selectedTrigger.id === trigger.id,
-                      'pb-5 pb-md-3': index == workflow.triggers.length - 1
+                      'pb-5 pb-md-3': index == workflow.triggers.length - 1,
                     }"
                     v-for="(trigger, index) in workflow.triggers"
                     :key="index"
@@ -59,17 +50,11 @@
                   >
                     <div class="" style="height: fit-content">
                       <div
-                        class="
-                          container
-                          text-center
-                          d-flex
-                          align-items-center
-                          justify-content-center
-                        "
+                        class="container text-center d-flex align-items-center justify-content-center"
                       >
-                            <!-- class="mr-3" -->
-                        <span
-                          ><i
+                        <!-- class="mr-3" -->
+                        <span>
+                          <i
                             :class="[
                               trigger.icon,
                               {
@@ -88,9 +73,7 @@
                       </div>
                       <TriggerDescription
                         v-if="selectedTriggerIndex === null"
-                        :description="
-                          triggerDescriptions[trigger.triggerType]()
-                        "
+                        :description="triggerDescriptions[trigger.triggerType]()"
                         :hideHeader="true"
                       />
                     </div>
@@ -113,16 +96,11 @@
                           >
                             <h5 class="mb-0">
                               <span class="mr-2"
-                                ><i
-                                  :class="[i.icon]"
-                                  style="font-size: 1rem"
-                                ></i
+                                ><i :class="[i.icon]" style="font-size: 1rem"></i
                               ></span>
                               <span
                                 :class="{
-                                  'd-none':
-                                    !showTriggers &&
-                                    workflow.triggers.length > 0,
+                                  'd-none': !showTriggers && workflow.triggers.length > 0,
                                 }"
                                 >{{ i.name }}</span
                               >
@@ -133,30 +111,15 @@
                     </div>
                   </div>
 
-                  <div
-                    class="
-                      col-md-12
-                      trigger-btn-div
-                      d-flex
-                      justify-content-stretch
-                    "
-                  >
+                  <div class="col-md-12 trigger-btn-div d-flex justify-content-stretch">
                     <button
-                      class="
-                        btn btn-secondary
-                        w-100
-                        trigger-btn
-                        btn-100
-                        ml-n3
-                        font-weight-bold
-                      "
+                      class="btn btn-secondary w-100 trigger-btn btn-100 ml-n3 font-weight-bold"
                       @click="toggleTriggers"
                     >
                       <span><i class="pi pi-plus mx-2"></i></span>
                       <span
                         :class="{
-                          'd-none':
-                            !showTriggers && workflow.triggers.length > 0,
+                          'd-none': !showTriggers && workflow.triggers.length > 0,
                         }"
                         >Add a trigger</span
                       >
@@ -195,6 +158,7 @@
                     <GivingAmount
                       :selectedTriggerIndex="selectedTriggerIndex"
                       :groups="groups"
+                      :groupMappedTree="groupMappedTree"
                       v-if="selectedTrigger.triggerType === 0"
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
@@ -204,6 +168,7 @@
                     <GivingNewRegular
                       :selectedTriggerIndex="selectedTriggerIndex"
                       :groups="groups"
+                      :groupMappedTree="groupMappedTree"
                       v-else-if="selectedTrigger.triggerType === 1"
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
@@ -212,6 +177,7 @@
                     />
                     <NoLongerGiving
                       :groups="groups"
+                      :groupMappedTree="groupMappedTree"
                       v-else-if="selectedTrigger.triggerType === 2"
                       :selectedTriggerIndex="selectedTriggerIndex"
                       @updatetrigger="updateTrigger"
@@ -231,6 +197,7 @@
                     />
                     <NewMember
                       :groups="groups"
+                      :groupMappedTree="groupMappedTree"
                       v-else-if="selectedTrigger.triggerType === 6"
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
@@ -239,6 +206,7 @@
                     />
                     <FirstTimer
                       :groups="groups"
+                      :groupMappedTree="groupMappedTree"
                       v-else-if="selectedTrigger.triggerType === 9"
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
@@ -247,6 +215,7 @@
                     />
                     <NewConvert
                       :groups="groups"
+                      :groupMappedTree="groupMappedTree"
                       v-else-if="selectedTrigger.triggerType === 8"
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
@@ -259,13 +228,15 @@
                     />
                     <GroupAddOrRemove
                       :groups="groups"
+                      :groupMappedTree="groupMappedTree"
                       @updatetrigger="updateTrigger"
                       v-else-if="selectedTrigger.triggerType === 10"
-                      :condition="getTrigger(11)"
+                      :condition="getTrigger(10)"
                       :selectedTriggerIndex="selectedTriggerIndex"
                       @removetrigger="removeTrigger"
                     />
                     <GroupMembershipDuration
+                      :groupMappedTree="groupMappedTree"
                       :groups="groups"
                       v-else-if="selectedTrigger.triggerType === 11"
                       @updatetrigger="updateTrigger"
@@ -275,18 +246,18 @@
                     />
                     <AttendanceTrigger
                       :groups="groups"
+                      :groupMappedTree="groupMappedTree"
                       v-else-if="selectedTrigger.triggerType === 12"
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
                       :selectedTriggerIndex="selectedTriggerIndex"
                       :condition="getTrigger(12)"
                     />
-                    <FromSubmission
-                      v-else-if="selectedTrigger.triggerType === 13"
-                    />
+                    <FromSubmission v-else-if="selectedTrigger.triggerType === 13" />
                     <Individual
                       v-else-if="selectedTrigger.triggerType === 7"
                       :groups="groups"
+                      :groupMappedTree="groupMappedTree"
                       @updatetrigger="updateTrigger"
                       @removetrigger="removeTrigger"
                       :selectedTriggerIndex="selectedTriggerIndex"
@@ -327,30 +298,26 @@
                         :style="`min-height: ${showActions ? '400px' : '80px'}`"
                         :class="{ 'col-md-6': actionSelected }"
                       >
-                        <div class="row ">
-                          <div class="col-6 col-sm-4 col-md-12 py-3 border"
-                                :class="{
-                                  'bg-white':
-                                    selectedAction &&
-                                    i.id === selectedAction.id,
-                                  'bg-transparent':
-                                    selectedAction &&
-                                    i.id !== selectedAction.id,
-                                  'd-none': showActions,
-                                  'pb-5 pb-md-3': j == triggerActions.length - 1
-                                }"
-                                v-for="(i, j) in triggerActions"
-                                :key="j"
-                                @click="setActiveAction(i, j)">
-                                <h5 class="mb-0">
-                                  <span class="mr-2"
-                                    ><i
-                                      :class="[i.icon]"
-                                      style="font-size: 1rem"
-                                    ></i
-                                  ></span>
-                                  <span class="font-weight">{{ i.name }}</span>
-                                </h5>
+                        <div class="row">
+                          <div
+                            class="col-6 col-sm-4 col-md-12 py-3 border"
+                            :class="{
+                              'bg-white': selectedAction && i.id === selectedAction.id,
+                              'bg-transparent':
+                                selectedAction && i.id !== selectedAction.id,
+                              'd-none': showActions,
+                              'pb-5 pb-md-3': j == triggerActions.length - 1,
+                            }"
+                            v-for="(i, j) in triggerActions"
+                            :key="j"
+                            @click="setActiveAction(i, j)"
+                          >
+                            <h5 class="mb-0">
+                              <span class="mr-2"
+                                ><i :class="[i.icon]" style="font-size: 1rem"></i
+                              ></span>
+                              <span class="font-weight">{{ i.name }}</span>
+                            </h5>
                             <!-- <ul class="list-group d-flex">
                               <li
                                 class="list-group-item c-pointer py-4 border"
@@ -361,10 +328,7 @@
                             </ul> -->
                           </div>
                         </div>
-                        <div
-                          class="row"
-                          style="overflow-y: scroll; max-height: 100%"
-                        >
+                        <div class="row" style="overflow-y: scroll; max-height: 100%">
                           <div
                             class="col-md-12 trigger-btn-con"
                             :class="{ 'trigger-btn-con-height': showActions }"
@@ -395,15 +359,7 @@
                           </div>
                           <div class="col-md-12 px-0 trigger-btn-div">
                             <button
-                              class="
-                                btn btn-secondary
-                                w-100
-                                trigger-btn
-                                d-flex
-                                justify-content-center
-                                btn-100
-                                font-weight-bold
-                              "
+                              class="btn btn-secondary w-100 trigger-btn d-flex justify-content-center btn-100 font-weight-bold"
                               @click="toggleActions"
                             >
                               Actions
@@ -444,11 +400,7 @@
                                     aria-labelledby="dropdownMenuButton"
                                   >
                                     <a
-                                      class="
-                                        dropdown-item
-                                        font-weight-700
-                                        c-pointer
-                                      "
+                                      class="dropdown-item font-weight-700 c-pointer"
                                       @click="removeActiveAction"
                                       >Remove</a
                                     >
@@ -459,18 +411,14 @@
 
                             <EmailAction
                               @updateaction="updateAction"
-                              v-if="
-                                selectedAction &&
-                                selectedAction.actionType === 0
-                              "
+                              v-if="selectedAction && selectedAction.actionType === 0"
                               :selectedActionIndex="selectedActionIndex"
                               :parameters="getAction(0, selectedTriggerIndex)"
                               :selectEmailList="triggerActions"
                             />
                             <GroupAction
                               v-else-if="
-                                selectedAction &&
-                                selectedAction.actionType === 4
+                                selectedAction && selectedAction.actionType === 4
                               "
                               :selectedActionIndex="selectedActionIndex"
                               @updateaction="updateAction"
@@ -480,8 +428,7 @@
                             />
                             <AssignTask
                               v-else-if="
-                                selectedAction &&
-                                selectedAction.actionType === 5
+                                selectedAction && selectedAction.actionType === 5
                               "
                               :selectedActionIndex="selectedActionIndex"
                               @updateaction="updateAction"
@@ -491,8 +438,7 @@
                             <SMSAction
                               @updateaction="updateAction"
                               v-else-if="
-                                selectedAction &&
-                                selectedAction.actionType === 1
+                                selectedAction && selectedAction.actionType === 1
                               "
                               :selectedActionIndex="selectedActionIndex"
                               :parameters="getAction(1, selectedTriggerIndex)"
@@ -500,8 +446,7 @@
                             />
                             <AdminMessage
                               v-else-if="
-                                selectedAction &&
-                                selectedAction.actionType === 6
+                                selectedAction && selectedAction.actionType === 6
                               "
                               :selectedActionIndex="selectedActionIndex"
                               @updateaction="updateAction"
@@ -510,14 +455,12 @@
                             />
                             <UpdateProgress
                               v-else-if="
-                                selectedAction &&
-                                selectedAction.actionType === 66
+                                selectedAction && selectedAction.actionType === 66
                               "
                             />
                             <VoiceAction
                               v-else-if="
-                                selectedAction &&
-                                selectedAction.actionType === 2
+                                selectedAction && selectedAction.actionType === 2
                               "
                               :selectedActionIndex="selectedActionIndex"
                               @updateaction="updateAction"
@@ -526,8 +469,7 @@
                             />
                             <TimerAction
                               v-else-if="
-                                selectedAction &&
-                                selectedAction.actionType === 8
+                                selectedAction && selectedAction.actionType === 8
                               "
                               :selectedActionIndex="selectedActionIndex"
                               @updateaction="updateAction"
@@ -536,8 +478,7 @@
                             />
                             <MarkPresent
                               v-else-if="
-                                selectedAction &&
-                                selectedAction.actionType === 9
+                                selectedAction && selectedAction.actionType === 9
                               "
                               :selectedActionIndex="selectedActionIndex"
                               @updateaction="updateAction"
@@ -546,14 +487,12 @@
                             />
                             <Interactions
                               v-else-if="
-                                selectedAction &&
-                                selectedAction.actionType === 100
+                                selectedAction && selectedAction.actionType === 100
                               "
                             />
                             <WhatsAppAction
                               v-else-if="
-                                selectedAction &&
-                                selectedAction.actionType === 3
+                                selectedAction && selectedAction.actionType === 3
                               "
                               :selectedActionIndex="selectedActionIndex"
                               @updateaction="updateAction"
@@ -562,8 +501,7 @@
                             />
                             <AddNoteAction
                               v-else-if="
-                                selectedAction &&
-                                selectedAction.actionType === 10
+                                selectedAction && selectedAction.actionType === 10
                               "
                               :selectedActionIndex="selectedActionIndex"
                               @updateaction="updateAction"
@@ -575,24 +513,12 @@
                         </div>
 
                         <div
-                          class="
-                            col-md-12
-                            trigger-btn-div
-                            d-flex
-                            justify-content-stretch
-                          "
+                          class="col-md-12 trigger-btn-div d-flex justify-content-stretch"
                           style="padding: 10px"
                         >
                           <button
                             @click="onDone"
-                            class="
-                              btn btn-success
-                              w-100
-                              trigger-btn
-                              btn-100
-                              ml-n4
-                              font-weight-bold
-                            "
+                            class="btn btn-success w-100 trigger-btn btn-100 ml-n4 font-weight-bold"
                           >
                             Done
                           </button>
@@ -608,12 +534,16 @@
 
         <div class="row mt-3">
           <div class="col-md-12 px-0 d-flex justify-content-center my-3">
-            <button
-              class="default-btn border-0 primary-bg font-weight-700 text-white"
+            <el-button
+              :color="primarycolor"
+              :loading="loading"
+              round
+              size="large"
+              class="border-0 text-white text-center"
               @click="saveWorkflow"
             >
-              <i class="pi pi-spin pi-spinner mr-1" v-if="loading"></i>Save
-            </button>
+              Save
+            </el-button>
           </div>
         </div>
       </div>
@@ -623,6 +553,7 @@
 
 <script>
 import { ref } from "@vue/reactivity";
+import { inject } from "@vue/runtime-core";
 import GivingAmount from "./triggers/GivingAmount";
 import GroupMembershipDuration from "./triggers/GroupMembershipDuration";
 import GroupAddOrRemove from "./triggers/GroupAddOrRemove";
@@ -654,11 +585,11 @@ import AssignTask from "./actions/AssignTask";
 import MemberBirthday from "./triggers/MemberBirthday.vue";
 import grousService from "../../../services/groups/groupsservice";
 import workflow_service from "../utlity/workflow_service";
-import { useToast } from "primevue/usetoast";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
 import collector from "../../../services/groupArray/mapTree";
-import { useStore } from "vuex"
+import { useStore } from "vuex";
+import { ElMessage } from "element-plus";
 
 import descriptionHelper from "../helper/description";
 import TriggerDescription from "./TriggerDescription.vue";
@@ -696,7 +627,6 @@ export default {
     TriggerDescription,
   },
   setup() {
-    const toast = useToast();
     const route = useRoute();
     const router = useRouter();
     const loading = ref(false);
@@ -704,7 +634,6 @@ export default {
 
     const showTriggers = ref(false);
     const showActions = ref(false);
-    // const triggersIsVissible = ref(false);
     const triggers = [
       {
         name: "Giving- amount",
@@ -854,6 +783,7 @@ export default {
       },
     ];
 
+    const primarycolor = inject("primarycolor");
     const workflow = ref({ triggers: [] });
 
     const selectedTriggers = ref([]);
@@ -869,16 +799,9 @@ export default {
     };
 
     const checkIfAlreadySelected = (trigger) => {
-      const index = workflow.value.triggers.findIndex(
-        (t) => t.name === trigger.name
-      );
+      const index = workflow.value.triggers.findIndex((t) => t.name === trigger.name);
       return index >= 0 ? true : false;
     };
-    // const checkIfActionIsAlreadySelected = trigger => {
-    //     if (!workflow.value.triggers[selectedTriggerIndex.value].triggerActions) return false;
-    //     const index = workflow.value.triggers[selectedTriggerIndex.value].triggerActions.findIndex(t => t.name === trigger.name);
-    //     return index >= 0 ? true : false;
-    // }
 
     const selectTrigger = (trigger) => {
       if (!checkIfAlreadySelected(trigger)) {
@@ -906,9 +829,7 @@ export default {
         !workflow.value.triggers[selectedTriggerIndex.value] ||
         !workflow.value.triggers[selectedTriggerIndex.value].triggerActions
       ) {
-        workflow.value.triggers[selectedTriggerIndex.value].triggerActions = [
-          trigger,
-        ];
+        workflow.value.triggers[selectedTriggerIndex.value].triggerActions = [trigger];
         selectedActionIndex.value = 0;
       } else {
         workflow.value.triggers[selectedTriggerIndex.value].triggerActions.push(
@@ -929,19 +850,16 @@ export default {
     const selectedTriggerIndex = ref(0);
     const selectedTrigger = computed(() => {
       if (workflow.value.triggers.length === 0) return {};
-      if (selectedTriggerIndex.value !== 0 && !selectedTriggerIndex.value)
-        return {};
+      if (selectedTriggerIndex.value !== 0 && !selectedTriggerIndex.value) return {};
       return workflow.value.triggers[selectedTriggerIndex.value];
     });
     const selectedActionIndex = ref(0);
     const selectedAction = computed(() => {
       if (workflow.value.triggers.length === 0) return {};
-      if (selectedTriggerIndex.value !== 0 && !selectedTriggerIndex.value)
-        return {};
+      if (selectedTriggerIndex.value !== 0 && !selectedTriggerIndex.value) return {};
       if (
         !workflow.value.triggers[selectedTriggerIndex.value].triggerActions ||
-        workflow.value.triggers[selectedTriggerIndex.value].triggerActions
-          .length === 0
+        workflow.value.triggers[selectedTriggerIndex.value].triggerActions.length === 0
       )
         return {};
       return workflow.value.triggers[selectedTriggerIndex.value].triggerActions[
@@ -956,15 +874,16 @@ export default {
     };
 
     const updateTrigger = (data, selectedTriggerIndex) => {
-      let parsed = JSON.parse(data)
+      let parsed = JSON.parse(data);
+      console.log(parsed);
       let foo;
-      if (parsed.pledges && parsed.pledges.length > 0) parsed.pledges = parsed.pledges.join(",")
-      if (typeof parsed.groups !== 'string') {
-        parsed.groups = parsed.groups.join(",")
-        foo = JSON.stringify(parsed)
+      if (typeof parsed.groups !== "string") {
+        parsed.groups = parsed.groups.join(",");
       } else {
-        foo = data
+        parsed = data;
       }
+      foo = JSON.stringify(parsed);
+      console.log(foo);
       workflow.value.triggers[selectedTriggerIndex].jsonCondition = foo;
     };
 
@@ -975,9 +894,7 @@ export default {
         activeAction
       ].Action = JSON.stringify({
         ActionType: actionType,
-        JSONActionParameters: JSON.stringify(
-          data[activeAction].JSONActionParameters
-        ),
+        JSONActionParameters: JSON.stringify(data[activeAction].JSONActionParameters),
       });
     };
 
@@ -990,20 +907,19 @@ export default {
       if (
         !workflow.value.triggers[selectedTriggerIndex.value] ||
         !workflow.value.triggers[selectedTriggerIndex.value].triggerActions ||
-        workflow.value.triggers[selectedTriggerIndex.value].triggerActions
-          .length === 0
+        workflow.value.triggers[selectedTriggerIndex.value].triggerActions.length === 0
       )
         return [];
-      return workflow.value.triggers[
-        selectedTriggerIndex.value
-      ].triggerActions.sort((a, b) => a.order - b.order);
+      return workflow.value.triggers[selectedTriggerIndex.value].triggerActions.sort(
+        (a, b) => a.order - b.order
+      );
     });
 
     const groups = ref([]);
     const getGroups = async () => {
       try {
         const response = await grousService.getGroups();
-        groups.value = response.response.groupResonseDTO
+        groups.value = response.response.groupResonseDTO;
         groups.value.unshift({
           id: "0000-000-0000-0000-0000-0000",
           name: "Entire ministry",
@@ -1012,7 +928,6 @@ export default {
         let data = { children: groups.value };
         const { children } = collector(data);
         groupMappedTree.value = children;
-
       } catch (error) {
         console.log(error);
       }
@@ -1032,41 +947,42 @@ export default {
     };
     getFinancialCOntributions();
 
-    const allPledgeDefinitionList = ref([])
+    const allPledgeDefinitionList = ref([]);
     const getAllPledgeDefinition = async () => {
       try {
-          await store.dispatch("pledge/getPledgeDefinition").then((res) => {
-
+        await store.dispatch("pledge/getPledgeDefinition").then((res) => {
           let data = { children: res };
-        const { children } = collector(data);
-        allPledgeDefinitionList.value = children;
-
-          });
+          const { children } = collector(data);
+          allPledgeDefinitionList.value = children;
+        });
       } catch (error) {
-          console.log(error);
+        console.log(error);
       }
-      };
-      getAllPledgeDefinition();
+    };
+    getAllPledgeDefinition();
 
     const name = ref("");
     const isActive = ref(false);
     const saveWorkflow = async () => {
-      console.log(workflow.value, 'dddpppp');
+      console.log(workflow.value, "dddpppp");
       const data = workflow.value.triggers.map((i) => {
         return {
           // JSONCondition: i.JSONCondition,
           // triggerType: i.triggerType,
           ...i,
-          triggerActions: i.triggerActions && i.triggerActions.length > 0 ? i.triggerActions.map((item, index) => {
-            return {
-              order: index,
-              action: item.Action,
-            };
-          }) : [],
+          triggerActions:
+            i.triggerActions && i.triggerActions.length > 0
+              ? i.triggerActions.map((item, index) => {
+                  return {
+                    order: index,
+                    action: item.Action,
+                  };
+                })
+              : [],
         };
       });
 
-      console.log(data, 'klkjkllk');
+      console.log(data, "klkjkllk");
 
       const reqBody = {
         id: workflow.value.id,
@@ -1082,72 +998,77 @@ export default {
     };
 
     const saveNewWorkflow = async (reqBody) => {
-        loading.value = true
+      loading.value = true;
       try {
-        const { status, response } = await workflow_service.saveWorkflow(
-          reqBody
-        );
-        loading.value = false
+        const { status, response } = await workflow_service.saveWorkflow(reqBody);
+        loading.value = false;
         if (status) {
-          toast.add({
-            severity: "success",
-            summary: "Workflow Saved",
-            detail: "Workflow was created successfully",
-            life: 2000,
+          ElMessage({
+            type: "success",
+            message: "Workflow created successfully",
+            duration: 3000,
           });
           setTimeout(() => {
             router.push("/tenant/workflow/list");
-          }, 2200);
+          }, 3200);
         } else {
-          toast.add({
-            severity: "error",
-            summary: "Workflow Error",
-            detail: `${
+          ElMessage({
+            type: "error",
+            message: `${
               response && response.length < 50
                 ? response
                 : "Workflow could not be created"
             }`,
-            life: 2000,
+            duration: 3000,
           });
         }
       } catch (error) {
-          loading.value = false
-        console.log(error);
+        loading.value = false;
+        if (error.status === 500) {
+          ElMessage({
+            type: "warning",
+            message: "Please ensure that you have added an action to this trigger",
+            duration: 10000,
+            showClose: true,
+          });
+        }
       }
     };
 
     const editWorkflow = async (reqBody) => {
-        loading.value = true
+      loading.value = true;
       try {
-        const { status, response } = await workflow_service.editWorkflow(
-          reqBody
-        );
-        loading.value = false
+        const { status, response } = await workflow_service.editWorkflow(reqBody);
+        loading.value = false;
         if (status) {
-          toast.add({
-            severity: "success",
-            summary: "Workflow Saved",
-            detail: "Workflow was update successfully",
-            life: 2000,
+          ElMessage({
+            type: "success",
+            message: "Workflow created successfully",
+            duration: 3000,
           });
           setTimeout(() => {
             router.push("/tenant/workflow/list");
-          }, 2200);
+          }, 3200);
         } else {
-          toast.add({
-            severity: "error",
-            summary: "Workflow Error",
-            detail: `${
-              response && response.length < 50
-                ? response
-                : "Workflow could not be update"
+          ElMessage({
+            type: "error",
+            message: `${
+              response && response.length < 50 ? response : "Workflow could not be update"
             }`,
-            life: 2000,
+            duration: 3000,
           });
         }
       } catch (error) {
-          loading.value = false
+        loading.value = false;
         console.log(error);
+        if (error.status === 500) {
+          ElMessage({
+            type: "warning",
+            message: "Please ensure that you have added an action to this trigger",
+            duration: 10000,
+            showClose: true,
+          });
+        }
       }
     };
 
@@ -1171,13 +1092,13 @@ export default {
 
     const removeActiveAction = () => {
       if (selectedActionIndex.value >= 0) {
-        workflow.value.triggers[
-          selectedTriggerIndex.value
-        ].triggerActions.splice(selectedActionIndex.value, 1);
+        workflow.value.triggers[selectedTriggerIndex.value].triggerActions.splice(
+          selectedActionIndex.value,
+          1
+        );
         if (
           workflow.value.triggers[selectedTriggerIndex.value].triggerActions &&
-          workflow.value.triggers[selectedTriggerIndex.value].triggerActions
-            .length === 0
+          workflow.value.triggers[selectedTriggerIndex.value].triggerActions.length === 0
         ) {
           selectedActionIndex.value = null;
         } else {
@@ -1188,15 +1109,12 @@ export default {
 
     const getWorkflowById = async (id) => {
       try {
-        const { returnObject: data, status } = await workflow_service.getById(
-          id
-        );
+        const { returnObject: data, status } = await workflow_service.getById(id);
         if (!status) {
-          toast.add({
-            severity: "error",
-            summary: "Workflow Saved",
-            detail: "Error getting workflow",
-            life: 2000,
+          ElMessage({
+            type: "error",
+            message: "Error getting workflow",
+            duration: 3000,
           });
           return false;
         }
@@ -1210,9 +1128,7 @@ export default {
               ...i,
               icon: t.icon ? t.icon : "",
               triggerActions: i.triggerActions.map((i) => {
-                const actn = actions.find(
-                  (j) => j.actionType === i.action.actionType
-                );
+                const actn = actions.find((j) => j.actionType === i.action.actionType);
                 return {
                   ...i,
                   icon: actn ? actn.icon : "",
@@ -1240,9 +1156,7 @@ export default {
     }
 
     const getTrigger = (type) => {
-      const trigger = workflow.value.triggers.find(
-        (i) => i.triggerType === type
-      );
+      const trigger = workflow.value.triggers.find((i) => i.triggerType === type);
       return trigger && trigger.jsonCondition ? trigger : {};
     };
 
@@ -1256,11 +1170,7 @@ export default {
     };
 
     const triggerDescriptions = ref(
-      descriptionHelper(
-        workflow.value.triggers,
-        groups.value,
-        contributionItems.value
-      )
+      descriptionHelper(workflow.value.triggers, groups.value, contributionItems.value)
     );
     const onDone = () => {
       selectedActionIndex.value = null;
@@ -1271,10 +1181,9 @@ export default {
       // done.value = false;
       // triggerDescriptions.value = descriptionHelper(workflow.value.triggers, groups.value, contributionItems.value)
     };
-    const previousPage = () =>{
-        router.push("/tenant/workflow/list")
-     }
-
+    const previousPage = () => {
+      router.push("/tenant/workflow/list");
+    };
 
     return {
       showTriggers,
@@ -1321,7 +1230,8 @@ export default {
       allSelectedActions,
       loading,
       groupMappedTree,
-      allPledgeDefinitionList
+      allPledgeDefinitionList,
+      primarycolor,
     };
   },
 };
@@ -1358,7 +1268,7 @@ export default {
   max-width: 100% !important;
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
   .scr-height {
     height: calc(100vh - 373px) !important;
   }

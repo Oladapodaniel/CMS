@@ -24,34 +24,57 @@
             <el-input type="email" placeholder="Email" v-model="state.credentials.userName" />
           </el-form-item>
           <el-form-item>
-            <el-input type="password" placeholder="Password" v-model="state.credentials.password" show-password/>
+            <el-input type="password" placeholder="Password" v-model="state.credentials.password" show-password />
           </el-form-item>
           <div class="f-password-div">
             <router-link to="/forgotpassword" class="forgot-password primary--text">Forgot it?</router-link>
           </div>
           <el-form-item>
-            <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>Sign
-              In</el-button>
-            <el-divider>
-              or
-            </el-divider>
-            <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
+            <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>
+              Sign In
+            </el-button>
+
+            <!-- <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
               <img src="../../assets/facebook-small.png" class="fb-icon" alt="Facebook Icon" />
               <span>Sign in with Facebook</span>
               <span></span>
-            </div>
+            </div> -->
           </el-form-item>
-        </el-form>
-      </div>
+          <!-- <el-form-item class="row"> -->
 
-      <div class="bottom-container">
-        <div>
-          <p class="sign-up-prompt">
-            Don't have an account yet?
-            <router-link to="/register" class="sign-up primary--text"><strong>Sign up now</strong></router-link>
-          </p>
+          <!-- <div class="col-sm-6 col-12 mt-2 mt-sm-0 d-flex justify-content-center   justify-content-sm-end  ">
+                <a class="text-decoration-none apple-store" target="_blank" href="https://www.apple.com/safari/">
+                  <img src="../../assets/mobileonboarding/app-store-logo.png" alt="">
+                </a>
+              </div> -->
+          <!-- </el-form-item> -->
+        </el-form>
+        <div class="bottom-container">
+          <div>
+            <div class="sign-up-prompt">
+              Don't have an account yet?
+            </div>
+          </div>
+
+          <div class="mt-2"><router-link to="/register"
+              class="sign-up primary--text text-decoration-none"><el-button color="#17c5cf"
+                class="w-50"  :loading="loading" round><strong>Sign up now</strong>
+              </el-button></router-link></div>
+        </div>
+        <div class="row">
+          <el-divider>
+            Download the App
+          </el-divider>
+          <div class="col-md-12 col-12 d-flex justify-content-center   ">
+            <a class="text-decoration-none googleplay  " target="_blank"
+              href="https://play.google.com/store/apps/details?id=com.complustech.co">
+              <img src="../../assets/mobileonboarding/Google-play-logo.png" alt="">
+            </a>
+          </div>
         </div>
       </div>
+
+
       <el-dialog v-model="displayModal" title="Please enter your email" width="80%" align-center>
         <div class="container">
           <div class="row mt-2">
@@ -73,6 +96,7 @@
           </span>
         </template>
       </el-dialog>
+      <!-- <el-button @click="sendError">Clicked</el-button> -->
     </div>
   </div>
 </template>
@@ -85,6 +109,7 @@ import router from "../../router/index";
 import setupService from "../../services/setup/setupservice";
 import { useGtag } from "vue-gtag-next";
 import FBlogin from "@/mixins/facebookLogin"
+// import * as Sentry from '@sentry/vue'
 
 export default {
   setup() {
@@ -107,17 +132,24 @@ export default {
       notAUser: false,
     });
     const loading = ref(false);
-    const {facebookLogin, displayModal, saveEmail, emailLoading, invalidEmailObj} = FBlogin()
+    const { facebookLogin, displayModal, saveEmail, emailLoading, invalidEmailObj } = FBlogin()
 
+    const sendError = () => {
+      // Dialogg.seen
+      // Sentry.captureMessage('Button clicked')
+      // Sentry.captureMessage('Button clicked');
+    }
     const login = async () => {
       signInLoading.value = true
       localStorage.setItem("email", state.credentials.userName);
       state.showError = false;
       state.notUser = false;
+      // Sentry.captureMessage('Login Button Clicked')
       try {
         loading.value = true;
         const res = await axios.post("/login", state.credentials);
         const { data } = res;
+        // Sentry.captureMessage(JSON.stringify(data), 'Login Response')
         signInLoading.value = false
         if (!data || !data.token) {
           router.push({
@@ -189,6 +221,7 @@ export default {
         }
         loading.value = false
       } catch (err) {
+        // Sentry.captureMessage(err, 'Login Error Response')
         /*eslint no-undef: "warn"*/
         signInLoading.value = false
         console.log(err, "login error");
@@ -209,7 +242,7 @@ export default {
         }
       }
     };
-    
+
 
     return {
       signInLoading,
@@ -221,7 +254,8 @@ export default {
       emailLoading,
       facebookLogin,
       saveEmail,
-      primarycolor
+      primarycolor,
+      sendError
     };
   },
 };
@@ -253,6 +287,18 @@ export default {
   margin: auto;
   padding: 10px;
 }
+
+.apple-store img {
+  width: 170px;
+  cursor: pointer;
+  height: 3.4rem;
+}
+
+.googleplay img {
+  width: 170px;
+  cursor: pointer;
+}
+
 
 .input {
   /* font-family: Averta,sans-serif; */
@@ -378,7 +424,7 @@ export default {
   color: #4d6575;
   font-size: 14px;
   line-height: 1.4;
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 .sign-up {

@@ -210,9 +210,9 @@
       <!-- Enter phone numbers -->
       <div class="col-md-12 my-1 px-0" v-if="phoneNumberSelectionTab">
         <div class="row">
-          <div class="col-md-2"></div>
+          <div class="col-md-2 small"></div>
           <div class="col-md-10 py-2 px-0">
-            <el-input type="textarea" class="w-100" rows="4" placeholder="Enter phone number(s)" v-model="phoneNumber" />
+            <el-input type="textarea" class="w-100" rows="4" placeholder="Enter comma seperated number e.g. 09033246067, 091228374832" v-model="phoneNumber" />
           </div>
           <div class="col-md-12 grey-rounded-border groups" :class="{ hide: !groupsAreVissible }">
             <div class="row" v-for="(category, index) in categories" :key="index">
@@ -421,7 +421,8 @@
         align-center class="px-4">
         <div class="row" v-if="!nigerian">
           <div class="col-md-12 text-center">
-            <el-button :loading="loading" :disabled="disableBtn" :color="primarycolor" class="w-100" @click="contructScheduleMessageBody(1, '')" round>Send SMS
+            <el-button :loading="loading" :disabled="disableBtn" :color="primarycolor" class="w-100"
+              @click="contructScheduleMessageBody(1, '')" round>Send SMS
               now</el-button>
             <!-- <button class=" primary-btn default-btn px-4 my-2 border-0 primary-bg text-white outline-none extra-btn"
               data-dismiss="modal" @click="contructScheduleMessageBody(1, '')">
@@ -776,7 +777,7 @@ export default {
 
     const subject = ref("");
     const phoneNumber = ref("");
-    
+
     // const isPersonalized = ref(false);
 
     const isoCode = ref("");
@@ -787,17 +788,17 @@ export default {
     const setSelectedSenderIdCheckin = (payload) => {
       searchSenderText.value = payload
       subject.value = payload;
-      if(searchSenderIDs.value || subject.value ){
+      if (searchSenderIDs.value || subject.value) {
         disableBtn.value = false
-      }else{
+      } else {
         disableBtn.value = true
       }
     }
 
     const sendSMS = (data) => {
-      
+
       // disableBtn.value = true;
-      
+
       invalidDestination.value = false;
       invalidMessage.value = false;
       loading.value = true

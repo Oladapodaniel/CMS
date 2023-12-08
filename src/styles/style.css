@@ -606,7 +606,7 @@ rect.highcharts-background[fill] {
 
   .input-field {
     display: flex;
-    align-items: start;
+    align-items: flex-start;
     justify-content: flex-end;
     margin: 0 10px 10px 10px;
   }
