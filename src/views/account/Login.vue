@@ -56,8 +56,9 @@
             </div>
           </div>
 
-          <div class="mt-2"><router-link to="/register" class="sign-up primary--text text-decoration-none"><el-button
-                color="#17c5cf" class="w-50" round><strong>Sign up now</strong>
+          <div class="mt-2"><router-link to="/register"
+              class="sign-up primary--text text-decoration-none"><el-button color="#17c5cf"
+                class="w-50"  :loading="loading" round><strong>Sign up now</strong>
               </el-button></router-link></div>
         </div>
         <div class="row">
@@ -95,6 +96,7 @@
           </span>
         </template>
       </el-dialog>
+      <!-- <el-button @click="sendError">Clicked</el-button> -->
     </div>
   </div>
 </template>
@@ -107,6 +109,7 @@ import router from "../../router/index";
 import setupService from "../../services/setup/setupservice";
 import { useGtag } from "vue-gtag-next";
 import FBlogin from "@/mixins/facebookLogin"
+// import * as Sentry from '@sentry/vue'
 
 export default {
   setup() {
@@ -131,15 +134,22 @@ export default {
     const loading = ref(false);
     const { facebookLogin, displayModal, saveEmail, emailLoading, invalidEmailObj } = FBlogin()
 
+    const sendError = () => {
+      // Dialogg.seen
+      // Sentry.captureMessage('Button clicked')
+      // Sentry.captureMessage('Button clicked');
+    }
     const login = async () => {
       signInLoading.value = true
       localStorage.setItem("email", state.credentials.userName);
       state.showError = false;
       state.notUser = false;
+      // Sentry.captureMessage('Login Button Clicked')
       try {
         loading.value = true;
         const res = await axios.post("/login", state.credentials);
         const { data } = res;
+        // Sentry.captureMessage(JSON.stringify(data), 'Login Response')
         signInLoading.value = false
         if (!data || !data.token) {
           router.push({
@@ -211,6 +221,7 @@ export default {
         }
         loading.value = false
       } catch (err) {
+        // Sentry.captureMessage(err, 'Login Error Response')
         /*eslint no-undef: "warn"*/
         signInLoading.value = false
         console.log(err, "login error");
@@ -243,7 +254,8 @@ export default {
       emailLoading,
       facebookLogin,
       saveEmail,
-      primarycolor
+      primarycolor,
+      sendError
     };
   },
 };

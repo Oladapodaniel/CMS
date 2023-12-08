@@ -38,13 +38,23 @@
           class="box-item"
           effect="dark"
           :content="
-            eventSummary.attendanceAverage
+            eventSummary &&
+            eventSummary.attendanceAverage &&
+            eventSummary.attendanceAverage.monthly
               ? eventSummary.attendanceAverage.monthly.toString()
-              : ''
+              : '--'
           "
           placement="left-start"
         >
-          <div>{{ convert(eventSummary.attendanceAverage.monthly) }}</div>
+          <div>
+            {{
+              eventSummary &&
+              eventSummary.attendanceAverage &&
+              eventSummary.attendanceAverage.monthly
+                ? convert(eventSummary.attendanceAverage.monthly)
+                : "-- --"
+            }}
+          </div>
         </el-tooltip>
       </div>
       <div class="col-6 col-md-3">
@@ -61,7 +71,7 @@
             eventSummary.offeringAverage &&
             eventSummary.offeringAverage.monthly
               ? eventSummary.offeringAverage.monthly.toString()
-              : '-- --'
+              : '--'
           }`"
           placement="left-start"
         >
@@ -82,13 +92,23 @@
           class="box-item"
           effect="dark"
           :content="
-            eventSummary.firstTimerAverage
+            eventSummary &&
+            eventSummary.firstTimerAverage &&
+            eventSummary.firstTimerAverage.monthly
               ? eventSummary.firstTimerAverage.monthly.toString()
-              : ''
+              : '--'
           "
           placement="left-start"
         >
-          <div>{{ convert(eventSummary.firstTimerAverage.monthly) }}</div>
+          <div>
+            {{
+              eventSummary &&
+              eventSummary.firstTimerAverage &&
+              eventSummary.firstTimerAverage.monthly
+                ? convert(eventSummary.firstTimerAverage.monthly)
+                : "-- --"
+            }}
+          </div>
         </el-tooltip>
       </div>
       <div class="col-6 col-md-3">
@@ -97,13 +117,23 @@
           class="box-item"
           effect="dark"
           :content="
-            eventSummary.newConvertAverage
+            eventSummary &&
+            eventSummary.newConvertAverage &&
+            eventSummary.newConvertAverage.monthly
               ? eventSummary.newConvertAverage.monthly.toString()
-              : ''
+              : '--'
           "
           placement="left-start"
         >
-          <div>{{ convert(eventSummary.newConvertAverage.monthly) }}</div>
+          <div>
+            {{
+              eventSummary &&
+              eventSummary.newConvertAverage &&
+              eventSummary.newConvertAverage.monthly
+                ? convert(eventSummary.newConvertAverage.monthly)
+                : "-- --"
+            }}
+          </div>
         </el-tooltip>
       </div>
     </div>
