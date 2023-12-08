@@ -109,7 +109,7 @@ import router from "../../router/index";
 import setupService from "../../services/setup/setupservice";
 import { useGtag } from "vue-gtag-next";
 import FBlogin from "@/mixins/facebookLogin"
-import * as Sentry from '@sentry/vue'
+// import * as Sentry from '@sentry/vue'
 
 export default {
   setup() {
@@ -144,12 +144,12 @@ export default {
       localStorage.setItem("email", state.credentials.userName);
       state.showError = false;
       state.notUser = false;
-      Sentry.captureMessage('Login Button Clicked')
+      // Sentry.captureMessage('Login Button Clicked')
       try {
         loading.value = true;
         const res = await axios.post("/login", state.credentials);
         const { data } = res;
-        Sentry.captureMessage(JSON.stringify(data), 'Login Response')
+        // Sentry.captureMessage(JSON.stringify(data), 'Login Response')
         signInLoading.value = false
         if (!data || !data.token) {
           router.push({
@@ -221,7 +221,7 @@ export default {
         }
         loading.value = false
       } catch (err) {
-        Sentry.captureMessage(err, 'Login Error Response')
+        // Sentry.captureMessage(err, 'Login Error Response')
         /*eslint no-undef: "warn"*/
         signInLoading.value = false
         console.log(err, "login error");

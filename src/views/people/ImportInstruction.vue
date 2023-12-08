@@ -29,7 +29,7 @@
         >
         <span> You can use this as a template for creating your Excel/CSV file.</span>
       </div>
-      <div class="col-12 col-md-6 mb-3">
+      <div class="col-12 col-md-6 mb-3" v-if="route.query.query == 'importfirstimer'">
         <span class="font-weight-700">Select event attended</span>
         <div class="mt-2">
           <el-dropdown class="w-100" trigger="click">
@@ -82,7 +82,7 @@
       </div>
       <div class="col-12">
         <div class="py-2 rounded bg-white">
-          <div class="col-md-12 col-12 col-lg-12 mt-3">
+          <div class="mt-3">
             <el-upload
                 class="upload-demo"
                 :limit="1"
@@ -462,10 +462,11 @@ export default {
           }
           console.log(err);
         }
-      } else if (route.fullPath.includes("/tenant/event")) {
+      } else if (route.fullPath.includes("/tenant/event") || (route.query.query === 'importfirsttimer' && Object.keys(selectedEventAttended.value).length > 0)) {
+        console.log(selectedEventAttended.value)
         let payload = {
           data: memberData.value,
-          activityID: route.params.event,
+          activityID: route.params.event ? route.params.event : selectedEventAttended.value.activityID,
           activateFollowUpWorkflow: true,
         };
         try {
@@ -592,7 +593,8 @@ export default {
       eventsAttended,
       eventAttendedSelected,
       eventsSearchString,
-      handleRemove
+      handleRemove,
+      route
     };
   },
 };

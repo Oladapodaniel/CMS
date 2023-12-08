@@ -123,23 +123,23 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 app.provide('primarycolor', '#136acd')
 
 
-Sentry.init({
-  app,
-  dsn: "https://7cff418eccb8c7340141c13304c531a2@o4506353832099840.ingest.sentry.io/4506353869258752",
-  integrations: [
-    new Sentry.BrowserTracing({
-      // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
-      tracePropagationTargets: ["localhost", /^https:\/\/yourserver\.io\/api/],
-      routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-    }),
-    new Sentry.Replay(),
-  ],
-  // Performance Monitoring
-  tracesSampleRate: 1.0, // Capture 100% of the transactions
-  // Session Replay
-  replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
-  replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
-});
+// Sentry.init({
+//   app,
+//   dsn: "https://7cff418eccb8c7340141c13304c531a2@o4506353832099840.ingest.sentry.io/4506353869258752",
+//   integrations: [
+//     new Sentry.BrowserTracing({
+//       // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
+//       tracePropagationTargets: ["localhost", /^https:\/\/yourserver\.io\/api/],
+//       routingInstrumentation: Sentry.vueRouterInstrumentation(router),
+//     }),
+//     new Sentry.Replay(),
+//   ],
+//   // Performance Monitoring
+//   tracesSampleRate: 1.0, // Capture 100% of the transactions
+//   // Session Replay
+//   replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
+//   replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
+// });
 
 
 
