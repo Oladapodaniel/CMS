@@ -58,7 +58,7 @@
 
           <div class="mt-2"><router-link to="/register"
               class="sign-up primary--text text-decoration-none"><el-button color="#17c5cf"
-                class="w-50"  :loading="loading" round><strong>Sign up now</strong>
+                class="w-50"  round><strong>Sign up now</strong>
               </el-button></router-link></div>
         </div>
         <div class="row">
