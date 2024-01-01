@@ -2,7 +2,9 @@
   <div>
     <div class="main-section">
       <div class="logo-con">
-        <a class="logo-link"><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" /></a>
+        <a class="logo-link"
+          ><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo"
+        /></a>
       </div>
       <div class="header">
         <h1>Sign in</h1>
@@ -16,21 +18,41 @@
         <div class="error-div" v-if="state.notAUser">
           <p class="error-message">
             Not a registered user,
-            <a href="/register" class="primary-text font-weight-bold text-decoration-none">Register now</a>
+            <a href="/register" class="primary-text font-weight-bold text-decoration-none"
+              >Register now</a
+            >
           </p>
         </div>
         <el-form :model="state" class="mt-3" @keyup.enter="login">
           <el-form-item>
-            <el-input type="email" placeholder="Email" v-model="state.credentials.userName" />
+            <el-input
+              type="email"
+              placeholder="Email"
+              v-model="state.credentials.userName"
+            />
           </el-form-item>
           <el-form-item>
-            <el-input type="password" placeholder="Password" v-model="state.credentials.password" show-password />
+            <el-input
+              type="password"
+              placeholder="Password"
+              v-model="state.credentials.password"
+              show-password
+            />
           </el-form-item>
           <div class="f-password-div">
-            <router-link to="/forgotpassword" class="forgot-password primary--text">Forgot it?</router-link>
+            <router-link to="/forgotpassword" class="forgot-password primary--text"
+              >Forgot it?</router-link
+            >
           </div>
           <el-form-item>
-            <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>
+            <el-button
+              size="large"
+              :color="primarycolor"
+              @click="login"
+              class="w-100"
+              :loading="signInLoading"
+              round
+            >
               Sign In
             </el-button>
 
@@ -51,17 +73,18 @@
         </el-form>
         <div class="bottom-container">
           <div>
-            <div class="sign-up-prompt">
-              Don't have an account yet?
-            </div>
+            <div class="sign-up-prompt">Don't have an account yet?</div>
           </div>
 
-          <div class="mt-2"><router-link to="/register"
-              class="sign-up primary--text text-decoration-none"><el-button color="#17c5cf"
-                class="w-50"  round><strong>Sign up now</strong>
-              </el-button></router-link></div>
+          <div class="mt-2">
+            <router-link to="/register" class="sign-up primary--text text-decoration-none"
+              ><el-button color="#17c5cf" class="w-50" round
+                ><strong>Sign up now</strong>
+              </el-button></router-link
+            >
+          </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
           <el-divider>
             Download the App
           </el-divider>
@@ -71,11 +94,15 @@
               <img src="../../assets/mobileonboarding/Google-play-logo.png" alt="">
             </a>
           </div>
-        </div>
+        </div> -->
       </div>
 
-
-      <el-dialog v-model="displayModal" title="Please enter your email" width="80%" align-center>
+      <el-dialog
+        v-model="displayModal"
+        title="Please enter your email"
+        width="80%"
+        align-center
+      >
         <div class="container">
           <div class="row mt-2">
             <div class="col-12"></div>
@@ -89,8 +116,16 @@
         </div>
         <template #footer>
           <span class="dialog-footer">
-            <el-button @click="displayModal = false" class="secondary-button" round>Cancel</el-button>
-            <el-button type="primary" @click="saveEmail" :loading="emailLoading" :color="primarycolor" round>
+            <el-button @click="displayModal = false" class="secondary-button" round
+              >Cancel</el-button
+            >
+            <el-button
+              type="primary"
+              @click="saveEmail"
+              :loading="emailLoading"
+              :color="primarycolor"
+              round
+            >
               Confirm
             </el-button>
           </span>
@@ -103,26 +138,26 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import { ElNotification } from 'element-plus'
+import { ElNotification } from "element-plus";
 import { reactive, ref, inject } from "vue";
 import router from "../../router/index";
 import setupService from "../../services/setup/setupservice";
 import { useGtag } from "vue-gtag-next";
-import FBlogin from "@/mixins/facebookLogin"
+import FBlogin from "@/mixins/facebookLogin";
 // import * as Sentry from '@sentry/vue'
 
 export default {
   setup() {
-    const { event } = useGtag()
+    const { event } = useGtag();
     const track = () => {
-      event('aaa', {
-        'event_category': 'login',
-        'event_label': 'ccc'
-      })
+      event("aaa", {
+        event_category: "login",
+        event_label: "ccc",
+      });
     };
     track();
-    const signInLoading = ref(false)
-    const primarycolor = inject('primarycolor')
+    const signInLoading = ref(false);
+    const primarycolor = inject("primarycolor");
 
     const state = reactive({
       passwordType: "password",
@@ -132,15 +167,21 @@ export default {
       notAUser: false,
     });
     const loading = ref(false);
-    const { facebookLogin, displayModal, saveEmail, emailLoading, invalidEmailObj } = FBlogin()
+    const {
+      facebookLogin,
+      displayModal,
+      saveEmail,
+      emailLoading,
+      invalidEmailObj,
+    } = FBlogin();
 
     const sendError = () => {
       // Dialogg.seen
       // Sentry.captureMessage('Button clicked')
       // Sentry.captureMessage('Button clicked');
-    }
+    };
     const login = async () => {
-      signInLoading.value = true
+      signInLoading.value = true;
       localStorage.setItem("email", state.credentials.userName);
       state.showError = false;
       state.notUser = false;
@@ -150,7 +191,7 @@ export default {
         const res = await axios.post("/login", state.credentials);
         const { data } = res;
         // Sentry.captureMessage(JSON.stringify(data), 'Login Response')
-        signInLoading.value = false
+        signInLoading.value = false;
         if (!data || !data.token) {
           router.push({
             name: "EmailSent",
@@ -160,22 +201,22 @@ export default {
         }
         localStorage.setItem("token", data.token);
         localStorage.setItem("expiryDate", data.expiryTime);
-        localStorage.setItem('roles', JSON.stringify(data.roles))
+        localStorage.setItem("roles", JSON.stringify(data.roles));
         if (data.roles.length > 0) {
-          let roleIndex = data.roles.findIndex(i => {
-            return i.toLowerCase() == "family" || i.toLowerCase() == "mobileuser"
-          })
+          let roleIndex = data.roles.findIndex((i) => {
+            return i.toLowerCase() == "family" || i.toLowerCase() == "mobileuser";
+          });
 
-          let adminIndex = data.roles.findIndex(i => {
-            return i.toLowerCase() == "admin"
-          })
+          let adminIndex = data.roles.findIndex((i) => {
+            return i.toLowerCase() == "admin";
+          });
 
           if (adminIndex !== -1) {
             setTimeout(() => {
               setupService.setup();
             }, 5000);
             if (data.churchSize >= data.subscribedChurchSize) {
-              router.push("/errorpage/member-capacity-reached")
+              router.push("/errorpage/member-capacity-reached");
             } else {
               if (data.churchSize > 0) {
                 router.push("/tenant");
@@ -184,21 +225,21 @@ export default {
               }
             }
           } else if (adminIndex === -1 && roleIndex !== -1) {
-            localStorage.clear()
+            localStorage.clear();
             ElNotification({
-              title: 'Unauthorized',
-              message: 'You do not have access to this page, contact your church admin',
-              type: 'error',
-            })
+              title: "Unauthorized",
+              message: "You do not have access to this page, contact your church admin",
+              type: "error",
+            });
           } else {
             if (data.churchSize >= data.subscribedChurchSize) {
-              router.push("/errorpage/member-capacity-reached")
+              router.push("/errorpage/member-capacity-reached");
             } else {
               if (data.roles.indexOf("GroupLeader") !== -1) {
                 router.push({
-                  name: "GroupLeaderDashboard"
+                  name: "GroupLeaderDashboard",
                 });
-              } else if (data.roles.length === 1 && data.roles[0] === 'FollowUp') {
+              } else if (data.roles.length === 1 && data.roles[0] === "FollowUp") {
                 router.push("/tenant/followup");
               } else if (data.roles.indexOf("FinancialAccount") !== -1) {
                 router.push("/tenant/offering");
@@ -219,11 +260,11 @@ export default {
             }, 5000);
           }
         }
-        loading.value = false
+        loading.value = false;
       } catch (err) {
         // Sentry.captureMessage(err, 'Login Error Response')
         /*eslint no-undef: "warn"*/
-        signInLoading.value = false
+        signInLoading.value = false;
         console.log(err, "login error");
         NProgress.done();
         loading.value = false;
@@ -243,7 +284,6 @@ export default {
       }
     };
 
-
     return {
       signInLoading,
       state,
@@ -255,7 +295,7 @@ export default {
       facebookLogin,
       saveEmail,
       primarycolor,
-      sendError
+      sendError,
     };
   },
 };
@@ -303,7 +343,6 @@ export default {
   width: 170px;
   cursor: pointer;
 }
-
 
 .input {
   /* font-family: Averta,sans-serif; */
