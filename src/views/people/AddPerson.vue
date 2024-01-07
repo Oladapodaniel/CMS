@@ -135,7 +135,7 @@
                   <el-input
                     type="text"
                     class="input-width"
-                    v-model="person.postalCode"
+                    v-model="person.zipPostalCode"
                     placeholder="Postal code"
                   />
                   <div class="p-1"></div>
@@ -926,7 +926,7 @@ export default {
           : []
       );
       formData.append("homeAddress", personObj.address ? personObj.address : "");
-      formData.append("postalCode", personObj.postalCode ? personObj.postalCode : "");
+      formData.append("zipPostalCode", personObj.zipPostalCode ? personObj.zipPostalCode : "");
       formData.append(
         "maritalStatusID",
         selectedMaritalStatus.value ? selectedMaritalStatus.value.id : ""
@@ -1183,7 +1183,7 @@ export default {
       person.firstName = data.firstName;
       person.mobilePhone = data.mobilePhone ? data.mobilePhone : "";
       person.address = data.homeAddress;
-      person.postalCode = data.postalCode;
+      person.zipPostalCode = data.zipPostalCode;
       person.occupation = data.occupation;
       person.dayOfBirth = data.dayOfBirth == 0 ? null : data.dayOfBirth;
       person.monthOfBirth = data.monthOfBirth ? months[data.monthOfBirth - 1] : null;
