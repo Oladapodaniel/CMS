@@ -98,7 +98,7 @@
       <div class="col-12 col-md-6 col-lg-2 mt-3 mt-md-0 mt-lg-0 px-lg-1">
         <div class="mb-1">Select Category</div>
         <div>
-          <SelectAllDropdown :items="allPledgeDefinitionList" @selected-item="setSelectedCategory" />
+          <SelectAllDropdown :items="allPledgeDefinitionList"  @selected-item="setSelectedCategory"   />
         </div>
         <!-- <el-select-v2
           v-model="selectedCategoryID"
@@ -114,7 +114,7 @@
       <div class="col-12 col-md-6 col-lg-2 mt-3 mt-lg-0 px-lg-1">
         <div class="mb-1">Select Status</div>
         <div>
-          <SelectAllDropdown :items="allPledgeStatus" @selected-item="setSelectedStatus" />
+          <SelectAllDropdown :items="allPledgeStatus"  @selected-item="setSelectedStatus" />
         </div>
         <!-- <el-select-v2
           v-model="selectedStatusID"
@@ -273,6 +273,7 @@ export default {
       { name: "Partial", id: '4' },
       { name: "---", id: '5' },
     ]);
+
     const allPledgeDefinitionList = ref([]);
     const selectedCategory = ref([]);
     const filterResult = ref([]);
@@ -675,6 +676,8 @@ export default {
       allPledgeStatus,
       selectedStatus,
       date,
+      // closeDropDown,
+      // closeDropDown2,
       primarycolor,
       // singlePledge
     };

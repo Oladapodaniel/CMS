@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class=""  >
     <div
       class=" border-contribution bg-white d-flex  justify-content-between align-items-center exempt-hide"
       @click="setGroupProp" :class="{ 'dropdown-height' : showHeight}"
@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import { computed, ref, nextTick, inject } from "vue";
+import { computed, ref, nextTick, inject, watchEffect } from "vue";
 export default {
   //  name: "ReportDropdown",
   props: ["items"],
@@ -118,6 +118,8 @@ export default {
         showHeight.value = true
       }
     };
+
+
     const checkAll = () => {
       props.items.forEach((i) => {
         if (allChecked.value) {
