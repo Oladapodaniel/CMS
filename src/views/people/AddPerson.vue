@@ -134,7 +134,7 @@
                 <div class="input-width d-flex">
                   <el-input
                     type="text"
-                    class="w-50"
+                    class="input-width"
                     v-model="person.zipPostalCode"
                     placeholder="Postal code"
                   />
