@@ -98,8 +98,9 @@
       <div class="col-12 col-md-6 col-lg-2 mt-3 mt-md-0 mt-lg-0 px-lg-1">
         <div class="mb-1">Select Category</div>
         <div>
-          <SelectAllDropdown :items="allPledgeDefinitionList"  @selected-item="setSelectedCategory"   />
+          <SelectAllDropdown :items="allPledgeDefinitionList" @selected-item="setSelectedCategory" />
         </div>
+
         <!-- <el-select-v2
           v-model="selectedCategoryID"
           @change="setSelectedCategory"
@@ -113,8 +114,15 @@
       </div>
       <div class="col-12 col-md-6 col-lg-2 mt-3 mt-lg-0 px-lg-1">
         <div class="mb-1">Select Status</div>
+        <!-- <div>
+          <SelectAllDropdown :items="allPledgeStatus" @selected-item="setSelectedStatus" />
+        </div> -->
         <div>
-          <SelectAllDropdown :items="allPledgeStatus"  @selected-item="setSelectedStatus" />
+          <el-select v-model="selectedStatusID" multiple collapse-tags placeholder="Select" style="width: 240px">
+            <el-option @click="selectAllItem" label="Select All" value="Select All" />
+            <el-option @click="setselectedItem" v-for="item in allPledgeStatus" :key="item.id" :label="item.name"
+              :value="item.id" />
+          </el-select>
         </div>
         <!-- <el-select-v2
           v-model="selectedStatusID"
@@ -263,8 +271,8 @@ export default {
     const primarycolor = inject("primarycolor");
     const networkError = ref(false);
     const route = useRoute();
-    const selectedStatusID = ref(null);
-    const selectedCategoryID = ref(null);
+    const selectedStatusID = ref([]);
+    const selectedCategoryID = ref([]);
     const filterLoading = ref(false);
     const allPledgeStatus = ref([
       { name: "Paid", id: '1' },
@@ -323,8 +331,31 @@ export default {
       showUpload.value = false;
     };
 
+    const selectedPleStatus = ref(false)
+    const selectAllItem = () => {
+    selectedPleStatus.value = !selectedPleStatus.value
+      selectedStatus.value = []
+      if(selectedPleStatus.value === true ){
+        selectedStatusID.value = allPledgeStatus.value.map((i) => i.id)
+      }else{
+        selectedStatusID.value = []
+      }
+      if (selectedStatusID.value.length > 0) {
+        selectedStatus.value = allPledgeStatus.value
+      }
+
+      // } 
+    }
+    const setselectedItem = () => {
+      selectedStatus.value = []
+      selectedStatusID.value.forEach((item) => {
+      selectedStatus.value.push(allPledgeStatus.value.find((i) => i.id == item ))
+      })
+
+    }
+
     const setSelectedCategory = (payload) => {
-      console.log(payload, 'ggggg');
+
       selectedCategory.value = payload
 
       // selectedCategory.value = allPledgeDefinitionList.value.find((i) => {
@@ -348,11 +379,7 @@ export default {
     };
 
     const setSelectedStatus = (payload) => {
-      console.log(payload, 'kkkkkk');
       selectedStatus.value = payload;
-      // selectedStatus.value = allPledgeStatus.value.find((i) => {
-      //   return i.id == selectedStatusID.value;
-      // });
     };
 
     const navigateToMakePledge = () => {
@@ -623,6 +650,9 @@ export default {
 
     return {
       upload,
+      selectAllItem,
+      setselectedItem,
+      selectedPleStatus,
       getAllTotalPayment,
       getAllTotalBalance,
       getAllPledgeAmount,

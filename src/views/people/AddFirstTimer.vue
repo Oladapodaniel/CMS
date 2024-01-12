@@ -54,7 +54,7 @@
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <div class="input-width d-flex">
-                  <el-input type="text" class="input-width" v-model="firstTimersObj.postalCode" placeholder="Postal code" />
+                  <el-input type="text" class="input-width" v-model="firstTimersObj.zipPostalCode" placeholder="Postal code" />
                   <div class="p-1"></div>
                   <el-input type="text" class="input-width" v-model="firstTimersObj.address" placeholder="Address" />
                 </div>
@@ -593,11 +593,11 @@ export default {
       formData.append('lastName', firstTimersObj.value && firstTimersObj.value.lastName ? firstTimersObj.value.lastName : "")
       formData.append('phoneNumber', firstTimersObj.value && firstTimersObj.value.phoneNumber ? firstTimersObj.value.phoneNumber : "")
       formData.append('email', firstTimersObj.value && firstTimersObj.value.email ? firstTimersObj.value.email : "")
-      formData.append('postalCode', firstTimersObj.value && firstTimersObj.value.postalCode ? firstTimersObj.value.postalCode : "")
-      formData.append('genderId', selectedGender.value ? selectedGender.value.id : 0)
-      formData.append('maritalStatusId', selectedMaritalStatus.value ? selectedMaritalStatus.value.id : 0)
+      formData.append('zipPostalCode', firstTimersObj.value && firstTimersObj.value.zipPostalCode ? firstTimersObj.value.zipPostalCode : "")
+      formData.append('genderId', selectedGender.value && selectedGender.value.id ? selectedGender.value.id : 0)
+      formData.append('maritalStatusId', selectedMaritalStatus.value && selectedMaritalStatus.value.id ? selectedMaritalStatus.value.id : 0)
       formData.append('activityID', selectedEventAttended.value && selectedEventAttended.value.activityID ? selectedEventAttended.value.activityID : "")
-      formData.append('howDidYouAboutUsId', selectedAboutUsSource.value ? selectedAboutUsSource.value.id : "00000000-0000-0000-0000-000000000000")
+      formData.append('howDidYouAboutUsId', selectedAboutUsSource.value && selectedAboutUsSource.value.id ? selectedAboutUsSource.value.id : "00000000-0000-0000-0000-000000000000")
       formData.append('communicationMeans', selectedCommunicationMeans.value ? comMeansArr.value.indexOf(selectedCommunicationMeans.value) + 1 : 0)
       formData.append('interestedInJoining', selectedJoinInterest.value ? joinInterestArr.value.indexOf(selectedJoinInterest.value) + 1 : 0)
       formData.append('wantToBeVisited', selectedVisitOption.value ? wantVisitArr.value.indexOf(selectedVisitOption.value) + 1 : 0)
@@ -734,7 +734,7 @@ export default {
           email: firstTimersObj.value.email,
           activityID: firstTimersObj.value && firstTimersObj.value.activityID ? firstTimersObj.value.activityID : "",
           address: firstTimersObj.value.address,
-          postalCode: firstTimersObj.value.postalCode,
+          zipPostalCode: firstTimersObj.value.zipPostalCode,
           birthday: firstTimersObj.value.birthday,
           birthMonth: firstTimersObj.value.birthMonth,
           birthYear: firstTimersObj.value.birthYear,
@@ -817,10 +817,10 @@ export default {
               selectedVisitOption.value = {};
               birthMonth.value = "";
 
-              validatePhone.value.classList.remove("is-valid");
-              validateEmail.value.classList.remove("is-valid");
-              validatePhone.value.classList.remove("is-invalid");
-              validateEmail.value.classList.remove("is-invalid");
+              // validatePhone.value.classList.remove("is-valid");
+              // validateEmail.value.classList.remove("is-valid");
+              // validatePhone.value.classList.remove("is-invalid");
+              // validateEmail.value.classList.remove("is-invalid");
             } else {
               setTimeout(() => {
                 router.push(
@@ -831,6 +831,7 @@ export default {
             }
           })
           .catch((err) => {
+            console.log(err, 'hhhhh');
             finish();
             loading.value = false;
             loadingtwo.value = false;
