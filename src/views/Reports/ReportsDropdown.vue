@@ -1,80 +1,124 @@
 <template>
-  <div class=""  >
-    <div
-      class=" border-contribution bg-white d-flex  justify-content-between align-items-center exempt-hide"
-      @click="setGroupProp" :class="{ 'dropdown-height' : showHeight}"
-    >
+  <div>
+    <el-select v-model="selectedCategoryID" multiple collapse-tags placeholder="Select" class="w-100">
+      <el-option @click="selectAllCategory" label="Select All" value="Select All" />
+      <el-option @click="setSelectedCategoryItem" v-for="item in allItems" :key="item.id"
+        :label="item.name || item.text" :value="item.id" />
+    </el-select>
+  </div>
+</template>
+
+<script>
+
+import { computed, ref, nextTick, inject, watchEffect } from "vue";
+export default {
+  props: ["items"],
+  emits: ["selected-item"],
+
+  setup(props, { emit }) {
+
+    const selectedCategory = ref([])
+    const selectedCategoryID = ref([])
+    const selectedPleCategory = ref(false)
+
+    const allItems = ref([])
+
+    watchEffect(() => {
+      if (props.items) {
+        allItems.value = props.items
+      }
+    })
+
+    const selectAllCategory = () => {
+      selectedPleCategory.value = !selectedPleCategory.value
+      selectedCategory.value = []
+      if (selectedPleCategory.value === true) {
+        selectedCategoryID.value = allItems.value.map((i) => i.id)
+      } else {
+        selectedCategoryID.value = []
+      }
+      if (selectedCategoryID.value.length > 0) {
+        selectedCategory.value = allItems.value
+        emit("selected-item", selectedCategory.value);
+      }
+
+      // } 
+    }
+
+    const setSelectedCategoryItem = () => {
+      selectedCategory.value = []
+      selectedCategoryID.value.forEach((item) => {
+        selectedCategory.value.push(allItems.value.find((i) => i.id == item))
+      })
+      emit("selected-item", selectedCategory.value);
+
+    }
+
+    return {
+      selectAllCategory,
+      setSelectedCategoryItem,
+      selectedPleCategory,
+      selectedCategory,
+      selectedCategoryID,
+      allItems
+    }
+  },
+}
+</script>
+
+<style scoped></style>
+<!-- <template>
+  <div class="">
+    <div class=" border-contribution bg-white d-flex  justify-content-between align-items-center exempt-hide"
+      @click="setGroupProp" :class="{ 'dropdown-height': showHeight }">
       <span class="exempt-hide">
         <span v-if="selectedMember.length > 0 && selectedMember.length <= 2">
-        <el-tag class="mx-1 mt-1" type="info" v-for="item in selectedMember.slice(0, 3)" :key="item.id">
+          <el-tag class="mx-1 mt-1" type="info" v-for="item in selectedMember.slice(0, 3)" :key="item.id">
             <span v-if="item.name" class="">{{ item.name }}</span>
             <span v-else class="">{{ item.text }}</span>
-        </el-tag>
-        
+          </el-tag>
+
         </span>
         <span v-if="selectedMember.length > 0 && selectedMember.length > 2">
           <el-tag class="mx-1 mt-1" type="info" v-for="item in selectedMember.slice(0, 3)" :key="item.id">
             <span v-if="item.name" class="">{{ item.name }}</span>
             <span v-else class="">{{ item.text }}</span>
           </el-tag>
-          <!-- <span v-for="item in selectedMember.slice(0, 2)" :key="item.id">
-            <span v-if="item.name" class="eachGroup">{{ item.name }}</span>
-            <span v-else class="eachGroup">{{ item.text }}</span>
-          </span> -->
           ...
         </span>
         <span v-if="selectedMember.length === 0">Select</span>
       </span>
-      <el-icon class="exemple-hide"><ArrowDown /></el-icon>
+      <el-icon class="exemple-hide">
+        <ArrowDown />
+      </el-icon>
     </div>
-    <div
-      class="div-card p-2 exempt-hide"
-      :class="{
-        'd-none': hideDiv,
-        'd-block': !hideDiv,
-      }"
-    >
-      <el-icon
-        v-if="searchForMembers.length === 0"
-        class="is-loading text-center exempt-hide"
-      >
+    <div class="div-card p-2 exempt-hide" :class="{
+      'd-none': hideDiv,
+      'd-block': !hideDiv,
+    }">
+      <el-icon v-if="searchForMembers.length === 0" class="is-loading text-center exempt-hide">
         <Loading />
       </el-icon>
-      <input
-        type="text"
-        class="form-control exempt-hide"
-        v-model="searchMemberText"
-        ref="searchMemberRef"
-        placeholder="Search"
-      />
+      <input type="text" class="form-control exempt-hide" v-model="searchMemberText" ref="searchMemberRef"
+        placeholder="Search" />
       <div class="row">
         <div class="col-12 px-3">
           <div>
             <div>
-              <el-checkbox
-                v-model="allChecked"
-                @change="checkAll"
-                class="exempt-hide"
-              />
+              <el-checkbox v-model="allChecked" @change="checkAll" class="exempt-hide" />
               <span class="font-weight-700">&nbsp; &nbsp;Select all</span>
             </div>
           </div>
         </div>
       </div>
       <ul class="px-2 w-100">
-        <li
-          v-for="(member, index) in searchForMembers"
-          :key="index"
-          class="px-2 pt-2 c-pointer parent-li border-top exempt-hide"
-        >
+        <li v-for="(member, index) in searchForMembers" :key="index"
+          class="px-2 pt-2 c-pointer parent-li border-top exempt-hide">
           <div class="row exempt-hide">
             <div class="text-primary exempt-hide">
               <span>
-                <el-checkbox
-                  v-model="member.displayCheck"
-                  @change="getCheckedGroup(member)"
-                  class="exempt-hide all-check"
-                />
+                <el-checkbox v-model="member.displayCheck" @change="getCheckedGroup(member)"
+                  class="exempt-hide all-check" />
               </span>
             </div>
             <div class="text-primary exempt-hide">
@@ -112,9 +156,9 @@ export default {
       nextTick(() => {
         searchMemberRef.value.focus();
       });
-      if(selectedMember.value.length > 0){
+      if (selectedMember.value.length > 0) {
         showHeight.value = false
-      }else{
+      } else {
         showHeight.value = true
       }
     };
@@ -146,8 +190,6 @@ export default {
         );
         emit("selected-item", selectedMember.value);
       }
-
-      // displayCheck.value = item
     };
 
     const searchForMembers = computed(() => {
@@ -173,9 +215,9 @@ export default {
     };
   },
 };
-</script>
+</script> -->
 
-<style scoped>
+<!-- <style scoped>
 li {
   list-style-type: none;
 }
@@ -185,10 +227,11 @@ li li:hover {
   background: rgba(224, 223, 223, 0.46);
 }
 
-.dropdown-height{
+.dropdown-height {
   height: 2.69rem;
 }
-.Hide-height{
+
+.Hide-height {
   height: 0px;
 }
 
@@ -209,4 +252,4 @@ li li:hover {
   border-radius: 25px;
   margin: 0 4px;
 }
-</style>
+</style> -->
