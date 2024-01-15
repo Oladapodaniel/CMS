@@ -98,8 +98,16 @@
       <div class="col-12 col-md-6 col-lg-2 mt-3 mt-md-0 mt-lg-0 px-lg-1">
         <div class="mb-1">Select Category</div>
         <div>
-          <SelectAllDropdown :items="allPledgeDefinitionList" @selected-item="setSelectedCategory" />
+          <el-select v-model="selectedCategoryID" multiple collapse-tags placeholder="Select" class="w-100">
+            <el-option @click="selectAllCategory" label="Select All" value="Select All" />
+            <el-option @click="setSelectedCategoryItem" v-for="item in allPledgeDefinitionList" :key="item.id" :label="item.name"
+              :value="item.id" />
+          </el-select>
         </div>
+        
+        <!-- <div>
+          <SelectAllDropdown :items="allPledgeDefinitionList" @selected-item="setSelectedCategory" />
+        </div> -->
 
         <!-- <el-select-v2
           v-model="selectedCategoryID"
@@ -118,9 +126,9 @@
           <SelectAllDropdown :items="allPledgeStatus" @selected-item="setSelectedStatus" />
         </div> -->
         <div>
-          <el-select v-model="selectedStatusID" multiple collapse-tags placeholder="Select" style="width: 240px">
-            <el-option @click="selectAllItem" label="Select All" value="Select All" />
-            <el-option @click="setselectedItem" v-for="item in allPledgeStatus" :key="item.id" :label="item.name"
+          <el-select v-model="selectedStatusID" multiple collapse-tags placeholder="Select" class="w-100">
+            <el-option @click="selectAllStatus" label="Select All" value="Select All" />
+            <el-option @click="setSelectedStatusItem" v-for="item in allPledgeStatus" :key="item.id" :label="item.name"
               :value="item.id" />
           </el-select>
         </div>
@@ -332,12 +340,13 @@ export default {
     };
 
     const selectedPleStatus = ref(false)
-    const selectAllItem = () => {
-    selectedPleStatus.value = !selectedPleStatus.value
+    const selectedPleCategory = ref(false)
+    const selectAllStatus = () => {
+      selectedPleStatus.value = !selectedPleStatus.value
       selectedStatus.value = []
-      if(selectedPleStatus.value === true ){
+      if (selectedPleStatus.value === true) {
         selectedStatusID.value = allPledgeStatus.value.map((i) => i.id)
-      }else{
+      } else {
         selectedStatusID.value = []
       }
       if (selectedStatusID.value.length > 0) {
@@ -346,10 +355,31 @@ export default {
 
       // } 
     }
-    const setselectedItem = () => {
+    const selectAllCategory = () => {
+      selectedPleCategory.value = !selectedPleCategory.value
+      selectedCategory.value = []
+      if (selectedPleCategory.value === true) {
+        selectedCategoryID.value = allPledgeDefinitionList.value.map((i) => i.id)
+      } else {
+        selectedCategoryID.value = []
+      }
+      if (selectedCategoryID.value.length > 0) {
+        selectedCategory.value = allPledgeDefinitionList.value
+      }
+
+      // } 
+    }
+    const setSelectedStatusItem = () => {
       selectedStatus.value = []
       selectedStatusID.value.forEach((item) => {
-      selectedStatus.value.push(allPledgeStatus.value.find((i) => i.id == item ))
+        selectedStatus.value.push(allPledgeStatus.value.find((i) => i.id == item))
+      })
+
+    }
+    const setSelectedCategoryItem = () => {
+      selectedCategory.value = []
+      selectedCategoryID.value.forEach((item) => {
+        selectedCategory.value.push(allPledgeDefinitionList.value.find((i) => i.id == item))
       })
 
     }
@@ -650,9 +680,12 @@ export default {
 
     return {
       upload,
-      selectAllItem,
-      setselectedItem,
+      selectAllStatus,
+      selectAllCategory,
+      setSelectedStatusItem,
+      setSelectedCategoryItem,
       selectedPleStatus,
+      selectedPleCategory,
       getAllTotalPayment,
       getAllTotalBalance,
       getAllPledgeAmount,
