@@ -97,17 +97,17 @@
       </div>
       <div class="col-12 col-md-6 col-lg-2 mt-3 mt-md-0 mt-lg-0 px-lg-1">
         <div class="mb-1">Select Category</div>
-        <div>
+        <!-- <div>
           <el-select v-model="selectedCategoryID" multiple collapse-tags placeholder="Select" class="w-100">
             <el-option @click="selectAllCategory" label="Select All" value="Select All" />
             <el-option @click="setSelectedCategoryItem" v-for="item in allPledgeDefinitionList" :key="item.id" :label="item.name"
               :value="item.id" />
           </el-select>
-        </div>
-        
-        <!-- <div>
-          <SelectAllDropdown :items="allPledgeDefinitionList" @selected-item="setSelectedCategory" />
         </div> -->
+        
+        <div>
+          <SelectAllDropdown :items="allPledgeDefinitionList" @selected-item="setSelectedCategory" />
+        </div>
 
         <!-- <el-select-v2
           v-model="selectedCategoryID"
@@ -122,16 +122,16 @@
       </div>
       <div class="col-12 col-md-6 col-lg-2 mt-3 mt-lg-0 px-lg-1">
         <div class="mb-1">Select Status</div>
-        <!-- <div>
-          <SelectAllDropdown :items="allPledgeStatus" @selected-item="setSelectedStatus" />
-        </div> -->
         <div>
+          <SelectAllDropdown :items="allPledgeStatus" @selected-item="setSelectedStatus" />
+        </div>
+        <!-- <div>
           <el-select v-model="selectedStatusID" multiple collapse-tags placeholder="Select" class="w-100">
             <el-option @click="selectAllStatus" label="Select All" value="Select All" />
             <el-option @click="setSelectedStatusItem" v-for="item in allPledgeStatus" :key="item.id" :label="item.name"
               :value="item.id" />
           </el-select>
-        </div>
+        </div> -->
         <!-- <el-select-v2
           v-model="selectedStatusID"
           @change="setSelectedStatus"
@@ -283,11 +283,11 @@ export default {
     const selectedCategoryID = ref([]);
     const filterLoading = ref(false);
     const allPledgeStatus = ref([
-      { name: "Paid", id: '1' },
-      { name: "Over Due", id: '2' },
-      { name: "No Payment", id: '3' },
-      { name: "Partial", id: '4' },
-      { name: "---", id: '5' },
+      { text: "Paid", id: '1' },
+      { text: "Over Due", id: '2' },
+      { text: "No Payment", id: '3' },
+      { text: "Partial", id: '4' },
+      { text: "---", id: '5' },
     ]);
 
     const allPledgeDefinitionList = ref([]);
@@ -339,53 +339,11 @@ export default {
       showUpload.value = false;
     };
 
-    const selectedPleStatus = ref(false)
-    const selectedPleCategory = ref(false)
-    const selectAllStatus = () => {
-      selectedPleStatus.value = !selectedPleStatus.value
-      selectedStatus.value = []
-      if (selectedPleStatus.value === true) {
-        selectedStatusID.value = allPledgeStatus.value.map((i) => i.id)
-      } else {
-        selectedStatusID.value = []
-      }
-      if (selectedStatusID.value.length > 0) {
-        selectedStatus.value = allPledgeStatus.value
-      }
-
-      // } 
-    }
-    const selectAllCategory = () => {
-      selectedPleCategory.value = !selectedPleCategory.value
-      selectedCategory.value = []
-      if (selectedPleCategory.value === true) {
-        selectedCategoryID.value = allPledgeDefinitionList.value.map((i) => i.id)
-      } else {
-        selectedCategoryID.value = []
-      }
-      if (selectedCategoryID.value.length > 0) {
-        selectedCategory.value = allPledgeDefinitionList.value
-      }
-
-      // } 
-    }
-    const setSelectedStatusItem = () => {
-      selectedStatus.value = []
-      selectedStatusID.value.forEach((item) => {
-        selectedStatus.value.push(allPledgeStatus.value.find((i) => i.id == item))
-      })
-
-    }
-    const setSelectedCategoryItem = () => {
-      selectedCategory.value = []
-      selectedCategoryID.value.forEach((item) => {
-        selectedCategory.value.push(allPledgeDefinitionList.value.find((i) => i.id == item))
-      })
-
-    }
+    const setSelectedStatus = (payload) => {
+      selectedStatus.value = payload;
+    };
 
     const setSelectedCategory = (payload) => {
-
       selectedCategory.value = payload
 
       // selectedCategory.value = allPledgeDefinitionList.value.find((i) => {
@@ -408,9 +366,7 @@ export default {
       });
     };
 
-    const setSelectedStatus = (payload) => {
-      selectedStatus.value = payload;
-    };
+  
 
     const navigateToMakePledge = () => {
       router.push("/tenant/pledge/makepledge");
@@ -680,12 +636,6 @@ export default {
 
     return {
       upload,
-      selectAllStatus,
-      selectAllCategory,
-      setSelectedStatusItem,
-      setSelectedCategoryItem,
-      selectedPleStatus,
-      selectedPleCategory,
       getAllTotalPayment,
       getAllTotalBalance,
       getAllPledgeAmount,
