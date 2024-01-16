@@ -436,7 +436,6 @@ export default {
         // const res = await axios.get(
         //   `/api/Pledge/GetAllPledgesSearch?personId=${selectedContactValue}&status=${selectedStatusValue}&pledgeItemID=${selectedCategoryValue}&startDate=${startDateValue}&endDate=${endDateValue}`
         // );
-        console.log(res.data, 'gjhgjhfhg');
         if (res.data && res.data.returnObject.length == 0) {
           ElMessage({
             type: "warning",
@@ -454,7 +453,6 @@ export default {
         getAllTotalBalance.value = res.data.returnObject
           .map((i) => i.balance)
           .reduce((b, a) => b + a, 0);
-        console.log(getAllPledgeAmount.value, "jkkj");
         filterLoading.value = false;
       } catch (error) {
         filterLoading.value = false;

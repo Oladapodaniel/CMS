@@ -1,41 +1,31 @@
 <template>
   <div class="">
-    <div
-      class="container-fluid px-0 pb-4  backgroundColor "
-    >
+    <div class="container-fluid px-0 pb-4  backgroundColor ">
       <div class="row">
         <div class="col-md-12">
           <div class="row justify-content-center">
             <div class="col-md-12 d-flex justify-content-center ">
               <div class="col-md-4 col-11 col-sm-8 mt-2">
                 <el-dropdown trigger="click" class="w-100">
-                    <el-input
-                      type="text"
-                      placeholder="Select Country"
-                      v-model="counrtySearch"
-                    >
+                  <el-input type="text" placeholder="Select Country" v-model="counrtySearch">
                     <template #suffix>
-                        <el-button style="padding: 5px; height: 22px;" @click.prevent="counrtySearch = ''">
-                            <el-icon :size="13">
-                                <Close />
-                            </el-icon>
-                        </el-button>
+                      <el-button style="padding: 5px; height: 22px;" @click.prevent="counrtySearch = ''">
+                        <el-icon :size="13">
+                          <Close />
+                        </el-icon>
+                      </el-button>
                     </template>
                     <template #append>
-                        <el-button>
-                            <el-icon :size="15">
-                                <ArrowDownBold />
-                            </el-icon>
-                        </el-button>
+                      <el-button>
+                        <el-icon :size="15">
+                          <ArrowDownBold />
+                        </el-icon>
+                      </el-button>
                     </template>
-                    </el-input>
+                  </el-input>
                   <template #dropdown>
                     <el-dropdown-menu>
-                      <el-dropdown-item
-                        v-for="item in filteredCounrty"
-                        :key="item.id"
-                        @click="setSelectedCountry(item)"
-                      >
+                      <el-dropdown-item v-for="item in filteredCounrty" :key="item.id" @click="setSelectedCountry(item)">
                         {{ item ? item.name : "" }}
                       </el-dropdown-item>
                     </el-dropdown-menu>
@@ -43,14 +33,8 @@
                 </el-dropdown>
               </div>
             </div>
-            <div
-              class="col-11 col-sm-10 col-md-7 col-lg-4 d-flex my-4 justify-content-between"
-              @click="toggle"
-            >
-              <div
-                class="font-weight-bold text-center h4"
-                :class="{ 'text-color': togglePrice }"
-              >
+            <div class="col-11 col-sm-10 col-md-7 col-lg-4 d-flex my-4 justify-content-between" @click="toggle">
+              <div class="font-weight-bold text-center h4" :class="{ 'text-color': togglePrice }">
                 Monthly Pricing
               </div>
               <div class="">
@@ -59,104 +43,94 @@
                   <span class="slider round"></span>
                 </label>
               </div>
-              <div
-                class="font-weight-bold text-center h4"
-                :class="{ 'text-color': !togglePrice }"
-              >
+              <div class="font-weight-bold text-center h4" :class="{ 'text-color': !togglePrice }">
                 Yearly Pricing
               </div>
             </div>
             <div class="col-md-11 ">
               <div class="row justify-content-between">
-                <div
-                  class="col-10 col-sm-5 col-md-3 mx-auto text-center "
-                  v-for="(item, index) in productPricing"
-                  :key="index"
-                >
+                <div class="col-10 col-sm-5 col-md-3 mx-auto text-center " v-for="(item, index) in productPricing"
+                  :key="index">
                   <div class="row justify-content-center">
-                    <div
-                      class="col-md-11    py-5 rounded mb-3 d-flex justify-content-center border bg-white" style="min-height: 930px;"
-                    >
-                    <div class="row justify-content-center">
+                    <div class="col-md-11    py-5 rounded mb-3 d-flex justify-content-center border bg-white"
+                      style="min-height: 930px;">
+                      <div class="row justify-content-center">
                         <div class="col-md-10 ">
-                        <div class="mt-4 h4 font-weight-bold price-header">
-                          {{ item.subscriptionPlan.description }}
-                        </div>
-                        <div v-if="item.currency.country === 'Nigeria'">
-                          <div class="mt-4 head-text  " v-if="togglePrice">
-                            {{ item.currency.symbol
-                            }}{{
-                              item.subscriptionPlan.amountInNaira.toLocaleString()
-                            }}<div class="small text-secondary"> /month</div>
+                          <div class="mt-4 h4 font-weight-bold price-header">
+                            {{ item.subscriptionPlan.description }}
                           </div>
-                          <div class="mt-4 head-text   " v-else>
-                            {{ item.currency.symbol
-                            }}{{
-                              (
-                                item.subscriptionPlan.amountInNaira * 12
-                              ).toLocaleString()
-                            }}
-                            <div class="small text-secondary"> /year</div>
+                          <div v-if="item.currency.country === 'Nigeria'">
+                            <div class="mt-4 head-text  " v-if="togglePrice">
+                              {{ item.currency.symbol
+                              }}{{
+  item.subscriptionPlan.amountInNaira.toLocaleString()
+}}<div class="small text-secondary"> /month</div>
+                            </div>
+                            <div class="mt-4 head-text   " v-else>
+                              {{ item.currency.symbol
+                              }}{{
+  (
+    item.subscriptionPlan.amountInNaira * 12
+  ).toLocaleString()
+}}
+                              <div class="small text-secondary"> /year</div>
+                            </div>
+                          </div>
+                          <div v-else-if="item.currency.shortCode === 'USD'">
+                            <div class="mt-4 head-text" v-if="togglePrice">
+                              ${{
+                                item.price.toLocaleString()
+                              }}<div class="small text-secondary"> /month</div>
+                            </div>
+                            <div class="mt-4 head-text" v-else>
+                              ${{
+                                (
+                                  item.price * 12
+                                ).toLocaleString()
+                              }}
+                              <div class="small text-secondary">/year</div>
+                            </div>
+                          </div>
+                          <div v-else>
+                            <div class="mt-4 head-text" v-if="togglePrice">
+                              {{ item.currency.symbol
+                              }}{{ item.price.toLocaleString()
+}}<div class="small text-secondary"> /month</div>
+                            </div>
+                            <div class="mt-4 head-text" v-else>
+                              {{ item.currency.symbol
+                              }}{{ (item.price * 12).toLocaleString() }}
+                              <div class="small text-secondary"> /year</div>
+                            </div>
+                          </div>
+                          <div class="mt-4" v-if="item.subscriptionPlan.membershipSize < 500">
+                            <img class="w-100" src="../../assets/icon_5-1.png" alt="" />
+                          </div>
+                          <div class="mt-4" v-else>
+                            <img class="w-100" src="../../assets/icon_4-1.png" alt="" />
+                          </div>
+                          <div class="mt-4 font-weight-bold">
+                            ({{ item.subscriptionPlan.membershipSize }} Membership
+                            Size)
+                          </div>
+                          <div class="mt-4">
+                            {{
+                              item.subscriptionPlan.membershipSize > 500
+                              ? "Free 250 SMS Units Monthly" :
+                              item.subscriptionPlan.membershipSize >= 200 && item.subscriptionPlan.membershipSize <= 500
+                                ? "Free 100 SMS Units Monthly" : "0 SMS Unit" }} </div>
+                              <div class="mt-4">Accounting</div>
+                              <div class="mt-4">Event Management</div>
+                              <div class="my-4">
+                                Communication ( SMS, Email, WhatsApp, Voice)
+                              </div>
+                              <div class="">Membership Managament</div>
+                              <div class="my-4">Reports</div>
+                              <div class="">Free Online Giving</div>
                           </div>
                         </div>
-                        <div v-else-if="item.currency.shortCode === 'USD'">
-                          <div class="mt-4 head-text" v-if="togglePrice">
-                            ${{
-                              item.price.toLocaleString()
-                            }}<div class="small text-secondary"> /month</div>
-                          </div>
-                          <div class="mt-4 head-text" v-else>
-                            ${{
-                              (
-                                item.price * 12
-                              ).toLocaleString()
-                            }}
-                            <div class="small text-secondary">/year</div>
-                          </div>
-                        </div>
-                        <div v-else>
-                          <div class="mt-4 head-text" v-if="togglePrice">
-                            {{ item.currency.symbol
-                            }}{{ item.price.toLocaleString()
-                            }}<div class="small text-secondary"> /month</div>
-                          </div>
-                          <div class="mt-4 head-text" v-else>
-                            {{ item.currency.symbol
-                            }}{{ (item.price * 12).toLocaleString() }}
-                            <div class="small text-secondary"> /year</div>
-                          </div>
-                        </div>
-                        <div
-                          class="mt-4"
-                          v-if="item.subscriptionPlan.membershipSize < 500"
-                        >
-                          <img class="w-100" src="../../assets/icon_5-1.png" alt="" />
-                        </div>
-                        <div class="mt-4" v-else>
-                          <img class="w-100" src="../../assets/icon_4-1.png" alt="" />
-                        </div>
-                        <div class="mt-4 font-weight-bold">
-                          ({{ item.subscriptionPlan.membershipSize }} Membership
-                          Size)
-                        </div>
-                        <div class="mt-4">
-                          {{
-                            item.subscriptionPlan.membershipSize > 500
-                              ? "Free 250 SMS Units Monthly"
-                              : "Free 100 SMS Units Monthly"
-                          }}
-                        </div>
-                        <div class="mt-4">Accounting</div>
-                        <div class="mt-4">Event Management</div>
-                        <div class="my-4">
-                          Communication ( SMS, Email, WhatsApp, Voice)
-                        </div>
-                        <div class="">Membership Managament</div>
-                        <div class="my-4">Reports</div>
-                        <div class="">Free Online Giving</div>
-                        </div>
-                    </div>
-                      
+
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -166,7 +140,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -213,10 +186,8 @@ export default {
     const getPricing = async () => {
       try {
         const { data } = await axios.get(
-          `/public/ProductPricingByCountryCode?CountryCode=${
-            countryCode.value ? countryCode.value : ""
-          }${
-            selectedCountry.value.isoCode ? selectedCountry.value.isoCode : ""
+          `/public/ProductPricingByCountryCode?CountryCode=${countryCode.value ? countryCode.value : ""
+          }${selectedCountry.value.isoCode ? selectedCountry.value.isoCode : ""
           }`
         );
         productPricing.value = data
@@ -274,21 +245,26 @@ export default {
   width: 60px;
   height: 27px;
 }
-.backgroundColor{
+
+.backgroundColor {
   background-color: rgb(227, 231, 255);
 }
+
 .price-header {
   text-transform: lowercase;
   /* color: #172B4D; */
 }
+
 .price-header:first-letter,
 .price-header:first-line {
   text-transform: capitalize;
 }
+
 .descrip:first-letter,
 .descrip::first-line {
   color: #61c330 !important;
 }
+
 .text-color {
   color: #4154f1 !important;
 }
@@ -332,15 +308,15 @@ export default {
   transition: 0.4s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: #4154f1;
 }
 
-input:focus + .slider {
+input:focus+.slider {
   box-shadow: 0 0 1px #4154f1;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
