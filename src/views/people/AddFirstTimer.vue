@@ -54,7 +54,7 @@
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <div class="input-width d-flex">
-                  <el-input type="text" class="input-width" v-model="firstTimersObj.zipPostalCode" placeholder="Postal code" />
+                  <el-input type="text" class="w-50" v-model="firstTimersObj.zipPostalCode" placeholder="Postal code" />
                   <div class="p-1"></div>
                   <el-input type="text" class="input-width" v-model="firstTimersObj.address" placeholder="Address" />
                 </div>
