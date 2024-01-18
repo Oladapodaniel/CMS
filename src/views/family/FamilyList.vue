@@ -6,17 +6,9 @@
           <div class="">
             <div class="table-top p-3 mt-5">
               <div class="col-md-5 justify-content-flex-end">
-                <el-input
-                  size="small"
-                  v-model="searchText"
-                  placeholder="Search..."
-                  class="input-with-select"
-                >
+                <el-input size="small" v-model="searchText" placeholder="Search..." class="input-with-select">
                   <template #suffix>
-                    <el-button
-                      style="padding: 5px; height: 22px"
-                      @click.prevent="searchText = ''"
-                    >
+                    <el-button style="padding: 5px; height: 22px" @click.prevent="searchText = ''">
                       <el-icon :size="13">
                         <Close />
                       </el-icon>
@@ -35,13 +27,8 @@
           </div>
         </div>
 
-        <Table
-          :data="searchFamily"
-          :headers="familyHeaders"
-          :checkMultipleItem="false"
-          v-if="searchFamily.length > 0"
-        >
-          <template v-slot:date="{ item }">
+        <Table :data="searchFamily" :headers="familyHeaders" :checkMultipleItem="false" v-if="searchFamily.length > 0">
+          <template v-slot:dateCreated="{ item }">
             <div class="c-pointer">
               {{ formatDate(item.dateCreated) }}
             </div>
@@ -58,7 +45,7 @@
             </div>
           </template>
 
-          <template v-slot:phone="{ item }">
+          <template v-slot:homePhone="{ item }">
             <div class="c-pointer">
               {{ item.homePhone }}
             </div>
@@ -72,25 +59,20 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item>
-                    <router-link
-                      :to="{
-                        name: 'AddFamily',
-                        params: {
-                          familyId: item.fatherID
-                            ? item.fatherID
-                            : item.motherID,
-                        },
-                      }"
-                    >
+                    <router-link :to="{
+                      name: 'AddFamily',
+                      params: {
+                        familyId: item.fatherID
+                          ? item.fatherID
+                          : item.motherID,
+                      },
+                    }">
                       <div class="text-decoration-none text-color">Edit</div>
                     </router-link>
                   </el-dropdown-item>
 
                   <el-dropdown-item>
-                    <div
-                      class="text-decoration-none text-color"
-                      @click="showConfirmModal(item.id)"
-                    >
+                    <div class="text-decoration-none text-color" @click="showConfirmModal(item.id)">
                       Delete
                     </div>
                   </el-dropdown-item>
@@ -160,7 +142,7 @@ export default {
           });
           let listFiltered = props.familyList.filter((i) => i.id !== id);
           emit("list-filtered", listFiltered);
-           store.dispatch('family/removeFamilyFromStore', id)
+          store.dispatch('family/removeFamilyFromStore', id)
         })
         .catch((err) => {
           console.log(err);
@@ -180,7 +162,7 @@ export default {
       )
         .then(() => {
           deleteFamily(id);
-          
+
         })
         .catch(() => {
           ElMessage({
@@ -190,10 +172,10 @@ export default {
         });
     };
     const familyHeaders = ref([
-      { name: "DATE", value: "date" },
+      { name: "DATE", value: "dateCreated" },
       { name: "FAMILY NAME", value: "familyName" },
       { name: "EMAIL", value: "email" },
-      { name: "PHONE", value: "phone" },
+      { name: "PHONE", value: "homePhone" },
       { name: "ACTION", value: "action" },
     ]);
 
@@ -222,20 +204,24 @@ export default {
   font-size: 16px;
   padding: 0.5rem 0;
 }
+
 .filter-options {
   height: 0;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
+
 .filter-options-shown {
   height: 80px !important;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
+
 .clear-link,
 .hide-link {
   color: #136acd;
 }
+
 .table-top {
   font-weight: 800;
   font-size: 12px;
@@ -245,6 +231,7 @@ export default {
   justify-content: flex-end;
   display: flex;
 }
+
 .table-top label:hover,
 .table-top p:hover {
   cursor: pointer;

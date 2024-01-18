@@ -6,9 +6,9 @@
     <div class="row">
       <div class="col-md-12">
         <div class="table-top p-3 mt-5">
-      <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
-        <div>
-          <!-- <el-tooltip
+          <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
+            <div>
+              <!-- <el-tooltip
             class="box-item"
             effect="dark"
             v-if="marked.length > 0"
@@ -23,25 +23,15 @@
               <User />
             </el-icon>
           </el-tooltip> -->
-          <el-tooltip
-            class="box-item"
-            effect="dark"
-            v-if="marked.length > 0"
-            content="Unarchive member(s)"
-            placement="top-start"
-          >
-            <el-icon
-              class="c-pointer"
-              :size="20"
-              @click="displayPositionArchive = true"
-              v-if="marked.length > 0"
-            >
-              <DocumentAdd />
-            </el-icon>
+              <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Unarchive member(s)"
+                placement="top-start">
+                <el-icon class="c-pointer" :size="20" @click="displayPositionArchive = true" v-if="marked.length > 0">
+                  <DocumentAdd />
+                </el-icon>
 
-            
-          </el-tooltip>
-          <!-- <el-tooltip
+
+              </el-tooltip>
+              <!-- <el-tooltip
             class="box-item"
             effect="dark"
             v-if="marked.length > 0"
@@ -57,52 +47,38 @@
               <Delete />
             </el-icon>
           </el-tooltip> -->
+            </div>
+            <div class="d-flex flex-column flex-sm-row justify-content-sm-end">
+
+              <el-input size="small" v-model="searchText" placeholder="Search..." @keyup.enter.prevent="searchArchiveInDB"
+                class="input-with-select">
+                <template #suffix>
+                  <el-button style="padding: 5px; height: 22px" @click.prevent="searchText = ''">
+                    <el-icon :size="13">
+                      <Close />
+                    </el-icon>
+                  </el-button>
+                </template>
+                <template #append>
+                  <el-button @click.prevent="searchArchiveInDB">
+                    <el-icon :size="13">
+                      <Search />
+                    </el-icon>
+                  </el-button>
+                </template>
+              </el-input>
+            </div>
+
+          </div>
         </div>
-        <div class="d-flex flex-column flex-sm-row justify-content-sm-end">
-          
-          <el-input
-            size="small"
-            v-model="searchText"
-            placeholder="Search..."
-            @keyup.enter.prevent="searchArchiveInDB"
-            class="input-with-select"
-          >
-            <template #suffix>
-              <el-button
-                style="padding: 5px; height: 22px"
-                @click.prevent="searchText = ''"
-              >
-                <el-icon :size="13">
-                  <Close />
-                </el-icon>
-              </el-button>
-            </template>
-            <template #append>
-              <el-button @click.prevent="searchArchiveInDB">
-                <el-icon :size="13">
-                  <Search />
-                </el-icon>
-              </el-button>
-            </template>
-          </el-input>
-        </div>
-        
-      </div>
-    </div>
-        <Table
-          :data="searchArchive"
-          :headers="archivedHeaders"
-          :checkMultipleItem="true"
-          @checkedrow="handleSelectionChange"
-          v-loading="paginatedTableLoading"
-          v-if="searchArchive.length > 0"
-        >
-          <template v-slot:name="{ item }">
+        <Table :data="searchArchive" :headers="archivedHeaders" :checkMultipleItem="true"
+          @checkedrow="handleSelectionChange" v-loading="paginatedTableLoading" v-if="searchArchive.length > 0">
+          <template v-slot:firstName="{ item }">
             <div class="c-pointer">
               {{ item.firstName }} {{ item.lastName }}
             </div>
           </template>
-          <template v-slot:phoneNumber="{ item }">
+          <template v-slot:mobilePhone="{ item }">
             <div class="c-pointer">
               {{ item.mobilePhone }}
             </div>
@@ -125,29 +101,20 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item>
-                    <div
-                      class="text-color"
-                      @click="showConfirmModall(item.id, index)"
-                    >
+                    <div class="text-color" @click="showConfirmModall(item.id, index)">
                       Unarchive
                     </div>
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <router-link
-                      class="text-color text-decoration-none"
-                      :to="{
-                        name: 'AddPerson',
-                        params: { personId: item.id },
-                      }"
-                    >
+                    <router-link class="text-color text-decoration-none" :to="{
+                      name: 'AddPerson',
+                      params: { personId: item.id },
+                    }">
                       Edit
                     </router-link>
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <div
-                      @click.prevent="showConfirmModal(item.id, index)"
-                      class="text-color"
-                    >
+                    <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">
                       Delete
                     </div>
                   </el-dropdown-item>
@@ -157,34 +124,20 @@
           </template>
         </Table>
       </div>
-      <el-dialog
-      v-model="displayPositionArchive"
-      title="Archive member(s)"
-      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
-      align-center
-    >
-      <p class="p-m-0">
-        You are about to archive your member(s). Do you want to continue ?
-      </p>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button
-            class="secondary-button"
-            @click="displayPositionArchive = false"
-            round
-            >No</el-button
-          >
-          <el-button
-            :color="primarycolor"
-            :loading="archiveLoading"
-            @click="unArchiveAll"
-            round
-          >
-            Yes
-          </el-button>
-        </span>
-      </template>
-    </el-dialog>
+      <el-dialog v-model="displayPositionArchive" title="Archive member(s)"
+        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" align-center>
+        <p class="p-m-0">
+          You are about to archive your member(s). Do you want to continue ?
+        </p>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button class="secondary-button" @click="displayPositionArchive = false" round>No</el-button>
+            <el-button :color="primarycolor" :loading="archiveLoading" @click="unArchiveAll" round>
+              Yes
+            </el-button>
+          </span>
+        </template>
+      </el-dialog>
 
       <!-- <div class="container-fluid  d-none d-md-block">
           <div class="row t-header mt-5   font-weight-bold">
@@ -358,8 +311,8 @@ export default {
     const primarycolor = inject("primarycolor");
     const archiveLoading = ref(false);
     const archivedHeaders = ref([
-      { name: "NAME", value: "name" },
-      { name: "PHONE", value: "phoneNumber" },
+      { name: "NAME", value: "firstName" },
+      { name: "PHONE", value: "mobilePhone" },
       { name: "EMAIL", value: "email" },
       { name: "HOME ADDRESS", value: "homeAddress" },
       { name: "ACTION", value: "action" },
@@ -567,9 +520,9 @@ export default {
       deleteMember,
       churchMembers,
       showConfirmModal,
-      mdAndUp, 
-      lgAndUp, 
-      xlAndUp, 
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
       xsOnly,
       unArchiveAll,
       primarycolor,
@@ -590,6 +543,7 @@ export default {
   font-size: 16px;
   padding: 0.5rem 0;
 }
+
 .table-header {
   background: #f1f3f9 !important;
   color: #8898aa !important;
@@ -606,6 +560,7 @@ export default {
   color: #136acd;
   cursor: pointer;
 }
+
 .table-top {
   font-weight: 800;
   font-size: 12px;
@@ -618,6 +573,7 @@ export default {
 .table-top p:hover {
   cursor: pointer;
 }
+
 .hover:hover {
   background: #eee;
 }

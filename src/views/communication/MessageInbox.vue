@@ -44,11 +44,11 @@
                       }">
                         {{
                           item.message && item.message.length > 25
-                            ? `${item.message
-                              .split("")
-                              .slice(0, 25)
-                              .join("")}...`
-                            : item.message
+                          ? `${item.message
+                            .split("")
+                            .slice(0, 25)
+                            .join("")}...`
+                          : item.message
                         }}
                       </router-link>
                     </span>
@@ -72,9 +72,7 @@
                     <router-link :to="{
                       name: 'MessageDetails',
                       params: { messageId: item.id },
-                    }"
-                    class="c-pointer small-text primary--text"
-                    > View
+                    }" class="c-pointer small-text primary--text"> View
                     </router-link>
                   </span>
                 </template>
@@ -142,7 +140,7 @@ export default {
       }
     };
 
-    if ( (!replies.value) || (replies.value && replies.value.data && replies.value.data.length == 0)) getSMSReplies();
+    if ((!replies.value) || (replies.value && replies.value.data && replies.value.data.length == 0)) getSMSReplies();
 
     const getRepliesByPage = async (page) => {
       try {
@@ -162,7 +160,7 @@ export default {
     });
 
     const searchSMS = computed(() => {
-      if (searchSms.value === ""  ) {
+      if (searchSms.value === "") {
         return replies.value;
       }
       return replies.value.filter((i) =>

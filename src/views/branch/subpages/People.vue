@@ -97,19 +97,19 @@
                   </el-icon>
                 </el-avatar>
               </template>
-              <template v-slot:firstname="{ item }">
+              <template v-slot:firstName="{ item }">
                 <div @click="showMemberRow(item)" class="c-pointer">
                   {{ item.firstName }}
                 </div>
               </template>
 
-              <template v-slot:lastname="{ item }">
+              <template v-slot:lastName="{ item }">
                 <div @click="showMemberRow(item)" class="c-pointer">
                   {{ item.lastName }}
                 </div>
               </template>
 
-              <template v-slot:phone="{ item }">
+              <template v-slot:mobilePhone="{ item }">
                 <div @click="showMemberRow(item)" class="c-pointer">
                   {{ item.mobilePhone }}
                 </div>
@@ -193,9 +193,9 @@ export default {
     const branchID = ref(localStorage.getItem("branchId"));
     const branchMemberHeaders = ref([
       { name: "PICTURE", value: "pictureUrl" },
-      { name: "FIRSTNAME", value: "firstname" },
-      { name: "LASTNAME", value: "lastname" },
-      { name: "PHONE", value: "phone" },
+      { name: "FIRSTNAME", value: "firstName" },
+      { name: "LASTNAME", value: "lastName" },
+      { name: "PHONE", value: "mobilePhone" },
       { name: "ACTION", value: "action" },
     ]);
 

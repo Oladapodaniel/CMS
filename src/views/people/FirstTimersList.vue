@@ -34,15 +34,15 @@
                 <span class="ml-1"> FILTER</span>
               </p>
             </div>
-            <el-input size="small" v-model="searchText" placeholder="Search..." @input="searchingMember = true" @keyup.enter.prevent="searchMemberInDB"
-              class="input-with-select">
+            <el-input size="small" v-model="searchText" placeholder="Search..." @input="searchingMember = true"
+              @keyup.enter.prevent="searchMemberInDB" class="input-with-select">
               <template #suffix>
-              <el-button style="padding: 5px; height: 22px;" @click.prevent="searchText = ''">
-                <el-icon :size="13">
-                  <Close />
-                </el-icon>
-              </el-button>
-            </template>
+                <el-button style="padding: 5px; height: 22px;" @click.prevent="searchText = ''">
+                  <el-icon :size="13">
+                    <Close />
+                  </el-icon>
+                </el-button>
+              </template>
               <template #append>
                 <el-button @click.prevent="searchMemberInDB">
                   <el-icon :size="13">
@@ -100,7 +100,7 @@
             </el-icon>
           </el-avatar>
         </template>
-        <template v-slot:fullName="{ item }">
+        <template v-slot:firstName="{ item }">
           <div @click="showMemberRow(item)" class="c-pointer">{{ item.firstName }} {{ item.lastName }}</div>
         </template>
         <template v-slot:phoneNumber="{ item }">
@@ -137,19 +137,17 @@
               </el-icon>
               <ul class="dropdown-menu">
                 <li class="dropdown-item"><a>
-                    <router-link :to="
-                      item.phoneNumber
+                    <router-link :to="item.phoneNumber
                         ? `/tenant/sms/compose?phone=${item.phoneNumber}`
                         : ''
-                    " :class="{ 'fade-text': !item.phoneNumber, 'text-color': item.phoneNumber }">Send
+                      " :class="{ 'fade-text': !item.phoneNumber, 'text-color': item.phoneNumber }">Send
                       SMS</router-link>
                   </a></li>
                 <li><a class="dropdown-item" href="#">
-                    <router-link :to="
-                      item.email
+                    <router-link :to="item.email
                         ? `/tenant/email/compose?phone=${item.email}`
                         : ''
-                    " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send Email</router-link>
+                      " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send Email</router-link>
                   </a></li>
                 <li><a class="dropdown-item" href="#">
                     <router-link :to="`/tenant/firsttimermanagement/${item.id}?memberType=0`" class="text-color">
@@ -181,14 +179,9 @@
         </template>
       </Table>
       <div v-if="searchMember.length == 0">
-      <el-alert
-        title="First Timer not found"
-        type="warning"
-        description="Try searching with another keyword"
-        show-icon
-        center
-      />
-    </div>
+        <el-alert title="First Timer not found" type="warning" description="Try searching with another keyword" show-icon
+          center />
+      </div>
       <div class="d-flex justify-content-end my-3">
         <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
           layout="total, sizes, prev, pager, next, jumper" :total="totalItems" @size-change="handleSizeChange"
@@ -261,7 +254,7 @@ import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import Table from "@/components/table/Table"
 
 export default {
-  props: [ 'firstTimersList', 'totalItems' ],
+  props: ['firstTimersList', 'totalItems'],
   components: {
     FirstTimersChartArea,
     smsComponent,
@@ -305,7 +298,7 @@ export default {
 
     const firstTimerHeaders = ref([
       { name: 'PICTURE', value: 'imageURL' },
-      { name: 'FULLNAME', value: 'fullName' },
+      { name: 'FULLNAME', value: 'firstName' },
       { name: 'PHONE', value: 'phoneNumber' },
       { name: 'SOURCE', value: 'howDidYouAboutUsName' },
       { name: 'INTERESTED', value: 'interestedInJoining' },
@@ -334,15 +327,15 @@ export default {
           `/api/People/GetAllFirstTimers?page=${serverOptions.value.page}`
           // `/api/people/getPaginatedFirstTimer?page=${serverOptions.value.page}`
         );
-        if(data && data.response.data.length > 0 ) {
+        if (data && data.response.data.length > 0) {
           churchMembers.value = data.response.data;
-        }else{
+        } else {
           ElMessage({
-              type: 'warning',
-              message: "Page not Found, Pls Go back to the Previous one",
-              duration: 5000
-            })
-        }  
+            type: 'warning',
+            message: "Page not Found, Pls Go back to the Previous one",
+            duration: 5000
+          })
+        }
         paginatedTableLoading.value = false
       } catch (error) {
         paginatedTableLoading.value = false
@@ -368,7 +361,7 @@ export default {
     const totalFirsttimersCount = computed(() => {
       if (
         !totalFirstTimer.value
-      //  !totalItems.value
+        //  !totalItems.value
       )
         return 0;
       return totalFirstTimer.value;
@@ -471,22 +464,22 @@ export default {
       paginatedTableLoading.value = true
       let url = `/api/People/FilterFirstTimers?firstname=${searchText.value}&&phone_number=${searchText.value}`
       axios
-      .get(url)
-      .then((res) => {
-        searchingMember.value = false
-        paginatedTableLoading.value = false
-        searchNamesInDB.value = res.data;
-        if (res.data.length === 0) {
-          ElMessage({
-            type: 'warning',
-            message: `${searchText.value} not found, please to try add a new firsttimer and search again`,
-            duration: 5000
-          })
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        searchingMember.value = false
+        .get(url)
+        .then((res) => {
+          searchingMember.value = false
+          paginatedTableLoading.value = false
+          searchNamesInDB.value = res.data;
+          if (res.data.length === 0) {
+            ElMessage({
+              type: 'warning',
+              message: `${searchText.value} not found, please to try add a new firsttimer and search again`,
+              duration: 5000
+            })
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          searchingMember.value = false
           paginatedTableLoading.value = false
         });
     };

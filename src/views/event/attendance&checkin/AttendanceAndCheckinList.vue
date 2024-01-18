@@ -6,13 +6,8 @@
         <div class="table-top p-3">
           <div class="d-flex flex-column flex-sm-row justify-content-end">
             <div>
-              <el-input
-                size="small"
-                v-model="searchText"
-                placeholder="Search..."
-                @keyup.enter.prevent="searchAttendanceInDB"
-                class="input-with-select"
-              >
+              <el-input size="small" v-model="searchText" placeholder="Search..."
+                @keyup.enter.prevent="searchAttendanceInDB" class="input-with-select">
                 <template #append>
                   <el-button @click.prevent="searchAttendanceInDB">
                     <el-icon :size="13">
@@ -23,92 +18,65 @@
               </el-input>
             </div>
           </div>
-          <div
-            class="d-flex flex-column flex-sm-row justify-content-start"
-            v-if="checkedAttendance.length > 0"
-          >
+          <div class="d-flex flex-column flex-sm-row justify-content-start" v-if="checkedAttendance.length > 0">
             <div class="">
-              <el-tooltip
-                class="box-item"
-                effect="dark"
-                content="Delete attendance(s)"
-                placement="top-start"
-              >
-                <el-icon
-                  :size="20"
-                  class="c-pointer"
-                  v-if="checkedAttendance.length > 0"
-                  @click="modal"
-                >
+              <el-tooltip class="box-item" effect="dark" content="Delete attendance(s)" placement="top-start">
+                <el-icon :size="20" class="c-pointer" v-if="checkedAttendance.length > 0" @click="modal">
                   <Delete />
                 </el-icon>
               </el-tooltip>
             </div>
           </div>
         </div>
-        <Table
-          :data="searchAttendance"
-          :headers="attendanceHeaders"
-          :checkMultipleItem="true"
-          v-loading="loading"
-          @checkedrow="handleSelectionChange"
-        >
-          <template v-slot:eventName="{ item }">
+        <Table :data="searchAttendance" :headers="attendanceHeaders" :checkMultipleItem="true" v-loading="loading"
+          @checkedrow="handleSelectionChange">
+          <template v-slot:fullEventName="{ item }">
             <div class="c-pointer">
-              <router-link
-                class="text-decoration-none font-weight-500 itemroute-color"
-                :to="{
-                  name: 'CheckinType',
-                  query: {
-                    activityID: item.eventID,
-                    activityName: item.fullEventName,
-                    groupId: item.groupID,
-                    groupName: item.fullGroupName,
-                    id: item.id,
-                    code: item.attendanceCode,
-                  },
-                }"
-              >
+              <router-link class="text-decoration-none font-weight-500 itemroute-color" :to="{
+                name: 'CheckinType',
+                query: {
+                  activityID: item.eventID,
+                  activityName: item.fullEventName,
+                  groupId: item.groupID,
+                  groupName: item.fullGroupName,
+                  id: item.id,
+                  code: item.attendanceCode,
+                },
+              }">
                 {{ item.fullEventName }}
               </router-link>
             </div>
           </template>
-          <template v-slot:date="{ item }">
+          <template v-slot:eventDate="{ item }">
             <div class="c-pointer">
-              <router-link
-                class="text-decoration-none font-weight-500 itemroute-color"
-                :to="{
-                  name: 'CheckinType',
-                  query: {
-                    activityID: item.eventID,
-                    activityName: item.fullEventName,
-                    groupId: item.groupID,
-                    groupName: item.fullGroupName,
-                    id: item.id,
-                    code: item.attendanceCode,
-                  },
-                }"
-              >
+              <router-link class="text-decoration-none font-weight-500 itemroute-color" :to="{
+                name: 'CheckinType',
+                query: {
+                  activityID: item.eventID,
+                  activityName: item.fullEventName,
+                  groupId: item.groupID,
+                  groupName: item.fullGroupName,
+                  id: item.id,
+                  code: item.attendanceCode,
+                },
+              }">
                 {{ formatDate(item.eventDate) }}
               </router-link>
             </div>
           </template>
-          <template v-slot:groupName="{ item }">
+          <template v-slot:fullGroupName="{ item }">
             <div class="c-pointer">
-              <router-link
-                class="text-decoration-none font-weight-500 itemroute-color"
-                :to="{
-                  name: 'CheckinType',
-                  query: {
-                    activityID: item.eventID,
-                    activityName: item.fullEventName,
-                    groupId: item.groupID,
-                    groupName: item.fullGroupName,
-                    id: item.id,
-                    code: item.attendanceCode,
-                  },
-                }"
-              >
+              <router-link class="text-decoration-none font-weight-500 itemroute-color" :to="{
+                name: 'CheckinType',
+                query: {
+                  activityID: item.eventID,
+                  activityName: item.fullEventName,
+                  groupId: item.groupID,
+                  groupName: item.fullGroupName,
+                  id: item.id,
+                  code: item.attendanceCode,
+                },
+              }">
                 {{ item.fullGroupName }}
               </router-link>
             </div>
@@ -121,31 +89,23 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item>
-                    <router-link
-                      class="text-decoration-none text-dark"
-                      :to="{
-                        name: 'AttendanceReport',
-                        params: { id: item.id },
-                      }"
-                      >View Details</router-link
-                    >
+                    <router-link class="text-decoration-none text-dark" :to="{
+                      name: 'AttendanceReport',
+                      params: { id: item.id },
+                    }">View Details</router-link>
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <router-link
-                      class="text-decoration-none text-dark"
-                      :to="{
-                        name: 'CheckinType',
-                        query: {
-                          activityID: item.eventID,
-                          activityName: item.fullEventName,
-                          groupId: item.groupID,
-                          groupName: item.fullGroupName,
-                          id: item.id,
-                          code: item.attendanceCode,
-                        },
-                      }"
-                      >Checkin</router-link
-                    >
+                    <router-link class="text-decoration-none text-dark" :to="{
+                      name: 'CheckinType',
+                      query: {
+                        activityID: item.eventID,
+                        activityName: item.fullEventName,
+                        groupId: item.groupID,
+                        groupName: item.fullGroupName,
+                        id: item.id,
+                        code: item.attendanceCode,
+                      },
+                    }">Checkin</router-link>
                   </el-dropdown-item>
                   <!-- <el-dropdown-item>
                  <router-link
@@ -171,15 +131,9 @@
         </Table>
       </div>
       <div class="d-flex justify-content-end my-3">
-        <el-pagination
-          v-model:current-page="serverOptions.page"
-          v-model:page-size="serverOptions.rowsPerPage"
-          background
-          layout="total, prev, pager, next, jumper"
-          :total="serverItemsLength"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        />
+        <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
+          layout="total, prev, pager, next, jumper" :total="serverItemsLength" @size-change="handleSizeChange"
+          @current-change="handleCurrentChange" />
       </div>
     </div>
     <!-- {{totalItems}} -->
@@ -212,9 +166,9 @@ export default {
     const attendanceList = ref([]);
     const checkedAttendance = ref([]);
     const attendanceHeaders = ref([
-      { name: "EVENT NAME", value: "eventName" },
-      { name: "DATE", value: "date" },
-      { name: "GROUP NAME", value: "groupName" },
+      { name: "EVENT NAME", value: "fullEventName" },
+      { name: "DATE", value: "eventDate" },
+      { name: "GROUP NAME", value: "fullGroupName" },
       { name: "ACTION", value: "action" },
     ]);
     const serverOptions = ref({
@@ -657,15 +611,18 @@ export default {
 .myselectContr {
   height: 2.5rem;
 }
+
 .data-value a {
   color: #136acd;
   text-decoration: none;
   width: 241px;
 }
+
 .page-header {
   font-weight: 700;
   font-size: 1.7rem;
 }
+
 .summary {
   border-radius: 30px;
   /* box-shadow: 0px 3px 6px #2c28281c; */
@@ -674,6 +631,7 @@ export default {
   box-shadow: 0px 3px 6px #2c28281c;
   border: 1px solid #00204424;
 }
+
 .table {
   width: 100% !important;
   box-shadow: 0px 1px 4px #02172e45;
@@ -682,9 +640,11 @@ export default {
   text-align: left;
   margin-bottom: auto !important;
 }
+
 .boards {
   display: flex;
 }
+
 .board-top {
   display: flex;
   justify-content: space-between;
@@ -693,21 +653,26 @@ export default {
   box-shadow: 0px 3px 6px #2c28281c;
   padding: 4px;
 }
+
 .total {
   margin-bottom: 40px;
   font-size: 37px;
 }
+
 .total-text {
   font-size: 15px;
   font-weight: 700;
 }
+
 .percent {
   color: #136acd;
 }
+
 .hr {
   border: 1px solid #0020440a;
   margin: 0 4px 10px 0;
 }
+
 .tbl-footer-btn {
   background: transparent;
   padding: 4px;
@@ -718,34 +683,42 @@ export default {
   border: 1px solid #8898aa80;
   outline: transparent;
 }
+
 .action-icon {
   text-align: center;
 }
+
 .list-body {
   padding: 0 21px;
 }
+
 .data-value {
   display: flex;
   padding-left: 6px;
 }
+
 .theader {
   padding-left: 2px;
   text-align: left;
 }
+
 .filter-options {
   height: 0;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
+
 .filter-options-shown {
   height: 80px !important;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
+
 .clear-link,
 .hide-link {
   color: #136acd;
 }
+
 .table-top {
   font-weight: 800;
   font-size: 12px;
@@ -760,26 +733,31 @@ export default {
 .table-top p:hover {
   cursor: pointer;
 }
+
 @media (max-width: 660px) {
   .select-all {
     display: none;
   }
 }
+
 .header {
   background: #dde2e6 0% 0% no-repeat padding-box;
   font: normal normal bold 13px/13px Nunito Sans;
   letter-spacing: 0px;
   color: #002044;
 }
+
 .header tr {
   color: #8898aa;
   font-size: 11px;
   box-shadow: 0px 3px 6px #2c28281c;
   background: #dde2e6 0% 0% no-repeat padding-box;
 }
+
 .select-all input {
   margin: 0 8px 0 -5px !important;
 }
+
 .currency {
   background: #fafafa 0% 0% no-repeat padding-box;
   /* border: 1px solid #C5D9F2; */
@@ -789,15 +767,18 @@ export default {
   padding: 4px;
   font-weight: bold;
 }
+
 .offering-amount {
   border: 1px solid #00204424;
   padding: 5px;
   border-radius: 5px;
 }
+
 .head-button {
   display: flex;
   justify-content: flex-end;
 }
+
 .add-btn {
   width: 180px;
   background: #136acd;
@@ -810,6 +791,7 @@ export default {
   height: 42px;
   text-decoration: none;
 }
+
 .more {
   background: #dde2e6;
   border-radius: 22px;
@@ -820,6 +802,7 @@ export default {
   height: 42px;
   margin-right: 1rem;
 }
+
 .fa-ellipsis-v:hover {
   cursor: pointer;
 }
@@ -827,9 +810,11 @@ export default {
 .fa-ellipsis-v {
   padding: 10px;
 }
+
 .board.members-count {
   padding: 24px;
 }
+
 .no-record {
   color: rgba(184, 5, 5, 0.726);
   font-size: 1.1em;
@@ -838,90 +823,110 @@ export default {
 .itemroute-color {
   color: #136acd;
 }
+
 @media (max-width: 767px) {
   .first-timers-text {
     text-align: center;
   }
+
   .head-button {
     display: flex;
     justify-content: center;
   }
 }
+
 @media screen and (max-width: 500px) {
   .board {
     width: 100% !important;
   }
 }
+
 @media screen and (min-width: 500px) {
   .theader {
     width: 23%;
   }
+
   .table-body .check {
     width: 3%;
   }
+
   .action {
     width: 5%;
   }
 }
+
 @media (max-width: 577px) {
   .head-button {
     flex-direction: column;
     align-items: center;
   }
+
   .more {
     margin-right: 0;
   }
+
   .add-btn {
     margin-top: 10px;
   }
 }
+
 @media (max-width: 575px) {
   .head-button {
     display: flex;
     justify-content: center;
   }
 }
+
 @media screen and (min-width: 501px) and (max-width: 768px) {
   .board {
     width: 50% !important;
     margin-bottom: 10px;
   }
+
   .summary-header {
     width: 50%;
     margin-left: 25%;
   }
 }
+
 @media screen and (max-width: 768px) {
   .filter-options-shown {
     height: 150px !important;
     overflow: hidden;
     transition: all 0.5s ease-in-out;
   }
+
   .boards {
     flex-wrap: nowrap;
   }
+
   .responsive-table {
     max-width: 100%;
     overflow-x: scroll;
   }
 }
+
 @media screen and (max-width: 1024px) {
   .my-con {
     flex-direction: column;
   }
+
   .table {
     width: 98%;
     margin: 24px auto;
   }
+
   .summary {
     width: 98%;
     margin: auto;
   }
 }
+
 .row-divider {
   border: 1px solid #0020440a;
   margin: 0;
 }
+
 .table-footer {
   display: flex;
   justify-content: flex-end;
@@ -929,9 +934,11 @@ export default {
   padding: 10px 0;
   /* border-radius: 0px 0px 22px 22px; */
 }
+
 .board.members-count {
   max-height: 216px;
 }
+
 .table-header {
   padding: 12px;
   color: black;
@@ -939,22 +946,27 @@ export default {
   font-size: 11px;
   font-weight: 700;
 }
+
 .table-body {
   padding: 12px;
   border-bottom: 1.5px solid #6d6d6d19;
 }
+
 .itemroute-color {
   /* color: #136acd; */
   color: #02172e;
 }
+
 .itemroute-color:hover {
   text-decoration: none;
 }
+
 .t-header {
   background: #dde2e6 0% 0% no-repeat padding-box;
   font-size: 16px;
   padding: 0.5rem 0;
 }
+
 .parent-desc.first {
   color: #8898aa;
   font-size: 14px;
@@ -962,9 +974,11 @@ export default {
   box-shadow: 0px 3px 6px #2c28281c;
   background: #dde2e6 0% 0% no-repeat padding-box;
 }
+
 .desc-head {
   font-weight: 700;
 }
+
 .desc {
   color: #9b9a9c;
 }
@@ -972,6 +986,7 @@ export default {
 .hover:hover {
   background: #eee;
 }
+
 /* @media Queries */
 @media (max-width: 771px) {
   .fontIncrease {
@@ -983,5 +998,5 @@ export default {
     /* color: #02172e; */
   }
 }
-/* tosin working */
-</style>
+
+/* tosin working */</style>

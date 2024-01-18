@@ -70,7 +70,7 @@
               @checkedrow="handleSelectionChange"
               v-if="searchBranchAttendance.length > 0"
             >
-              <template v-slot:event="{ item }">
+              <template v-slot:fullEventName="{ item }">
                 <div class="c-pointer">
                   <router-link
                     :to="{
@@ -92,7 +92,7 @@
                 </div>
               </template>
 
-              <template v-slot:date="{ item }">
+              <template v-slot:eventDate="{ item }">
                 <div class="c-pointer">
                   <router-link
                     :to="{
@@ -114,7 +114,7 @@
                 </div>
               </template>
 
-              <template v-slot:group="{ item }">
+              <template v-slot:fullGroupName="{ item }">
                 <div class="c-pointer">
                   <router-link
                     :to="{
@@ -232,9 +232,9 @@ export default {
     const totalItem = ref();
     const branchID = ref(localStorage.getItem("branchId"));
     const branchAtendanceHeaders = ref([
-      { name: "EVENT", value: "event" },
-      { name: "DATE", value: "date" },
-      { name: "GROUP", value: "group" },
+      { name: "EVENT", value: "fullEventName" },
+      { name: "DATE", value: "eventDate" },
+      { name: "GROUP", value: "fullGroupName" },
       { name: "ACTION", value: "action" },
     ]);
 

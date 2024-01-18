@@ -580,7 +580,7 @@
           <template #pledgeType="{ item }">
             <span>{{ item.pledgeType.name }}</span>
           </template>
-          <template v-slot:person="{ item }">
+          <template v-slot:firstName="{ item }">
             <span> {{ item.person ? item.person.firstName : "" }}</span>
             <span>{{ item.person ? item.person.lastName : "" }}</span>
           </template>
@@ -689,7 +689,7 @@ export default {
     ]);
     const pledgeDefinitionHeaders = ref([
       { name: "NAME", value: "pledgeType" },
-      { name: "CONTACT", value: "person" },
+      { name: "CONTACT", value: "firstName" },
       { name: "PLEDGE AMOUNT", value: "amount" },
       { name: "REDEMEED", value: "redeemed" },
       { name: "DATE", value: "date" },

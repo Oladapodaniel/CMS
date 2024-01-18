@@ -33,7 +33,8 @@
       <div class="col-md-12 py-4">
         <div class="row">
           <div class="col-md-8">
-            <el-input v-model="searchText" class="w-100 m-md-2" placeholder="Search" :prefix-icon="Search" v-if="groupDetail && groupDetail.peopoleAttendancesDTOs && groupDetail.peopoleAttendancesDTOs.length > 0 && !attendanceTableLoading" />
+            <el-input v-model="searchText" class="w-100 m-md-2" placeholder="Search" :prefix-icon="Search"
+              v-if="groupDetail && groupDetail.peopoleAttendancesDTOs && groupDetail.peopoleAttendancesDTOs.length > 0 && !attendanceTableLoading" />
             <!-- <p class="search-span px-2">
               <i class="pi pi-search p-2" style="height: 30px; width: 30px"></i>
               <input
@@ -151,11 +152,11 @@
                       data-target="#exampleModal" size="large" round>
                       Add member
                     </el-button>
-                  </div> 
                   </div>
-                  <AttendanceCheckinUpdate :contributionItems="contributionItems" :attendanceType="attendanceType"
-                    :groupDetail="groupDetail" />
                 </div>
+                <AttendanceCheckinUpdate :contributionItems="contributionItems" :attendanceType="attendanceType"
+                  :groupDetail="groupDetail" />
+              </div>
             </template>
             <template #fallback>
               <div class="row">
@@ -198,8 +199,8 @@
                           </div>
                         </div>
 
-                        <a class="dropdown-item font-weight-700 small-text"
-                          v-for="(member, index) in searchedMembers" :key="index" @click="addExistingMember(member)">{{
+                        <a class="dropdown-item font-weight-700 small-text" v-for="(member, index) in searchedMembers"
+                          :key="index" @click="addExistingMember(member)">{{
                             member.name }}</a>
                         <a class="dropdown-item font-weight-700 small-text" href="#" v-if="searchingForMembers && searchedMembers.length === 0
                           ">

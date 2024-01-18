@@ -2,32 +2,28 @@
   <div class="container-fluid">
     <div class="row d-flex flex-column flex-sm-row justify-content-sm-between">
       <div class="head-text">Partnership and Pledge Item</div>
-      <router-link
-        to="/tenant/pledge/pledgedefinition"
-        class="grey-border primary-btn default-btn text-white text-center text-decoration-none primary-bg border-0 mt-3  mt-sm-0"
-        >Create New
+      <router-link to="/tenant/pledge/pledgedefinition"
+        class="grey-border primary-btn default-btn text-white text-center text-decoration-none primary-bg border-0 mt-3  mt-sm-0">Create
+        New
       </router-link>
       <div class="col-md-12 px-0">
         <hr class="hr my-3" />
       </div>
       <div class="col-md-12 mb-3 px-0">
         <div class="text-primary c-pointer  col-md-2" @click="previousPage">
-          <el-icon><DArrowLeft /></el-icon> Back
+          <el-icon>
+            <DArrowLeft />
+          </el-icon> Back
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-12 px-0" id="table">
         <div class="top-con" id="ignore2">
-          <div class="table-top" >
+          <div class="table-top">
             <div class="col-12 col-sm-4 my-3">
-              <el-input
-                size="small"
-                v-model="searchText"
-                placeholder="Search..."
-                @keyup.enter.prevent="searchPledgeInDB"
-                class="input-with-select"
-              >
+              <el-input size="small" v-model="searchText" placeholder="Search..." @keyup.enter.prevent="searchPledgeInDB"
+                class="input-with-select">
                 <template #append>
                   <el-button @click.prevent="searchPledgeInDB">
                     <el-icon :size="13">
@@ -40,35 +36,30 @@
           </div>
         </div>
         <div v-if="searchPledge && searchPledge.length > 0">
-          <Table
-            :data="searchPledge"
-            :headers="pledgeHeaders"
-            :checkMultipleItem="false"
-            v-loading="loading"
-          >
+          <Table :data="searchPledge" :headers="pledgeHeaders" :checkMultipleItem="false" v-loading="loading">
             <template v-slot:name="{ item }">
               <div class="c-pointer" @click="pledgeClick(item.id)">
                 {{ item.name }}
               </div>
             </template>
-            <template v-slot:pledgeType="{ item }">
+            <template v-slot:donorPaymentType="{ item }">
               <div v-if="item.donorPaymentType === 2" class="c-pointer" @click="pledgeClick(item.id)">
-                
-                  Range
-                
+
+                Range
+
               </div>
               <div v-if="item.donorPaymentType === 1" class="c-pointer" @click="pledgeClick(item.id)">
-                
-                  Specific
-                
+
+                Specific
+
               </div>
               <div v-if="item.donorPaymentType === 0" class="c-pointer" @click="pledgeClick(item.id)">
-              
-                  Freewill
-                
+
+                Freewill
+
               </div>
             </template>
-            <template v-slot:pledgeAmount="{ item }">
+            <template v-slot:totalPledgeAmount="{ item }">
               <div class="c-pointer" @click="pledgeClick(item.id)">
                 {{ item && item.currency ? item.currency.symbol : "" }}
                 {{
@@ -76,7 +67,7 @@
                 }}.00
               </div>
             </template>
-            <template v-slot:redeemed="{ item }">
+            <template v-slot:totalPaymentsAmount="{ item }">
               <div class="c-pointer" @click="pledgeClick(item.id)">
                 {{ item.currencySymbol
                 }} {{ Math.abs(item.totalPaymentsAmount).toLocaleString() }}.00
@@ -115,27 +106,18 @@
                 <template #dropdown>
                   <el-dropdown-menu>
                     <el-dropdown-item>
-                      <router-link
-                        target="_blank"
-                        :to="`/partnership/pay?pledgeDefinitionID=${item.id}`"
-                        class="text-color"
-                      >
+                      <router-link target="_blank" :to="`/partnership/pay?pledgeDefinitionID=${item.id}`"
+                        class="text-color">
                         Payment link
                       </router-link>
                     </el-dropdown-item>
                     <el-dropdown-item>
-                      <router-link
-                        :to="`/tenant/pledge/pledgedefinition?id=${item.id}`"
-                        class="text-color"
-                      >
+                      <router-link :to="`/tenant/pledge/pledgedefinition?id=${item.id}`" class="text-color">
                         Edit
                       </router-link>
                     </el-dropdown-item>
                     <el-dropdown-item>
-                      <div
-                        @click.prevent="showConfirmModal(item.id, index)"
-                        class="text-color"
-                      >
+                      <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">
                         Delete
                       </div>
                     </el-dropdown-item>
@@ -147,42 +129,24 @@
         </div>
         <el-skeleton class="w-100" animated v-if="loading">
           <template #template>
-            <div
-              style="
+            <div style="
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 margin-top: 20px;
-              "
-            >
-              <el-skeleton-item
-                variant="text"
-                style="width: 240px; height: 240px"
-              />
-              <el-skeleton-item
-                variant="text"
-                style="width: 240px; height: 240px"
-              />
+              ">
+              <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+              <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
             </div>
-            <el-skeleton
-              class="w-100 mt-5"
-              style="height: 25px"
-              :rows="20"
-              animated
-            />
+            <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
           </template>
         </el-skeleton>
-        <div
-          class="no-person"
-          v-if="searchPledge && searchPledge.length < 0 && !loading"
-        >
+        <div class="no-person" v-if="searchPledge && searchPledge.length < 0 && !loading">
           <div class="empty-img">
             <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You haven't Create any pledge item yet</p>
-            <div
-              class="c-pointer primary-bg col-sm-6 col-md-4 offset-sm-3 offset-md-4 default-btn border-0 text-white"
-              @click="navigateToCreatePledgeItem"
-            >
+            <div class="c-pointer primary-bg col-sm-6 col-md-4 offset-sm-3 offset-md-4 default-btn border-0 text-white"
+              @click="navigateToCreatePledgeItem">
               Add new Pledge item
             </div>
           </div>
@@ -217,9 +181,9 @@ export default {
     );
     const pledgeHeaders = ref([
       { name: "NAME", value: "name" },
-      { name: "PLEDGE TYPE", value: "pledgeType" },
-      { name: "TOTAL PLEDGED", value: "pledgeAmount" },
-      { name: "REDEEMED", value: "redeemed" },
+      { name: "PLEDGE TYPE", value: "donorPaymentType" },
+      { name: "TOTAL PLEDGED", value: "totalPledgeAmount" },
+      { name: "REDEEMED", value: "totalPaymentsAmount" },
       { name: "BALANCE", value: "balance" },
       { name: "DATE", value: "date" },
       { name: "NO. OF PLEDGES", value: "pledgeCount" },
@@ -370,11 +334,13 @@ export default {
 .events {
   font: normal normal 800 29px Nunito sans;
 }
+
 .no-person {
   height: 80vh;
   display: flex;
   text-align: center;
 }
+
 .empty-img {
   width: 85%;
   /* min-width: 397px; */
@@ -385,9 +351,11 @@ export default {
   width: 100%;
   max-width: 200px;
 }
+
 .dropdown-menu a {
   color: #02172e;
 }
+
 .link a {
   text-decoration: none;
 }
@@ -395,10 +363,12 @@ export default {
 .link a:hover {
   color: #fff;
 }
+
 .text-color {
   color: #212529;
   text-decoration: none;
 }
+
 .text-color:hover {
   color: #007bff;
 }
@@ -411,6 +381,7 @@ export default {
   text-align: left;
   margin-bottom: auto !important;
 }
+
 .table-top {
   font-weight: 800;
   font-size: 12px;
@@ -420,6 +391,7 @@ export default {
   display: flex;
   justify-content: flex-end;
 }
+
 .table-top label:hover,
 .table-top p:hover {
   cursor: pointer;
@@ -429,9 +401,11 @@ export default {
   .theader {
     width: 23%;
   }
+
   .table-body .check {
     width: 3%;
   }
+
   .action {
     width: 5%;
   }
@@ -441,10 +415,12 @@ export default {
   .my-con {
     flex-direction: column;
   }
+
   .table {
     width: 98%;
     margin: 24px auto;
   }
+
   .summary {
     width: 98%;
     margin: auto;
@@ -466,6 +442,7 @@ export default {
   font-size: 11px;
   font-weight: 700;
 }
+
 .table-body {
   padding: 12px;
   border-bottom: 1.5px solid #6d6d6d19;
@@ -490,6 +467,7 @@ export default {
 .desc-head {
   font-weight: 700;
 }
+
 /* .desc {
   color: #9b9a9c;
 } */
@@ -507,6 +485,7 @@ export default {
   background: #ffffff47 !important;
   min-width: 121px;
 }
+
 .pi-spinner {
   color: #136acd;
 }

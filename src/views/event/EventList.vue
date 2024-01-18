@@ -419,7 +419,7 @@
               </router-link>
             </div>
           </template>
-          <template v-slot:date="{ item }">
+          <template v-slot:activityDate="{ item }">
             <div class="c-pointer">
               <router-link
                 :to="`/tenant/event/${item.activityId}`"
@@ -589,7 +589,7 @@ export default {
       { name: "STATUS", value: "isSent" },
       { name: "EVENT NAME", value: "eventName" },
       { name: "TITLE", value: "title" },
-      { name: "DATE", value: "date" },
+      { name: "DATE", value: "activityDate" },
       { name: "ATTENDANCES", value: "attendances" },
       { name: "FIRST TIMERS", value: "firstTimers" },
       { name: "NEW CONVERTS", value: "newConverts" },

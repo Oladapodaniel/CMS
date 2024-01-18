@@ -1,119 +1,97 @@
 <template>
-  <div
-    class="container-fluid px-0"
-  >
+  <div class="container-fluid px-0">
     <div class="">
       <div class="top-con">
-          <div class="">
-            <div class="table-top p-3 mt-5">
-              <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
-                 <div>
-                    <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send SMS" placement="top-start">
-                      <img src="../../assets/sms.png" style="width: 20px; margin-top: -13px" class="ml-2 c-pointer"
-                        @click="sendMarkedMemberSms" alt="Send SMS" />
-                    </el-tooltip>
-                    <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send Email" placement="top-start">
-                      <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberEmail">
-                        <Message />
+        <div class="">
+          <div class="table-top p-3 mt-5">
+            <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
+              <div>
+                <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send SMS"
+                  placement="top-start">
+                  <img src="../../assets/sms.png" style="width: 20px; margin-top: -13px" class="ml-2 c-pointer"
+                    @click="sendMarkedMemberSms" alt="Send SMS" />
+                </el-tooltip>
+                <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send Email"
+                  placement="top-start">
+                  <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberEmail">
+                    <Message />
+                  </el-icon>
+                </el-tooltip>
+              </div>
+              <div class="d-flex flex-column flex-sm-row justify-content-sm-end">
+                <el-input size="small" v-model="searchText" placeholder="Search..." class="input-with-select">
+                  <template #suffix>
+                    <el-button style="padding: 5px; height: 22px" @click.prevent="searchText = ''">
+                      <el-icon :size="13">
+                        <Close />
                       </el-icon>
-                    </el-tooltip>
-                  </div>
-                  <div class="d-flex flex-column flex-sm-row justify-content-sm-end">
-                    <el-input
-                      size="small"
-                      v-model="searchText"
-                      placeholder="Search..."
-                      class="input-with-select"
-                    >
-                      <template #suffix>
-                        <el-button
-                          style="padding: 5px; height: 22px"
-                          @click.prevent="searchText = ''"
-                        >
-                          <el-icon :size="13">
-                            <Close />
-                          </el-icon>
-                        </el-button>
-                      </template>
-                      <template #append>
-                        <el-button>
-                          <el-icon :size="13">
-                            <Search />
-                          </el-icon>
-                        </el-button>
-                      </template>
-                    </el-input>
-                  </div>
+                    </el-button>
+                  </template>
+                  <template #append>
+                    <el-button>
+                      <el-icon :size="13">
+                        <Search />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                </el-input>
               </div>
             </div>
           </div>
         </div>
-      <Table
-          :data="searchNewConvert"
-          :headers="NewConvertHeaders"
-          :checkMultipleItem="true" @checkedrow="handleSelectionChange"
-          v-if="searchNewConvert.length > 0 "
-        >
-          <template v-slot:fullname="{ item }">
-            <div @click="showMemberRow(item)" class="c-pointer">
-              {{ item.fullName }}
-            </div>
-          </template>
+      </div>
+      <Table :data="searchNewConvert" :headers="NewConvertHeaders" :checkMultipleItem="true"
+        @checkedrow="handleSelectionChange" v-if="searchNewConvert.length > 0">
+        <template v-slot:fullname="{ item }">
+          <div @click="showMemberRow(item)" class="c-pointer">
+            {{ item.fullName }}
+          </div>
+        </template>
 
-          <template v-slot:phone="{ item }">
-            <div @click="showMemberRow(item)" class="c-pointer">
-              {{ item.phoneNumber }}
-            </div>
-          </template>
+        <template v-slot:phoneNumber="{ item }">
+          <div @click="showMemberRow(item)" class="c-pointer">
+            {{ item.phoneNumber }}
+          </div>
+        </template>
 
-          <template v-slot:date="{ item }">
-            <div @click="showMemberRow(item)" class="c-pointer">
-              {{ formatDate(item.date) }}
-            </div>
-          </template>
-          <template v-slot:howDidYouAboutUsName="{ item }">
-            <div @click="showMemberRow(item)" class="c-pointer">
-              {{ item.howDidYouAboutUsName }}
-            </div>
-          </template>
-          <template v-slot:interactions="{ item }">
-            <div @click="showMemberRow(item)"  class="c-pointer">
-              {{ item.interactions }}
-            </div>
-          </template>
+        <template v-slot:date="{ item }">
+          <div @click="showMemberRow(item)" class="c-pointer">
+            {{ formatDate(item.date) }}
+          </div>
+        </template>
+        <template v-slot:howDidYouAboutUsName="{ item }">
+          <div @click="showMemberRow(item)" class="c-pointer">
+            {{ item.howDidYouAboutUsName }}
+          </div>
+        </template>
+        <template v-slot:interactions="{ item }">
+          <div @click="showMemberRow(item)" class="c-pointer">
+            {{ item.interactions }}
+          </div>
+        </template>
 
-          <template v-slot:action="{ item }">
-            <el-dropdown trigger="click">
-              <el-icon>
-                <MoreFilled />
-              </el-icon>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item>
-                    <router-link
-                      :to="`/tenant/people/addnewconvert?id=${item.id}`"
-                      class="text-color"
-                      >Edit</router-link
-                    >
-                  </el-dropdown-item>
-                  <el-dropdown-item>
-                    <div
-                      class="text-decoration-none text-color"
-                      @click="showConfirmModal(item.id)"
-                    >
-                      Delete
-                    </div>
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </template>
+        <template v-slot:action="{ item }">
+          <el-dropdown trigger="click">
+            <el-icon>
+              <MoreFilled />
+            </el-icon>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>
+                  <router-link :to="`/tenant/people/addnewconvert?id=${item.id}`" class="text-color">Edit</router-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <div class="text-decoration-none text-color" @click="showConfirmModal(item.id)">
+                    Delete
+                  </div>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </template>
       </Table>
     </div>
-    <div
-      v-if="allNewConvert.length ===  0  && !loading && !networkError"
-      class="no-person"
-    >
+    <div v-if="allNewConvert.length === 0 && !loading && !networkError" class="no-person">
       <div class="empty-img">
         <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
         <p class="tip">You haven't added any first timer yet</p>
@@ -147,29 +125,16 @@
 
     <el-skeleton class="w-100" animated v-if="loading">
       <template #template>
-        <div
-          style="
+        <div style="
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-top: 20px;
-          "
-        >
-          <el-skeleton-item
-            variant="text"
-            style="width: 240px; height: 240px"
-          />
-          <el-skeleton-item
-            variant="text"
-            style="width: 240px; height: 240px"
-          />
+          ">
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
         </div>
-        <el-skeleton
-          class="w-100 mt-5"
-          style="height: 25px"
-          :rows="20"
-          animated
-        />
+        <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
       </template>
     </el-skeleton>
   </div>
@@ -208,7 +173,7 @@ export default {
     const allNewConvert = ref([])
     const NewConvertHeaders = ref([
       { name: "NAME", value: "fullname" },
-      { name: "PHONE", value: "phone" },
+      { name: "PHONE", value: "phoneNumber" },
       { name: "DATE", value: "date" },
       { name: "SOURCE", value: "howDidYouAboutUsName" },
       { name: "INTERESTED", value: "interestedInJoining" },
@@ -258,7 +223,7 @@ export default {
       )
         .then(() => {
           deleteNewConvert(id);
-          
+
         })
         .catch(() => {
           ElMessage({
@@ -278,7 +243,7 @@ export default {
             duration: 3000
           });
           allNewConvert.value = allNewConvert.value.filter((i) => i.id !== id);
-           store.dispatch('membership/removeNewConvertFromStore', id)
+          store.dispatch('membership/removeNewConvertFromStore', id)
         })
         .catch((err) => {
           console.log(err);
@@ -293,21 +258,21 @@ export default {
     })
 
     return {
-    mdAndUp, lgAndUp ,xlAndUp, primarycolor, loading, NewConvertHeaders, formatDate, networkError, 
-    showConfirmModal,
-    showSMS,
-    contacts,
-    showEmail,
-    markedMembers,
-    marked,
-    handleSelectionChange,
-    deleteNewConvert,
-    sendMarkedMemberEmail,
-    sendMarkedMemberSms,
-    allNewConvert,
-    showMemberRow,
-    searchNewConvert,
-    searchText
+      mdAndUp, lgAndUp, xlAndUp, primarycolor, loading, NewConvertHeaders, formatDate, networkError,
+      showConfirmModal,
+      showSMS,
+      contacts,
+      showEmail,
+      markedMembers,
+      marked,
+      handleSelectionChange,
+      deleteNewConvert,
+      sendMarkedMemberEmail,
+      sendMarkedMemberSms,
+      allNewConvert,
+      showMemberRow,
+      searchNewConvert,
+      searchText
     }
   },
 };

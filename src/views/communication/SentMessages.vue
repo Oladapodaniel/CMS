@@ -105,19 +105,17 @@
                       <template #dropdown>
                         <el-dropdown-menu>
                           <el-dropdown-item>
-                            <router-link :to="
-                              item.phone
+                            <router-link :to="item.phone
                                 ? `/tenant/sms/compose?phone=${item.phone}`
                                 : ''
-                            " :class="{ 'fade-text': !item.phone, 'text-color': item.phone }">Send
+                              " :class="{ 'fade-text': !item.phone, 'text-color': item.phone }">Send
                               SMS</router-link>
                           </el-dropdown-item>
                           <el-dropdown-item>
-                            <router-link :to="
-                              item.email
+                            <router-link :to="item.email
                                 ? `/tenant/email/compose?phone=${item.email}`
                                 : ''
-                            " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send
+                              " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send
                               Email</router-link>
                           </el-dropdown-item>
                         </el-dropdown-menu>
@@ -135,9 +133,9 @@
             <div class="col-md-12 mb-3 pagination-container">
               <!-- <PaginationButtons @getcontent="getSMSByPage" :itemsCount="itemsCount" :currentPage="currentPage"
                 :totalItems="sentSMS.totalItems" /> -->
-                <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage"
+              <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage"
                 background layout="total, prev, pager, next, jumper" :total="totalItems" @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"/>
+                @current-change="handleCurrentChange" />
             </div>
           </div>
         </div>
@@ -188,15 +186,15 @@ export default {
 
 
     const getSentSMS = async () => {
-        loading.value = true
+      loading.value = true
       try {
         await store.dispatch("communication/getAllSMS").then((res) => {
-           loading.value = false;
+          loading.value = false;
           sentSMS.value = res.data;
           totalItems.value = res.totalItems
         });
       } catch (error) {
-         loading.value = false;
+        loading.value = false;
         console.log(error);
       }
     };
@@ -338,7 +336,7 @@ export default {
     const handleSelectionChange = (val) => {
       marked.value = val
     }
-    
+
 
     const handleSizeChange = (val) => {
       console.log(`${val} items per page`)
@@ -348,8 +346,8 @@ export default {
     }
 
     onMounted(() => {
-      if ( (!sentSMS.value) || (sentSMS.value && sentSMS.value.length == 0)) {
-         getSentSMS();
+      if ((!sentSMS.value) || (sentSMS.value && sentSMS.value.length == 0)) {
+        getSentSMS();
       }
     });
 

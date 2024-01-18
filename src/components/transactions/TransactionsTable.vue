@@ -132,7 +132,7 @@
                     {{ formatDate(item.date) }}
                   </div>
                 </template>
-                <template v-slot:description="{ item }">
+                <template v-slot:narration="{ item }">
                   <div @click="rowSelected(item)" class="c-pointer">
                     {{ item.narration }}
                   </div>
@@ -342,7 +342,7 @@ export default {
     // const totalTransaction = ref(0)
     const transactionHeaders = ref([
       { name: "DATE", value: "date" },
-      { name: "DESCRIPTION", value: "description" },
+      { name: "DESCRIPTION", value: "narration" },
       { name: "AMOUNT", value: "amount" },
       { name: "CATEGORY", value: "category" },
       { name: "Approve", value: "approve" },
@@ -834,13 +834,10 @@ html {
   scroll-behavior: smooth;
 }
 
-<<<<<<< HEAD
-=======
 .reciept-image img {
   height: 13rem;
 }
 
->>>>>>> development
 .events {
   font: normal normal 800 29px Nunito sans;
 }
