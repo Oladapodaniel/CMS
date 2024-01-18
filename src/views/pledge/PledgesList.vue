@@ -172,7 +172,7 @@
             {{ item.pledgeNumber }}
           </div>
         </template>
-        <template v-slot:pledgeName="{ item }">
+        <template v-slot:pledgeItemName="{ item }">
           <div class="c-pointer" @click="pledgeListClick(item.id)">
             {{ item.pledgeItemName }}
           </div>
@@ -188,7 +188,7 @@
             {{ Math.abs(item.amount).toLocaleString() }}.00
           </div>
         </template>
-        <template v-slot:redeemed="{ item }">
+        <template v-slot:totalPaymentSum="{ item }">
           <div class="c-pointer" @click="pledgeListClick(item.id)">
             {{ item.currencySymbol
             }}{{ Math.abs(item.totalPaymentSum).toLocaleString() }}.00
@@ -313,10 +313,10 @@ export default {
     const pledgeHeaders = ref([
       { name: "STATUS", value: "status" },
       { name: "PLEDGE NO.", value: "pledgeNumber" },
-      { name: "PLEDGE NAME", value: "pledgeName" },
+      { name: "PLEDGE NAME", value: "pledgeItemName" },
       { name: "CONTACT", value: "contact" },
       { name: "AMOUNT", value: "amount" },
-      { name: "REDEEMED", value: "redeemed" },
+      { name: "REDEEMED", value: "totalPaymentSum" },
       { name: "DATE", value: "date" },
       { name: "ACTION", value: "action" },
     ]);

@@ -98,6 +98,7 @@
 import { ref, onMounted, watchEffect } from "vue";
 import getData from "@/services/loading/loading";
 import exportService from "../../services/exportFile/exportservice";
+import dateFormatter from "@/services/dates/dateformatter.js"
 
 export default {
   emits: ["checkedrow"],
@@ -216,8 +217,10 @@ export default {
         dataInView.value = getData(foo_data.value, 10).filter((i) => i !== null);
 
         setTimeout(() => {
-          fileHeaderToExport.value = props.headers.map((i) => i.value);
+          fileHeaderToExport.value = props.headers.map((i) => i.name);
           fileToExport.value = props.data.map((obj) => {
+            // if it has date property, formate the date value
+            obj.date ? obj.date = dateFormatter.monthDayYear(obj.date) : null;
             let newObj = {};
             props.headers.forEach((prop, index) => {
               newObj[index] = obj[prop.value];
