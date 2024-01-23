@@ -212,7 +212,7 @@
         <div class="row">
           <div class="col-md-2 small"></div>
           <div class="col-md-10 py-2 px-0">
-            <el-input type="textarea" class="w-100" rows="4" placeholder="Enter comma seperated number e.g. 09033246067, 091228374832" v-model="phoneNumber" />
+            <el-input type="textarea" ref="phoneNumberRef" class="w-100" rows="4" placeholder="Enter comma seperated number e.g. 09033246067, 091228374832" v-model="phoneNumber" />
           </div>
           <div class="col-md-12 grey-rounded-border groups" :class="{ hide: !groupsAreVissible }">
             <div class="row" v-for="(category, index) in categories" :key="index">
@@ -624,6 +624,7 @@ export default {
     const editorData = ref("");
     const disableBtn = ref(false);
     const loading = ref(false);
+    const phoneNumberRef = ref(null);
     const editorConfig = {
       // The configuration of the editor.
       height: "800",
@@ -977,9 +978,10 @@ export default {
       }
 
       if (subject.value) {
-        if (multipleContact.value instanceof File) {
-          sendSMSToUploadedContacts(gateway);
-        } else if (sendOrSchedule == 2) {
+        // if (multipleContact.value instanceof File) {
+        //   sendSMSToUploadedContacts(gateway);
+        // } else
+        if (sendOrSchedule == 2) {
           data.executionDate = iSoStringFormat.value
           data.date = iSoStringFormat.value
           data.time = iSoStringFormat.value.split("T")[1];
@@ -1023,17 +1025,25 @@ export default {
 
     const sendSMSToUploadedContacts = async (gateway) => {
       let formData = new FormData();
-      formData.append("file", multipleContact.value);
-      formData.append("message", editorData.value);
-      formData.append("category", "");
-      formData.append("gatewayToUse", gateway);
-      formData.append("isoCode", isoCode.value);
+      formData.append("contactUploadedFile", multipleContact.value);
+      // formData.append("file", multipleContact.value);
+      // formData.append("message", editorData.value);
+      // formData.append("category", "");
+      // formData.append("gatewayToUse", gateway);
+      // formData.append("isoCode", isoCode.value);
 
       try {
         let { data } = await axios.post("/api/messaging/upload", formData);
+        console.log(phoneNumberRef.value , 'kkkkk');
+        // phoneNumberRef.value.ref.focus();
+        phoneNumber.value += data.map(i => i.phone).join(",")
+        if(data){
+          phoneNumberSelectionTab.value = true
+        }
+
         ElMessage({
           type: "success",
-          message: data.response,
+          message: "Phone numbers extracted from file",
           duration: 6000,
         });
       } catch (err) {
@@ -1206,6 +1216,7 @@ export default {
 
     const uploadFile = (e) => {
       multipleContact.value = e.target.files[0];
+      sendSMSToUploadedContacts()
     };
 
     const getSenderId = async () => {
@@ -1314,6 +1325,7 @@ export default {
     return {
       primarycolor,
       iSoStringFormat,
+      phoneNumberRef,
       setSelectedSenderIdCheckin,
       editorData,
       // displays,

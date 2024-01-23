@@ -104,7 +104,7 @@
               :value="item.id" />
           </el-select>
         </div> -->
-        
+
         <div>
           <SelectAllDropdown :items="allPledgeDefinitionList" @selected-item="setSelectedCategory" />
         </div>
@@ -283,11 +283,11 @@ export default {
     const selectedCategoryID = ref([]);
     const filterLoading = ref(false);
     const allPledgeStatus = ref([
-      { text: "Paid", id: '1' },
-      { text: "Over Due", id: '2' },
-      { text: "No Payment", id: '3' },
-      { text: "Partial", id: '4' },
-      { text: "---", id: '5' },
+      { name: "Paid", id: '1' },
+      { name: "Over Due", id: '2' },
+      { name: "No Payment", id: '3' },
+      { name: "Partial", id: '4' },
+      { name: "---", id: '5' },
     ]);
 
     const allPledgeDefinitionList = ref([]);
@@ -366,7 +366,7 @@ export default {
       });
     };
 
-  
+
 
     const navigateToMakePledge = () => {
       router.push("/tenant/pledge/makepledge");
@@ -395,39 +395,12 @@ export default {
     const getAllTotalBalance = ref([]);
     const filterPledge = async () => {
       filterLoading.value = true;
-      // let selectedContactValue =
-      //   selectedContact.value && selectedContact.value.id
-      //     ? selectedContact.value.id
-      //     : "";
-      // let selectedCategoryValue = selectedCategory.value.map((i) => i.id);
-
-      // let selectedCategoryValue =
-      //   selectedCategory.value && selectedCategory.value.id
-      //     ? selectedCategory.value.id
-      //     : "";
-      // let selectedStatusValue =
-      //   selectedStatus.value && selectedStatus.value.name
-      //     ? selectedStatus.value.name
-      //     : "";
-      // let selectedStatusValue =  selectedStatus.value.map((i) => i.name);
-      // let startDateValue = startDate.value
-      //   ? new Date(startDate.value).toLocaleDateString("en-US")
-      //   : "";
-      // let endDateValue = endDate.value
-      //   ? new Date(endDate.value).toLocaleDateString("en-US")
-      //   : "";
-
       const payload = {
         personId: selectedContact.value && selectedContact.value.id ? selectedContact.value.id : "",
         status: selectedStatus.value.map((i) => i.name),
-        // status :  selectedStatus.value && selectedStatus.value.length > 0  ? selectedStatus.value.map((i) => i.name) : "",
         pledgeItemIDs: selectedCategory.value.map((i) => i.id),
-        // pledgeItemIDs : selectedCategory.value && selectedCategory.value.length > 0 ? selectedCategory.value.map((i) => i.id) : '' ,
         startDate: startDate.value ? new Date(startDate.value).toLocaleDateString("en-US") : "",
-        endDate: endDate.value ? new Date(endDate.value).toLocaleDateString("en-US") : ""
-
-
-
+        endDate: endDate.value ? new Date(endDate.value).toLocaleDateString("en-US") : "",
       }
       try {
         const res = await axios.post(
