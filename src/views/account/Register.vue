@@ -166,11 +166,7 @@ import { reactive, ref, inject } from "vue";
 export default {
   setup() {
     const primarycolor = inject("primarycolor");
-    const credentials = reactive({
-      ChurchName: "Default Church",
-      firstName: "First name",
-      lastName: "Last name",
-    });
+    const credentials = reactive({});
     const showError = ref(false);
     const errorMessage = ref("");
     const show = ref(false);
