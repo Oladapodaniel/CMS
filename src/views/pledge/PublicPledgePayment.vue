@@ -2,19 +2,14 @@
   <div class="container-fluid  mx-0 tool">
     <div class="row d-flex justify-content-center align-items-center">
       <div class="col-11 col-sm-8 col-md-7 col-lg-5 d-flex justify-content-center ">
-        <div class="d-flex    ">
-          <div class=" mb-2  ">
+        <div class="d-flex flex-column align-items-center mt-4">
+          <div class="mb-1">
             <img :src="churchLogo2" v-if="churchLogo2" class="link-image" alt="" style="width:45px" />
             <img src="../../assets/dashboardlinks/churchcloud.png" style="width:100px" v-else class="link-image "
               alt="" />
           </div>
 
-          <!-- <span>
-              <h4 class="font-weight-bold mt-3">{{ churchName ? churchName : "Churchplus" }}</h4>
-            </span> -->
-
-          <div class=" font-weight-bold  text-small mt-2  px-0 ">
-            <!-- Moses Orimolade Education Foundation Pledge Portal -->
+          <div class=" font-weight-bold  text-small text-center mt-2 mb-3 px-0 ">
             {{ contributionDetail.name }} {{ !route.query.tenantID && contributionDetail.name ? 'Payment' : "" }}
           </div>
         </div>
@@ -22,14 +17,14 @@
     </div>
 
     <div class="row d-flex justify-content-center">
-      <div class="col-11 col-sm-8 col-md-7 col-lg-5 card pb-2" v-loading="cardLoading">
+      <div class="col-11 col-sm-8 col-md-7 col-lg-5 card pb-2 p-3 px-md-5 py-md-4" v-loading="cardLoading">
         <div class="container-fluid">
           <div class="row mt-2 justify-content-center">
             <div class="col-md-12  px-0">
               <div class="col-md-12 px-0 ">
-                <label for="" class="text-small  m-0 ">Pledge Name<sup class="text-danger ">*</sup></label>
+                <label for="" class="text-small  m-0 mb-2">Pledge Name<sup class="text-danger ">*</sup></label>
               </div>
-              <div class="col-md-12 px-0">
+              <div class="col-md-12 px-0 mb-3">
                 <select class="form-control  text-small input-adjust" v-model="selectPledgeItemID"
                   :disabled="!route.query.tenantID" @change="setSelectPledgeItem">
                   <option v-for="(itm, index) in contributionDetail.pledgeItemDTOs" :key="index" :value="itm.id">
@@ -320,24 +315,12 @@
               " class=" col-md-11">
               <hr class="w-100">
             </div> -->
-            <div class=" col-md-11">
+            <div class=" col-md-12 px-0">
               <hr class="w-100">
             </div>
-            <!-- <div class="col-md-12   px-0" v-if="personToggle && !showLoading"> -->
-            <!-- <Transition name="slide-fade">
-                <div class="col-md-12 font-weight-bold text-small" v-if="pledgeActionType == '1'">
-                  <label for="">How much do you want to pay now ?</label>
-                </div>
-              </Transition> -->
-            <!-- Range, Free will and Specific -->
-            <!-- <Transition name="slide-fade">
-                <div class="col-md-12 px-0 " v-if="pledgeActionType == '1'">
-                  <el-input type="number"   class="input-adjust mb-1" v-model="amountToPayNow" placeholder="Enter amount to pay" />
-                </div>
-              </Transition> -->
-            <!-- </div> -->
-            <div class="col-md-11  px-0  d-flex justify-content-center">
-              <div class="col-md-12">
+          
+            <div class="col-md-12  px-0  d-flex justify-content-center">
+              <div class="col-md-12 px-0">
                 <el-button class="w-100  text-small  input-adjust" :color="primarycolor" :loading="loading" size="large"
                   :disabled="!personToggle" @click="triggerPayment" round>{{ pledgeActionType
                     == '1' ? 'Pay' : 'Pledge'
@@ -356,7 +339,7 @@
                   <!-- <div class="col-3">
                     <img src="../../assets/VisaDebit.png" class="w-100">
                   </div> -->
-                  <div class="col-md-10 col-12 text-small   d-flex">
+                  <div class="col-md-10 col-12 text-small mt-3 d-flex">
                     <div class=" col-md-6 text-center ">
                       <img src="../../assets/Full-Flutterwave.png" class="w-100">
                     </div>
@@ -374,7 +357,7 @@
               <div class=" col-10 col-sm-8 col-md-7   ">
                 <div class="row  justify-content-center">
                   <!-- <div class="col-md-12 d-flex    "> -->
-                  <div class=" col-md-6 text-center text-small  image-adjust  ">Powered by <img
+                  <div class="col-md-12 text-center text-small image-adjust mt-3"><span class="text-small s-12">Powered by</span> <img
                       src="../../assets/logoblue.png" alt="churchplus Logo" /></div>
                   <!-- <div class="image-adjust col-md-5 border  ">
                       <img src="../../assets/logoblue.png" alt="churchplus Logo" class=" border " />
@@ -764,7 +747,7 @@ export default {
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
-        email: contactDetail.value.email ? contactDetail.value.email : newContact.value.email,
+        email: responseObject.person.email,
         // amount: amountToPayNow.value * 100,
         amount: amountToPledge.value * 100,
         currency: selectedCurrencyCode.value,
@@ -872,7 +855,7 @@ export default {
         customer: {
           name: contactDetail.value && Object.keys(contactDetail.value).length > 0 ? `${contactDetail.value.firstName} ${contactDetail.value.lastName}` : `${newContact.value.firstName} ${newContact.value.lastName}`,
           phone_number: userSearchString.value,
-          email: contactDetail.value.email ? contactDetail.value.email : newContact.value.email,
+          email: responseObject.person.email,
         },
         callback: (response) => {
           let trans_id = response.transaction_id
