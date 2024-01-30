@@ -117,7 +117,7 @@ export default {
       { name: '', value: 'delete' },
     ]);
 
-    const getScheduledSMS = async () => {
+    const getScheduledEmails = async () => {
       try {
         loading.value = true;
         const res = await communicationService.getSchedules("/api/Messaging/getEmailSchedules");
@@ -136,7 +136,7 @@ export default {
     }
 
     onMounted(() => {
-      getScheduledSMS();
+      getScheduledEmails();
     });
 
     // function to search

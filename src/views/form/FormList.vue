@@ -13,17 +13,17 @@
         </div>
         <Table :data="formItems" :headers="formHeaders" :checkMultipleItem="false" v-loading="loading">
             <template v-slot:name="{ item }">
-                <div class="c-pointer" @click="formListClick(item.id)">
+                <div class="c-pointer" @click="formListClick(item)">
                     {{ item.name }}
                 </div>
             </template>
             <template v-slot:entries="{ item }">
-                <div class="c-pointer" @click="formListClick(item.id)">
+                <div class="c-pointer" @click="formListClick(item)">
                     {{ item.entries }}
                 </div>
             </template>
             <template v-slot:date="{ item }">
-                <div class="c-pointer" @click="formListClick(item.id)">
+                <div class="c-pointer" @click="formListClick(item)">
                     {{ date(item.date) }}
                 </div>
             </template>
@@ -39,9 +39,13 @@
                                     class="text-color">Edit
                                     Form</router-link>
                             </el-dropdown-item>
-                            <el-dropdown-item>
+                            <!-- <el-dropdown-item>
                                 <router-link :to="`/tenant/singleformlist?id=${item.id}`" class="text-color">View
                                     Form</router-link>
+                            </el-dropdown-item> -->
+                            <el-dropdown-item>
+                                <router-link :to="`/tenant/singleformlist?id=${item.id}&formName=${item.name}`" class="text-color">View
+                                    Data</router-link>
                             </el-dropdown-item>
                             <el-dropdown-item>
                                 <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">
@@ -61,6 +65,7 @@ import { ref, computed, inject } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import monthDayYear from "../../services/dates/dateformatter";
 import axios from "@/gateway/backendapi";
+import router from "../../router";
 import Table from "@/components/table/Table";
 export default {
     components: {
@@ -99,6 +104,10 @@ export default {
                     });
                 });
         };
+
+        const formListClick = (item) =>{
+            router.push(`/tenant/singleformlist?id=${item.id}&formName=${item.name}`)
+        }
 
         const deleteForm = (id) => {
             axios
@@ -156,7 +165,8 @@ export default {
             primarycolor,
             date,
             showConfirmModal,
-            deleteForm
+            deleteForm,
+            formListClick
         }
     },
 }

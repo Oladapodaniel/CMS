@@ -138,7 +138,7 @@ const communicationService = {
 
     getSchedules(url) {
         return new Promise((resolve, reject) => {
-            axios.get('/api/Messaging/getSmsSchedules')
+            axios.get(url)
                 .then(res => {
                     console.log(res);
                     resolve(res.data);

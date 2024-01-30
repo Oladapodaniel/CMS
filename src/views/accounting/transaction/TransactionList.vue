@@ -1,151 +1,117 @@
 <template>
-  <div class=" container-top"  :class="{ 'container-slim': lgAndUp || xlAndUp }"  @click="hideModals">
+  <div class=" container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }" @click="hideModals">
     <div class="main-co">
-        <div class="top container-fluid px-0 ">
-           <div class="header ">
-                <div class="head-text">Transaction</div>
-              </div>
-          <div class="row mt-2 header-btns justify-content-center">
-            <!-- <div class="actions"> -->
-              <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0  mx-auto mx-sm-0 mx-md-0">
-                 <el-button
-                    class="more-btn header-btn align-items-center justify-content-center d-flex w-100  border-0"
-                    round
-                    size="large"
-                    @click="toggleTransac(1)"
-                  >
-                    Add Income
-                  </el-button>
-              </div>
-
-              <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
-                <el-button
-                  class="more-btn header-btn align-items-center justify-content-center d-flex w-100 border-0"
-                  size="large"
-                  round
-                  @click="toggleTransac(2)">
-                   Add Expense
-                </el-button>
-              </div>
-              <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
-                <a class="dropdown show more-btn align-items-center justify-content-center w-100 d-flex default-btn border-0 text-decoration-none">
-                  <a class="dropdown-toggle text-decoration-none text-dark" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    More
-                  </a>
-
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item c-pointer" @click="toggleTransac(3)">General Ledger</a>
-                  </div>
-                </a>
-              </div>
-
-          </div>
+      <div class="top container-fluid px-0 ">
+        <div class="header ">
+          <div class="head-text">Transaction</div>
         </div>
+        <div class="row mt-2 header-btns justify-content-center">
+          <!-- <div class="actions"> -->
+          <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0  mx-auto mx-sm-0 mx-md-0">
+            <el-button class="more-btn header-btn align-items-center justify-content-center d-flex w-100  border-0" round
+              size="large" @click="toggleTransac(1)">
+              Add Income
+            </el-button>
+          </div>
 
-        <div class="container-fluid px-0">
-          <div class="col-12 col-sm-8 col-lg-6 px-0 mt-5">
-            <el-dropdown trigger="click" class="w-100">
-                    <span class="el-dropdown-link w-100">
-                      <div
-                        class="d-flex justify-content-between border-contribution  w-100"
-                        size="large"
-                      >
-                        <span class="text-secondary">{{ selectedTransaction.type }}</span>
-                        <span class="text-secondary">{{ selectedTransaction.amount }}</span>
-                        <div>
-                          <el-icon class="el-icon--right">
-                            <arrow-down />
-                          </el-icon>
-                        </div>
-                      </div>
-                    </span>
-                    <template #dropdown>
-                      <el-dropdown-menu>
-                        <el-dropdown-item
-                          v-for="(cash, index) in accountsAndBalancesList"
-                          :key="index"
-                           @click="selectAnAccount(cash, index)"
-                           class="d-flex justify-content-between font-weight-700"
-                          >
-                          <div class="close-modal">{{ cash.text }}</div>
-                          <div>&nbsp;&nbsp;</div>
-                          <div class="close-modal">{{ cash.currency && cash.currency.symbol ? cash.currency.symbol : currentUser.currencySymbol }}{{ cash.balance }}</div>
-                        </el-dropdown-item>
-                        <el-dropdown-item
-                          class="text-center"
-                          divided
-                          >
-                          <!-- <a
+          <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
+            <el-button class="more-btn header-btn align-items-center justify-content-center d-flex w-100 border-0"
+              size="large" round @click="toggleTransac(2)">
+              Add Expense
+            </el-button>
+          </div>
+          <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
+            <a
+              class="dropdown show more-btn align-items-center justify-content-center w-100 d-flex default-btn border-0 text-decoration-none">
+              <a class="dropdown-toggle text-decoration-none text-dark" href="#" role="button" id="dropdownMenuLink"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                More
+              </a>
+
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item c-pointer" @click="toggleTransac(3)">General Ledger</a>
+              </div>
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="container-fluid px-0">
+        <div class="col-12 col-sm-8 col-lg-6 px-0 mt-5">
+          <el-dropdown trigger="click" class="w-100 font-weight-700">
+            <span class="el-dropdown-link w-100">
+              <div class="d-flex justify-content-between px-3 font-weight-700 border-contribution  w-100" size="large">
+                <div class=" w-100 d-flex justify-content-between  ">
+                  <span class="">{{ selectedTransaction.type }}</span>
+                  <span class="">{{ selectedTransaction.amount }}</span>
+                </div>
+                <div class="">
+                  <el-icon class="el-icon--right">
+                    <arrow-down />
+                  </el-icon>
+                </div>
+              </div>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu >
+                <el-dropdown-item  v-for="(cash, index) in accountsAndBalancesList" :key="index"
+                  @click="selectAnAccount(cash, index)" class="d-flex justify-content-between font-weight-700">
+                  <div class="close-modal w-100">{{ cash.text }}</div>
+                  <div>&nbsp;&nbsp;</div>
+                  <div class="close-modal ">{{ cash.currency && cash.currency.symbol ? cash.currency.symbol :
+                    currentUser.currencySymbol }}{{ cash.balance }}</div>
+                </el-dropdown-item>
+                <el-dropdown-item class="text-center" divided>
+                  <!-- <a
                             class="font-weight-bold small-text d-flex justify-content-center p-3 text-decoration-none primary-text"
                           >
                             <el-icon size="large"><Files /></el-icon>
                             Upload Bank Statement
                           </a> -->
-                          <a
-                            class="font-weight-bold small-text d-flex justify-content-center p-3 text-decoration-none primary-text" @click="openModal"
-                          >
-                            <el-icon size="large">
-                              <CirclePlus />
-                            </el-icon>
-                            Add a
-                            new account
-                          </a>
-                          </el-dropdown-item
-                        >
-                      </el-dropdown-menu>
-                    </template>
-                  </el-dropdown>
-          </div>
+                  <!-- <a class="font-weight-bold small-text d-flex justify-content-center p-3 text-decoration-none primary-text"
+                    @click="openModal">
+                    <el-icon size="large">
+                      <CirclePlus />
+                    </el-icon>
+                    Add a
+                    new account
+                  </a> -->
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
 
-          <!-- <h5>Modal</h5> -->
-          <el-dialog v-model="displayModal"
-          :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+        <!-- <h5>Modal</h5> -->
+        <el-dialog v-model="displayModal" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
           <div class="row mt-2">
-              <div class="col-sm-3 align-self-center text-right p-0">
-                Account Type <span class="text-danger">*</span>
+            <div class="col-sm-3 align-self-center text-right p-0">
+              Account Type <span class="text-danger">*</span>
+            </div>
+            <div class="col-sm-7">
+              <div class="select-elem-con pointer d-flex justify-content-space-between close-modal"
+                @click="showAccount = !showAccount">
+                <span class="ofering close-modal">Select one</span><span>
+                  <el-icon>
+                    <ArrowDown />
+                  </el-icon></span>
               </div>
-              <div class="col-sm-7">
-                <div
-                  class="select-elem-con pointer d-flex justify-content-space-between close-modal"
-                  @click="showAccount = !showAccount"
-                >
-                  <span class="ofering close-modal">Select one</span
-                  ><span>
-                   <el-icon><ArrowDown /></el-icon></span>
+              <div class="ofering close-modal" :class="{ 'style-account': showAccount }" v-if="showAccount"
+                ref="selectAccount">
+                <div class="px-3 pt-3 close-modal">
+                  <input type="text" placeholder="Search..." class="form-control ofering mb-1 close-modal"
+                    v-model="accountText" />
                 </div>
-                <div
-                  class="ofering close-modal"
-                  :class="{ 'style-account': showAccount }"
-                  v-if="showAccount"
-                  ref="selectAccount"
-                >
-                  <div class="px-3 pt-3 close-modal">
-                    <input
-                      type="text"
-                      placeholder="Search..."
-                      class="form-control ofering mb-1 close-modal"
-                      v-model="accountText"
-                    />
-                  </div>
-                  <div class="container-fluid px-0"
-                    v-for="(accounts, index) in transactionalAccounts"
-                    :key="index"
-                  >
-                    <div class="desc-head py-1 px-3 close-modal text-capitalize">{{ accountTypes[index] }}</div>
-                    <div class="header-border close-modal">
-                      <div>
-                        <div
-                          @click="transactionItem(account)"
-                          class="manual-dd-item close-modal"
-                          v-for="(account, indx) in accounts"
-                          :key="indx"
-                        >
-                          <div
-                            class="d-flex justify-content-between py-2 px-3 close-modal"
-                          >
-                            <div class="close-modal offset-sm-1">
-                              {{ account.text }}
-                            </div>
+                <div class="container-fluid px-0" v-for="(accounts, index) in transactionalAccounts" :key="index">
+                  <div class="desc-head py-1 px-3 close-modal text-capitalize">{{ accountTypes[index] }}</div>
+                  <div class="header-border close-modal">
+                    <div>
+                      <div @click="transactionItem(account)" class="manual-dd-item close-modal"
+                        v-for="(account, indx) in accounts" :key="indx">
+                        <div class="d-flex justify-content-between py-2 px-3 close-modal">
+                          <div class="close-modal offset-sm-1">
+                            {{ account.text }}
                           </div>
                         </div>
                       </div>
@@ -154,108 +120,75 @@
                 </div>
               </div>
             </div>
-            <div class="row mt-2">
-              <div class="col-sm-3 align-self-center text-right p-0">
-                Account Name <span class="text-danger">*</span>
-              </div>
-              <div class="col-sm-7">
-                <el-input type="text" v-model="newAccount.name" class="w-100" />
-              </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-sm-3 align-self-center text-right p-0">
+              Account Name <span class="text-danger">*</span>
             </div>
-            <div class="row mt-2">
-              <div class="col-sm-3 align-self-center text-right p-0">
-                Account Currency
+            <div class="col-sm-7">
+              <el-input type="text" v-model="newAccount.name" class="w-100" />
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-sm-3 align-self-center text-right p-0">
+              Account Currency
+            </div>
+            <div class="col-sm-7">
+              <div class="select-elem-con pointer d-flex justify-content-space-between close-modal"
+                @click="showCurrency = !showCurrency">
+                <span class="ofering close-modal">NGN - Nigeria</span><span>
+                  <el-icon>
+                    <ArrowDown />
+                  </el-icon></span>
               </div>
-              <div class="col-sm-7">
-                <div
-                  class="select-elem-con pointer d-flex justify-content-space-between close-modal"
-                  @click="showCurrency = !showCurrency"
-                >
-                  <span class="ofering close-modal">NGN - Nigeria</span
-                  ><span>
-                    <el-icon><ArrowDown /></el-icon></span>
+              <div class="ofering close-modal" :class="{ 'style-account': showCurrency }" v-if="showCurrency">
+                <div class="px-3 pt-3">
+                  <input type="text" placeholder="Search..." class="form-control close-modal ofering mb-1"
+                    v-model="currencyText" />
                 </div>
-                <div
-                  class="ofering close-modal"
-                  :class="{ 'style-account': showCurrency }"
-                  v-if="showCurrency"
-                >
-                  <div class="px-3 pt-3">
-                    <input
-                      type="text"
-                      placeholder="Search..."
-                      class="form-control close-modal ofering mb-1"
-                      v-model="currencyText"
-                    />
-                  </div>
-                  <div
-                    class="header-border close-modal"
-                    v-if="filterCurrency.length > 0"
-                  >
-                    <div
-                      class="manual-dd-item close-modal"
-                      v-for="item in filterCurrency"
-                      :key="item.id"
-                    >
-                      <div
-                        class="d-flex justify-content-between py-2 px-3 close-modal"
-                      >
-                        <div class="close-modal offset-sm-1">
-                          {{ item.name }} - {{ item.country }}
-                        </div>
+                <div class="header-border close-modal" v-if="filterCurrency.length > 0">
+                  <div class="manual-dd-item close-modal" v-for="item in filterCurrency" :key="item.id">
+                    <div class="d-flex justify-content-between py-2 px-3 close-modal">
+                      <div class="close-modal offset-sm-1">
+                        {{ item.name }} - {{ item.country }}
                       </div>
                     </div>
                   </div>
-                  <div class="header-border close-modal" v-else>
-                    <div class="p-3 text-center text-danger">
-                      No Match Found
-                    </div>
+                </div>
+                <div class="header-border close-modal" v-else>
+                  <div class="p-3 text-center text-danger">
+                    No Match Found
                   </div>
                 </div>
               </div>
             </div>
-            <div class="row mt-2">
-              <div class="col-sm-3 align-self-center text-right p-0">
-                Account ID
-              </div>
-              <div class="col-sm-7">
-                <el-input type="text" class="w-100" />
-              </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-sm-3 align-self-center text-right p-0">
+              Account ID
             </div>
-            <div class="row mt-2">
-              <div class="col-sm-3 align-self-center text-right p-0">
-                Description
-              </div>
-              <div class="col-sm-7">
-                <!-- <textarea class="form-control" v-model="newAccount.description" rows="4"></textarea> -->
-                <el-input
-                   v-model="newAccount.description"
-                  :rows="4"
-                  type="textarea"
-                />
-              </div>
+            <div class="col-sm-7">
+              <el-input type="text" class="w-100" />
             </div>
-            <template #footer>
+          </div>
+          <div class="row mt-2">
+            <div class="col-sm-3 align-self-center text-right p-0">
+              Description
+            </div>
+            <div class="col-sm-7">
+              <!-- <textarea class="form-control" v-model="newAccount.description" rows="4"></textarea> -->
+              <el-input v-model="newAccount.description" :rows="4" type="textarea" />
+            </div>
+          </div>
+          <template #footer>
 
-              <el-button
-                color="#EBEFF4"
-                round
-                size="large"
-                class=" secondary-btn px-4"
-                @click="closeModal"
-              >
-                Close
-              </el-button>
-              <el-button
-                round
-                size="large"
-                :color="primarycolor"
-                class=" px-4 mr-0 text-white"
-                @click="saveAccount"
-              >
-                Save
-              </el-button>
-            </template>
+            <el-button color="#EBEFF4" round size="large" class=" secondary-btn px-4" @click="closeModal">
+              Close
+            </el-button>
+            <el-button round size="large" :color="primarycolor" class=" px-4 mr-0 text-white" @click="saveAccount">
+              Save
+            </el-button>
+          </template>
         </el-dialog>
         <el-skeleton class="w-100" animated v-if="tableLoading">
           <template #template>
@@ -271,20 +204,12 @@
             <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
           </template>
         </el-skeleton>
-          <TransactionTable
-            v-else
-            :showEditTransaction="showEditTransaction"
-            :transactionDetails="transacPropsValue"
-            :selectedTransactionType="selectedTransactionType"
-            :journalEntry="journalEntry"
-            @toggle-edit-form="closeIt"
-            @select-row="selectRow"
-            @tableloading="setTableLoading"
-            @select-journal="selectJournalEntry"
-            @reload-accounts="reloadAccounts"
-          />
-          <!-- <LedgerForm /> -->
-        </div>
+        <TransactionTable v-else :showEditTransaction="showEditTransaction" :transactionDetails="transacPropsValue"
+          :selectedTransactionType="selectedTransactionType" :journalEntry="journalEntry" @toggle-edit-form="closeIt"
+          @select-row="selectRow" @tableloading="setTableLoading" @select-journal="selectJournalEntry"
+          @reload-accounts="reloadAccounts" />
+        <!-- <LedgerForm /> -->
+      </div>
     </div>
   </div>
 </template>
@@ -308,7 +233,7 @@ export default {
     // LedgerForm,
   },
   setup() {
-    const transactions = ref([ ]);
+    const transactions = ref([]);
     const loading = ref(false)
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
     const cashAndBank = ref([
@@ -337,7 +262,7 @@ export default {
 
     const tableLoading = ref(false)
 
-    const setTableLoading = (payload) =>{
+    const setTableLoading = (payload) => {
       tableLoading.value = payload
     }
 
@@ -351,16 +276,16 @@ export default {
     }
     if (!currentUser.value || !currentUser.value.tenantId) getCurrentUser();
 
-    const rates = ref({ });
-      const getConversionRates = async () => {
-        try {
-          const response = await currencyConverter.getConversionData();
-          rates.value = response;
-        } catch (error) {
-          console.log(error);
-        }
+    const rates = ref({});
+    const getConversionRates = async () => {
+      try {
+        const response = await currencyConverter.getConversionData();
+        rates.value = response;
+      } catch (error) {
+        console.log(error);
       }
-     getConversionRates();
+    }
+    getConversionRates();
 
     const creditCard = ref([
       { name: { type: "tobi", amount: "N2.10" } },
@@ -499,7 +424,7 @@ export default {
           type: "ledger",
           account: "Journal",
         };
-        journalEntry.value = { };
+        journalEntry.value = {};
       }
       showEditTransaction.value = true;
     };
@@ -534,7 +459,7 @@ export default {
 
     getTransactionalAccounts();
 
-    const cashAndBankItems = ref([ ]);
+    const cashAndBankItems = ref([]);
     const getCashAndBanks = async () => {
       loading.value = true;
       try {
@@ -558,7 +483,7 @@ export default {
       selectedTransactionType.value = account.id ? account.id : "";
     }
 
-    const newAccount = ref({ });
+    const newAccount = ref({});
     const saveAccount = async () => {
       try {
         newAccount.value.accountType = 0;
@@ -573,7 +498,7 @@ export default {
       transacPropsValue.value = rowData;
     }
 
-    const journalEntry = ref({ })
+    const journalEntry = ref({})
     const selectJournalEntry = (rowData) => {
       journalEntry.value = rowData;
       showEditTransaction.value = true;
@@ -584,7 +509,7 @@ export default {
     }
     // saveAccount()
 
-    const accountsAndBalances = ref([ ])
+    const accountsAndBalances = ref([])
     const getAccountBalances = async () => {
       // loading.value = true;
       try {
@@ -594,7 +519,7 @@ export default {
         let index = response.findIndex(i => i.text === "All Accounts")
 
         if (index >= 0) {
-          selectedTransaction.value.amount = `${currentUser.value && currentUser.value.currencySymbol ? currentUser.value.currencySymbol: ''}${accountsAndBalances.value[index] && accountsAndBalances.value[index].balance ? amountWithCommas(accountsAndBalances.value[index].balance) : 0}`;
+          selectedTransaction.value.amount = `${currentUser.value && currentUser.value.currencySymbol ? currentUser.value.currencySymbol : ''}${accountsAndBalances.value[index] && accountsAndBalances.value[index].balance ? amountWithCommas(accountsAndBalances.value[index].balance) : 0}`;
           accountsAndBalances.value[index].currency = { symbol: currentUser.value ? currentUser.value.currencySymbol : '' };
         }
         loading.value = false;
@@ -607,7 +532,7 @@ export default {
     getAccountBalances()
 
     const accountsAndBalancesList = computed(() => {
-      if (!accountsAndBalances.value || accountsAndBalances.value.length === 0) return [ ];
+      if (!accountsAndBalances.value || accountsAndBalances.value.length === 0) return [];
       return accountsAndBalances.value.map(i => {
         i.balance = amountWithCommas(i.balance);
         return i;
@@ -628,7 +553,6 @@ export default {
       if (currentUser.value && currentUser.value.currency && currentUser.value.currency.toLowerCase() === account.currency.shortCode.toLowerCase()) return account.balance;
 
       const amountInDollars = account.currency.shortCode !== "USD" ? rates.value[`usd${account.currency.shortCode.toLowerCase()}`] * account.balance : account.balance;
-
       const tenantAmount = rates.value[`usd${currentUser.value && currentUser.value.currency ? currentUser.value.currency.toLowerCase() : ''}`] * amountInDollars;
       return tenantAmount;
     }
@@ -712,6 +636,7 @@ html {
 .events {
   font: normal normal 800 29px Nunito sans;
 }
+
 .whole-con {
   display: flex;
   /* background: #f1f5f8; */
@@ -770,7 +695,8 @@ html {
 }
 
 .table {
-  width: 100% !important; margin: 0;
+  width: 100% !important;
+  margin: 0;
 }
 
 .table-top {
@@ -794,6 +720,7 @@ html {
   overflow: hidden;
   transition: all 0.5 ease-in-out;
 }
+
 .label-search input {
   border: transparent;
   background: transparent;
@@ -953,6 +880,7 @@ html {
   max-height: 14em;
   overflow-y: scroll;
 }
+
 .style-account div div:hover {
   /* background-color: #ecf0f3; */
   cursor: pointer;
@@ -1017,14 +945,14 @@ html {
     }
   } */
 
-  .row {
-    margin-right: 0 !important;
-    margin-left: 0 !important;
-  }
+.row {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
 
-  @media (min-width: 768px) and (max-width: 840px) {
-    .header-btns {
-      margin-top: 10px;
-    }
+@media (min-width: 768px) and (max-width: 840px) {
+  .header-btns {
+    margin-top: 10px;
   }
+}
 </style>

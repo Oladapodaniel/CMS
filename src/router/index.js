@@ -114,7 +114,6 @@ const routes = [
         component: () =>
             import( /* webpackChunkName: "emailsent" */ '../views/account/EmailSent.vue')
     },
-
     {
         path: '/tenant',
         name: 'Home',
@@ -1814,6 +1813,15 @@ const routes = [
         ],
     },
     {
+        path: '/createpublicform/',
+        name: 'PublicForm',
+        meta: {
+            title: 'Churchplus - Form',
+        },
+        component: () =>
+            import( /* webpackChunkName: "addfirsttimer" */ '../views/form/PublicForm.vue')
+    },
+    {
         path: '/partnership/pay/',
         name: 'PublicPledgePayment',
         meta: {
@@ -2142,6 +2150,7 @@ router.beforeEach((to, from, next) => {
         to.name === "PublicNewConvert" ||
         to.name === "EventRegistration" ||
         to.name === "PricingPage" ||
+        to.name === "PublicForm" ||
         to.name === "PublicPledgePayment") && !tokenIsValid) return next(true)
 
 

@@ -492,8 +492,12 @@ export default {
           });
           x(res.data.cashAccountID);
 
-          if (res.data.incomeRemittance && res.data.incomeRemittance.length > 0) applyRem.value = true
-          remitance.value = res.data.incomeRemittance.map(i => {
+          selectedIncomeAccountID.value = selectedIncomeAccount.value ? selectedIncomeAccount.value.text : ""
+
+          console.log(res.data, 'jhhbgjhg');
+
+          if (res.data && res.data.incomeRemittance && res.data.incomeRemittance.length > 0) applyRem.value = true
+          remitance.value =  res.data &&   res.data.incomeRemittance ?  res.data.incomeRemittance.map(i => {
             let data = {};
             data.percentage = i.percentage;
             if (i.distinationCashBankAccount == '00000000-0000-0000-0000-000000000000') {
@@ -506,7 +510,8 @@ export default {
               })
             }
             return data
-          })
+          }) : "";
+          console.log(remitance.value, 'jkjjjj');
         } catch (err) {
           console.log(err);
         }

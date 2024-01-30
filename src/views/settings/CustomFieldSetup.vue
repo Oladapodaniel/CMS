@@ -46,8 +46,8 @@
                                     <CircleClose />
                                   </el-icon></i>
                               </div>
-                              <input class="inputt  py-2 " v-model="currentInput" @keypress.enter="saveChip" @input="checkComma"
-                                @keydown.delete="backspaceDelete">
+                              <input class="inputt  py-2 " v-model="currentInput" @keypress.enter="saveChip"
+                                @input="checkComma" @keydown.delete="backspaceDelete">
                             </div>
                           </div>
                         </div>
@@ -99,7 +99,7 @@
           <!-- <div> {{ index }} - {{ element.label }} </div> -->
 
           <draggable item-key="id" class="list-group" v-model="allCustomFieldList" ghost-class="ghost"
-             @start="dragging = true" @end="(dragging = false),(reorderCustomField())" v-loading="reoderloading">
+            @start="dragging = true" @end="(dragging = false), (reorderCustomField())" v-loading="reoderloading">
             <template #item="{ element, index }">
               <div class="row py-2 graggable">
                 <div class="col-md-12">
@@ -158,20 +158,20 @@
                       d-flex
                       justify-content-md-between w-100 fllexxwrap
                     ">
-                    <el-dropdown class="w-100" trigger="click">
-                      <span class="el-dropdown-link">
-                        <el-icon>
-                          <MoreFilled />
-                        </el-icon>
-                      </span>
-                      <template #dropdown>
-                        <el-dropdown-menu>
-                          <el-dropdown-item @click="openClassification(index)">View</el-dropdown-item>
-                          <el-dropdown-item @click="deleteCustomField(element.id, index)">Delete</el-dropdown-item>
-                        </el-dropdown-menu>
-                      </template>
-                    </el-dropdown>
-                    <img src="../../assets/drag-and-drop.png"/>
+                        <el-dropdown class="w-100" trigger="click">
+                          <span class="el-dropdown-link">
+                            <el-icon>
+                              <MoreFilled />
+                            </el-icon>
+                          </span>
+                          <template #dropdown>
+                            <el-dropdown-menu>
+                              <el-dropdown-item @click="openClassification(index)">View</el-dropdown-item>
+                              <el-dropdown-item @click="deleteCustomField(element.id, index)">Delete</el-dropdown-item>
+                            </el-dropdown-menu>
+                          </template>
+                        </el-dropdown>
+                        <img src="../../assets/drag-and-drop.png" />
                         <!-- <el-button class="py-1 px-4 mb-md-3" color="#EBEFF4" round @click="openClassification(index)">
                           View
                         </el-button>
@@ -204,19 +204,20 @@
                             label: i.name,
                             value: i.id,
                           }))
-                            " placeholder="Select type" class="w-100" size="large" style="width: 100%; text-align: left" />
+                            " placeholder="Select type" class="w-100" size="large"
+                            style="width: 100%; text-align: left" />
                         </div>
                       </div>
-  
+
                       <div class="col-md-9 d-flex flex-wrap my-3" v-if="customControlType.name == 'DropdownList'">
                         <div class="col-md-4 text-md-right text-left">
-                  
+
                         </div>
                         <div class="col-md-8">
                           <el-input type="text" class="w-100" size="large" v-model="customDropdownList" />
                         </div>
                       </div>
-  
+
                       <div class="col-md-9 d-flex flex-wrap my-3">
                         <div class="col-md-4 text-md-right text-left">
                           <label for="">Entity type</label>
@@ -226,7 +227,8 @@
                             label: i.name,
                             value: i.id,
                           }))
-                            " placeholder="Select type" class="w-100" size="large" style="width: 100%; text-align: left" />
+                            " placeholder="Select type" class="w-100" size="large"
+                            style="width: 100%; text-align: left" />
                         </div>
                       </div>
                       <div class="col-md-12">
@@ -249,7 +251,7 @@
                       </div>
                     </div>
                   </div>
-  
+
                   <div class="row">
                     <div class="col-md-12 px-0">
                       <hr class="hr my-0" />
@@ -324,7 +326,7 @@ export default {
     ]);
     const dragging = ref(false)
     const reoderloading = ref(false)
-  
+
 
     const saveChip = () => {
       ((dropdownList.value.indexOf(currentInput.value) === -1)) && dropdownList.value.push(currentInput.value);
@@ -338,7 +340,7 @@ export default {
     }
 
     const checkComma = (e) => {
-      if(e.data == ',') {
+      if (e.data == ',') {
         saveChip();
       }
     }
@@ -567,7 +569,8 @@ export default {
     getAllCustomFields();
 
     const getEntityName = (id) => {
-      return entityType.value.find((i) => i.id == id).name;
+      return entityType.value && entityType.value.find((i) => i.id == id)
+        ? entityType.value.find((i) => i.id == id).name : "";
     };
 
     const getControlName = (id) => {
@@ -597,7 +600,7 @@ export default {
         reoderloading.value = false
       }
     }
-  
+
 
     return {
       controlType,
@@ -859,9 +862,9 @@ i {
 }
 
 .graggable {
-    cursor: move; /* fallback if grab cursor is unsupported */
-    cursor: grab;
-    cursor: -moz-grab;
-    cursor: -webkit-grab;
-}
-</style>
+  cursor: move;
+  /* fallback if grab cursor is unsupported */
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}</style>

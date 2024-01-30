@@ -22,13 +22,13 @@
                             <el-input type="textarea" :rows="3" v-model="description" />
                         </div>
                     </div>
-                    <div class="row mt-4  ">
+                    <!-- <div class="row mt-4  ">
                         <div class="col-md-3"></div>
                         <div class="col-md-9  ">
-                            <el-input class="" type="text" placeholder="Sample Question" v-model="description" />
+                            <el-input class="" type="text" placeholder="Sample Question" v-model="description"  required />
                             <el-checkbox class="" v-model="required" label="Required" />
                         </div>
-                    </div>
+                    </div> -->
                     <div class="row">
                         <hr class="w-100">
                     </div>
@@ -38,8 +38,8 @@
                                 <div class="col-md-3 font-weight-bold text-md-right text-left "><label for="">Label name
                                     </label></div>
                                 <div class="col-md-9  ">
-                                    <el-input type="text" class="w-100" placeholder="input Label name"
-                                        v-model="item.label" />
+                                    <el-input type="text"  class="w-100" placeholder="input Label name"
+                                        v-model="item.label" required />
                                 </div>
                             </div>
                             <div class="row mt-3  ">
