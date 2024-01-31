@@ -183,7 +183,7 @@ export default {
       this.userDetails.countryId = this.selectedCountry.id;
       this.loading = true;
       axios
-        .post("/api/onboarding", this.userDetails)
+        .post("/api/Onboarding", this.userDetails)
         .then((res) => {
           if (res.data.isOnboarded) {
             ElNotification({

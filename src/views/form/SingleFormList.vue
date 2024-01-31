@@ -13,7 +13,7 @@
         </div>
         <div class="d-flex flex-wrap flex-column flex-sm-row row"
             v-if="route.fullPath == `/tenant/singleformlist?id=${route.query.id}&formName=${route.query.formName}`">
-            <div class="col-12 py-md-4 mt-3">
+            <div class="col-md-9 py-md-4 mt-3">
                 <div class="font-weight-bold">Copy and Share the link</div>
                 <div class="p-inputgroup form-group mt-2">
                     <el-input v-model="formlink" placeholder="Click the copy button when the link appears"
@@ -28,34 +28,35 @@
                     </el-input>
                 </div>
             </div>
+            <div class="col-md-3  mt-4" @click="previewForm">
+                <div></div>
+                <el-button class="d-flex mt-3" round >
+                    <el-icon><View /></el-icon>
+                    <span>Preview Form</span>
+                </el-button>
+            </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-md-12 d-flex">
-                <div class="col-md-6 border py-3 text-center" style="background-color: #F4F4F4;">
+                <div class="col-md-6 border py-3 tab-color text-center" :class="{'showedColor' : showSummary}" @click="summary" >
                     Summary
                 </div>
-            <div class="col-md-6 border py-3 text-center">
-                Individual
+                <div class="col-md-6 border py-3 tab-color text-center" :class="{'showedColor' : showIndividual}" @click="individual" >
+                    Individual
+                </div>
             </div>
-            </div>
-        </div>
+        </div> -->
         <div class="row">
-            <div class="mt-3 col-md-12 ">
-                <table class="table table-borderlesst  remove-styles mt-0" id="table">
-                    <thead class="border font-weight-700">
-                        <tr class="small-text text-capitalize text-nowrap font-weight-700" style="border-bottom: 0">
-                            <th scope="col">Name</th>
+            <div class="mt-3 rounded col-md-12 " v-for="(item, index) in formItems" :key="index">
+                <table v-for="(itm, indx) in item.data" :key="indx" class="table   remove-styles mt-0" id="table">
+                    <thead class="border font-weight-bold">
+                        <tr class=" text-capitalize text-nowrap font-weight-bold" style="border-bottom: 0">
+                            <th class="font-weight-bold " scope="col">{{itm.customAttribute.label}}</th>
                         </tr>
                     </thead>
                     <tbody class=" font-weight-550 text-nowrap " style="font-size: 15px">
                         <tr class="border">
-                            <td class="font-weight-550">Tope James</td>
-                        </tr>
-                        <tr class="border">
-                            <td>Daniel Oladapo</td>
-                        </tr>
-                        <tr class="border">
-                            <td>Joseph Oladipo</td>
+                            <td class="font-weight-550">{{itm.data}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -108,7 +109,7 @@ import { ref, computed, inject } from "vue";
 import Table from "@/components/table/Table";
 import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from "element-plus";
-// import router from "../../router";
+import router from "../../router";
 import { useRoute } from "vue-router";
 export default {
     components: {
@@ -116,6 +117,8 @@ export default {
     },
     setup() {
         const loading = ref(false)
+        const showIndividual = ref(false)
+        const showSummary = ref(true)
         const selectedLink = ref(null)
         const tenantID = ref('')
         const primarycolor = inject("primarycolor");
@@ -127,23 +130,28 @@ export default {
             { name: "INCOME RANGE", value: "incomerange" },
             { name: "ACTION", value: "action" },
         ]);
-        const formItems = ref([
-            { name: "Sam loko", age: "29", incomerange: "200k", id: 1 },
-            { name: "James Ibori", age: "30", incomerange: "200k", id: 2 },
-            { name: "Adams Lawmon", age: "89", incomerange: "200k", id: 3 },
-            { name: "Samson lawnrence", age: "76", incomerange: "200k", id: 4 },
-            { name: "Stephen Brown", age: "40", incomerange: "200k", id: 5 },
-        ]);
+        const formItems = ref([]);
 
         const getFormData = async () => {
             try {
                 const { data } = await axios.get(`/api/Forms/getformdata?Id=${route.query.id}`)
                 console.log(data, 'hdjdjj');
+                formItems.value = data
+                console.log(formItems.value, 'form');
             } catch (error) {
                 console.log(error);
             }
         }
         getFormData()
+
+        const summary = () => {
+            showSummary.value = true
+            showIndividual.value = false
+        }
+        const individual = () => {
+            showSummary.value = false
+            showIndividual.value = true
+        }
 
         const getCurrentlySignedInUser = async () => {
             try {
@@ -160,6 +168,10 @@ export default {
             if (!tenantID.value) return "";
             return `${window.location.origin}/createpublicform?id=${route.query.id}&tenantID=${tenantID.value}`;
         });
+
+        const previewForm = () => {
+            router.push(`/createpublicform?id=${route.query.id}&tenantID=${tenantID.value}`)
+        }
 
 
         const copylink = () => {
@@ -188,7 +200,12 @@ export default {
             route,
             selectedLink,
             tenantID,
-            copylink
+            copylink,
+            showIndividual,
+            showSummary,
+            individual,
+            summary,
+            previewForm
         }
     },
 }
@@ -198,6 +215,16 @@ export default {
 .text-color {
     color: #212529;
     text-decoration: none;
+}
+
+.showedColor {
+    background-color: #CAF5FF !important;
+    font-weight: bold;
+}
+
+
+.tab-color{
+    background-color: #F4F4F4;
 }
 
 .text-color:hover {
@@ -224,7 +251,7 @@ export default {
 
 .table thead th {
     font-weight: 550;
-    opacity: 50% !important;
+    /* opacity: 50% !important; */
 }
 
 /* .table thead {

@@ -478,6 +478,8 @@ export default {
       selectedCashAccount.value = cashBankAccount.value.find((i) => {
         return i.id === id;
       });
+      console.log(selectedCashAccount.value, 'llklll')
+      selectedCashAccountID.value = selectedCashAccount.value ? selectedCashAccount.value.text : ""
     };
 
     const getOffItems = async () => {
