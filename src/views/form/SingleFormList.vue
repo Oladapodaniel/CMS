@@ -4,6 +4,7 @@
             <div class="">
                 <div class="head-text">{{ route.query.formName }}</div>
             </div>
+
             <!-- <div class="d-flex flex-column flex-sm-row   link">
                 <router-link class="" to="/tenant/pledge/makepledge">
                     <el-button :color="primarycolor" class="header-btn w-100 mt-3 mt-sm-0" round>
@@ -11,11 +12,23 @@
                     </el-button></router-link>
             </div> -->
         </div>
+        <div class="row">
+            <div class="col-12 px-0">
+                <div class="text-primary c-pointer col-md-2" @click="previousPage">
+                    <el-icon>
+                        <DArrowLeft />
+                    </el-icon> Back
+                </div>
+            </div>
+        </div>
         <div class="d-flex flex-wrap flex-column flex-sm-row row"
             v-if="route.fullPath == `/tenant/singleformlist?id=${route.query.id}&formName=${route.query.formName}`">
-            <div class="col-md-9 py-md-4 mt-3">
-                <div class="font-weight-bold">Copy and Share the link</div>
-                <div class="p-inputgroup form-group mt-2">
+            <div class="col-md-9 pt-md-2 pb-1 border d-flex  rounded mt-3">
+                <!-- <div class="font-weight-bold">Copy and Share the link</div> -->
+                <div class="font-weight-bold">
+                    <img src="../../assets/link.svg" alt="" style="width: 60px; height: 60px">
+                </div>
+                <div class="p-inputgroup form-group mt-2 ">
                     <el-input v-model="formlink" placeholder="Click the copy button when the link appears"
                         ref="selectedLink" class="input-with-select">
                         <template #append>
@@ -28,10 +41,11 @@
                     </el-input>
                 </div>
             </div>
-            <div class="col-md-3  mt-4" @click="previewForm">
-                <div></div>
-                <el-button class="d-flex mt-3" round >
-                    <el-icon><View /></el-icon>
+            <div class="col-md-3 d-flex px-0 justify-content-center  align-items-center mt-4">
+                <el-button class="d-flex " @click="previewForm" size="large" round>
+                    <el-icon>
+                        <View />
+                    </el-icon>
                     <span>Preview Form</span>
                 </el-button>
             </div>
@@ -46,61 +60,24 @@
                 </div>
             </div>
         </div> -->
-        <div class="row">
-            <div class="mt-3 rounded col-md-12 " v-for="(item, index) in formItems" :key="index">
-                <table v-for="(itm, indx) in item.data" :key="indx" class="table   remove-styles mt-0" id="table">
-                    <thead class="border font-weight-bold">
-                        <tr class=" text-capitalize text-nowrap font-weight-bold" style="border-bottom: 0">
-                            <th class="font-weight-bold " scope="col">{{itm.customAttribute.label}}</th>
-                        </tr>
-                    </thead>
-                    <tbody class=" font-weight-550 text-nowrap " style="font-size: 15px">
-                        <tr class="border">
-                            <td class="font-weight-550">{{itm.data}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="row justify-content-center border mt-4 pb-5 rounded" v-if="formItems && formItems.length > 0">
+            <div class=" rounded col-md-9 border mt-5 shadow-sm py-3 " v-for="(item, index) in formItems" :key="index">
+                <div v-for="(itm, indx) in item.data" :key="indx" class=" row justify-content-center border-remove   "
+                    id="table">
+                    <div class="col-md-11   py-3 ">
+                        <div class="row text-capitalize justify-content-between">
+                            <div class=" col-md-6 primary-text ">{{ itm.customAttribute.label }}</div>
+                            <div class="col-md-6 font-weight-bold  ">{{ itm.data }}</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
-
-        <!-- <Table :data="formItems" :headers="formHeaders" :checkMultipleItem="false" v-loading="loading">
-            <template v-slot:name="{ item }">
-                <div class="c-pointer" @click="formListClick(item.id)">
-                    {{ item.name }}
-                </div>
-            </template>
-            <template v-slot:age="{ item }">
-                <div class="c-pointer" @click="formListClick(item.id)">
-                    {{ item.age }}
-                </div>
-            </template>
-            <template v-slot:incomerange="{ item }">
-                <div class="c-pointer" @click="formListClick(item.id)">
-                    {{ item.incomerange }}
-                </div>
-            </template>
-            <template v-slot:action="{ item }">
-                <el-dropdown trigger="click">
-                    <el-icon>
-                        <MoreFilled />
-                    </el-icon>
-                    <template #dropdown>
-                        <el-dropdown-menu>
-                            <el-dropdown-item>
-                                <router-link :to="`/tenant/pledge/makepledge?id=${item.id}`"
-                                    class="text-color">Edit</router-link>
-                            </el-dropdown-item>
-                            <el-dropdown-item>
-                                <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">
-                                    Delete
-                                </div>
-                            </el-dropdown-item>
-                        </el-dropdown-menu>
-                    </template>
-                </el-dropdown>
-            </template>
-        </Table> -->
+        <div class="row justify-content-center mt-5" v-if="formItems && formItems.length === 0">
+            <div class="col-md-6 text-center  mt-5" style="font-size: 23px ">
+                No entries have been submitted in the form yet. Please copy and share the link above to make an entry
+            </div>
+        </div>
     </div>
 </template>
 
@@ -143,6 +120,10 @@ export default {
             }
         }
         getFormData()
+
+        const previousPage = () =>{
+            router.push('/tenant/formlist')
+        }
 
         const summary = () => {
             showSummary.value = true
@@ -193,6 +174,7 @@ export default {
 
         return {
             formHeaders,
+            previousPage,
             formlink,
             formItems,
             loading,
@@ -217,13 +199,21 @@ export default {
     text-decoration: none;
 }
 
+.border-remove {
+    border-bottom: 1px solid rgb(189, 189, 189) !important;
+}
+
+.border-remove:last-child {
+    border: none !important;
+}
+
 .showedColor {
     background-color: #CAF5FF !important;
     font-weight: bold;
 }
 
 
-.tab-color{
+.tab-color {
     background-color: #F4F4F4;
 }
 

@@ -48,6 +48,21 @@
                                     }))
                                         " :placeholder="item.label" class="w-100" size="large" />
                                 </div>
+                                <div class="col-md-9  " v-if="item.controlType === 2">
+                                    <el-checkbox v-model="item.data" size="large" />
+                                </div>
+                                <div class="col-md-9  " v-if="item.controlType === 3">
+                                    <el-date-picker v-model="item.data" class="w-100" type="date"
+                                        :placeholder="item.label" size="default" />
+                                </div>
+                                <div class="col-md-9  " v-if="item.controlType === 4">
+                                    <el-input type="email" class="w-100" v-model="item.data"
+                                        :placeholder="item.label" />
+                                </div>
+                                <div class="col-md-9  " v-if="item.controlType === 5">
+                                    <el-input type="number" class="w-100" v-model="item.data"
+                                        :placeholder="item.label" />
+                                </div>
                             </div>
                             <!-- <div class="row mt-3  ">
                                 <div class="col-md-3 font-weight-bold text-md-right text-left "><label for="">
@@ -105,7 +120,7 @@
                     <div class="row mt-4">
                         <div class="col-md-3"></div>
                         <div class="col-md-9" @click="saveForm">
-                            <el-button class="w-100" round :color="primarycolor"> Save form</el-button>
+                            <el-button class="w-100" round :color="primarycolor"> Submit</el-button>
                         </div>
                     </div>
                 </div>

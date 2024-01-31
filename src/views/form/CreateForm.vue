@@ -137,8 +137,8 @@ export default {
             { name: "CheckBox", id: "2" },
             { name: "DateTime", id: "3" },
             { name: "Email", id: "4" },
-            { name: "Image", id: "5" },
-            { name: "Number", id: "6" },
+            { name: "Number", id: "5" },
+            // { name: "Image", id: "6" },
         ]);
 
         const deleteItem = (index) => {
@@ -216,6 +216,7 @@ export default {
             try {
                 const { data } = await axios.post('/api/Forms/saveform', payload)
                 console.log(data);
+                router.push('/tenant/formlist')
             }
             catch (error) {
                 console.log(error);

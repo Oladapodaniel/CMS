@@ -55,7 +55,7 @@
             </span>
             <template #dropdown>
               <el-dropdown-menu >
-                <el-dropdown-item  v-for="(cash, index) in accountsAndBalancesList" :key="index"
+                <el-dropdown-item v-for="(cash, index) in accountsAndBalancesList" :key="index"
                   @click="selectAnAccount(cash, index)" class="d-flex justify-content-between font-weight-700">
                   <div class="close-modal w-100">{{ cash.text }}</div>
                   <div>&nbsp;&nbsp;</div>
@@ -214,7 +214,7 @@
   </div>
 </template>
 <script>
-import { ref, computed, inject } from "vue";
+import { ref, computed, watchEffect, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import transactionService from "../../../services/financials/transaction_service";
 import TransactionTable from "../../../components/transactions/TransactionsTable"
@@ -234,6 +234,7 @@ export default {
   },
   setup() {
     const transactions = ref([]);
+    // const childElement = ref('')
     const loading = ref(false)
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
     const cashAndBank = ref([
@@ -323,6 +324,7 @@ export default {
     const toggleAccount = () => {
       accountDisplay.value = !accountDisplay.value;
     };
+
 
     const hideModals = (e) => {
       if (!e.target.classList.contains("close-modal")) {
@@ -561,6 +563,11 @@ export default {
     const reloadAccounts = () => {
       getAccountBalances()
     }
+
+    // watchEffect(() => {
+    //   let childElementValue = childElement.value
+    //   transaction_service.widenDropDownMenu(childElementValue)
+    // })
 
     return {
       transactions,

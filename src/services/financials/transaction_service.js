@@ -1,6 +1,22 @@
 import axios from "@/gateway/backendapi";
 import stopProgressBar from "../progressbar/progress";
 
+
+// const widenDropDownMenu = (element) => {
+//     let childElement = element;
+//     // Create a style tag
+//     var styleTag = document.createElement('style');
+
+//     // Append the style tag to the document head
+//     document.head.appendChild(styleTag);
+
+//     // Define the CSS rule with the desired style
+//     var cssRule = `.el-popper.el-dropdown__popper {width: ${childElement && childElement.ref ? childElement.ref.offsetWidth : 0}px;}`;
+
+//     // Add the CSS rule to the style tag
+//     styleTag.textContent = cssRule;
+// }
+
 const getTransactionalAccounts = () => {
     return new Promise((resolve, reject) => {
         axios.get("/api/Financials/Accounts/GetTransactionalAccounts")
@@ -301,6 +317,7 @@ const approveFinancialReport = (payload) => {
 
 
 export default {
+    // widenDropDownMenu,
     getTransactionalAccounts, 
     testPoint, 
     getTransactions,
