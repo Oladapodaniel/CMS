@@ -163,16 +163,16 @@ export default {
         route: '/',
         submenu: []
       }
-      const form = {
-        id: 3,
-        name: 'Form',
-        logo: require('../../assets/dashboardlinks/events-icon.svg'),
-        route: '/tenant/formlist',
-        submenu: []
-      }
+      // const form = {
+      //   id: 3,
+      //   name: 'Form',
+      //   logo: require('../../assets/dashboardlinks/events-icon.svg'),
+      //   route: '/tenant/formlist',
+      //   submenu: []
+      // }
 
       const communication = {
-        id: 4,
+        id: 3,
         name: 'Communication',
         logo: require('../../assets/dashboardlinks/com-icon.svg'),
         route: '/',
@@ -201,7 +201,7 @@ export default {
       }
 
       const event = {
-        id: 5,
+        id: 4,
         name: 'Events',
         logo: require('../../assets/dashboardlinks/events-icon.svg'),
         route: '/',
@@ -220,7 +220,7 @@ export default {
       }
 
       const financial = {
-        id: 6,
+        id: 5,
         name: 'Financials',
         logo: require('../../assets/dashboardlinks/acc-icon.svg'),
         route: '/',
@@ -277,7 +277,7 @@ export default {
         route: '/tenant/family',
       }
       const social = {
-        id: 7,
+        id: 6,
         name: 'Social & Mobile App',
         logo: require('../../assets/dashboardlinks/social-icon.svg'),
         route: '/tenant/social',
@@ -290,7 +290,7 @@ export default {
       //   submenu: []
       // }
       const report = {
-        id: 8,
+        id: 7,
         name: 'Reports',
         logo: require('../../assets/dashboardlinks/reports-icon.svg'),
         route: '/tenant/reports',
@@ -386,7 +386,7 @@ export default {
       //   submenu: []
       // }
       const more = {
-        id: 9,
+        id: 8,
         name: 'More',
         logo: '',
         route: '/',
@@ -479,7 +479,7 @@ export default {
         }
 
         if (i.toLowerCase() == 'admin') {
-          menuLink.value.push(dashboard, people, form, communication, event, financial, social, report, more,)
+          menuLink.value.push(dashboard, people, communication, event, financial, social, report, more,)
           // menuLink.value.push(dashboard, people, communication, event, financial,  report, more)
           menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(members, firsttimers, groups, families)
           menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(media, branch, settings)
