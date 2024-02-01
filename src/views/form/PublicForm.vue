@@ -1,5 +1,5 @@
 <template>
-    <div class="container-top container-slim">
+    <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
         <div class="continer-fluid mt-3">
             <div class="row">
                 <div class="col-md-12 text-center head-text">{{ singleFormData.name }}</div>
@@ -142,11 +142,10 @@ export default {
         const description = ref("")
         const cutomFieldData = ref([{ parameterValues: [] }])
         const route = useRoute();
-        const singleFormData = ref([])
+        const singleFormData = ref([]);
         const required = ref(false)
         const centerDialogVisible = ref(false)
         const currentInput = ref("")
-        const tenantId = ref("")
         const dropdownList = ref([])
         const { xsOnly, mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
         const primarycolor = inject("primarycolor");
@@ -218,21 +217,7 @@ export default {
         }
         getFormData()
 
-        const getCurrentlySignedInUser = async () => {
-            try {
-                const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-                tenantId.value = res.data.tenantId;
-            } catch (err) {
-                /*eslint no-undef: "warn"*/
-                console.log(err);
-            }
-        };
-        getCurrentlySignedInUser();
-
         const saveForm = async () => {
-
-            // tenantID: tenantId.value,
-
             try {
                 const { data } = await axios.post('/api/Forms/saveformdata', singleFormData.value.customAttributes.map((i) => ({
                     customAttributeID: i.id,
@@ -255,7 +240,6 @@ export default {
             responseType,
             centerDialogVisible,
             currentInput,
-            tenantId,
             route,
             singleFormData,
             xsOnly, mdAndUp, lgAndUp, xlAndUp,

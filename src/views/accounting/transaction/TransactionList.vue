@@ -54,7 +54,7 @@
               </div>
             </span>
             <template #dropdown>
-              <el-dropdown-menu >
+              <el-dropdown-menu>
                 <el-dropdown-item v-for="(cash, index) in accountsAndBalancesList" :key="index"
                   @click="selectAnAccount(cash, index)" class="d-flex justify-content-between font-weight-700">
                   <div class="close-modal w-100">{{ cash.text }}</div>
@@ -69,14 +69,14 @@
                             <el-icon size="large"><Files /></el-icon>
                             Upload Bank Statement
                           </a> -->
-                  <!-- <a class="font-weight-bold small-text d-flex justify-content-center p-3 text-decoration-none primary-text"
+                  <a class="font-weight-bold small-text d-flex justify-content-center p-3 text-decoration-none primary-text"
                     @click="openModal">
                     <el-icon size="large">
                       <CirclePlus />
                     </el-icon>
                     Add a
                     new account
-                  </a> -->
+                  </a>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -89,7 +89,42 @@
             <div class="col-sm-3 align-self-center text-right p-0">
               Account Type <span class="text-danger">*</span>
             </div>
-            <div class="col-sm-7">
+            <div class="col-md-7">
+              <el-dropdown trigger="click" class="w-100 mt-2">
+                <span class="el-dropdown-link w-100">
+                  <div class="d-flex justify-content-between border-contribution w-100" size="large">
+                    <div>
+                      {{
+                        !selectedAccountType || !selectedAccountType.text
+                        ? "Select account type"
+                        : selectedAccountType.text
+                      }}
+                    </div>
+                    <div>
+                      <el-icon class="el-icon--right">
+                        <arrow-down />
+                      </el-icon>
+                    </div>
+                  </div>
+                </span>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item v-for="(accounts, index) in transactionalAccounts" :key="index">
+                      <div class="col-md-12 px-2">
+                        <div v-if="accounts.length > 0" class="py-2 font-weight-700 border-bottom">
+                          {{ accountTypes[index] }}
+                        </div>
+                        <div v-for="(account, indx) in accounts" :key="indx" @click="selectAccountType(account)"
+                          class="c-pointer py-2">
+                          {{ account.text }}
+                        </div>
+                      </div>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
+            <!-- <div class="col-sm-7">
               <div class="select-elem-con pointer d-flex justify-content-space-between close-modal"
                 @click="showAccount = !showAccount">
                 <span class="ofering close-modal">Select one</span><span>
@@ -119,7 +154,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="row mt-2">
             <div class="col-sm-3 align-self-center text-right p-0">
@@ -133,7 +168,13 @@
             <div class="col-sm-3 align-self-center text-right p-0">
               Account Currency
             </div>
-            <div class="col-sm-7">
+            <div class="col-md-7" id="currencySelect">
+              <el-select v-model="selectedCurrencyID" placeholder="Select" class="w-100" @change="setSelectedCurrency"
+                filterable>
+                <el-option v-for="item in filterCurrency" :label="item.name" :value="item.id" :key="item.id" />
+              </el-select>
+            </div>
+            <!-- <div class="col-sm-7">
               <div class="select-elem-con pointer d-flex justify-content-space-between close-modal"
                 @click="showCurrency = !showCurrency">
                 <span class="ofering close-modal">NGN - Nigeria</span><span>
@@ -161,7 +202,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="row mt-2">
             <div class="col-sm-3 align-self-center text-right p-0">
@@ -234,6 +275,9 @@ export default {
   },
   setup() {
     const transactions = ref([]);
+    const selectedAccountType = ref({});
+    const selectedCurrency = ref({});
+    const selectedCurrencyID = ref(null);
     // const childElement = ref('')
     const loading = ref(false)
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
@@ -266,6 +310,16 @@ export default {
     const setTableLoading = (payload) => {
       tableLoading.value = payload
     }
+
+    const selectAccountType = (account) => {
+      selectedAccountType.value = account;
+    };
+
+    const setSelectedCurrency = () => {
+      selectedCurrency.value = accountCurrencies.value.find(
+        (i) => i.id == selectedCurrencyID.value
+      );
+    };
 
     const getCurrentUser = async () => {
       try {
@@ -487,6 +541,7 @@ export default {
 
     const newAccount = ref({});
     const saveAccount = async () => {
+      console.log(newAccount.value, 'jjjjjj')
       try {
         newAccount.value.accountType = 0;
         await transactionService.saveAccount(newAccount.value)
@@ -571,6 +626,11 @@ export default {
 
     return {
       transactions,
+      setSelectedCurrency,
+      selectedCurrencyID,
+      selectedCurrency,
+      selectAccountType,
+      selectedAccountType,
       loading,
       setTableLoading,
       tableLoading,

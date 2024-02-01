@@ -1,5 +1,5 @@
 <template>
-    <div class="container-top container-slim">
+    <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
         <div class="conatiner-fluid mt-3">
             <div class="row">
                 <div class="col-md-12 head-text">Create Form </div>
