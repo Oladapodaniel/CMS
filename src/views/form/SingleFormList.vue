@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid container-top">
+    <div class=" container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
         <div class="d-flex flex-wrap flex-column flex-sm-row mb-3 justify-content-between">
             <div class="">
                 <div class="head-text">{{ route.query.formName }}</div>
@@ -23,10 +23,10 @@
         </div>
         <div class="d-flex flex-wrap flex-column flex-sm-row row"
             v-if="route.fullPath == `/tenant/singleformlist?id=${route.query.id}&formName=${route.query.formName}`">
-            <div class="col-md-9 pt-md-2 pb-1 border d-flex  rounded mt-3">
+            <div class="col-md-9 pt-md-2 pb-1  d-flex  rounded mt-3">
                 <!-- <div class="font-weight-bold">Copy and Share the link</div> -->
-                <div class="font-weight-bold">
-                    <img src="../../assets/link.svg" alt="" style="width: 60px; height: 60px">
+                <div class=" mt-2 mr-2 image" @click="getQrCode">
+                    <img src="../../assets/group2.svg" alt="Member image" />
                 </div>
                 <div class="p-inputgroup form-group mt-2 ">
                     <el-input v-model="formlink" placeholder="Click the copy button when the link appears"
@@ -41,7 +41,7 @@
                     </el-input>
                 </div>
             </div>
-            <div class="col-md-3 d-flex px-0 justify-content-center  align-items-center mt-4">
+            <div class="col-md-3 d-flex px-0 justify-content-center  align-items-center mt-2">
                 <el-button class="d-flex " @click="previewForm" size="large" round>
                     <el-icon>
                         <View />
@@ -60,7 +60,7 @@
                 </div>
             </div>
         </div> -->
-        <div class="row justify-content-center border mt-4 pb-5 rounded" v-if="formItems && formItems.length > 0">
+        <div class="row justify-content-center  mt-4 pb-5 rounded" v-if="formItems && formItems.length > 0">
             <div class=" rounded col-md-9 border mt-5 shadow-sm py-3 " v-for="(item, index) in formItems" :key="index">
                 <div v-for="(itm, indx) in item.data" :key="indx" class=" row justify-content-center border-remove   "
                     id="table">
@@ -78,6 +78,18 @@
                 No entries have been submitted in the form yet. Please copy and share the link above to make an entry
             </div>
         </div>
+        <el-dialog v-model="QRCodeDialog" title="" :width="mdAndUp || lgAndUp || xlAndUp ? `30%` : xsOnly ? `90%` : `70%`"
+            class="QRCodeDialog" align-center>
+
+            <div class="d-flex align-items-center flex-column">
+                <h4 class="text-capitalize font-weight-bold"> Form QR Code For Registration</h4>
+            </div>
+            <div class=" d-flex justify-content-center ">
+                <div class="img-wrapper  ">
+                    <img v-if="qrCode" :src="qrCode" class="image-wrapper w-100" />
+                </div>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -87,6 +99,7 @@ import Table from "@/components/table/Table";
 import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import router from "../../router";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useRoute } from "vue-router";
 export default {
     components: {
@@ -97,9 +110,12 @@ export default {
         const showIndividual = ref(false)
         const showSummary = ref(true)
         const selectedLink = ref(null)
+        const QRCodeDialog = ref(false)
+        const qrCode = ref('')
         const tenantID = ref('')
         const primarycolor = inject("primarycolor");
         const route = useRoute();
+        const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
 
         const formHeaders = ref([
             { name: "NAME", value: "name" },
@@ -121,7 +137,7 @@ export default {
         }
         getFormData()
 
-        const previousPage = () =>{
+        const previousPage = () => {
             router.push('/tenant/formlist')
         }
 
@@ -147,11 +163,23 @@ export default {
 
         const formlink = computed(() => {
             if (!tenantID.value) return "";
-            return `${window.location.origin}/createpublicform?id=${route.query.id}&tenantID=${tenantID.value}`;
+            return `${window.location.origin}/createpublicform?id=${route.query.id}`;
         });
 
         const previewForm = () => {
-            router.push(`/createpublicform?id=${route.query.id}&tenantID=${tenantID.value}`)
+            router.push(`/createpublicform?id=${route.query.id}`)
+        }
+
+        const getQrCode = async () => {
+            try {
+                const res = await axios.get(`/api/Settings/GetQRCode?link=${window.location.origin}/createpublicform?id=${route.query.id}`)
+                QRCodeDialog.value = true
+                qrCode.value = res.data
+                console.log(qrCode.value, 'hhhh');
+            }
+            catch (error) {
+                console.log(error);
+            }
         }
 
 
@@ -174,7 +202,11 @@ export default {
 
         return {
             formHeaders,
+            QRCodeDialog,
+            qrCode,
+            getQrCode,
             previousPage,
+            mdAndUp, lgAndUp, xlAndUp, xsOnly,
             formlink,
             formItems,
             loading,
@@ -194,6 +226,10 @@ export default {
 </script>
 
 <style scoped>
+.image img {
+    height: 2.5rem;
+}
+
 .text-color {
     color: #212529;
     text-decoration: none;

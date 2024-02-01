@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid container-top">
+    <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
         <div class="d-flex flex-wrap flex-column flex-sm-row mb-3 justify-content-between">
             <div class="">
                 <div class="head-text">Forms</div>
@@ -67,6 +67,7 @@ import monthDayYear from "../../services/dates/dateformatter";
 import axios from "@/gateway/backendapi";
 import router from "../../router";
 import Table from "@/components/table/Table";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 export default {
     components: {
         Table,
@@ -74,6 +75,7 @@ export default {
     setup() {
         const loading = ref(false)
         const primarycolor = inject("primarycolor");
+        const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
 
         const formHeaders = ref([
             { name: "FORM NAME", value: "name" },
@@ -163,6 +165,7 @@ export default {
             formItems,
             loading,
             primarycolor,
+            mdAndUp, lgAndUp, xlAndUp, xsOnly,
             date,
             showConfirmModal,
             deleteForm,
