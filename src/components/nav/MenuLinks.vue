@@ -40,6 +40,9 @@
               <img :src="item.logo" class="link-icon" alt="" />
             </el-icon>
             <span>{{ item.name }}</span>
+            <!-- <el-tag type="warning" class="ml-3" effect="dark" size="" v-if="item.id == 5" round>
+              <span style="display: flex; font-size: 14px">Beta</span>
+            </el-tag> -->
           </el-menu-item>
         </div>
       </el-menu>
@@ -163,13 +166,6 @@ export default {
         route: '/',
         submenu: []
       }
-      // const form = {
-      //   id: 3,
-      //   name: 'Form',
-      //   logo: require('../../assets/dashboardlinks/events-icon.svg'),
-      //   route: '/tenant/formlist',
-      //   submenu: []
-      // }
 
       const communication = {
         id: 3,
@@ -218,6 +214,14 @@ export default {
           }
         ]
       }
+      // const form = {
+      //   id: 5,
+      //   name: 'Forms',
+      //   logo: require('../../assets/dashboardlinks/events-icon.svg'),
+      //   route: '/tenant/formlist',
+      //   submenu: []
+      // }
+
 
       const financial = {
         id: 5,

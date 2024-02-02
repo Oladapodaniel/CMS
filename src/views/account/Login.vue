@@ -210,6 +210,10 @@ export default {
           let adminIndex = data.roles.findIndex((i) => {
             return i.toLowerCase() == "admin";
           });
+          
+          let basicUserIndex = data.roles.findIndex((i) => {
+            return i.toLowerCase() == "basicuser";
+          });
 
           if (adminIndex !== -1) {
             setTimeout(() => {
@@ -224,7 +228,7 @@ export default {
                 router.push("/next");
               }
             }
-          } else if (adminIndex === -1 && roleIndex !== -1) {
+          } else if ((adminIndex === -1 && roleIndex !== -1) &&  (basicUserIndex === -1 && roleIndex !== -1)) {
             localStorage.clear();
             ElNotification({
               title: "Unauthorized",

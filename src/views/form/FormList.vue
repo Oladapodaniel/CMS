@@ -1,8 +1,8 @@
 <template>
-    <div class="container-fluid container-top">
-        <div class="d-flex flex-wrap flex-column flex-sm-row mb-3 justify-content-between">
+    <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
+        <div  class="d-flex flex-wrap flex-column flex-sm-row mb-3 justify-content-between">
             <div class="">
-                <div class="head-text">Forms</div>
+                <div class="h2 font-weight-600">Forms</div>
             </div>
             <div class="d-flex flex-column flex-sm-row   link">
                 <router-link class="" to="/tenant/createform">
@@ -11,7 +11,7 @@
                     </el-button></router-link>
             </div>
         </div>
-        <Table :data="formItems" :headers="formHeaders" :checkMultipleItem="false" v-loading="loading">
+        <Table :data="formItems" :headers="formHeaders" v-if="(formItems && formItems.length > 0) && !loading && !networkError" :checkMultipleItem="false" v-loading="loading">
             <template v-slot:name="{ item }">
                 <div class="c-pointer" @click="formListClick(item)">
                     {{ item.name }}
@@ -35,8 +35,7 @@
                     <template #dropdown>
                         <el-dropdown-menu>
                             <el-dropdown-item>
-                                <router-link :to="`/tenant/createform?formID=${item.id}`"
-                                    class="text-color">Edit
+                                <router-link :to="`/tenant/createform?formID=${item.id}`" class="text-color">Edit
                                     Form</router-link>
                             </el-dropdown-item>
                             <!-- <el-dropdown-item>
@@ -44,7 +43,8 @@
                                     Form</router-link>
                             </el-dropdown-item> -->
                             <el-dropdown-item>
-                                <router-link :to="`/tenant/singleformlist?id=${item.id}&formName=${item.name}`" class="text-color">View
+                                <router-link :to="`/tenant/singleformlist?id=${item.id}&formName=${item.name}`"
+                                    class="text-color">View
                                     Data</router-link>
                             </el-dropdown-item>
                             <el-dropdown-item>
@@ -57,7 +57,36 @@
                 </el-dropdown>
             </template>
         </Table>
+        <div class="row mt-4">
+            <div v-if="(formItems && formItems.length === 0) && !loading && !networkError" class="no-person mt-4 col-md-12">
+                <div class="empty-img">
+                    <!-- <p><img src="../../assets/people/people-empty.svg" alt="" /></p> -->
+                    <p class="tip">You haven't Created any Form yet </p>
+                    <el-button :color="primarycolor" @click="createForm" class="ml-2 header-btn" round>Create a new Form
+                    </el-button>
+                </div>
+            </div>
+            <div v-else-if="networkError && !loading" class="adjust-network">
+                <img src="../../assets/network-disconnected.png">
+                <div>Opps, Your internet connection was disrupted</div>
+            </div>
+        </div>
     </div>
+
+    <el-skeleton class="w-100" animated v-if="loading && formItems && formItems.length === 0">
+        <template #template>
+            <div style="display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px
+          ">
+                <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+                <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+            </div>
+            <!-- <el-skeleton-item variant="text" class="w-100" style="height: 25px" :rows="10"/> -->
+            <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
+        </template>
+    </el-skeleton>
 </template>
 
 <script>
@@ -67,13 +96,16 @@ import monthDayYear from "../../services/dates/dateformatter";
 import axios from "@/gateway/backendapi";
 import router from "../../router";
 import Table from "@/components/table/Table";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 export default {
     components: {
         Table,
     },
     setup() {
         const loading = ref(false)
+        const networkError = ref(false)
         const primarycolor = inject("primarycolor");
+        const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
 
         const formHeaders = ref([
             { name: "FORM NAME", value: "name" },
@@ -82,6 +114,10 @@ export default {
             { name: "ACTION", value: "action" },
         ]);
         const formItems = ref([]);
+
+        const createForm = () => {
+            router.push('/tenant/createform')
+        }
 
         const showConfirmModal = (id, index) => {
             ElMessageBox.confirm(
@@ -105,7 +141,7 @@ export default {
                 });
         };
 
-        const formListClick = (item) =>{
+        const formListClick = (item) => {
             router.push(`/tenant/singleformlist?id=${item.id}&formName=${item.name}`)
         }
 
@@ -142,13 +178,20 @@ export default {
 
 
         const getAllForms = async () => {
+            loading.value = true
             try {
                 const { data } = await axios.get('/api/Forms/getallforms')
                 console.log(data, 'mmmn');
                 formItems.value = data
+                loading.value = false
             }
             catch (error) {
-                console.log(error);
+                if (error.toString().toLowerCase().includes("network error")) {
+                    networkError.value = true
+                } else {
+                    networkError.value = false
+                }
+                loading.value = false
             }
         }
         getAllForms()
@@ -163,6 +206,9 @@ export default {
             formItems,
             loading,
             primarycolor,
+            networkError,
+            mdAndUp, lgAndUp, xlAndUp, xsOnly,
+            createForm,
             date,
             showConfirmModal,
             deleteForm,
@@ -173,6 +219,30 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@100&display=swap');
+
+* {
+    font-family: Poppins;
+}
+
+.no-person {
+    height: 30vh;
+    display: flex;
+    text-align: center;
+    margin: auto;
+}
+
+.empty-img {
+    width: 30%;
+    min-width: 397px;
+    margin: auto;
+}
+
+.empty-img img {
+    width: 100%;
+    max-width: 200px;
+}
+
 .text-color {
     color: #212529;
     text-decoration: none;
