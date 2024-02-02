@@ -166,17 +166,7 @@ export default {
         route: '/',
         submenu: []
       }
-<<<<<<< HEAD
-=======
-      // const form = {
-      //   id: 3,
-      //   name: 'Form',
-      //   logo: require('../../assets/dashboardlinks/events-icon.svg'),
-      //   route: '/tenant/formlist',
-      //   submenu: []
-      // }
->>>>>>> 39b779075831ffbc8aea030411be101d1d94d2f0
-
+      
       const communication = {
         id: 3,
         name: 'Communication',
