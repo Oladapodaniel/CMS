@@ -1,67 +1,43 @@
 <template>
-    <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
+    <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }" v-loading="loadingPage">
         <div class="continer-fluid mt-3">
-            <div class="row">
-                <div class="col-md-12 text-center head-text">{{ singleFormData.name }}</div>
-            </div>
-            <div class="row justify-content-center mt-4">
-                <div class="col-md-10 ">
-                    <!-- <div class="row mt-3">
-                        <div class="col-md-3 font-weight-bold text-md-right text-left">
-                            <label for=""> Form Name </label>
-                        </div>
-                        <div class="col-md-9">
-                            <el-input type="text" v-model="formName" />
-                        </div>
-                    </div> -->
-                    <!-- <div class="row mt-4">
-                        <div class="col-md-3 font-weight-bold text-md-right text-left">
-                            <label for="">Description</label>
-                        </div>
-                        <div class="col-md-9">
-                            <el-input type="textarea" :rows="3" v-model="description" />
-                        </div>
-                    </div> -->
-                    <!-- <div class="row mt-4  ">
-                        <div class="col-md-3"></div>
-                        <div class="col-md-9  ">
-                            <el-input class="" type="text" placeholder="Sample Question" v-model="description" />
-                            <el-checkbox class="" v-model="required" label="Required" />
-                        </div>
+            <div class="row  justify-content-center ">
+
+                <div class="col-md-7  text-center d-flex justify-content-center">
+                    <div class="col-md-10 h2 font-weight-600">
+                        {{ singleFormData.name }}
                     </div>
-                    <div class="row">
-                        <hr class="w-100">
-                    </div> -->
+                </div>
+                <div class="col-md-7 text-center d-flex justify-content-center">
+                    <div class="col-md-10">
+                        {{ singleFormData.description }}
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-4" v-if=" singleFormData && singleFormData.customAttributes && singleFormData.customAttributes.length > 0 && !networkError && !loadingPage">
+                <div class="col-md-7  ">
                     <div class="row">
                         <div class="col-md-12" v-for="(item, index) in singleFormData.customAttributes " :key="index">
-                            <div class="row mt-3  ">
-                                <div class="col-md-3 font-weight-bold text-md-right text-left "><label for="">{{ item.label
-                                }}
-                                    </label></div>
-                                <div class="col-md-9  " v-if="item.controlType === 0">
-                                    <el-input type="text" class="w-100" :placeholder="item.label" v-model="item.data" />
-                                </div>
-                                <div class="col-md-9  " v-if="item.controlType === 1">
-                                    <el-select-v2 v-model="item.data" :options="item.parameterValues.split(',').map((i) => ({
+                            <div class="row mt-3 justify-content-center ">
+
+                                <div class="col-md-9  " style="font-weight: 500">
+                                    <label for="">{{ item.label }} <span v-if="item.isRequired" style="color: red">
+                                            *</span></label>
+                                    <el-input type="text" class="w-100" v-if="item.controlType === 0"
+                                        :placeholder="item.label" v-model="item.data" />
+                                    <el-select-v2 v-model="item.data" v-if="item.controlType === 1" :options="item.parameterValues.split(',').map((i) => ({
                                         label: i,
                                         value: i,
                                     }))
                                         " :placeholder="item.label" class="w-100" size="large" />
-                                </div>
-                                <div class="col-md-9  " v-if="item.controlType === 2">
-                                    <el-checkbox v-model="item.data" size="large" />
-                                </div>
-                                <div class="col-md-9  " v-if="item.controlType === 3">
-                                    <el-date-picker v-model="item.data" class="w-100" type="date"
-                                        :placeholder="item.label" size="default" />
-                                </div>
-                                <div class="col-md-9  " v-if="item.controlType === 4">
-                                    <el-input type="email" class="w-100" v-model="item.data"
+                                    <el-checkbox v-if="item.controlType === 2" v-model="item.data" size="large" />
+                                    <el-date-picker v-if="item.controlType === 3" v-model="item.data" class="w-100"
+                                        type="date" :placeholder="item.label" size="default" />
+                                    <el-input type="email" v-if="item.controlType === 4" class="w-100" v-model="item.data"
                                         :placeholder="item.label" />
-                                </div>
-                                <div class="col-md-9  " v-if="item.controlType === 5">
-                                    <el-input type="number" class="w-100" v-model="item.data"
+                                    <el-input type="number" v-if="item.controlType === 5" class="w-100" v-model="item.data"
                                         :placeholder="item.label" />
+                                    <!-- <span class="w-100" v-if=" item.isRequired && !item.data   ">please fill field </span> -->
                                 </div>
                             </div>
                             <!-- <div class="row mt-3  ">
@@ -117,13 +93,20 @@
                             </div> -->
                         </div>
                     </div>
-                    <div class="row mt-4">
-                        <div class="col-md-3"></div>
+                    <div class="row justify-content-center mt-4">
+                        <!-- <div class="col-md-3"></div> -->
                         <div class="col-md-9" @click="saveForm">
-                            <el-button class="w-100" round :color="primarycolor"> Submit</el-button>
+                            <el-button class="w-100" :loading="loading" round :color="primarycolor"> Submit</el-button>
                         </div>
+                        <!-- <div class="col-md-9" @click="saveForm2">
+                            <el-button class="w-100" :loading="loading" round :color="primarycolor"> Submit2</el-button>
+                        </div> -->
                     </div>
                 </div>
+            </div>
+            <div v-if="networkError && !loading" class="adjust-network">
+                <img src="../../assets/network-disconnected.png">
+                <div>Opps, Your internet connection was disrupted</div>
             </div>
         </div>
     </div>
@@ -134,6 +117,7 @@ import { ref, inject } from 'vue'
 import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import finish from '../../services/progressbar/progress'
 import { useRoute } from "vue-router";
 import router from "../../router";
 export default {
@@ -142,6 +126,9 @@ export default {
         const description = ref("")
         const cutomFieldData = ref([{ parameterValues: [] }])
         const route = useRoute();
+        const loading = ref(false)
+        const loadingPage = ref(false)
+        const networkError = ref(false)
         const singleFormData = ref([]);
         const required = ref(false)
         const centerDialogVisible = ref(false)
@@ -161,27 +148,11 @@ export default {
             { name: "Number", id: "6" },
         ]);
 
-        const deleteItem = (index) => {
-            if (cutomFieldData.value.length > 1) {
-                cutomFieldData.value.splice(index, 1);
-            } else {
-                ElMessage({
-                    type: 'error',
-                    showClose: true,
-                    message: 'Cannot Delete, You must have at least one field',
-                    duration: 5000
-                })
-            }
-        };
-
         const saveChip = (index) => {
             cutomFieldData.value[index].currentInput ? cutomFieldData.value[index].parameterValues.push(cutomFieldData.value[index].currentInput) : null
 
             // ((dropdownList.value.indexOf(currentInput.value) === -1)) && dropdownList.value.push(currentInput.value);
             cutomFieldData.value[index].currentInput = '';
-        }
-        const deleteChip = (i, index) => {
-            cutomFieldData.value[index].parameterValues.splice(i, 1);
         }
         const backspaceDelete = ({ which }, index) => {
             which == 8 && cutomFieldData.value[index].currentInput === '' && cutomFieldData.value[index].parameterValues.splice(cutomFieldData.value[index].parameterValues.length - 1);
@@ -191,6 +162,12 @@ export default {
                 saveChip();
             }
         }
+        // const saveForm2 = () => {
+        //     let myArray = singleFormData.value.customAttributes.forEach((i) =>{
+        //         i.data
+        //     })
+        //     console.log(myArray, 'jjj');
+        // }
 
         const addNewField = () => {
             // centerDialogVisible.value = true
@@ -200,33 +177,48 @@ export default {
             centerDialogVisible.value = false
         }
         const getSingleForm = async () => {
-            const { data } = await axios.get(`/api/Forms/getsingleform?Id=${route.query.id}`)
-            singleFormData.value = data
+            loadingPage.value = true
+            try {
+                const { data } = await axios.get(`/api/Forms/getsingleform?Id=${route.query.id}`)
+                singleFormData.value = data
+                console.log(data, 'ffjjfj');
+                loadingPage.value = false
 
+            } catch (error) {
+                // finish()
+                if (error.toString().toLowerCase().includes("network error")) {
+                    networkError.value = true
+                } else {
+                    networkError.value = false
+                }
+                loadingPage.value = false
+                console.log(error)
 
-            console.log(data, 'ffjjfj');
+            }
+
         }
         getSingleForm()
 
-        const getFormData = async () => {
-            const { data } = await axios.get(`/api/Forms/getformdata?Id=${route.query.id}`)
-            // singleFormData.value = data
-
-
-            console.log(data, 'f0000000000000j');
-        }
-        getFormData()
-
         const saveForm = async () => {
+
+            loading.value = true
             try {
                 const { data } = await axios.post('/api/Forms/saveformdata', singleFormData.value.customAttributes.map((i) => ({
                     customAttributeID: i.id,
-                    data: i.data
+                    data: i.data,
+                    isRequired: i.isRequired
                 })))
+                ElMessage({
+                    type: 'success',
+                    message: 'From created successfully',
+                    duration: 5000
+                })
                 console.log(data);
+                loading.value = false
             }
             catch (error) {
                 console.log(error);
+                loading.value = false
             }
         }
 
@@ -243,13 +235,15 @@ export default {
             route,
             singleFormData,
             xsOnly, mdAndUp, lgAndUp, xlAndUp,
+            loading,
+            loadingPage,
+            networkError,
+            // saveForm2,
             addNewField,
-            deleteItem,
             saveForm,
             checkComma,
             saveChip,
             backspaceDelete,
-            deleteChip,
             saveCustomField,
         }
 
@@ -258,6 +252,12 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@100&display=swap');
+
+* {
+    font-family: Poppins;
+}
+
 .chip-container {
     /* width: 425px; */
     border: 1px solid #ccc;

@@ -2,12 +2,12 @@
     <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
         <div class="conatiner-fluid mt-3">
             <div class="row">
-                <div class="col-md-12 head-text">Create Form </div>
+                <div class="col-md-12 h2 font-weight-600 head-text">Create Form </div>
             </div>
             <div class="row justify-content-center mt-4">
                 <div class="col-md-10 ">
                     <div class="row mt-3">
-                        <div class="col-md-3 font-weight-bold text-md-right text-left">
+                        <div class="col-md-3 font-weight text-md-right text-left">
                             <label for=""> Form Name </label>
                         </div>
                         <div class="col-md-9">
@@ -15,7 +15,7 @@
                         </div>
                     </div>
                     <div class="row mt-4">
-                        <div class="col-md-3 font-weight-bold text-md-right text-left">
+                        <div class="col-md-3 font-weight text-md-right text-left">
                             <label for="">Description</label>
                         </div>
                         <div class="col-md-9">
@@ -35,15 +35,15 @@
                     <div class="row">
                         <div class="col-md-12" v-for="(item, index) in cutomFieldData " :key="index">
                             <div class="row mt-3  ">
-                                <div class="col-md-3 font-weight-bold text-md-right text-left "><label for="">Label name
+                                <div class="col-md-3 font-weight text-md-right text-left "><label for="">Label name
                                     </label></div>
                                 <div class="col-md-9  ">
-                                    <el-input type="text"  class="w-100" placeholder="input Label name"
-                                        v-model="item.label" required />
+                                    <el-input type="text" class="w-100" placeholder="input Label name" v-model="item.label"
+                                        required />
                                 </div>
                             </div>
                             <div class="row mt-3  ">
-                                <div class="col-md-3 font-weight-bold text-md-right text-left "><label for=""> Select
+                                <div class="col-md-3 font-weight text-md-right text-left "><label for=""> Select
                                         Response
                                         type
                                     </label></div>
@@ -76,16 +76,19 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-3"></div>
-                                <div class="col-md-9 px-0 d-flex  justify-content-end "
-                                    :class="{ 'justify-content-between': index === cutomFieldData.length - 1 }">
-                                    <div @click="addNewField" v-if="index === cutomFieldData.length - 1">
-                                        <el-button text class="d-flex">
+                                <div class="col-md-9 px-0 d-flex  justify-content-between  "
+                                    :class="{ 'justify-content-between': item.controlType === '1' }">
+                                    <div @click="saveChip(index)" v-if="item.controlType === '1'">
+                                        <!-- <div @click="saveChip(index)" v-if="index === cutomFieldData.length - 1"> -->
+                                        <el-button text class="d-flex ">
                                             <el-icon :size="16" class=" ">
                                                 <Plus />
                                             </el-icon>
-                                            <span class="mt-1">Add New Field</span>
+                                            <span class="mt-1">Add New Option</span>
                                         </el-button>
                                     </div>
+                                    <div class="mt-0  pl-3"><el-checkbox class="" v-model="item.isRequired"
+                                            label="Required" /></div>
                                     <div @click="deleteItem" class="">
                                         <el-button text class="d-flex justify-content-end ">
                                             <el-icon class=" " :size="23">
@@ -99,8 +102,17 @@
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-3"></div>
-                        <div class="col-md-9" @click="saveForm">
-                            <el-button class="w-100" round :color="primarycolor"> Save form</el-button>
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-12" @click="addNewField">
+                                    <el-button class="secondary-button my-3 w-100 mx-0" round>Add New
+                                        Field</el-button>
+                                </div>
+                                <div class="col-md-12" @click="saveForm">
+                                    <el-button class="w-100" :loading="loading" size="large" round :color="primarycolor">
+                                        Save form</el-button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -115,7 +127,7 @@ import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useRoute } from "vue-router";
- import router from "../../router";
+import router from "../../router";
 export default {
     setup() {
         const formName = ref("")
@@ -123,6 +135,7 @@ export default {
         const cutomFieldData = ref([{ parameterValues: [] }])
         const route = useRoute();
         const required = ref(false)
+        const loading = ref(false)
         const centerDialogVisible = ref(false)
         const currentInput = ref("")
         const tenantId = ref("")
@@ -201,6 +214,7 @@ export default {
         getCurrentlySignedInUser();
 
         const saveForm = async () => {
+            loading.value = true
             const payload = {
                 name: formName.value,
                 description: description.value,
@@ -210,15 +224,23 @@ export default {
                         parameterValues: i.parameterValues.toString(),
                         controlType: i.controlType,
                         label: i.label,
+                        isRequired: i.isRequired
                     };
                 })
             }
             try {
                 const { data } = await axios.post('/api/Forms/saveform', payload)
                 console.log(data);
-                router.push('/tenant/formlist')
+                loading.value = false
+                ElMessage({
+                    type: 'success',
+                    message: 'Your Forms has been created successfully',
+                    duration: 5000
+                })
+                router.push(`/tenant/singleformlist?id=${data.id}&formName=${data.name}`)
             }
             catch (error) {
+                loading.value = false
                 console.log(error);
             }
         }
@@ -229,6 +251,7 @@ export default {
             cutomFieldData,
             dropdownList,
             required,
+            loading,
             description,
             responseType,
             centerDialogVisible,
@@ -251,6 +274,13 @@ export default {
 </script>
 
 <style scoped>
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@100&display=swap');
+
+* {
+    font-family: Poppins;
+}
+
 .chip-container {
     /* width: 425px; */
     border: 1px solid #ccc;
@@ -259,6 +289,9 @@ export default {
     display: flex;
     flex-wrap: wrap;
     align-content: space-between;
+}
+.font-weight{
+    font-weight: 500;
 }
 
 .inputt {

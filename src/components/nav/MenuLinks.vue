@@ -40,6 +40,9 @@
               <img :src="item.logo" class="link-icon" alt="" />
             </el-icon>
             <span>{{ item.name }}</span>
+            <el-tag type="warning" class="ml-3" effect="dark" size="" v-if="item.id == 5" round>
+              <span style="display: flex; font-size: 14px">Beta</span>
+            </el-tag>
           </el-menu-item>
         </div>
       </el-menu>
@@ -163,16 +166,9 @@ export default {
         route: '/',
         submenu: []
       }
-      const form = {
-        id: 3,
-        name: 'Form',
-        logo: require('../../assets/dashboardlinks/events-icon.svg'),
-        route: '/tenant/formlist',
-        submenu: []
-      }
 
       const communication = {
-        id: 4,
+        id: 3,
         name: 'Communication',
         logo: require('../../assets/dashboardlinks/com-icon.svg'),
         route: '/',
@@ -201,7 +197,7 @@ export default {
       }
 
       const event = {
-        id: 5,
+        id: 4,
         name: 'Events',
         logo: require('../../assets/dashboardlinks/events-icon.svg'),
         route: '/',
@@ -218,6 +214,14 @@ export default {
           }
         ]
       }
+      const form = {
+        id: 5,
+        name: 'Forms',
+        logo: require('../../assets/dashboardlinks/events-icon.svg'),
+        route: '/tenant/formlist',
+        submenu: []
+      }
+
 
       const financial = {
         id: 6,
@@ -479,7 +483,7 @@ export default {
         }
 
         if (i.toLowerCase() == 'admin') {
-          menuLink.value.push(dashboard, people, form, communication, event, financial, social, report, more,)
+          menuLink.value.push(dashboard, people, communication, event, form, financial, social, report, more,)
           // menuLink.value.push(dashboard, people, communication, event, financial,  report, more)
           menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(members, firsttimers, groups, families)
           menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(media, branch, settings)
