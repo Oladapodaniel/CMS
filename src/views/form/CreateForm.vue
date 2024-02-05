@@ -58,7 +58,7 @@
                             <div class="row mt-2 ">
                                 <div class="col-md-3"></div>
                                 <div class="col-md-9" v-if="item.controlType === '1'">
-                                    <div>Input your options and press enter</div>
+                                    <!-- <div>Input your options and press enter</div> -->
                                     <div class="chip-container col-md-12 p-0 m-0 ">
                                         <div class="chip px-2  d-flex justify-content-between my-2 mx-1"
                                             v-for="(chip, i) of item.parameterValues" :key="chip.label">
@@ -68,7 +68,7 @@
                                                     <CircleClose />
                                                 </el-icon></i>
                                         </div>
-                                        <input class="inputt  py-2 " v-model="item.currentInput"
+                                        <input placeholder="input option" class="inputt   py-2 " v-model="item.currentInput"
                                             @keypress.enter="saveChip(index)" @input="checkComma"
                                             @keydown.delete="backspaceDelete(index)">
                                     </div>
@@ -80,12 +80,17 @@
                                     :class="{ 'justify-content-between': item.controlType === '1' }">
                                     <div @click="saveChip(index)" v-if="item.controlType === '1'">
                                         <!-- <div @click="saveChip(index)" v-if="index === cutomFieldData.length - 1"> -->
-                                        <el-button text class="d-flex ">
+                                        <div class="d-flex ml-2 " style="font-weight: 500; ">
+                                            <el-icon :size="14" class="mt-1 mr-0 font-weight-bold ">
+                                                <Plus />
+                                            </el-icon><span>New Option</span>
+                                        </div>
+                                        <!-- <el-button text class="d-flex ">
                                             <el-icon :size="16" class=" ">
                                                 <Plus />
                                             </el-icon>
-                                            <span class="mt-1">Add New Option</span>
-                                        </el-button>
+                                            <span class="mt-1">New Option</span>
+                                        </el-button> -->
                                     </div>
                                     <div class="mt-0  pl-3"><el-checkbox class="" v-model="item.isRequired"
                                             label="Required" /></div>
@@ -104,13 +109,20 @@
                         <div class="col-md-3"></div>
                         <div class="col-md-9">
                             <div class="row">
-                                <div class="col-md-12" @click="addNewField">
-                                    <el-button class="secondary-button my-3 w-100 mx-0" round>Add New
-                                        Field</el-button>
+                                <div class="col-md-12 d-flex justify-content-center" @click="addNewField">
+                                    <div class="col-md-5 d-flex " style="font-weight: 500; ">
+                                        <el-icon :size="14" class="mt-1 mr-0 font-weight-bold ">
+                                            <Plus />
+                                        </el-icon><span>Add New
+                                            Field</span>
+                                    </div>
+
                                 </div>
-                                <div class="col-md-12" @click="saveForm">
-                                    <el-button class="w-100" :loading="loading" size="large" round :color="primarycolor">
-                                        Save form</el-button>
+                                <div class="col-md-12 mt-4" @click="saveForm">
+                                    <el-button class="w-100 d-flex" :loading="loading" size="large" round
+                                        :color="primarycolor">
+                                        <img class="mr-2" src="../../assets/form/Vector.png" alt="">
+                                        <span>Save and Preview</span></el-button>
                                 </div>
                             </div>
                         </div>
@@ -274,7 +286,6 @@ export default {
 </script>
 
 <style scoped>
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@100&display=swap');
 
 * {
@@ -290,7 +301,8 @@ export default {
     flex-wrap: wrap;
     align-content: space-between;
 }
-.font-weight{
+
+.font-weight {
     font-weight: 500;
 }
 

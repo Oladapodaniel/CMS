@@ -5,6 +5,18 @@
             <div class="">
                 <div class="h2 font-weight-600">{{ route.query.formName }}</div>
             </div>
+            <div class=" d-flex px-0 mt-3 justify-content-center  align-items-center mt-2">
+                <el-button class="d-flex " @click="copylink" size="large" round>
+                    <span class="mr-2">Copy link</span>
+                    <img src="../../assets/form/copyIcon.png" style="width: 25px" alt="">
+                </el-button>
+                <el-button class="d-flex " @click="previewForm" size="large" round>
+                    <el-icon>
+                        <View />
+                    </el-icon>
+                    <span>Preview Form</span>
+                </el-button>
+            </div>
 
             <!-- <div class="d-flex flex-column flex-sm-row   link">
                 <router-link class="" to="/tenant/pledge/makepledge">
@@ -14,7 +26,14 @@
             </div> -->
         </div>
         <div class="row">
-            <div class="col-12 px-0">
+            <div class="col-md-12 ">
+                <div class="border d-flex justify-content-center  col-md-1  rounded pr-5 pl-5 py-3 ">
+                    <img @click="getQrCode" class="cursor-pointer " src="../../assets/form/QrCodeImage.png" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 mt-1 px-0">
                 <div class="text-primary c-pointer col-md-2" @click="previousPage">
                     <el-icon>
                         <DArrowLeft />
@@ -26,16 +45,16 @@
             v-if="route.fullPath == `/tenant/singleformlist?id=${route.query.id}&formName=${route.query.formName}`">
             <div class="col-md-9 pt-md-2 pb-1  d-flex  rounded mt-3">
                 <!-- <div class="font-weight-bold">Copy and Share the link</div> -->
-                <div class=" mt-2 mr-2 image" @click="getQrCode">
+                <!-- <div class=" mt-2 mr-2 image" @click="getQrCode">
                     <img src="../../assets/group2.svg" alt="Member image" />
-                </div>
+                </div> -->
                 <!-- <div >{{ formlink }}</div>
                 <el-button @click="copylink">
                     <el-icon>
                         <CopyDocument />
                     </el-icon>
                 </el-button> -->
-                <div class="p-inputgroup form-group mt-2 ">
+                <!-- <div class="p-inputgroup form-group mt-2 ">
                     <el-input v-model="formlink" placeholder="Click the copy button when the link appears"
                         ref="selectedLink" class="border-0">
                         <template #append>
@@ -46,27 +65,29 @@
                             </el-button>
                         </template>
                     </el-input>
-                </div>
+                </div> -->
             </div>
-            <div class="col-md-3 d-flex px-0 justify-content-center  align-items-center mt-2">
+            <!-- <div class="col-md-3 d-flex px-0 justify-content-center  align-items-center mt-2">
                 <el-button class="d-flex " @click="previewForm" size="large" round>
                     <el-icon>
                         <View />
                     </el-icon>
                     <span>Preview Form</span>
                 </el-button>
+            </div> -->
+        </div>
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <div class="col-md-6 border py-3 tab-color  text-center" :class="{ 'showedColor': showSummary }"
+                    @click="summary">
+                    Analytics
+                </div>
+                <div class="col-md-6 border py-3 tab-color text-center" :class="{ 'showedColor': showIndividual }"
+                    @click="individual">
+                    Grid
+                </div>
             </div>
         </div>
-        <!-- <div class="row">
-            <div class="col-md-12 d-flex">
-                <div class="col-md-6 border py-3 tab-color text-center" :class="{'showedColor' : showSummary}" @click="summary" >
-                    Summary
-                </div>
-                <div class="col-md-6 border py-3 tab-color text-center" :class="{'showedColor' : showIndividual}" @click="individual" >
-                    Individual
-                </div>
-            </div>
-        </div> -->
         <!-- <div class="col-md-12 p-0 scroll-table">
             <table class="table table-hover" style="border-radius: 0" id="table">
                 <thead>
@@ -80,7 +101,7 @@
             </table>
         </div> -->
         <div class="col-md-12 p-0 scroll-table">
-            <table class="table table-hover table"  id="table">
+            <table class="table table-hover table" id="table">
                 <thead>
                     <tr class=" table-row-bg ">
                         <th v-for="(label, index) in labels" :key="index">
@@ -140,7 +161,6 @@
                 <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
                 <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
             </div>
-            <!-- <el-skeleton-item variant="text" class="w-100" style="height: 25px" :rows="10"/> -->
             <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
         </template>
     </el-skeleton>
@@ -168,6 +188,7 @@ export default {
         const tenantID = ref('')
         const primarycolor = inject("primarycolor");
         const route = useRoute();
+        const formlink = ref(`${window.location.origin}/createpublicform?id=${route.query.id}`)
         const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
 
         const formHeaders = ref([
@@ -186,9 +207,9 @@ export default {
                 const { data } = await axios.get(`/api/Forms/getformdata?Id=${route.query.id}`)
                 formItems.value = data
 
-                labels.value = formItems.value[0].data.map(
+                labels.value = formItems.value && formItems.value[0] ? formItems.value[0].data.map(
                     (dataItem) => dataItem.customAttribute.label
-                );
+                ) : '';
                 // labels.value.push('Date')
                 loading.value = false;
                 console.log(formItems.value, 'form');
@@ -205,7 +226,7 @@ export default {
                 const sortedItem = {};
                 item.data.forEach((dataItem) => {
                     const { label, data } = dataItem.customAttribute;
-                    sortedItem[label] = dataItem.data;
+                    sortedItem[label] = dataItem && dataItem.data ? dataItem.data : "";
                 });
                 return sortedItem;
             });
@@ -243,10 +264,6 @@ export default {
 
         getCurrentlySignedInUser();
 
-        const formlink = computed(() => {
-            if (!tenantID.value) return "";
-            return `${window.location.origin}/createpublicform?id=${route.query.id}`;
-        });
 
         const previewForm = () => {
             router.push(`/createpublicform?id=${route.query.id}`)
@@ -266,14 +283,17 @@ export default {
 
 
         const copylink = () => {
-            selectedLink.value.input.setSelectionRange(
-                0,
-                selectedLink.value.input.value.length
-            ); /* For mobile devices */
-            selectedLink.value.input.select();
+            const textarea = document.createElement("textarea");
+            textarea.value = formlink.value;
 
-            /* Copy the text inside the text field */
+            document.body.appendChild(textarea);
+
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+
             document.execCommand("copy");
+            document.body.removeChild(textarea)
+
             ElMessage({
                 showClose: true,
                 message: "Copied to clipboard",
@@ -351,8 +371,10 @@ export default {
 }
 
 .showedColor {
-    background-color: #CAF5FF !important;
+    background-color: #0B55D4 !important;
+    /* background-color: #CAF5FF !important; */
     font-weight: bold;
+    color: white;
 }
 
 

@@ -96,7 +96,7 @@
                     <div class="row justify-content-center mt-4">
                         <!-- <div class="col-md-3"></div> -->
                         <div class="col-md-9" @click="saveForm">
-                            <el-button class="w-100" :loading="loading" round :color="primarycolor"> Submit</el-button>
+                            <el-button class="w-100" :loading="loading" round :color="primarycolor"> Publish Form</el-button>
                         </div>
                         <!-- <div class="col-md-9" @click="saveForm2">
                             <el-button class="w-100" :loading="loading" round :color="primarycolor"> Submit2</el-button>
