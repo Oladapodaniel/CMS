@@ -36,7 +36,10 @@
             </div>
           </el-sub-menu>
           <el-menu-item :index="`${index + 1}`" class="w-100" @click="routeToPage(item)" v-else>
-            <el-icon>
+            <el-icon v-if="item.id === 5">
+              <img style="width: 45px" :src="item.logo" class="link-icon" alt="" />
+            </el-icon>
+            <el-icon v-else>
               <img :src="item.logo" class="link-icon" alt="" />
             </el-icon>
             <span>{{ item.name }}</span>
@@ -188,11 +191,11 @@ export default {
             logo: '/',
             route: '/tenant/voice/voicelist',
           },
-          {
-            name: 'Whatsapp',
-            logo: '/',
-            route: '/tenant/whatsapp',
-          },
+          // {
+          //   name: 'Whatsapp',
+          //   logo: '/',
+          //   route: '/tenant/whatsapp',
+          // },
         ]
       }
 
@@ -217,8 +220,8 @@ export default {
       const form = {
         id: 5,
         name: 'Forms',
-        logo: require('../../assets/dashboardlinks/events-icon.svg'),
-        route: '/tenant/formlist',
+        logo: require('../../assets/form/formIcon.png'),
+        route: '/tenant/forms',
         submenu: []
       }
 

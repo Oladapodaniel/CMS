@@ -210,31 +210,42 @@ const routes = [
 
         },
         {
-            path: 'formlist',
+            path: 'forms',
             name: 'FormList',
             meta: {
                 title: 'Churchplus - Form',
             },
             component: () =>
-                import( /* webpackChunkName: "addfirsttimer" */ '../views/form/FormList.vue')
-        },
-        {
-            path: 'createform',
-            name: 'CreateForm',
-            meta: {
-                title: 'Churchplus - Form',
-            },
-            component: () =>
-                import( /* webpackChunkName: "addfirsttimer" */ '../views/form/CreateForm.vue')
-        },
-        {
-            path: 'singleformlist',
-            name: 'SingleFormList',
-            meta: {
-                title: 'Churchplus - Form',
-            },
-            component: () =>
-                import( /* webpackChunkName: "addfirsttimer" */ '../views/form/SingleFormList.vue')
+                import( /* webpackChunkName: "addfirsttimer" */ '../views/form/Forms.vue'),
+                children: [
+
+                    {
+                        path: '',
+                        meta: {
+                            title: 'Churchplus - Forms',
+                        },
+                        component: () =>
+                            import( /* webpackChunkName: "peopleempty" */ '../views/form/FormList.vue')
+                    },
+                    {
+                        path: 'create/:id?',
+                        name: 'CreateForm',
+                        meta: {
+                            title: 'Churchplus - Form',
+                        },
+                        component: () =>
+                            import( /* webpackChunkName: "addfirsttimer" */ '../views/form/CreateForm.vue')
+                    },
+                    {
+                        path: 'view/:id?',
+                        name: 'SingleFormList',
+                        meta: {
+                            title: 'Churchplus - Form',
+                        },
+                        component: () =>
+                            import( /* webpackChunkName: "addfirsttimer" */ '../views/form/SingleFormList.vue')
+                    },
+                ]
         },
         {
             path: 'firsttimermanagement/:personId?',
@@ -1813,7 +1824,7 @@ const routes = [
         ],
     },
     {
-        path: '/createpublicform/',
+        path: '/forms/:id',
         name: 'PublicForm',
         meta: {
             title: 'Churchplus - Form',

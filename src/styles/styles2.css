@@ -16,6 +16,7 @@
   transition: all .5s ease-in-out;
 }
 
+
 .secondary-button:hover {
   background: #136acd0f !important;
   border-color: #136acd !important;
@@ -48,6 +49,14 @@
   border-radius: 0 25px 25px 0;
   background: #136acd;
   color: #ffffff
+}
+.button-text button.el-button{
+  font-weight: 400 !important;
+}
+.upload-demo .el-upload button.el-button{
+  font-weight: 400 !important;
+  background: none !important;
+  font-size: 16px !important;
 }
 
 .el-select-group__title {
