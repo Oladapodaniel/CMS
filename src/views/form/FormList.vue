@@ -1,17 +1,42 @@
 <template>
-    <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
-        <div  class="d-flex flex-wrap flex-column flex-sm-row mb-3 justify-content-between">
+    <div class="container-fluid">
+        <div class="d-flex flex-wrap flex-column flex-sm-row mb-3 justify-content-between">
             <div class="">
                 <div class="h2 font-weight-600">Forms</div>
             </div>
             <div class="d-flex flex-column flex-sm-row   link">
-                <router-link class="" to="/tenant/createform">
+                <router-link class="" to="/tenant/forms/create">
                     <el-button :color="primarycolor" class="header-btn w-100 mt-3 mt-sm-0" round>
                         Create New Form
                     </el-button></router-link>
             </div>
         </div>
-        <Table :data="formItems" :headers="formHeaders" v-if="(formItems && formItems.length > 0) && !loading && !networkError" :checkMultipleItem="false" v-loading="loading">
+        <div class="container-fluid table-top mt-3  py-3">
+            <div class="row justify-content-end">
+                <div class="col-md-5 col-12 d-flex align-items-center justify-content-center mt-2 py-2 py-md-0">
+                    <el-input size="small" v-model="searchText" placeholder="Search..." @input="searchingForm = true"
+                        @keyup.enter.prevent="searchFormsInDB" class="input-with-select">
+                        <template #suffix>
+                            <el-button style="padding: 5px; height: 22px" @click.prevent="searchText = ''">
+                                <el-icon :size="13">
+                                    <Close />
+                                </el-icon>
+                            </el-button>
+                        </template>
+                        <template #append>
+                            <el-button @click.prevent="searchFormsInDB">
+                                <el-icon :size="13">
+                                    <Search />
+                                </el-icon>
+                            </el-button>
+                        </template>
+                    </el-input>
+                </div>
+            </div>
+        </div>
+        <Table :data="searchForm" :headers="formHeaders"
+            v-if="(searchForm && searchForm.length > 0) && !loading && !networkError" :checkMultipleItem="false"
+            v-loading="loading">
             <template v-slot:name="{ item }">
                 <div class="c-pointer" @click="formListClick(item)">
                     {{ item.name }}
@@ -35,7 +60,7 @@
                     <template #dropdown>
                         <el-dropdown-menu>
                             <el-dropdown-item>
-                                <router-link :to="`/tenant/createform?formID=${item.id}`" class="text-color">Edit
+                                <router-link :to="`/tenant/forms/create/${item.id}`" class="text-color">Edit
                                     Form</router-link>
                             </el-dropdown-item>
                             <!-- <el-dropdown-item>
@@ -43,8 +68,7 @@
                                     Form</router-link>
                             </el-dropdown-item> -->
                             <el-dropdown-item>
-                                <router-link :to="`/tenant/singleformlist?id=${item.id}&formName=${item.name}`"
-                                    class="text-color">View
+                                <router-link :to="`/tenant/forms/view/${item.id}`" class="text-color">View
                                     Data</router-link>
                             </el-dropdown-item>
                             <el-dropdown-item>
@@ -57,10 +81,14 @@
                 </el-dropdown>
             </template>
         </Table>
+        <div v-if="!loading && searchForm.length == 0">
+            <el-alert title="Forms not found" type="warning" description="Try searching with another keyword" show-icon
+                center />
+        </div>
         <div class="row mt-4">
             <div v-if="(formItems && formItems.length === 0) && !loading && !networkError" class="no-person mt-4 col-md-12">
                 <div class="empty-img">
-                    <!-- <p><img src="../../assets/people/people-empty.svg" alt="" /></p> -->
+                    <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
                     <p class="tip">You haven't Created any Form yet </p>
                     <el-button :color="primarycolor" @click="createForm" class="ml-2 header-btn" round>Create a new Form
                     </el-button>
@@ -71,22 +99,21 @@
                 <div>Opps, Your internet connection was disrupted</div>
             </div>
         </div>
-    </div>
-
-    <el-skeleton class="w-100" animated v-if="loading && formItems && formItems.length === 0">
-        <template #template>
-            <div style="display: flex;
+        <el-skeleton class="w-100" animated v-if="loading && formItems && formItems.length === 0">
+            <template #template>
+                <div style="display: flex;
             align-items: center;
             justify-content: space-between;
             margin-top: 20px
           ">
-                <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
-                <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
-            </div>
-            <!-- <el-skeleton-item variant="text" class="w-100" style="height: 25px" :rows="10"/> -->
-            <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
-        </template>
-    </el-skeleton>
+                    <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+                    <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+                </div>
+                <!-- <el-skeleton-item variant="text" class="w-100" style="height: 25px" :rows="10"/> -->
+                <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
+            </template>
+        </el-skeleton>
+    </div>
 </template>
 
 <script>
@@ -104,6 +131,8 @@ export default {
     setup() {
         const loading = ref(false)
         const networkError = ref(false)
+        const searchingForm = ref(true);
+        const searchText = ref('')
         const primarycolor = inject("primarycolor");
         const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
 
@@ -116,7 +145,7 @@ export default {
         const formItems = ref([]);
 
         const createForm = () => {
-            router.push('/tenant/createform')
+            router.push('/tenant/forms/create')
         }
 
         const showConfirmModal = (id, index) => {
@@ -142,7 +171,7 @@ export default {
         };
 
         const formListClick = (item) => {
-            router.push(`/tenant/singleformlist?id=${item.id}&formName=${item.name}`)
+            router.push(`/tenant/forms/view/${item.id}`)
         }
 
         const deleteForm = (id) => {
@@ -181,7 +210,6 @@ export default {
             loading.value = true
             try {
                 const { data } = await axios.get('/api/Forms/getallforms')
-                console.log(data, 'mmmn');
                 formItems.value = data
                 loading.value = false
             }
@@ -196,6 +224,30 @@ export default {
         }
         getAllForms()
 
+        const searchForm = computed(() => {
+            if (searchText.value !== "" && formItems.value.length > 0) {
+                return formItems.value.filter((i) => {
+                    if (i.name)
+                        return i.name
+                            .toLowerCase()
+                            .includes(searchText.value.toLowerCase());
+                });
+            } else {
+                return formItems.value;
+            }
+        });
+
+        const searchFormsInDB = () => {
+            if (searchText.value !== "" && formItems.value.length > 0) {
+                return formItems.value.filter((i) => {
+                    if (i.name)
+                        return i.name.toLowerCase().includes(searchText.value.toLowerCase());
+                });
+            } else {
+                return formItems.value;
+            }
+        };
+
         const date = (offDate) => {
             return monthDayYear.monthDayYear(offDate);
         };
@@ -203,12 +255,16 @@ export default {
 
         return {
             formHeaders,
+            searchText,
             formItems,
             loading,
             primarycolor,
             networkError,
             mdAndUp, lgAndUp, xlAndUp, xsOnly,
+            searchingForm,
+            searchForm,
             createForm,
+            searchFormsInDB,
             date,
             showConfirmModal,
             deleteForm,
@@ -230,6 +286,19 @@ export default {
     display: flex;
     text-align: center;
     margin: auto;
+}
+
+.table-top {
+    font-weight: 800;
+    font-size: 12px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-bottom: none;
+}
+
+.table-top label:hover,
+.table-top p:hover {
+    cursor: pointer;
 }
 
 .empty-img {

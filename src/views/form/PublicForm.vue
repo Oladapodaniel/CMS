@@ -1,21 +1,28 @@
 <template>
-    <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }" v-loading="loadingPage">
-        <div class="continer-fluid mt-3">
+    <div class="continer-fluid pb-4  h-100 " style="background: #EAECF0;" v-loading="loadingPage">
+        <div class="container " :class="{ 'container-slim': lgAndUp || xlAndUp }">
             <div class="row  justify-content-center ">
 
-                <div class="col-md-7  text-center d-flex justify-content-center">
-                    <div class="col-md-10 h2 font-weight-600">
-                        {{ singleFormData.name }}
+                <div class="col-md-5  py-3 bg-white mt-5 ">
+                    <div class="row justify-content-center">
+                        <div class="col-md-9 mt-3 " v-if="formLogo">
+                            <img v-if="formLogo" :src="formLogo" class="w-100" style="height: 9rem" alt="">
+                        </div>
+                        <div class="col-md-9 text-center h4  mt-4 font-weight-600">
+                            {{ singleFormData.name }}
+                        </div>
+                        <div class="col-md-9 text-center">
+                            {{ singleFormData.description }}
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-7 text-center d-flex justify-content-center">
-                    <div class="col-md-10">
-                        {{ singleFormData.description }}
-                    </div>
-                </div>
+                <!-- <div class="col-md-7 text-center d-flex justify-content-center">
+                    
+                </div> -->
             </div>
-            <div class="row justify-content-center mt-4" v-if=" singleFormData && singleFormData.customAttributes && singleFormData.customAttributes.length > 0 && !networkError && !loadingPage">
-                <div class="col-md-7  ">
+            <div class="row justify-content-center mt-3 "
+                v-if="singleFormData && singleFormData.customAttributes && singleFormData.customAttributes.length > 0 && !networkError && !disabledBtn && !loadingPage">
+                <div class="col-md-5 py-4 rounded bg-white  ">
                     <div class="row">
                         <div class="col-md-12" v-for="(item, index) in singleFormData.customAttributes " :key="index">
                             <div class="row mt-3 justify-content-center ">
@@ -40,68 +47,32 @@
                                     <!-- <span class="w-100" v-if=" item.isRequired && !item.data   ">please fill field </span> -->
                                 </div>
                             </div>
-                            <!-- <div class="row mt-3  ">
-                                <div class="col-md-3 font-weight-bold text-md-right text-left "><label for="">
-                                    </label></div>
-                                <div class="col-md-9  ">
-                                    <el-select-v2 v-model="item.controlType" :options="responseType.map((i) => ({
-                                        label: i.name,
-                                        value: i.id,
-                                    }))
-                                        " placeholder="Select Control type" class="w-100" size="large" />
-                                </div>
-                            </div> -->
-                            <!-- <div class="row mt-2 ">
-                                <div class="col-md-3"></div>
-                                <div class="col-md-9" v-if="item.controlType === '1'">
-                                    <div>Input your options and press enter</div>
-                                    <div class="chip-container col-md-12 p-0 m-0 ">
-                                        <div class="chip px-2  d-flex justify-content-between my-2 mx-1"
-                                            v-for="(chip, i) of item.parameterValues" :key="chip.label">
-                                            <span>{{ chip }}</span>
-                                            <i class=" pt-1 text-dark align-items-center"
-                                                @click="deleteChip(i, index)"><el-icon>
-                                                    <CircleClose />
-                                                </el-icon></i>
-                                        </div>
-                                        <input class="inputt  py-2 " v-model="item.currentInput"
-                                            @keypress.enter="saveChip(index)" @input="checkComma"
-                                            @keydown.delete="backspaceDelete(index)">
-                                    </div>
-                                </div>
-                            </div> -->
-                            <!-- <div class="row">
-                                <div class="col-md-3"></div>
-                                <div class="col-md-9 px-0 d-flex  justify-content-end "
-                                    :class="{ 'justify-content-between': index === cutomFieldData.length - 1 }">
-                                    <div @click="addNewField" v-if="index === cutomFieldData.length - 1">
-                                        <el-button text class="d-flex">
-                                            <el-icon :size="16" class=" ">
-                                                <Plus />
-                                            </el-icon>
-                                            <span class="mt-1">Add New Field</span>
-                                        </el-button>
-                                    </div>
-                                    <div @click="deleteItem" class="">
-                                        <el-button text class="d-flex justify-content-end ">
-                                            <el-icon class=" " :size="23">
-                                                <Delete />
-                                            </el-icon><span class="ml-1 ">Delete</span>
-                                        </el-button>
-                                    </div>
-                                </div>
-                            </div> -->
+
+
                         </div>
                     </div>
                     <div class="row justify-content-center mt-4">
                         <!-- <div class="col-md-3"></div> -->
                         <div class="col-md-9" @click="saveForm">
-                            <el-button class="w-100" :loading="loading" round :color="primarycolor"> Submit</el-button>
+                            <el-button class="w-100" size="large" :disabled="disabledBtn" :loading="loading" round
+                                :color="primarycolor"> Submit
+                            </el-button>
                         </div>
-                        <!-- <div class="col-md-9" @click="saveForm2">
-                            <el-button class="w-100" :loading="loading" round :color="primarycolor"> Submit2</el-button>
-                        </div> -->
                     </div>
+
+
+                </div>
+
+
+
+                <div class="col-md-9  text-center mt-4">
+                    ChurchPlus Forms
+                </div>
+
+            </div>
+            <div class="row justify-content-center mt-4" v-if="disabledBtn">
+                <div class="col-md-4 text-center h3">
+                    Form Submitted Successfully 
                 </div>
             </div>
             <div v-if="networkError && !loading" class="adjust-network">
@@ -119,6 +90,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import finish from '../../services/progressbar/progress'
 import { useRoute } from "vue-router";
+import swal from "sweetalert";
 import router from "../../router";
 export default {
     setup() {
@@ -129,7 +101,9 @@ export default {
         const loading = ref(false)
         const loadingPage = ref(false)
         const networkError = ref(false)
+        const disabledBtn = ref(false)
         const singleFormData = ref([]);
+        const formLogo = ref('');
         const required = ref(false)
         const centerDialogVisible = ref(false)
         const currentInput = ref("")
@@ -179,8 +153,9 @@ export default {
         const getSingleForm = async () => {
             loadingPage.value = true
             try {
-                const { data } = await axios.get(`/api/Forms/getsingleform?Id=${route.query.id}`)
+                const { data } = await axios.get(`/api/Forms/getsingleform?Id=${route.params.id}`)
                 singleFormData.value = data
+                formLogo.value = data.pictureUrl
                 console.log(data, 'ffjjfj');
                 loadingPage.value = false
 
@@ -199,27 +174,47 @@ export default {
         }
         getSingleForm()
 
+        const filterIsRequired = ref([])
+        const requiredData = ref([])
         const saveForm = async () => {
+            let newArray = []
+            filterIsRequired.value = singleFormData.value.customAttributes.filter(i => i.isRequired === true)
+            requiredData.value = filterIsRequired.value.map(i => i.data).toString()
+            newArray = newArray.push(requiredData.value)
+            console.log(requiredData.value, '622222222266');
+            console.log(newArray, '6hhhhhhhhhhh22266');
+            if (filterIsRequired.value && filterIsRequired.value[0].isRequired === true  && newArray.length === 0 ) {
+                alert('please fill  the required field')
+            } else {
+                loading.value = true
+                try {
+                    const { data } = await axios.post('/api/Forms/saveformdata', singleFormData.value.customAttributes.map((i) => ({
+                        customAttributeID: i.id,
+                        data: i.data,
+                        isRequired: i.isRequired
+                    })))
+                    swal({
+                        title: "Success!",
+                        text: 'Form Successfully Submitted ',
+                        icon: "success",
+                        confirmButtonColor: '#8CD4F5',
+                        dangerMode: true,
+                    })
+                    disabledBtn.value = true
+                    // ElMessage({
+                    //     type: 'success',
+                    //     message: 'From created successfully',
+                    //     duration: 5000
+                    // })
+                    console.log(data);
+                    loading.value = false
+                }
+                catch (error) {
+                    console.log(error);
+                    loading.value = false
+                }
+            }
 
-            loading.value = true
-            try {
-                const { data } = await axios.post('/api/Forms/saveformdata', singleFormData.value.customAttributes.map((i) => ({
-                    customAttributeID: i.id,
-                    data: i.data,
-                    isRequired: i.isRequired
-                })))
-                ElMessage({
-                    type: 'success',
-                    message: 'From created successfully',
-                    duration: 5000
-                })
-                console.log(data);
-                loading.value = false
-            }
-            catch (error) {
-                console.log(error);
-                loading.value = false
-            }
         }
 
         return {
@@ -233,11 +228,15 @@ export default {
             centerDialogVisible,
             currentInput,
             route,
+            disabledBtn,
             singleFormData,
             xsOnly, mdAndUp, lgAndUp, xlAndUp,
             loading,
             loadingPage,
+            formLogo,
             networkError,
+            filterIsRequired,
+            requiredData,
             // saveForm2,
             addNewField,
             saveForm,
