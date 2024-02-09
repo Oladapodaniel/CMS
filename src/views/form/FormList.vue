@@ -11,7 +11,7 @@
                     </el-button></router-link>
             </div>
         </div>
-        <div class="container-fluid table-top mt-3  py-3">
+        <div class="container-fluid table-top mt-3  py-3" v-if="formItems && formItems.length > 0 && !loading && !networkError"   >
             <div class="row justify-content-end">
                 <div class="col-md-5 col-12 d-flex align-items-center justify-content-center mt-2 py-2 py-md-0">
                     <el-input size="small" v-model="searchText" placeholder="Search..." @input="searchingForm = true"
@@ -81,7 +81,7 @@
                 </el-dropdown>
             </template>
         </Table>
-        <div v-if="!loading && searchForm.length == 0">
+        <div v-if="!loading && searchForm && searchForm.length <= 0">
             <el-alert title="Forms not found" type="warning" description="Try searching with another keyword" show-icon
                 center />
         </div>
