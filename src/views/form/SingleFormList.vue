@@ -5,12 +5,12 @@
                 <div class="h2 font-weight-600">{{ formDetails.form && formDetails.form.name ? formDetails.form.name : '' }}
                 </div>
             </div>
-            <div class=" d-flex px-0 mt-3 button-text justify-content-center  align-items-center mt-2">
+            <div class=" d-flex flex-wrap px-0 mt-3 button-text justify-content-center  align-items-center mt-2">
                 <el-button class="d-flex " color="#BDF3FF" @click="copylink" size="large" round>
                     <span class="mr-2">Copy link</span>
                     <img src="../../assets/form/copyIcon.png" style="width: 25px" alt="">
                 </el-button>
-                <el-button class="d-flex " @click="previewForm" size="large" round>
+                <el-button class="d-flex mt-sm-0 mt-3 " @click="previewForm" size="large" round>
                     <el-icon>
                         <View />
                     </el-icon>
@@ -26,9 +26,9 @@
             </div> -->
         </div>
         <div class="row">
-            <div class="col-md-12 ">
-                <div class="border d-flex justify-content-center  col-md-1  rounded pr-5 pl-5 py-3 ">
-                    <img @click="getQrCode" class="cursor-pointer " src="../../assets/form/QrCodeImage.png" alt="">
+            <div class="col-md-12  ">
+                <div class="border d-flex justify-content-center  col-1  rounded pr-5 pl-5 py-3 ">
+                    <img @click="getQrCode" class="cursor-pointer " style="width: 60px;" src="../../assets/form/QrCodeImage.png" alt="">
                 </div>
             </div>
         </div>
@@ -47,7 +47,7 @@
         <div class="row mt-4">
             <div class="col-md-12">{{ sortedData.length > 1 ? sortedData.length + ' ' + 'responses' : sortedData.length +
                 ' ' + 'response' }}</div>
-            <div class="col-md-12 d-flex mt-1">
+            <div class="col-md-12 d-flex flex-column flex-sm-row mt-1">
                 <div class="col-md-2 cursor-pointer rounded border py-2 tab-color  text-center"
                     :class="{ 'showedColor': showSummary }" @click="summary">
                     Analytics
