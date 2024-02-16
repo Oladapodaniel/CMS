@@ -10,6 +10,7 @@
         <div class="top-con">
           <div class="header">
             <!-- <h1>Your all in one church management solution</h1> -->
+            <!-- <h1>{{$t('header.signup')}} <span class="free">{{$t('header.free')}}</span></h1> -->
             <h1>Get started for <span class="free">FREE</span></h1>
             <h3 class="intro">
               A church software that automates your entire <br />

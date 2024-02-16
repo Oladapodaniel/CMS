@@ -151,7 +151,12 @@
                                 </div>
 
                             </div>
-                            <div class="col-md-12 mt-4" @click="saveForm">
+                            <div class="col-md-12 mt-5" @click="previewForm">
+                                <el-button class="w-100 secondary-button d-flex" size="large" round>
+                                    <img class="mr-2" src="../../assets/form/Vector.png" alt="">
+                                    <span>Preview form</span></el-button>
+                            </div>
+                            <div class="col-md-12 mt-2" @click="saveForm">
                                 <el-button class="w-100 d-flex" :loading="loading" size="large" round :color="primarycolor">
                                     <img class="mr-2" src="../../assets/form/Vector.png" alt="">
                                     <span>Save</span></el-button>
@@ -159,13 +164,94 @@
                         </div>
                     </div>
                 </div>
+                <el-dialog v-model="dialogVisible" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+                    <div class="continer-fluid pb-4  h-100 " style="background: #EAECF0;">
+                        <div class="row  justify-content-center ">
+
+                            <div class="col-md-6  py-3 bg-white mt-5 ">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-9 mt-3 " v-if="url">
+                                        <img v-if="url" :src="url" class="w-100" style="height: 9rem" alt="">
+                                    </div>
+                                    <div class="col-md-9 text-center h4  mt-4 font-weight-600">
+                                        {{ formName }}
+                                    </div>
+                                    <div class="col-md-9 text-center">
+                                        {{ description }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center mt-3 ">
+                            <div class="col-md-6 py-4 rounded bg-white  ">
+                                <div class="row">
+                                    <div class="col-md-12" v-for="(item, index) in cutomFieldData " :key="index">
+                                        <div class="row mt-3 justify-content-center ">
+
+                                            <div class="col-md-9  " style="font-weight: 500">
+                                                <label for="">{{ item.label }} <span v-if="item.isRequired"
+                                                        style="color: red">
+                                                        *</span></label>
+                                                <el-input type="text" class="w-100" v-if="item.controlType === 0"
+                                                    :placeholder="item.label" v-model="item.currentInput" />
+                                                <el-select-v2 v-model="item.currentInput" v-if="item.controlType === 1"
+                                                    :options="item.parameterValues.map((i) => ({
+                                                        label: i,
+                                                        value: i,
+                                                    }))
+                                                        " :placeholder="item.label" class="w-100" size="large" />
+                                                <el-checkbox v-if="item.controlType === 2" v-model="item.currentInput"
+                                                    size="large" />
+                                                <el-date-picker v-if="item.controlType === 3" v-model="item.currentInput"
+                                                    class="w-100" type="date" :placeholder="item.label" size="large" />
+                                                <el-input type="email" v-if="item.controlType === 4" class="w-100"
+                                                    v-model="item.currentInput" :placeholder="item.label" />
+                                                <el-input type="number" v-if="item.controlType === 5" class="w-100"
+                                                    v-model="item.currentInput" :placeholder="item.label" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="row justify-content-center mt-4">
+                                    <div class="col-md-9" @click="saveForm">
+                                        <el-button class="w-100" size="large" :loading="loading" round
+                                            :color="primarycolor"> Publish Form
+                                        </el-button>
+                                    </div>
+                                </div> -->
+                            </div>
+                            <div class="col-md-9  text-center mt-4">
+                                ChurchPlus Forms
+                            </div>
+
+                        </div>
+                        <!-- <div class="row justify-content-center mt-4" v-if="disabledBtn">
+                                <div class="col-md-4 text-center h3">
+                                    Form Submitted Successfully
+                                </div>
+                            </div> -->
+                        <!-- <div v-if="networkError && !loading" class="adjust-network">
+                                <img src="../../assets/network-disconnected.png">
+                                <div>Opps, Your internet connection was disrupted</div>
+                            </div> -->
+
+                    </div>
+                    <!-- <span>This is a message</span> -->
+                    <!-- <template #footer>
+                        <div class="dialog-footer">
+                            <el-button type="primary" @click="dialogVisible = false">
+                                Confirm
+                            </el-button>
+                        </div>
+                    </template> -->
+                </el-dialog>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { ref, inject } from 'vue'
+import { ref, inject, watch } from 'vue'
 import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
@@ -181,6 +267,7 @@ export default {
         const loading = ref(false)
         const selectedImage = ref("");
         const centerDialogVisible = ref(false)
+        const dialogVisible = ref(false)
         const currentInput = ref("")
         const tenantId = ref("")
         const fileImage = ref(false);
@@ -196,21 +283,25 @@ export default {
             { name: "DateTime", id: 3 },
             { name: "Email", id: 4 },
             { name: "Number", id: 5 },
-            // { name: "Image", id: "6" },
+            { name: "TextArea", id: 6 },
         ]);
+
+        const previewForm = () => {
+            dialogVisible.value = true
+        }
 
         const deleteItem = (id, index) => {
             console.log(index, 'ssss')
             console.log(id, 'id')
-            if (id && cutomFieldData.value &&  cutomFieldData.value.length > 1) {
-            //    if () {
-            //     ElMessage({
-            //             type: 'error',
-            //             showClose: true,
-            //             message: 'Cannot Delete, You must have at least one field',
-            //             duration: 5000
-            //         })
-            //    }
+            if (id && cutomFieldData.value && cutomFieldData.value.length > 1) {
+                //    if () {
+                //     ElMessage({
+                //             type: 'error',
+                //             showClose: true,
+                //             message: 'Cannot Delete, You must have at least one field',
+                //             duration: 5000
+                //         })
+                //    }
                 axios
                     .delete(`/api/Forms/deleteCustomField?Id=${id}`)
                     .then((res) => {
@@ -326,6 +417,18 @@ export default {
             cutomFieldData.value.push({ parameterValues: [] });
             console.log(cutomFieldData.value, 'kkkkk');
         }
+
+        const getGelocation = async () => {
+            try {
+                const data = await axios.get(
+                    "https://ipgeolocation.abstractapi.com/v1/?api_key=bac6ccc8cd56499dbd1385017983a52c"
+                );
+                console.log(data,'hjjhjhj')
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getGelocation();
         const saveCustomField = () => {
             centerDialogVisible.value = false
         }
@@ -365,7 +468,7 @@ export default {
             formData2.append("date", dateUpdated.value);
             formData2.append("pictureUrl", url.value ? url.value : selectedImage.value);
             formData2.append("tenantID", tenantId.value);
-            formData2.append("customAttributes", JSON.stringify(cutomFieldData.value.map(i => {
+            formData2.append("customAttributesString", JSON.stringify(cutomFieldData.value.map(i => {
                 return {
                     id: i.id,
                     parameterValues: i.parameterValues.toString(),
@@ -428,6 +531,8 @@ export default {
             fileImage,
             url,
             dateUpdated,
+            dialogVisible,
+            previewForm,
             chooseFile,
             handleRemove,
             addNewField,

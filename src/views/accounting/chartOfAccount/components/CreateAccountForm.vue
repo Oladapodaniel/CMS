@@ -198,6 +198,7 @@ export default {
     const selectedCurrency = ref({});
     const selectedFund = ref({});
     const newAccount = ref({});
+    const accountCurrencies = ref([]);
     const selectedCurrencyID = ref(null);
     const selectedFundID = ref(null);
     const userCurrency = ref(
@@ -374,7 +375,6 @@ export default {
       );
     };
 
-    const accountCurrencies = ref([]);
     const getCurrencies = async () => {
       try {
         const response = await transactionals.getCurrencies();

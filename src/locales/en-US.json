@@ -1,0 +1,15 @@
+{
+    "languages": {
+      "pt": "Portuguese",
+      "en": "English",
+      "es": "Spanish"
+    },
+    "title": {
+      "config": "Configuration"
+    },
+    "header": {
+        "login": "Sign in",
+        "signup": "Get Started for",
+        "free": "FREE"
+    }
+  }

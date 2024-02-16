@@ -27,8 +27,8 @@
         </div>
         <div class="row">
             <div class="col-md-12  ">
-                <div class="border d-flex justify-content-center  col-1  rounded pr-5 pl-5 py-3 ">
-                    <img @click="getQrCode" class="cursor-pointer " style="width: 60px;" src="../../assets/form/QrCodeImage.png" alt="">
+                <div class="border d-flex justify-content-center  col-md-1 col-sm-2 col-4 rounded  ">
+                    <img @click="getQrCode" class="cursor-pointer  my-2 " style="width: 40px; height: 2.7rem" src="../../assets/form/QrCodeImage.png" alt="">
                 </div>
             </div>
         </div>

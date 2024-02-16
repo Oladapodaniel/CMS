@@ -63,10 +63,6 @@
                                 <router-link :to="`/tenant/forms/create/${item.id}`" class="text-color">Edit
                                     Form</router-link>
                             </el-dropdown-item>
-                            <!-- <el-dropdown-item>
-                                <router-link :to="`/tenant/singleformlist?id=${item.id}`" class="text-color">View
-                                    Form</router-link>
-                            </el-dropdown-item> -->
                             <el-dropdown-item>
                                 <router-link :to="`/tenant/forms/view/${item.id}`" class="text-color">View
                                     Data</router-link>

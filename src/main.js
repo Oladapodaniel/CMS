@@ -6,6 +6,7 @@ import Highcharts from 'highcharts';
 import VueHighcharts from 'vue-highcharts';
 import loadFunnel from 'highcharts/modules/funnel';
 import ElementPlus from 'element-plus'
+import i18n from './i18n';
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import 'element-plus/theme-chalk/display.css'
@@ -143,4 +144,4 @@ app.provide('primarycolor', '#136acd')
 
 
 
-app.use(store).use(router).use(VueHighcharts, { Highcharts }).use(CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).use(ElementPlus).use(VueTelInput, VueTelInputOptions).mount('#app')
+app.use(store).use(router).use(VueHighcharts, { Highcharts }).use(CKEditor).use(i18n()).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).use(ElementPlus).use(VueTelInput, VueTelInputOptions).mount('#app')

@@ -44,6 +44,7 @@
                                         :placeholder="item.label" />
                                     <el-input type="number" v-if="item.controlType === 5" class="w-100" v-model="item.data"
                                         :placeholder="item.label" />
+                                    <el-input v-model="item.data" v-if="item.controlType === 6" :rows="2" type="textarea" :placeholder="item.label" />
                                     <!-- <span class="w-100" v-if=" item.isRequired && !item.data   ">please fill field </span> -->
                                 </div>
                             </div>
@@ -72,7 +73,7 @@
             </div>
             <div class="row justify-content-center mt-4" v-if="disabledBtn">
                 <div class="col-md-4 text-center h3">
-                    Form Submitted Successfully 
+                    Form Submitted Successfully
                 </div>
             </div>
             <div v-if="networkError && !loading" class="adjust-network">
@@ -153,7 +154,7 @@ export default {
         const getSingleForm = async () => {
             loadingPage.value = true
             try {
-                const { data } = await axios.get(`/api/Forms/getsingleform?Id=${route.params.id}`)
+                const { data } = await axios.get(`/api/Forms/getsinglepublicform?Id=${route.params.id}`)
                 singleFormData.value = data
                 formLogo.value = data.pictureUrl
                 console.log(data, 'ffjjfj');
@@ -183,7 +184,7 @@ export default {
             newArray = newArray.push(requiredData.value)
             console.log(requiredData.value, '622222222266');
             console.log(newArray, '6hhhhhhhhhhh22266');
-            if (filterIsRequired.value && filterIsRequired.value[0].isRequired === true  && newArray.length === 0 ) {
+            if (filterIsRequired.value && filterIsRequired.value[0].isRequired === true && newArray.length === 0) {
                 alert('please fill  the required field')
             } else {
                 loading.value = true

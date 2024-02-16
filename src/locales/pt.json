@@ -1,0 +1,15 @@
+{
+    "languages": {
+        "pt": "Igbo",
+        "en": "Inglês",
+        "es": "Espanhol"
+    },
+    "title": {
+        "config": "Seeyouthere"
+    },
+    "header": {
+        "login": "banye",
+        "signup": "Debanye aha",
+        "free" :  "n'efu"
+    }
+}
