@@ -1,0 +1,15 @@
+{
+    "languages": {
+        "pt": "China",
+        "en": "Inglês",
+        "es": "Espanhol"
+    },
+    "title": {
+        "config": "配置"
+    },
+    "header": {
+        "login": "登入",
+        "signup": "開始使用",
+        "free" :  "自由的"
+    }
+}

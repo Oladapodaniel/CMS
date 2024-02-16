@@ -2,11 +2,10 @@
   <div>
     <div class="main-section">
       <div class="logo-con">
-        <a class="logo-link"
-          ><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo"
-        /></a>
+        <a class="logo-link"><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" /></a>
       </div>
       <div class="header">
+        <!-- <h1>{{ $t('header.login') }}</h1> -->
         <h1>Sign in</h1>
       </div>
 
@@ -18,41 +17,21 @@
         <div class="error-div" v-if="state.notAUser">
           <p class="error-message">
             Not a registered user,
-            <a href="/register" class="primary-text font-weight-bold text-decoration-none"
-              >Register now</a
-            >
+            <a href="/register" class="primary-text font-weight-bold text-decoration-none">Register now</a>
           </p>
         </div>
         <el-form :model="state" class="mt-3" @keyup.enter="login">
           <el-form-item>
-            <el-input
-              type="email"
-              placeholder="Email"
-              v-model="state.credentials.userName"
-            />
+            <el-input type="email" placeholder="Email" v-model="state.credentials.userName" />
           </el-form-item>
           <el-form-item>
-            <el-input
-              type="password"
-              placeholder="Password"
-              v-model="state.credentials.password"
-              show-password
-            />
+            <el-input type="password" placeholder="Password" v-model="state.credentials.password" show-password />
           </el-form-item>
           <div class="f-password-div">
-            <router-link to="/forgotpassword" class="forgot-password primary--text"
-              >Forgot it?</router-link
-            >
+            <router-link to="/forgotpassword" class="forgot-password primary--text">Forgot it?</router-link>
           </div>
           <el-form-item>
-            <el-button
-              size="large"
-              :color="primarycolor"
-              @click="login"
-              class="w-100"
-              :loading="signInLoading"
-              round
-            >
+            <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>
               Sign In
             </el-button>
 
@@ -77,11 +56,9 @@
           </div>
 
           <div class="mt-2">
-            <router-link to="/register" class="sign-up primary--text text-decoration-none"
-              ><el-button color="#17c5cf" class="w-50" round
-                ><strong>Sign up now</strong>
-              </el-button></router-link
-            >
+            <router-link to="/register" class="sign-up primary--text text-decoration-none"><el-button color="#17c5cf"
+                class="w-50" round><strong>Sign up now</strong>
+              </el-button></router-link>
           </div>
         </div>
         <!-- <div class="row">
@@ -97,12 +74,7 @@
         </div> -->
       </div>
 
-      <el-dialog
-        v-model="displayModal"
-        title="Please enter your email"
-        width="80%"
-        align-center
-      >
+      <el-dialog v-model="displayModal" title="Please enter your email" width="80%" align-center>
         <div class="container">
           <div class="row mt-2">
             <div class="col-12"></div>
@@ -116,16 +88,8 @@
         </div>
         <template #footer>
           <span class="dialog-footer">
-            <el-button @click="displayModal = false" class="secondary-button" round
-              >Cancel</el-button
-            >
-            <el-button
-              type="primary"
-              @click="saveEmail"
-              :loading="emailLoading"
-              :color="primarycolor"
-              round
-            >
+            <el-button @click="displayModal = false" class="secondary-button" round>Cancel</el-button>
+            <el-button type="primary" @click="saveEmail" :loading="emailLoading" :color="primarycolor" round>
               Confirm
             </el-button>
           </span>
@@ -138,12 +102,15 @@
 
 <script>
 import axios from "@/gateway/backendapi";
+import axio from "axios";
 import { ElNotification } from "element-plus";
-import { reactive, ref, inject } from "vue";
+import { reactive, ref, inject, watch } from "vue";
 import router from "../../router/index";
 import setupService from "../../services/setup/setupservice";
 import { useGtag } from "vue-gtag-next";
 import FBlogin from "@/mixins/facebookLogin";
+import { useI18n } from 'vue-i18n';
+import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from '../../i18n';
 // import * as Sentry from '@sentry/vue'
 
 export default {
@@ -180,6 +147,12 @@ export default {
       // Sentry.captureMessage('Button clicked')
       // Sentry.captureMessage('Button clicked');
     };
+    const { locale } = useI18n({ useScope: 'global' });
+    watch(locale, (val) => {
+      setI18nLanguage(val);
+    
+    });
+
     const login = async () => {
       signInLoading.value = true;
       localStorage.setItem("email", state.credentials.userName);
@@ -210,7 +183,7 @@ export default {
           let adminIndex = data.roles.findIndex((i) => {
             return i.toLowerCase() == "admin";
           });
-          
+
           let basicUserIndex = data.roles.findIndex((i) => {
             return i.toLowerCase() == "basicuser";
           });
@@ -228,7 +201,7 @@ export default {
                 router.push("/next");
               }
             }
-          } else if ((adminIndex === -1 && roleIndex !== -1) &&  (basicUserIndex === -1 && roleIndex !== -1)) {
+          } else if ((adminIndex === -1 && roleIndex !== -1) && (basicUserIndex === -1 && roleIndex !== -1)) {
             localStorage.clear();
             ElNotification({
               title: "Unauthorized",

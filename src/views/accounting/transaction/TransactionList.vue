@@ -171,7 +171,8 @@
             <div class="col-md-7" id="currencySelect">
               <el-select v-model="selectedCurrencyID" placeholder="Select" class="w-100" @change="setSelectedCurrency"
                 filterable>
-                <el-option v-for="item in filterCurrency" :label="item.name" :value="item.id" :key="item.id" />
+                <el-option v-for="item in filterCurrency" :label="`${item.name} - ${item.country}`" :value="item.currencyId"
+                  :key="item.currencyId" />
               </el-select>
             </div>
             <!-- <div class="col-sm-7">
@@ -204,14 +205,14 @@
               </div>
             </div> -->
           </div>
-          <div class="row mt-2">
+          <!-- <div class="row mt-2">
             <div class="col-sm-3 align-self-center text-right p-0">
               Account ID
             </div>
             <div class="col-sm-7">
               <el-input type="text" class="w-100" />
             </div>
-          </div>
+          </div> -->
           <div class="row mt-2">
             <div class="col-sm-3 align-self-center text-right p-0">
               Description
@@ -221,12 +222,20 @@
               <el-input v-model="newAccount.description" :rows="4" type="textarea" />
             </div>
           </div>
+          <div class="row my-3">
+            <div class="col-md-4 text-md-right"></div>
+            <div class="col-md-7">
+              <p class="text-danger" v-if="invalidAccountDetails">
+                Please select account type and provide account name
+              </p>
+            </div>
+          </div>
           <template #footer>
 
             <el-button color="#EBEFF4" round size="large" class=" secondary-btn px-4" @click="closeModal">
               Close
             </el-button>
-            <el-button round size="large" :color="primarycolor" class=" px-4 mr-0 text-white" @click="saveAccount">
+            <el-button round size="large" :color="primarycolor" :loading="loading" class=" px-4 mr-0 text-white" @click="saveAccount">
               Save
             </el-button>
           </template>
@@ -260,6 +269,7 @@ import axios from "@/gateway/backendapi";
 import transactionService from "../../../services/financials/transaction_service";
 import TransactionTable from "../../../components/transactions/TransactionsTable"
 import transaction_service from '../../../services/financials/transaction_service';
+import chart_of_accounts from "../../../services/financials/chart_of_accounts";
 import numbers_formatter from '../../../services/numbers/numbers_formatter';
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 // import LedgerForm from "../transaction/components/LedgerForm";
@@ -316,9 +326,10 @@ export default {
     };
 
     const setSelectedCurrency = () => {
-      selectedCurrency.value = accountCurrencies.value.find(
-        (i) => i.id == selectedCurrencyID.value
+      selectedCurrency.value = currencyList.value.find(
+        (i) => i.currencyId == selectedCurrencyID.value
       );
+      console.log(selectedCurrency.value, 'kkkk')
     };
 
     const getCurrentUser = async () => {
@@ -359,6 +370,8 @@ export default {
     });
     const displayModal = ref(false);
     const showAccount = ref(false);
+    const newAccount = ref({});
+    const invalidAccountDetails = ref(false);
     const currencyList = ref([]);
     const showCurrency = ref(false);
     const selectAccount = ref("");
@@ -420,6 +433,7 @@ export default {
               name: i.currency,
               id: i.id,
               country: i.name,
+              currencyId: i.currencyId,
             };
           });
         })
@@ -538,14 +552,38 @@ export default {
       console.log(index, account);
       selectedTransactionType.value = account.id ? account.id : "";
     }
-
-    const newAccount = ref({});
+    
     const saveAccount = async () => {
       console.log(newAccount.value, 'jjjjjj')
+      loading.value = true;
+      invalidAccountDetails.value = false;
+      if (
+        !selectedAccountType.value ||
+        !selectedAccountType.value.text ||
+        !newAccount.value.name
+      ) {
+        invalidAccountDetails.value = true;
+        return false;
+      }
+
+      newAccount.value.financialAccountGroupID = selectedAccountType.value.id;
+      newAccount.value.financialFundID = "";
+      if (selectedCurrency.value && selectedCurrency.value.currencyId) {
+        newAccount.value.currencyID = selectedCurrency.value.currencyId;
+      }
+
+      // if (selectedFund.value && selectedFund.value.id) {
+      // newAccount.value.financialFundID =
+      //   selectedFund.value && selectedFund.value.id
+      //     ? selectedFund.value.id
+      //     : "";
+      // }
       try {
-        newAccount.value.accountType = 0;
-        await transactionService.saveAccount(newAccount.value)
+        // newAccount.value.accountType = 0;
+        await chart_of_accounts.saveAccount(newAccount.value)
+        loading.value = false
       } catch (error) {
+        loading.value = false;
         console.log(error);
       }
     }
@@ -564,7 +602,6 @@ export default {
         account: "Journal"
       };
     }
-    // saveAccount()
 
     const accountsAndBalances = ref([])
     const getAccountBalances = async () => {
@@ -626,6 +663,7 @@ export default {
 
     return {
       transactions,
+      invalidAccountDetails,
       setSelectedCurrency,
       selectedCurrencyID,
       selectedCurrency,
