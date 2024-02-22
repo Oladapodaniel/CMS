@@ -429,8 +429,6 @@ export default {
           : "",
         incomeRemittance: remitance.value
       };
-      console.log(contributionCategory, 'kkksccjs')
-      console.log(remitance.value, 'ccjs')
 
       if (remitance.value[0].account || remitance.value[0].percentage) {
         contributionCategory.incomeRemittance = remitance.value.map((i) => {
@@ -438,11 +436,11 @@ export default {
           let payload = {};
           if (i.account.accountType.toLowerCase().includes("assets"))
             payload.distinationCashBankAccount = i.account.id;
-            payload.id = i.id ? i.id : '';
+            payload.id = i.id;
           if (i.account.accountType.toLowerCase().includes("income"))
             payload.distinationIncomeAccount = i.account.id;
           payload.percentage = i.percentage;
-          payload.id = i.id ? i.id : '';
+          payload.id = i.id ;
           return payload;
         });
       } else {
