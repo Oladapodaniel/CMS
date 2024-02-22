@@ -427,8 +427,10 @@ export default {
         cashAccountId: selectedCashAccount.value
           ? selectedCashAccount.value.id
           : "",
-        incomeRemittance: remitance.value,
+        incomeRemittance: remitance.value
       };
+      console.log(contributionCategory, 'kkksccjs')
+      console.log(remitance.value, 'ccjs')
 
       if (remitance.value[0].account || remitance.value[0].percentage) {
         contributionCategory.incomeRemittance = remitance.value.map((i) => {
@@ -436,9 +438,11 @@ export default {
           let payload = {};
           if (i.account.accountType.toLowerCase().includes("assets"))
             payload.distinationCashBankAccount = i.account.id;
+            payload.id = i.id ? i.id : '';
           if (i.account.accountType.toLowerCase().includes("income"))
             payload.distinationIncomeAccount = i.account.id;
           payload.percentage = i.percentage;
+          payload.id = i.id ? i.id : '';
           return payload;
         });
       } else {
@@ -502,6 +506,7 @@ export default {
           remitance.value =  res.data &&   res.data.incomeRemittance ?  res.data.incomeRemittance.map(i => {
             let data = {};
             data.percentage = i.percentage;
+            data.id = i.id
             if (i.distinationCashBankAccount == '00000000-0000-0000-0000-000000000000') {
               data.account = ungroupedRemittanceResult.value.find(j => {
                 return j.id == i.distinationIncomeAccount

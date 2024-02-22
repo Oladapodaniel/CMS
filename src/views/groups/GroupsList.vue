@@ -56,8 +56,8 @@
             </div>
           </div>
           <div class="screensize">
-            <el-table :data="searchGroup" v-loading="loading" stripe class="groupTree" lazy style="width: 100%" row-key="id"
-              :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
+            <el-table :data="searchGroup" v-loading="loading" stripe class="groupTree" lazy style="width: 100%"
+              row-key="id" :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
               <el-table-column width="40%" label="Group">
                 <template #default="scope">
                   <div @click="groupClick(scope.row.id)" class="c-pointer">
@@ -193,7 +193,20 @@ export default {
           cancelButtonText: "Cancel",
           type: "error",
         }
-      );
+      )
+        .then(() => {
+          deleteGroupitem(id);
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Delete canceled",
+            duration: 5000,
+          });
+        });
+    };
+
+    const deleteGroupitem = (id) => {
       try {
         groupsService.deleteGroup(id).then(() => {
           const index = groups.value.findIndex(i => i.id == id)
@@ -212,7 +225,8 @@ export default {
         });
         console.log(error);
       }
-    };
+    }
+
     const getgroups = async () => {
       try {
         loading.value = true;
@@ -354,7 +368,8 @@ export default {
       groupLeader,
       route,
       router,
-      primarycolor
+      primarycolor,
+      deleteGroupitem
     };
   },
 };
@@ -408,6 +423,7 @@ export default {
     min-width: 500px;
   }
 }
+
 @media screen and (min-width: 580px) {
   .hidden-header {
     display: none;

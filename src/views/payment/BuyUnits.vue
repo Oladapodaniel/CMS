@@ -162,7 +162,7 @@
       </div>
       <div class="row justify-content-center">
 
-        <div class="col-md-8 rounded bg-white  shadow"
+        <div class="col-md-8 rounded bg-white  shadow pb-2"
           :class="{ 'showDropdownMenu': showTransferDetail, 'hideDropdownMenu': !showTransferDetail }">
           <div class="col-md-12 d-flex justify-content-start"> <el-icon :size="18">
               <Bottom />
@@ -176,6 +176,9 @@
             </div>
             <div class="col-md-12 d-flex justify-content-between ">
               <div>Bank: </div> <span class="font-weight-bold ">Access</span>
+            </div>
+            <div class="col-md-12 d-flex justify-content-between ">
+              <div>Send Prove of Payment to: </div> <span class="font-weight-bold ">08023739961</span>
             </div>
           </div>
         </div>
@@ -530,7 +533,7 @@ export default {
 
 .showDropdownMenu {
   overflow: hidden;
-  height: 100px;
+  /* height: 100px; */
   transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 

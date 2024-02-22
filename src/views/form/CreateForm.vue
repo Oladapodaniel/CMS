@@ -7,7 +7,7 @@
             <div class="col-md-8 ">
                 <div class="row mt-3">
                     <div class="col-md-3 "></div>
-                    <div class="col-md-9">
+                    <div class="col-md-8">
                         <div class="col-md-12  border d-flex justify-content-center py-3 rounded "
                             style="background-color: #EBEBEB">
                             <div>
@@ -32,22 +32,28 @@
                                 </el-upload>
                             </div>
                         </div>
+
                     </div>
+                    <div class="col-md-1"></div>
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-3 font-weight text-md-right text-left">
                         <label for=""> Form Name </label>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-8">
                         <el-input type="text" v-model="formName" />
+                    </div>
+                    <div class="col-md-1">
                     </div>
                 </div>
                 <div class="row mt-4">
                     <div class="col-md-3 font-weight text-md-right text-left">
                         <label for="">Description</label>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-8">
                         <el-input type="textarea" :rows="3" v-model="description" />
+                    </div>
+                    <div class="">
                     </div>
                 </div>
                 <!-- <div class="row mt-4  ">
@@ -60,87 +66,98 @@
                 <div class="row">
                     <hr class="w-100">
                 </div>
-                <div class="row">
-                    <div class="col-md-12" v-for="(item, index) in cutomFieldData " :key="index">
-                        <div class="row mt-3  ">
-                            <div class="col-md-3 font-weight text-md-right text-left "><label for="">Label name
-                                </label></div>
-                            <div class="col-md-9  ">
-                                <el-input type="text" class="w-100" placeholder="input Label name" v-model="item.label"
-                                    required />
-                            </div>
-                        </div>
-                        <div class="row mt-3  ">
-                            <div class="col-md-3 font-weight text-md-right text-left "><label for=""> Select
-                                    Response
-                                    type
-                                </label></div>
-                            <div class="col-md-9  ">
-                                <el-select-v2 v-model="item.controlType" :options="responseType.map((i) => ({
-                                    label: i.name,
-                                    value: i.id,
-                                }))
-                                    " placeholder="Select Control type" class="w-100" size="large" />
-                            </div>
-                        </div>
-                        <div class="row mt-2 ">
-                            <div class="col-md-3"></div>
-                            <div class="col-md-9" v-if="item.controlType === 1">
-                                <!-- <div>Input your options and press enter</div> -->
-                                <div class="chip-container col-md-12 p-0 m-0 ">
-                                    <div class="chip px-2  d-flex justify-content-between my-2 mx-1"
-                                        v-for="(chip, i) of item.parameterValues" :key="i">
-                                        <span>{{ chip }}</span>
-                                        <!-- <span>{{ item.parameterValues }}</span> -->
-                                        <i class=" pt-1 text-dark align-items-center"
-                                            @click="deleteChip(i, index)"><el-icon>
-                                                <CircleClose />
-                                            </el-icon></i>
+                <draggable item-key="id" class="list-group" v-model="cutomFieldData" ghost-class="ghost"
+                    @start="dragging = true" @end="(dragging = false), (reorderCustomField())" v-loading="reoderloading">
+                    <template #item="{ element, index }">
+                        <div class="row  graggable">
+                            <div class="col-md-12 ">
+                                <!-- <div class="col-md-12" v-for="(item, index) in cutomFieldData " :key="index"> -->
+                                <div class="row mt-3  ">
+                                    <div class="col-md-3 font-weight text-md-right text-left "><label for="">Label name
+                                        </label></div>
+                                    <div class="col-md-8  ">
+                                        <el-input type="text" class="w-100" placeholder="input Label name"
+                                            v-model="element.label" required />
                                     </div>
-                                    <input placeholder="input option" class="inputt   py-2 " v-model="item.currentInput"
-                                        @keypress.enter="saveChip(index)" @input="checkComma"
-                                        @keydown.delete="backspaceDelete(index)">
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3"></div>
-                            <div class="col-md-9 px-0 d-flex  justify-content-between  "
-                                :class="{ 'justify-content-between': item.controlType === 1 }">
-                                <div @click="saveChip(index)" v-if="item.controlType === 1">
-                                    <!-- <div @click="saveChip(index)" v-if="index === cutomFieldData.length - 1"> -->
-                                    <div class="d-flex mt-1 ml-2 " style="font-weight: 500; ">
-                                        <el-icon :size="14" class="mt-1 mr-0 font-weight-bold ">
-                                            <Plus />
-                                        </el-icon><span>New Option</span>
+                                <div class="row mt-3  ">
+                                    <div class="col-md-3 font-weight text-md-right text-left "><label for=""> Select
+                                            Response
+                                            type
+                                        </label></div>
+                                    <div class="col-md-8  ">
+                                        <el-select-v2 v-model="element.controlType" :options="responseType.map((i) => ({
+                                            label: i.name,
+                                            value: i.id,
+                                        }))
+                                            " placeholder="Select Control type" class="w-100" size="large" />
                                     </div>
-                                    <!-- <el-button text class="d-flex ">
+                                    <div class="mt-">
+                                        <img src="../../assets/drag-and-drop.png" />
+                                    </div>
+                                </div>
+                                <div class="row mt-2 ">
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-8" v-if="element.controlType === 1">
+                                        <!-- <div>Input your options and press enter</div> -->
+                                        <div class="chip-container col-md-12 p-0 m-0 ">
+                                            <div class="chip px-2  d-flex justify-content-between my-2 mx-1"
+                                                v-for="(chip, i) of element.parameterValues" :key="i">
+                                                <span>{{ chip }}</span>
+                                                <!-- <span>{{ item.parameterValues }}</span> -->
+                                                <i class=" pt-1 text-dark align-items-center"
+                                                    @click="deleteChip(i, index)"><el-icon>
+                                                        <CircleClose />
+                                                    </el-icon></i>
+                                            </div>
+                                            <input placeholder="input option" class="inputt   py-2 "
+                                                v-model="element.currentInput" @keypress.enter="saveChip(index)"
+                                                @input="checkComma" @keydown.delete="backspaceDelete(index)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-8 px-0 d-flex  justify-content-between  "
+                                        :class="{ 'justify-content-between': element.controlType === 1 }">
+                                        <div @click="saveChip(index)" v-if="element.controlType === 1">
+                                            <!-- <div @click="saveChip(index)" v-if="index === cutomFieldData.length - 1"> -->
+                                            <div class="d-flex mt-1 ml-2 " style="font-weight: 500; ">
+                                                <el-icon :size="14" class="mt-1 mr-0 font-weight-bold ">
+                                                    <Plus />
+                                                </el-icon><span>New Option</span>
+                                            </div>
+                                            <!-- <el-button text class="d-flex ">
                                             <el-icon :size="16" class=" ">
                                                 <Plus />
                                             </el-icon>
                                             <span class="mt-1">New Option</span>
                                         </el-button> -->
+                                        </div>
+                                        <div class="mt-0  pl-3"><el-checkbox class="" v-model="element.isRequired"
+                                                label="Required" />
+                                        </div>
+                                        <div @click="deleteItem(element.id, index)" class="">
+                                            <el-button text class="d-flex justify-content-end ">
+                                                <el-icon class=" " :size="23">
+                                                    <Delete />
+                                                </el-icon><span class="ml-1 ">Delete</span>
+                                            </el-button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="mt-0  pl-3"><el-checkbox class="" v-model="item.isRequired" label="Required" />
-                                </div>
-                                <div @click="deleteItem(item.id, index)" class="">
-                                    <el-button text class="d-flex justify-content-end ">
-                                        <el-icon class=" " :size="23">
-                                            <Delete />
-                                        </el-icon><span class="ml-1 ">Delete</span>
-                                    </el-button>
+                                <div class="row" v-if="index !== cutomFieldData.length - 1">
+                                    <hr class="w-100">
                                 </div>
                             </div>
                         </div>
-                        <div class="row" v-if="index !== cutomFieldData.length - 1">
-                            <hr class="w-100">
-                        </div>
-                    </div>
-                </div>
+                    </template>
+                </draggable>
+
 
                 <div class="row mt-4">
                     <div class="col-md-3"></div>
-                    <div class="col-md-9">
+                    <div class="col-md-8">
                         <div class="row">
                             <div class="col-md-12 " @click="addNewField">
                                 <div class="col-md-12  d-flex " style="font-weight: 500; ">
@@ -182,6 +199,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="row justify-content-center mt-3 ">
                             <div class="col-md-6 py-4 rounded bg-white  ">
                                 <div class="row">
@@ -257,13 +275,19 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useRoute } from "vue-router";
 import router from "../../router";
+import draggable from 'vuedraggable'
 export default {
+    components: {
+        draggable
+    },
     setup() {
         const formName = ref("")
         const description = ref("")
         const cutomFieldData = ref([{ parameterValues: [] }])
         const route = useRoute();
         const required = ref(false)
+        const dragging = ref(false)
+        const reoderloading = ref(false)
         const loading = ref(false)
         const selectedImage = ref("");
         const centerDialogVisible = ref(false)
@@ -288,6 +312,36 @@ export default {
 
         const previewForm = () => {
             dialogVisible.value = true
+        }
+
+        const reorderCustomField = async () => {
+            reoderloading.value = true
+            let payload = cutomFieldData.value.map((i, index) => {
+                i.order = index
+                return {
+                    id : i.id ? i.id : '',
+                    label : i.label,
+                    controlType : i.controlType,
+                    entityType : i.controlType,
+                    entityID : i.entityID,
+                    tenantID : i.tenantID,
+                    isRequired : i.isRequired,
+                    order : i.order
+                }
+            })
+            try {
+                let data = await axios.put("/api/Forms/reOrderform", payload)
+                reoderloading.value = false
+                ElMessage({
+                    type: "success",
+                    message: "Custom fields reordered successfully",
+                    duration: 5000
+                });
+            }
+            catch (error) {
+                console.error(error)
+                reoderloading.value = false
+            }
         }
 
         const deleteItem = (id, index) => {
@@ -423,7 +477,7 @@ export default {
                 const data = await axios.get(
                     "https://ipgeolocation.abstractapi.com/v1/?api_key=bac6ccc8cd56499dbd1385017983a52c"
                 );
-                console.log(data,'hjjhjhj')
+                console.log(data, 'hjjhjhj')
             } catch (error) {
                 console.log(error);
             }
@@ -515,11 +569,13 @@ export default {
 
         return {
             formName,
+            dragging,
             primarycolor,
             cutomFieldData,
             dropdownList,
             required,
             loading,
+            reoderloading,
             description,
             responseType,
             centerDialogVisible,
@@ -532,6 +588,7 @@ export default {
             url,
             dateUpdated,
             dialogVisible,
+            reorderCustomField,
             previewForm,
             chooseFile,
             handleRemove,
@@ -554,6 +611,14 @@ export default {
 
 * {
     font-family: Poppins;
+}
+
+.graggable {
+    cursor: move;
+    /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
 }
 
 .chip-container {

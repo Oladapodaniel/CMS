@@ -459,6 +459,7 @@ export default {
         date: iSoStringFormat.value,
         debitAccountID: selectedCashAccount.value.id,
         memo: transacObj.value.memo,
+        note: transacObj.value.note,
         transactionNumber: props.transactionDetails.transactionNumber ? props.transactionDetails.transactionNumber : ""
       }
       if (props.transactionDetails.id) {
@@ -512,6 +513,7 @@ export default {
             creditAccountID: selectedCashAccount.value.id,
             date: iSoStringFormat.value,
             memo: transacObj.value.memo,
+            note: transacObj.value.note,
             transactionNumber: props.transactionDetails.transactionNumber ? props.transactionDetails.transactionNumber : "",
             amount: Math.abs(+transacObj.value.amount),
             // amount: Math.abs(+transacObj.value.amount),
@@ -545,6 +547,7 @@ export default {
       transacObj.value.date = data.date;
       transacObj.value.amount = Math.abs(data.amount);
       transacObj.value.memo = data.memo;
+      transacObj.value.note = data.note;
       splittedTransactions.value = [{}]
       selectedCashAccount.value = data.account;
 

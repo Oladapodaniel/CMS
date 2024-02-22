@@ -21,7 +21,22 @@
             </el-button>
           </div>
           <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
-            <a
+            <el-dropdown size="large" 
+              class="show more-btn align-items-center  justify-content-center w-100 d-flex default-btn border-0">
+              <span class="el-dropdown-link w-100 text-center h font-weight-bold my-1">
+                More
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <!-- <el-dropdown-item @click="toggleTransac(4)">Money Transfer</el-dropdown-item> -->
+                  <el-dropdown-item @click="toggleTransac(3)" >General ledger</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+            <!-- <a
               class="dropdown show more-btn align-items-center justify-content-center w-100 d-flex default-btn border-0 text-decoration-none">
               <a class="dropdown-toggle text-decoration-none text-dark" href="#" role="button" id="dropdownMenuLink"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -29,9 +44,14 @@
               </a>
 
               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item c-pointer">Money Transfer</a>
+
+              </div>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+
                 <a class="dropdown-item c-pointer" @click="toggleTransac(3)">General Ledger</a>
               </div>
-            </a>
+            </a> -->
           </div>
 
         </div>
@@ -171,8 +191,8 @@
             <div class="col-md-7" id="currencySelect">
               <el-select v-model="selectedCurrencyID" placeholder="Select" class="w-100" @change="setSelectedCurrency"
                 filterable>
-                <el-option v-for="item in filterCurrency" :label="`${item.name} - ${item.country}`" :value="item.currencyId"
-                  :key="item.currencyId" />
+                <el-option v-for="item in filterCurrency" :label="`${item.name} - ${item.country}`"
+                  :value="item.currencyId" :key="item.currencyId" />
               </el-select>
             </div>
             <!-- <div class="col-sm-7">
@@ -235,7 +255,8 @@
             <el-button color="#EBEFF4" round size="large" class=" secondary-btn px-4" @click="closeModal">
               Close
             </el-button>
-            <el-button round size="large" :color="primarycolor" :loading="loading" class=" px-4 mr-0 text-white" @click="saveAccount">
+            <el-button round size="large" :color="primarycolor" :loading="loading" class=" px-4 mr-0 text-white"
+              @click="saveAccount">
               Save
             </el-button>
           </template>
@@ -489,6 +510,12 @@ export default {
           // type: "Add Vendor",
           account: "Expense Account",
         };
+      } else if (e === 4) {
+        transacPropsValue.value = {
+          type: "",
+          type: "Transfer",
+          account: "Destination Account",
+        };
       } else {
         transacPropsValue.value = {
           type: "ledger",
@@ -552,7 +579,7 @@ export default {
       console.log(index, account);
       selectedTransactionType.value = account.id ? account.id : "";
     }
-    
+
     const saveAccount = async () => {
       console.log(newAccount.value, 'jjjjjj')
       loading.value = true;
