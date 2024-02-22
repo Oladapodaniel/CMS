@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row bordered-bottom pb-2 mb-3">
       <div class="col-md-12">
-        <h5 class="mb-0 py-2 d-flex justify-content-between"><span>General Ledger</span> <span @click="closeLedgerForm" class="c-pointer"><el-icon><Close /></el-icon></span></h5>
+        <div class="mb-0 p-3 d-flex parent-desc first justify-content-between "><span>General Ledger</span> <span @click="closeLedgerForm" class="c-pointer"><el-icon><Close /></el-icon></span></div>
       </div>
     </div>
     <div class="row mt-3" v-if="gettingSelectedTrsn">
@@ -17,7 +17,7 @@
         <!-- <div class="container"> -->
           <div class="row">
             <div class="col-md-12">
-              <label for="" class="form-label" style="font-size: 14px"
+              <label for="" class="form-label label-text" style="font-size: 14px"
                 >Description</label
               >
               <el-input  v-model="memo" type="textarea" placeholder="Write a description" :rows="2" class="w-100" />
@@ -36,7 +36,8 @@
     </div>
 
     <div class="row bordered-bottom pb-2 mb-3">
-      <div class="col-md-12 d-flex mt-3 ">
+      <div class="col-md-12  mt-3 ">
+        <label class="label-text" for="">Date</label>
         <el-date-picker
             v-model="transactionDate"
             type="date"
@@ -62,7 +63,7 @@
 
     <div class="row bordered-bottom pb-3 mb-3">
       <div class="col-md-12 d-flex justify-content-center">
-          <div class="col-md-4 mb-3">
+          <div class="col-md-4 mb-2">
             <h5 class="font-weight-700 text-center mb-n1">Debits</h5>
           </div>
       </div>
@@ -144,7 +145,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="col-md-12 d-flex justify-content-center">
-            <div class="col-md-4 mb-3">
+            <div class="col-md-4 mb-2">
               <h5 class="font-weight-700 text-center mb-n1">Credits</h5>
             </div>
         </div>
@@ -230,6 +231,9 @@
       <div class="col-md-12 text-center" v-if="unbalanced">
         <span class="text-center text-danger font-weight-700">Unbalanced</span>
       </div>
+      <div class="col-12 mt-4">
+          <el-input v-model="note" type="textarea" :rows="3" class="w-100" />
+        </div>
       <div class="col-md-12 d-flex justify-content-center my-3">
         <el-button
           class=" text-white font-weight-700 border-0"
@@ -337,6 +341,7 @@ export default {
     })
 
     const memo = ref("");
+    const note = ref("");
     const transactionDate = ref("");
 
     const saveTransaction = async () => {
@@ -344,6 +349,7 @@ export default {
         const body = journalTransactions.value.map(i => {
             return {
                 memo: memo.value,
+                note: note.value,
                 date: iSoStringFormat.value,
                 debitAccountID: i.debitAccountID,
                 creditAccountID: i.creditAccountID,
@@ -390,8 +396,10 @@ export default {
 
     watch(() => props.journalEntry, () => {
       if (props.journalEntry && props.journalEntry.date) {
+        console.log(props.journalEntry,'jjjjjjj');
         // console.log(props.journalEntry.date.toLocaleString().includes('T') ? props.journalEntry.date.toLocaleString().split('T')[0] : props.journalEntry.date.toLocaleString(), "jjjjjjj");
         memo.value = props.journalEntry.memo;
+        note.value = props.journalEntry.note;
         transactionDate.value = props.journalEntry.date
         journalTransactions.value = [
           ...props.journalEntry.debitSplitAccounts.map(i => {
@@ -443,6 +451,7 @@ export default {
       saveTransaction,
       unbalanced,
       memo,
+      note,
       transactionDate,
       closeLedgerForm,
     };
@@ -451,6 +460,21 @@ export default {
 </script>
 
 <style scoped>
+.parent-desc.first {
+  color: #8898aa;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0px 3px 6px #2c28281c;
+  background: #dde2e6 0% 0% no-repeat padding-box;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+}
+.label-text {
+  font-size: 0.8em;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
 .bordered-bottom {
   border-bottom: 1px solid#00204412 !important;
 }

@@ -154,7 +154,7 @@ export default {
         const getSingleForm = async () => {
             loadingPage.value = true
             try {
-                const { data } = await axios.get(`/api/Forms/getsinglepublicform?Id=${route.params.id}`)
+                const { data } = await axios.get(`/api/public/getsinglepublicform?Id=${route.params.id}`)
                 singleFormData.value = data
                 formLogo.value = data.pictureUrl
                 console.log(data, 'ffjjfj');

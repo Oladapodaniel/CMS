@@ -1,15 +1,26 @@
 {
-    "languages": {
-      "pt": "Portuguese",
-      "en": "English",
-      "es": "Spanish"
-    },
-    "title": {
-      "config": "Configuration"
-    },
-    "header": {
-        "login": "Sign in",
-        "signup": "Get Started for",
-        "free": "FREE"
-    }
+  "languages": {
+    "pt": "Portuguese",
+    "en": "English",
+    "es": "Spanish"
+  },
+  "title": {
+    "config": "Configuration"
+  },
+  "home-header": {
+    "login": "Sign in",
+    "signup": "Get Started for",
+    "free": "FREE"
+  },
+  "loginContent": {
+    "login-btntext": "Sign in",
+    "signup-btntext": "Sign in now",
+    "signin-text": "Sign up now",
+    "get-started": "Get Started",
+    "forgot-it": "Forgot it?",
+    "no-account-yet": "Don't have an account yet?",
+    "church-software-text": "A church software that automates your entire church management processes.",
+    "pword-Character" : "At least 6 characters, but longer is better.",
+    "have-an-account" : "Already have an account?"
   }
+}

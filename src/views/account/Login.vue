@@ -5,8 +5,8 @@
         <a class="logo-link"><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" /></a>
       </div>
       <div class="header">
-        <!-- <h1>{{ $t('header.login') }}</h1> -->
-        <h1>Sign in</h1>
+        <h1>{{ $t('home-header.login') == navigatorLang ? $t('home-header.login') : 'Sign in' }}</h1>
+        <!-- <h1>Sign in</h1> -->
       </div>
 
       <div class="form-container">
@@ -31,8 +31,11 @@
             <router-link to="/forgotpassword" class="forgot-password primary--text">Forgot it?</router-link>
           </div>
           <el-form-item>
-            <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>
+            <!-- <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>
               Sign In
+            </el-button> -->
+            <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>
+              {{ $t('home-header.login') == navigatorLang ? $t('home-header.login') : 'Sign in' }}
             </el-button>
 
             <!-- <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
@@ -124,6 +127,8 @@ export default {
     };
     track();
     const signInLoading = ref(false);
+    const navigatorLang = ref(navigator.language);
+    console.log(navigatorLang.value, 'dddsdsd');
     const primarycolor = inject("primarycolor");
 
     const state = reactive({
@@ -263,6 +268,7 @@ export default {
 
     return {
       signInLoading,
+      navigatorLang,
       state,
       login,
       loading,

@@ -238,8 +238,17 @@
               class="table edit-transac col-12 border col-sm-10 col-md-8 w-100 w-sm-50 w-md-50 w-lg-50 col-lg-4 mobile-form mywidt"
               v-if="showEditTransaction"
             >
+              <TransferForm
+                v-if="transactionDetails.type === 'Transfer'"
+                @close-it="closeIt"
+                @transac-obj="transacObj"
+                :transactionDetails="transactionDetails"
+                :showEditTransaction="showEditTransaction"
+                @reload="getTransactions"
+                :gettingSelectedTrsn="gettingSelectedTrsn"
+              />
               <TransactionForm
-                v-if="transactionDetails.type !== 'ledger'"
+                v-else-if="transactionDetails.type !== 'ledger' && transactionDetails.type !== 'Transfer' "
                 @close-it="closeIt"
                 @transac-obj="transacObj"
                 :transactionDetails="transactionDetails"
@@ -305,6 +314,7 @@ import { ref, computed, inject, onMounted, watchEffect, watch } from "vue";
 import axios from "@/gateway/backendapi";
 import finish from "../../services/progressbar/progress";
 import TransactionForm from "../../views/accounting/transaction/EditTransaction";
+import TransferForm from "../../views/accounting/transaction/TransferForm";
 import transaction_service from "../../services/financials/transaction_service";
 import dateFormatter from "../../services/dates/dateformatter";
 // import transactionService from "../../services/financials/transaction_service";
@@ -325,6 +335,7 @@ export default {
   components: {
     TransactionForm,
     LedgerForm,
+    TransferForm,
     Table,
   },
   setup(props, { emit }) {

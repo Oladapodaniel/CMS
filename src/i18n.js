@@ -36,13 +36,13 @@ export async function loadLocaleMessages(locale) {
 
 export default function setupI18n() {
     if (!i18n) {
-        let locale = localStorage.getItem('lang') || navigator.language || navigator.userLanguage;
+        let locale = localStorage.getItem('lang') || "en-US";
 
         i18n = createI18n({
             globalInjection: true,
             legacy: false,
             locale: locale,
-            fallbackLocale:  navigator.language || navigator.userLanguage
+            fallbackLocale:  navigator.language ? navigator.language : "en-US" 
         });
 
         setI18nLanguage(locale);
