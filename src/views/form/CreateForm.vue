@@ -160,7 +160,7 @@
                     <div class="col-md-8">
                         <div class="row">
                             <div class="col-md-12 " @click="addNewField">
-                                <div class="col-md-12  d-flex " style="font-weight: 500; ">
+                                <div class="col-md-12 cursor-pointer  d-flex " style="font-weight: 500; ">
                                     <el-icon :size="14" class="mt-1 mr-0 font-weight-bold ">
                                         <Plus />
                                     </el-icon><span class="font-weight-600">Add New

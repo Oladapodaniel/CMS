@@ -3,15 +3,15 @@
         <div class="container " :class="{ 'container-slim': lgAndUp || xlAndUp }">
             <div class="row  justify-content-center ">
 
-                <div class="col-md-5  py-3 bg-white mt-5 ">
+                <div class="col-md-6 col-lg-5   py-3 bg-white mt-0 mt-sm-5 ">
                     <div class="row justify-content-center">
-                        <div class="col-md-9 mt-3 " v-if="formLogo">
+                        <div class="col-md-10  mt-3 " v-if="formLogo">
                             <img v-if="formLogo" :src="formLogo" class="w-100" style="height: 9rem" alt="">
                         </div>
-                        <div class="col-md-9 text-center h4  mt-4 font-weight-600">
+                        <div class="col-md-10  text-center h4  mt-4 font-weight-600">
                             {{ singleFormData.name }}
                         </div>
-                        <div class="col-md-9 text-center">
+                        <div class="col-md-10 text-center">
                             {{ singleFormData.description }}
                         </div>
                     </div>
@@ -22,12 +22,12 @@
             </div>
             <div class="row justify-content-center mt-3 "
                 v-if="singleFormData && singleFormData.customAttributes && singleFormData.customAttributes.length > 0 && !networkError && !disabledBtn && !loadingPage">
-                <div class="col-md-5 py-4 rounded bg-white  ">
+                <div class="col-md-6 col-lg-5 py-4 rounded bg-white  ">
                     <div class="row">
                         <div class="col-md-12" v-for="(item, index) in singleFormData.customAttributes " :key="index">
                             <div class="row mt-3 justify-content-center ">
 
-                                <div class="col-md-9  " style="font-weight: 500">
+                                <div class="col-md-10  " style="font-weight: 500">
                                     <label for="">{{ item.label }} <span v-if="item.isRequired" style="color: red">
                                             *</span></label>
                                     <el-input type="text" class="w-100" v-if="item.controlType === 0"

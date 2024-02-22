@@ -21,7 +21,7 @@
             </el-button>
           </div>
           <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
-            <el-dropdown size="large" 
+            <el-dropdown size="large"
               class="show more-btn align-items-center  justify-content-center w-100 d-flex default-btn border-0">
               <span class="el-dropdown-link w-100 text-center h font-weight-bold my-1">
                 More
@@ -32,7 +32,7 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <!-- <el-dropdown-item @click="toggleTransac(4)">Money Transfer</el-dropdown-item> -->
-                  <el-dropdown-item @click="toggleTransac(3)" >General ledger</el-dropdown-item>
+                  <el-dropdown-item @click="toggleTransac(3)">General ledger</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -115,9 +115,9 @@
                   <div class="d-flex justify-content-between border-contribution w-100" size="large">
                     <div>
                       {{
-                        !selectedAccountType || !selectedAccountType.text
+                        !selectedAccountType || !selectedAccountType.name
                         ? "Select account type"
-                        : selectedAccountType.text
+                        : selectedAccountType.name
                       }}
                     </div>
                     <div>
@@ -136,7 +136,7 @@
                         </div>
                         <div v-for="(account, indx) in accounts" :key="indx" @click="selectAccountType(account)"
                           class="c-pointer py-2">
-                          {{ account.text }}
+                          {{ account.name }}
                         </div>
                       </div>
                     </el-dropdown-item>
@@ -195,35 +195,6 @@
                   :value="item.currencyId" :key="item.currencyId" />
               </el-select>
             </div>
-            <!-- <div class="col-sm-7">
-              <div class="select-elem-con pointer d-flex justify-content-space-between close-modal"
-                @click="showCurrency = !showCurrency">
-                <span class="ofering close-modal">NGN - Nigeria</span><span>
-                  <el-icon>
-                    <ArrowDown />
-                  </el-icon></span>
-              </div>
-              <div class="ofering close-modal" :class="{ 'style-account': showCurrency }" v-if="showCurrency">
-                <div class="px-3 pt-3">
-                  <input type="text" placeholder="Search..." class="form-control close-modal ofering mb-1"
-                    v-model="currencyText" />
-                </div>
-                <div class="header-border close-modal" v-if="filterCurrency.length > 0">
-                  <div class="manual-dd-item close-modal" v-for="item in filterCurrency" :key="item.id">
-                    <div class="d-flex justify-content-between py-2 px-3 close-modal">
-                      <div class="close-modal offset-sm-1">
-                        {{ item.name }} - {{ item.country }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="header-border close-modal" v-else>
-                  <div class="p-3 text-center text-danger">
-                    No Match Found
-                  </div>
-                </div>
-              </div>
-            </div> -->
           </div>
           <!-- <div class="row mt-2">
             <div class="col-sm-3 align-self-center text-right p-0">
@@ -256,7 +227,7 @@
               Close
             </el-button>
             <el-button round size="large" :color="primarycolor" :loading="loading" class=" px-4 mr-0 text-white"
-              @click="saveAccount">
+              @click="saveNewAccount">
               Save
             </el-button>
           </template>
@@ -293,6 +264,7 @@ import transaction_service from '../../../services/financials/transaction_servic
 import chart_of_accounts from "../../../services/financials/chart_of_accounts";
 import numbers_formatter from '../../../services/numbers/numbers_formatter';
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
+import { ElMessage } from "element-plus";
 // import LedgerForm from "../transaction/components/LedgerForm";
 import { useStore } from "vuex";
 import userService from '../../../services/user/userservice';
@@ -540,13 +512,22 @@ export default {
     const getTransactionalAccounts = async () => {
       loading.value = true;
       try {
-        const response = await transactionService.getTransactionalAccounts();
-        for (let group of accountTypes) {
-          const groupItems = response.filter(
-            (i) => i.accountType.toLowerCase() === group
-          );
-          transactionalAccounts.value.push(groupItems);
+        const res = await transaction_service.getAccountHeads();
+        let data = []
+        for (let group of res) {
+          data.push(group.accountHeadsDTO);
         }
+        transactionalAccounts.value = data
+
+        // const response = await transactionService.getTransactionalAccounts();
+        // console.log(response, 'iiuiu');
+        // for (let group of accountTypes) {
+        //   const groupItems = response.filter(
+        //     (i) => i.accountType.toLowerCase() === group
+        //   );
+        //   transactionalAccounts.value.push(groupItems);
+        // }
+        // console.log(transactionalAccounts.value, 'jjj');
         loading.value = false;
       } catch (error) {
         console.log(error);
@@ -580,13 +561,12 @@ export default {
       selectedTransactionType.value = account.id ? account.id : "";
     }
 
-    const saveAccount = async () => {
-      console.log(newAccount.value, 'jjjjjj')
+    const saveNewAccount = async () => {
       loading.value = true;
       invalidAccountDetails.value = false;
       if (
         !selectedAccountType.value ||
-        !selectedAccountType.value.text ||
+        !selectedAccountType.value.name ||
         !newAccount.value.name
       ) {
         invalidAccountDetails.value = true;
@@ -606,9 +586,24 @@ export default {
       //     : "";
       // }
       try {
-        // newAccount.value.accountType = 0;
-        await chart_of_accounts.saveAccount(newAccount.value)
+        const data  = await chart_of_accounts.saveAccount(newAccount.value)
+        if (data && data.status) {
+          ElMessage({
+          type: "success",
+          message: `${data.response}`,
+          duration: 3000,
+        });
+        getTransactionalAccounts();
+        }else{
+          ElMessage({
+              type: "error",
+              message: "Account Creation Failed",
+              duration: 3000,
+            });
+        }
+        
         loading.value = false
+        displayModal.value = false;
       } catch (error) {
         loading.value = false;
         console.log(error);
@@ -741,7 +736,7 @@ export default {
       selectAnAccount,
       selectedTransactionType,
       newAccount,
-      saveAccount,
+      saveNewAccount,
       selectRow,
       accountsAndBalances,
       totalAccountBalances,
