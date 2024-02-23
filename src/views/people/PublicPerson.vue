@@ -1478,7 +1478,7 @@ export default {
 
     const birthDaysArr = computed(() => {
       const arrOfDays = [];
-      for (let i = 1; i <= daysInBirthMonth.value; i++) {
+      for (let i = 1; i <= 31; i++) {
         arrOfDays.push(i);
       }
       return arrOfDays;
@@ -1515,7 +1515,7 @@ export default {
     const daysInAnnMonth = ref(anniversaryDate.daysInMonth());
     const annDaysArr = computed(() => {
       const arrOfDays = [];
-      for (let i = 1; i <= daysInAnnMonth.value; i++) {
+      for (let i = 1; i <= 31; i++) {
         arrOfDays.push(i);
       }
       return arrOfDays;
