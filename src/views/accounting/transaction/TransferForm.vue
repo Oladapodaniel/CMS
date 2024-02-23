@@ -52,11 +52,12 @@
   
               <div class="container-fluid">
                 <div class="row">
-                  <div class="  col-md-12 px-0" v-for="(account, index) in filteredCashandBank" :key="index"
-                    @click="accountFlow($event, account)">
-                    <div class="header-border hover-text close-modal">
-                      <div v-if="account">
-                        <div class="close-modal offset-sm-1  py-2 small-text">{{ account.text }}</div>
+                  <div class="  col-md-12 px-0" v-for="(account, index) in remittanceResult" :key="index"
+                    >
+                    <div class="header-border hover-text close-modal" v-for="(item, index) in account.value" :key="index"
+                    @click="accountFlow($event, item)">
+                      <div v-if="item">
+                        <div class="close-modal offset-sm-1  py-2 small-text">{{ item.text }}</div>
                       </div>
                       <div v-else>
                         <div class="text-center px-3 py-2 text-danger">
@@ -65,11 +66,11 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-12" v-if="filteredCashandBank.length === 0">
+                  <!-- <div class="col-md-12" v-if="filteredCashandBank.length === 0">
                     <div class="text-center px-3 py-2 text-danger">
                       No Match Found
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
   
@@ -100,8 +101,7 @@
           <div class="row mt-3">
             <div class="col-12" v-for="(i, index) in splittedTransactions" :key="index">
               <div class="label-text">{{ transactionDetails.id && transactionDetails.debitSplitAccounts &&
-                transactionDetails.debitSplitAccounts.length > 0 ? "Expense Account" : transactionDetails.id ?
-                "IncomeAccount" : transactionDetails.account }}</div>
+                transactionDetails.debitSplitAccounts.length > 0 ? "Destination Account" : transactionDetails.account }}</div>
   
               <div class="dropdown cursor-pointer">
                 <button class="btn cursor-pointer btn-default text-left bg-light col-7"
@@ -161,7 +161,7 @@
             <el-tooltip class="box-item" effect="dark"
               content='Create multiple categories to associate(split) this trasaction between different accounts.'
               placement="top">
-              <div class="w-100">Split this {{ transactionDetails.account === 'Destination Account' ? 'Destination Account' : '' }} <el-icon>
+              <div class="w-100">Split this {{ transactionDetails.account === 'Destination Account' ? ' Destination ' : '' }} <el-icon>
                   <InfoFilled />
                 </el-icon></div>
             </el-tooltip>
@@ -205,7 +205,7 @@
           </div> -->
           <div class="col-6 offset-sm-3 mb-2 mt-3">
             <div class=" text-center cpon">
-              <el-button class=" primary-bg text-white border-0 d-flex justify-content-center" :loading="savingAccount"
+              <el-button class=" text-white border-0 d-flex justify-content-center" :loading="savingAccount"
                 :color="primarycolor" round size="large" :disabled="!formIsValid || savingAccount" @click="saveIncome">
                 <span>
                   {{ transactionDetails.id ? 'Update' : 'Save' }}
@@ -220,10 +220,12 @@
   
   <script>
   import { ref, computed, nextTick, inject, watch, watchEffect, proxyRefs } from "vue";
+  import axios from "@/gateway/backendapi";
   import transaction_service from "../../../services/financials/transaction_service";
   import chart_of_accounts from '../../../services/financials/chart_of_accounts';
   import SearchMember from "../../../components/search/SearchMember"
   import dateFormatter from "../../../services/dates/dateformatter";
+  import groupData from "../../../services/groupArray/groupResponse";
   import store from "../../../store/store";
   import { ElMessage } from 'element-plus'
   export default {
@@ -235,6 +237,8 @@
       const accountText = ref("");
       const selectedFileUrl = ref("");
       const accountType = ref([]);
+      const remittanceResult = ref([]);
+      const ungroupedRemittanceResult = ref([]);
       const primarycolor = inject('primarycolor')
       const liabilities = ref(["Credit Card", "Loan and Line of Credit"]);
       const showUncategorized = ref(false);
@@ -344,6 +348,7 @@
       };
   
       const accountFlow = (e, account) => {
+        console.log(account, 'hjjjj')
         // transacObj.value.accountFlow = e.target.innerText;
         showAccount.value = !showAccount.value;
         selectedCashAccount.value = account;
@@ -440,6 +445,29 @@
         }
         return accounts;
       })
+
+      const getRemittanceAccount = () => {
+      axios
+        .get("/api/Financials/Accounts/GetRemittanceAccounts")
+        .then((res) => {
+          ungroupedRemittanceResult.value = res.data
+          console.log(ungroupedRemittanceResult.value, 'ndjjdjdd')
+          let groupedRemittance = groupData.groupData(res.data, "accountType");
+          for (const prop in groupedRemittance) {
+            remittanceResult.value.push({
+              name: prop,
+              value: groupedRemittance[prop],
+            });
+          }
+          console.log(remittanceResult.value, 'jjjjjj');
+          // getOffItems();
+        })
+        .catch((err) => {
+          NProgress.done();
+          console.log(err);
+        });
+    };
+    getRemittanceAccount();
   
       const constructSaveTransactionReqBody = () => {
         const reqBody = {
@@ -494,36 +522,35 @@
             transacObj.value.debitAccountID = selectedCashAccount.value.id;
             reqBody = constructSaveTransactionReqBody();
             reqBody.category = "inflow";
-            const response = await transaction_service.saveIncome(reqBody);
+            const response = await transaction_service.saveJournalTransaction(reqBody);
             savingAccount.value = false;
             toastMessage(response);
-          } else {
-            const body = {
-              debitSplitAccounts: splittedTransactions.value.map(i => {
-                return {
-                  accountID: i.accountID,
-                  amount: Math.abs(splittedTransactions.value.length === 1 ? transacObj.value.amount : i.amount ? +i.amount : +transacObj.value.amount),
-                  // amount: Math.abs(i.amount ? +i.amount : +transacObj.value.amount),
-                  contactID: i.donorId ? i.donorId : "",
-                  transactionID: i.transactionID
-                }
-              }),
-              creditAccountID: selectedCashAccount.value.id,
-              date: iSoStringFormat.value,
-              memo: transacObj.value.memo,
-              transactionNumber: props.transactionDetails.transactionNumber ? props.transactionDetails.transactionNumber : "",
-              amount: Math.abs(+transacObj.value.amount),
-              // amount: Math.abs(+transacObj.value.amount),
-              category: "outflow"
-            }
+          } 
+          // else {
+          //   const body = {
+          //     debitSplitAccounts: splittedTransactions.value.map(i => {
+          //       return {
+          //         accountID: i.accountID,
+          //         amount: Math.abs(splittedTransactions.value.length === 1 ? transacObj.value.amount : i.amount ? +i.amount : +transacObj.value.amount),
+          //         contactID: i.donorId ? i.donorId : "",
+          //         transactionID: i.transactionID
+          //       }
+          //     }),
+          //     creditAccountID: selectedCashAccount.value.id,
+          //     date: iSoStringFormat.value,
+          //     memo: transacObj.value.memo,
+          //     transactionNumber: props.transactionDetails.transactionNumber ? props.transactionDetails.transactionNumber : "",
+          //     amount: Math.abs(+transacObj.value.amount),
+          //     category: "outflow"
+          //   }
   
-            if (props.transactionDetails.id) {
-              body.id = props.transactionDetails.id;
-            }
-            const response = await transaction_service.saveExpense(body);
-            savingAccount.value = false;
-            toastMessage(response)
-          }
+          //   if (props.transactionDetails.id) {
+          //     body.id = props.transactionDetails.id;
+          //   }
+          //   const response = await transaction_service.saveExpense(body);
+          //   savingAccount.value = false;
+          //   toastMessage(response)
+          // }
         } catch (error) {
           savingAccount.value = false;
           console.log(error);
@@ -593,6 +620,10 @@
         if (!cashandbank.value || cashandbank.value.length === 0) return [];
         return cashandbank.value.filter(i => i.text.toLowerCase().includes(accountText.value));
       })
+      // const filteredCashandBank = computed(() => {
+      //   if (!remittanceResult.value ||  remittanceResult.value.length === 0) return [];
+      //   return remittanceResult.value.value.filter(i => i.text.toLowerCase().includes(accountText.value));
+      // })
   
       const splitTransaction = () => {
         splittedTransactions.value.push({})
@@ -625,6 +656,8 @@
   
       return {
         showAccount,
+        remittanceResult,
+        ungroupedRemittanceResult,
         iSoStringFormat,
         accountText,
         filterAccount,

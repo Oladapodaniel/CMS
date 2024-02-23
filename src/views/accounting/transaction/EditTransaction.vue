@@ -206,7 +206,7 @@
         </div> -->
         <div class="col-6 offset-sm-3 mb-2 mt-3">
           <div class=" text-center cpon">
-            <el-button class=" primary-bg text-white border-0 d-flex justify-content-center" :loading="savingAccount"
+            <el-button class=" text-white border-0 d-flex justify-content-center" :loading="savingAccount"
               :color="primarycolor" round size="large" :disabled="!formIsValid || savingAccount" @click="saveIncome">
               <span>
                 {{ transactionDetails.id ? 'Update' : 'Save' }}
@@ -488,6 +488,7 @@ export default {
 
     const newIncome = ref({});
     const saveIncome = async () => {
+      if(props.transactionDetails.creditSplitAccounts !==  props.transactionDetails.creditSplitAccounts < 0 )
       try {
         let reqBody = {};
         savingAccount.value = true;
@@ -619,6 +620,7 @@ export default {
       const result = splittedTransactions.value.map(i => {
         return i.amount ? Math.abs(+i.amount) : 0;
       }).reduce((a, b) => a + b);
+      console.log(result, 'jjjj');
       const amount = transacObj.value.amount ? +transacObj.value.amount : 0;
       return Math.abs(amount) === result;
     })

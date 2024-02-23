@@ -396,7 +396,6 @@ export default {
 
     watch(() => props.journalEntry, () => {
       if (props.journalEntry && props.journalEntry.date) {
-        console.log(props.journalEntry,'jjjjjjj');
         // console.log(props.journalEntry.date.toLocaleString().includes('T') ? props.journalEntry.date.toLocaleString().split('T')[0] : props.journalEntry.date.toLocaleString(), "jjjjjjj");
         memo.value = props.journalEntry.memo;
         note.value = props.journalEntry.note;

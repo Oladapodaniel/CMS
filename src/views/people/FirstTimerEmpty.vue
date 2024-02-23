@@ -160,7 +160,7 @@
          <el-button :color="primarycolor" @click="addNewFirsttimer" class="ml-2 header-btn" round>Add First Timers</el-button>
       </div>
     </div>
-    <div v-if="(newConvertList.length === 0) && !loading && !networkError " class="no-person">
+    <div v-if="(newConvertList.length === 0) && showNewConvert && !loading && !networkError " class="no-person">
       <div class="empty-img">
         <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
         <p class="tip">You haven't added any New convert yet</p>
