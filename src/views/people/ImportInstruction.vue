@@ -7,25 +7,25 @@
   >
     <div class="row">
       <div class="col-12 col-md-12 col-lg-12 header" v-if="!isModal">
-        <div>Import members</div>
+        <div>Import {{ route.query.query == 'importfirsttimer' ? firstTimerText : memberText }}s</div>
         <div class="border-bottom w-100 my-4 col-12 col-md-12 col-lg-12"></div>
       </div>
 
       <div class="col-12 col-md-10 col-lg-11 col-xl-11">
         <p>
-          You can easily import members from any spreadsheet with .xlsx or .csv file
+          You can easily import {{route.query.query == 'importfirsttimer' ? firstTimerText : memberText}}s from any spreadsheet with .xlsx or .csv file
           format.
         </p>
       </div>
       <div class="col-12 text-secondary font-weight-normal lead d-none d-md-block mb-3">
-        Members Excel/CSV template file
+        {{route.query.query == 'importfirsttimer' ? firstTimerText : memberText}}s Excel/CSV template file
       </div>
       <div class="col-12 col-md-12 mb-3">
         <a
           href="/files/Template.csv"
           class="no-decoration primary--text font-weight-bold"
           download
-          >Click here to download and view our members Excel/CSV template.</a
+          >Click here to download and view our {{ route.query.query == 'importfirsttimer' ? firstTimerText : memberText }}s Excel/CSV template.</a
         >
         <span> You can use this as a template for creating your Excel/CSV file.</span>
       </div>
@@ -115,7 +115,7 @@
               @click="uploadFile"
               :loading="uploadLoading"
               round
-              >Upload and preview members</el-button
+              >Upload and preview {{route.query.query == 'importfirsttimer' ? firstTimerText : memberText}}s</el-button
             >
           </div>
           <div class="border-bottom w-100 my-2 col-md-12"></div>
@@ -153,8 +153,8 @@
           </div>
           <div class="col-10 col-md-12">
             <span
-              >The first line of your members Excel/CSV must include all of the headers
-              listed below, which are included in the member Excel/CSV template</span
+              >The first line of your {{route.query.query == 'importfirsttimer' ? firstTimerText : memberText}}s Excel/CSV must include all of the headers
+              listed below, which are included in the {{route.query.query == 'importfirsttimer' ? firstTimerText : memberText}} Excel/CSV template</span
             >
           </div>
           <div class="row ml-1 bg-secondary my-3 mx-1 rounded h-100 w-100">
@@ -167,75 +167,75 @@
               <p>FirstName</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>The first name of your member</p>
+              <p>The first name of your {{route.query.query == 'importfirsttimer' ? firstTimerText : memberText}}</p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>LastName</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>The last name of your member.</p>
+              <p>The last name of your {{route.query.query == 'importfirsttimer' ? firstTimerText : memberText}}.</p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>Email</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>The email address of your member</p>
+              <p>The email address of your {{route.query.query == 'importfirsttimer' ? firstTimerText : memberText}}</p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>PhoneNumber</p>
             </div>
-            <div class="col-8 col-md-8 col-lg-8">The phone number of your member.</div>
+            <div class="col-8 col-md-8 col-lg-8">The phone number of your {{route.query.query == 'importfirsttimer' ? firstTimerText : memberText}}.</div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>Address</p>
             </div>
-            <div class="col-8 col-md-8 col-lg-8">The address of the member.</div>
+            <div class="col-8 col-md-8 col-lg-8">The address of the {{route.query.query == 'importfirsttimer' ? firstTimerText : memberText}}.</div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>Birthday</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>The birthday of the member</p>
+              <p>The birthday of the {{route.query.query == 'importfirsttimer' ? firstTimerText : memberText}}</p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>BirthMonth</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>The birth month of the member</p>
+              <p>The birth month of the {{route.query.query == 'importfirsttimer' ? firstTimerText : memberText}}</p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>BirthYear</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>The birth year of the member</p>
+              <p>The birth year of the {{route.query.query == 'importfirsttimer' ? firstTimerText : memberText}}</p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>Gender</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>The gender of the member</p>
+              <p>The gender of the {{route.query.query == 'importfirsttimer' ? firstTimerText : memberText}}</p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>MaritalStatus</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>The marital status of the member</p>
+              <p>The marital status of the {{route.query.query == 'importfirsttimer' ? firstTimerText : memberText}}</p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>CommunicationMeans</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>Preferred communcation means of the member</p>
+              <p>Preferred communcation means of the {{route.query.query == 'importfirsttimer' ? firstTimerText : memberText}}</p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>InterestedInJoining</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>If member is interested in joining</p>
+              <p>If {{route.query.query == 'importfirsttimer' ? firstTimerText : memberText}} is interested in joining</p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>WantToBeVisited</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>If member wants to be visited.</p>
+              <p>If {{route.query.query == 'importfirsttimer' ? firstTimerText : memberText}} wants to be visited.</p>
             </div>
           </div>
         </div>
@@ -243,7 +243,7 @@
 
       <el-dialog
         v-model="displayModal"
-        title="Members to import from file"
+        title="{{route.query.query == 'importfirsttimer' ? firstTimerText : memberText}}s to import from file"
         :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
       >
         <div class="row">
@@ -307,6 +307,8 @@ export default {
     const image = ref("");
     const displayModal = ref(false);
     const memberData = ref([]);
+    const firstTimerText = ref('firstTimer');
+    const memberText = ref('member');
     const addInstructionClass = ref(false);
     const loading = ref(false);
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
@@ -574,6 +576,8 @@ export default {
 
     return {
       imageSelected,
+      firstTimerText,
+      memberText,
       image,
       uploadFile,
       memberData,
