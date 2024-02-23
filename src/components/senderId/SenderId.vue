@@ -171,7 +171,6 @@ const showConfirmModal = (item) => {
     };
 
 const deletSenderId = async (item) => {
-    console.log('pressed')
     try {
         let { data } = await axios.delete(`/api/Messaging/DeleteSenderID?id=${item.id}`)
         console.log(data)
