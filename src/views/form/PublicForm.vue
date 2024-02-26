@@ -178,18 +178,18 @@ export default {
         const filterIsRequired = ref([])
         const requiredData = ref([])
         const saveForm = async () => {
-            let newArray = []
-            filterIsRequired.value = singleFormData.value.customAttributes.filter(i => i.isRequired === true)
-            requiredData.value = filterIsRequired.value.map(i => i.data).toString()
-            newArray = newArray.push(requiredData.value)
-            console.log(requiredData.value, '622222222266');
-            console.log(newArray, '6hhhhhhhhhhh22266');
-            if (filterIsRequired.value && filterIsRequired.value[0].isRequired === true && newArray.length === 0) {
-                alert('please fill  the required field')
-            } else {
+            // let newArray = []
+            // filterIsRequired.value = singleFormData.value.customAttributes.filter(i => i.isRequired === true)
+            // requiredData.value = filterIsRequired.value.map(i => i.data).toString()
+            // newArray = newArray.push(requiredData.value)
+            // console.log(requiredData.value, '622222222266');
+            // console.log(newArray, '6hhhhhhhhhhh22266');
+            // if (filterIsRequired.value && filterIsRequired.value[0].isRequired === true && newArray.length === 0) {
+            //     alert('please fill  the required field')
+            // } else {
                 loading.value = true
                 try {
-                    const { data } = await axios.post('/api/Forms/saveformdata', singleFormData.value.customAttributes.map((i) => ({
+                    const { data } = await axios.post(`/api/public/saveformdata?formID=${route.params.id}`, singleFormData.value.customAttributes.map((i) => ({
                         customAttributeID: i.id,
                         data: i.data,
                         isRequired: i.isRequired
@@ -214,7 +214,7 @@ export default {
                     console.log(error);
                     loading.value = false
                 }
-            }
+            // }
 
         }
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container-fluid">
+    <!-- <div class="container-fluid">
       <div class="row">
         <div class="col-md-12   align-items-center d-flex justify-content-center" style="height: 50vh;">
           <div class="empty-img  text-center " >
@@ -9,8 +9,8 @@
           </div>
         </div>
       </div>
-    </div>
-    <!-- <div class="container">
+    </div> -->
+    <div class="container">
       <div class="row">
         <div
           class="mt-5 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 text-sm-center"
@@ -302,7 +302,7 @@
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
 
   </div>
 </template>
