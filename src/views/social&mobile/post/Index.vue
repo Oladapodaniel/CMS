@@ -515,7 +515,7 @@ export default {
         formData.append("content", message.value ? message.value : "");
         formData.append("mediaUrl", mediaUrl.value ? mediaUrl.value : "");
         formData.append("postId", route.query.postId);
-        formData.append("title", devotionTitle.value);
+        formData.append("title", devotionTitle.value ? devotionTitle.value : "Announcement");
         formData.append("bibleVerse", devotionScripture.value);
         formData.append("memoryVerse", devotionMemoryVerse.value);
         formData.append(
@@ -613,7 +613,7 @@ export default {
       formData.append("mediaFile", file.value ? file.value : "");
       formData.append("content", message.value ? message.value : "");
       formData.append("mediaUrl", mediaUrl.value ? mediaUrl.value : "");
-      formData.append("title", devotionTitle.value);
+      formData.append("title", devotionTitle.value ? devotionTitle.value : "Announcement");
       formData.append("bibleVerse", devotionScripture.value);
       formData.append("memoryVerse", devotionMemoryVerse.value);
       formData.append(
