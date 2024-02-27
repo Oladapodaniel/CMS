@@ -13,7 +13,7 @@
           v-for="(socialMedia, index) in handles"
           :key="index"
         >
-          <div class="col-2 mt-2">
+          <div class="col-2 mt-2 align-self-center">
             <img
               v-if="socialMedia.name === 'facebook handle'"
               src="../../../assets/social/facebook.svg"
@@ -40,7 +40,7 @@
               alt="youtube channel id"
             />
           </div>
-          <div class="col-10 mt-3" id="logoBox">
+          <div class="col-10 align-self-center mt-3" id="logoBox">
             <input
               type="text"
               :placeholder="handles.length - 1 === index ? `Enter your youtube channel id` : `Enter your ${socialMedia.name.split(' ')[0]} page url`"
@@ -48,6 +48,14 @@
               class="w-100 py-1 border-0 outline-none px-2"
             />
           </div>
+        </div>
+        <div class="row">
+          <div
+          class="col-12 offset-1 offset-md-0 ml-2 mt-2 w-100"
+        >
+        <span class="small font-weight-700">NB:</span>
+        <span class="small">  Media from your youtube channel will be displayed on the mobile app, ensure to paste your Channel ID before proceeding.</span>
+        </div>
         </div>
         <div class="row">
           <div

@@ -218,33 +218,28 @@ export default {
     white-space: initial;
     font-size: 1rem;
     border-radius: 50%;
-    padding: 0.6rem 2rem 1rem 1.3rem;
+    /* padding: 0.6rem 2rem 1rem 1.3rem; */
     /* width: auto; */
     width: 50px;
     height: 50px;
     outline: transparent !important;
-    /* max-height: 50px;
-    min-width: 50px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .success-bg {
     background: rgba(0, 220, 51, 0.201);
     color: rgba(3, 120, 31, 0.729);
-    /* border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 10px */
     font-weight: 600;
     white-space: initial;
     font-size: 1rem;
     border-radius: 50%;
     /* padding: 1rem 1.6rem 3rem 1.6rem; */
-    padding: 0.6rem 2rem 1rem 1.3rem;
-
-    /* width: auto; */
+    /* padding: 0.6rem 2rem 1rem 1.3rem; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     outline: transparent !important;
     width: 50px;
     height: 50px;

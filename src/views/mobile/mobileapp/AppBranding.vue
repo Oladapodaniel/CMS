@@ -8,7 +8,7 @@
               <div class="col-12">
                 <h5 class="appBranding">Customize Your App</h5>
                 
-                <div class="mt-3"><span class="font-weight-700">NB:</span> Please choose a dark shade color, click out of the color box, the system will verify your color, then click save to continue.</div>
+                <div class="mt-3"><span class="font-weight-700 small">NB:</span> <span class="small">Please choose a dark shade color, click out of the color box, the system will verify your color, then click save to continue.</span></div>
               </div>
 
               <!-- MOBILE AREA -->
