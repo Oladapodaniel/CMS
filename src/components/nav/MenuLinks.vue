@@ -169,7 +169,7 @@ export default {
         route: '/',
         submenu: []
       }
-
+      
       const communication = {
         id: 3,
         name: 'Communication',
