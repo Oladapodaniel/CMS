@@ -4,45 +4,26 @@
       <div class="row">
         <div class="col-md-12 px-0">
           <div class="parent-table">
-            <div
-              class="px-0 container-fluid mt-4"
-              style="height: fit-content"
-              :class="{
-                bordered: !showEditTransaction,
-                removeTable: showEditTransaction,
-              }"
-            >
+            <div class="px-0 container-fluid mt-4" style="height: fit-content" :class="{
+              bordered: !showEditTransaction,
+              removeTable: showEditTransaction,
+            }">
               <div class="container-fluid table-top py-3">
                 <div class="row justify-content-end">
-                  <div
-                    class="col-md-3 col-lg-3 col-8 py-md-0 d-flex align-items-center justify-content-end"
-                  >
-                    <p
-                      @click="toggleFilterFormVissibility"
-                      class="mb-0 c-pointer mt-2 mt-sm-0 mt-md-0 mt-lg-0 font-weight-700"
-                    >
+                  <div class="col-md-3 col-lg-3 col-8 py-md-0 d-flex align-items-center justify-content-end">
+                    <p @click="toggleFilterFormVissibility"
+                      class="mb-0 c-pointer mt-2 mt-sm-0 mt-md-0 mt-lg-0 font-weight-700">
                       <el-icon :size="13">
                         <Filter />
                       </el-icon>
                       <span class="ml-1"> FILTER</span>
                     </p>
                   </div>
-                  <div
-                    class="col-md-5 col-12 d-flex align-items-center justify-content-center mt-2 py-2 py-md-0"
-                  >
-                    <el-input
-                      size="small"
-                      v-model="searchText"
-                      placeholder="Search..."
-                      @input="searchingMember = true"
-                      @keyup.enter.prevent="searchTrancInDB"
-                      class="input-with-select"
-                    >
+                  <div class="col-md-5 col-12 d-flex align-items-center justify-content-center mt-2 py-2 py-md-0">
+                    <el-input size="small" v-model="searchText" placeholder="Search..." @input="searchingMember = true"
+                      @keyup.enter.prevent="searchTrancInDB" class="input-with-select">
                       <template #suffix>
-                        <el-button
-                          style="padding: 5px; height: 22px"
-                          @click.prevent="searchText = ''"
-                        >
+                        <el-button style="padding: 5px; height: 22px" @click.prevent="searchText = ''">
                           <el-icon :size="13">
                             <Close />
                           </el-icon>
@@ -58,40 +39,24 @@
                     </el-input>
                   </div>
                 </div>
-                <div
-                  class="filter-options"
-                  :class="{ 'filter-options-shown': filterFormIsVissible }"
-                >
+                <div class="filter-options" :class="{ 'filter-options-shown': filterFormIsVissible }">
                   <div class="container-fluid">
                     <div class="row mt-3">
                       <div class="col-md-9">
                         <div class="row">
-                          <div
-                            class="col-12 col-sm-12 col-md-6 offset-sm-0 offset-md-0 inp w-100"
-                          >
+                          <div class="col-12 col-sm-12 col-md-6 offset-sm-0 offset-md-0 inp w-100">
                             <el-input type="text" class="w-100" placeholder="Category" />
                           </div>
 
                           <div class="col-12 col-sm-6 d-none d-md-block">
-                            <el-date-picker
-                              v-model="datete"
-                              type="date"
-                              placeholder="Date"
-                              size="large"
-                              class="w-100"
-                              format="MM/DD/YYYY"
-                              value-format="MM-DD-YYYY"
-                            />
+                            <el-date-picker v-model="datete" type="date" placeholder="Date" size="large" class="w-100"
+                              format="MM/DD/YYYY" value-format="MM-DD-YYYY" />
                           </div>
                         </div>
 
                         <div class="row">
                           <div class="col-12 col-sm-6 d-none d-md-block">
-                            <el-input
-                              type="text"
-                              class="w-100"
-                              placeholder="Description"
-                            />
+                            <el-input type="text" class="w-100" placeholder="Description" />
                           </div>
 
                           <div class="col-12 col-sm-6 d-none d-md-block"></div>
@@ -104,9 +69,8 @@
                         </button>
                         <span class="mt-2">
                           <a class="clear-link mr-2" @click="clearAll">Clear all</a>
-                          <span class="mx-2"
-                            ><i class="fas fa-circle" style="font-size: 4px"></i></span
-                          ><a class="hide-link ml-2" @click="hide">Hide</a>
+                          <span class="mx-2"><i class="fas fa-circle" style="font-size: 4px"></i></span><a
+                            class="hide-link ml-2" @click="hide">Hide</a>
                         </span>
                       </div>
                     </div>
@@ -120,13 +84,8 @@
                   </el-icon>
                 </div>
               </div>
-              <Table
-                :data="selectedTransactions"
-                :headers="transactionHeaders"
-                :checkMultipleItem="true"
-                @checkedrow="handleSelectionChange"
-                v-loading="loading"
-              >
+              <Table :data="selectedTransactions" :headers="transactionHeaders" :checkMultipleItem="true"
+                @checkedrow="handleSelectionChange" v-loading="loading">
                 <template v-slot:date="{ item }">
                   <div @click="rowSelected(item)" class="c-pointer">
                     {{ formatDate(item.date) }}
@@ -138,14 +97,10 @@
                   </div>
                 </template>
                 <template v-slot:amount="{ item }">
-                  <div
-                    @click="rowSelected(item)"
-                    class="c-pointer"
-                    :class="{
-                      'text-danger': item.amount < 0,
-                      'text-success': item.amount > 0,
-                    }"
-                  >
+                  <div @click="rowSelected(item)" class="c-pointer" :class="{
+                    'text-danger': item.amount < 0,
+                    'text-success': item.amount > 0,
+                  }">
                     {{ item.currency ? item.currency.symbol : ""
                     }}{{ amountWithCommas(Math.abs(item.amount)) }}
                   </div>
@@ -157,29 +112,17 @@
                 </template>
                 <template v-slot:approve="{ item }">
                   <div class="c-pointer">
-                    <div
-                      class="spinner-border text-primary"
-                      style="font-size: 10px; width: 26px; height: 26px"
-                      role="status"
-                      v-show="item.approvingServiceReport"
-                    >
+                    <div class="spinner-border text-primary" style="font-size: 10px; width: 26px; height: 26px"
+                      role="status" v-show="item.approvingServiceReport">
                       <span class="sr-only">Loading...</span>
                     </div>
-                    <div
-                      v-if="!item.approved && !item.approvingServiceReport"
-                      @click="approveReport(item, 1)"
-                    >
+                    <div v-if="!item.approved && !item.approvingServiceReport" @click="approveReport(item, 1)">
                       <el-icon size="27">
                         <CircleCheck />
                       </el-icon>
                     </div>
-                    <video
-                      height="30"
-                      autoplay
-                      @click="approveReport(item, 2)"
-                      class="approveservicereport"
-                      v-if="item.approved && !item.approvingServiceReport"
-                    >
+                    <video height="30" autoplay @click="approveReport(item, 2)" class="approveservicereport"
+                      v-if="item.approved && !item.approvingServiceReport">
                       <source src="../../assets/check_animated.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
@@ -193,10 +136,7 @@
                     <template #dropdown>
                       <el-dropdown-menu>
                         <el-dropdown-item>
-                          <div
-                            @click.prevent="showConfirmModal(item.id, index)"
-                            class="text-color"
-                          >
+                          <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">
                             Delete
                           </div>
                         </el-dropdown-item>
@@ -215,54 +155,29 @@
                   </el-dropdown>
                 </template>
               </Table>
-              <div
-                class="d-flex justify-content-center my-2"
-                v-if="allTransactions && allTransactions.length === 0 && !loading"
-              >
+              <div class="d-flex justify-content-center my-2"
+                v-if="allTransactions && allTransactions.length === 0 && !loading">
                 <div>No data</div>
               </div>
               <div class="d-flex justify-content-end my-3">
-                <el-pagination
-                  v-model:current-page="serverOptions.page"
-                  v-model:page-size="serverOptions.rowsPerPage"
-                  background
-                  layout="total, sizes, prev, pager, next, jumper"
-                  :total="totalTransaction"
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                />
+                <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage"
+                  background layout="total, sizes, prev, pager, next, jumper" :total="totalTransaction"
+                  @size-change="handleSizeChange" @current-change="handleCurrentChange" />
               </div>
             </div>
 
             <div
               class="table edit-transac col-12 border col-sm-10 col-md-8 w-100 w-sm-50 w-md-50 w-lg-50 col-lg-4 mobile-form mywidt"
-              v-if="showEditTransaction"
-            >
-              <TransferForm
-                v-if="transactionDetails.type === 'Transfer'"
-                @close-it="closeIt"
-                @transac-obj="transacObj"
-                :transactionDetails="transactionDetails"
-                :showEditTransaction="showEditTransaction"
-                @reload="getTransactions"
-                :gettingSelectedTrsn="gettingSelectedTrsn"
-              />
-              <TransactionForm
-                v-else-if="transactionDetails.type !== 'ledger' && transactionDetails.type !== 'Transfer' "
-                @close-it="closeIt"
-                @transac-obj="transacObj"
-                :transactionDetails="transactionDetails"
-                :showEditTransaction="showEditTransaction"
-                @reload="getTransactions"
-                :gettingSelectedTrsn="gettingSelectedTrsn"
-              />
-              <LedgerForm
-                v-else
-                @entrysaved="journalEntrySaved"
-                @close-ledger="closeLedgerForm"
-                :journalEntry="journalEntry"
-                :gettingSelectedTrsn="gettingSelectedTrsn"
-              />
+              v-if="showEditTransaction">
+              <TransferForm v-if="transactionDetails.type === 'Transfer'" :transactionDetails="transactionDetails"
+                @entrysaved="journalEntrySaved" @close-ledger="closeLedgerForm" :journalEntry="journalEntry"
+                :gettingSelectedTrsn="gettingSelectedTrsn" />
+              <TransactionForm v-else-if="transactionDetails.type !== 'ledger' && transactionDetails.type !== 'Transfer'"
+                @close-it="closeIt" @transac-obj="transacObj" :transactionDetails="transactionDetails"
+                :showEditTransaction="showEditTransaction" @reload="getTransactions"
+                :gettingSelectedTrsn="gettingSelectedTrsn" />
+              <LedgerForm v-else @entrysaved="journalEntrySaved" @close-ledger="closeLedgerForm"
+                :journalEntry="journalEntry" :gettingSelectedTrsn="gettingSelectedTrsn" />
             </div>
           </div>
           <el-dialog v-model="displayReciept" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
@@ -271,8 +186,8 @@
                 <img :src="selectedFileUrl" v-show="fileImage" alt="">
               </div>
               <div class="col-md-12  d-flex justify-content-center ">
-                <el-upload class="upload-demo " multiple :show-file-list="false" :on-change="chooseFile" :on-remove="handleRemove"
-                  :auto-upload="false" >
+                <el-upload class="upload-demo " multiple :show-file-list="false" :on-change="chooseFile"
+                  :on-remove="handleRemove" :auto-upload="false">
                   <el-button :color="primarycolor">Click to upload</el-button>
                   <template #tip>
                     <el-icon class="ml-2" style="font-size: 20px; color: #7d7d7d">
@@ -610,6 +525,7 @@ export default {
 
     const gettingSelectedTrsn = ref(false);
     const rowSelected = async (item) => {
+      console.log(item, 'hhj');
       try {
         gettingSelectedTrsn.value = true;
         if (item.category === "Journal") {

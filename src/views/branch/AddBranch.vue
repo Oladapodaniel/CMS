@@ -8,19 +8,13 @@
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div class="col-md-4 text-md-right align-self-center">
-                  <label for="" class=""
-                    >Branch name <sup class="text-danger">*</sup>
+                  <label for="" class="">Branch name <sup class="text-danger">*</sup>
                   </label>
                 </div>
 
                 <div class="col-md-8">
-                  <el-input
-                    type="text"
-                    v-model="churchName"
-                    class="w-100"
-                    :class="{ 'is-invalid': !isNameValid }"
-                    @blur="checkNameValue"
-                  />
+                  <el-input type="text" v-model="churchName" class="w-100" :class="{ 'is-invalid': !isNameValid }"
+                    @blur="checkNameValue" />
                   <div class="invalid-feedback">Please enter branch name.</div>
                 </div>
               </div>
@@ -43,18 +37,12 @@
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div class="col-md-4 text-md-right align-self-center">
-                  <label for="" class=""
-                    >Parent Branch <sup class="text-danger">*</sup>
+                  <label for="" class="">Parent Branch <sup class="text-danger">*</sup>
                   </label>
                 </div>
                 <div class="col-md-8">
-                  <el-tree-select
-                    v-model="value"
-                    class="w-100"
-                    :data="branches"
-                    :check-strictly="false"
-                    :render-after-expand="false"
-                  />
+                  <el-tree-select v-model="value" class="w-100" :data="branches" :check-strictly="false"
+                    :render-after-expand="false" />
                 </div>
               </div>
             </div>
@@ -68,11 +56,7 @@
                 </div>
 
                 <div class="col-md-8">
-                  <el-input
-                    type="text"
-                    v-model="pastorName"
-                    class="w-100"
-                  />
+                  <el-input type="text" v-model="pastorName" class="w-100" />
                 </div>
               </div>
             </div>
@@ -81,19 +65,13 @@
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div class="col-md-4 text-md-right align-self-center">
-                  <label for="" class=""
-                    >Pastor email <sup class="text-danger">*</sup>
+                  <label for="" class="">Pastor email <sup class="text-danger">*</sup>
                   </label>
                 </div>
 
                 <div class="col-md-8">
-                  <el-input
-                    type="text"
-                    v-model="pastorEmail"
-                    class="w-100"
-                    :class="{ 'is-invalid': !isEmailValid }"
-                    @blur="checkEmailValue"
-                  />
+                  <el-input type="text" v-model="pastorEmail" class="w-100" :class="{ 'is-invalid': !isEmailValid }"
+                    @blur="checkEmailValue" />
                   <div class="invalid-feedback">Please enter your email.</div>
                 </div>
               </div>
@@ -107,11 +85,7 @@
                 </div>
 
                 <div class="col-md-8">
-                  <el-input
-                    type="text"
-                    v-model="pastorPhone"
-                    class="w-100"
-                  />
+                  <el-input type="text" v-model="pastorPhone" class="w-100" />
                 </div>
               </div>
             </div>
@@ -123,7 +97,7 @@
                 <div class="col-8">
                   <div class="row">
                     <div class="col-12 mt-2">
-                      <el-checkbox  v-model="replicateAttendance" />
+                      <el-checkbox v-model="replicateAttendance" />
                       <!-- <Checkbox
                         id="binary"
                         v-model="replicateAttendance"
@@ -132,7 +106,7 @@
                       Replicate attendance
                     </div>
                     <div class="col-12 mt-2">
-                      <el-checkbox  v-model="replicateFinancial" />
+                      <el-checkbox v-model="replicateFinancial" />
                       <!-- <Checkbox
                         id="binary"
                         v-model="replicateFinancial"
@@ -141,7 +115,7 @@
                       Replicate financial
                     </div>
                     <div class="col-12 mt-2">
-                      <el-checkbox  v-model="replicateEvent" />
+                      <el-checkbox v-model="replicateEvent" />
                       <!-- <Checkbox
                         id="binary"
                         v-model="replicateEvent"
@@ -150,7 +124,7 @@
                       Replicate event
                     </div>
                     <div class="col-12 mt-2">
-                      <el-checkbox  v-model="replicateGroup" />
+                      <el-checkbox v-model="replicateGroup" />
                       <!-- <Checkbox
                         id="binary"
                         v-model="replicateGroup"
@@ -169,35 +143,20 @@
             <div class="grey-bg">
               <div>
                 <div class="person-img">
-                  <img
-                    v-if="!url"
-                    src="../../assets/people/phone-import.svg"
-                    alt="Uploaded Image"
-                  />
-                  <img
-                    v-else
-                    :src="url"
-                    alt="Uploaded Image"
-                    style="
+                  <img v-if="!url" src="../../assets/people/phone-import.svg" alt="Uploaded Image" />
+                  <img v-else :src="url" alt="Uploaded Image" style="
                       width: 110px;
                       height: 110px;
                       border-radius: 50%;
                       object-fit: cover;
-                    "
-                  />
+                    " />
                 </div>
               </div>
               <div>
                 <div class="cs-input">
                   <label for="imgUpload" class="choose-file">
                     Choose image
-                    <input
-                      type="file"
-                      class="input file-input"
-                      placeholder=""
-                      id="imgUpload"
-                      @change="imageSelected"
-                    />
+                    <input type="file" class="input file-input" placeholder="" id="imgUpload" @change="imageSelected" />
                   </label>
                 </div>
               </div>
@@ -224,9 +183,9 @@
               <div v-for="(item, index) in hierarchies" :key="index">
                 <div class="d-flex" v-if="index > 0">
                   <span :class="`ml-${index + 1}`" class="border-style"></span>
-                  <span class="mt-4 ml-1 d-flex"
-                    ><el-icon class="mt-2 px-0 ml-0 mr-1 primary--text"><ArrowRightBold /></el-icon>{{ item.name }}</span
-                  >
+                  <span class="mt-4 ml-1 d-flex"><el-icon class="mt-2 px-0 ml-0 mr-1 primary--text">
+                      <ArrowRightBold />
+                    </el-icon>{{ item.name }}</span>
                 </div>
               </div>
             </div>
@@ -236,29 +195,16 @@
         <div class="col-md-6 offset-md-3 mt-4">
           <div class="row d-flex justify-content-between">
             <div class="mt-4">
-              <el-button class="" round  size="large" data-dismiss="modal">Cancel</el-button>
+              <el-button class="" round size="large" data-dismiss="modal">Cancel</el-button>
             </div>
             <div class="mt-4">
-              <el-button
-                class=""
-                round
-                size="large"
-                data-toggle="modal"
-                data-target="#codemodal"
-              >
+              <el-button class="" @click="generateCodeModal" round size="large">
                 Generate branch join code
               </el-button>
             </div>
             <div class="mt-4">
-              <el-button
-              :loading="loading"
-              :color="primarycolor"
-              round
-              size="large"
-                class=" border-0 text-white"
-                data-dismiss="modal"
-                @click="addBranch"
-              >
+              <el-button :loading="loading" :color="primarycolor" round size="large" class=" border-0 text-white"
+               @click="addBranch">
                 Save
               </el-button>
             </div>
@@ -269,85 +215,50 @@
     </div>
   </div>
   <!-- Generate Join Branch Code Modal -->
-
-  <div
-    class="modal fade"
-    id="codemodal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="codemodalModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-dialog-centered" role="document" ref="modal">
-      <div class="modal-content pr-2">
-        <div class="modal-header py-3">
+  <el-dialog v-model="displayModal" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" align-center>
+    <div class="row ">
+      <div class=" col-md-12 pr-2">
+        <div class=" py-3">
           <h5 class="modal-title font-weight-700" id="codemodalModalLabel">
             Generate your branch code.
           </h5>
-          <el-button
-            class="close d-flex"
-            data-dismiss="modal"
-            aria-label="Close"
-            ref="closeGroupModal"
-          >
-            <el-icon :size="16" class="mt-4"><CloseBold /></el-icon>
-          </el-button>
         </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-12 mb-2">
-              Select the branch level you want your code to be generated with,
-              then copy the generated code.
-            </div>
-            
-            <div class="col-9 mt-2">
-              <el-tree-select
-                    v-model="value"
-                    class="w-100"
-                    :data="branches"
-                    :check-strictly="false"
-                    :render-after-expand="false"
-                  />
-            </div>
-            <el-button
-              round
-             :color="primarycolor"
-             :loading="loadingCode"
-             size="large"
-              class="mt-2 mb-3 col-2  text-white font-weight-bold c-pointer border-0 text-center"
-              @click="generateCode"
-            >
-             Generate
-            </el-button>
-            <div class=" col-md-9 d-flex mb-3 " v-if="requestedCode">
-              <el-input
-                type="text"
-                class="w-100"
-                placeholder="Heres your code"
-                :value="requestedCode"
-                ref="code"
-                aria-describedby="basic-addon1"
-              />
-              <div class="input-group-prepend">
-                <span
-                  class="input-group-text c-pointer"
-                  id="basic-addon1"
-                  @click="copyCode"
-                  >
-                  <el-icon><CopyDocument /></el-icon>
+        <div class="row">
+          <div class="col-12 mb-2">
+            Select the branch level you want your code to be generated with,
+            then copy the generated code.
+          </div>
+
+          <div class="col-9 mt-2">
+            <el-tree-select v-model="value" class="w-100" :data="branches" :check-strictly="false"
+              :render-after-expand="false" />
+          </div>
+          <el-button round :color="primarycolor" :loading="loadingCode" size="large"
+            class="mt-2 mb-3 col-2  text-white font-weight-bold c-pointer border-0 text-center" @click="generateCode">
+            Generate
+          </el-button>
+          <div class=" col-md-9 d-flex mb-3 " v-if="requestedCode">
+            <el-input type="text" class="w-100" placeholder="Heres your code" :value="requestedCode" ref="code"
+              aria-describedby="basic-addon1" />
+            <div class="input-group-prepend">
+              <span class="input-group-text c-pointer" id="basic-addon1" @click="copyCode">
+                <el-icon>
+                  <CopyDocument />
+                </el-icon>
               </span>
-              </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
-  </div>
+  </el-dialog>
 </template>
 
 <script>
 import axios from "@/gateway/backendapi";
-import { ref , inject  } from "vue";
+import { ref, inject } from "vue";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import router from "../../router";
 import store from "../../store/store";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -374,9 +285,11 @@ export default {
     const isoCode = ref("");
     const loading = ref(false);
     const loadingCode = ref(false);
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
     const value = ref(null);
     const branchValue = ref(null);
     const isNameValid = ref(true);
+    const displayModal = ref(false);
     const isEmailValid = ref(true);
 
 
@@ -393,6 +306,9 @@ export default {
       }
     };
     getHierarchies();
+    const generateCodeModal = () => {
+      displayModal.value = true
+    }
     const getAllBranchList = async () => {
       try {
         axios
@@ -404,11 +320,11 @@ export default {
                 value: i.id,
                 children: i.teanants
                   ? i.teanants.map((j) => {
-                      return {
-                        label: j.name,
-                        value: j.id,
-                      };
-                    })
+                    return {
+                      label: j.name,
+                      value: j.id,
+                    };
+                  })
                   : "",
               };
             });
@@ -437,7 +353,7 @@ export default {
         const formData = new FormData();
         formData.append("churchName", churchName.value ? churchName.value : "");
         formData.append("address", Address.value ? Address.value : "");
-        formData.append("parentID", value.value ? value.value: "");
+        formData.append("parentID", value.value ? value.value : "");
         formData.append("pastorName", pastorName.value ? pastorName.value : "");
         formData.append("email", pastorEmail.value ? pastorEmail.value : "");
         formData.append(
@@ -453,7 +369,7 @@ export default {
           loading.value = true;
           let { data } = await axios.post("/api/Branching", formData);
           loading.value = false;
-
+          displayModal.value = false;
 
           let SMSBody = {
             category: "",
@@ -472,11 +388,10 @@ export default {
               .post("/api/Messaging/sendSms", SMSBody)
               .then((res) => console.log(res))
               .catch((err) => console.log(err));
-            toast.add({
-              severity: "success",
-              summary: "Branch created",
-              detail: data.message,
-              life: 3000,
+            ElMessage({
+              type: "success",
+              message: data.message,
+              duration: 5000,
             });
             setTimeout(() => {
               router.push("/tenant/branch/mainbranchsummary");
@@ -493,10 +408,10 @@ export default {
         }
       } else {
         ElMessage({
-            type: "warning",
-            message: "Choose the level you want to create this branch under, then click Save.",
-            duration: 5000,
-          });
+          type: "warning",
+          message: "Choose the level you want to create this branch under, then click Save.",
+          duration: 5000,
+        });
       }
     };
 
@@ -514,10 +429,10 @@ export default {
         loadingCode.value = false;
         requestedCode.value = data.code;
         ElMessage({
-            type: "success",
-            message: "Code generated successfully, you can copy to share to the branch",
-            duration: 5000,
-          });
+          type: "success",
+          message: "Code generated successfully, you can copy to share to the branch",
+          duration: 5000,
+        });
       } catch (err) {
         console.log(err);
         loadingCode.value = false;
@@ -534,10 +449,10 @@ export default {
       /* Copy the text inside the text field */
       document.execCommand("copy");
       ElMessage({
-            type: "success",
-            message: "Code copied to your clipboard",
-            duration: 5000,
-          });
+        type: "success",
+        message: "Code copied to your clipboard",
+        duration: 5000,
+      });
     };
 
     const checkNameValue = () => {
@@ -576,15 +491,18 @@ export default {
       value,
       branchValue,
       generateCode,
+      generateCodeModal,
+      displayModal,
       requestedCode,
       hierarchies,
       primarycolor,
       code,
+      mdAndUp, lgAndUp, xlAndUp, xsOnly,
       copyCode,
       isoCode,
       loading,
       loadingCode,
-   
+
       checkNameValue,
       isNameValid,
       isEmailValid,
@@ -598,6 +516,7 @@ export default {
 .heading-text {
   font: normal normal 800 1.5rem Nunito sans;
 }
+
 .border-style {
   border-left: 1px solid #132acd;
   border-bottom: 1px solid #132acd;
@@ -609,6 +528,7 @@ export default {
 .header-color {
   color: #a4a5a7;
 }
+
 .hierarchy-bg {
   background: #f9f9f9;
   overflow-x: scroll;

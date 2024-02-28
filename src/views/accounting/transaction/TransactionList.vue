@@ -31,7 +31,7 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <!-- <el-dropdown-item @click="toggleTransac(4)">Money Transfer</el-dropdown-item> -->
+                  <el-dropdown-item @click="toggleTransac(4)">Money Transfer</el-dropdown-item>
                   <el-dropdown-item @click="toggleTransac(3)">General ledger</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -488,6 +488,7 @@ export default {
           type: "Transfer",
           account: "Destination Account",
         };
+        journalEntry.value = {};
       } else {
         transacPropsValue.value = {
           type: "ledger",
@@ -617,6 +618,7 @@ export default {
 
     const journalEntry = ref({})
     const selectJournalEntry = (rowData) => {
+      console.log(rowData, 'jeetretr');
       journalEntry.value = rowData;
       showEditTransaction.value = true;
       transacPropsValue.value = {

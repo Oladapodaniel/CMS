@@ -47,7 +47,6 @@ export default {
     const loading = ref(false);
 
     const attendanceData = ref(store.getters["attendance/attendanceItemData"]);
-    console.log(attendanceData.value, 'nnnnnn')
     const user = ref(store.getters.currentUser);
     const qrCode = computed(() =>
       attendanceData.value && attendanceData.value.qrCode

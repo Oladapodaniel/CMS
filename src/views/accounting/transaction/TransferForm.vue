@@ -1,194 +1,177 @@
 <template>
-    <div @click="hideModals">
-      <!-- <div>{{ transacObj }}</div> -->
-      <!-- <div>{{ splitCategories }}</div> -->
-      <!-- <div>{{ showEditTransaction }}</div> -->
-      <div class="col-12 parent-desc d-flex justify-content-between first p-3">
-        <div>Money Transfer</div>
-        <el-icon @click="closeTransac" class="mt-0">
-          <Close />
-        </el-icon>
+  <div>
+    <!-- <div>{{ transacObj }}</div> -->
+    <!-- <div>{{ splitCategories }}</div> -->
+    <!-- <div>{{ showEditTransaction }}</div> -->
+    <div class="col-12 parent-desc d-flex justify-content-between first p-3">
+      <div>Money Transfer</div>
+      <el-icon @click="closeTransac" class="mt-0">
+        <Close />
+      </el-icon>
+    </div>
+    <div class="container">
+      <div class="row mt-3" v-if="gettingSelectedTrsn">
+        <div class="col-md-12 text-center">
+          <el-icon class="is-loading ">
+            <Loading />
+          </el-icon>
+        </div>
       </div>
-      <div class="container">
-        <div class="row mt-3" v-if="gettingExpenseAccounts || gettingSelectedTrsn">
-          <div class="col-md-12 text-center">
-            <el-icon class="is-loading ">
-              <Loading />
-            </el-icon>
-          </div>
+      <div class="row mt-4">
+        <div class="col-12">
         </div>
-        <div class="row mt-4">
-          <div class="col-12">
-          </div>
-          <div class="col-12">
-            <div class="label-text">Description <span class="text-danger">*</span></div>
-            <el-input class="w-100" id="description" ref="descrp" v-model="transacObj.memo" placeholder="Description"
-              :autofocus="showEditTransaction" />
-          </div>
-          <div class="col-12 mt-1">
-            <div class="label-text">Date <span class="text-danger">*</span></div>
-            <el-date-picker v-model="transacObj.date" type="date" id="date" class="w-100" size="large" ref="dateField"
-              format="MM/DD/YYYY" />
-          </div>
+        <div class="col-12">
+          <div class="label-text">Description <span class="text-danger">*</span></div>
+          <el-input class="w-100" id="description"  v-model="memo" placeholder="Description"/>
+          <!-- <el-input class="w-100" id="description"  v-model="memo" placeholder="Description"
+            :autofocus="showEditTransaction" /> -->
         </div>
-        <div class="row mt-3">
-          <div class="col-7 pr-0">
-            <div class="label-text">Source Account</div>
-            <div
-              class="select-elem-con pointer form-control d-flex justify-content-space-between align-items-center close-modal c-pointer"
-              @click="showAccount = !showAccount">
-              <span class="ofering close-modal">{{
-                selectedCashAccount && selectedCashAccount.name ? selectedCashAccount.name : selectedCashAccount &&
-                  selectedCashAccount.text ? selectedCashAccount.text : "Select"
-              }}</span><span>
-                <i class="pi pi-angle-down close-modal" aria-hidden="true"></i></span>
-            </div>
-            <div class="ofering close-modal" :class="{ 'style-account': showAccount }" v-if="showAccount"
-              ref="selectAccount">
-              <div class="px-3 pt-3 close-modal">
-                <input type="text" placeholder="Search" class="form-control ofering mb-1 close-modal"
-                  v-model="accountText" />
-              </div>
-  
-              <div class="container-fluid">
-                <div class="row">
-                  <div class="  col-md-12 px-0" v-for="(account, index) in remittanceResult" :key="index"
-                    >
-                    <div class="header-border hover-text close-modal" v-for="(item, index) in account.value" :key="index"
-                    @click="accountFlow($event, item)">
-                      <div v-if="item">
-                        <div class="close-modal offset-sm-1  py-2 small-text">{{ item.text }}</div>
-                      </div>
-                      <div v-else>
-                        <div class="text-center px-3 py-2 text-danger">
-                          No Match Found
+        <div class="col-12 mt-1">
+          <div class="label-text">Date <span class="text-danger">*</span></div>
+          <el-date-picker v-model="transactionDate" type="date" id="date" class="w-100" size="large"
+            format="MM/DD/YYYY" />
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class=" col-md-12 label-text">Source Account</div>
+        <div class="col-md-12">
+          <div class="row my-1 d-flex" v-for="(transaction, indexe) in journalTransactions" :key="indexe">
+            <div class="col-md-12" v-if="transaction.category === 'inflow'">
+              <div class="row">
+                <div class="col-md-8">
+                  <el-dropdown trigger="click" class="w-100">
+                    <span class="el-dropdown-link w-100">
+                      <div class="d-flex justify-content-between border-contribution  w-100" size="large">
+                        {{
+                          !transaction.account
+                          ? "Select"
+                          : transaction.account
+                        }}
+                        <div>
+                          <el-icon class="el-icon--right">
+                            <arrow-down />
+                          </el-icon>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                  <!-- <div class="col-md-12" v-if="filteredCashandBank.length === 0">
-                    <div class="text-center px-3 py-2 text-danger">
-                      No Match Found
-                    </div>
-                  </div> -->
+                    </span>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item v-for="(accounts, index) in remittanceResult" :key="index">
+                          <div class="col-md-12 px-2">
+                            <!-- <h6 class="mb-0 text-capitalize font-weight-bold" v-if="accounts.length > 0">
+                              {{ accountTypes[index] }}
+
+                            </h6> -->
+                            <div class="py-1" v-for="(account, indx) in accounts.value" :key="indx"
+                              @click="selectAccount(1, indexe, account)">{{ account.text }}</div>
+                          </div>
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
+                </div>
+                <div class="col-md-4 mb-2 adjust-screen mt-3 mt-sm-0 ">
+                  <el-input type="text" class="w-100" v-model="transaction.amount" />
                 </div>
               </div>
-  
-  
             </div>
-          </div>
-          <!-- <div class="col-7 pr-0">
-            <div class="label-text">Cash Account</div>
-            <div class="input-width">
-              <el-dropdown class="w-100" trigger="click">
-                <el-input class="w-100" placeholder="Select" v-model="selectedCashAccount" />
-                <template #dropdown>
-                  <el-dropdown-menu class="menu-height">
-                    <el-dropdown-item v-for="(account, index) in filteredCashandBank" :key="index"
-                     @click="accountFlow($event, account)">{{ account.text }}</el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-            </div>
-          </div> -->
-          <div class="col-sm-5 col-md-5 col-lg-5 col-12 ">
-            <div class="label-text">Amount</div>
-            <el-input type="number" class=" w-100" v-model="transacObj.amount" placeholder="0.00" />
           </div>
         </div>
-  
-        <div>
-          <div class="row mt-3">
-            <div class="col-12" v-for="(i, index) in splittedTransactions" :key="index">
-              <div class="label-text">{{ transactionDetails.id && transactionDetails.debitSplitAccounts &&
-                transactionDetails.debitSplitAccounts.length > 0 ? "Destination Account" : transactionDetails.account }}</div>
-  
-              <div class="dropdown cursor-pointer">
-                <button class="btn cursor-pointer btn-default text-left bg-light col-7"
-                  :class="{ 'col-12': splittedTransactions.length === 1 }" type="button" id="dropdownMenuButton"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                  style="border: 1px solid #ced4da;border-radius: 4px;background: rgb(253, 253, 253)">
-                  <span class="text-left">{{ splittedTransactions.length === 0 || !splittedTransactions[index].text ?
-                    "Select" : splittedTransactions[index].text }}</span>
-                  <span class="float-right"><el-icon :size="16">
-                      <ArrowUp />
-                    </el-icon></span>
-                </button><input type="text" placeholder="amount" :class="{ 'col-4': splittedTransactions.length > 1 }"
-                  class="form-control d-inline" v-model="i.amount" v-if="splittedTransactions.length > 1"><span
-                  v-if="splittedTransactions.length > 1" class="col-1 px-1" @click="removeSplit(index)"><el-icon>
-                    <Delete />
-                  </el-icon></span>
-                <div class="dropdown-menu cursor-pointer w-100" id="noTransfrom" aria-labelledby="dropdownMenuButton">
-                  <div class="row">
-                    <div class="col-md-11 mx-auto">
-                      <input type="text" placeholder="Search..." class="form-control ofering mb-1 close-modal"
-                        v-model="incomeExpenseSearchText" />
-                    </div>
-                  </div>
-  
-                  <div class="row">
-                    <div class="col-md-11 ">
-                      <a class="dropdown-item cursor-pointer" v-for="(item, indx) in expenseIncomeAccounts" :key="indx"
-                        @click="categories(item, index)">{{ item.text }}</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- <div class="col-md-12">
-                <div class="d-flex justify-content-end">
-                  <div class="mt-2 vendor c-pointer" @click="() => i.showDonorField = !i.showDonorField">{{ i.donor ?
-                    i.donor : transactionDetails.account === "Destination Account" || (transactionDetails.creditSplitAccounts &&
-                      transactionDetails.creditSplitAccounts.length) > 0 ? "Destination Account" : "" }}</div>
-                  <div class="dot ml-2"></div>
-                  <div class="mt-2 ml-2 vendor">Include Tax Sales</div>
-                </div>
-              </div>
-              <div class="col-md-12 px-0" v-if="i.showDonorField">
-                <SearchMember @selectmember="donorSelected" :index="index" />
-              </div> -->
-            </div>
-          </div>
-  
-        </div>
-  
-  
-        <div>{{ totalAmount.amount }}</div>
-        <div class="row mt-2">
-          <div class="col-3 line pr-0">
-            <hr />
-          </div>
-          <div class="col-md-6 mt-2 text-center split" @click="splitTransaction">
-            <el-tooltip class="box-item" effect="dark"
-              content='Create multiple categories to associate(split) this trasaction between different accounts.'
-              placement="top">
-              <div class="w-100">Split this {{ transactionDetails.account === 'Destination Account' ? ' Destination ' : '' }} <el-icon>
-                  <InfoFilled />
-                </el-icon></div>
-            </el-tooltip>
-  
-          </div>
-          <div class="col-3 line pl-0">
-            <hr />
-          </div>
-          <div class="error-div col-10 offset-1 mt-3" v-if="parseInt(totalAmount.amount) > transacObj.amount">
+      </div>
+
+      <div>
+        <div class="row mt-3" v-for="(transaction, indexe) in journalTransactions" :key="indexe">
+          <div class=" col-md-12 label-text " v-if="transaction.category === 'outflow'">Destination Account</div>
+          <div class="col-md-12" v-if="transaction.category === 'outflow'">
             <div class="row">
-              <div class="col-1"><el-icon>
-                  <Warning />
-                </el-icon></div>
-              <p class="error-message col-10 pl-0">
-                The sum of the above lines should not exceed the total deposit
-                amount of {{ transacObj.amount }}
-              </p>
+              <div class="col-md-8">
+                <el-dropdown trigger="click" class="w-100">
+                  <span class="el-dropdown-link w-100">
+                    <div class="d-flex justify-content-between border-contribution  w-100" size="large">
+                      {{
+                        !transaction.account
+                        ? "Select"
+                        : transaction.account
+                      }}
+                      <div>
+                        <el-icon class="el-icon--right">
+                          <arrow-down />
+                        </el-icon>
+                      </div>
+                    </div>
+                  </span>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item v-for="(accounts, index) in remittanceResult" :key="index">
+                        <div class="col-md-12 px-2">
+                          <!-- <h6 class="mb-0 text-capitalize font-weight-bold" v-if="accounts.length > 0">
+                            {{ accountTypes[index] }}
+
+                          </h6> -->
+                          <div class="py-1" v-for="(account, indx) in accounts.value" :key="indx"
+                            @click="selectAccount(0, indexe, account)">{{ account.text }}</div>
+                        </div>
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+              </div>
+              <div class="col-md-4 mb-2 adjust-screen mt-3 mt-sm-0 ">
+                <el-input type="text" class="w-100" v-model="transaction.amount" />
+              </div>
             </div>
           </div>
-          <div class="col-12 mt-4">
-            <el-input v-model="transacObj.note" type="textarea" :rows="3" class="w-100" />
+          <div class="col-md-12">
+            <span v-if="journalTransactions.length > 2 && transaction.category === 'outflow' && indexe > 1 " class="col-1 px-1" @click="removeSplit(indexe)"><el-icon>
+                <Delete />
+              </el-icon></span>
           </div>
-          <div class="col-12 mt-1 modified">
-            Transaction last modified on {{ new Date(Date.now()).toLocaleDateString() }}
+        </div>
+
+      </div>
+
+
+      <div>{{ totalAmount.amount }}</div>
+      <div class="row mt-2">
+        <div class="col-3 line pr-0">
+          <hr />
+        </div>
+        <div class="col-md-6 mt-2 text-center split" @click="addRecord('outflow')">
+          <!-- <el-tooltip class="box-item" effect="dark"
+            content='Create multiple categories to associate(split) this trasaction between different accounts.'
+            placement="top"> -->
+          <!-- <el-tooltip class="box-item" effect="dark"
+            content=''
+            placement="top"> -->
+            <div class="w-100">Split this {{ transactionDetails.account === 'Destination Account' ? ' Destination ' : ''
+            }} <el-icon>
+                <InfoFilled />
+              </el-icon></div>
+          <!-- </el-tooltip> -->
+
+        </div>
+        <div class="col-3 line pl-0">
+          <hr />
+        </div>
+        <!-- <div class="error-div col-10 offset-1 mt-3" v-if="parseInt(totalAmount.amount) > transacObj.amount">
+          <div class="row">
+            <div class="col-1"><el-icon>
+                <Warning />
+              </el-icon></div>
+            <p class="error-message col-10 pl-0">
+              The sum of the above lines should not exceed the total deposit
+              amount of {{ transacObj.amount }}
+            </p>
           </div>
-          <!-- <div class="font-weight-bold col-md-12 mt-2">Receipt</div> -->
-          <!-- <div class="col-md-12 ">
+        </div> -->
+        <div class="col-12 mt-4">
+          <el-input v-model="note" type="textarea" :rows="3" class="w-100" />
+        </div>
+        <div class="col-12 mt-1 modified">
+          Transaction last modified on {{ new Date(Date.now()).toLocaleDateString() }}
+        </div>
+        <!-- <div class="font-weight-bold col-md-12 mt-2">Receipt</div> -->
+        <!-- <div class="col-md-12 ">
             <div class="row justify-content-center">
               <div class=" border rounded col-md-11 py-3 bg-white">
                 <el-upload class="upload-demo col-md-12 mt-3 d-flex flex-column justify-content-center" action="" multiple
@@ -203,255 +186,240 @@
               </div>
             </div>
           </div> -->
-          <div class="col-6 offset-sm-3 mb-2 mt-3">
-            <div class=" text-center cpon">
-              <el-button class=" text-white border-0 d-flex justify-content-center" :loading="savingAccount"
-                :color="primarycolor" round size="large" :disabled="!formIsValid || savingAccount" @click="saveIncome">
-                <span>
-                  {{ transactionDetails.id ? 'Update' : 'Save' }}
-                </span>
-              </el-button>
-            </div>
+        <div class="col-6 offset-sm-3 mb-2 mt-3">
+          <div class=" text-center cpon">
+            <el-button class=" text-white border-0 d-flex justify-content-center" :loading="savingAccount"
+              :color="primarycolor" round size="large" :disabled="unbalanced || savingAccount" @click="saveTransaction">
+              <span>
+                {{ transactionDetails.id ? 'Update' : 'Save' }}
+              </span>
+            </el-button>
           </div>
         </div>
       </div>
     </div>
-  </template>
+  </div>
+</template>
   
-  <script>
-  import { ref, computed, nextTick, inject, watch, watchEffect, proxyRefs } from "vue";
-  import axios from "@/gateway/backendapi";
-  import transaction_service from "../../../services/financials/transaction_service";
-  import chart_of_accounts from '../../../services/financials/chart_of_accounts';
-  import SearchMember from "../../../components/search/SearchMember"
-  import dateFormatter from "../../../services/dates/dateformatter";
-  import groupData from "../../../services/groupArray/groupResponse";
-  import store from "../../../store/store";
-  import { ElMessage } from 'element-plus'
-  export default {
-    components: { SearchMember },
-    props: ["transactionDetails", "showEditTransaction", "gettingSelectedTrsn"],
-    setup(props, { emit }) {
-      const showAccount = ref(false);
-      const fileImage = ref(false);
-      const accountText = ref("");
-      const selectedFileUrl = ref("");
-      const accountType = ref([]);
-      const remittanceResult = ref([]);
-      const ungroupedRemittanceResult = ref([]);
-      const primarycolor = inject('primarycolor')
-      const liabilities = ref(["Credit Card", "Loan and Line of Credit"]);
-      const showUncategorized = ref(false);
-      const uncategorizedText = ref("");
-      const transacObj = ref(props.transactionDetails);
-      const splittedTransactions = ref([{ ...props.transactionDetails }])
-      const savingAccount = ref(false);
-  
-      const amountRef = ref("");
-      const descrp = ref("");
-      const selectedCashAccount = ref({});
-      const selectedIncomeOrExpenseAccount = ref({});
-      const iSoStringFormat = ref('')
-      watchEffect(() => {
-        if (transacObj.value.date) {
-          iSoStringFormat.value = dateFormatter.getISOStringGMT(transacObj.value.date)
-        }
-      })
-  
-      const filterAccount = computed(() => {
-        if (accountText.value !== "" && accountType.value.length > 0) {
-          return accountType.value.filter((i) => {
-            if (i)
-              return i.toLowerCase().includes(accountText.value.toLowerCase());
-          });
-        } else {
-          return accountType.value;
-        }
-      });
-  
-      const filterLiabilities = computed(() => {
-        if (accountText.value !== "" && liabilities.value.length > 0) {
-          return liabilities.value.filter((i) => {
-            if (i)
-              return i.toLowerCase().includes(accountText.value.toLowerCase());
-          });
-        } else {
-          return liabilities.value;
-        }
-      });
-  
-      const hideModals = (e) => {
-        if (!e.target.classList.contains("close-modal")) {
-          showAccount.value = false;
-          showUncategorized.value = false;
-        }
-      };
-  
-      const handleRemove = () => {
-        selectedFileUrl.value = "";
-      }
-      const chooseFile = (e) => {
-        selectedFileUrl.value = ""
-        console.log(e)
-        if (e.raw.type.includes("image")) {
-          selectedFileUrl.value = URL.createObjectURL(e.raw);
-          fileImage.value = true;
-          console.log(selectedFileUrl.value, 'hhhhh');
-        } else {
-          fileImage.value = false;
-        }
-  
-      }
-  
-      const filterUncategorizedAsset = computed(() => {
-        if (uncategorizedText.value !== "" && accountType.value.length > 0) {
-          return accountType.value.filter((i) => {
-            if (i)
-              return i
-                .toLowerCase()
-                .includes(uncategorizedText.value.toLowerCase());
-          });
-        } else {
-          return accountType.value;
-        }
-      });
-  
-      const filterUncategorizedLiabilities = computed(() => {
-        if (uncategorizedText.value !== "" && liabilities.value.length > 0) {
-          return liabilities.value.filter((i) => {
-            if (i)
-              return i
-                .toLowerCase()
-                .includes(uncategorizedText.value.toLowerCase());
-          });
-        } else {
-          return liabilities.value;
-        }
-      });
-  
-      const categoryAccount = (e) => {
-        transacObj.value.splitCategories[
-          transacObj.value.splitCategories.length - 1
-        ].category = e.target.innerHTML;
-        transacObj.value.splitCategories[
-          transacObj.value.splitCategories.length - 1
-        ].showUncategorized = false;
-        // let index = splitCategories.findIndex(i => )
-      };
-  
-      const categories = (account, index) => {
-        // transacObj.value.category = e.target.innerText;
-        showUncategorized.value = !showUncategorized.value;
-        // selectedIncomeOrExpenseAccount.value = account;
-        splittedTransactions.value[index].accountID = account.id;
-        splittedTransactions.value[index].text = account.text;
-      };
-  
-      const accountFlow = (e, account) => {
-        console.log(account, 'hjjjj')
-        // transacObj.value.accountFlow = e.target.innerText;
-        showAccount.value = !showAccount.value;
-        selectedCashAccount.value = account;
-      };
-  
-      const splitWithdrawal = () => {
-        transacObj.value.splitCategories.push({
-          amount: 0,
+<script>
+import { ref, computed, nextTick, inject, watch, watchEffect, proxyRefs } from "vue";
+import axios from "@/gateway/backendapi";
+import transaction_service from "../../../services/financials/transaction_service";
+// import chart_of_accounts from '../../../services/financials/chart_of_accounts';
+import SearchMember from "../../../components/search/SearchMember"
+import dateFormatter from "../../../services/dates/dateformatter";
+import groupData from "../../../services/groupArray/groupResponse";
+import store from "../../../store/store";
+import { ElMessage } from 'element-plus'
+export default {
+  components: { SearchMember },
+  props: ["transactionDetails", "journalEntry", "gettingSelectedTrsn"],
+  setup(props, { emit }) {
+    const fileImage = ref(false);
+    const accountText = ref("");
+    const selectedFileUrl = ref("");
+    const accountType = ref([]);
+    const remittanceResult = ref([]);
+    const ungroupedRemittanceResult = ref([]);
+    const primarycolor = inject('primarycolor')
+    const liabilities = ref(["Credit Card", "Loan and Line of Credit"]);
+    const uncategorizedText = ref("");
+    const savingAccount = ref(false);
+    const transactionDate = ref("");
+    const memo = ref("");
+    const note = ref("");
+    const journalTransactions = ref([]);
+    const iSoStringFormat = ref('')
+    const filterAccount = computed(() => {
+      if (accountText.value !== "" && accountType.value.length > 0) {
+        return accountType.value.filter((i) => {
+          if (i)
+            return i.toLowerCase().includes(accountText.value.toLowerCase());
         });
-        nextTick(() => {
-          amountRef.value.select();
-        });
-      };
-  
-      const deleteSplit = (index) => {
-        transacObj.value.splitCategories.splice(index, 1);
-      };
-  
-      const totalAmount = computed(() => {
-        if (transacObj.value.splitCategories && transacObj.value.splitCategories.length > 0) {
-          return transacObj.value.splitCategories.reduce((a, b) => {
-            return { amount: parseInt(a.amount) + parseInt(b.amount) };
-          });
-        } else {
-          return 0;
+      } else {
+        return accountType.value;
+      }
+    });
+
+    const selectAccount = (type, index, account) => {
+      if (type === 0) {
+        journalTransactions.value[index].debitAccountID = account.id;
+        journalTransactions.value[index].account = account.text;
+      } else {
+        journalTransactions.value[index].creditAccountID = account.id;
+        journalTransactions.value[index].account = account.text;
+      }
+    };
+    const initializeJournalTransactions = () => {
+      journalTransactions.value = [
+        {
+          category: "inflow",
+          amount: 0.0,
+        },
+        {
+          category: "outflow",
+          amount: 0.0,
+        },
+      ]
+    }
+
+    initializeJournalTransactions();
+    const saveTransaction = async () => {
+      savingAccount.value = true;
+      if ((sumOfRecords(creditRecords.value) !== sumOfRecords(debitRecords.value)) || sumOfRecords(debitRecords.value) === 0) return false;
+      const body = journalTransactions.value.map(i => {
+        return {
+          memo: memo.value,
+          note: note.value,
+          date: iSoStringFormat.value,
+          debitAccountID: i.debitAccountID,
+          creditAccountID: i.creditAccountID,
+          amount: i.amount,
         }
-      });
-  
-      const incomeExpenseSearchText = ref("");
-  
-      const expenseIncomeAccounts = computed(() => {
-        let data = [];
-        if (!props.transactionDetails.account) {
-          data = [...expenseAccounts.value, accountType.value];
-        }
-        if (props.transactionDetails.id && props.transactionDetails.debitSplitAccounts && props.transactionDetails.debitSplitAccounts.length > 0) {
-          data = expenseAccounts.value;
-        }
-        if (props.transactionDetails.id && props.transactionDetails.creditSplitAccounts && props.transactionDetails.creditSplitAccounts.length > 0) {
-          data = accountType.value ? accountType.value : [];
-        }
-        if (props.transactionDetails.account === "Income Account") {
-          data = accountType.value ? accountType.value : [];
-        }
-        if (props.transactionDetails.account === "Expense Account") {
-          data = expenseAccounts.value;
-        }
-        if (!incomeExpenseSearchText.value) return data;
-        return data.filter(i => i.text.toLowerCase().includes(incomeExpenseSearchText.value));
-      })
-  
-      const closeTransac = () => {
-        emit("close-it", false);
-      };
-  
-      const gettingIncomeAccounts = ref(false);
-      const getIncomeAccounts = async () => {
-        try {
-          gettingIncomeAccounts.value = true;
-          const response = await transaction_service.getIncomeAccounts();
-          accountType.value = response;
-          gettingIncomeAccounts.value = false;
-        } catch (error) {
-          console.log(error);
-          gettingIncomeAccounts.value = false;
-        }
-      };
-  
-      const expenseAccounts = ref([]);
-      const gettingExpenseAccounts = ref(false);
-      const getExpenseAccounts = async () => {
-        try {
-          gettingExpenseAccounts.value = true;
-          const response = await transaction_service.getExpenseAccounts();
-          expenseAccounts.value = response;
-          gettingExpenseAccounts.value = false;
-        } catch (error) {
-          console.log(error);
-          gettingExpenseAccounts.value = false;
-        }
-      };
-  
-      getExpenseAccounts();
-      getIncomeAccounts();
-  
-      const accountTypes = ["assets", "liability", "income", "expense", "equity"];
-      const accTypes = ["assets", "liability", "equity", "income", "expense"];
-  
-      const transactionalAccounts = computed(() => {
-        if (!accountHeads.value || accountHeads.value.length === 0) return [];
-        let accounts = [];
-        for (let group of accountHeads.value) {
-          accounts.push(group.accountHeadsDTO)
-        }
-        return accounts;
+
       })
 
-      const getRemittanceAccount = () => {
+      try {
+        const response = await transaction_service.saveJournalTransaction(body);
+        if (response.data.status === true && response.status >= 200 && response.status <= 300) {
+          ElMessage({
+            type: "success",
+            message: `The transaction was ${response.data.response}`,
+            duration: 3000,
+          });
+          emit('entrysaved');
+          savingAccount.value = false;
+        } else if (response.data.status == false && response.data.response.toLowerCase().includes("must equal")) {
+          ElMessage({
+            type: "error",
+            message: response.data.response,
+            duration: 3000,
+          });
+          savingAccount.value = false;
+        } else {
+          ElMessage({
+            type: "error",
+            message: "Transaction failed, please try again",
+            duration: 3000,
+          });
+          savingAccount.value = false;
+        }
+      } catch (error) {
+        ElMessage({
+          type: "error",
+          message: "Transaction failed, please try again",
+          duration: 3000,
+        });
+        console.log(error);
+        savingAccount.value = false;
+      }
+    }
+
+    const closeTransac = () => {
+      emit("close-ledger")
+    }
+
+    const addRecord = (category) => {
+      journalTransactions.value.push({ category: category, amount: 0.00 })
+    }
+    const unbalanced = computed(() => {
+      const debitSum = sumOfRecords(debitRecords.value);
+      const creditSum = sumOfRecords(creditRecords.value);
+      return debitSum !== creditSum;
+    })
+
+    const debitRecords = computed(() => {
+      if (!journalTransactions.value) return [];
+      return journalTransactions.value.filter(i => i.category === "inflow");
+    })
+
+    const creditRecords = computed(() => {
+      if (!journalTransactions.value) return [];
+      return journalTransactions.value.filter(i => i.category === "outflow");
+    })
+
+
+
+    const filterLiabilities = computed(() => {
+      if (accountText.value !== "" && liabilities.value.length > 0) {
+        return liabilities.value.filter((i) => {
+          if (i)
+            return i.toLowerCase().includes(accountText.value.toLowerCase());
+        });
+      } else {
+        return liabilities.value;
+      }
+    });
+
+    const handleRemove = () => {
+      selectedFileUrl.value = "";
+    }
+    const chooseFile = (e) => {
+      selectedFileUrl.value = ""
+      console.log(e)
+      if (e.raw.type.includes("image")) {
+        selectedFileUrl.value = URL.createObjectURL(e.raw);
+        fileImage.value = true;
+        console.log(selectedFileUrl.value, 'hhhhh');
+      } else {
+        fileImage.value = false;
+      }
+
+    }
+
+    const filterUncategorizedAsset = computed(() => {
+      if (uncategorizedText.value !== "" && accountType.value.length > 0) {
+        return accountType.value.filter((i) => {
+          if (i)
+            return i
+              .toLowerCase()
+              .includes(uncategorizedText.value.toLowerCase());
+        });
+      } else {
+        return accountType.value;
+      }
+    });
+
+    const filterUncategorizedLiabilities = computed(() => {
+      if (uncategorizedText.value !== "" && liabilities.value.length > 0) {
+        return liabilities.value.filter((i) => {
+          if (i)
+            return i
+              .toLowerCase()
+              .includes(uncategorizedText.value.toLowerCase());
+        });
+      } else {
+        return liabilities.value;
+      }
+    });
+
+    const sumOfRecords = (records) => {
+      let sum = 0;
+      for (let record of records) {
+        sum += +record.amount;
+      }
+      return sum;
+    }
+
+    const totalAmount = computed(() => {
+      if (!journalTransactions.value) return 0;
+      const debits = journalTransactions.value.filter(i => i.category === "inflow");
+
+      return sumOfRecords(debits);
+    })
+
+    
+
+
+    const accountTypes = ["assets", "liability", "income", "expense", "equity"];
+    const accTypes = ["assets", "liability", "equity", "income", "expense"];
+
+
+    const getRemittanceAccount = () => {
       axios
         .get("/api/Financials/Accounts/GetRemittanceAccounts")
         .then((res) => {
           ungroupedRemittanceResult.value = res.data
-          console.log(ungroupedRemittanceResult.value, 'ndjjdjdd')
           let groupedRemittance = groupData.groupData(res.data, "accountType");
           for (const prop in groupedRemittance) {
             remittanceResult.value.push({
@@ -459,8 +427,6 @@
               value: groupedRemittance[prop],
             });
           }
-          console.log(remittanceResult.value, 'jjjjjj');
-          // getOffItems();
         })
         .catch((err) => {
           NProgress.done();
@@ -468,300 +434,163 @@
         });
     };
     getRemittanceAccount();
-  
-      const constructSaveTransactionReqBody = () => {
-        const reqBody = {
-          // id: props.transactionDetails.id ? props.transactionDetails.id : "",
-          amount: Math.abs(+transacObj.value.amount),
-          // amount: Math.abs(+transacObj.value.amount),
-          creditSplitAccounts: splittedTransactions.value.map(i => {
-            return {
-              accountID: i.accountID,
-              amount: Math.abs(splittedTransactions.value.length === 1 ? +transacObj.value.amount : i.amount ? +i.amount : +transacObj.value.amount),
-              // amount: Math.abs(i.amount ? +i.amount : +transacObj.value.amount),
-              contactID: i.donorId ? i.donorId : "",
-              transactionID: i.transactionID
+
+
+    
+    // const filteredCashandBank = computed(() => {
+    //   if (!remittanceResult.value ||  remittanceResult.value.length === 0) return [];
+    //   return remittanceResult.value.value.filter(i => i.text.toLowerCase().includes(accountText.value));
+    // })
+
+    const removeSplit = (index) => {
+      if (journalTransactions.value.length > 2) {
+        journalTransactions.value.splice(index, 2);
+
+                } else {
+                    ElMessage({
+                        type: 'error',
+                        showClose: true,
+                        message: 'Cannot Delete, You must have at least one field',
+                        duration: 5000
+                    })
+                }
+      // journalTransactions.value.splice(index, 1);
+     
+    }
+    watch(() => props.journalEntry, () => {
+      if (props.journalEntry && props.journalEntry.date) {
+        // console.log(props.journalEntry.date.toLocaleString().includes('T') ? props.journalEntry.date.toLocaleString().split('T')[0] : props.journalEntry.date.toLocaleString(), "jjjjjjj");
+        memo.value = props.journalEntry.memo;
+        note.value = props.journalEntry.note;
+        transactionDate.value = props.journalEntry.date
+        journalTransactions.value = [
+          ...props.journalEntry.debitSplitAccounts.map(i => {
+            i = {
+              ...i,
+              category: 'inflow',
+              account: i.account.name
             }
+
+            return i;
           }),
-          date: iSoStringFormat.value,
-          debitAccountID: selectedCashAccount.value.id,
-          memo: transacObj.value.memo,
-          transactionNumber: props.transactionDetails.transactionNumber ? props.transactionDetails.transactionNumber : ""
-        }
-        if (props.transactionDetails.id) {
-          reqBody.id = props.transactionDetails.id;
-        }
-        return reqBody;
+          ...props.journalEntry.creditSplitAccounts.map(i => {
+            i = {
+              ...i,
+              category: 'outflow',
+              account: i.account.name
+            }
+
+            return i;
+          })
+
+        ]
+      } else {
+        initializeJournalTransactions();
       }
-  
-      const toastMessage = (response) => {
-        if (response.status) {
-          ElMessage({
-            type: "success",
-            message: "Transaction saved successfully",
-            duration: 3000,
-          });
-          store.dispatch("transaction/getTransaction")
-          emit("reload")
-        } else {
-          ElMessage({
-            type: "error",
-            message: "The operation was not successful",
-            duration: 3000,
-          });
-        }
+    })
+
+    watchEffect(() => {
+      if (transactionDate.value) {
+        iSoStringFormat.value = dateFormatter.getISOStringGMT(transactionDate.value)
       }
+    })
+
+    return {
+      selectAccount,
+      saveTransaction,
+      unbalanced,
+      creditRecords,
+      debitRecords,
+      journalTransactions,
+      memo,
+      note,
+      remittanceResult,
+      ungroupedRemittanceResult,
+      iSoStringFormat,
+      accountText,
+      filterAccount,
+      accountType,
+      filterLiabilities,
+      liabilities,
+      selectedFileUrl,
+      uncategorizedText,
+      filterUncategorizedAsset,
+      filterUncategorizedLiabilities,
+      closeTransac,
+      addRecord,
+      sumOfRecords,
+      handleRemove,
+      fileImage,
+      totalAmount,
+      transactionDate,
+      chooseFile,
+      primarycolor,
+      accountTypes,
+      accTypes,
+      removeSplit,
+      savingAccount
+    };
+  },
+};
+</script>
   
-      const newIncome = ref({});
-      const saveIncome = async () => {
-        try {
-          let reqBody = {};
-          savingAccount.value = true;
-          if (props.transactionDetails.account === "Destination Account" || (props.transactionDetails.creditSplitAccounts && props.transactionDetails.creditSplitAccounts.length > 0)) {
-            transacObj.value.creditAccountID = selectedIncomeOrExpenseAccount.value.id;
-            transacObj.value.debitAccountID = selectedCashAccount.value.id;
-            reqBody = constructSaveTransactionReqBody();
-            reqBody.category = "inflow";
-            const response = await transaction_service.saveJournalTransaction(reqBody);
-            savingAccount.value = false;
-            toastMessage(response);
-          } 
-          // else {
-          //   const body = {
-          //     debitSplitAccounts: splittedTransactions.value.map(i => {
-          //       return {
-          //         accountID: i.accountID,
-          //         amount: Math.abs(splittedTransactions.value.length === 1 ? transacObj.value.amount : i.amount ? +i.amount : +transacObj.value.amount),
-          //         contactID: i.donorId ? i.donorId : "",
-          //         transactionID: i.transactionID
-          //       }
-          //     }),
-          //     creditAccountID: selectedCashAccount.value.id,
-          //     date: iSoStringFormat.value,
-          //     memo: transacObj.value.memo,
-          //     transactionNumber: props.transactionDetails.transactionNumber ? props.transactionDetails.transactionNumber : "",
-          //     amount: Math.abs(+transacObj.value.amount),
-          //     category: "outflow"
-          //   }
-  
-          //   if (props.transactionDetails.id) {
-          //     body.id = props.transactionDetails.id;
-          //   }
-          //   const response = await transaction_service.saveExpense(body);
-          //   savingAccount.value = false;
-          //   toastMessage(response)
-          // }
-        } catch (error) {
-          savingAccount.value = false;
-          console.log(error);
-        }
-      }
-  
-      const getSplittedAccountNames = () => {
-        splittedTransactions.value = splittedTransactions.value.map(i => {
-          const accIncome = accountType.value.find(j => j.id === i.accountID);
-          const accExpense = expenseAccounts.value.find(j => j.id === i.accountID);
-          i.text = accIncome ? accIncome.text : accExpense ? accExpense.text : "Income Account";
-          return i;
-        })
-      }
-  
-      const dateField = ref(null);
-      watch(() => props.transactionDetails, (data) => {
-        transacObj.value.date = data.date;
-        transacObj.value.amount = Math.abs(data.amount);
-        transacObj.value.memo = data.memo;
-        splittedTransactions.value = [{}]
-        selectedCashAccount.value = data.account;
-  
-        if (props.transactionDetails.id) {
-          transacObj.value.date = data.date;
-          // transacObj.value.date = data.date && data.date.toLocaleString().includes('T') ? data.date.toLocaleString().split('T')[0] : data.date.toLocaleString();
-          // transacObj.value.date = new Date(data.date).toISOString().substr(0, 10)
-          if (data.debitSplitAccounts && data.debitSplitAccounts.length > 0) {
-            splittedTransactions.value = data.debitSplitAccounts.map(i => {
-              i.amount = Math.abs(i.amount);
-              return i;
-            });
-          } else {
-            splittedTransactions.value = data.creditSplitAccounts.map(i => {
-              i.amount = Math.abs(i.amount);
-              return i;
-            });
-          }
-          getSplittedAccountNames()
-        }
-  
-      })
-  
-      const accountHeads = ref([]);
-      const getAccountHeads = async () => {
-        try {
-          const response = await chart_of_accounts.getAccountHeads();
-          accountHeads.value = response;
-        } catch (error) {
-          console.log(error);
-        }
-      }
-      getAccountHeads();
-  
-      const cashandbank = ref([]);
-      const getCashAndBank = async () => {
-        try {
-          const response = await transaction_service.getCashAndBank();
-          cashandbank.value = response;
-        } catch (error) {
-          console.log(error);
-        }
-      }
-      getCashAndBank();
-  
-      const filteredCashandBank = computed(() => {
-        if (!cashandbank.value || cashandbank.value.length === 0) return [];
-        return cashandbank.value.filter(i => i.text.toLowerCase().includes(accountText.value));
-      })
-      // const filteredCashandBank = computed(() => {
-      //   if (!remittanceResult.value ||  remittanceResult.value.length === 0) return [];
-      //   return remittanceResult.value.value.filter(i => i.text.toLowerCase().includes(accountText.value));
-      // })
-  
-      const splitTransaction = () => {
-        splittedTransactions.value.push({})
-      }
-  
-      const showDonorField = ref(false);
-      const addDonor = () => {
-  
-      }
-  
-      const donorSelected = (memberData) => {
-        splittedTransactions.value[memberData.index].donorId = memberData.member.id;
-        splittedTransactions.value[memberData.index].donor = memberData.member.name;
-        splittedTransactions.value[memberData.index].showDonorField = false;
-      }
-  
-      const formIsValid = computed(() => {
-        if (!transacObj.value.amount) return false;
-        if (splittedTransactions.value.length === 1) return true;
-        const result = splittedTransactions.value.map(i => {
-          return i.amount ? Math.abs(+i.amount) : 0;
-        }).reduce((a, b) => a + b);
-        const amount = transacObj.value.amount ? +transacObj.value.amount : 0;
-        return Math.abs(amount) === result;
-      })
-  
-      const removeSplit = index => {
-        splittedTransactions.value.splice(index, 1);
-      }
-  
-      return {
-        showAccount,
-        remittanceResult,
-        ungroupedRemittanceResult,
-        iSoStringFormat,
-        accountText,
-        filterAccount,
-        accountType,
-        filterLiabilities,
-        liabilities,
-        hideModals,
-        selectedFileUrl,
-        showUncategorized,
-        uncategorizedText,
-        filterUncategorizedAsset,
-        filterUncategorizedLiabilities,
-        closeTransac,
-        transacObj,
-        categoryAccount,
-        splitWithdrawal,
-        deleteSplit,
-        accountFlow,
-        handleRemove,
-        fileImage,
-        totalAmount,
-        amountRef,
-        descrp,
-        categories,
-        chooseFile,
-        primarycolor,
-        transactionalAccounts,
-        accountTypes,
-        expenseIncomeAccounts,
-        saveIncome,
-        newIncome,
-        selectedCashAccount,
-        selectedIncomeOrExpenseAccount,
-        gettingIncomeAccounts,
-        gettingExpenseAccounts,
-        accountHeads,
-        accTypes,
-        cashandbank,
-        filteredCashandBank,
-        incomeExpenseSearchText,
-        splitTransaction,
-        splittedTransactions,
-        donorSelected,
-        showDonorField,
-        addDonor,
-        formIsValid,
-        removeSplit,
-        dateField,
-        savingAccount
-      };
-    },
-  };
-  </script>
-  
-  <style scoped>
-  #noTransfrom {
-    transform: none !important;
-    max-height: 300px;
-    overflow: auto;
-    top: inherit !important;
-  }
-  
-  .hover-text {
-    background-color: white;
-  }
-  
-  .hover-text:hover {
-    background-color: rgb(248, 247, 247);
-  }
-  
-  .parent-desc.first {
-    color: #8898aa;
-    font-size: 15px;
-    font-weight: 600;
-    box-shadow: 0px 3px 6px #2c28281c;
-    background: #dde2e6 0% 0% no-repeat padding-box;
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
-  }
-  
-  .select-elem-con {
-    padding: 5px 10px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    justify-content: space-between;
-    background: rgb(253, 253, 253);
-  }
-  
-  .style-account {
-    box-shadow: 0px 3px 15px #797e8159;
-    position: absolute;
-    background: white;
-    z-index: 1;
-    width: 130%;
-    max-height: 14em;
-    overflow-y: scroll;
-  }
-  
-  .style-account div div div:hover {
-    /* background-color: #ecf0f3; */
-    cursor: pointer;
-  }
-  
-  /* .input-width {
+<style scoped>
+.border-contribution {
+  border: 1.6px solid rgb(255, 255, 255);
+  border-radius: 4px;
+  padding: 11px 7px;
+  background-color: white;
+}
+
+#noTransfrom {
+  transform: none !important;
+  max-height: 300px;
+  overflow: auto;
+  top: inherit !important;
+}
+
+.hover-text {
+  background-color: white;
+}
+
+.hover-text:hover {
+  background-color: rgb(248, 247, 247);
+}
+
+.parent-desc.first {
+  color: #8898aa;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0px 3px 6px #2c28281c;
+  background: #dde2e6 0% 0% no-repeat padding-box;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+}
+
+.select-elem-con {
+  padding: 5px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  justify-content: space-between;
+  background: rgb(253, 253, 253);
+}
+
+.style-account {
+  box-shadow: 0px 3px 15px #797e8159;
+  position: absolute;
+  background: white;
+  z-index: 1;
+  width: 130%;
+  max-height: 14em;
+  overflow-y: scroll;
+}
+
+.style-account div div div:hover {
+  /* background-color: #ecf0f3; */
+  cursor: pointer;
+}
+
+/* .input-width {
     width: 100%
   }
   
@@ -775,93 +604,93 @@
     }
   
   } */
-  
-  .style-uncategorized {
-    box-shadow: 0px 3px 15px #797e8159;
-    position: absolute;
-    background: white;
-    z-index: 1;
-    width: 90%;
-    max-height: 14em;
-    overflow-y: scroll;
-  }
-  
-  .style-uncategorized div div div:hover {
-    /* background-color: #ecf0f3; */
-    cursor: pointer;
-  }
-  
-  .menu-height {
-    max-height: 400px;
-    overflow: scroll;
-  }
-  
-  .desc-head {
-    font-weight: 700;
-  }
-  
-  .desc {
-    color: #9b9a9c;
-    /* opacity: 0.7; */
-  }
-  
-  .vendor {
-    color: #136acd;
-    font-weight: 700;
-    font-size: 0.8em;
-  }
-  
-  .dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    align-self: center;
-    background: #686868;
-    margin-top: 5px;
-  }
-  
-  .split {
-    /* border: 2px solid #bebebe; */
-    border-radius: 30px;
-    font-size: 0.8em;
-    font-weight: 700;
-    padding: 4px;
-    box-shadow: 0px 2px 6px 2px #2c28281c;
-    cursor: pointer;
-  }
-  
-  .line {
-    position: relative;
-    top: 5px;
-    color: #686868;
-  }
-  
-  .modified {
-    font-size: 0.9em;
-  }
-  
-  .label-text {
-    font-size: 0.8em;
-    font-weight: 700;
-    margin-bottom: 5px;
-  }
-  
-  .error-div {
-    background: #fff8f8;
-    border-color: #ffe9e9;
-    padding: 10px 5px;
-    margin-bottom: 24px;
-    border-radius: 8px;
-    border: 1px solid transparent;
-    border-left: 5px solid #b52626;
-  }
-  
-  .error-message {
-    margin-bottom: 0;
-    font-size: 0.9em;
-  }
-  
-  .adjust-left {
-    margin-left: 78px;
-  }
-  </style>
+
+.style-uncategorized {
+  box-shadow: 0px 3px 15px #797e8159;
+  position: absolute;
+  background: white;
+  z-index: 1;
+  width: 90%;
+  max-height: 14em;
+  overflow-y: scroll;
+}
+
+.style-uncategorized div div div:hover {
+  /* background-color: #ecf0f3; */
+  cursor: pointer;
+}
+
+.menu-height {
+  max-height: 400px;
+  overflow: scroll;
+}
+
+.desc-head {
+  font-weight: 700;
+}
+
+.desc {
+  color: #9b9a9c;
+  /* opacity: 0.7; */
+}
+
+.vendor {
+  color: #136acd;
+  font-weight: 700;
+  font-size: 0.8em;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  align-self: center;
+  background: #686868;
+  margin-top: 5px;
+}
+
+.split {
+  /* border: 2px solid #bebebe; */
+  border-radius: 30px;
+  font-size: 0.8em;
+  font-weight: 700;
+  padding: 4px;
+  box-shadow: 0px 2px 6px 2px #2c28281c;
+  cursor: pointer;
+}
+
+.line {
+  position: relative;
+  top: 5px;
+  color: #686868;
+}
+
+.modified {
+  font-size: 0.9em;
+}
+
+.label-text {
+  font-size: 0.8em;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.error-div {
+  background: #fff8f8;
+  border-color: #ffe9e9;
+  padding: 10px 5px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  border-left: 5px solid #b52626;
+}
+
+.error-message {
+  margin-bottom: 0;
+  font-size: 0.9em;
+}
+
+.adjust-left {
+  margin-left: 78px;
+}
+</style>
