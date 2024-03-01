@@ -6,8 +6,8 @@
     <div class="main-con">
       <div class="main-section">
         <div class="intro-div">
-          <h1 class="intro-header">Welcome {{ data && data.churchName ? data.churchName : "" }}</h1>
-          <p class="intro-subtext">Where do you want to start ?</p>
+          <h1 class="intro-header">{{ navigatorLang === "en-US" ? 'Welcome' : $t('startDashboard.wel') }} {{ data && data.churchName ? data.churchName : "" }}</h1>
+          <p class="intro-subtext">{{ navigatorLang === "en-US" ? 'Where do you want to start ?' : $t('startDashboard.want-to-start') }}</p>
         </div>
         <div class="boxes-con">
           <router-link class="box" to="/tenant/people/add" style="text-decoration: none">
@@ -18,10 +18,10 @@
               </div>
               <div class="box-text can-dogi">
                 <div class="box-header-text">
-                  <h4>Add members</h4>
+                  <h4>{{ navigatorLang === "en-US" ? 'Add members' : $t('startDashboard.add-member') }}</h4>
                 </div>
                 <div class="box-small-text">
-                  <p>Stay compliant by keeping accurate records of your members.</p>
+                  <p>{{ navigatorLang === "en-US" ? 'Stay compliant by keeping accurate records of your members.' : $t('startDashboard.stay-compliant') }}</p>
                 </div>
               </div>
             </div>
@@ -36,10 +36,10 @@
               </div>
               <div class="box-text can-do">
                 <div class="box-header-text">
-                  <h4>Send SMS</h4>
+                  <h4>{{ navigatorLang === "en-US" ? 'Send SMS' : $t('startDashboard.send-sms') }}</h4>
                 </div>
                 <div class="box-small-text">
-                  <p>Communicate with your members by sending sms with our seamless sms.</p>
+                  <p>{{ navigatorLang === "en-US" ? 'Communicate with your members by sending sms with our seamless sms.' : $t('startDashboard.communicate') }}</p>
                 </div>
               </div>
             </div>
@@ -54,10 +54,10 @@
               </div>
               <div class="box-text can-do">
                 <div class="box-header-text">
-                  <h4>Add first timers</h4>
+                  <h4>{{ navigatorLang === "en-US" ? 'Add first timers' : $t('startDashboard.add-fst-timers') }}</h4>
                 </div>
                 <div class="box-small-text">
-                  <p>Keep accurate record and follow up your first timers with our automation system.</p>
+                  <p>{{ navigatorLang === "en-US" ? 'Keep accurate record and follow up your first timers with our automated system.' : $t('startDashboard.keep-accurate') }}</p>
                 </div>
 
               </div>
@@ -72,7 +72,7 @@
       <div class="row">
         <div class="col-md-10 offset-2 text-center my-4 text-lg-right" style="max-width: 900px; margin: auto">
           <router-link to="/tenant" class="font-weight-bold text-decoration-none">
-            <el-button class="font-weight-bold primary--text" text>Skip To Dashboard >>></el-button>
+            <el-button class="font-weight-bold primary--text" text>{{ navigatorLang === "en-US" ? 'Skip To Dashboard' : $t('startDashboard.skip-dashboard') }} >>></el-button>
           </router-link>
         </div>
       </div>
@@ -81,11 +81,22 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import axios from "@/gateway/backendapi"
+import { useI18n } from 'vue-i18n';
+import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from '../../i18n';
 export default {
   setup() {
     const data = ref({})
+
+    const navigatorLang = ref(navigator.language);
+    console.log(navigatorLang.value, 'jjj');
+    
+    const { locale } = useI18n({ useScope: 'global' });
+    watch(locale, (val) => {
+      setI18nLanguage(val);
+    });
+
     const churchData = () => {
       axios.get("/api/Membership/GetCurrentSignedInUser")
         .then(res => {
@@ -98,6 +109,7 @@ export default {
 
     return {
       data,
+      navigatorLang,
       churchData
     };
   },

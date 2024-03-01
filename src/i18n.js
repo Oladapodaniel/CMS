@@ -8,7 +8,6 @@ let i18n;
 export const SUPPORT_LOCALES = [navigator.language || navigator.userLanguage];
 
 export function setI18nLanguage(locale) {
-    console.log(locale, 'jjjj');
     loadLocaleMessages(locale);
 
     if (i18n.mode === 'legacy') {
@@ -24,9 +23,8 @@ export function setI18nLanguage(locale) {
 export async function loadLocaleMessages(locale) {
     // load locale messages with dynamic import
     const messages = await import(
-    /* webpackChunkName: "locale-[request]" */ `./locales/${locale}.json`
+    /* webpackChunkName: "locale-[request]" */ `./locales/${locale !== 'fr' && locale !== 'pt' && locale !== 'en-US' && locale !== 'en' && locale !== 'zh-CN' ? 'en-US' : locale}.json`
     );
-    console.log(messages, 'jjjhhk');
 
     // set locale and locale message
     i18n.global.setLocaleMessage(locale, messages.default);
@@ -35,6 +33,7 @@ export async function loadLocaleMessages(locale) {
 }
 
 export default function setupI18n() {
+    console.log(i18n, 'jej');
     if (!i18n) {
         let locale = localStorage.getItem('lang') || "en-US";
 
@@ -42,10 +41,10 @@ export default function setupI18n() {
             globalInjection: true,
             legacy: false,
             locale: locale,
-            fallbackLocale:  navigator.language ? navigator.language : "en-US" 
+            fallbackLocale: navigator.language ? navigator.language : "en-US"
         });
 
-        setI18nLanguage(locale);
+        setI18nLanguage(navigator.language);
     }
     return i18n;
 }

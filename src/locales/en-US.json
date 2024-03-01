@@ -1,8 +1,8 @@
 {
   "languages": {
     "pt": "Portuguese",
-    "en": "English",
-    "es": "Spanish"
+    "en-US": "English",
+    "zh-CN": "Chinese"
   },
   "title": {
     "config": "Configuration"
@@ -14,13 +14,70 @@
   },
   "loginContent": {
     "login-btntext": "Sign in",
-    "signup-btntext": "Sign in now",
-    "signin-text": "Sign up now",
-    "get-started": "Get Started",
+    "signup-btntext": "Sign up now",
     "forgot-it": "Forgot it?",
-    "no-account-yet": "Don't have an account yet?",
-    "church-software-text": "A church software that automates your entire church management processes.",
+    "no-account-yet": "Don't have an account yet?"
+  },
+  "signupContent": {
+    "church-software-text": "A church software that automates your entire",
+    "church-management-text": "church management processes.",
     "pword-Character" : "At least 6 characters, but longer is better.",
-    "have-an-account" : "Already have an account?"
+    "get-started": "Get Started",
+    "hve-an-account" : "Already have an account?",
+    "signin-text": "Sign in now",
+    "indicated": "By signing up, you are indicating that you have read and agree to the",
+    "terms": "Terms of Use",
+    "and"  : "and",
+    "privacy" : "Privacy Policy",
+    "resetPassword" : "click here to reset your password"
+  },
+  "onboardingContent": {
+    "welcome-chplus": "Welcome to Churchplus!",
+    "about-ch" : "Tell us about you and your church",
+    "labels": {
+      "ur-name" : "What's your name?",
+      "ur-ministry" : "What's the name of your ministry?",
+      "ur-phone" : "What's your phone number?",
+      "ur-country" : "Select your country",
+      "membership-size" : "What's the membership size of your ministry?",
+      "step" : "STEP 1 OF 2"
+    },
+    "next-btntext" : "Next"
+  },
+  "startingPointContent": {
+    "hey" : "Hey",
+    "what-to-do-in-ch" : "What would you like to do in Churchplus?",
+    "step" : "STEP 2 OF 2",
+    "starting-point" : "Choose a starting point",
+    "do-more" : "You can do more later",
+    "claim-unit" : "Claim your 500 unit now",
+    "terms" : "Terms and Conditions",
+    "units-and-above" : "Buy 1000 units or above and get 500units free",
+    "existing-customers" : "Offer is open to both new and existing customers",
+    "one-time-offer": "This is a one time offer for the duration of this campaign",
+    "buy-sms": "Buy SMS now",
+    "send-email-sms": "Send Email/SMS",
+    "add-ch-members": "Add Church Members",
+    "add-fst-timers": "Add First Timers",
+    "not-yet": "Not Sure Yet"
+  },
+
+  "processRequestContent": {
+    "hg-tight": "Hang tight!",
+    "setting-things" : "We 're setting things up for you.",
+    "all-in-one" : "All-in-one Church management software",
+    "get-ur-church" : "Get your church administrative activities and processes automated without hassle."
+  },
+
+  "startDashboard" : {
+    "wel" : "Welcome",
+    "want-to-start" : "Where do you want to start ?",
+    "add-member" : "Add members",
+    "stay-compliant" : "Stay compliant by keeping accurate records of your members.",
+    "send-sms" : "Send SMS",
+    "communicate" : "Communicate with your members by sending sms with our seamless sms.",
+    "add-fst-timers" : "Add first timers",
+    "keep-accurate" : "Keep accurate record and follow up your first timers with our automated system.",
+    "skip-dashboard" : "Skip To Dashboard"
   }
 }

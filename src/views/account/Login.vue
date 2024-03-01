@@ -5,7 +5,7 @@
         <a class="logo-link"><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" /></a>
       </div>
       <div class="header">
-        <h1>{{ $t('home-header.login') == navigatorLang ? $t('home-header.login') : 'Sign in' }}</h1>
+        <h1>{{  navigatorLang === "en-US" ? 'Sign in' : $t('home-header.login') }}</h1>
         <!-- <h1>Sign in</h1> -->
       </div>
 
@@ -28,14 +28,14 @@
             <el-input type="password" placeholder="Password" v-model="state.credentials.password" show-password />
           </el-form-item>
           <div class="f-password-div">
-            <router-link to="/forgotpassword" class="forgot-password primary--text">Forgot it?</router-link>
+            <router-link to="/forgotpassword" class="forgot-password primary--text">{{ navigatorLang === "en-US" ? "Forgot it?" : $t('loginContent.forgot-it') }}</router-link>
           </div>
           <el-form-item>
             <!-- <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>
               Sign In
             </el-button> -->
             <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>
-              {{ $t('home-header.login') == navigatorLang ? $t('home-header.login') : 'Sign in' }}
+              {{ navigatorLang === "en-US" ? 'Sign in' : $t('home-header.login') }}
             </el-button>
 
             <!-- <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
@@ -55,12 +55,12 @@
         </el-form>
         <div class="bottom-container">
           <div>
-            <div class="sign-up-prompt">Don't have an account yet?</div>
+            <div class="sign-up-prompt">{{ navigatorLang === "en-US" ? "Don't have an account yet?" : $t('loginContent.no-account-yet') }}</div>
           </div>
 
           <div class="mt-2">
             <router-link to="/register" class="sign-up primary--text text-decoration-none"><el-button color="#17c5cf"
-                class="w-50" round><strong>Sign up now</strong>
+                class="w-50" round><strong>{{ navigatorLang === "en-US" ? "Sign up now" : $t('loginContent.signup-btntext') }}</strong>
               </el-button></router-link>
           </div>
         </div>

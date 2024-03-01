@@ -2,19 +2,22 @@
   <div>
     <div class="main-section">
       <div class="logo-con">
-        <a class="logo-link"
-          ><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo"
-        /></a>
+        <a class="logo-link"><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" /></a>
       </div>
       <div class="header">
         <div class="top-con">
           <div class="header">
             <!-- <h1>Your all in one church management solution</h1> -->
             <!-- <h1>{{$t('header.signup')}} <span class="free">{{$t('header.free')}}</span></h1> -->
-            <h1>Get started for <span class="free">FREE</span></h1>
-            <h3 class="intro">
+            <h1> {{ navigatorLang === "en-US" ? 'Get started for' : $t('home-header.signup') }} <span class="free">{{
+              navigatorLang === "en-US" ? "FREE" : $t('home-header.free') }}</span></h1>
+            <h3 class="intro" v-if="navigatorLang === 'en-US'">
               A church software that automates your entire <br />
               church management processes.
+            </h3>
+            <h3 class="intro" v-else>
+              {{ $t('signupContent.church-software-text') }} <br />
+              {{ $t('signupContent.church-management-text') }}
             </h3>
           </div>
         </div>
@@ -24,20 +27,12 @@
         <div class="error-div" v-if="showError">
           <p class="error-message">
             {{ errorMessage }}
-            <span v-if="showResetLink"
-              >OR
+            <span v-if="showResetLink">OR
               <span>
-                <a
-                  class="font-weight-bold text-decoration-none c-pointer"
-                  @click="resetPassword"
-                  >click here to reset your password</a
-                ></span
-              ></span
-            >
+                <a class="font-weight-bold text-decoration-none c-pointer" @click="resetPassword">{{ navigatorLang ===
+                  "en-US" ? "click here to reset your password" : $t('signupContent.resetPassword') }}</a></span></span>
             <span v-else>
-              <a href="mailto:support@churchplus.co" class="font-weight-700 primary-text"
-                >Contact Support</a
-              >
+              <a href="mailto:support@churchplus.co" class="font-weight-700 primary-text">Contact Support</a>
             </span>
           </p>
         </div>
@@ -46,38 +41,26 @@
             <el-input type="email" placeholder="Email" v-model="credentials.email" />
           </el-form-item>
           <el-form-item>
-            <el-input
-              type="password"
-              placeholder="Password"
-              v-model="credentials.password"
-              show-password
-            />
+            <el-input type="password" placeholder="Password" v-model="credentials.password" show-password />
           </el-form-item>
           <div class="f-password-div">
-            <span class="password-tip password-help"
-              >At least 6 characters, but longer is better.</span
-            >
+            <span class="password-tip password-help">{{ navigatorLang ===
+              "en-US" ? "At least 6 characters, but longer is better." : $t('signupContent.pword-Character') }}</span>
           </div>
           <el-form-item>
-            <el-button
-              size="large"
-              color="#17c5cf"
-              @click="register"
-              class="w-100"
-              :loading="loading"
-              round
-            >
-              Get Started
+            <el-button size="large" color="#17c5cf" @click="register" class="w-100" :loading="loading" round>
+              {{ navigatorLang ===
+                "en-US" ? "Get Started" : $t('signupContent.get-started') }}
             </el-button>
           </el-form-item>
         </el-form>
         <div class="bottom-container mt-1">
           <div>
             <p class="sign-up-prompt">
-              Already have an account?
-              <router-link to="/" class="sign-up"
-                ><span class="primary--text"> Sign in now</span></router-link
-              >
+              {{ navigatorLang ===
+                "en-US" ? "Already have an account" : $t('signupContent.hve-an-account') }}
+              <router-link to="/" class="sign-up"><span class="primary--text">{{ navigatorLang ===
+                "en-US" ? "Sign in now" : $t('signupContent.signin-text') }}</span></router-link>
             </p>
           </div>
         </div>
@@ -89,10 +72,15 @@
             </div> -->
         <div class="terms">
           <div>
-            By signing up, you are indicating that you have read and agree to the
-            <router-link to="/termsofuse" class="terms-link">Terms of Use</router-link>
-            and
-            <router-link to="/termsofuse" class="terms-link">Privacy Policy.</router-link>
+            {{ navigatorLang ===
+              "en-US" ? "By signing up, you are indicating that you have read and agree to the" :
+              $t('signupContent.indicated') }}
+            <router-link to="/termsofuse" class="terms-link">{{ navigatorLang ===
+              "en-US" ? "Terms of Use" : $t('signupContent.terms') }}</router-link>
+            {{ navigatorLang ===
+              "en-US" ? "and" : $t('signupContent.privacy') }}
+            <router-link to="/termsofuse" class="terms-link">{{ navigatorLang ===
+              "en-US" ? "Privacy Policy." : $t('signupContent.privacy') }}</router-link>
           </div>
         </div>
         <!-- <el-divider>
@@ -118,12 +106,7 @@
           </div>
         </div> -->
 
-        <el-dialog
-          v-model="displayModal"
-          title="Please enter your email"
-          width="80%"
-          align-center
-        >
+        <el-dialog v-model="displayModal" title="Please enter your email" width="80%" align-center>
           <div class="container">
             <div class="row mt-2">
               <div class="col-12"></div>
@@ -137,16 +120,8 @@
           </div>
           <template #footer>
             <span class="dialog-footer">
-              <el-button @click="displayModal = false" class="secondary-button" round
-                >Cancel</el-button
-              >
-              <el-button
-                type="primary"
-                @click="saveEmail"
-                :loading="emailLoading"
-                :color="primarycolor"
-                round
-              >
+              <el-button @click="displayModal = false" class="secondary-button" round>Cancel</el-button>
+              <el-button type="primary" @click="saveEmail" :loading="emailLoading" :color="primarycolor" round>
                 Confirm
               </el-button>
             </span>
@@ -162,11 +137,14 @@ import axios from "@/gateway/backendapi";
 import router from "../../router/index";
 import FBlogin from "@/mixins/facebookLogin";
 import store from "../../store/store";
-import { reactive, ref, inject } from "vue";
+import { reactive, watch, ref, inject } from "vue";
+import { useI18n } from 'vue-i18n';
+import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from '../../i18n';
 
 export default {
   setup() {
     const primarycolor = inject("primarycolor");
+    const navigatorLang = ref(navigator.language);
     const credentials = reactive({});
     const showError = ref(false);
     const errorMessage = ref("");
@@ -180,6 +158,13 @@ export default {
       emailLoading,
       invalidEmailObj,
     } = FBlogin();
+
+
+    const { locale } = useI18n({ useScope: 'global' });
+    watch(locale, (val) => {
+      setI18nLanguage(val);
+
+    });
 
     const register = () => {
       const routeQuery = router.currentRoute.value.query;
@@ -237,6 +222,7 @@ export default {
 
     return {
       credentials,
+      navigatorLang,
       showError,
       errorMessage,
       show,
@@ -289,6 +275,7 @@ export default {
   text-align: center;
   margin-top: 36px;
 }
+
 .logo-link img {
   width: 9rem;
   height: 6rem;

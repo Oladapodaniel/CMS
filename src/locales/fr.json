@@ -1,0 +1,83 @@
+{
+    "languages": {
+      "pt": "Portuguese",
+      "en-US": "English",
+      "zh-CN": "Chinese"
+    },
+    "title": {
+      "config": "Configuration"
+    },
+    "home-header": {
+      "login": "Se connecter",
+      "signup": "Commencer pour",
+      "free": "GRATUITE"
+    },
+    "loginContent": {
+      "login-btntext": "Se connecter",
+      "signup-btntext": "S'inscrire maintenant",
+      "forgot-it": "Je l'ai oublié?",
+      "no-account-yet": "Vous n'avez pas encore de compte?"
+    },
+    "signupContent": {
+      "church-software-text": "Un logiciel d'église qui automatise l'ensemble de votre",
+      "church-management-text": "processus de gestion de l'église.",
+      "pword-Character" : "Au moins 6 caractères, mais plus c'est mieux.",
+      "get-started": "Commencer",
+      "hve-an-account" : "Vous avez déjà un compte?",
+      "signin-text": "Connectez vous maintenant",
+      "indicated": "En vous inscrivant, vous indiquez que vous avez lu et accepté les",
+      "terms": "Conditions d'utilisation",
+      "and"  : "et",
+      "privacy" : "politique de confidentialité",
+      "resetPassword" : "cliquez ici pour réinitialiser votre mot de passe"
+    },
+    "onboardingContent": {
+      "welcome-chplus": "Bienvenue chez Churchplus!",
+      "about-ch" : "Parlez-nous de vous et de votre église",
+      "labels": {
+        "ur-name" : "Quel est ton nom?",
+        "ur-ministry" : "Quel est le nom de votre ministère?",
+        "ur-phone" : "Quel est ton numéro de téléphone?",
+        "ur-country" : "Sélectionnez votre pays",
+        "membership-size" : "Quelle est la taille des membres de votre ministère?",
+        "step" : "ÉTAPE 1 SUR 2"
+      },
+      "next-btntext" : "Suivante"
+    },
+    "startingPointContent": {
+      "hey" : "Hé",
+      "what-to-do-in-ch" : "Qu’aimeriez-vous faire chez Churchplus?",
+      "step" : "ÉTAPE 2 SUR 2",
+      "starting-point" : "Choisissez un point de départ",
+      "do-more" : "Vous pourrez en faire plus plus tard",
+      "claim-unit" : "Réclamez votre unité de 500 maintenant",
+      "terms" : "Termes et conditions",
+      "units-and-above" : "Achetez 1 000 unités ou plus et obtenez 500 unités gratuites",
+      "existing-customers" : "L'offre est ouverte aux clients nouveaux et existants",
+      "one-time-offer": "Il s'agit d'une offre unique pour la durée de cette campagne",
+      "buy-sms": "Achetez des SMS maintenant",
+      "send-email-sms": "Envoyer un e-mail/SMS",
+      "add-ch-members": "Ajouter des membres d'église",
+      "add-fst-timers": "Ajouter des débutants",
+      "not-yet": "Pas encore sûr"
+    },
+  
+    "processRequestContent": {
+      "hg-tight": "Tenir fermement!",
+      "setting-things" : "Nous préparons les choses pour vous.",
+      "all-in-one" : "Logiciel de gestion d'église tout-en-un",
+      "get-ur-church" : "Automatisez les activités et les processus administratifs de votre église sans tracas."
+    },
+  
+    "startDashboard" : {
+      "wel" : "Bienvenue",
+      "want-to-start" : "Où voulez-vous commencer ?",
+      "add-member" : "Ajouter des membres",
+      "stay-compliant" : "Restez conforme en tenant des registres précis de vos membres.",
+      "send-sms" : "Envoyer un SMS",
+      "communicate" : "Communiquez avec vos membres en envoyant des sms avec notre sms transparent.",
+      "add-fst-timers" : "Ajouter des débutants",
+      "keep-accurate" : "Gardez un enregistrement précis et suivez vos nouveaux arrivants avec notre système automatisé.",
+      "skip-dashboard" : "Passer au tableau de bord"
+    }
+  }

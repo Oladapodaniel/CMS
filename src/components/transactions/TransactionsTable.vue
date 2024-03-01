@@ -525,7 +525,6 @@ export default {
 
     const gettingSelectedTrsn = ref(false);
     const rowSelected = async (item) => {
-      console.log(item, 'hhj');
       try {
         gettingSelectedTrsn.value = true;
         if (item.category === "Journal") {
