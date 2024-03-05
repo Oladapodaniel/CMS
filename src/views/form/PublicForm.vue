@@ -44,8 +44,12 @@
                                         :placeholder="item.label" />
                                     <el-input type="number" v-if="item.controlType === 5" class="w-100" v-model="item.data"
                                         :placeholder="item.label" />
-                                    <el-input v-model="item.data" v-if="item.controlType === 6" :rows="2" type="textarea" :placeholder="item.label" />
-                                    <!-- <span class="w-100" v-if=" item.isRequired && !item.data   ">please fill field </span> -->
+                                    <el-input v-model="item.data" v-if="item.controlType === 6" :rows="2" type="textarea"
+                                        :placeholder="item.label" />
+                                    <span class="w-100 small text-danger"
+                                        v-if="filterIsRequired && filterIsRequired.isRequired && item.isRequired && !item.data">Please fill in
+                                        your {{ item.label }}
+                                    </span>
                                 </div>
                             </div>
 
@@ -55,8 +59,9 @@
                     <div class="row justify-content-center mt-4">
                         <!-- <div class="col-md-3"></div> -->
                         <div class="col-md-9" @click="saveForm">
-                            <el-button class="w-100" size="large" :disabled="disabledBtn" :loading="loading" round
-                                :color="primarycolor"> Submit
+                            <el-button class="w-100" size="large"
+                                :disabled="disabledBtn ||(filterIsRequired && filterIsRequired.isRequired && !filterIsRequired.data) "
+                                :loading="loading" round :color="primarycolor"> Submit
                             </el-button>
                         </div>
                     </div>
@@ -89,7 +94,6 @@ import { ref, inject } from 'vue'
 import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
-import finish from '../../services/progressbar/progress'
 import { useRoute } from "vue-router";
 import swal from "sweetalert";
 import router from "../../router";
@@ -137,12 +141,7 @@ export default {
                 saveChip();
             }
         }
-        // const saveForm2 = () => {
-        //     let myArray = singleFormData.value.customAttributes.forEach((i) =>{
-        //         i.data
-        //     })
-        //     console.log(myArray, 'jjj');
-        // }
+
 
         const addNewField = () => {
             // centerDialogVisible.value = true
@@ -157,7 +156,6 @@ export default {
                 const { data } = await axios.get(`/api/public/getsinglepublicform?Id=${route.params.id}`)
                 singleFormData.value = data
                 formLogo.value = data.pictureUrl
-                console.log(data, 'ffjjfj');
                 loadingPage.value = false
 
             } catch (error) {
@@ -175,19 +173,18 @@ export default {
         }
         getSingleForm()
 
-        const filterIsRequired = ref([])
-        const requiredData = ref([])
+        const filterIsRequired = ref({})
+        const requiredField = ref(false)
+
+        const saveForm2 = () => {
+
+
+        }
         const saveForm = async () => {
-            // let newArray = []
-            // filterIsRequired.value = singleFormData.value.customAttributes.filter(i => i.isRequired === true)
-            // requiredData.value = filterIsRequired.value.map(i => i.data).toString()
-            // newArray = newArray.push(requiredData.value)
-            // console.log(requiredData.value, '622222222266');
-            // console.log(newArray, '6hhhhhhhhhhh22266');
-            // if (filterIsRequired.value && filterIsRequired.value[0].isRequired === true && newArray.length === 0) {
-            //     alert('please fill  the required field')
-            // } else {
-                loading.value = true
+            let isRequiredFalse = singleFormData.value.customAttributes.find(i => i.isRequired === false)
+            filterIsRequired.value = singleFormData.value.customAttributes.find(i => i.isRequired === true)
+            loading.value = true
+            if (isRequiredFalse && filterIsRequired.value === undefined ) {
                 try {
                     const { data } = await axios.post(`/api/public/saveformdata?formID=${route.params.id}`, singleFormData.value.customAttributes.map((i) => ({
                         customAttributeID: i.id,
@@ -202,18 +199,38 @@ export default {
                         dangerMode: true,
                     })
                     disabledBtn.value = true
-                    // ElMessage({
-                    //     type: 'success',
-                    //     message: 'From created successfully',
-                    //     duration: 5000
-                    // })
-                    console.log(data);
                     loading.value = false
                 }
                 catch (error) {
                     console.log(error);
                     loading.value = false
                 }
+            } else if (filterIsRequired.value && filterIsRequired.value.data && filterIsRequired.value.isRequired === true) {
+                try {
+                    const { data } = await axios.post(`/api/public/saveformdata?formID=${route.params.id}`, singleFormData.value.customAttributes.map((i) => ({
+                        customAttributeID: i.id,
+                        data: i.data,
+                        isRequired: i.isRequired
+                    })))
+                    swal({
+                        title: "Success!",
+                        text: 'Form Successfully Submitted ',
+                        icon: "success",
+                        confirmButtonColor: '#8CD4F5',
+                        dangerMode: true,
+                    })
+                    disabledBtn.value = true
+                    loading.value = false
+                }
+                catch (error) {
+                    console.log(error);
+                    loading.value = false
+
+                }
+            } else {
+                loading.value = false
+                disabledBtn.value = false
+            }
             // }
 
         }
@@ -237,8 +254,8 @@ export default {
             formLogo,
             networkError,
             filterIsRequired,
-            requiredData,
-            // saveForm2,
+            requiredField,
+            saveForm2,
             addNewField,
             saveForm,
             checkComma,
@@ -288,5 +305,4 @@ export default {
     border-radius: 3px;
     display:flex;
     align-items: center; */
-}
-</style>
+}</style>

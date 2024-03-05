@@ -23,7 +23,7 @@ export function setI18nLanguage(locale) {
 export async function loadLocaleMessages(locale) {
     // load locale messages with dynamic import
     const messages = await import(
-    /* webpackChunkName: "locale-[request]" */ `./locales/${locale !== 'fr' && locale !== 'pt' && locale !== 'en-US' && locale !== 'en' && locale !== 'zh-CN' ? 'en-US' : locale}.json`
+    /* webpackChunkName: "locale-[request]" */ `./locales/${locale !== 'fr' && locale !== 'de' && locale !== 'pt' && locale !== 'en-US' && locale !== 'en' && locale !== 'zh-CN' ? 'en-US' : locale}.json`
     );
 
     // set locale and locale message
