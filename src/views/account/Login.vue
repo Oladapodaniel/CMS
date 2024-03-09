@@ -28,7 +28,7 @@
             <el-input type="password" placeholder="Password" v-model="state.credentials.password" show-password />
           </el-form-item>
           <div class="f-password-div">
-            <router-link to="/forgotpassword" class="forgot-password primary--text">{{ navigatorLang === "en-US" ? "Forgot it?" : $t('loginContent.forgot-it') }}</router-link>
+            <router-link to="/forgotpassword" class="forgot-password primary--text">{{ navigatorLang === "en-US" ? "Forgot password?" : $t('loginContent.forgot-it') }}</router-link>
           </div>
           <el-form-item>
             <!-- <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>

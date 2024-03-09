@@ -1,0 +1,145 @@
+<template>
+    <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
+        <div class="row" >
+            <div  class="col-md-12" :class="{ 'box1': welcome, 'box2' : !welcome }" style="background: #F9FAFBE3;">
+                <div class="row">
+                    <div class="col-md-12  mt-3 d-flex justify-content-end">
+                        <img src="../../../assets/mobileonboarding/progressicon.png" alt="">
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-center col-12">
+                        <img class="" src="../../../assets/mobileonboarding/phone-one.png" alt="">
+                    </div>
+                    <div class="col-md-6 d-flex  align-items-center col-12 ">
+                        <div class="row d-flex  align-items-center">
+                            <div class="col-md-7  text-center ">
+                                <div class="h2 font-weight-600 text-head ">Welcome to Faith Connect!</div>
+                                <div class="text-font">Join Your Church Community and Embrace Spiritual Growth Together.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <el-button color="#120DFA" @click="next1" size="large" class="ml-2 pr-2 " round>Next <el-icon
+                                :size="20">
+                                <Right />
+                            </el-icon> </el-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3" >
+            <div class="col-md-12 " :class="{ 'box1': gateway, 'box2' : !gateway }" style="background: #F9FAFBE3;">
+                <div class="row">
+                    <div class="col-md-12  mt-3 d-flex justify-content-end">
+                        <img src="../../../assets/mobileonboarding/progressicon2.png" alt="">
+                    </div>
+
+                    <div class="col-md-5 d-flex  align-items-center col-12 ">
+                        <div class="row d-flex justify-content-end align-items-center">
+                            <div class="col-md-9  text-center ">
+                                <div class="h2 font-weight-600">Gateway to Faithful Living Starts Here.</div>
+                                <div class="text-font">Explore Inspirational Media, Engage in Worship, and Give Back Online.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7   col-12">
+                        <img class="" src="../../../assets/mobileonboarding/phone-two.png" alt="">
+                    </div>
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <el-button color="#120DFA" @click="next2" size="large" class="ml-2 pr-2 " round>Next <el-icon
+                                :size="20">
+                                <Right />
+                            </el-icon> </el-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3" >
+            <div class="col-md-12 " :class="{ 'box1': yourFaith, 'box2' : !yourFaith }" style="background: #F9FAFBE3;">
+                <div class="row">
+                    <div class="col-md-12  mt-3 d-flex justify-content-end">
+                        <img src="../../../assets/mobileonboarding/progressicon3.png" alt="">
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-center col-12">
+                        <img class="" src="../../../assets/mobileonboarding/phone-three.png" alt="">
+                    </div>
+                    <div class="col-md-6 d-flex  align-items-center col-12 ">
+                        <div class="row d-flex  align-items-center">
+                            <div class="col-md-9  text-center ">
+                                <div class="h2 font-weight-600 text-head">Your Faith, Anytime, Anywhere.</div>
+                                <div class="text-font">Seamlessly receive donations tithes and offerings, Stay Connected, and Grow
+                                    Spiritually with Faith Connect App.</div>
+                            </div>
+                            <div class="col-md-9 mt-4 d-flex  justify-content-center">
+                                <router-link :to="{ name: 'OnboardingProcess' }" class=" d-flex  justify-content-center"><el-button round color="#120DFA"
+                                        size="large" class="btn default-btn  c-pointer">Start now for
+                                        FREE</el-button></router-link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+import { inject, ref } from 'vue'
+// import router from '../../../router';
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
+export default {
+    setup() {
+        const primarycolor = inject('primarycolor')
+        const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
+        const welcome = ref(true);
+        const gateway = ref(false);
+        const yourFaith =  ref(false);
+        const next1 = () => {
+            welcome.value = false;
+            gateway.value = true;
+            yourFaith.value = false
+        }
+        const next2 = () => {
+            welcome.value = false;
+            gateway.value = false;
+            yourFaith.value = true
+        }
+
+        return {
+            primarycolor,
+            yourFaith,
+            gateway,
+            welcome,
+            next1,
+            next2,
+            mdAndUp, lgAndUp, xlAndUp, xsOnly
+        }
+    },
+}
+</script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Raleway:wght@100..900&family=Roboto:wght@100&display=swap');
+
+/* * {
+    font-family: Poppins;
+} */
+
+.text-head{
+    font-family: Raleway !important;
+}
+.text-font{
+    font-family: Poppins !important;;
+}
+.box1 {
+    /* transform: translateX(0%); */
+    transition: all 5s ease-in-out;;
+  }
+.box2 {
+    /* transform: translateX(0%); */
+    width: 0% !important;
+    height: 0;
+    overflow: hidden;
+    transition: all 5s ease-in-out;;
+  }
+
+
+</style>

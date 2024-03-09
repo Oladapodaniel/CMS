@@ -93,8 +93,13 @@ import Badge from 'primevue/badge';
                 {
                     text: "Mobile App Onboarding",
                     icon: "pi pi-mobile",
-                    to: "/mobileonboarding",
-                }
+                    to: "/welcomeonboarding1",
+                },
+                // {
+                //     text: "Mobile App Onboarding",
+                //     icon: "pi pi-mobile",
+                //     to: "/mobileonboarding",
+                // }
             ]
 
             const showToggleList = ref(false);

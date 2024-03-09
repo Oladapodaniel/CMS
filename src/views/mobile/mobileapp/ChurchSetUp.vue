@@ -1,181 +1,225 @@
 <template>
-  <div class="container-wide">
+  <div class="">
     <!-- write up part -->
-    <div class="row " style="height: 10vh">
+    <div class="row justify-content-center ">
       <Toast />
       <ConfirmDialog />
-      <!-- <div class="col-md-6 mt-3"> -->
-        <!-- <div class="row mt-5"> -->
-          <div class="col-12 justify-content-center d-flex  setup mt-5">Set up your church profile</div>
+      <div class="col-md-9 mt-3 ">
+        <div class="row ">
+          <div class="col-md-3"></div>
+          <div class=" col-md-7 justify-content-center d-flex text-center h2 font-weight-600  setup mt-5 text-head">Set up
+            Church
+            Profile</div>
           <!-- <div class="col-sm-3"></div> -->
-          <div class=" col-12 col-sm-12 col-md-3 col-lg-3 align-self-center mt-4 text-left text-sm-left text-md-right text-lg-right">Name</div>
-          <div class="col-12 col-sm-12 col-md-7 col-lg-7  mt-4">
-            <input type="text" class="form-control" v-model="churchName" />
+          <div
+            class=" col-12 col-md-3 text-font   font-weight-600 align-self-center mt-4 text-left text-sm-left text-md-right ">
+            Church Name</div>
+          <div class="col-12 col-sm-12 col-md-7 mt-4">
+            <!-- <input type="text" class="form-control" v-model="churchName" /> -->
+            <el-input type="text" class="w-100" v-model="churchName" />
           </div>
-          <!-- <div class="col-sm-3"></div> -->
 
-          <div class="col-12 col-sm-12 col-md-3 col-lg-3 align-self-center mt-4 text-left text-sm-left text-md-right text-lg-right">
+          <div
+            class="col-12 col-sm-12 col-md-3 col-lg-3 text-font font-weight-600 align-self-center mt-4 text-left text-sm-left text-md-right text-lg-right">
             Phone Number
           </div>
           <div class="col-12 col-sm-12 col-md-7 col-lg-7 mt-4">
-            <input type="text" class="form-control" v-model="phoneNumber" />
+            <!-- <input type="text" class="form-control" v-model="phoneNumber" /> -->
+            <el-input type="text" class="w-100" v-model="phoneNumber" />
           </div>
-          <!-- <div class="col-sm-3"></div> -->
 
-          <div class="col-12 col-sm-12 col-md-3 col-lg-3 align-self-center mt-4 text-left text-sm-left text-md-right text-lg-right">Address</div>
+          <div
+            class="col-sm-12 col-md-3 col-lg-3 text-font font-weight-600 align-self-center mt-4 text-left text-sm-left text-md-right text-lg-right">
+            Address</div>
           <div class="col-12 col-sm-12 col-md-7 col-lg-7 mt-4">
-            <input type="text" class="form-control" v-model="address" />
+            <!-- <input type="text" class="form-control" v-model="address" /> -->
+            <el-input type="text" class="w-100" v-model="address" />
           </div>
-          <!-- <div class="col-sm-3"></div> -->
-
-          <div class="col-12  mt-4 justify-content-center">
-            <div class="row justify-content-between ">
-              <div class="col-12 col-sm-5 col-md-5 col-lg-5 font-weight-700">Pastors and Ministers</div>
-              <div
-                class="col-12 col-sm-2 col-md-2 col-lg-2 ml-3 mt-2  "
-                data-target="#add-pastor"
-                data-toggle="modal"
-                data-whatever="@fat"
-              >
-              <button class="align-items-center default-btn btn primary-bg border-0 text-white  c-pointer">  Add</button>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 ">
-            <div class="row" v-for="(item, index) in pastors" :key="index">
-              <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
-              <div class="col-12 justify-content-center mx-auto mt-4">
-                <div class="row">    
-                  <div class="col-md-2 col-lg-2 col-sm-5 text-center col-5 person-image">
-                    <img
-                      style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover;"
-                      :src="item.photo"
-                    />
+          <div class="col-md-12  mt-2 ">
+            <div class="row justify-content-center">
+              <div class="col-md-1"></div>
+              <div class="col-md-7   mt-3">
+                <div class="row justify-content-between">
+                  <div class=" col-md-6 col-12 mt-1 text-font font-weight-600">Other Information</div>
+                  <div class="col-12  col-md-4  c-pointer" data-target="#other-info" data-toggle="modal"
+                    data-whatever="@fat">
+                    <el-button round size="large" class=" c-pointer">Add</el-button>
                   </div>
-                  <div class="col-12 col-md-8 col-sm-8  col-lg-8 mx-auto align-self-center ">
-                    <div class="pastorname text-center w-100 person-image">{{ item.name }}</div>
-                    <div class="person-image  w-100 text-center">{{ item.bio }}</div>
-                  </div>
-                  <!-- <div class="row mx-auto   mx-lg-0  justify-content-center"> -->
-                      <div class="col-12  text-center text-sm-left text-md-left text-lg-left col-sm-1 col-md-1 col-lg-1 align-self-center cursor-pointer " data-target="#add-pastor" data-toggle="modal" data-whatever="@fat" @click.prevent="editPastor(index)">
-                        <i class="fa fa-pencil"></i>
-                      </div>
-                      <div class="col-12 col-md-1 col-lg-1 col-sm-1 text-center text-sm-left text-md-left text-lg-left align-self-center cursor-pointer  " @click.prevent="showConfirmModal(item.pastorId, index)">
-                        <i class="pi pi-trash text-dark"></i>
-                      </div>
-                  <!-- </div> -->
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-12   mt-3">
-            <div class="row justify-content-between ">
-              <div class=" col-sm-5 col-md-5 col-lg-5 col-12 font-weight-700">Other Information</div>
-              <div
-                class="col-12 mt-2 col-sm-2 col-lg-2 col-md-2  c-pointer"
-                data-target="#other-info"
-                data-toggle="modal"
-                data-whatever="@fat"
-              >
-                <button class="align-items-center default-btn btn primary-bg border-0 text-white c-pointer">Add</button>
               </div>
             </div>
           </div>
           <!-- other information add button -->
-           <div class="col-12 col-sm-7 offset-sm-2">
-            <div class="row" v-for="(item, index) in infoArray"
-                :key="index">
-              <div
-                class="col-10 px-0"
-              >
-                <div class="col-12 col-md-10 mt-4 p-md-0 font-weight-bold">
-                  <span class="display:block">{{ item.title }}</span>
+          <div class="col-md-12">
+            <div class="row justify-content-center">
+              <div class="col-md-2"></div>
+              <div class="col-12 col-md-8  ">
+                <div class="row" v-for="(item, index) in infoArray" :key="index">
+                  <div class="col-md-10 px-0">
+                    <div class=" bg-white py-2 rounded-lg col-md-12 mt-4  text-font font-weight-600">
+                      <span class="display:block">{{ item.title }}</span>
+                    </div>
+                    <div class="col-12 pb-2 pt-3 rounded-lg  mt-1 bg-white">
+                      <p>
+                        <span v-if="!item.showFullMessage" class="display:block">{{
+                          item.details &&
+                          item.details.toString().length > 20
+                          ? `${item.details.substring(0, 20)}...`
+                          : item.details
+                        }}</span>
+                        <span v-else>{{ item.details }}</span>
+                        <span @click="() => (item.showFullMessage = !item.showFullMessage)
+                          " v-if="item.details && item.details.toString().length > 20"
+                          class="text-primary c-pointer pl-2">
+                          {{ item.showFullMessage ? "see less" : "see more" }}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-md-2 d-flex">
+                    <div class=" mr-3  align-self-center cursor-pointer " data-target="#other-info" data-toggle="modal"
+                      data-whatever="@fat" @click.prevent="editInfo(item)">
+                      <i class="fa fa-pencil text-secondary"></i>
+                    </div>
+                    <div class=" align-self-center  cursor-pointer"
+                      @click.prevent="showConfirmModalAbout(item.customAboutId)">
+                      <i class="pi pi-trash text-secondary"></i>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-10 p-md-0">
-                  <p>
-                    <span v-if="!item.showFullMessage" class="display:block">{{
-                      item.details &&
-                      item.details.toString().length > 20
-                        ? `${item.details.substring(0, 20)}...`
-                        : item.details
-                    }}</span>
-                    <span v-else>{{ item.details }}</span>
-                    <span
-                      @click="
-                        () => (item.showFullMessage = !item.showFullMessage)
-                      "
-                      v-if="
-                        item.details &&
-                        item.details.toString().length > 20
-                      "
-                      class="text-primary c-pointer pl-2"
-                    >
-                      {{ item.showFullMessage ? "see less" : "see more" }}
-                    </span>
-                  </p>
-                </div>
-              </div>
-              <div class="col-2 align-self-center cursor-pointer" @click.prevent="showConfirmModalAbout(item.customAboutId)">
-                <i class="pi pi-trash text-dark"></i>
               </div>
             </div>
           </div>
 
-          <div class="col-12  mt-3">
-            <div class="row justify-content-between">
-              <div class="col-sm-5 col-md-5 col-lg-5 col-12 font-weight-700">Branches</div>
-              <div
-                class="col-12 mt-2 col-md-2 col-sm-2 col-lg-2 c-pointer"
-                data-target="#branches"
-                data-toggle="modal"
-                data-whatever="@fat"
-                @click="clearChurchBranch"
-              >
-                <button class=" align-items-center default-btn btn primary-bg border-0 text-white c-pointer">  Add</button>
+          <!-- <div class="col-md-12  mt-4 ">
+            <div class="row">
+              <div class="col-12 col-sm-5 col-md-5 col-lg-5  font-weight-bold">Pastors and Ministers</div>
+              <div class="col-12 col-sm-2 col-md-2 col-lg-2 mt-2  " data-target="#add-pastor" data-toggle="modal"
+                data-whatever="@fat">
+                <el-button class="c-pointer" round size="large"> Add</el-button>
+              </div>
+            </div>
+          </div> -->
+          <div class="col-md-12  mt-2 ">
+            <div class="row justify-content-center">
+              <div class="col-md-1"></div>
+              <div class="col-md-7   mt-3">
+                <div class="row justify-content-between">
+                  <div class=" col-md-6 col-12 mt-1 text-font font-weight-600">Pastors and Ministers</div>
+                  <div class="col-12  col-md-4  c-pointer" data-target="#add-pastor" data-toggle="modal"
+                    data-whatever="@fat">
+                    <el-button round size="large" class=" c-pointer">Add</el-button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          <div class="col-md-12 ">
+            <div class="row justify-content-center" v-for="(item, index) in pastors" :key="index">
+              <div class="col-md-2"></div>
+              <div class="col-12 col-md-8 ">
+                <div class="row">
+                  <div class="col-md-10 px-0 bg-white p-2   mt-4">
+                    <div class="row">
+                      <div class="col-12 col-md-5 person-image">
+                        <img style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover;"
+                          :src="item.photo" />
+                      </div>
+                      <div class=" col-12 col-md-7 px-0 align-self-center  ">
+                        <div class="text-font font-weight-600">{{ item.name }}</div>
+                        <div class=" ">{{ item.bio }}</div>
+                      </div>
+                      <!-- <div class="row mx-auto   mx-lg-0  justify-content-center"> -->
+                      <!-- </div> -->
+                    </div>
+                  </div>
+                  <div class="col-md-2 d-flex">
+                    <div class=" mr-3 align-self-center cursor-pointer " data-target="#add-pastor" data-toggle="modal"
+                      data-whatever="@fat" @click.prevent="editPastor(index)">
+                      <i class="fa fa-pencil text-secondary"></i>
+                    </div>
+                    <div class=" align-self-center cursor-pointer  "
+                      @click.prevent="showConfirmModal(item.pastorId, index)">
+                      <i class="pi pi-trash text-secondary"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12  mt-2 ">
+            <div class="row justify-content-center">
+              <div class="col-md-1"></div>
+              <div class="col-md-7   mt-4">
+                <div class="row justify-content-between">
+                  <div class=" col-md-6 col-12 mt-2 text-font font-weight-600">Branches</div>
+                  <div class="col-12  col-md-4 c-pointer" data-target="#branches" data-toggle="modal" data-whatever="@fat"
+                    @click="clearChurchBranch">
+                    <el-button round class=" c-pointer"> Add</el-button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-12  mt-3">
+            <div class="row  ">
+              <div class="col-sm-5 col-md-5 col-lg-5 col-12 font-weight-600">Branches</div>
+              <div class="col-12 mt-2 col-md-2 col-sm-2 col-lg-2 c-pointer" data-target="#branches" data-toggle="modal"
+                data-whatever="@fat" @click="clearChurchBranch">
+                <el-button round class=" c-pointer"> Add</el-button>
+              </div>
+            </div>
+          </div> -->
           <!-- returnedObject for churchesbranch -->
-          <div class="col-12  ">
-            <div class="row " v-for="(item, index) in churchBranches" :key="index">
+          <div class="col-md-12  ">
+            <div class="row justify-content-center " v-for="(item, index) in churchBranches" :key="index">
               <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
-              <div class="col-12 col-sm-12 col-md-12 col-lg-12    mt-4">
-                <div class="row ">
-                  <div class="col-12 col-sm-5 col-md-5 col-lg-5 align-self-center">
-                    <div class="pastorname">{{ item.branchName }}</div>
-                    <!-- <div>{{ item.pastorName }}</div> -->
+              <div class="col-md-2"></div>
+              <div class="col-md-8">
+                <div class="row">
+                  <div class="col-12 col-md-10   py-3 rounded  bg-white   mt-4">
+                    <div class="row  ">
+                      <div class="col-md-5 col-12">
+                        <div class="font-weight-600  text-font"><img src="../../../assets/mobileonboarding/House.png"
+                            alt=""><span>{{ item.branchName }}</span></div>
+                        <div class="text-font">{{ item.address }}</div>
+                      </div>
+                      <div class="col-12 col-md-7  align-self-center">
+                        <div class="row">
+                          <div class="col-12  col-md-4 px-0 ">
+                            <img style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;"
+                              :src="item.pastorPictureUrl" />
+                          </div>
+                          <div class="col-md-8 col-12  px-0 ">
+                            <div class="text-font  font-weight-600">{{ item.branchName }}</div>
+                            <div class="text-font ">{{ item.pastorName }}</div>
+                            <div class="text-font  d-flex"><img src="../../../assets/mobileonboarding/phoneicon.png"
+                                alt=""><span>{{ item.pastorPhone }}</span></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-12 col-sm-5 col-md-5 col-lg-5  align-self-center">
-                    <!-- <div class="pastorname">{{ item.branchName }}</div> -->
-                    <div>{{ item.pastorName }}</div>
-                  </div>
-                  <div class="col-1 align-self-center cursor-pointer " data-target="#branches" data-toggle="modal" data-whatever="@fat" @click.prevent="editBranch(item)">
-                    <i class="fa fa-pencil"></i>
-                  </div>
-                  <div class="col-1  align-self-center cursor-pointer" @click.prevent="showConfirmModalBranch(item.id)">
-                    <i class="pi pi-trash text-dark"></i>
+                  <div class="col-md-2 mt-3 d-flex">
+                    <div class=" mr-3  align-self-center cursor-pointer " data-target="#branches" data-toggle="modal"
+                      data-whatever="@fat" @click.prevent="editBranch(item)">
+                      <i class="fa fa-pencil text-secondary"></i>
+                    </div>
+                    <div class="  align-self-center cursor-pointer" @click.prevent="showConfirmModalBranch(item.id)">
+                      <i class="pi pi-trash text-secondary"></i>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <!-- modal for other info -->
-          <div
-            class="modal fade"
-            id="other-info"
-            tabindex="-1"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-          >
+          <div class="modal fade" id="other-info" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <button
-                    type="button"
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                  >
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
@@ -185,42 +229,25 @@
                       <div class="form-cover w-100">
                         <form class="mr-lg-0">
                           <div class="form-group">
-                            <label for="recipient-title" class="col-form-label"
-                              >Title:</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="title"
-                              v-model="otherInfo.title"
-                            />
+                            <label for="recipient-title" class="col-form-label">Title:</label>
+                            <el-input type="text" class="w-100" id="title" v-model="otherInfo.title" />
                           </div>
                           <div class="form-group">
-                            <label for="message-text" class="col-form-label"
-                              >Other Information:</label
-                            >
-                            <textarea
-                              class="form-control h-200"
-                              id="message-text"
-                              v-model="otherInfo.details"
-                            ></textarea>
+                            <label for="message-text" class="col-form-label">Other Information:</label>
+                            <el-input :rows="2" type="textarea" class="w-100" id="message-text"
+                              v-model="otherInfo.details"></el-input>
                           </div>
                         </form>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div
-                  class="col-md-11 col-12 ml-md-3 mb-4 text-center text-lg-right"
-                >
-                
-                  <button
-                    class="default-btn primary-bg border-0 text-white"
-                    ref="closeTextArea"
-                    @click="otherInfoDetails"
-                  >
+                <div class="col-md-11 col-12 ml-md-3 mb-4 text-center text-lg-right">
+
+                  <el-button round size="large" class="primary-bg border-0 text-white" ref="closeTextArea"
+                    @click="otherInfoDetails">
                     Save
-                  </button>
+                  </el-button>
                   <!-- <button type="button" ref="closeTextArea" class="btn btn-primary" @click="otherInfoDetails">Save</button> -->
                 </div>
               </div>
@@ -228,27 +255,16 @@
           </div>
 
           <!-- modal -->
-          <div
-            class="modal fade"
-            id="add-pastor"
-            tabindex="-1"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-          >
+          <div class="modal fade" id="add-pastor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">
                     Add Pastor/Minister
                   </h5>
-                  <button
-                    type="button"
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+                  <el-icon data-dismiss="modal" :size="16">
+                    <Close />
+                  </el-icon>
                 </div>
                 <div class="modal-body">
                   <div class="row">
@@ -259,25 +275,16 @@
                             <!-- <label for="recipient-name" class="col-form-label"
                           ></label
                         > -->
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="recipient-name"
-                              placeholder="Name"
-                              v-model="pastorDetails.name"
-                            />
+                            <el-input type="text" class="w-100" id="recipient-name" placeholder="Name"
+                              v-model="pastorDetails.name" />
                           </div>
-                        
+
                           <div class="form-group">
                             <!-- <label for="message-text" class="col-form-label"
                           ></label
                         > -->
-                            <textarea
-                              class="form-control h-100"
-                              id="message-text"
-                              v-model="pastorDetails.bio"
-                              placeholder="About Pastor/Minister"
-                            ></textarea>
+                            <el-input class="w-100" type="textarea" :rows="2" id="message-text"
+                              v-model="pastorDetails.bio" placeholder="About Pastor/Minister"></el-input>
                           </div>
                         </form>
                       </div>
@@ -285,29 +292,13 @@
                     <div class="col-md-5 mt-3 col-12">
                       <div class="container-img mx-auto mx-md-0 mx-lg-0 pt-2">
                         <div class="photo-box">
-                          <img
-                            v-if="!pastorDetails.photo"
-                            src="../../../assets/people/phone-import.svg"
-                            alt="Uploaded Image"
-                            class="w-100 h-100 img-responsive"
-                          />
-                          <img
-                            v-else
-                            :src="pastorDetails.photo"
-                            class="w-100 h-100 img-responsive"
-                          />
+                          <img v-if="!pastorDetails.photo" src="../../../assets/people/phone-import.svg"
+                            alt="Uploaded Image" class="w-100 h-100 img-responsive" />
+                          <img v-else :src="pastorDetails.photo" class="w-100 h-100 img-responsive" />
                         </div>
                         <div class="custom-file submit-img">
-                          <input
-                            type="file"
-                            class="custom-file-input"
-                            id="customFile"
-                            @change="uploadFile"
-                          />
-                          <label
-                            class="custom-file-label px-4"
-                            for="customFile"
-                          ></label>
+                          <input type="file" class="custom-file-input" id="customFile" @change="uploadFile" />
+                          <label class="custom-file-label px-4" for="customFile"></label>
                         </div>
                       </div>
                     </div>
@@ -319,39 +310,19 @@
                       </div>
                       <div class="row ml-2" v-for="(item, index) in pastorSocialMedia" :key="index">
                         <div class="col-md-2">
-                          <div v-if="item.name === 'facebook'"
-                            class="d-flex justify-content-center font-container"
-                          >
-                            <img
-                              src="../../../assets/mobileonboarding/facebook-icon.png"
-                              style="width: 78px"
-                            />
+                          <div v-if="item.name === 'facebook'" class="d-flex justify-content-center font-container">
+                            <img src="../../../assets/mobileonboarding/facebook-icon.png" style="width: 78px" />
                           </div>
-                          <div v-if="item.name === 'instagram'"
-                            class="d-flex justify-content-center font-container"
-                          >
-                            <img
-                              src="../../../assets/mobileonboarding/instagram-icon.png"
-                              style="width: 78px"
-                            />
+                          <div v-if="item.name === 'instagram'" class="d-flex justify-content-center font-container">
+                            <img src="../../../assets/mobileonboarding/instagram-icon.png" style="width: 78px" />
                           </div>
-                          <div v-if="item.name === 'twitter'"
-                            class="d-flex justify-content-center font-container"
-                          >
-                            <img
-                              src="../../../assets/mobileonboarding/twitter-icon.png"
-                              style="width: 78px"
-                            />
+                          <div v-if="item.name === 'twitter'" class="d-flex justify-content-center font-container">
+                            <img src="../../../assets/mobileonboarding/twitter-icon.png" style="width: 78px" />
                           </div>
                         </div>
                         <div class="col-md-9 mr-2 p-md-0">
                           <div class="">
-                            <input
-                              type="text"
-                              class="social-input mb-2 form-control"
-                              v-model="item.url"
-                              :placeholder="item.name"
-                            />
+                            <el-input type="text" class=" mb-2 w-100" v-model="item.url" :placeholder="item.name" />
                           </div>
                         </div>
                       </div>
@@ -359,41 +330,24 @@
                     <div class="col-md-4"></div>
                   </div>
                 </div>
-                <div
-                  class="col-md-12 col-12 col-lg-12 mb-4 text-center text-md-right text-lg-right"
-                >
-                  <button type="button" ref="closePastorModal" class="mr-3 btn default-btn" @click="closeModal">Close</button>
-                  <button
-                    class="default-btn primary-bg border-0 text-white"
-                    data-dismiss="modal"
-                    @click="detailsForPastor"
-                  >
+                <div class="col-md-12 col-12 col-lg-12 mb-4 text-center text-md-right text-lg-right">
+                  <el-button size="large" round data-dismiss="modal" class="mr-3 " @click="closeModal">Close</el-button>
+                  <el-button size="large" round class="d primary-bg text-white" @click="detailsForPastor">
                     Save
-                  </button>
+                  </el-button>
                 </div>
               </div>
             </div>
           </div>
           <!-- modal for pastors branches-->
-          <div
-            class="modal fade"
-            id="branches"
-            tabindex="-1"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-          >
+          <div class="modal fade" id="branches" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">
                     Add Branch
                   </h5>
-                  <button
-                    type="button"
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                  >
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
@@ -403,48 +357,24 @@
                       <div class="form-cover w-100">
                         <form class="mr-5 mr-md-0 mr-lg-0">
                           <div class="form-group">
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="recipient-name"
-                              placeholder="Branch Name"
-                              v-model="branchDetails.branchName"
-                            />
+                            <el-input type="text" class="w-100" id="recipient-name" placeholder="Branch Name"
+                              v-model="branchDetails.branchName" />
                           </div>
                           <div class="form-group">
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="recipient-name"
-                              placeholder="Pastor Name"
-                              v-model="branchDetails.pastorName"
-                            />
-                          </div>
-                           <div class="form-group">
-                            <textarea
-                              class="form-control h-100"
-                              id="message-text"
-                              v-model="branchDetails.pastorDetails"
-                              placeholder="Pastor Details"
-                            ></textarea>
+                            <el-input type="text" class="w-100" id="recipient-name" placeholder="Pastor Name"
+                              v-model="branchDetails.pastorName" />
                           </div>
                           <div class="form-group">
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="recipient-name"
-                              placeholder="Pastor Phone"
-                              v-model="branchDetails.pastorPhone"
-                            />
+                            <el-input class="w-100" type="textarea" :rows="2" id="message-text"
+                              v-model="branchDetails.pastorDetails" placeholder="Pastor Details"></el-input>
                           </div>
                           <div class="form-group">
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="recipient-name"
-                              placeholder="Address"
-                              v-model="branchDetails.address"
-                            />
+                            <el-input type="text" class="w-100" id="recipient-name" placeholder="Pastor Phone"
+                              v-model="branchDetails.pastorPhone" />
+                          </div>
+                          <div class="form-group">
+                            <el-input type="text" class="w-100" id="recipient-name" placeholder="Address"
+                              v-model="branchDetails.address" />
                           </div>
                         </form>
                       </div>
@@ -458,54 +388,36 @@
                             alt="Uploaded Image"
                             class="w-100 h-100 img-responsive"
                           /> -->
-                          <img
-                           
-                            :src="image"
-                            class="w-100 h-100 img-responsive"
-                          />
+                          <img :src="image" class="w-100 h-100 img-responsive" />
                         </div>
                         <div class="custom-file submit-img">
-                          <input
-                            type="file"
-                            class="custom-file-input"
-                            id="customFile"
-                            @change="uploadPastorPicture"
-                          />
-                          <label
-                            class="custom-file-label px-4"
-                            for="customFile"
-                          ></label>
+                          <input type="file" class="custom-file-input" id="customFile" @change="uploadPastorPicture" />
+                          <label class="custom-file-label px-4" for="customFile"></label>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div
-                  class="col-md-12 col-12 col-lg-12 mb-4 text-center text-md-right text-lg-right"
-                >
-                  <button type="button" ref="closePastorModal" class="mr-3 btn default-btn" @click="closeModal">Close</button>
-                  <button
-                    class="default-btn primary-bg border-0 text-white"
-                    data-dismiss="modal"
-                    @click="branchPost"
-                  >
+                <div class="col-md-12 col-12 col-lg-12 mb-4 text-center text-md-right text-lg-right">
+                  <el-button size="large" round data-dismiss="modal" class="mr-3 " @click="closeModal">Close</el-button>
+                  <el-button round size="large" class="primary-bg  text-white" data-dismiss="modal" @click="branchPost">
                     Save
-                  </button>
+                  </el-button>
                 </div>
               </div>
             </div>
           </div>
-          <div
-            class="btn primary-bg mt-5 text-white default-btn border-0 col-12 col-sm-6 offset-sm-3"
-            @click="saveSetUp"
-          >
-            Save and continue
+          <div class=" mt-5 col-12 col-sm-6 offset-sm-3" @click="saveSetUp">
+            <el-button size="large" round class="w-100 text-white primary-bg">
+              Save and continue
+            </el-button>
           </div>
-          <div
-            @click="skip"
-            class="btn my-3 mb-5 text-primary text-right col-12 col-sm-6 offset-sm-3">
-            Skip >>>
+          <div @click="skip" class=" my-3 mb-5 primary--text text-center  col-12 col-sm-6 offset-sm-3">
+            Skip for now
           </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -532,11 +444,11 @@ export default {
       {
         name: 'facebook',
         url: ''
-        },{
-          name: 'twitter',
-          url: ''
-        
-      },{
+      }, {
+        name: 'twitter',
+        url: ''
+
+      }, {
         name: 'instagram',
         url: ''
       }
@@ -560,11 +472,11 @@ export default {
 
 
     const saveSetUp = async () => {
-      
-      
-        infoArray.value.map(i => {
-          if(!i.customAboutId) delete i.showFullMessage
-        })
+
+
+      infoArray.value.map(i => {
+        if (!i.customAboutId) delete i.showFullMessage
+      })
 
 
 
@@ -610,14 +522,14 @@ export default {
         console.log(response);
       } catch (error) {
         stopProgressBar();
-        if(error.toString().toLowerCase().includes('network error')) {
+        if (error.toString().toLowerCase().includes('network error')) {
           toast.add({
             severity: "warn",
             summary: "Network Error",
             detail: "Please ensure you have a strong internet connection",
             life: 4000,
           });
-        } else if (error.toString().toLowerCase().includes('timeout'))  {
+        } else if (error.toString().toLowerCase().includes('timeout')) {
           toast.add({
             severity: "warn",
             summary: "Timeout",
@@ -629,53 +541,53 @@ export default {
       }
     };
 
-    const detailsForPastor = async() => {
+    const detailsForPastor = async () => {
       console.log(pastors.value)
       console.log(pastorDetails.value)
       console.log(pastorSocialMedia.value)
 
-      
-       pastorSocialMedia.value.forEach(i => {
+
+      pastorSocialMedia.value.forEach(i => {
         if (i.socialMediaId && i.url) {
-            pastorPayload.value.push(`${i.socialMediaId},${i.name},${i.url},${i.owner}`)
+          pastorPayload.value.push(`${i.socialMediaId},${i.name},${i.url},${i.owner}`)
         }
         if (!i.socialMediaId && i.url) {
-            pastorPayload.value.push(`new,${i.name},${i.url},new`)
+          pastorPayload.value.push(`new,${i.name},${i.url},new`)
         }
       })
 
       let formData = new FormData()
-        formData.append("name", pastorDetails.value.name)
-        formData.append("bio", pastorDetails.value.bio)
-        formData.append("photo", image.value)
-        if (pastorDetails.value.pastorId) {
-          formData.append("pastorId", pastorDetails.value.pastorId)
-        } else {
-          pastors.value.push({
-         name:pastorDetails.value.name,
-         bio: pastorDetails.value.bio,
-         photo: pastorDetails.value.photo,
-         socialMedia: pastorSocialMedia.value
-       });
-        }
-        pastorPayload.value.forEach(i => {
-          formData.append("socialMedia", i)
-        })
-        console.log(pastorPayload.value)
+      formData.append("name", pastorDetails.value.name)
+      formData.append("bio", pastorDetails.value.bio)
+      formData.append("photo", image.value)
+      if (pastorDetails.value.pastorId) {
+        formData.append("pastorId", pastorDetails.value.pastorId)
+      } else {
+        pastors.value.push({
+          name: pastorDetails.value.name,
+          bio: pastorDetails.value.bio,
+          photo: pastorDetails.value.photo,
+          socialMedia: pastorSocialMedia.value
+        });
+      }
+      pastorPayload.value.forEach(i => {
+        formData.append("socialMedia", i)
+      })
+      console.log(pastorPayload.value)
 
-        try {
-          let res = await axios.post('/mobile/v1/profile/createoreditpastor', formData)
-            console.log(res)
-        }
-        catch (error) {
-          console.log(error)
-        }
-      closePastorModal.value.setAttribute("data-dismiss", "modal");
-        
+      try {
+        let res = await axios.post('/mobile/v1/profile/createoreditpastor', formData)
+        console.log(res)
+      }
+      catch (error) {
+        console.log(error)
+      }
+      closePastorModal.value.ref.setAttribute("data-dismiss", "modal");
+
       pastorPayload.value = []
       pastorDetails.value = {}
       pastorSocialMedia.value = [
-        { name: 'facebook', url: ''},
+        { name: 'facebook', url: '' },
         { name: 'twitter', url: '' },
         { name: 'instagram', url: '' }
       ]
@@ -683,7 +595,7 @@ export default {
 
     const otherInfoDetails = () => {
       infoArray.value.push(otherInfo.value);
-      closeTextArea.value.setAttribute("data-dismiss", "modal");
+      closeTextArea.value.ref.setAttribute("data-dismiss", "modal");
       otherInfo.value = {};
     };
 
@@ -693,14 +605,14 @@ export default {
       if (pastors.value[index] && pastors.value[index].socialMedia.length > 0) {
         if (pastors.value[index].socialMedia.find(i => i.name.trim().toLowerCase() === "facebook")) {
           pastorSocialMedia.value[0] = pastors.value[index].socialMedia.find(i => i.name.trim().toLowerCase() === "facebook")
-        } else{
-            pastorSocialMedia.value[0] = {
+        } else {
+          pastorSocialMedia.value[0] = {
             name: 'facebook',
             url: ''
           }
         }
         if (pastors.value[index].socialMedia.find(i => i.name.trim().toLowerCase() === "twitter")) {
-           pastorSocialMedia.value[1] = pastors.value[index].socialMedia.find(i => i.name.trim().toLowerCase() === "twitter")
+          pastorSocialMedia.value[1] = pastors.value[index].socialMedia.find(i => i.name.trim().toLowerCase() === "twitter")
         } else {
           pastorSocialMedia.value[1] = {
             name: 'twitter',
@@ -708,15 +620,15 @@ export default {
           }
         }
         if (pastors.value[index].socialMedia.find(i => i.name.trim().toLowerCase() === "instagram")) {
-           pastorSocialMedia.value[2] = pastors.value[index].socialMedia.find(i => i.name.trim().toLowerCase() === "instagram")
+          pastorSocialMedia.value[2] = pastors.value[index].socialMedia.find(i => i.name.trim().toLowerCase() === "instagram")
         } else {
           pastorSocialMedia.value[2] = {
             name: 'instagram',
             url: ''
           }
         }
-       
-       
+
+
       }
       console.log(pastors.value[index])
       console.log(pastorSocialMedia.value)
@@ -764,7 +676,7 @@ export default {
           infoArray.value = response.data.returnObject.customAbouts.map(i => {
             return {
               title: i.title,
-              details:  i.details,
+              details: i.details,
               customAboutId: i.customAboutId
             }
           })
@@ -779,7 +691,7 @@ export default {
               pastorPictureUrl: i.pastorPicturUrl
             }
           })
- console.log(churchBranches.value, 'testing the branch');
+          console.log(churchBranches.value, 'testing the branch');
         })
         .catch((error) => {
           console.log(error);
@@ -788,84 +700,84 @@ export default {
     getTenantId();
 
     const uploadPastorPicture = (e) => {
-          branchDetails.value.pastorPicture  = e.target.files[0];
-          image.value= URL.createObjectURL( branchDetails.value.pastorPicture );
-          
-        console.log('uploaded', branchDetails.value )
-     };
-    const branchPost = async() => {
-       let formData = new FormData()
-        formData.append("branchName", branchDetails.value.branchName ? branchDetails.value.branchName : '')
-        formData.append("pastorName", branchDetails.value.pastorName ? branchDetails.value.pastorName : '')
-        formData.append("pastorDetails", branchDetails.value.pastorDetails ? branchDetails.value.pastorDetails : '')
-        formData.append("pastorPhone", branchDetails.value.pastorPhone ? branchDetails.value.pastorPhone : '')
-        formData.append("address", branchDetails.value.address ? branchDetails.value.address : '')
-        formData.append("pastorPicture", branchDetails.value.pastorPicture ? branchDetails.value.pastorPicture : '')  
-          
-        if (branchDetails.value.id) {
-          formData.append("id", branchDetails.value.id)
-          editChurchBranch(formData)
-        } else {
-          SaveChurchBranch(formData)
-        }
-        closePastorModal.value.setAttribute("data-dismiss", "modal");
-        branchDetails.value = {}
-        image.value = ""
+      branchDetails.value.pastorPicture = e.target.files[0];
+      image.value = URL.createObjectURL(branchDetails.value.pastorPicture);
+
+      console.log('uploaded', branchDetails.value)
+    };
+    const branchPost = async () => {
+      let formData = new FormData()
+      formData.append("branchName", branchDetails.value.branchName ? branchDetails.value.branchName : '')
+      formData.append("pastorName", branchDetails.value.pastorName ? branchDetails.value.pastorName : '')
+      formData.append("pastorDetails", branchDetails.value.pastorDetails ? branchDetails.value.pastorDetails : '')
+      formData.append("pastorPhone", branchDetails.value.pastorPhone ? branchDetails.value.pastorPhone : '')
+      formData.append("address", branchDetails.value.address ? branchDetails.value.address : '')
+      formData.append("pastorPicture", branchDetails.value.pastorPicture ? branchDetails.value.pastorPicture : '')
+
+      if (branchDetails.value.id) {
+        formData.append("id", branchDetails.value.id)
+        editChurchBranch(formData)
+      } else {
+        SaveChurchBranch(formData)
+      }
+      closePastorModal.value.ref.setAttribute("data-dismiss", "modal");
+      branchDetails.value = {}
+      image.value = ""
     }
- 
+
     const SaveChurchBranch = async (formData) => {
-          try {
-          let res = await axios.post('/mobile/v1/Profile/CreateOrEditBranch',formData)
-            console.log(res, 'brach end point') 
-            const displayChurchBranch =  {
-              branchName: res.data.returnObject.branchName,
-              pastorName: res.data.returnObject.pastorName, 
-              pastorPhone: res.data.returnObject.pastorPhone,
-              details: res.data.returnObject.pastorDetails,
-              address: res.data.returnObject.address,
-              pastorPicture: res.data.returnObject.pastorPicturUrl
-            }
-            churchBranches.value.unshift(displayChurchBranch)
-             toast.add({
-                severity: "success",
-                summary: "Branch Saved",
-                detail: `${res.data.response}`,
-                life: 4000,
-              });
+      try {
+        let res = await axios.post('/mobile/v1/Profile/CreateOrEditBranch', formData)
+        console.log(res, 'brach end point')
+        const displayChurchBranch = {
+          branchName: res.data.returnObject.branchName,
+          pastorName: res.data.returnObject.pastorName,
+          pastorPhone: res.data.returnObject.pastorPhone,
+          details: res.data.returnObject.pastorDetails,
+          address: res.data.returnObject.address,
+          pastorPicture: res.data.returnObject.pastorPicturUrl
         }
-        catch (error) {
-          console.log(error)
-           toast.add({
-                severity: "error",
-                summary: "Failed",
-                detail: `${res.data.response}`,
-                life: 4000,
-              });
-        }  
+        churchBranches.value.unshift(displayChurchBranch)
+        toast.add({
+          severity: "success",
+          summary: "Branch Saved",
+          detail: `${res.data.response}`,
+          life: 4000,
+        });
+      }
+      catch (error) {
+        console.log(error)
+        toast.add({
+          severity: "error",
+          summary: "Failed",
+          detail: `${res.data.response}`,
+          life: 4000,
+        });
+      }
     }
 
     const editChurchBranch = async (item) => {
       console.log(item);
-       branchDetails.value = item
-       image.value = item.pastorPicturUrl
-          try {
-          let res = await axios.post('/mobile/v1/Profile/CreateOrEditBranch', branchDetails.value)
-            console.log(res, 'brach end point')
-             toast.add({
-                severity: "success",
-                summary: "Updated Successfully",
-                detail: `${res.data.response}`,
-                life: 4000,
-              });
-        } catch (error) {
-          console.log(error)
-           toast.add({
-                severity: "error",
-                summary: "Failed",
-                detail: `${res.data.response}`,
-                life: 4000,
-              });
-        }  
+      branchDetails.value = item
+      image.value = item.pastorPicturUrl
+      try {
+        let res = await axios.post('/mobile/v1/Profile/CreateOrEditBranch', branchDetails.value)
+        console.log(res, 'brach end point')
+        toast.add({
+          severity: "success",
+          summary: "Updated Successfully",
+          detail: `${res.data.response}`,
+          life: 4000,
+        });
+      } catch (error) {
+        console.log(error)
+        toast.add({
+          severity: "error",
+          summary: "Failed",
+          detail: `${res.data.response}`,
+          life: 4000,
+        });
+      }
     }
 
     const clearChurchBranch = () => {
@@ -875,11 +787,16 @@ export default {
     const setChurchBranch = (item) => {
       branchDetails.value = item;
     }
-   
+
     const editBranch = (item) => {
-      console.log(item,'edit itme');
+      console.log(item, 'edit itme');
       branchDetails.value = item;
-      image.value =  item.pastorPictureUrl 
+      image.value = item.pastorPictureUrl
+    }
+    const editInfo = (item) => {
+      console.log(item, 'edit itme');
+      otherInfo.value = item
+
     }
     //  const imageEdit = (e) => {
     //   image.value = e.target.files[0];
@@ -887,26 +804,26 @@ export default {
     //   branchDetails.value.pastorPictureUrl = URL.createObjectURL(image.value);
     // };
     const skip = () => {
-      if (churchName.value && address.value &&  phoneNumber.value && pastors.value.length > 0 && infoArray.value.length > 0) {
+      if (churchName.value && address.value && phoneNumber.value && pastors.value.length > 0 && infoArray.value.length > 0) {
         let changeState = {
-            tab: true,
-            churchSetup: false,
-            socialMedia: true,
-            appBranding: false,
-            donationForm: false
-          }
-          context.emit('saved-churchsetup', changeState)
-          console.log('sent true to parent')
+          tab: true,
+          churchSetup: false,
+          socialMedia: true,
+          appBranding: false,
+          donationForm: false
+        }
+        context.emit('saved-churchsetup', changeState)
+        console.log('sent true to parent')
       } else {
         let changeState = {
           // tab: true,
-            churchSetup: false,
-            socialMedia: true,
-            appBranding: false,
-            donationForm: false
-          }
-          context.emit('saved-churchsetup', changeState)
-          console.log('didnt send true')
+          churchSetup: false,
+          socialMedia: true,
+          appBranding: false,
+          donationForm: false
+        }
+        context.emit('saved-churchsetup', changeState)
+        console.log('didnt send true')
       }
     }
 
@@ -936,88 +853,88 @@ export default {
       if (!id) {
         pastors.value.splice(index, 1);
       } else {
-            axios
-            .delete(`/mobile/v1/Profile/DeletePastor?pastorId=${id}`)
-            .then((res) => {
-              console.log(res);
-              toast.add({
-                severity: "success",
-                summary: "Confirmed",
-                detail: `${res.data.response}`,
-                life: 4000,
-              });
-              pastors.value = pastors.value.filter(
-                (item) => item.pastorId !== id
-              );
-
-            })
-            .catch((err) => {
-              console.log(err)
-                toast.add({
-                  severity: "error",
-                  summary: "Unable to delete",
-                  detail: "An error occurred, please try again",
-                  life: 4000,
-                });
+        axios
+          .delete(`/mobile/v1/Profile/DeletePastor?pastorId=${id}`)
+          .then((res) => {
+            console.log(res);
+            toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: `${res.data.response}`,
+              life: 4000,
             });
-        }
-     
-      };
-      // Delete church branch 
-      const deleteBranch = (id) => {
-        if (id) {
-            console.log(id, 'check delete');
-          axios
-            .delete(`/mobile/v1/Profile/removeBranch?branchId=${id}`)
-            .then((res) => {
-              console.log(res);
-              toast.add({
-                severity: "success",
-                summary: "Confirmed",
-                detail: `${res.data.response}`,
-                life: 4000,
-              });
-              churchBranches.value = churchBranches.value.filter(
-                (item) => item.id !== id
-              );
-            })
-            .catch((err) => {
-              console.log(err)
-                toast.add({
-                  severity: "error",
-                  summary: "Unable to delete",
-                  detail: "An error occurred, please try again",
-                  life: 4000,
-                });
-            });
-          }
-       
+            pastors.value = pastors.value.filter(
+              (item) => item.pastorId !== id
+            );
 
+          })
+          .catch((err) => {
+            console.log(err)
+            toast.add({
+              severity: "error",
+              summary: "Unable to delete",
+              detail: "An error occurred, please try again",
+              life: 4000,
+            });
+          });
       }
 
-        const showConfirmModalBranch = (id) => {
-          confirm.require({
-            message: "Are you sure you want to proceed?",
-            header: "Confirmation",
-            icon: "pi pi-exclamation-triangle",
-            acceptClass: "confirm-delete",
-            rejectClass: "cancel-delete",
-            accept: () => {
-              deleteBranch(id);
-              // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-            },
-            reject: () => {
-              toast.add({
-                severity: "info",
-                summary: "Rejected",
-                detail: "You have rejected",
-                life: 3000,
-              });
-            },
+    };
+    // Delete church branch 
+    const deleteBranch = (id) => {
+      if (id) {
+        console.log(id, 'check delete');
+        axios
+          .delete(`/mobile/v1/Profile/removeBranch?branchId=${id}`)
+          .then((res) => {
+            console.log(res);
+            toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: `${res.data.response}`,
+              life: 4000,
+            });
+            churchBranches.value = churchBranches.value.filter(
+              (item) => item.id !== id
+            );
+          })
+          .catch((err) => {
+            console.log(err)
+            toast.add({
+              severity: "error",
+              summary: "Unable to delete",
+              detail: "An error occurred, please try again",
+              life: 4000,
+            });
           });
-       };
+      }
 
-      const showConfirmModalAbout = (id) => {
+
+    }
+
+    const showConfirmModalBranch = (id) => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteBranch(id);
+          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+    };
+
+    const showConfirmModalAbout = (id) => {
       confirm.require({
         message: "Are you sure you want to proceed?",
         header: "Confirmation",
@@ -1040,42 +957,42 @@ export default {
     };
 
     const deleteAbout = (id) => {
-        axios
-          .delete(`/mobile/v1/Profile/DeleteCustomAbout?customAboutId=${id}`)
-          .then((res) => {
-            console.log(res);
-            toast.add({
-              severity: "success",
-              summary: "Confirmed",
-              detail: `${res.data.response}`,
-              life: 4000,
-            });
-            infoArray.value = infoArray.value.filter(
-              (item) => item.customAboutId !== id
-            );
-
-          })
-          .catch((err) => {
-            console.log(err)
-              toast.add({
-                severity: "error",
-                summary: "Unable to delete",
-                detail: "An error occurred, please try again",
-                life: 4000,
-              });
+      axios
+        .delete(`/mobile/v1/Profile/DeleteCustomAbout?customAboutId=${id}`)
+        .then((res) => {
+          console.log(res);
+          toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: `${res.data.response}`,
+            life: 4000,
           });
-      };
+          infoArray.value = infoArray.value.filter(
+            (item) => item.customAboutId !== id
+          );
 
-      const closeModal = () => {
-          pastorPayload.value = []
-          pastorDetails.value = {}
-          pastorSocialMedia.value = [
-            { name: 'facebook', url: ''},
-            { name: 'twitter', url: '' },
-            { name: 'instagram', url: '' }
-          ]
-          closePastorModal.value.setAttribute("data-dismiss", "modal");
-      }
+        })
+        .catch((err) => {
+          console.log(err)
+          toast.add({
+            severity: "error",
+            summary: "Unable to delete",
+            detail: "An error occurred, please try again",
+            life: 4000,
+          });
+        });
+    };
+
+    const closeModal = () => {
+      pastorPayload.value = []
+      pastorDetails.value = {}
+      pastorSocialMedia.value = [
+        { name: 'facebook', url: '' },
+        { name: 'twitter', url: '' },
+        { name: 'instagram', url: '' }
+      ]
+      closePastorModal.value.ref.setAttribute("data-dismiss", "modal");
+    }
 
     return {
       pastors,
@@ -1108,6 +1025,7 @@ export default {
       uploadPastorPicture,
       churchBranches,
       editBranch,
+      editInfo,
       SaveChurchBranch,
       editChurchBranch,
       deleteBranch,
@@ -1119,27 +1037,45 @@ export default {
 };
 </script>
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Raleway:wght@100..900&family=Roboto:wght@100&display=swap');
+
+/* * {
+    font-family: Poppins;
+} */
+
+.text-head {
+  font-family: Raleway !important;
+}
+
+.text-font {
+  font-family: Poppins;
+}
+
 .setup {
   color: #031c39;
-  font: normal normal 800 30px/40px Nunito Sans;
+  /* font: normal normal 800 30px/40px Nunito Sans; */
 }
+
 .check-icon {
   height: 30px;
   width: 30px;
   border-radius: 50%;
   background-color: #136acd;
 }
+
 .pi {
   color: #fff;
   margin-top: 6px;
   margin-left: 2px;
 }
+
 .btn-button {
   border-radius: 25px !important;
   width: 40%;
   height: 25px;
   line-height: 10px;
 }
+
 .bg-image {
   background-image: url("../../../assets/mobileonboarding/groupMain.svg");
   /* height: 500px;  */
@@ -1149,40 +1085,48 @@ export default {
   /* background: transparent linear-gradient(180deg, #2E67CE 0%, #690C7F 100%) 0% 0% no-repeat padding-box; */
   min-height: 100vh;
 }
+
 .image-dis {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .next-btn {
   background: #f1faff 0% 0% no-repeat padding-box;
   border: 0.20000000298023224px solid #7894a6;
   border-radius: 23px;
   opacity: 1;
 }
+
 .next-text {
   font: normal normal bold 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #136acd;
   opacity: 1;
 }
+
 .step {
   font: normal normal bold 18px/24px Nunito Sans;
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
 }
+
 /* Add pastor style */
 .modal-title {
   margin-left: 2rem;
 }
+
 .form-cover {
   margin-left: 1.5rem !important;
   width: 100%;
 }
+
 .form-group {
   margin-top: 0rem !important;
 }
+
 .form-group label {
   padding-top: 0;
   font-weight: bold;
@@ -1239,6 +1183,7 @@ export default {
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   /* end add pastor detail */
 }
+
 .bg-mission {
   background: #dedede61 0% 0% no-repeat padding-box;
   border: 1px solid #d2cfcf5c;
@@ -1247,11 +1192,13 @@ export default {
   height: 30px;
   padding-right: 50px;
 }
+
 .mission {
   font: normal normal bold 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #002044;
 }
+
 .edit {
   font: normal normal bold 16px/22px Nunito Sans;
   letter-spacing: 0px;
@@ -1278,11 +1225,13 @@ export default {
   padding: 7px;
   text-align: center;
 }
+
 .pastorname {
   font: normal normal 700 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #020e1c;
 }
+
 .submit-img {
   width: 87%;
   margin-left: 12px;
@@ -1294,6 +1243,7 @@ export default {
   top: 34em;
   width: 20%
 }
+
 .person-image {
   width: 50%;
   margin: auto;

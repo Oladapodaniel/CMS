@@ -7,17 +7,66 @@
       <div class="col-md-12 mt-5" :class="{ 'slide-right': slide }">
         <div class="row">
           <div class="col-md-7">
-            <h2 class="events">Online Donation</h2>
+            <div class="text-head h3 font-weight-bold">Bank Details</div>
+            <div class="text-font">Enter bank details to set up online donation</div>
           </div>
           <div class="col-md-5 d-flex justify-content-end">
-            <button
-              class="default-btn primary-bg border-0 font-weight-700 text-white"
-              data-toggle="modal"
-              data-target="#paymentModal"
-              style="font-size: 13px"
-            >
+            <el-button @click="openPaymentOnBoardModal" round size="large" class="text-white  primary-bg  c-pointer"
+              data-toggle="modal" data-target="#paymentOnBoardingModal">
+              Add
+            </el-button>
+          </div>
+        </div>
+        <div class="container-fluid px-0  remove-styles2 remove-border responsiveness">
+          <table class="table remove-styles mt-0 table-header-area table-border ">
+            <thead class="thead-light">
+              <tr class="small-text text-capitalize text-nowrap">
+                <th></th>
+                <th class="text-font">Bank name</th>
+                <th class="text-font">Account Number</th>
+                <th class="text-font">Account Name</th>
+                <th class="text-font">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(bankAccount, index) in bankAccounts" :key="index">
+                <td><img src="../../../assets/mobileonboarding/home.png" alt=""></td>
+                <td class="text-font">{{ bankAccount.bankName }}</td>
+                <td class="text-font">{{ bankAccount.accountNumber }}</td>
+                <td class="text-font">{{ bankAccount.accountName }}</td>
+                <!-- <td class="text-font">{{ bankAccount.description }}</td> -->
+                <td>
+                  <el-dropdown trigger="click">
+                    <el-icon>
+                      <MoreFilled />
+                    </el-icon>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item>
+                          <div @click.prevent="showConfirmModalBank(bankAccount.id, index)" class="text-color">
+                            Delete
+                          </div>
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
+                  <!-- <div class="col-2 align-self-center cursor-pointer" @click="showConfirmModalBank(bankAccount.id)">
+                      <i class="pi pi-trash text-dark"></i>
+                    </div> -->
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md-7">
+            <div class="h3 text-head font-weight-bold">Online Donation</div>
+          </div>
+          <div class="col-md-5 d-flex justify-content-end">
+            <el-button size="large" round @click="openPaymentModal" class=" primary-bg  text-white" data-toggle="modal"
+              data-target="#paymentModal" style="font-size: 13px">
               Add Donation Form
-            </button>
+            </el-button>
           </div>
           <!-- <div class="col-12">
               <Paymentonboarding/>
@@ -26,185 +75,126 @@
             <p>Enter bank details to set up online donation</p>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-7">
-            <div class="col-md-7 mt-3 px-md-0 col-9">Bank Details</div>
-          </div>
-          <div class="col-md-5 d-flex justify-content-end">
-            <button
-              class="col-4 mt-2 col-md-4 mr-2 btnIcons c-pointer"
-              data-toggle="modal"
-              data-target="#paymentOnBoardingModal"
-              style="font-size: 18px"
-            >
-              Add
-            </button>
-          </div>
+        <div class="container-fluid table-main bg-white  remove-styles2 remove-border responsiveness">
+          <table class="table remove-styles mt-0 table-header-area table-border">
+            <thead class="thead-light">
+              <tr class="small-text text-capitalize text-nowrap">
+                <th></th>
+                <th class="text-font">Name</th>
+                <th class="text-font">Account Name</th>
+                <th class="text-font">Account Number</th>
+                <th class="text-font">Bank</th>
+                <th class="text-font">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(form, index) in formsArr" :key="index">
+                <td><img src="../../../assets/mobileonboarding/home.png" alt=""></td>
+                <td class="font-weight-600 text-font">{{ form.accountName }}</td>
+                <td class="text-font">{{ form.name }}</td>
+                <td class="text-font">{{ form.accountNumber }}</td>
+                <td class="text-font">{{ selectCodeBank(form.bankCode) }}</td>
+                <td>
+                  <el-dropdown trigger="click">
+                    <el-icon>
+                      <MoreFilled />
+                    </el-icon>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item>
+                          <div @click.prevent="showConfirmModal(form.id, index)" class="text-color">
+                            Delete
+                          </div>
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
+                  <!-- <div class="col-2 align-self-center cursor-pointer" @click="showConfirmModalBank(bankAccount.id)">
+                  <i class="pi pi-trash text-dark"></i>
+                </div> -->
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <!-- List for the bank details -->
-
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Account Name</th>
-              <th>Account Number</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(bankAccount, index) in bankAccounts" :key="index">
-              <td>{{ bankAccount.accountName }}</td>
-              <td>{{ bankAccount.accountNumber }}</td>
-              <td>{{ bankAccount.description }}</td>
-              <td>
-                <div
-                  class="col-2 align-self-center cursor-pointer"
-                  @click="showConfirmModalBank(bankAccount.id)"
-                >
-                  <i class="pi pi-trash"></i>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- <div class="row table table-border">
-          <div class="col-md-12 px-0">
-            <div class="row">
-              <div class="col-md-4">Account Name</div>
-              <div class="col-md-3">Account Number</div>
-              <div class="col-md-2">Description</div>
-              <div class="col-md-1"></div>
-            </div>
-            <div class="row" v-for="(bankAccount, index) in bankAccounts" :key="index">
-              <div class="col-md-4">{{bankAccount.bankName}}</div>
-              <div class="col-md-3">{{bankAccount.bankNumber}}</div>
-              <div class="col-md-2">{{bankAccount.description}}</div>
-              <div class="col-md-1"></div>
-            </div>
-          </div>
-        </div> -->
-
-        <table class="table table-border">
-          <thead class="thead-light">
-            <tr>
-              <th scope="col-3">Name</th>
-              <th scope="col-3"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(form, index) in formsArr" :key="index">
-              <td>{{ form.name }}</td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
 
         <!-- Modal -->
-        <div
-          class="modal fade"
-          id="paymentModal"
-          tabindex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
+        <el-dialog v-model="displayPaymentModal" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" top>
+          <div class=" row justify-content-center ">
+            <div class="text-head font-weight-600 h2 text-center col-11 col-md-10">
+              Online donation Form
+            </div>
+            <div class="cl-11 col-md-10 pt-2">
+              <paymentform @formcreated="formCreated" />
+            </div>
+          </div>
+        </el-dialog>
+        <el-dialog v-model="displayPaymentOnBoardModal" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" top>
+          <div class="row justify-content-center">
+            <div class=" col-11 col-md-10 d-flex justify-content-center pb-0">
+              <div class="text-head h2 font-weight-600">
+                Add Bank
+              </div>
+            </div>
+            <div class="col-11 col-md-10 pt-1">
+              <paymentonboarding @formcreated="formCreated" @closemodal="closeModal" />
+            </div>
+          </div>
+        </el-dialog>
+        <!-- <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg" style="max-width: 600px">
             <div class="modal-content">
-              <div class="modal-header pb-0">
-                <h5
-                  class="modal-title"
-                  style="font: normal normal 800 28px Nunito sans"
-                  id="exampleModalLabel"
-                >
-                  Online donation form
-                </h5>
-                <button
-                  type="button"
-                  class="btn-close border-0"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                  ref="closeModalButtonForm"
-                >
-                  X
-                </button>
+              <div class=" row ">
+                <div class="col-md-11 d-flex mt-2  justify-content-end"><el-icon data-dismiss="modal" :size="25">
+                    <Close />
+                  </el-icon></div>
+                <div class="modal-title text-head font-weight-600 h2 text-center col-md-12" id="exampleModalLabel">
+                  Online donation Form
+                </div>
               </div>
               <div class="modal-body pt-0">
                 <paymentform @formcreated="formCreated" />
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- Modal -->
-        <div
-          class="modal fade"
-          id="paymentOnBoardingModal"
-          tabindex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
+        <!-- <div class="modal fade" id="paymentOnBoardingModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
           <div class="modal-dialog modal-lg" style="max-width: 600px">
-            <div class="modal-content">
-              <div class="modal-header pb-0">
-                <h5
-                  class="modal-title"
-                  style="font: normal normal 800 28px Nunito sans"
-                  id="exampleModalLabel"
-                >
-                  Bank Details
-                </h5>
-                <button
-                  type="button"
-                  class="btn-close border-0"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                  ref="closeModalButton"
-                >
-                  X
-                </button>
+            <div class="modal-content row">
+              <el-button ref="closeModalButton" class=" border-0 d-flex justify-content-end mt-3"><el-icon
+                  data-dismiss="modal" :size="25">
+                  <Close />
+                </el-icon></el-button>
+              <div class=" col-md-12 d-flex justify-content-center pb-0">
+                <div class="text-head h2 font-weight-600" id="exampleModalLabel">
+                  Add Bank
+                </div>
               </div>
               <div class="modal-body pt-0">
-                <paymentonboarding
-                  @formcreated="formCreated"
-                  @closemodal="closeModal"
-                />
+                <paymentonboarding @formcreated="formCreated" @closemodal="closeModal" />
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <div class="row mt-4">
-          <div
-            class="
-              col-11
-              ml-3
-              btn
-              primary-bg
+        <div class="row justify-content-center mt-4">
+          <div class="
+              col-md-11
+              
               my-2
-              text-white
-              default-btn
-              border-0
-            "
-            @click="completeSetUp"
-          >
-            <i
-              class="pi pi-spin pi-spinner text-white mr-2"
-              v-show="setupSpinner"
-              style="fontsize: 16px"
-            ></i>
-            Finish Setup
+            " @click="completeSetUp">
+            <el-button round size="large" :loading="setupSpinner" class=" w-100 primary-bg  text-white">Finish
+              Setup</el-button>
+
           </div>
-          <div
-            @click="skip"
-            class="
-              btn
-              my-3
-              mb-5
-              text-primary text-right
-              col-12 col-sm-6
-              offset-sm-3
-            "
-          >
-            Skip >>>
+          <div @click="skip" class="
+            
+              col-md-11 my-3
+              text-center
+            ">
+            Skip for now
           </div>
         </div>
       </div>
@@ -223,10 +213,10 @@ import finish from "../../../services/progressbar/progress";
 import axio from "axios";
 // import store from "../../../store/store";
 import paymentform from "../../../components/genericmobile/paymentform";
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 import store from "../../../store/store";
-import { useToast } from "primevue/usetoast";
 import Paymentonboarding from "./PaymentOnBoarding";
-import { useConfirm } from "primevue/useconfirm";
+import { ElMessage, ElMessageBox } from "element-plus";
 // import paymentonboarding from './PaymentOnBoarding';
 export default {
   components: {
@@ -236,14 +226,15 @@ export default {
     // Dropdown,
   },
   setup(props, context) {
-    const toast = useToast();
-    const confirm = useConfirm();
     const nigerianBanks = ref([]);
     const bankAccounts = ref([]);
     const selectedBank = ref("");
+    const { lgAndUp, xlAndUp, mdAndUp } = deviceBreakpoint();
     const accountNumber = ref("");
     const accountName = ref("");
     const loading = ref(false);
+    const displayPaymentModal = ref(false);
+    const displayPaymentOnBoardModal = ref(false);
     const accNameRef = ref("");
     const closeModalButtonForm = ref(null);
     // const toast = useToast();
@@ -258,6 +249,14 @@ export default {
       },
     ]);
     const setupSpinner = ref(false);
+
+
+    const openPaymentModal = () => {
+      displayPaymentModal.value = true
+    }
+    const openPaymentOnBoardModal = () => {
+      displayPaymentOnBoardModal.value = true
+    }
 
     const completeSetUp = () => {
       let changeState = {
@@ -301,6 +300,42 @@ export default {
     };
     getBanks();
 
+    const deleteDonation = (id) => {
+      axios
+        .delete(`/api/PaymentForm/Delete?paymentFormID=${id}`)
+        .then((res) => {
+          console.log(res);
+          ElMessage({
+            type: "success",
+            message: "Donation form deleted",
+            duration: 5000,
+          });
+          formsArr.value = formsArr.value.filter(
+            (formid) => formid.id !== id
+          );
+        })
+        .catch((err) => {
+          finish();
+          if (err.response.status === 400) {
+            ElMessage({
+              type: "error",
+              message: "Unable to delete",
+              duration: 5000,
+            });
+          } else {
+            ElMessage({
+              type: "error",
+              message: "Unable to delete, An error occurred, please try again",
+              duration: 5000,
+            });
+          }
+        });
+    };
+
+    const selectCodeBank = ((code) => {
+      return nigerianBanks.value && nigerianBanks.value.find(i => i.code == code) ? nigerianBanks.value.find(i => i.code == code).name : ""
+    })
+
     const resolveCustomerDetail = async () => {
       loading.value = true;
       try {
@@ -331,28 +366,28 @@ export default {
     const closeModalButton = ref(null);
     const formsArr = ref([]);
     const formCreated = (data) => {
-      closeModalButton.value.click();
-      closeModalButtonForm.value.click();
-      console.log(data);
+      displayPaymentModal.value = false
+      displayPaymentOnBoardModal.value = false
+      console.log(data, 'dddd');
       formsArr.value.push({
         name: data.name,
         accountName: data.accountName,
-        bank: data.bank,
+        accountNumber: data.accountNumber,
+        bankCode: data.bankCode,
       });
     };
 
     const closeModal = (bankDetails) => {
-      toast.add({
-        severity: "success",
-        summary: "Bank Details Successfully Added",
-        detail: "The account was added successful",
-        life: 4000,
+      displayPaymentOnBoardModal.value = false
+      ElMessage({
+        type: "success",
+        message: "Bank Details Successfully Added",
+        duration: 5000,
       });
-      closeModalButton.value.click();
-      console.log(bankDetails, "bankDetails list");
       bankAccounts.value.push({
-        accountName: bankDetails.bankName,
-        accountNumber: bankDetails.bankNumber,
+        accountName: bankDetails.accountName,
+        bankName: bankDetails.bankName,
+        accountNumber: bankDetails.accountNumber,
         description: bankDetails.description
       });
     };
@@ -382,38 +417,59 @@ export default {
     };
     getAllChurchBank();
 
-    const showConfirmModalBank = (id) => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
-          deleteBankUser(id);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-        },
-        reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
+    const showConfirmModalBank = (id, index) => {
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
+          deleteBankUser(id, index);
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Delete canceled",
+            duration: 5000,
           });
-        },
-      });
+        });
     };
+    const showConfirmModal = (id, index) => {
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
+          deleteDonation(id, index);
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Delete canceled",
+            duration: 5000,
+          });
+        });
+    };
+
     const deleteBankUser = (id) => {
       axios
         .delete(`deleteTenantBank?Id=${id}`)
         .then((res) => {
           // alert('deleted');
           console.log(res, "deleted bank user");
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: `${res.data.response}`,
-            life: 4000,
+          ElMessage({
+            type: "success",
+            message: res.data.response,
+            duration: 5000,
           });
           bankAccounts.value = bankAccounts.value.filter(
             (tenant) => tenant.id !== id
@@ -421,11 +477,10 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-          toast.add({
-            severity: "error",
-            summary: "Unable to delete",
-            detail: "An error occurred, please try again",
-            life: 4000,
+          ElMessage({
+            type: "error",
+            message: "Unable to delete",
+            duration: 5000,
           });
         });
     };
@@ -449,6 +504,8 @@ export default {
     };
     return {
       nigerianBanks,
+      displayPaymentModal,
+      displayPaymentOnBoardModal,
       selectedBank,
       accountNumber,
       completeSetUp,
@@ -457,6 +514,7 @@ export default {
       resolveCustomerDetail,
       loading,
       accNameRef,
+      lgAndUp, xlAndUp, mdAndUp,
       banks,
       formCreated,
       closeModalButton,
@@ -465,14 +523,55 @@ export default {
       setupSpinner,
       closeModal,
       bankAccounts,
+      selectCodeBank,
       deleteBankUser,
+      openPaymentModal,
+      showConfirmModal,
       showConfirmModalBank,
+      openPaymentOnBoardModal,
       closeModalButtonForm,
+      deleteDonation,
     };
   },
 };
 </script>
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Raleway:wght@100..900&family=Roboto:wght@100&display=swap');
+
+/* * {
+    font-family: Poppins;
+} */
+
+.text-head {
+  font-family: Raleway !important;
+}
+
+.text-font {
+  font-family: Poppins !important;
+}
+
+.thead-light tr th {
+  font-weight: 500 !important;
+  color: #000000 !important;
+}
+
+.responsiveness {
+  max-width: 100%;
+  /* overflow-y: scroll; */
+}
+
+.table-main {
+  width: 100% !important;
+  /* box-shadow: 0 0.063rem 0.25rem #02172e45 !important; */
+  /* border: 0.063rem solid #dde2e6 !important; */
+  /* border-radius: 30px !important; */
+
+  text-align: left !important;
+  /* margin-bottom: auto !important; */
+  /* padding-bottom: 0.5rem !important; */
+}
+
+
 .table-header1 {
   background: #f1f3f9;
   color: #8898aa;
@@ -484,25 +583,37 @@ export default {
   max-width: 0;
 }
 
+
 .table-border {
   border-radius: 0;
+}
+
+.remove-styles2 {
+  padding-right: 0;
+  padding-left: 0;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  overflow-x: scroll;
 }
 
 .setup {
   color: #031c39;
   font: normal normal 800 30px/40px Nunito Sans;
 }
+
 .check-icon {
   height: 30px;
   width: 30px;
   border-radius: 50%;
   background-color: #136acd;
 }
+
 .pi {
   color: #fff;
   margin-top: 6px;
   margin-left: 2px;
 }
+
 .btn-button {
   border-radius: 25px !important;
   width: 40%;
@@ -517,40 +628,43 @@ export default {
   height: 100vh;
   width: 100%;
 }
+
 .image-dis {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .next-btn {
   background: #f1faff 0% 0% no-repeat padding-box;
   border: 0.20000000298023224px solid #7894a6;
   border-radius: 23px;
   opacity: 1;
 }
+
 .next-text {
   font: normal normal bold 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #136acd;
   opacity: 1;
 }
+
 .step {
   font: normal normal bold 18px/24px Nunito Sans;
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
 }
-/* Add pastor style */
-.modal-title {
-  margin-left: 2rem;
-}
+
 .form-cover {
   margin-left: 1.5rem !important;
   width: 100%;
 }
+
 .form-group {
   margin-top: 0rem !important;
 }
+
 .form-group label {
   padding-top: 0;
   font-weight: bold;
@@ -605,6 +719,7 @@ export default {
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   /* end add pastor detail */
 }
+
 .bg-mission {
   background: #dedede61 0% 0% no-repeat padding-box;
   border: 1px solid #d2cfcf5c;
@@ -613,11 +728,13 @@ export default {
   height: 30px;
   padding-right: 50px;
 }
+
 .mission {
   font: normal normal bold 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #002044;
 }
+
 .edit {
   font: normal normal bold 16px/22px Nunito Sans;
   letter-spacing: 0px;
