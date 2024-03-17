@@ -151,6 +151,33 @@
           </div>
         </div>
       </div>
+      <div class="col-md-4 col-lg-4 col-12 offset-md-1 sub mt-2  card-bg">
+        <div class="row rounded pb-2">
+          <div class="font-weight-bold col-md-8">
+          Direct Bank Transfer
+        </div>
+          <div class="col-md-12   pb-2"
+            :class="{ 'showDropdownMenu': showTransferDetail, 'hideDropdownMenu': !showTransferDetail }">
+            <div class="col-md-12 d-flex justify-content-start"> <el-icon :size="18">
+                <Bottom />
+              </el-icon> </div>
+            <div class="row   ">
+              <div class="col-md-12 d-flex justify-content-between ">
+                <div>Account Name: </div> <span class="font-weight-bold ">Complustech Limited</span>
+              </div>
+              <div class="col-md-12 d-flex justify-content-between">
+                <div>Account Number: </div> <span class="font-weight-bold ">0017934252</span>
+              </div>
+              <div class="col-md-12 d-flex justify-content-between ">
+                <div>Bank: </div> <span class="font-weight-bold ">Access</span>
+              </div>
+              <div class="col-md-12 d-flex justify-content-between ">
+                <div>Send Prove of Payment to: </div> <span class="font-weight-bold ">08023739961</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <el-dialog title="Payment status" v-model="display"
         :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center :modal="true">

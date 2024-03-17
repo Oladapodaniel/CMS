@@ -75,6 +75,10 @@
           save.</em>
       </div>
     </div>
+    <div class="col-md-12 mt-3">
+      <div class="font-weight-bold" >Description</div>
+      <el-input class="w-100" v-model="form.description" />
+    </div>
 
     <!-- <div class="col-10 col-md-12 mt-5 d-flex align-items-center c-pointer" >
             <p class="mb-0" style="width:100px">Payment</p><hr class="mt-4" style="width: calc(100% - 80px)"/><span><i class="pi pi-angle-down"></i></span>
@@ -108,6 +112,7 @@ import axios from "@/gateway/backendapi";
 import axio from "axios";
 import finish from "../../../services/progressbar/progress";
 import { ElMessage, ElMessageBox } from "element-plus";
+// import description from '../../workflow/helper/description';
 
 export default {
   components: {
@@ -115,6 +120,7 @@ export default {
   },
   setup(props, context ) {
     const selectedBank = ref({});
+    const description = ref('');
     const nigerianBanks = ref([]);
     const bankSearchText = ref("");
     const form = ref({});
@@ -145,9 +151,11 @@ export default {
     }
 
     const submitForm = () => {
+      loading.value = true
       form.value.bank = {
         code: selectedBank.value.code,
       };
+      console.log(form.value, 'hhhhjj');
       axios
         .post("/saveTenantBank", form.value)
         .then((res) => {
@@ -160,12 +168,14 @@ export default {
               accountName: res.data.returnObject.accountName,
               description: res.data.returnObject.description,
             });
+            loading.value = false
           } else {
             ElMessage({
             type: "warning",
             message: res.data.response,
             duration: 5000,
           });
+          loading.value = false
           }
         })
         .catch((error) => {
@@ -175,6 +185,7 @@ export default {
             message: "Account Check Error, Please check your banks details again",
             duration: 5000,
           });
+          loading.value = false
         });
     };
 
@@ -243,6 +254,7 @@ export default {
       nigerianBanks,
       filteredBanks,
       bankSearchText,
+      description,
       resolveCustomerDetail,
       loading,
       form,

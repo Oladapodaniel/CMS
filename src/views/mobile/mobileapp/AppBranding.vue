@@ -113,9 +113,9 @@
         </div>
 
         <div class="col-md-5 b my-5 d-none d-md-block">
-          <img src="../../../assets/mobileonboarding/Iphone16.png" alt="">
+          <!-- <img src="../../../assets/mobileonboarding/Iphone16.png" alt=""> -->
 
-          <!-- <div class="smartphone">
+          <div class="smartphone">
             <div class="content">
               <iframe style="width: 100%; border: none; height: 100%" />
               <div class="mobile-container-holder">
@@ -248,7 +248,7 @@
                 </div>
               </div>
             </div>
-          </div> -->
+          </div>
         </div>
       </div>
     </div>
@@ -352,7 +352,8 @@ export default {
             churchSetup: false,
             socialMedia: false,
             appBranding: false,
-            donationForm: true
+            donationForm: true,
+            subscription: false
           }
           context.emit('saved-appbranding', changeState)
         })
@@ -632,7 +633,7 @@ color: #020E1C;
 opacity: 1;
 } */
 #colorpicker {
-  -webkit-appearance: none;
+  /* -webkit-appearance: none; */
   padding: 0;
   border: none;
   border-radius: 10px;

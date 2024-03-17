@@ -262,6 +262,7 @@ import ImageModal from "../../views/donation/ImageModal";
 // import ToggleButton from  '../../views/donation/toggleButton'
 import { useConfirm } from "primevue/useconfirm";
 import { ElMessage, ElMessageBox } from "element-plus";
+import description from '../../views/workflow/helper/description';
 
 export default {
   components: {
@@ -580,6 +581,7 @@ export default {
         bankCode: selectedBank.value.code,
         accountName: accountName.value,
         accountNumber: accountNumber.value,
+        // description: description.value,
         isActive: isActive.value,
         contributionItems: removeEmptyObj.map((i) => {
           let id = i.financialContribution.id;

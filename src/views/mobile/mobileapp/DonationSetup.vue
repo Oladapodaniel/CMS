@@ -25,6 +25,7 @@
                 <th class="text-font">Bank name</th>
                 <th class="text-font">Account Number</th>
                 <th class="text-font">Account Name</th>
+                <th class="text-font">Description</th>
                 <th class="text-font">Action</th>
               </tr>
             </thead>
@@ -34,7 +35,7 @@
                 <td class="text-font">{{ bankAccount.bankName }}</td>
                 <td class="text-font">{{ bankAccount.accountNumber }}</td>
                 <td class="text-font">{{ bankAccount.accountName }}</td>
-                <!-- <td class="text-font">{{ bankAccount.description }}</td> -->
+                <td class="text-font">{{ bankAccount.description }}</td>
                 <td>
                   <el-dropdown trigger="click">
                     <el-icon>
@@ -58,7 +59,7 @@
             </tbody>
           </table>
         </div>
-        <div class="row mt-4">
+        <div class="row mt-5">
           <div class="col-md-7">
             <div class="h3 text-head font-weight-bold">Online Donation</div>
           </div>
@@ -185,8 +186,7 @@
               
               my-2
             " @click="completeSetUp">
-            <el-button round size="large" :loading="setupSpinner" class=" w-100 primary-bg  text-white">Finish
-              Setup</el-button>
+            <el-button round size="large" :loading="setupSpinner" class=" w-100 primary-bg  text-white">Save and Continue</el-button>
 
           </div>
           <div @click="skip" class="
@@ -264,7 +264,10 @@ export default {
         churchSetup: false,
         socialMedia: false,
         appBranding: false,
-        donationForm: true,
+        subsciption: false,
+        donationForm: false,
+        subscription: true
+        
       };
       context.emit("saved-donation", changeState);
 
@@ -370,6 +373,7 @@ export default {
       displayPaymentOnBoardModal.value = false
       console.log(data, 'dddd');
       formsArr.value.push({
+        id: data.id,
         name: data.name,
         accountName: data.accountName,
         accountNumber: data.accountNumber,
@@ -385,6 +389,7 @@ export default {
         duration: 5000,
       });
       bankAccounts.value.push({
+        id: bankDetails.id,
         accountName: bankDetails.accountName,
         bankName: bankDetails.bankName,
         accountNumber: bankDetails.accountNumber,
@@ -468,7 +473,8 @@ export default {
           console.log(res, "deleted bank user");
           ElMessage({
             type: "success",
-            message: res.data.response,
+            message: 'Bank Detail Deleted Successfully',
+            // message: res.data.response,
             duration: 5000,
           });
           bankAccounts.value = bankAccounts.value.filter(

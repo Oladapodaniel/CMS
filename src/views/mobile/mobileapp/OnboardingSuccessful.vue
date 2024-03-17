@@ -1,18 +1,85 @@
 <template>
-  <div class="wave">
+  <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
+    <div class="container-fluid  py-5" style="background: #F9FAFBE3;">
+      <div class="row">
+        <div class="col-md-12 ">
+          <div class="row">
+            <div class="col-md-5   mt-4">
+              <!-- <div class="col-md-11 "> -->
+              <div class="row justify-content-md-end justify-content-center">
+                <div class="col-md-9 col-sm-7 col-8"><img class="w-100"
+                    src="../../../assets/mobileonboarding/Iphone16.png" alt=""></div>
+              </div>
+              <!-- </div> -->
+            </div>
+            <div class="col-md-7 ">
+              <div class="row align-items-center justify-content-center h-100">
+                <div class="col-md-12 ">
+                  <div class="row">
+                    <div class="col-md-12 h1 mt-4 text-head font-weight-600">Welldone! <br>
+                      Your app is ready</div>
+                    <div class="col-md-9 text-font mt-2" style="line-height: 25px; letter-spacing: -0.01em;">Congrats,
+                      you have successfully set up your Churchplus App.
+                    </div>
+                    <div class="font-weight-600 mt-4 h4 col-md-12 text-head">
+                      Here are your next steps
+                    </div>
+                    <div class="col-md-12 mt-2  d-flex flex-wrap  ">
+                      <div class="col-md-8 px-0 d-flex ">
+                        <div>
+                          <div class="primary-bg mr-1 d-flex align-items-center justify-content-center  text-white"
+                            style="width: 30px;  height: 30px; border-radius: 50%;">1
+                          </div>
+                        </div>
+                        <div class=" mt-1 text-font" style="line-height: 25px; letter-spacing: -0.01em;">Start Sharing
+                          with members of your church</div>
+                      </div>
+                      <div class="col-md-4 px-0 mt-2 mt-sm-0  " @click="copyLink">
+                        <el-button round class="  c-pointer">Copy downloadlink</el-button>
+                      </div>
+                    </div>
+                    <div class="col-md-8 mt-4 d-flex ">
+                      <div class="">
+                        <div class="primary-bg d-flex align-items-center justify-content-center  text-center  text-white"
+                          style="width: 30px; height: 30px; border-radius: 50%;">2</div>
+                      </div>
+                      <div class="text-font ml-1 " style="line-height: 25px; letter-spacing: -0.01em;">
+                        Click on the button below to make a post to your mobile app and your social media page for you to
+                        get
+                        your
+                        members engaged with events and activities going on in your church.
+                      </div>
+                    </div>
+                    <div class="col-md-8   mt-3" @click="post">
+                      <div class="row justify-content-center text-center">
+                        <div class="col-md-11">
+                          <el-button round size="large" class=" w-100 primary-bg text-white c-pointer ">Create First
+                            post</el-button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="wave">
     <div class="container">
       <div class="row containerheight">
         <div class="col-lg-6 col-sm-12">
           <div class="col">
-            <!-- track 1 -->
+         
             <div class="row mt-5">
               <div class="col-lg-12 text-sm-center text-lg-left fss align-text-main">
                 <h2 class="font-weight-bold mainheader">Welldone! Your app is ready</h2>
               </div>
             </div>
-            <!-- end track 1 -->
-
-            <!-- track 2 -->
+          
             <div class="row mt-3 align-text">
               <div class="col-lg-12">
                 <h5 class="text-wrap h6 line-height">
@@ -21,9 +88,7 @@
                 </h5>
               </div>
             </div>
-            <!-- end track 2 -->
-
-            <!-- track 3 -->
+         
             <div class="row mt-5">
               <div class="col-12">
             <div class="image">
@@ -72,27 +137,6 @@
 
           </div>
           
-              <!-- <div class="col-lg-12 d-flex pl-0 bring-forward">
-                <div class="col-4 col-sm-3">
-                  <img
-                    class="w-100 mt-5"
-                    src="../../../assets/mobileonboarding/Google-play-logo.png"
-                    alt="phone image"
-                  />
-                </div>
-                <div class="col-4 col-sm-3">
-                  <img
-                    class="w-100 mt-5"
-                    src="../../../assets/mobileonboarding/app-store-logo.png"
-                    alt="phone image"
-                  />
-                </div>
-              </div> -->
-              
-              
-              <!-- <div class="col-3 ml-3 mt-3 text-white bg-primary default-btn border-0" >
-                 
-              </div> -->
 
             
           </div>
@@ -101,8 +145,6 @@
           
         </div>
       </div>
-
-      <!-- wave area -->
       <div class="row">
         <div class="custom-shape-divider-bottom-1620296099">
           <svg
@@ -119,19 +161,17 @@
         </div>
       </div>
     </div>
-      <!-- end wave area -->
     </div>
-  
 
-  <!-- footer Area -->
+
+
   <div class="container mt-5 footer-area">
     <div class="row">
       <div class="col-12 text-center mt-5 mb-4">
-        <!-- <h5 class="copyright mb-5">Powered By Churchplus</h5> -->
       </div>
     </div>
-  </div>
-  <!-- end footer Area -->
+  </div> -->
+
   <Toast />
 </template>
 
@@ -139,33 +179,41 @@
 import { ref } from 'vue'
 import { useToast } from "primevue/usetoast";
 import router from '../../../router';
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
+import { ElMessage, ElMessageBox } from "element-plus";
 export default {
   setup() {
 
-      const link = ref("")
-      const toast = useToast()
+    const link = ref("https://play.google.com/store/apps/details?id=com.churchplus.app.genericapp")
+    const toast = useToast()
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
 
-      const copyLink = () => {
-        console.log(link.value.value)
-                link.value.select();
-                link.value.setSelectionRange(0, link.value.value.length); /* For mobile devices */
+    const copyLink = () => {
+      const textarea = document.createElement("textarea");
+      textarea.value = link.value;
 
-                /* Copy the text inside the text field */
-                document.execCommand("copy");
-                toast.add({
-                    severity: "success",
-                    summary: "Link Copied",
-                    detail: "Link copied to your clipboard",
-                    life: 3000,
-                });
-            }
-      const  post = () => {
-        router.push({ name: 'SocialPost' })
-      }
+      document.body.appendChild(textarea);
+
+      textarea.select();
+      textarea.setSelectionRange(0, 99999);
+
+      document.execCommand("copy");
+      document.body.removeChild(textarea)
+
+      ElMessage({
+        showClose: true,
+        message: "Copied to clipboard",
+        type: "success",
+      });
+    }
+    const post = () => {
+      router.push({ name: 'SocialPost' })
+    }
     return {
       copyLink,
       link,
-      post
+      post,
+      mdAndUp, lgAndUp, xlAndUp, xsOnly
     }
   },
 }
@@ -174,6 +222,21 @@ export default {
 
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Raleway:wght@100..900&family=Roboto:wght@100&display=swap');
+
+/* * {
+    font-family: Poppins;
+} */
+
+.text-head {
+  font-family: Raleway !important;
+}
+
+.text-font {
+  font-family: Poppins !important;
+}
+
+
 .copyright {
   color: #020e1c9f;
   font: normal normal 800 18px/36px Nunito Sans;
@@ -186,7 +249,7 @@ export default {
 .mainheader {
   font: normal normal 800 55px/64px Nunito Sans;
   font-family: Nunito Sans;
-   color: #020e1c9f;
+  color: #020e1c9f;
 }
 
 .subheader {
@@ -199,8 +262,8 @@ export default {
 .ctatext {
   font: normal normal bold 18px/27px Nunito Sans;
   font-family: Nunito Sans;
- color: #020e1ca1;
- overflow: hidden;
+  color: #020e1ca1;
+  overflow: hidden;
 }
 
 .cta {
@@ -244,7 +307,7 @@ export default {
   .mainheader {
     font: normal normal 500 30px/30px Nunito Sans;
     font-family: Nunito Sans;
-     color: #020e1c9f;
+    color: #020e1c9f;
   }
 
   .align-text {
@@ -260,9 +323,9 @@ export default {
     height: 100vh;
   }
 
-  .show-on-small-screen{
-  position: relative;
-  z-index: 1;
+  .show-on-small-screen {
+    position: relative;
+    z-index: 1;
   }
 }
 
@@ -304,7 +367,7 @@ export default {
 
   .align-text {
     text-align: center;
-        z-index: 1;
+    z-index: 1;
     position: relative;
   }
 
@@ -342,7 +405,7 @@ export default {
   font-size: 32px;
 }
 
-.line-height{
+.line-height {
   line-height: 28px;
 }
 
@@ -353,10 +416,8 @@ export default {
 }
 
 .wave {
-    position: relative;
-  background: linear-gradient(
-45deg
-, #ffffff, transparent);
+  position: relative;
+  background: linear-gradient(45deg, #ffffff, transparent);
   height: 80vh;
   width: 83vw;
 }

@@ -515,7 +515,8 @@ export default {
             churchSetup: false,
             socialMedia: true,
             appBranding: false,
-            donationForm: false
+            donationForm: false,
+            subscription: false
           }
           context.emit('saved-churchsetup', changeState)
         }

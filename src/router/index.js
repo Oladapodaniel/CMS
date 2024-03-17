@@ -1727,6 +1727,15 @@ const routes = [
             component: () =>
                 import( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/WelcomeOnboarding1')
         },
+        // {
+        //     path: '/subscriptionprocess',
+        //     name: 'SubscriptionProcess',
+        //     meta: {
+        //         title: 'Churchplus - Mobile Onboarding',
+        //     },
+        //     component: () =>
+        //         import( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/SubscriptionProcess')
+        // },
         {
             path: '/appbranding',
             name: 'AppBranding',

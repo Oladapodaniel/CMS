@@ -10,18 +10,18 @@
                     <div class="col-md-8">
                         <div class="col-md-12  border d-flex justify-content-center py-3 rounded "
                             style="background-color: #EBEBEB">
-                            <div>
-                                <div v-if="route.params.id">
-                                    <div v-if="url" class="w-100 mb-3  d-flex justify-content-center image-upload">
-                                        <img :src="url" alt="">
+                            <div class="row">
+                                <div class="col-md-12 d-flex justify-content-center" v-if="route.params.id">
+                                    <div v-if="url" class="col-md-8 col-11 mb-3  d-flex justify-content-center image-upload">
+                                        <img :src="url" alt="" class="w-100" >
                                     </div>
                                 </div>
-                                <div v-else>
-                                    <div v-if="url" class="w-100 mb-3  d-flex justify-content-center image-upload">
-                                        <img :src="url" alt="">
+                                <div class="col-md-12" v-else>
+                                    <div v-if="url" class="col-md-8 mb-3 col-11  d-flex justify-content-center image-upload">
+                                        <img :src="url" alt="" class="w-100" >
                                     </div>
                                 </div>
-                                <el-upload class="upload-demo" multiple :show-file-list="false" :on-change="chooseFile"
+                                <el-upload class="upload-demo col-md-12 d-flex justify-content-center" multiple :show-file-list="false" :on-change="chooseFile"
                                     :on-remove="handleRemove" :auto-upload="false">
                                     <el-button round class="d-flex ">
                                         <el-icon :size="18">

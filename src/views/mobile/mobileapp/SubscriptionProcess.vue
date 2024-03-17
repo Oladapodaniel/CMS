@@ -1,0 +1,691 @@
+<template>
+    <div class="container-fluid mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-12 text-center text-head h2 font-weight-bold  ">
+                        Payment (Subscription)
+                    </div>
+                    <div class="col-md-12 text-center text-font">
+                        Confirm your Subscription to complete the Setup
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-12 bg-white py-5 my-5">
+                        <div class="row">
+                            <div class="col-md-12 text-center text-head font-weight-bold">
+                                Your current Plan{{ TotalAmount }}
+                            </div>
+                            <div class="col-md-12 mt-3">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-5 col-sm-6">
+                                        <el-dropdown trigger="click" class="w-100">
+                                            <span class="el-dropdown-link w-100">
+                                                <div class="d-flex justify-content-between border-contribution px-3   w-100"
+                                                    style="background: #F2F4F7; border-radius: 20px" size="large">
+                                                    <span class="text-font font-weight-600">{{
+                                    selectedSubscriptionPlan && selectedSubscriptionPlan.description
+                                        ? selectedSubscriptionPlan.description
+                                        : "Select plan"
+                                }}</span>
+                                                    <div>
+                                                        <el-icon class="el-icon--right">
+                                                            <arrow-down />
+                                                        </el-icon>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                            <template #dropdown>
+                                                <el-dropdown-menu>
+                                                    <el-dropdown-item v-for="(itm, indx) in UserSubscriptionPlans"
+                                                        :key="indx" @click="setSubscriptionPlan(itm)">{{ itm.description
+                                                        }}
+                                                    </el-dropdown-item>
+                                                    <el-dropdown-item class="text-center" divided></el-dropdown-item>
+
+                                                </el-dropdown-menu>
+                                            </template>
+                                        </el-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-3">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-8 mb-3 text-font text-center">You must have at least 12 months (1
+                                        year)
+                                        active subscription</div>
+                                    <hr class="col-md-8 my-3 hr">
+                                    <div class="col-md-8 mt-3 text-font font-weight-600 text-center">One year Mobile App
+                                        Subcription</div>
+                                    <div class="col-md-12 mt-2">
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-3 text-head font-weight-500 text-right">Amount</div>
+                                            <div class="col-md-8  ">
+                                                <div style="background: #EBEDFF; border-radius: 20px"
+                                                    class=" text-center text-font  font-weight-bold col-md-7  py-2">
+                                                    <!-- NGN 180.000 -->
+                                                    {{
+                                    selectedSubscriptionPlan &&
+                                        Object.keys(selectedSubscriptionPlan).length > 0 &&
+                                        selectedSubscriptionPlan.currency
+                                        ? selectedSubscriptionPlan.currency.symbol : ""
+                                }}
+                                                    {{ (subselectedDuratn).toLocaleString() }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 mt-5" data-toggle="modal" data-target="#PaymentOptionModal">
+                                        <el-button :color="primarycolor" size="large" class="w-100" round
+                                            :disabled="!selectedSubscriptionPlan.id">
+                                            Pay Now
+                                        </el-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-modal">
+                                <h5 class="modal-title" id="exampleModalLongTitle">
+                                    Payment methods
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true" ref="close">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body p-0 bg-modal pb-5">
+                                <div class="row">
+                                    <div class="col-sm-12 p-4 text-center continue-text">
+                                        Continue payment with
+                                    </div>
+                                </div>
+                                <div class="row row-button c-pointer d-flex justify-content-center"
+                                    @click="initializePayment(0)" v-if="currentUser.currency == 'NGN' || currentUser.currency == 'GHS'
+                                    ">
+                                    <div>
+                                        <img style="width: 150px" src="../../../assets/4PaystackLogo.png"
+                                            alt="paystack" />
+                                    </div>
+                                </div>
+                                <div class="row row-button c-pointer d-flex justify-content-center"
+                                    @click="initializePayment(1)">
+                                    <div>
+                                        <img style="width: 150px" src="../../../assets/flutterwave_logo_color@2x.png"
+                                            alt="flutterwave" />
+                                    </div>
+                                </div>
+                                <div class="row row-button c-pointer d-flex justify-content-center">
+                                    <a href="https://www.paypal.me/GeorgeOnyeama?locale.x=en_GB" target="_blank">
+                                        <div>
+                                            <img style="width: 150px; height: 2rem;" src="../../../assets/PayPal2.png"
+                                                alt="paypal" />
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10 mt-4 h-100" v-if="false">
+                <div class="row justify-content-center align-items-center">
+                    <div class="text-fon  font-weight-600 col-md-6 h1 h-100 text-center">
+                        Subscription is up to date
+                    </div>
+                    <div class="col-md-10 d-flex my-5 justify-content-center">
+                        <div class="col-md-8 ">
+                            <el-button @click="finishSetup" :color="primarycolor" size="large" class="w-100"
+                                round>Finish
+                                setup</el-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10 mt-4 h-100" v-if="false">
+                <div class="row justify-content-center align-items-center">
+                    <div class="text-fon font-weight-600 col-md-6 h1 text-center">
+                        Subscription Successfully
+                    </div>
+                    <div class="col-md-10 d-flex my-5 justify-content-center">
+                        <div class="col-md-8 ">
+                            <el-button @click="finishSetup" :color="primarycolor" size="large" class="w-100"
+                                round>Finish
+                                setup</el-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import { ref, computed, inject } from "vue"
+import { useStore } from "vuex";
+import router from "../../../router";
+import axios from "@/gateway/backendapi";
+import formatDate from "../../../services/dates/dateformatter";
+import { ElLoading } from 'element-plus';
+import membershipService from "../../../services/membership/membershipservice";
+import productPricing from "../../../services/user/productPricing";
+import { ElMessage, ElMessageBox } from "element-plus";
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
+export default {
+    setup(props, { emit }) {
+        const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
+        const selectedSubscriptionPlan = ref({})
+        const primarycolor = inject("primarycolor");
+        const store = useStore();
+        const productsList = ref([]);
+        const existingPlan = ref({});
+        const currentAmount = ref("");
+        const currentPlan = ref("");
+        const churchLogo = ref("");
+        const expiryDate = ref("");
+        const notifiedDays = ref("");
+        const Plans = ref({});
+        const isProduction = true;
+        const daysToEndOfSubscription = ref(0);
+        const UserSubscriptionPricing = ref([]);
+        const UserSubscriptionPlans = ref([]);
+        const selectedPlanId = ref(null);
+        const subscriptionPlans = ref([]);
+        const subscriptionPlan = ref([
+            { name: 'FREE-TRIAL PLAN' },
+            { name: 'STARTER PLAN' },
+            { name: 'BASIC PLAN' },
+            { name: 'GROWTH-PLAN' }
+        ])
+
+
+        const selectEmailUnit = ref([
+            { name: "1000-2000", constValue: 2 },
+            { name: "2000-3000", constValue: 4 },
+            { name: "3000-4000", constValue: 6 },
+            { name: "4000-5000", constValue: 8 },
+        ]);
+
+        const finishSetup = () => {
+            let changeState = {
+                tab: true,
+                churchSetup: false,
+                socialMedia: false,
+                appBranding: false,
+                subsciption: false,
+                donationForm: false,
+                subscription: true
+            };
+            emit("saved-sub", changeState);
+            setTimeout(() => {
+                router.push({ name: "OnboardingSuccessful" });
+            }, 1000);
+        }
+
+        
+
+        const currentUser = computed(() => {
+            if (
+                !store.getters.currentUser ||
+                (store.getters.currentUser &&
+                    Object.keys(store.getters.currentUser).length == 0)
+            )
+                return "";
+            return store.getters.currentUser;
+        });
+
+        const selectedCurrency = computed(() => {
+            if (
+                selectedSubscriptionPlan.value &&
+                Object.keys(selectedSubscriptionPlan.value).length > 0 &&
+                selectedSubscriptionPlan.value.currency
+            )
+                return selectedSubscriptionPlan.value.currency;
+            return "";
+        });
+
+        // const getSubscriptionPlan = async () => {
+        //     try {
+        //         const { data } = await axios.get('/api/Subscription/GetSubscription')
+        //         console.log(data.returnObject, 'ggggg');
+        //     }
+        //     catch (error) {
+        //         console.log(error)
+        //     }
+        // }
+        // getSubscriptionPlan()
+        const subselectedDuratn = computed(() => {
+            let multiValue = 1;
+            if (selectedSubscriptionPlan.value && selectedSubscriptionPlan.value.amount)
+                multiValue *= selectedSubscriptionPlan.value.amount;
+            if (selectedSubscriptionPlan.value.name) multiValue *= +selectedSubscriptionPlan.value.name;
+            return multiValue * 12;
+        });
+
+        const TotalAmount = computed(() => {
+            let sum = 0;
+            if (subselectedDuratn.value)
+                return sum += subselectedDuratn.value;
+            // if (smsValue.value) sum += smsValue.value * 2;
+            // sum += emailAmount.value;
+            // return sum + +sumCheckboxItem.value.toFixed(2);
+        });
+
+        const initializePayment = (paymentGateway) => {
+            const loading = ElLoading.service({
+                lock: true,
+                text: "Please wait...",
+                background: "rgba(255, 255, 255, 0.9)",
+            });
+
+            const payload = {
+                subscriptionPlanID: selectedSubscriptionPlan.value.id,
+                paymentGateway: paymentGateway === 0 ? "Paystack" : "Flutterwave",
+                totalAmount: TotalAmount.value,
+                durationInMonths: 12,
+                currencyId: selectedCurrency.value.id,
+            };
+            axios
+                .post("/api/Payment/InitializeSubscription", payload)
+                .then(({ data }) => {
+                    console.log(data);
+                    close.value.click();
+                    // initializedOrder.value = res.data;
+                    loading.close();
+                    if (data.status) {
+                        if (paymentGateway == 0) {
+                            payWithPaystack(data);
+                        } else {
+                            payWithFlutterwave(data);
+                        }
+                    }
+                });
+        };
+        const subscriptionPayment = async (trans_id, tx_ref) => {
+            try {
+                await axios
+                    .post(
+                        `/api/Payment/ConfirmSubscriptionPayment?id=${trans_id}&txnref=${tx_ref}`
+                    )
+                    .then((res) => {
+                        console.log(res);
+                        display.value = true;
+                        if (res.data) {
+                            paymentFailed.value = false;
+                        } else {
+                            paymentFailed.value = true;
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        display.value = true;
+                        paymentFailed.value = true;
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        const payWithPaystack = (responseObject) => {
+            let handler = PaystackPop.setup({
+                key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+                // key: process.env.VUE_APP_PAYSTACK_API_KEY,
+                email: "info@churchplus.co",
+                amount: TotalAmount.value * 100,
+                currency: selectedCurrency.value.shortCode,
+                channels: [
+                    "card",
+                    "bank",
+                    "ussd",
+                    "qr",
+                    "mobile_money",
+                    "bank_transfer",
+                ],
+                ref: responseObject.transactionReference,
+                onClose: function () {
+                    ElMessage({
+                        type: "info",
+                        showClose: true,
+                        message: "You have cancelled the transaction",
+                        duration: 5000,
+                    });
+                },
+                callback: function (response) {
+                    let trans_id = response.trxref;
+                    let tx_ref = response.trxref;
+                    subscriptionPayment(tx_ref, trans_id);
+                },
+            });
+            handler.openIframe();
+        };
+
+        const getFlutterwaveModules = () => {
+            const script = document.createElement("script");
+            script.src = !isProduction
+                ? "https://ravemodal-dev.herokuapp.com/v3.js"
+                : "https://checkout.flutterwave.com/v3.js";
+            document.getElementsByTagName("head")[0].appendChild(script);
+        };
+        getFlutterwaveModules();
+
+        const payWithFlutterwave = (responseObject) => {
+            console.log(responseObject, "flutterwave");
+
+            let country = "";
+
+            switch (selectedCurrency.value.shortCode) {
+                case "KES":
+                    country = "KE";
+                    break;
+                case "GHS":
+                    country = "GH";
+                    break;
+                case "ZAR":
+                    country = "ZA";
+                    break;
+                case "TZS":
+                    country = "TZ";
+                    break;
+
+                default:
+                    country = "NG";
+                    break;
+            }
+
+            window.FlutterwaveCheckout({
+                // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
+                public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+                tx_ref: responseObject.transactionReference,
+                amount: TotalAmount.value,
+                currency: selectedCurrency.value.shortCode,
+                country: country,
+                payment_options: "card,ussd",
+                customer: {
+                    name: currentUser.value.churchName,
+                    email: currentUser.value.userEmail,
+                },
+                callback: (response) => {
+                    let trans_id = response.transaction_id;
+                    let tx_ref = response.tx_ref;
+                    subscriptionPayment(trans_id, tx_ref);
+                },
+                onclose: () => console.log("Payment closed"),
+                customizations: {
+                    title: "Subscription",
+                    description: "Payment for Subcription ",
+                    logo: churchLogo.value,
+                },
+            });
+        };
+
+        const payNow = () => {
+            console.log('deeyyy');
+            let changeState = {
+                tab: true,
+                churchSetup: false,
+                socialMedia: false,
+                appBranding: false,
+                subsciption: false,
+                donationForm: false,
+                subscription: true
+            };
+            emit("saved-sub", changeState);
+            // setTimeout(() => {
+            //     router.push({ name: "OnboardingSuccessful" });
+            // }, 1000);
+        }
+
+        const setSubscriptionPlan = (item) => {
+            console.log(item, 'jshhs');
+            selectedSubscriptionPlan.value = item
+        }
+
+        // const subscriptionDuration = computed(() => {
+        //     if (selectMonth.value.name) return +selectMonth.value.name;
+        //     return 0;
+        // });
+
+        const calculatedProductPrice = (price) => {
+            if (daysToEndOfSubscription.value < 1)
+                return selectMonth.value.name ? price * +selectMonth.value.name : 0;
+            return (
+                (selectMonth.value.name ? price * +selectMonth.value.name : 0) +
+                (price / 30) * daysToEndOfSubscription.value
+            );
+        };
+        const calculateRemomainingMonthsOfSubscription = (expiryDate) => {
+            const endDate = new Date(expiryDate);
+            const startDate = new Date(Date.now());
+
+            const differenceInTime = Math.abs(endDate - startDate);
+            const differenceInDays = Math.ceil(
+                differenceInTime / (1000 * 60 * 60 * 24)
+            );
+
+            // return differenceInDays;
+            console.log(differenceInDays, 'uiurreeeewwauu');
+        };
+
+        const countDownDate = (expiryDate) => {
+            // Set the date we're counting down to
+            let countDownDates = new Date(expiryDate).getTime();
+            let countMonth = new Date(expiryDate).getMonth();
+            let getMonthNow = new Date().getMonth();
+            console.log(countMonth, 'sahahh');
+            console.log(getMonthNow, 'sswwwwahahh');
+            // Get today's date and time
+            let now = new Date().getTime();
+            // Find the distance between now and the count down date
+            let distance2 = countDownDates - getMonthNow;
+            console.log(distance2, 'tttttt');
+            let newRemaining = Math.floor(distance2 / (1000 * 60 * 60 * 24 ));
+            console.log(newRemaining, 'jklll');
+            let distance = countMonth - now;
+            notifiedDays.value = Math.floor(distance / (1000 * 60 * 60 * 24 ));
+            console.log(notifiedDays.value, 'uiuauu');
+        }
+
+        const getProductPricing = async (id) => {
+            let { data } = await productPricing.getProductPricing(id);
+            data.forEach((i) => {
+                if (i.product.name.toLowerCase() === "subscription") {
+                    UserSubscriptionPricing.value.push(i);
+                }
+            });
+            getTenantSubscription();
+            UserSubscriptionPlans.value = UserSubscriptionPricing.value
+                .sort((a, b) => a.order - b.order)
+                .map((i) => {
+                    i.subscriptionPlan.amount = i.price;
+                    i.subscriptionPlan.currency = i.currency;
+                    return i.subscriptionPlan;
+                });
+        };
+
+        const getTenantSubscription = async () => {
+            try {
+                const res = await axios.get("/api/Subscription/subscriptions");
+                Plans.value = res.data;
+                console.log(Plans.value, 'eheee');
+                existingPlan.value.id = Plans.value.id;
+                existingPlan.value.amount = Plans.value.amount;
+                existingPlan.value.description = Plans.value.description;
+                existingPlan.value.amountInDollar = Plans.value.amountInDollar;
+                existingPlan.value.membershipSize = Plans.value.membershipSize;
+
+                res.data.subscriptionPlans.forEach((i) => {
+                    if (i.membershipSize >= Plans.value.membershipSize) {
+                        subscriptionPlans.value.push(i);
+                    }
+                });
+
+                // Get current plan
+
+                // selectedSubscriptionPlan.value = UserSubscriptionPlans.value.find(
+                //     (i) => i.id == Plans.value.id
+                // );
+                selectedSubscriptionPlan.value = UserSubscriptionPlans.value.find(
+                    (i) => i.id == Plans.value.id
+                );
+
+                console.log(selectedSubscriptionPlan.value, 'sddgags');
+
+                // selectedSubscriptionPlan.value = UserSubscriptionPlans.value.find((i) => {
+                //     return i.id == Plans.value.id;
+                // })
+                //     ? UserSubscriptionPlans.value.find((i) => {
+                //         return i.id == Plans.value.id;
+                //     }).id
+                //     : null;
+
+                // Remove preceeding plans from list
+
+                const joined = UserSubscriptionPlans.value.map((i) => i.id).join("");
+                const splitted = joined.split(selectedSubscriptionPlan.value.id);
+                UserSubscriptionPlans.value = UserSubscriptionPlans.value.splice(
+                    splitted[0].length
+                );
+
+                if (selectedSubscriptionPlan.value == null) {
+                    ElMessageBox.confirm(
+                        "Subscription pricing is currently not available in your country, we will make it available as soon as possible, you can reach out to us by sending an email to info@churchplus.co for us to address your specific needs. Thank you for choosing Churchplus",
+                        "Notice",
+                        {
+                            confirmButtonText: "OK",
+                            cancelButtonText: "Cancel",
+                            type: "warning",
+                        }
+                    )
+                        .then(() => {
+                            ElMessage({
+                                type: "warning",
+                                message: "We await your feedback. Thank you",
+                            });
+                        })
+                        .catch(() => {
+                            ElMessage({
+                                type: "warning",
+                                message: "We await your feedback. Thank you",
+                            });
+                        });
+                }
+
+                currentAmount.value = res.data.amountInNaira;
+                currentPlan.value = existingPlan.value.description;
+                productsList.value = res.data.productsList;
+                expiryDate.value = formatDate.monthDayYear(
+                    Plans.value.subscriptionExpiration
+                );
+                countDownDate(res.data.subscriptionExpiration)
+                // emailPrice.value =
+                //     productsList.value && productsList.value.length > 0
+                //         ? productsList.value.find((i) => i.name === "Email").price
+                //         : [];
+                // smsPrice.value =
+                //     productsList.value && productsList.value.length > 0
+                //         ? productsList.value.find((i) => i.name === "SMS").price
+                //         : [];
+
+                daysToEndOfSubscription.value =
+                    calculateRemomainingMonthsOfSubscription(
+                        res.data.subscriptionExpiration
+                    );
+            }
+            catch (error) {
+                console.log(error);
+            }
+
+        };
+        // getTenantSubscription()
+        const getChurchProfile = async () => {
+            try {
+                let res = await axios.get(
+                    `/GetChurchProfileById?tenantId=${currentUser.value.tenantId}`
+                );
+                // churchLogo.value = res.data.returnObject.logo;
+                getProductPricing(res.data.returnObject.countryID);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        if (currentUser.value && Object.keys(currentUser.value).length > 0)
+            getChurchProfile();
+
+        const setCurrentUser = async () => {
+            membershipService.getSignedInUser().then((res) => {
+                store.dispatch("setCurrentUser", res);
+                getChurchProfile();
+            });
+        };
+        if (
+            !currentUser.value ||
+            (currentUser.value && Object.keys(currentUser.value).length == 0)
+        )
+            setCurrentUser();
+
+
+        return {
+            getTenantSubscription,
+            mdAndUp, lgAndUp, xlAndUp, xsOnly, subscriptionPlan, selectedSubscriptionPlan, currentUser, primarycolor, setSubscriptionPlan, payNow,
+            initializePayment,
+            selectEmailUnit,
+            currentAmount,
+            productsList,
+            subselectedDuratn,
+            finishSetup,
+            // subscriptionDuration,
+            calculatedProductPrice,
+            churchLogo,
+            selectedCurrency,
+            calculateRemomainingMonthsOfSubscription,
+            existingPlan,
+            daysToEndOfSubscription,
+            UserSubscriptionPricing,
+            UserSubscriptionPlans,
+            selectedPlanId,
+            currentPlan,
+            TotalAmount,
+            expiryDate,
+            countDownDate,
+            notifiedDays
+        }
+    },
+}
+</script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Raleway:wght@100..900&family=Roboto:wght@100&display=swap');
+
+/* * {
+    font-family: Poppins;
+} */
+
+.text-head {
+    font-family: Raleway !important;
+}
+
+.text-font {
+    font-family: Poppins !important;
+}
+
+.continue-text {
+    font-family: Nunito Sans !important;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.row-button {
+    padding: 10px;
+    border-radius: 25px;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+    background: #fff;
+    margin: 12px 70px 15px 70px;
+    transition: all 0.4s ease-in-out;
+    max-height: 45px;
+}
+</style>

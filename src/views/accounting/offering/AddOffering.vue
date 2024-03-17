@@ -279,7 +279,6 @@
                     >
                   </div>
                   <div class="col-md-7"> 
-                    <!-- {{newEvent.activity.date}} -->
                     <el-date-picker
                       v-model="newEvent.activity.date"
                       type="date"
@@ -1070,6 +1069,7 @@ export default {
     const currencyRate = ref("");
     const convertedResult = ref(0);
     const iSoStringFormat = ref("")
+    const iSoStringFormat2 = ref("")
     const paymentChannels = ref(['Cheque', 'Cash', 'Cheque', 'POS', 'Online', 'Bank Transfer' , 'USSDText'],)
 
     const addOffering = () => {
@@ -1234,6 +1234,9 @@ export default {
       // console.log(newEvent.value, "jjkjjl");/
       if(eventDate.value){
        iSoStringFormat.value = dateFormatter.getISOStringGMT(eventDate.value)
+      };
+      if(newEvent.value.activity.date){
+        newEvent.value.activity.date = dateFormatter.getISOStringGMT(newEvent.value.activity.date)
       }
   })
 
@@ -1876,7 +1879,8 @@ export default {
       currencyRate,
       convertResult,
       convertedResult,
-      iSoStringFormat
+      iSoStringFormat,
+      iSoStringFormat2
     };
   },
 };

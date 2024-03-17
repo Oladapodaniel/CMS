@@ -3,11 +3,11 @@
     <div class=" container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
         <div class="container-fluid" style="background: #F9FAFBE3;">
             <div class="row justify-content-center ">
-                <div class="col-md-9 mt-4">
-                    <div class="row justify-content-center">
-                        <div class="col-6 px-0 col-md-3" @click="showChurchSetup">
+                <div class="col-md-10   mt-4">
+                    <div class="row  justify-content-center ">
+                        <div class="col-6 col-md-2 px-0" @click="showChurchSetup">
                             <div
-                                class="mt-2 col-md-12 px-0 d-flex justify-content-center align-items-center cursor-pointer">
+                                class="mt-2  px-0 d-flex justify-content-center align-items-center cursor-pointer">
                                 <div  class="text-font" v-if="churchSetup" :class="{ 'active-tab': churchSetup, 'circle': !churchSetup }">1
                                 </div>
                                 <div v-else-if="churchSetupSaved" class="success-bg"><i class="pi pi-check"
@@ -20,12 +20,10 @@
                                 <div v-else-if="churchSetup" style="color: #136ACD" >Church setup</div>
                                 <div v-else class="text-font">Church setup</div>
                             </div>
-
-
                         </div>
-                        <div class="col-6 px-0 col-md-3 " @click="showSocialMedia">
+                        <div class=" col-6  col-md-2  px-0" @click="showSocialMedia">
                             <div
-                                class="mt-2 col-md-12 px-0  d-flex justify-content-between align-items-center cursor-pointer">
+                                class="mt-2  px-0  d-flex justify-content-between align-items-center cursor-pointer">
                                 <div v-if="socialMedia" class="text-font" :class="{ 'active-tab': socialMedia, 'circle': !socialMedia }">2
                                 </div>
                                 <div v-else-if="socialMediaSaved" class="success-bg"><i class="pi pi-check"
@@ -41,9 +39,9 @@
                             </div>
 
                         </div>
-                        <div class="col-6  px-0 col-md-3" @click="showAppBranding">
+                        <div class=" col-6  col-md-2 px-0" @click="showAppBranding">
                             <div
-                                class="mt-2 col-md-12 px-0  d-flex justify-content-between align-items-center cursor-pointer">
+                                class="mt-2  px-0  d-flex justify-content-between align-items-center cursor-pointer">
                                 <div v-if="appBranding" class="text-font" :class="{ 'active-tab': appBranding, 'circle': !appBranding }">3
                                 </div>
                                 <div v-else-if="appBrandingSaved" class="success-bg"><i class="pi pi-check"
@@ -58,9 +56,9 @@
                                 <div v-else class=" text-font ">App Branding</div>
                             </div>
                         </div>
-                        <div class="col-6 px-0 col-md-3  " @click="showOnlineDonation">
+                        <div class=" col-6 col-md-2 px-0 " @click="showOnlineDonation">
                             <div
-                                class="mt-2 col-md-12 px-0 d-flex justify-content-between align-items-center cursor-pointer">
+                                class="mt-2  px-0 d-flex justify-content-between align-items-center cursor-pointer">
                                 <div v-if="donationForm" class="text-font" :class="{ 'active-tab': donationForm, 'circle': !donationForm }">4
                                 </div>
                                 <div v-else-if="donationSaved"  class="success-bg"><i class="pi pi-check"
@@ -70,27 +68,46 @@
                                 <!-- <hr class="hr w-100"> -->
                             </div>
                             <div class="mt-2">
-                                <div v-if="donationSaved" class=" text-font  ">Giving & Bank Details</div>
+                                <div v-if="donationSaved" class=" text-font success ">Giving & Bank Details</div>
                                 <div v-else-if="donationForm" style="color: #136ACD!important"  >Giving & Bank Details</div>
                                 <div v-else class="text-font">Giving & Bank Details</div>
                             </div>
                         </div>
+                        <!-- <div class=" col-12 col-md-2 px-0  " @click="showSubscription">
+                            <div
+                                class="mt-2 w-100  px-0 d-flex justify-content-between align-items-center cursor-pointer">
+                                <div v-if="subscription" class="text-font" :class="{ 'active-tab': subscription, 'circle': !subscription }">5
+                                </div>
+                                <div v-else-if="subscriptionSaved"  class="success-bg"><i class="pi pi-check"
+                                        style="font-weight: 900"></i>
+                                </div>
+                                <div v-else class="text-font" :class="{ 'active-tab': subscription, 'circle': !subscription }">5</div>
+                            </div>
+                            <div class="mt-2">
+                                <div v-if="subscriptionSaved" class=" text-font  ">Subscription</div>
+                                <div v-else-if="subscription" style="color: #136ACD!important"  >Subscription</div>
+                                <div v-else class="text-font">Subscription</div>
+                            </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-12" v-if="churchSetup">
+                <div class="col-12 mt-4" v-if="churchSetup">
                     <ChurchSetup @saved-churchsetup="setChurchSuccessState" />
                 </div>
-                <div class="col-12" v-if="socialMedia">
+                <div class="col-12 mt-4" v-if="socialMedia">
                     <SocialMedia @saved-socialmedia="setSocialMediaSuccessState" />
                 </div>
-                <div class="col-12" v-if="appBranding">
+                <div class="col-12 mt-4" v-if="appBranding">
                     <AppBranding @saved-appbranding="setAppBrandingSuccessState" />
                 </div>
-                <div class="col-12" v-if="donationForm">
+                <div class="col-12 mt-4" v-if="donationForm">
                     <DonationForm @saved-donation="setDonationSuccessState" />
                 </div>
+                <!-- <div class="col-12 mt-4" v-if="subscription" >
+                    <SubscriptionProcess @saved-sub="setSubscriptionSuccessState" />
+                </div> -->
             </div>
         </div>
     </div>
@@ -102,11 +119,12 @@ import ChurchSetup from "./ChurchSetUp"
 import SocialMedia from "./SocialMedia"
 import AppBranding from "./AppBranding"
 import DonationForm from "./DonationSetup"
+import SubscriptionProcess from "./SubscriptionProcess"
 import axios from "@/gateway/backendapi";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 export default {
     components: {
-        ChurchSetup, SocialMedia, AppBranding, DonationForm
+        ChurchSetup, SocialMedia, AppBranding, DonationForm, SubscriptionProcess
     },
     setup() {
         const churchSetup = ref(true)
@@ -118,6 +136,8 @@ export default {
         const socialMediaSaved = ref(false)
         const appBrandingSaved = ref(false)
         const donationSaved = ref(false)
+        const subscriptionSaved = ref(false)
+        const subscription = ref(false)
 
 
         const showChurchSetup = () => {
@@ -125,24 +145,35 @@ export default {
             socialMedia.value = false
             appBranding.value = false
             donationForm.value = false
+            subscription.value = false
         }
         const showSocialMedia = () => {
             churchSetup.value = false
             socialMedia.value = true
             appBranding.value = false
             donationForm.value = false
+            subscription.value = false
         }
         const showAppBranding = () => {
             churchSetup.value = false
             socialMedia.value = false
             appBranding.value = true
             donationForm.value = false
+            subscription.value = false
         }
         const showOnlineDonation = () => {
             churchSetup.value = false
             socialMedia.value = false
             appBranding.value = false
+            subscription.value = false
             donationForm.value = true
+        }
+        const showSubscription = () => {
+            churchSetup.value = false
+            socialMedia.value = false
+            appBranding.value = false
+            donationForm.value = false
+            subscription.value = true
         }
 
         const setChurchSuccessState = (payload) => {
@@ -151,6 +182,7 @@ export default {
             socialMedia.value = payload.socialMedia
             appBranding.value = payload.appBranding
             donationForm.value = payload.donationForm
+            subscription.value = payload.subscription
         }
 
         const setSocialMediaSuccessState = (payload) => {
@@ -159,6 +191,7 @@ export default {
             socialMedia.value = payload.socialMedia
             appBranding.value = payload.appBranding
             donationForm.value = payload.donationForm
+            subscription.value = payload.subscription
         }
 
         const setAppBrandingSuccessState = (payload) => {
@@ -167,6 +200,7 @@ export default {
             socialMedia.value = payload.socialMedia
             appBranding.value = payload.appBranding
             donationForm.value = payload.donationForm
+            subscription.value = payload.subscription
         }
 
         const setDonationSuccessState = (payload) => {
@@ -175,6 +209,15 @@ export default {
             socialMedia.value = payload.socialMedia
             appBranding.value = payload.appBranding
             donationForm.value = payload.donationForm
+            subscription.value = payload.subscription
+        }
+        const setSubscriptionSuccessState = (payload) => {
+            subscriptionSaved.value = payload.tab
+            churchSetup.value = payload.churchSetup
+            socialMedia.value = payload.socialMedia
+            appBranding.value = payload.appBranding
+            donationForm.value = payload.donationForm
+            subscription.value = payload.subscription
         }
 
         const getChurchProfile = () => {
@@ -191,9 +234,9 @@ export default {
                         socialMediaSaved.value = true
                     }
 
-                    if (response.data.returnObject.churchAppBackgroundColor) {
-                        appBrandingSaved.value = true
-                    }
+                    // if (response.data.returnObject.churchAppBackgroundColor) {
+                    //     appBrandingSaved.value = true
+                    // }
 
                 })
                 .catch((error) => {
@@ -206,10 +249,10 @@ export default {
             axios
                 .get("/api/PaymentForm/GetAll")
                 .then((res) => {
-                    console.log(res);
-                    if (res.data.length > 0) {
-                        donationSaved.value = true
-                    }
+                    console.log(res, 'jjjj');
+                    // if (res.data.length > 0) {
+                    //     donationSaved.value = true
+                    // }
                 })
                 .catch((err) => {
                     console.log(err);
@@ -217,7 +260,7 @@ export default {
         };
         getPaymentForm();
         return {
-            showChurchSetup, showSocialMedia, showAppBranding, showOnlineDonation, mdAndUp, lgAndUp, xlAndUp, xsOnly, churchSetup, socialMedia, appBranding, donationForm, churchSetupSaved, setChurchSuccessState, socialMediaSaved, setSocialMediaSuccessState, appBrandingSaved, setAppBrandingSuccessState, donationSaved, setDonationSuccessState
+            showChurchSetup, showSocialMedia, showAppBranding, showOnlineDonation, showSubscription, setSubscriptionSuccessState, subscriptionSaved, subscription, mdAndUp, lgAndUp, xlAndUp, xsOnly, churchSetup, socialMedia, appBranding, donationForm, churchSetupSaved, setChurchSuccessState, socialMediaSaved, setSocialMediaSuccessState, appBrandingSaved, setAppBrandingSuccessState, donationSaved, setDonationSuccessState
         }
     }
 }
@@ -238,6 +281,7 @@ export default {
     font-family: Poppins !important;
     ;
 }
+
 
 .font {
     color: #031c39;
