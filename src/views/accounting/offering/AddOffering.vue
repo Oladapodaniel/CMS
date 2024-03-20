@@ -324,7 +324,7 @@
             </div>
           </div>
         </div>
-        <div class="attendance-body stretch" id="offeringBody" v-for="(item, index) in offeringItem" :key="index">
+        <div class="attendance-body  stretch" id="offeringBody" v-for="(item, index) in offeringItem" :key="index">
           <div class="row">
             <div class="col-12 col-sm-8 col-lg-3">
               <select class="form-control" v-if="item.financialContributionID && !routeParams">
@@ -1876,18 +1876,18 @@ export default {
   background-color: #ecf0f3;
 }
 
-.attendance-body.stretch {
+/* .attendance-body.stretch {
   height: 85px;
-}
+} */
 
 @media (max-width: 991px) {
   .row.form-body.reg .row div {
     margin-top: 2em;
   }
 
-  .attendance-body.stretch {
+  /* .attendance-body.stretch {
     height: 135px;
-  }
+  } */
 }
 
 .currency {
