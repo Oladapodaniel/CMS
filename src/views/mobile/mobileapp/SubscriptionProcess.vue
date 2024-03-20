@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid mt-4">
         <div class="row justify-content-center">
-            <div class="col-md-10">
+            <div class="col-md-10" v-if="monthRemaining < 12 || Plans.membershipSize < 500 && !paymentDone">
                 <div class="row">
                     <div class="col-md-12 text-center text-head h2 font-weight-bold  ">
                         Payment (Subscription)
@@ -14,7 +14,7 @@
                     <div class="col-md-12 bg-white py-5 my-5">
                         <div class="row">
                             <div class="col-md-12 text-center text-head font-weight-bold">
-                                Your current Plan{{ TotalAmount }}
+                                Choose Preferred Plan
                             </div>
                             <div class="col-md-12 mt-3">
                                 <div class="row justify-content-center">
@@ -24,10 +24,10 @@
                                                 <div class="d-flex justify-content-between border-contribution px-3   w-100"
                                                     style="background: #F2F4F7; border-radius: 20px" size="large">
                                                     <span class="text-font font-weight-600">{{
-                                    selectedSubscriptionPlan && selectedSubscriptionPlan.description
-                                        ? selectedSubscriptionPlan.description
-                                        : "Select plan"
-                                }}</span>
+                selectedSubscriptionPlan && selectedSubscriptionPlan.description
+                    ? selectedSubscriptionPlan.description
+                    : "Select plan"
+            }}</span>
                                                     <div>
                                                         <el-icon class="el-icon--right">
                                                             <arrow-down />
@@ -35,6 +35,7 @@
                                                     </div>
                                                 </div>
                                             </span>
+
                                             <template #dropdown>
                                                 <el-dropdown-menu>
                                                     <el-dropdown-item v-for="(itm, indx) in UserSubscriptionPlans"
@@ -46,6 +47,9 @@
                                                 </el-dropdown-menu>
                                             </template>
                                         </el-dropdown>
+                                        <!-- <div class="col-md-12 d-flex justify-content-end">
+                                            <span class=" upgrade ">upgrade</span>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -65,11 +69,11 @@
                                                     class=" text-center text-font  font-weight-bold col-md-7  py-2">
                                                     <!-- NGN 180.000 -->
                                                     {{
-                                    selectedSubscriptionPlan &&
-                                        Object.keys(selectedSubscriptionPlan).length > 0 &&
-                                        selectedSubscriptionPlan.currency
-                                        ? selectedSubscriptionPlan.currency.symbol : ""
-                                }}
+                selectedSubscriptionPlan &&
+                    Object.keys(selectedSubscriptionPlan).length > 0 &&
+                    selectedSubscriptionPlan.currency
+                    ? selectedSubscriptionPlan.currency.symbol : ""
+            }}
                                                     {{ (subselectedDuratn).toLocaleString() }}
                                                 </div>
                                             </div>
@@ -88,12 +92,12 @@
                 </div>
                 <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog"
                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
+                    <div class="modal-dialog modal-dialog-centered " role="document">
+                        <div class="modal-content " style="border-radius: 25px !important;">
                             <div class="modal-header bg-modal">
-                                <h5 class="modal-title" id="exampleModalLongTitle">
+                                <div class="modal-title text-head font-weight-bold h3 pl-2" id="exampleModalLongTitle">
                                     Payment methods
-                                </h5>
+                                </div>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true" ref="close">&times;</span>
                                 </button>
@@ -101,41 +105,66 @@
                             <div class="modal-body p-0 bg-modal pb-5">
                                 <div class="row">
                                     <div class="col-sm-12 p-4 text-center continue-text">
-                                        Continue payment with
+                                        <!-- Continue payment with -->
+                                        How would you like to pay ?
                                     </div>
                                 </div>
-                                <div class="row row-button c-pointer d-flex justify-content-center"
-                                    @click="initializePayment(0)" v-if="currentUser.currency == 'NGN' || currentUser.currency == 'GHS'
-                                    ">
-                                    <div>
-                                        <img style="width: 150px" src="../../../assets/4PaystackLogo.png"
-                                            alt="paystack" />
-                                    </div>
-                                </div>
-                                <div class="row row-button c-pointer d-flex justify-content-center"
-                                    @click="initializePayment(1)">
-                                    <div>
-                                        <img style="width: 150px" src="../../../assets/flutterwave_logo_color@2x.png"
-                                            alt="flutterwave" />
-                                    </div>
-                                </div>
-                                <div class="row row-button c-pointer d-flex justify-content-center">
-                                    <a href="https://www.paypal.me/GeorgeOnyeama?locale.x=en_GB" target="_blank">
-                                        <div>
-                                            <img style="width: 150px; height: 2rem;" src="../../../assets/PayPal2.png"
-                                                alt="paypal" />
+                                <div class="row justify-content-center c-pointer   " @click="initializePayment(0)" v-if="currentUser.currency == 'NGN' || currentUser.currency == 'GHS'
+                ">
+                                    <div class="col-md-8 border py-3  row-button ">
+                                        <div class="row  c-pointer justify-content-center">
+                                            <div class="col-md-6">
+                                                <img class="w-100" src="../../../assets/mobileonboarding/paystack.png"
+                                                    alt="paystack" />
+                                            </div>
                                         </div>
-                                    </a>
+                                    </div>
+                                </div>
+                                <div class="row c-pointer mt-3 justify-content-center" @click="initializePayment(1)">
+                                    <div class="col-md-8 border py-2  row-button ">
+                                        <div class="row  c-pointer justify-content-center">
+                                            <div class="col-md-7">
+                                                <img class="w-100"
+                                                    src="../../../assets/mobileonboarding/flutterwave.png"
+                                                    alt="flutterwave" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3 c-pointer  justify-content-center">
+                                    <div class="col-md-8 border  py-2 row-button ">
+                                        <div class="row  c-pointer justify-content-center">
+                                            <a href="https://www.paypal.me/GeorgeOnyeama?locale.x=en_GB"
+                                                class="col-md-6" target="_blank">
+
+                                                <img class="w-100" src="../../../assets/PayPal2.png" alt="paypal" />
+
+                                            </a>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-10 mt-4 h-100" v-if="false">
+            <!-- <div class="col-md-10 mt-4 h-100 bg-white mb-5"> -->
+            <div class="col-md-10 mt-4 h-100 bg-white mb-5"
+                v-if="monthRemaining >= 12 && Plans.membershipSize >= 500 && !paymentDone">
                 <div class="row justify-content-center align-items-center">
-                    <div class="text-fon  font-weight-600 col-md-6 h1 h-100 text-center">
-                        Subscription is up to date
+                    <div class="col-md-10 d-flex justify-content-center">
+                        <div class="col-md-6 ">
+                            <img class="w-100 " src="../../../assets/mobileonboarding/sub-successful.gif" alt="">
+                        </div>
+                    </div>
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <div class="col-md-6 col-8">
+                            <div class="text-head font-weight-bold px-0 col-md-12 h2 text-center"
+                                style="color: #78B348;">
+                                Your Subscription is up to date
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-10 d-flex my-5 justify-content-center">
                         <div class="col-md-8 ">
@@ -146,10 +175,20 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-10 mt-4 h-100" v-if="false">
+            <div class="col-md-10 mt-4 h-100 bg-white mb-5" v-if="paymentDone">
                 <div class="row justify-content-center align-items-center">
-                    <div class="text-fon font-weight-600 col-md-6 h1 text-center">
-                        Subscription Successfully
+                    <div class="col-md-10 d-flex justify-content-center">
+                        <div class="col-md-6 ">
+                            <img class="w-100 " src="../../../assets/mobileonboarding/sub-successful.gif" alt="">
+                        </div>
+                    </div>
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <div class="col-md-6 col-8">
+                            <div class="text-head font-weight-bold col-md-12 px-0 h2 text-center"
+                                style="color: #78B348;">
+                                Your Subscription is Successful!
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-10 d-flex my-5 justify-content-center">
                         <div class="col-md-8 ">
@@ -161,6 +200,33 @@
                 </div>
             </div>
         </div>
+        <el-dialog class="" style="border-radius: 25px;" v-model="paymentFailed" title="" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+            <div class="row justify-content-center ">
+                <div class="col-md-10 mt-4 h-100 bg-white mb-5" >
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-md-10 d-flex justify-content-center">
+                            <div class="col-md-6 ">
+                                <img class="w-100 " src="../../../assets/mobileonboarding/sub-failed.png" alt="">
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-center">
+                            <div class="col-md-6 col-8">
+                                <div class="text-head font-weight-bold col-md-12 px-0 h2 text-center"
+                                    style="color: #D21615;">
+                                    Your Subscription failed!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-10 d-flex my-5 justify-content-center">
+                            <div class="col-md-8 ">
+                                <el-button @click="tryAgain" :color="primarycolor" size="large" class="w-100"
+                                    round>Try again</el-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -188,20 +254,17 @@ export default {
         const churchLogo = ref("");
         const expiryDate = ref("");
         const notifiedDays = ref("");
+        const monthRemaining = ref("");
+        const close = ref(null);
+        const paymentDone = ref(false);
+        const paymentFailed = ref(false);
+        const display = ref(false);
         const Plans = ref({});
         const isProduction = true;
         const daysToEndOfSubscription = ref(0);
         const UserSubscriptionPricing = ref([]);
         const UserSubscriptionPlans = ref([]);
         const selectedPlanId = ref(null);
-        const subscriptionPlans = ref([]);
-        const subscriptionPlan = ref([
-            { name: 'FREE-TRIAL PLAN' },
-            { name: 'STARTER PLAN' },
-            { name: 'BASIC PLAN' },
-            { name: 'GROWTH-PLAN' }
-        ])
-
 
         const selectEmailUnit = ref([
             { name: "1000-2000", constValue: 2 },
@@ -226,7 +289,11 @@ export default {
             }, 1000);
         }
 
-        
+        const tryAgain = () => {
+            paymentFailed.value = false
+        }
+
+
 
         const currentUser = computed(() => {
             if (
@@ -248,22 +315,12 @@ export default {
             return "";
         });
 
-        // const getSubscriptionPlan = async () => {
-        //     try {
-        //         const { data } = await axios.get('/api/Subscription/GetSubscription')
-        //         console.log(data.returnObject, 'ggggg');
-        //     }
-        //     catch (error) {
-        //         console.log(error)
-        //     }
-        // }
-        // getSubscriptionPlan()
         const subselectedDuratn = computed(() => {
             let multiValue = 1;
             if (selectedSubscriptionPlan.value && selectedSubscriptionPlan.value.amount)
                 multiValue *= selectedSubscriptionPlan.value.amount;
-            if (selectedSubscriptionPlan.value.name) multiValue *= +selectedSubscriptionPlan.value.name;
-            return multiValue * 12;
+            if (selectedSubscriptionPlan.value && selectedSubscriptionPlan.value.name) multiValue *= +selectedSubscriptionPlan.value.name;
+            return multiValue *12;
         });
 
         const TotalAmount = computed(() => {
@@ -286,7 +343,7 @@ export default {
                 subscriptionPlanID: selectedSubscriptionPlan.value.id,
                 paymentGateway: paymentGateway === 0 ? "Paystack" : "Flutterwave",
                 totalAmount: TotalAmount.value,
-                durationInMonths: 12,
+                durationInMonths: "12",
                 currencyId: selectedCurrency.value.id,
             };
             axios
@@ -316,17 +373,29 @@ export default {
                         display.value = true;
                         if (res.data) {
                             paymentFailed.value = false;
+                            paymentDone.value = true;
                         } else {
                             paymentFailed.value = true;
                         }
+
+                        
                     })
                     .catch((err) => {
                         console.log(err);
                         display.value = true;
                         paymentFailed.value = true;
+                        paymentDone.value = false;
                     });
             } catch (error) {
                 console.log(error);
+                paymentDone.value = false;
+                paymentFailed.value = true;
+                ElMessage({
+                    type: "error",
+                    showClose: true,
+                    message: "Your Subscription Failed",
+                    duration: 5000,
+                });
             }
         };
 
@@ -422,23 +491,6 @@ export default {
             });
         };
 
-        const payNow = () => {
-            console.log('deeyyy');
-            let changeState = {
-                tab: true,
-                churchSetup: false,
-                socialMedia: false,
-                appBranding: false,
-                subsciption: false,
-                donationForm: false,
-                subscription: true
-            };
-            emit("saved-sub", changeState);
-            // setTimeout(() => {
-            //     router.push({ name: "OnboardingSuccessful" });
-            // }, 1000);
-        }
-
         const setSubscriptionPlan = (item) => {
             console.log(item, 'jshhs');
             selectedSubscriptionPlan.value = item
@@ -466,27 +518,39 @@ export default {
                 differenceInTime / (1000 * 60 * 60 * 24)
             );
 
-            // return differenceInDays;
-            console.log(differenceInDays, 'uiurreeeewwauu');
+            return differenceInDays;
+
         };
 
         const countDownDate = (expiryDate) => {
-            // Set the date we're counting down to
+
             let countDownDates = new Date(expiryDate).getTime();
-            let countMonth = new Date(expiryDate).getMonth();
-            let getMonthNow = new Date().getMonth();
-            console.log(countMonth, 'sahahh');
-            console.log(getMonthNow, 'sswwwwahahh');
+
             // Get today's date and time
-            let now = new Date().getTime();
+            let nowTime = new Date().getTime();
             // Find the distance between now and the count down date
-            let distance2 = countDownDates - getMonthNow;
-            console.log(distance2, 'tttttt');
-            let newRemaining = Math.floor(distance2 / (1000 * 60 * 60 * 24 ));
-            console.log(newRemaining, 'jklll');
-            let distance = countMonth - now;
-            notifiedDays.value = Math.floor(distance / (1000 * 60 * 60 * 24 ));
-            console.log(notifiedDays.value, 'uiuauu');
+            let distance = countDownDates - nowTime
+
+            notifiedDays.value = Math.floor(distance / (1000 * 60 * 60 * 24));
+
+
+            const expiry = new Date(expiryDate);
+            const now = new Date();
+            // Handle cases where expiry date has already passed
+            if (expiry < now) {
+                return 0;
+            }
+            // Calculate remaining years (if any)
+            const remainingYears = expiry.getFullYear() - now.getFullYear();
+            // Calculate remaining months considering year difference
+            let remainingMonths = expiry.getMonth() - now.getMonth() + remainingYears * 12;
+            // Handle cases where expiry month has already passed in the current year
+            if (remainingMonths < 0) {
+                remainingMonths += 12;
+            }
+            monthRemaining.value = remainingMonths;
+            console.log(monthRemaining.value, 'ddjjsjj')
+
         }
 
         const getProductPricing = async (id) => {
@@ -503,7 +567,14 @@ export default {
                     i.subscriptionPlan.amount = i.price;
                     i.subscriptionPlan.currency = i.currency;
                     return i.subscriptionPlan;
-                });
+                })
+            if (Plans.value && Plans.value.id < 3) {
+                console.log('right');
+                selectedSubscriptionPlan.value = UserSubscriptionPlans.value.find((i) => i.id === 3)
+            } else {
+                selectedSubscriptionPlan.value = UserSubscriptionPlans.value.find((i) => i.id === 5)
+
+            }
         };
 
         const getTenantSubscription = async () => {
@@ -517,22 +588,22 @@ export default {
                 existingPlan.value.amountInDollar = Plans.value.amountInDollar;
                 existingPlan.value.membershipSize = Plans.value.membershipSize;
 
-                res.data.subscriptionPlans.forEach((i) => {
-                    if (i.membershipSize >= Plans.value.membershipSize) {
-                        subscriptionPlans.value.push(i);
-                    }
-                });
+                // res.data.subscriptionPlans.forEach((i) => {
+                //     if (i.membershipSize >= Plans.value.membershipSize) {
+                //         subscriptionPlans.value.push(i);
+                //     }
+                // });
 
                 // Get current plan
 
                 // selectedSubscriptionPlan.value = UserSubscriptionPlans.value.find(
                 //     (i) => i.id == Plans.value.id
                 // );
-                selectedSubscriptionPlan.value = UserSubscriptionPlans.value.find(
-                    (i) => i.id == Plans.value.id
-                );
+                // selectedSubscriptionPlan.value = UserSubscriptionPlans.value.find(
+                //     (i) => i.id == Plans.value.id
+                // );
 
-                console.log(selectedSubscriptionPlan.value, 'sddgags');
+                // console.log(selectedSubscriptionPlan.value, 'sddgags');
 
                 // selectedSubscriptionPlan.value = UserSubscriptionPlans.value.find((i) => {
                 //     return i.id == Plans.value.id;
@@ -544,11 +615,9 @@ export default {
 
                 // Remove preceeding plans from list
 
-                const joined = UserSubscriptionPlans.value.map((i) => i.id).join("");
-                const splitted = joined.split(selectedSubscriptionPlan.value.id);
-                UserSubscriptionPlans.value = UserSubscriptionPlans.value.splice(
-                    splitted[0].length
-                );
+                // const joined = UserSubscriptionPlans.value.map((i) => i.id).join("");
+                // const splitted = joined.split(selectedSubscriptionPlan.value.id);
+                UserSubscriptionPlans.value = UserSubscriptionPlans.value.filter((i) => i.id !== 2 && i.id !== 1);
 
                 if (selectedSubscriptionPlan.value == null) {
                     ElMessageBox.confirm(
@@ -600,7 +669,7 @@ export default {
             }
 
         };
-        // getTenantSubscription()
+        getTenantSubscription()
         const getChurchProfile = async () => {
             try {
                 let res = await axios.get(
@@ -629,14 +698,17 @@ export default {
 
 
         return {
-            getTenantSubscription,
-            mdAndUp, lgAndUp, xlAndUp, xsOnly, subscriptionPlan, selectedSubscriptionPlan, currentUser, primarycolor, setSubscriptionPlan, payNow,
+            mdAndUp, lgAndUp, xlAndUp, xsOnly, selectedSubscriptionPlan, currentUser, primarycolor, setSubscriptionPlan,
             initializePayment,
             selectEmailUnit,
             currentAmount,
             productsList,
             subselectedDuratn,
             finishSetup,
+            paymentDone,
+            close,
+            display,
+            paymentFailed,
             // subscriptionDuration,
             calculatedProductPrice,
             churchLogo,
@@ -647,11 +719,14 @@ export default {
             UserSubscriptionPricing,
             UserSubscriptionPlans,
             selectedPlanId,
+            Plans,
             currentPlan,
             TotalAmount,
             expiryDate,
             countDownDate,
-            notifiedDays
+            tryAgain,
+            notifiedDays,
+            monthRemaining
         }
     },
 }
@@ -672,20 +747,31 @@ export default {
     font-family: Poppins !important;
 }
 
+.upgrade {
+    background: #32D583;
+    border-radius: 20px;
+    color: white;
+    padding: 0 3px 0 3px;
+
+}
+
 .continue-text {
     font-family: Nunito Sans !important;
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 400;
     text-align: center;
 }
 
 .row-button {
-    padding: 10px;
-    border-radius: 25px;
+    /* padding: 10px; */
+    /* padding: 10px 0; */
+    border-radius: 50px;
     box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
-    background: #fff;
-    margin: 12px 70px 15px 70px;
+    background: #F3F3F3;
+    /* background: #fff; */
+    /* margin: 12px 70px 15px 70px; */
     transition: all 0.4s ease-in-out;
-    max-height: 45px;
+    border: 1px solid #0000002B;
+    /* max-height: 45px; */
 }
 </style>

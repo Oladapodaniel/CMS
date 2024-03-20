@@ -65,15 +65,15 @@
                                         style="font-weight: 900"></i>
                                 </div>
                                 <div v-else class="text-font" :class="{ 'active-tab': donationForm, 'circle': !donationForm }">4</div>
-                                <!-- <hr class="hr w-100"> -->
+                                <hr class="hr w-100">
                             </div>
                             <div class="mt-2">
                                 <div v-if="donationSaved" class=" text-font success ">Giving & Bank Details</div>
-                                <div v-else-if="donationForm" style="color: #136ACD!important"  >Giving & Bank Details</div>
+                                <div v-else-if="donationForm"  style="letter-spacing: -0.01em; color: #136ACD!important"  >Giving & Bank Details</div>
                                 <div v-else class="text-font">Giving & Bank Details</div>
                             </div>
                         </div>
-                        <!-- <div class=" col-12 col-md-2 px-0  " @click="showSubscription">
+                        <div class=" col-12 col-md-2 px-0  " @click="showSubscription">
                             <div
                                 class="mt-2 w-100  px-0 d-flex justify-content-between align-items-center cursor-pointer">
                                 <div v-if="subscription" class="text-font" :class="{ 'active-tab': subscription, 'circle': !subscription }">5
@@ -86,9 +86,9 @@
                             <div class="mt-2">
                                 <div v-if="subscriptionSaved" class=" text-font  ">Subscription</div>
                                 <div v-else-if="subscription" style="color: #136ACD!important"  >Subscription</div>
-                                <div v-else class="text-font">Subscription</div>
+                                <div v-else class="text-font " style="font-weight: 400">Subscription</div>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -105,9 +105,9 @@
                 <div class="col-12 mt-4" v-if="donationForm">
                     <DonationForm @saved-donation="setDonationSuccessState" />
                 </div>
-                <!-- <div class="col-12 mt-4" v-if="subscription" >
+                <div class="col-12 mt-4" v-if="subscription" >
                     <SubscriptionProcess @saved-sub="setSubscriptionSuccessState" />
-                </div> -->
+                </div>
             </div>
         </div>
     </div>

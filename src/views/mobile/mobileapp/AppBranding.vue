@@ -10,7 +10,8 @@
                   <div class="text-head font-weight-bold h2">Customize your App</div>
 
                   <div class="mt-3"><span class="text-font ">NB:</span> <span class=" text-font ">Please choose a
-                      dark shade color, click out of the color box, the system will verify your color, then click save to
+                      dark shade color, click out of the color box, the system will verify your color, then click save
+                      to
                       continue.</span></div>
                 </div>
 
@@ -92,7 +93,7 @@
                         <img :src="imageURL" style="width: 50%" />
                       </div>
                     </div>
-                    <LoadingComponent :loading="loading" style="fontsize: 1rem" />
+                    <LoadingComponent :loading="loading" style="font-size: 1rem" />
 
                   </div>
                 </div>
@@ -112,136 +113,80 @@
           </div>
         </div>
 
-        <div class="col-md-5 b my-5 d-none d-md-block">
+        <div class="col-md-5 b mb-4  d-none d-md-block">
           <!-- <img src="../../../assets/mobileonboarding/Iphone16.png" alt=""> -->
 
           <div class="smartphone">
             <div class="content">
               <iframe style="width: 100%; border: none; height: 100%" />
-              <div class="mobile-container-holder">
-                <div class="container mt-5">
+              <div class="mobile-container-holder ">
+                <div class="container py-2 text-white small-text mt-3 " :style="{ backgroundColor: colorPicked }">
                   <div class="row">
-                    <div class="col-12">
-                      <h4 class="Header-text-small text-left">My Profile</h4>
-                    </div>
-                  </div>
-                </div>
-                <div class="container mb-2">
-                  <div class="row d-flex justify-content-center">
-                    <div class="col-6">
-                      <div class="image-container-small" style="
-                        border: 1px solid #ebeff4;
-                        height: 50px;
-                        width: 50px;
-                        border-radius: 50%;
-                        background-color: #fff;
-                      " :style="{
-                        color: colorPicked,
-                        backgroundColor: colorPicked,
-                      }">
-                        <img class="w-100 img-responsive" :style="{ border: colorPicked }"
-                          src="../../../assets/mobileonboarding/avatar-icon-images.png" alt="" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="container">
-                  <div class="row">
-                    <div class="col-12 text-center d-flex flex-column align-items-center">
-                      <span class="font-size-small">John Doe</span>
-                      <span class="font-size-small">johndoee@gmail.com</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="container mt-1">
-                  <div class="row d-flex align-items-center">
-                    <div class="col-2">
-                      <i class="pi pi-user text-center c-pointer reduced-icon-small" :style="{ color: colorPicked }"></i>
-                    </div>
-                    <div class="col-8">
-                      <p class="profile-text-small text-left c-pointer mb-0">
-                        Profile
-                      </p>
-                    </div>
-                  </div>
-                  <div class="row d-flex align-items-center">
-                    <div class="col-2">
-                      <i class="pi pi-download text-center c-pointer reduced-icon-small"
-                        :style="{ color: colorPicked }"></i>
-                    </div>
-                    <div class="col-8">
-                      <p class="profile-text-small text-left c-pointer mb-0">
-                        My Downloads
-                      </p>
-                    </div>
-                  </div>
-                  <div class="row d-flex align-items-center">
-                    <div class="col-2">
-                      <i class="pi pi-check-circle text-center c-pointer reduced-icon-small"
-                        :style="{ color: colorPicked }"></i>
-                    </div>
-                    <div class="col-8">
-                      <p class="profile-text-small text-left c-pointer mb-0">
-                        Attendance
-                      </p>
-                    </div>
-                  </div>
-                  <div class="row d-flex align-items-center">
-                    <div class="col-2">
-                      <i class="pi pi-home text-center c-pointer reduced-icon-small" :style="{ color: colorPicked }"></i>
-                    </div>
-                    <div class="col-9">
-                      <p class="profile-text-small text-left c-pointer mb-0">
-                        Church Information
-                      </p>
-                    </div>
-                  </div>
-                  <div class="row d-flex align-items-center">
-                    <div class="col-2">
-                      <i class="pi pi-sign-in text-center c-pointer reduced-icon-small"
-                        :style="{ color: colorPicked }"></i>
-                    </div>
-                    <div class="col-8">
-                      <p class="profile-text-small text-left c-pointer mb-0">
-                        Log in
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="background-color-small mt-1">
-                  <div class="container">
-                    <div class="row d-flex flex-row justify-content-center pt-1">
-                      <div class="col-2 text-center d-flex flex-column align-items-center">
-                        <i class="pi pi-home text-center c-pointer pi-font-small"></i>
-                        <span class="font-size-small">Home</span>
-                      </div>
-                      <div class="col-2 text-center d-flex flex-column align-items-center">
-                        <i class="pi pi-youtube text-center c-pointer pi-font-small"></i>
-                        <span class="font-size-small">Media</span>
-                      </div>
-                      <div class="col-2 text-center d-flex flex-column align-items-center">
-                        <i class="pi pi-money-bill text-center c-pointer pi-font-small"></i>
-                        <span class="font-size-small">Give</span>
-                      </div>
-                      <div class="col-2 text-center d-flex flex-column align-items-center">
-                        <i class="pi pi-comments text-center c-pointer pi-font-small"></i>
-                        <span class="font-size-small"> Chat</span>
-                      </div>
-                      <div class="col-2 text-center d-flex flex-column align-items-center">
-                        <i class="pi pi-tag text-center c-pointer pi-font-small" :style="{ color: colorPicked }"></i>
-                        <span class="font-size-small" :style="{ color: colorPicked }">More</span>
-                      </div>
-                    </div>
+                    <div class="col-md-12 d-flex justify-content-between">
+                      <div class="small col-md-6 px-0">Faith Connect</div>
+                      <div class="col-md-6 px-0 d-flex justify-content-end">
+                        <div class="">
+                          <img class="w-100" style="height: 1rem;"
+                            src="../../../assets/mobileonboarding/MagnifyingGlass.png" alt="">
+                        </div>
+                        <div class="mx-1">
+                          <img class="w-100" style="height: 1rem;" src="../../../assets/mobileonboarding/Gift.png"
+                            alt="">
+                        </div>
+                        <div class="">
+                          <img class="w-100" style="height: 1rem;" src="../../../assets/mobileonboarding/DotsThree.png"
+                            alt="">
+                        </div>
 
-                    <div class="row pt-1">
-                      <div class="col-4 text-right px-0">
-                        <i class="pi pi-window-minimize text-center c-pointer pi-font-small"></i>
+
                       </div>
-                      <div class="col-4 text-center">
-                        <i class="pi pi-circle-off text-center c-pointer pi-font-small"></i>
+                      <!-- <h4 class="Header-text-small text-left">My Profile</h4> -->
+                    </div>
+                    <div class="col-md-12 mt-2 small d-flex justify-content-between">
+                      <div>Faith</div>
+                      <div>Social</div>
+                      <div>Finance</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="container-fluid mb-2">
+                  <div class="row  justify-content-cent">
+                    <div class="col-md-12 d-flex px-0 justify-content-between mx-1 mt-2  small font-weight-700">
+                      <div class="text-small">Invite</div>
+                      <div class="text-small">Next Steps</div>
+                      <div class="text-small">Ministry info</div>
+                    </div>
+                    <div class="col-md-12 px-0" >
+                      <img class="w-100" style="height: 6rem;" src="../../../assets/mobileonboarding/familypic.png">
+                    </div>
+                    <div class="small col-md-12 px-0 mt-1">
+                      <span class="text-small font-weight-bold">Trending Messages</span>
+                    </div>
+                    <div class="col-md-12 d-flex px-1">
+                      <div class="">
+                        <img class="w-100" src="../../../assets/mobileonboarding/thanksgiving.png" alt="">
                       </div>
-                      <div class="col-4 text-left px-0">
-                        <i class="pi pi-spinner text-center c-pointer pi-font-small"></i>
+                      <div class=" mx-2">
+                        <img class="w-100" src="../../../assets/mobileonboarding/festival.png" alt="">
+                      </div>
+                      <div class="">
+                        <img class="w-100" src="../../../assets/mobileonboarding/prayer.png" alt="">
+                      </div>
+                    </div>
+                    <div class="col-md-12 px-0">
+                      <div>
+                        <img class="w-100" style="height: 4.5rem;" src="../../../assets/mobileonboarding/footericon.png" alt="">
+                      </div>
+                    </div>
+                    <div class="col-md-12 mt-1 d-flex justify-content-between" >
+                      <div class="" >
+                        <homeicon :colorCode="colorPicked" />
+                      </div>
+                      <div class="">
+                        <img class="w-100" style="height: 2.3rem;" src="../../../assets/mobileonboarding/media.png" alt="">
+                      </div>
+                      <div class="">
+                        <img class="w-100" style="height: 2.3rem;" src="../../../assets/mobileonboarding/give.png" alt="">
                       </div>
                     </div>
                   </div>
@@ -258,12 +203,14 @@
 <script>
 // import router from "../../../router";
 import { ref, computed } from "vue";
+import homeicon from "../../../components/svg/homeicon"
 // import store from "../../../store/store";
 import axios from "@/gateway/backendapi";
 import Tooltip from "primevue/tooltip";
 import LoadingComponent from "../../../components/loading/LoadingComponent";
 import { useToast } from "primevue/usetoast";
 import mobile_service from "../../../services/mobile/mobile-service"
+import { color } from "highcharts";
 
 // import {ref} from 'vue'
 export default {
@@ -272,6 +219,7 @@ export default {
   },
   components: {
     LoadingComponent,
+    homeicon
   },
   setup(props, context) {
     const image = ref("");
@@ -377,7 +325,8 @@ export default {
           churchSetup: false,
           socialMedia: false,
           appBranding: false,
-          donationForm: true
+          donationForm: true,
+          subscription: false
         }
         context.emit('saved-appbranding', changeState)
         console.log('all filllted');
@@ -387,7 +336,8 @@ export default {
           churchSetup: false,
           socialMedia: false,
           appBranding: false,
-          donationForm: true
+          donationForm: true,
+          subscription: false
         }
         context.emit('saved-appbranding', changeState)
         console.log('not all')
@@ -563,8 +513,9 @@ export default {
 /* The screen (or content) of the device */
 .smartphone .content {
   position: relative;
-  width: 169px;
-  height: 290px;
+  width: 100%;
+  height: 100%;
+  /* height: 290px; */
   background: white;
 }
 
@@ -705,4 +656,3 @@ opacity: 1;
   opacity: 1;
 }
 </style>
-

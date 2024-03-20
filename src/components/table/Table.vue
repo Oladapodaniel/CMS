@@ -140,6 +140,7 @@ export default {
 
     const checkSingleRow = (index) => {
       const currentRow = props.data[index];
+      console.log(props.data, 'dssgss');
       if (currentRow.check) {
         checkedRow.value.push(currentRow);
       } else {

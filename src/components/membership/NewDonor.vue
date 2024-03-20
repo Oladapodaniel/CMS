@@ -141,7 +141,7 @@
                                                     <el-dropdown-item v-for="(birthYear, index) in birthYearsArr"
                                                         :key="index">
                                                         <a class="no-decoration text-dark"
-                                                            @click="addBirthYears(birthYears)">
+                                                            @click="addBirthYears(birthYear)">
                                                             {{ birthYear }}
                                                         </a>
                                                     </el-dropdown-item>

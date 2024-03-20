@@ -182,7 +182,8 @@ export default {
           churchSetup: false,
           socialMedia: false,
           appBranding: true,
-          donationForm: false
+          donationForm: false,
+          subscription: false
         }
         context.emit('saved-socialmedia', changeState)
       } else {

@@ -280,6 +280,7 @@ export default {
     const fetchUsers = ref(false);
     const contributionItems = ref([]);
     const attendanceType = ref([]);
+    const groupDetailShallowCopy = ref({});
     const groupDetail = ref({});
     const loading = ref(false);
     const attendanceTableLoading = ref(false);
@@ -409,6 +410,7 @@ export default {
       try {
         let data = await attendanceservice.getReport(route.query.id)
         groupDetail.value = data
+        groupDetailShallowCopy.value = data
         console.log(data, 'reaching');
         attendanceTableLoading.value = false
       }
@@ -420,8 +422,9 @@ export default {
     getGroupDetails()
 
     const listOfPeople = computed(() => {
+
       if (groupDetail.value && groupDetail.value.peopoleAttendancesDTOs && groupDetail.value.peopoleAttendancesDTOs.length > 0 && !searchText.value) return groupDetail.value.peopoleAttendancesDTOs;
-      if (groupDetail.value && groupDetail.value.peopoleAttendancesDTOs && groupDetail.value.peopoleAttendancesDTOs.length > 0 && searchText.value) return groupDetail.value.peopoleAttendancesDTOs.filter(i => i.name.toLowerCase().includes(searchText.value.toLowerCase()))
+      if (groupDetail.value && groupDetail.value.peopoleAttendancesDTOs && groupDetail.value.peopoleAttendancesDTOs.length > 0 && searchText.value) return groupDetailShallowCopy.value.peopoleAttendancesDTOs.filter(i => i.name.toLowerCase().includes(searchText.value.toLowerCase()))
       return []
     })
 
@@ -587,6 +590,7 @@ export default {
       attendanceType,
       Search,
       groupDetail,
+      groupDetailShallowCopy,
       loading,
       attendanceHeader,
       handleSelectionChange,

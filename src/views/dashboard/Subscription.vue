@@ -316,6 +316,7 @@ export default {
     const paymentSummary = ref([]);
     const paymentSummObj = ref({});
     const isChecked = ref(false);
+    const showTransferDetail = ref(false);
     const checkedBoxArr = ref([]);
     const selectCurrencyArr = ref([]);
     const Plans = ref({});
@@ -738,6 +739,7 @@ export default {
       expiryDate,
       subselectedDuratn,
       expenseApp,
+      showTransferDetail,
       fixedAsset,
       acctReceived,
       paymentSummary,

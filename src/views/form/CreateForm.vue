@@ -12,12 +12,12 @@
                             style="background-color: #EBEBEB">
                             <div class="row">
                                 <div class="col-md-12 d-flex justify-content-center" v-if="route.params.id">
-                                    <div v-if="url" class="col-md-8 col-11 mb-3  d-flex justify-content-center image-upload">
+                                    <div v-if="url" class="col-md-12  mb-3  image-upload">
                                         <img :src="url" alt="" class="w-100" >
                                     </div>
                                 </div>
-                                <div class="col-md-12" v-else>
-                                    <div v-if="url" class="col-md-8 mb-3 col-11  d-flex justify-content-center image-upload">
+                                <div class="col-md-12 d-flex justify-content-center " v-else>
+                                    <div v-if="url" class="col-md-12 mb-3   image-upload">
                                         <img :src="url" alt="" class="w-100" >
                                     </div>
                                 </div>

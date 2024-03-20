@@ -7,7 +7,7 @@
       <div class="col-md-12 mt-5" :class="{ 'slide-right': slide }">
         <div class="row">
           <div class="col-md-7">
-            <div class="text-head h3 font-weight-bold">Bank Details</div>
+            <div class="text-head h3 font-weight-bold">Bank Accounts</div>
             <div class="text-font">Enter bank details to set up online donation</div>
           </div>
           <div class="col-md-5 d-flex justify-content-end">
@@ -186,7 +186,8 @@
               
               my-2
             " @click="completeSetUp">
-            <el-button round size="large" :loading="setupSpinner" class=" w-100 primary-bg  text-white">Save and Continue</el-button>
+            <el-button round size="large" :loading="setupSpinner" class=" w-100 primary-bg  text-white">Save and
+              Continue</el-button>
 
           </div>
           <div @click="skip" class="
@@ -267,7 +268,7 @@ export default {
         subsciption: false,
         donationForm: false,
         subscription: true
-        
+
       };
       context.emit("saved-donation", changeState);
 
@@ -281,9 +282,9 @@ export default {
           console.log(res);
           setupSpinner.value = false;
 
-          setTimeout(() => {
-            router.push({ name: "OnboardingSuccessful" });
-          }, 1000);
+          // setTimeout(() => {
+          //   router.push({ name: "OnboardingSuccessful" });
+          // }, 1000);
         })
         .catch((err) => {
           console.log(err);
@@ -500,9 +501,20 @@ export default {
         )
         .then((res) => {
           console.log(res);
-          setTimeout(() => {
-            router.push({ name: "OnboardingSuccessful" });
-          }, 1000);
+          let changeState = {
+            tab: true,
+            churchSetup: false,
+            socialMedia: false,
+            appBranding: false,
+            subsciption: false,
+            donationForm: false,
+            subscription: true
+
+          }
+          context.emit("saved-donation", changeState);
+          // setTimeout(() => {
+          //   router.push({ name: "OnboardingSuccessful" });
+          // }, 1000);
         })
         .catch((err) => {
           console.log(err);
