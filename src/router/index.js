@@ -1191,6 +1191,15 @@ const routes = [
                         import( /* webpackChunkName: "voicelist" */ '@/views/communication/Voice/VoiceList')
                 },
                 {
+                    path: 'schedulelist',
+                    name: 'ScheduledVoice',
+                    meta: {
+                        title: 'Churchplus -Voice List',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "voicelist" */ '@/views/communication/Voice/ScheduledVoice')
+                },
+                {
                     path: 'sendvoicemessage',
                     name: 'composeVoice',
                     meta: {

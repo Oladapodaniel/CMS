@@ -69,7 +69,6 @@
                     </div>
                     <div class="col-md-6 d-flex  align-items-center col-12 "
                         :class="{ 'yourFaithbox': yourFaith, 'yourFaithbox1': !yourFaith }">
-                        <transition name="el-fade-in-linear" v-show="yourFaith">
                             <div class="row d-flex  align-items-center">
                                 <div class="col-md-9  text-center ">
                                     <div class="h2 font-weight-600 text-head">Your Faith, Anytime, Anywhere.</div>
@@ -85,8 +84,6 @@
                                             FREE</el-button></router-link>
                                 </div>
                             </div>
-                        </transition>
-
                     </div>
                     <div class="col-md-6 d-flex justify-content-center col-12"
                         :class="{ 'yourFaith': yourFaith, 'yourFaith2': !yourFaith }">

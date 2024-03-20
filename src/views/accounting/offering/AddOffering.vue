@@ -398,7 +398,7 @@
             </div>
 
             <div v-if="item.donor == ''" data-toggle="modal" data-target="#exampleModal"
-              class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center" @click="setAddToDonor(index)">
+              class="col-8 col-sm-3  offset-sm-5 donor-text pt-0 align-self-center" @click="setAddToDonor(index)">
               Add Donor
             </div>
             <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"
@@ -408,7 +408,7 @@
           </div>
         </div>
 
-        <div class="col-sm-12 text-center add-attendance ofering" id="addOffering" @click="addOffering">
+        <div class="col-sm-12 text-center  mt-4 mt-md-0 add-attendance ofering" id="addOffering" @click="addOffering">
           <el-icon :size="20" class="mr-2">
             <CirclePlus />
           </el-icon>Add Offering
@@ -1872,6 +1872,7 @@ export default {
 
 .attendance-body {
   padding: 0 50px;
+  height: 100%;
   background-color: #ecf0f3;
 }
 

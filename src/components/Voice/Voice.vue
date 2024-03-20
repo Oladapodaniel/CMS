@@ -45,6 +45,19 @@
                     </a>
                   </div>
                 </div>
+                <!-- <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/voice/schedulelist' }">
+                  <div class="col-md-12 menu-item-div m-auto">
+                    <a class="btn btn-default font-weight-bold">
+                      <span class="menu-item">
+                        <router-link class="r-link text-decoration-none d-flex align-items-center "
+                          to="/tenant/voice/schedulelist">
+                          <el-icon class="mr-3"><Clock /></el-icon>
+                          <span class="active">Scheduled</span>
+                        </router-link>
+                      </span>
+                    </a>
+                  </div>
+                </div> -->
               </div>
             </div>
           </div>
