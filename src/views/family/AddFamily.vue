@@ -685,7 +685,7 @@ export default {
     const loading = ref(false);
     // const constructSelectedMember = ref({})
     const showWardModal = ref(false);
-    const routeParams = ref(route.params.familyId);
+    const routeParams = ref(route.params.id);
 
     const getFamilyRoles = async () => {
       try {
@@ -853,7 +853,7 @@ export default {
         wardSearchString.value = "";
         return false;
       }
-      if (wardState.value === 1 && !route.params.familyId) {
+      if (wardState.value === 1 && !route.params.id) {
         const constructSelectedMember = new Object();
         constructSelectedMember.name = selectedMember.value.name;
         constructSelectedMember.personId = selectedMember.value.id;
@@ -862,7 +862,7 @@ export default {
         console.log(constructSelectedMember);
         console.log(familyMembers.value);
         wardSearchString.value = "";
-      } else if (wardState.value === 1 && route.params.familyId) {
+      } else if (wardState.value === 1 && route.params.id) {
         // Push to view
         const constructSelectedMember = new Object();
         constructSelectedMember.name = selectedMember.value.name;
@@ -944,7 +944,7 @@ export default {
         motherId: mother.value.id,
       };
 
-      if (!route.params.familyId) {
+      if (!route.params.id) {
         try {
           let res = await axios.post("/api/family/createFamily", family);
          
@@ -994,10 +994,10 @@ export default {
     };
 
     const getFamilyDetails = async () => {
-      if (route.params.familyId) {
+      if (route.params.id) {
         try {
           const res = await axios.get(
-            `/api/Family/family?personId=${route.params.familyId}`
+            `/api/Family/family?Id=${route.params.id}`
           );
           console.log(res, "🎈🎈🎄");
           familyName.value = res.data.familyName;

@@ -57,6 +57,7 @@
                 </td>
               </tr>
             </tbody>
+            <!-- <tbody v-if="bankAccounts.length < 0"> You haven't add any bank account yet </tbody> -->
           </table>
         </div>
         <div class="row mt-5">
@@ -125,7 +126,7 @@
             <div class="text-head font-weight-600 h2 text-center col-11 col-md-10">
               Online donation Form
             </div>
-            <div class="cl-11 col-md-10 pt-2">
+            <div class="col-11 col-md-10 pt-2">
               <paymentform @formcreated="formCreated" />
             </div>
           </div>

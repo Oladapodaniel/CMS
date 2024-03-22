@@ -734,7 +734,7 @@ const routes = [
                 import( /* webpackChunkName: "event" */ '@/views/family/Family.vue')
         },
         {
-            path: 'addfamily/:familyId?',
+            path: 'addfamily/:id?',
             name: 'AddFamily',
             component: () =>
                 import( /* webpackChunkName: "event" */ '@/views/family/AddFamily.vue')

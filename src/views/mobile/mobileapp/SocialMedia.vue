@@ -11,7 +11,7 @@
           <div class="col-md-12">
             <img v-if="socialMedia.name === 'youtube channel ID'" src="../../../assets/mobileonboarding/youtube.svg"
               alt="youtube channel id" />
-            <span class="text-font" v-if="socialMedia.name === 'youtube channel ID'">Youtube Channel ID</span>
+            <span class="text-font ml-2 mt-2" v-if="socialMedia.name === 'youtube channel ID'">Youtube Channel ID</span>
           </div>
           <div v-if="socialMedia.name === 'youtube channel ID'" class="col-12 mt-1">
             <el-input v-if="socialMedia.name === 'youtube channel ID'" type="text"
@@ -27,12 +27,12 @@
         <div class="row mt-3" v-for="(socialMedia, index) in handles" :key="index">
           <div class="col-12 mt-2 ">
             <img v-if="socialMedia.name === 'facebook handle'" src="../../../assets/social/facebook.svg" alt="facebook" />
-            <span class="text-font mt-3 ml-1" v-if="socialMedia.name === 'facebook handle'">Facebook Page</span>
+            <span class="text-font mt-3 ml-2" v-if="socialMedia.name === 'facebook handle'">Facebook Page</span>
             <img v-if="socialMedia.name === 'twitter handle'" src="../../../assets/social/twitter.svg" alt="twitter" />
-            <span class="text-font  ml-1" v-if="socialMedia.name === 'twitter handle'">X Page</span>
+            <span class="text-font  ml-2" v-if="socialMedia.name === 'twitter handle'">X Page</span>
             <img v-if="socialMedia.name === 'instagram handle'" src="../../../assets/social/instagram.svg"
               alt="instagram" />
-            <span class="text-font  ml-1" v-if="socialMedia.name === 'instagram handle'">Instagram Page</span>
+            <span class="text-font  ml-2 " v-if="socialMedia.name === 'instagram handle'">Instagram Page</span>
             <!-- <img
               v-if="socialMedia.name === 'youtube handle'"
               src="../../../assets/mobileonboarding/youtube.svg"

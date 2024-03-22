@@ -29,24 +29,24 @@
 
         <Table :data="searchFamily" :headers="familyHeaders" :checkMultipleItem="false" v-if="searchFamily.length > 0">
           <template v-slot:dateCreated="{ item }">
-            <div class="c-pointer">
+            <div @click="editFamily(item)" class="c-pointer">
               {{ formatDate(item.dateCreated) }}
             </div>
           </template>
           <template v-slot:familyName="{ item }">
-            <div class="c-pointer">
+            <div  @click="editFamily(item)" class="c-pointer">
               {{ item.familyName }}
             </div>
           </template>
 
           <template v-slot:email="{ item }">
-            <div class="c-pointer">
+            <div @click="editFamily(item)" class="c-pointer">
               {{ item.email }}
             </div>
           </template>
 
           <template v-slot:homePhone="{ item }">
-            <div class="c-pointer">
+            <div @click="editFamily(item)" class="c-pointer">
               {{ item.homePhone }}
             </div>
           </template>
@@ -60,13 +60,11 @@
                 <el-dropdown-menu>
                   <el-dropdown-item>
                     <router-link :to="{
-                      name: 'AddFamily',
-                      params: {
-                        familyId: item.fatherID
-                          ? item.fatherID
-                          : item.motherID,
-                      },
-                    }">
+                  name: 'AddFamily',
+                  params: {
+                    id: item.id
+                  },
+                }">
                       <div class="text-decoration-none text-color">Edit</div>
                     </router-link>
                   </el-dropdown-item>
@@ -107,6 +105,21 @@ export default {
   },
   setup(props, { emit }) {
     const searchText = ref("");
+
+    const familyHeaders = ref([
+      { name: "DATE", value: "dateCreated" },
+      { name: "FAMILY NAME", value: "familyName" },
+      { name: "EMAIL", value: "email" },
+      { name: "PHONE", value: "homePhone" },
+      { name: "ACTION", value: "action" },
+    ]);
+
+    const editFamily = (item) => {
+      console.log(item, 'hhjj');
+      router.push({ name: "AddFamily", params: { id: item.id }, });
+    }
+
+
     const formatDate = (date) => {
       return dateFormatter.monthDayYear(date);
     };
@@ -171,13 +184,6 @@ export default {
           });
         });
     };
-    const familyHeaders = ref([
-      { name: "DATE", value: "dateCreated" },
-      { name: "FAMILY NAME", value: "familyName" },
-      { name: "EMAIL", value: "email" },
-      { name: "PHONE", value: "homePhone" },
-      { name: "ACTION", value: "action" },
-    ]);
 
     const moveToEdit = (id) => {
       router.push({ name: "AddFamily", params: { familyId: id } });
@@ -186,6 +192,7 @@ export default {
     return {
       formatDate,
       searchFamily,
+      editFamily,
       searchText,
       // toggleSearch,
       showConfirmModal,

@@ -26,6 +26,7 @@ export default {
             try{
                  const { data } = await axios.get('/api/Messaging/getVoiceSchedules')
                  scheduleVocieList.value = data
+                 console.log(scheduleVocieList.value, 'hhjjhj');
             }
             catch(err){
                 console.log(err);

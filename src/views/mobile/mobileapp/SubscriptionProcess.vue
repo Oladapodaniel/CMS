@@ -568,11 +568,12 @@ export default {
                     i.subscriptionPlan.currency = i.currency;
                     return i.subscriptionPlan;
                 })
-            if (Plans.value && Plans.value.id < 3) {
-                console.log('right');
+
+
+            if (Plans.value && Plans.value.id == 1 || Plans.value.id == 2) {
                 selectedSubscriptionPlan.value = UserSubscriptionPlans.value.find((i) => i.id === 3)
             } else {
-                selectedSubscriptionPlan.value = UserSubscriptionPlans.value.find((i) => i.id === 5)
+                selectedSubscriptionPlan.value = UserSubscriptionPlans.value.find((i) => i.id === Plans.value.id)
 
             }
         };

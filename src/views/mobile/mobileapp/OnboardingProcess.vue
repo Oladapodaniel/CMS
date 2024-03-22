@@ -50,7 +50,7 @@
                                 <div v-else class="text-font" :class="{ 'active-tab': appBranding, 'circle': !appBranding }">3</div>
                                 <hr class="hr w-100">
                             </div>
-                            <div class="mt-2">
+                            <div class="mt-2 text-center">
                                 <div v-if="appBrandingSaved" class=" text-font success">App Branding</div>
                                 <div v-else-if="appBranding" style="color: #136ACD">App Branding</div>
                                 <div v-else class=" text-font ">App Branding</div>
