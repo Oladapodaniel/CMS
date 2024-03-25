@@ -22,7 +22,8 @@
             </template>
             <template #message="{ item }">
                 <div>
-                    <div class="font-weight-600"><el-button type="success" @click="copyToClipBoard(item)" plain round>Copy
+                    <div class="font-weight-600"><el-button type="success" @click="copyToClipBoard(item)" plain
+                            round>Copy
                             URL</el-button></div>
                 </div>
             </template>
@@ -111,6 +112,7 @@ export default {
         const handleCurrentChange = (val) => {
             console.log(`current page: ${val}`)
         }
+        
 
         const getTransactionByPage = async () => {
             paginatedTableLoading.value = true
@@ -143,10 +145,17 @@ export default {
         }
 
         const searchVoiceList = computed(() => {
-            if (searchVoiceText.value === "" && sentVoiceList.value.length > 0) return sentVoiceList.value;
-            return sentVoiceList.value.filter((i) => {
-                return i.subject && i.subject.toLowerCase().includes(searchVoiceText.value.toLowerCase())
-            });
+            if (searchVoiceText.value !== "" && sentVoiceList.value.length > 0) {
+                return sentVoiceList.value.filter((i) => {
+                    if (i.subject)
+                        return i.subject
+                            .toLowerCase()
+                            .includes(searchVoiceText.value.toLowerCase());
+                });
+            } else {
+                return sentVoiceList.value;
+            }
+
         });
         return {
             sentVoiceList,

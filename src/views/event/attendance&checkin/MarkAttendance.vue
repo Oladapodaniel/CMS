@@ -122,14 +122,16 @@
                     <!-- <div class="c-pointer">{{ item.isRegistered }}</div> -->
                   </template>
                   <template v-slot:isPresent="{ item }">
-                    <el-checkbox class="custom-checkbox" v-model="item.isPresent" @change="checkin($event, 1, item)"
-                      :disabled="checking" />
-                    <!-- <div class="c-pointer">{{ item.isPresent }}</div> -->
+                      <input type="checkbox"  v-model="item.isPresent" id="flexCheckDefault" @change="checkin($event, 1, item)"
+                      :disabled="checking">
+                    <!-- <el-checkbox class="custom-checkbox" v-model="item.isPresent" @change="checkin($event, 1, item)"
+                      :disabled="checking" /> -->
                   </template>
                   <template v-slot:isCheckedOut="{ item }">
-                    <el-checkbox class="custom-checkbox" v-model="item.isCheckedOut" @change="checkin($event, 2, item)"
-                      :disabled="checking" />
-                    <!-- <div class="c-pointer">{{ item.isCheckedOut }}</div> -->
+                      <input  type="checkbox"  v-model="item.isCheckedOut" id="flexCheckDefault" @change="checkin($event, 2, item)"
+                      :disabled="checking">
+                    <!-- <el-checkbox class="custom-checkbox" v-model="item.isCheckedOut" @change="checkin($event, 2, item)"
+                      :disabled="checking" /> -->
                   </template>
                   <template v-slot:action="{ item }">
                     <div class="text-decoration-none" @click="showConfirmModal(item)">
@@ -145,8 +147,8 @@
                     <p class="my-2">No records found</p>
                   </div>
                   <div class="col-md-12 d-flex justify-content-center">
-                    <div class="col-md-4"><el-button class=" border-0 text-white w-100" :color="primarycolor" data-toggle="modal"
-                        data-target="#exampleModal" size="large" round>
+                    <div class="col-md-4"><el-button class=" border-0 text-white w-100" :color="primarycolor"
+                        data-toggle="modal" data-target="#exampleModal" size="large" round>
                         Add member
                       </el-button></div>
                   </div>

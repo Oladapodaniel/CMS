@@ -1,16 +1,11 @@
-
 <template>
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-6">
         <!-- top Address -->
-        <div
-          class="row vh-100 justify-content-center align-items-md-center align-items-start"
-        >
+        <div class="row vh-100 justify-content-center align-items-md-center align-items-start">
           <div class="col-md-12">
-            <div
-              class="row eventpictbg justify-content-center d-block d-md-none"
-            >
+            <div class="row eventpictbg justify-content-center d-block d-md-none">
               <div class="col-md-12 d-flex justify-content-center mb-4">
                 <img :src="bannerUrl" class="col-10 col-md-12" />
               </div>
@@ -22,25 +17,17 @@
                 </span>
                 <span v-if="fullEventData.registrationAmount">
                   - {{ tenantCurrency }}
-                  {{ fullEventData.registrationAmount }}</span
-                >
+                  {{ fullEventData.registrationAmount }}</span>
                 <div class="font-weight-bold">Event Registration</div>
                 <div class="italicize">{{ eventData.date }}</div>
               </div>
             </div>
 
-            <div
-              class="row d-flex justify-content-center"
-              v-if="
-                fullEventData.registrationCutOffTime &&
-                new Date().toISOString() >=
+            <div class="row d-flex justify-content-center" v-if="fullEventData.registrationCutOffTime &&
+                  new Date().toISOString() >=
                   new Date(fullEventData.registrationCutOffTime).toISOString()
-              "
-            >
-              <img
-                src="../../assets/registration_closed.jpeg"
-                class="event-closed"
-              />
+                  ">
+              <img src="../../assets/registration_closed.jpeg" class="event-closed" />
             </div>
 
             <!--end top Address -->
@@ -49,37 +36,24 @@
             <div class="row">
               <div class="col-md-3"></div>
               <div class="col-md-7">
-                <p
-                  class="font-weight-600 text-center primary-text"
-                  v-if="person.personId && loaded && !showLoading"
-                >
+                <p class="font-weight-600 text-center primary-text" v-if="person.personId && loaded && !showLoading">
                   Your details were found, please confirm to register.
                 </p>
-                <p
-                  class="font-weight-600 text-center primary-text"
-                  v-if="
-                    !person.personId &&
-                    !showLoading &&
-                    loaded &&
-                    !fetchingFailed
-                  "
-                >
+                <p class="font-weight-600 text-center primary-text" v-if="!person.personId &&
+                  !showLoading &&
+                  loaded &&
+                  !fetchingFailed
+                  ">
                   Please fill the form and confirm the registration
                 </p>
               </div>
             </div>
 
-            <div
-              class="row"
-              v-if="
-                !fullEventData.registrationCutOffTime ||
-                new Date().toISOString() <=
+            <div class="row" v-if="!fullEventData.registrationCutOffTime ||
+                  new Date().toISOString() <=
                   new Date(fullEventData.registrationCutOffTime).toISOString()
-              "
-            >
-              <div
-                class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
-              >
+                  ">
+              <div class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700">
                 <label for="">Phone Number</label>
               </div>
               <div class="col-md-7">
@@ -87,14 +61,8 @@
                   <!-- <i class="pi pi-phone icon" /> -->
                   <!-- <input @blur="checkCharacter" @input="CheckXterAfterEleven" class="form-control w-100" type="text"
                   v-model="enteredValue" aria-required="" placeholder="Enter your phone number" /> -->
-                  <el-input
-                    @blur="checkCharacter"
-                    class="w-100"
-                    type="number"
-                    v-model="enteredValue"
-                    aria-required=""
-                    placeholder="Enter your phone number"
-                  >
+                  <el-input @blur="checkCharacter" class="w-100" type="number" v-model="enteredValue" aria-required=""
+                    placeholder="Enter your phone number">
                     <template #prefix>
                       <el-icon class="el-input__icon">
                         <PhoneFilled />
@@ -104,17 +72,9 @@
                 </span>
                 <!-- v-if="autosearch && !person.name" -->
               </div>
-              <div
-                class="col-3 offset-3 offset-sm-4 offset-md-5 mt-4"
-                v-if="!names"
-              >
-                <el-button
-                  size="large"
-                  round
-                  :color="primarycolor"
-                  class="w-100 text-white border-0 text-center c-pointer"
-                  >Register</el-button
-                >
+              <div class="col-3 offset-3 offset-sm-4 offset-md-5 mt-4" v-if="!names">
+                <el-button size="large" round :color="primarycolor"
+                  class="w-100 text-white border-0 text-center c-pointer">Register</el-button>
               </div>
             </div>
 
@@ -137,24 +97,12 @@
             <!--start of top area button -->
             <div class="row" :class="{ 'mb-4': showLoading }" v-if="false">
               <div class="col-md-3 text-md-right"></div>
-              <div
-                class="col-md-5 text-center col-sm-2"
-                :class="{ 'mt-4': showLoading }"
-              >
-                <p
-                  class="text-danger"
-                  v-if="showNoPhoneError"
-                  :class="{ 'my-1': showLoading }"
-                >
+              <div class="col-md-5 text-center col-sm-2" :class="{ 'mt-4': showLoading }">
+                <p class="text-danger" v-if="showNoPhoneError" :class="{ 'my-1': showLoading }">
                   Please enter your phone number
                 </p>
-                <el-button
-                  class="default-btn add-btn"
-                  @click="checkCharacter"
-                  ref="submitBtn"
-                  v-if="!appltoggle && !showLoading"
-                  round
-                >
+                <el-button class="default-btn add-btn" @click="checkCharacter" ref="submitBtn"
+                  v-if="!appltoggle && !showLoading" round>
                   <!-- <i class="fas fa-circle-notch fa-spin" v-if="loading"></i> -->
                   Submit
                 </el-button>
@@ -165,46 +113,29 @@
             <!-- start of bottom area -->
             <div class="row" v-if="appltoggle && !showLoading">
               <div class="col-md-12">
-                <div
-                  class="row"
-                  v-if="
-                    selectedCustomField.find(
-                      (i) => i.toLowerCase() == 'card/checkin number'
-                    )
-                  "
-                >
+                <div class="row" v-if="selectedCustomField.find(
+                  (i) => i.toLowerCase() == 'card/checkin number'
+                )
+                  ">
                   <div
-                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-                  >
+                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
                     <label for="">Card number</label>
                   </div>
                   <div class="col-md-7">
-                    <el-input
-                      class="w-100 border"
-                      placeholder="Card Number"
-                      type="text"
-                      aria-required=""
-                      v-model="checkinCode"
-                    />
+                    <el-input class="w-100 border" placeholder="Card Number" type="text" aria-required=""
+                      v-model="checkinCode" />
                   </div>
                 </div>
 
                 <div class="row mt-2 my-2">
                   <div
-                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-                  >
+                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
                     <label for="">Name</label>
                   </div>
                   <div class="col-md-7">
                     <span class="p-input-icon-left w-100">
-                      <el-input
-                        class="w-100"
-                        type="text"
-                        v-model="person.name"
-                        aria-required=""
-                        :disabled="disabled"
-                        placeholder="Name"
-                      >
+                      <el-input class="w-100" type="text" v-model="person.name" aria-required="" :disabled="disabled"
+                        placeholder="Name">
                         <template #prefix>
                           <el-icon class="el-input__icon">
                             <User />
@@ -216,56 +147,37 @@
                 </div>
                 <div class="row">
                   <div
-                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-                  >
+                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
                     <label for="">Email</label>
                   </div>
                   <div class="col-md-7">
                     <span class="p-input-icon-left w-100 my-md-3">
-                      <el-input
-                        class="w-100"
-                        type="text"
-                        v-model="person.email"
-                        aria-required=""
-                        :disabled="
-                          (person.personId && personData.email) ||
-                          (personData.email !== '' && personData.email !== null)
-                        "
-                        placeholder="Email"
-                      >
+                      <el-input class="w-100" type="text" v-model="person.email" aria-required="" :disabled="(person.personId && personData.email) ||
+                  (personData.email !== '' && personData.email !== null)
+                  " placeholder="Email">
                         <template #prefix>
                           <el-icon class="el-input__icon">
                             <Message />
                           </el-icon>
                         </template>
                       </el-input>
+                      <div class="small-text" v-if="emailNotification && !person.email" style="color: #6aa5e9; font-weight: 100 !important; ">{{emailNotification}}</div>
                     </span>
                   </div>
                 </div>
 
-                <div
-                  class="row my-2"
-                  v-if="
-                    selectedCustomField.find(
-                      (i) => i.toLowerCase() == 'address'
-                    )
-                  "
-                >
+                <div class="row my-2" v-if="selectedCustomField.find(
+                  (i) => i.toLowerCase() == 'address'
+                )
+                  ">
                   <div
-                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-                  >
+                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
                     <label for="">Address</label>
                   </div>
                   <div class="col-md-7">
                     <span class="p-input-icon-left w-100">
-                      <el-input
-                        class="w-100 border"
-                        type="text"
-                        v-model="person.address"
-                        aria-required=""
-                        :disabled="personHasAddress"
-                        placeholder="Address"
-                      >
+                      <el-input class="w-100 border" type="text" v-model="person.address" aria-required=""
+                        :disabled="personHasAddress" placeholder="Address">
                         <template #prefix>
                           <el-icon class="el-input__icon">
                             <Location />
@@ -276,249 +188,132 @@
                   </div>
                 </div>
 
-                <div
-                  class="row my-3"
-                  v-if="
-                    selectedCustomField.find(
-                      (i) => i.toLowerCase() == 'birthday'
-                    )
-                  "
-                >
+                <div class="row my-3" v-if="selectedCustomField.find(
+                  (i) => i.toLowerCase() == 'birthday'
+                )
+                  ">
                   <div
-                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-                  >
+                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
                     <label for="">Birthday</label>
                   </div>
                   <div class="col-md-7">
                     <div class="row">
                       <div class="col-6">
-                        <el-select-v2
-                          v-model="birthDay"
-                          class="w-100"
-                          placeholder="Day"
-                          :options="[
-                            { label: 'Day', value: 0 },
-                            ...days.map((i) => ({ label: i, value: i })),
-                          ]"
-                          size="large"
-                        />
+                        <el-select-v2 v-model="birthDay" class="w-100" placeholder="Day" :options="[
+                  { label: 'Day', value: 0 },
+                  ...days.map((i) => ({ label: i, value: i })),
+                ]" size="large" />
                       </div>
                       <div class="col-6">
-                        <el-select-v2
-                          v-model="birthMonth"
-                          class="w-100"
-                          placeholder="Month"
-                          :options="[
-                            { label: 'Month', value: 0 },
-                            ...months.map((i) => ({ label: i, value: i })),
-                          ]"
-                          size="large"
-                        />
+                        <el-select-v2 v-model="birthMonth" class="w-100" placeholder="Month" :options="[
+                  { label: 'Month', value: 0 },
+                  ...months.map((i) => ({ label: i, value: i })),
+                ]" size="large" />
                       </div>
                     </div>
                   </div>
                 </div>
-                <div
-                  class="row my-3"
-                  v-if="
-                    selectedCustomField.find(
-                      (i) => i.toLowerCase() == 'wedding'
-                    )
-                  "
-                >
+                <div class="row my-3" v-if="selectedCustomField.find(
+                  (i) => i.toLowerCase() == 'wedding'
+                )
+                  ">
                   <div
-                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-                  >
+                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
                     <label for="">Wedding</label>
                   </div>
                   <div class="col-md-7">
                     <div class="row">
                       <div class="col-4">
-                        <el-select-v2
-                          v-model="dayOfWedding"
-                          class="w-100"
-                          placeholder="Day"
-                          :options="[
-                            { label: 'Day', value: 0 },
-                            ...days.map((i) => ({ label: i, value: i })),
-                          ]"
-                          size="large"
-                        />
+                        <el-select-v2 v-model="dayOfWedding" class="w-100" placeholder="Day" :options="[
+                  { label: 'Day', value: 0 },
+                  ...days.map((i) => ({ label: i, value: i })),
+                ]" size="large" />
                       </div>
                       <div class="col-4">
-                        <el-select-v2
-                          v-model="monthOfWedding"
-                          class="w-100"
-                          placeholder="Month"
-                          :options="[
-                            { label: 'Month', value: 0 },
-                            ...months.map((i) => ({ label: i, value: i })),
-                          ]"
-                          size="large"
-                        />
+                        <el-select-v2 v-model="monthOfWedding" class="w-100" placeholder="Month" :options="[
+                  { label: 'Month', value: 0 },
+                  ...months.map((i) => ({ label: i, value: i })),
+                ]" size="large" />
                       </div>
                       <div class="col-4">
-                        <el-select-v2
-                          v-model="yearOfWedding"
-                          class="w-100"
-                          placeholder="Year"
-                          :options="[
-                            { label: 'Year', value: 0 },
-                            ...weddingYearsArr.map((i) => ({
-                              label: i,
-                              value: i,
-                            })),
-                          ]"
-                          size="large"
-                        />
+                        <el-select-v2 v-model="yearOfWedding" class="w-100" placeholder="Year" :options="[
+                  { label: 'Year', value: 0 },
+                  ...weddingYearsArr.map((i) => ({
+                    label: i,
+                    value: i,
+                  })),
+                ]" size="large" />
                       </div>
                     </div>
                   </div>
                 </div>
-                <div
-                  class="row my-3"
-                  v-if="
-                    selectedCustomField.find(
-                      (i) => i.toLowerCase() == 'marital status'
-                    )
-                  "
-                >
+                <div class="row my-3" v-if="selectedCustomField.find(
+                  (i) => i.toLowerCase() == 'marital status'
+                )
+                  ">
                   <div
-                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-                  >
+                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
                     <label for="">Marital Status</label>
                   </div>
                   <div class="col-md-7">
-                    <el-select-v2
-                      v-model="maritalStatusId"
-                      @change="setSelectedMaritalStatus"
-                      :options="
-                        maritalStatus.map((i) => ({
-                          label: i.value,
-                          value: i.id,
-                        }))
-                      "
-                      placeholder="Marital status"
-                      size="large"
-                      class="w-100"
-                    />
+                    <el-select-v2 v-model="maritalStatusId" @change="setSelectedMaritalStatus" :options="maritalStatus.map((i) => ({
+                  label: i.value,
+                  value: i.id,
+                }))
+                  " placeholder="Marital status" size="large" class="w-100" />
                   </div>
                 </div>
-                <div
-                  class="row my-3"
-                  v-if="
-                    selectedCustomField.find((i) => i.toLowerCase() == 'gender')
-                  "
-                >
+                <div class="row my-3" v-if="selectedCustomField.find((i) => i.toLowerCase() == 'gender')
+                  ">
                   <div
-                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-                  >
+                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
                     <label for="">Gender</label>
                   </div>
                   <div class="col-md-7">
-                    <el-select-v2
-                      v-model="genderId"
-                      @change="setSelectedGender"
-                      :options="
-                        gender && gender.length > 0
-                          ? gender.map((i) => ({ label: i.value, value: i.id }))
-                          : []
-                      "
-                      placeholder="Gender"
-                      size="large"
-                      class="w-100"
-                    />
+                    <el-select-v2 v-model="genderId" @change="setSelectedGender" :options="gender && gender.length > 0
+                  ? gender.map((i) => ({ label: i.value, value: i.id }))
+                  : []
+                  " placeholder="Gender" size="large" class="w-100" />
                   </div>
                 </div>
-                <div
-                  class="row my-3"
-                  v-for="item in dynamicCustomFields"
-                  :key="item.id"
-                >
+                <div class="row my-3" v-for="item in dynamicCustomFields" :key="item.id">
                   <div
-                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
-                  >
+                    class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
                     <label for="">{{ item.label }}</label>
                   </div>
                   <div class="col-md-7">
-                    <el-input
-                      v-if="item.controlType == 0"
-                      class="w-100"
-                      type="text"
-                      aria-required=""
-                      v-model="item.data"
-                    />
-                    <el-select-v2
-                      v-else-if="item.controlType == 1"
-                      v-model="item.data"
-                      :options="
-                        item.parameterValues
-                          .split(',')
-                          .map((i) => ({ label: i, value: i }))
-                      "
-                      placeholder="Select option"
-                      size="large"
-                      class="w-100"
-                    />
-                    <el-checkbox
-                      v-else-if="item.controlType == 2"
-                      v-model="item.data"
-                    />
-                    <el-date-picker
-                      v-if="item.controlType == 3"
-                      v-model="item.data"
-                      type="datetime"
-                      format="DD/MM/YYYY hh:mm:ss"
-                      size="large"
-                      class="w-100"
-                    />
-                    <el-input
-                      v-if="item.controlType == 4"
-                      class="w-100 border"
-                      type="email"
-                      aria-required=""
-                      v-model="item.data"
-                    />
-                    <input
-                      v-if="item.controlType == 5"
-                      class="w-100 border"
-                      type="file"
-                      aria-required=""
-                    />
-                    <el-input
-                      v-if="item.controlType == 6"
-                      class="w-100 border"
-                      type="number"
-                      aria-required=""
-                      v-model="item.data"
-                    />
+                    <el-input v-if="item.controlType == 0" class="w-100" type="text" aria-required=""
+                      v-model="item.data" />
+                    <el-select-v2 v-else-if="item.controlType == 1" v-model="item.data" :options="item.parameterValues
+                  .split(',')
+                  .map((i) => ({ label: i, value: i }))
+                  " placeholder="Select option" size="large" class="w-100" />
+                    <el-checkbox v-else-if="item.controlType == 2" v-model="item.data" />
+                    <el-date-picker v-if="item.controlType == 3" v-model="item.data" type="datetime"
+                      format="DD/MM/YYYY hh:mm:ss" size="large" class="w-100" />
+                    <el-input v-if="item.controlType == 4" class="w-100 border" type="email" aria-required=""
+                      v-model="item.data" />
+                    <input v-if="item.controlType == 5" class="w-100 border" type="file" aria-required="" />
+                    <el-input v-if="item.controlType == 6" class="w-100 border" type="number" aria-required=""
+                      v-model="item.data" />
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-8 offset-md-3 mt-3 align-self-center">
                     <el-checkbox v-model="displayFamily" />
-                    <span class="ml-3"
-                      >Do you want to register your family for this event?</span
-                    >
+                    <span class="ml-3">Do you want to register your family for this event?</span>
                   </div>
                 </div>
 
                 <div class="row mt-4" v-if="displayFamily">
-                  <FamilyWards
-                    :family="familyWards"
-                    :memberRoles="memberRoles"
-                    :fullEventData="fullEventData"
-                    @newmember="setNewMember"
-                    @nofamilynewmember="setMemberDetails"
-                  />
+                  <FamilyWards :family="familyWards" :memberRoles="memberRoles" :fullEventData="fullEventData"
+                    @newmember="setNewMember" @nofamilynewmember="setMemberDetails" />
                 </div>
 
                 <div class="row my-2">
                   <div class="col-md-12">
                     <div class="row justify-content-center">
-                      <div
-                        class="col-md-5 d-flex justify-content-center cursor-pointer"
-                      >
+                      <div class="col-md-5 d-flex justify-content-center cursor-pointer">
                         <div class="font-weight-bold" round @click="notme">
                           <u>Not Me</u>
                         </div>
@@ -528,36 +323,19 @@
                   <div class="col-md-12 py-3 text-center">
                     <div class="row justify-content-center">
                       <div class="col-md-6">
-                        <el-button
-                          data-toggle="modal"
-                          class="w-100"
-                          data-target="#PaymentOptionModal"
-                          :color="primarycolor"
-                          @click="confirmCheck()"
-                          v-if="fullEventData.paymentFormId"
-                          :disabled="
-                            !person.name ||
-                            person.name.length < 1 ||
-                            !person.email ||
-                            disableClick
-                          "
-                          round
-                        >
+                        <el-button data-toggle="modal" class="w-100" data-target="#PaymentOptionModal"
+                          :color="primarycolor" @click="confirmCheck()" v-if="fullEventData.paymentFormId" :disabled="!person.name ||
+                  person.name.length < 1 ||
+                  !person.email ||
+                  disableClick
+                  " round>
                           Make payment to register
                         </el-button>
-                        <el-button
-                          size="large"
-                          class="mt-3 w-100 mt-sm-0 text-white"
-                          :color="primarycolor"
-                          @click="confirmToRegister"
-                          :disabled="
-                            !person.name ||
-                            person.name.length < 1 ||
-                            disableClick
-                          "
-                          round
-                          v-else
-                        >
+                        <el-button size="large" class="mt-3 w-100 mt-sm-0 text-white" :color="primarycolor"
+                          @click="confirmToRegister" :disabled="!person.name ||
+                  person.name.length < 1 ||
+                  disableClick
+                  " round v-else>
                           Confirm to register
                         </el-button>
                       </div>
@@ -566,75 +344,52 @@
                 </div>
               </div>
             </div>
-            <div
-              class="row justify-content-center"
-              v-if="
-                fullEventData.registrationCutOffTime &&
-                new Date().toISOString() <=
+            <div class="row justify-content-center" v-if="fullEventData.registrationCutOffTime &&
+                  new Date().toISOString() <=
                   new Date(fullEventData.registrationCutOffTime).toISOString()
-              "
-            >
+                  ">
               <div class="col-10  col-md-5 text-center ">
                 <!-- Button code -->
                 <div title="Add to Calendar" class="addeventatc w-100">
                   Add to Calendar
                   <span class="start">{{ fullEventData.eventDate }}</span>
                   <span class="timezone">{{
-                    Intl.DateTimeFormat().resolvedOptions().timeZone
-                  }}</span>
+                  Intl.DateTimeFormat().resolvedOptions().timeZone
+                }}</span>
                   <span class="title">{{ eventData.name }}</span>
                   <span class="description">{{
-                    fullEventData.eventDetails
-                  }}</span>
+                  fullEventData.eventDetails
+                }}</span>
                 </div>
               </div>
             </div>
 
             <div class="row mt-3">
-              <div
-                class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-3 font-weight-700"
-              ></div>
+              <div class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-3 font-weight-700">
+              </div>
               <div class="col-md-7 mt-2">
                 <p class="text-center fw-normal" style="color: #136acd">
                   Powered by CHURCHPLUS
                 </p>
               </div>
               <!-- Modal -->
-              <div
-                class="modal fade"
-                id="PaymentOptionModal"
-                tabindex="-1"
-                role="dialog"
-                aria-labelledby="exampleModalCenterTitle"
-                aria-hidden="true"
-              >
+              <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
                     <div class="modal-header bg-modal">
                       <h5 class="modal-title" id="exampleModalLongTitle">
                         Payment methods
                       </h5>
-                      <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true" ref="close">&times;</span>
                       </button>
                     </div>
                     <div class="modal-body p-0 bg-modal pb-5">
-                      <PaymentOptionModal
-                        :formData="eventPaymentForm"
-                        :close="close"
-                        :donation="donationObj"
-                        @selectedgateway="setGateway"
-                        :currency="paymentFormCurrency"
-                        @donationconfirmed="setConfirmDonation"
-                        :initializePaymentResponse="initializePaymentResponse"
-                        :callPayment="callPayment"
-                        @resetcallpaymentprops="resetCallPayment"
-                      />
+                      <PaymentOptionModal :formData="eventPaymentForm" :close="close" :donation="donationObj"
+                        @selectedgateway="setGateway" :currency="paymentFormCurrency"
+                        @donationconfirmed="setConfirmDonation" :initializePaymentResponse="initializePaymentResponse"
+                        :callPayment="callPayment" @resetcallpaymentprops="resetCallPayment" />
                     </div>
                   </div>
                 </div>
@@ -689,6 +444,7 @@ export default {
     const emails = ref("");
     const address = ref("");
     const enteredValue = ref("");
+    const emailNotification = ref("");
     const loading = ref(false);
     const autosearch = ref(false);
     const noError = ref(true);
@@ -1019,15 +775,15 @@ export default {
         person: person.value.personId
           ? personData.value
           : {
-              mobilePhone: enteredValue.value,
-              firstName: person.value.name.split(" ")[0]
-                ? person.value.name.split(" ")[0]
-                : "",
-              lastName: person.value.name.split(" ")[1]
-                ? person.value.name.split(" ")[1]
-                : "",
-              email: person.value.email ? person.value.email : "",
-            },
+            mobilePhone: enteredValue.value,
+            firstName: person.value.name.split(" ")[0]
+              ? person.value.name.split(" ")[0]
+              : "",
+            lastName: person.value.name.split(" ")[1]
+              ? person.value.name.split(" ")[1]
+              : "",
+            email: person.value.email ? person.value.email : "",
+          },
         customAttributeData: dynamicCustomFields.value.map((i) => ({
           customAttributeID: i.id,
           data: i.data,
@@ -1230,11 +986,23 @@ export default {
 
       try {
         let { data } = await axios.post("/createPublicPerson", createNewPerson);
-        if (displayFamily.value) {
-          createNewFamily(data.returnObject.id);
+        if (data.status === false) {
+          ElMessage({
+            dangerouslyUseHTMLString: true,
+            type: "info",
+            message: `<strong>${data.response}</strong>`,
+            duration: 5000,
+          });
+          emailNotification.value = data.response
+          disableClick.value = false
         } else {
-          confirm(data.returnObject.id);
+          if (displayFamily.value) {
+            createNewFamily(data.returnObject.id);
+          } else {
+            confirm(data.returnObject.id);
+          }
         }
+
       } catch (error) {
         console.log(error);
       }
@@ -1530,6 +1298,7 @@ export default {
       name,
       email,
       maritalStatus,
+      emailNotification,
       userAddress,
       showNoPhoneError,
       notme,
@@ -1591,6 +1360,7 @@ export default {
 
 <style scoped>
 .add-btn {
+  /* background: #6aa5e9; */
   background: #136acd;
   color: #ffffff;
   font-weight: bold;
@@ -1601,6 +1371,7 @@ export default {
 .eventpictbg {
   background: #ebeff4;
 }
+
 .add-btn2 {
   background: none;
 }
