@@ -9,10 +9,10 @@
                             <img v-if="formLogo" :src="formLogo" class="w-100" style="height: 9rem" alt="">
                         </div>
                         <div class="col-md-10  text-center h4  mt-4 font-weight-600">
-                            {{ singleFormData.name }}
+                            {{ singleFormData && singleFormData.name ? singleFormData.name : "" }}
                         </div>
                         <div class="col-md-10 text-center">
-                            {{ singleFormData.description }}
+                            {{ singleFormData && singleFormData.description === "null" ? "" : singleFormData.description }}
                         </div>
                     </div>
                 </div>
@@ -33,21 +33,22 @@
                                     <el-input type="text" class="w-100" v-if="item.controlType === 0"
                                         :placeholder="item.label" v-model="item.data" />
                                     <el-select-v2 v-model="item.data" v-if="item.controlType === 1" :options="item.parameterValues.split(',').map((i) => ({
-                                        label: i,
-                                        value: i,
-                                    }))
-                                        " :placeholder="item.label" class="w-100" size="large" />
+        label: i,
+        value: i,
+    }))
+        " :placeholder="item.label" class="w-100" size="large" />
                                     <el-checkbox v-if="item.controlType === 2" v-model="item.data" size="large" />
                                     <el-date-picker v-if="item.controlType === 3" v-model="item.data" class="w-100"
                                         type="date" :placeholder="item.label" size="default" />
-                                    <el-input type="email" v-if="item.controlType === 4" class="w-100" v-model="item.data"
-                                        :placeholder="item.label" />
-                                    <el-input type="number" v-if="item.controlType === 5" class="w-100" v-model="item.data"
-                                        :placeholder="item.label" />
-                                    <el-input v-model="item.data" v-if="item.controlType === 6" :rows="2" type="textarea"
-                                        :placeholder="item.label" />
+                                    <el-input type="email" v-if="item.controlType === 4" class="w-100"
+                                        v-model="item.data" :placeholder="item.label" />
+                                    <el-input type="number" v-if="item.controlType === 5" class="w-100"
+                                        v-model="item.data" :placeholder="item.label" />
+                                    <el-input v-model="item.data" v-if="item.controlType === 6" :rows="2"
+                                        type="textarea" :placeholder="item.label" />
                                     <span class="w-100 small text-danger"
-                                        v-if="filterIsRequired && filterIsRequired.isRequired && item.isRequired && !item.data">Please fill in
+                                        v-if="filterIsRequired && filterIsRequired.isRequired && item.isRequired && !item.data">Please
+                                        fill in
                                         your {{ item.label }}
                                     </span>
                                 </div>
@@ -60,7 +61,7 @@
                         <!-- <div class="col-md-3"></div> -->
                         <div class="col-md-9" @click="saveForm">
                             <el-button class="w-100" size="large"
-                                :disabled="disabledBtn ||(filterIsRequired && filterIsRequired.isRequired && !filterIsRequired.data) "
+                                :disabled="disabledBtn || (filterIsRequired && filterIsRequired.isRequired && !filterIsRequired.data)"
                                 :loading="loading" round :color="primarycolor"> Submit
                             </el-button>
                         </div>
@@ -176,15 +177,14 @@ export default {
         const filterIsRequired = ref({})
         const requiredField = ref(false)
 
-        const saveForm2 = () => {
-
-
-        }
+        
         const saveForm = async () => {
+
             let isRequiredFalse = singleFormData.value.customAttributes.find(i => i.isRequired === false)
+            let isRequiredNull = singleFormData.value.customAttributes.find(i => i.isRequired === null)
             filterIsRequired.value = singleFormData.value.customAttributes.find(i => i.isRequired === true)
             loading.value = true
-            if (isRequiredFalse && filterIsRequired.value === undefined ) {
+            if (isRequiredFalse && filterIsRequired.value === undefined) {
                 try {
                     const { data } = await axios.post(`/api/public/saveformdata?formID=${route.params.id}`, singleFormData.value.customAttributes.map((i) => ({
                         customAttributeID: i.id,
@@ -227,7 +227,30 @@ export default {
                     loading.value = false
 
                 }
-            } else {
+            } else if (isRequiredNull && isRequiredNull.data && filterIsRequired.value === undefined) {
+                try {
+                    const { data } = await axios.post(`/api/public/saveformdata?formID=${route.params.id}`, singleFormData.value.customAttributes.map((i) => ({
+                        customAttributeID: i.id,
+                        data: i.data,
+                        isRequired: i.isRequired
+                    })))
+                    swal({
+                        title: "Success!",
+                        text: 'Form Successfully Submitted ',
+                        icon: "success",
+                        confirmButtonColor: '#8CD4F5',
+                        dangerMode: true,
+                    })
+                    disabledBtn.value = true
+                    loading.value = false
+                }
+                catch (error) {
+                    console.log(error);
+                    loading.value = false
+
+                }
+                
+            }else{
                 loading.value = false
                 disabledBtn.value = false
             }
@@ -255,7 +278,6 @@ export default {
             networkError,
             filterIsRequired,
             requiredField,
-            saveForm2,
             addNewField,
             saveForm,
             checkComma,
@@ -305,4 +327,5 @@ export default {
     border-radius: 3px;
     display:flex;
     align-items: center; */
-}</style>
+}
+</style>

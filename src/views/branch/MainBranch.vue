@@ -596,24 +596,19 @@
       </div>
     </el-dialog>
     <el-dialog v-model="displayJoinModal" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" align-center>
-      <div class="row ">
-        <div class=" pr-2">
-          <div class=" py-3">
+      <div class="row justify-content-center ">
+        <div class="col-md-10 ">
+          <div class=" col-md-12 text-center py-3">
             <h5 class=" font-weight-700" id="importgroupModalLabel">
               Enter your code to join a branch network
             </h5>
           </div>
           <div class="row">
             <div class="col-md-12">
-              <div class="p-field p-col-12 p-md-4">
-                <!-- <span class="p-float-label"> -->
                 <el-input class="w-100" id="inputtext" placeholder="Enter your code" type="text" v-model="code" />
-                <!-- <label for="inputtext">Enter your code</label> -->
-                <!-- </span> -->
-              </div>
             </div>
             <div class="col-md-12 d-flex justify-content-center ">
-              <el-button class="mt-3 mb-3  col-4  text-white font-weight-bold c-pointer border-0 text-center"
+              <el-button class="mt-3 mb-3  col-md-5  text-white font-weight-bold c-pointer border-0 text-center"
                 :color="primarycolor" size="large" round @click="joinNetwork">
                 Join network
               </el-button>

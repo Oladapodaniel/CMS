@@ -152,7 +152,7 @@
                   </div>
                   <div class="col-md-7">
                     <span class="p-input-icon-left w-100 my-md-3">
-                      <el-input class="w-100" type="text" v-model="person.email" aria-required="" :disabled="(person.personId && personData.email) ||
+                      <el-input class="w-100" :class="{'border border-warning' : emailNotification }" type="text" v-model="person.email" aria-required="" :disabled="(person.personId && personData.email) ||
                   (personData.email !== '' && personData.email !== null)
                   " placeholder="Email">
                         <template #prefix>
@@ -161,7 +161,7 @@
                           </el-icon>
                         </template>
                       </el-input>
-                      <div class="small-text" v-if="emailNotification && !person.email" style="color: #6aa5e9; font-weight: 100 !important; ">{{emailNotification}}</div>
+                      <div class="small-text notify-text" v-if="emailNotification" >{{emailNotification}}</div>
                     </span>
                   </div>
                 </div>
@@ -989,7 +989,7 @@ export default {
         if (data.status === false) {
           ElMessage({
             dangerouslyUseHTMLString: true,
-            type: "info",
+            type: "warning",
             message: `<strong>${data.response}</strong>`,
             duration: 5000,
           });
@@ -1359,6 +1359,12 @@ export default {
 </script>
 
 <style scoped>
+.notify-text{
+  color: #E6A23C; 
+  /* background-color: #778593;  */
+  font-style: italic; 
+  font-weight: 100 !important;
+}
 .add-btn {
   /* background: #6aa5e9; */
   background: #136acd;
