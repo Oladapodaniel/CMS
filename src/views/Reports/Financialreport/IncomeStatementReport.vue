@@ -113,8 +113,15 @@
               title=""
               distance="5"
               :titleMargin="10"
-              :summary="groupofIcomeAndExpense"
+              :summary="mappedIncomeAndExpensePieChart"
             />
+            <!-- <IncomeStatementChart
+              domId="chart"
+              title=""
+              distance="5"
+              :titleMargin="10"
+              :summary="groupofIcomeAndExpense"
+            /> -->
           </div>
 
           <div
@@ -484,12 +491,18 @@ export default {
       for (const prop in result) {
         groupofIcomeAndExpense.value.push({
           name: prop,
-          value: result[prop].reduce((acc, cur) => {
-            return Math.abs(acc + cur.amount);
-          }, 0),
+          value: result[prop].length,
+          // value: result[prop].reduce((acc, cur) => {
+          //   return Math.abs(acc + cur.amount);
+          // }, 0),
         });
       }
     };
+
+    const mappedIncomeAndExpensePieChart = computed(() => {
+      if (groupofIcomeAndExpense.value.length === 0) return [];
+      return groupofIcomeAndExpense.value.map((i) => i);
+    });
 
     const columnChart = computed(() => {
       if (groupofIcomeAndExpense.value.length === 0) return [];
@@ -561,6 +574,7 @@ export default {
     return {
       sumOfDiffAcctInFunds,
       groupAccountCategoery,
+      mappedIncomeAndExpensePieChart,
       primarycolor,
       loading,
       fundSum,
