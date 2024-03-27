@@ -67,7 +67,7 @@
 import { ref, computed, watch } from "vue"
 import Table from "@/components/table/Table"
 // import store from "../../../store/store"
-// import { ElMessage } from 'element-plus'
+import { ElMessage } from 'element-plus'
 import monthDayYear from "../../../services/dates/dateformatter";
 import axios from "@/gateway/backendapi";
 export default {
@@ -77,6 +77,7 @@ export default {
     setup() {
         const scheduleVocieList = ref([]);
         const searchVoiceText = ref("");
+        const voiceLoading = ref(false);
 
         const voiceHeaders = ref([
             { name: 'Subject', value: 'subject' },
@@ -89,13 +90,15 @@ export default {
         ])
 
         const getScheduleVoice = async () => {
+            voiceLoading.value = true
             try {
                 const { data } = await axios.get('/api/Messaging/getVoiceSchedules')
                 scheduleVocieList.value = data
-                console.log(scheduleVocieList.value, 'hhjjhj');
+                voiceLoading.value = false
             }
             catch (err) {
                 console.log(err);
+                voiceLoading.value = false
             }
         }
         getScheduleVoice()
@@ -134,6 +137,7 @@ export default {
             searchVoiceText,
             voiceHeaders,
             copyToClipBoard,
+            voiceLoading,
             date
         }
 
