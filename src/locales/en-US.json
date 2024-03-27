@@ -79,5 +79,10 @@
     "add-fst-timers" : "Add first timers",
     "keep-accurate" : "Keep accurate record and follow up your first timers with our automated system.",
     "skip-dashboard" : "Skip To Dashboard"
+  },
+  "dashboard": {
+    "text-head" : "Dashboard",
+    "create-new" : "Create new",
+    "expired-content" : "10 days remaining before your subscription expires, kindly subscribe before"
   }
 }

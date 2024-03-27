@@ -12,7 +12,8 @@
                             {{ singleFormData && singleFormData.name ? singleFormData.name : "" }}
                         </div>
                         <div class="col-md-10 text-center">
-                            {{ singleFormData && singleFormData.description === "null" ? "" : singleFormData.description }}
+                            {{ singleFormData && singleFormData.description === "null" ? "" : singleFormData.description
+                            }}
                         </div>
                     </div>
                 </div>
@@ -27,16 +28,14 @@
                         <div class="col-md-12" v-for="(item, index) in singleFormData.customAttributes " :key="index">
                             <div class="row mt-3 justify-content-center ">
 
-                                <div class="col-md-10  " style="font-weight: 500">
-                                    <label for="">{{ item.label }} <span v-if="item.isRequired" style="color: red">
-                                            *</span></label>
+                                <div class="col-md-10  " style="font-weight: 450; font-size: 14px;">
+                                    <div for="">{{ item.label }} <span v-if="item.isRequired" style="color: red">
+                                            *</span></div>
                                     <el-input type="text" class="w-100" v-if="item.controlType === 0"
                                         :placeholder="item.label" v-model="item.data" />
-                                    <el-select-v2 v-model="item.data" v-if="item.controlType === 1" :options="item.parameterValues.split(',').map((i) => ({
-        label: i,
-        value: i,
-    }))
-        " :placeholder="item.label" class="w-100" size="large" />
+                                    <el-select-v2 v-model="item.data" v-if="item.controlType === 1"
+                                        :options="item.parameterValues.split(',').map((i) => ({ label: i, value: i, }))"
+                                        :placeholder="item.label" class="w-100" size="large" />
                                     <el-checkbox v-if="item.controlType === 2" v-model="item.data" size="large" />
                                     <el-date-picker v-if="item.controlType === 3" v-model="item.data" class="w-100"
                                         type="date" :placeholder="item.label" size="default" />
@@ -177,7 +176,7 @@ export default {
         const filterIsRequired = ref({})
         const requiredField = ref(false)
 
-        
+
         const saveForm = async () => {
 
             let isRequiredFalse = singleFormData.value.customAttributes.find(i => i.isRequired === false)
@@ -249,8 +248,8 @@ export default {
                     loading.value = false
 
                 }
-                
-            }else{
+
+            } else {
                 loading.value = false
                 disabledBtn.value = false
             }
