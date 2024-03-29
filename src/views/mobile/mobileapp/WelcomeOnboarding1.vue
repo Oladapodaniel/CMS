@@ -75,9 +75,10 @@
                                     Spiritually with Faith Connect App.</div>
                             </div>
                             <div class="col-md-9 mt-4 d-flex  justify-content-center">
+                                <div></div>
                                 <router-link :to="{ name: 'OnboardingProcess' }"
-                                    class=" d-flex  justify-content-center"><el-button round color="#120DFA"
-                                        size="large" class="btn default-btn  c-pointer">Start now for
+                                    class=" d-flex  justify-content-center text-decoration-none"><el-button round color="#120DFA"
+                                        size="large" class=" c-pointer">Start now for
                                         FREE</el-button></router-link>
                             </div>
                         </div>
