@@ -91,9 +91,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 d-flex d-none d-md-block justify-content-center col-12"
+                    <div class="col-md-6 d-flex justify-content-center col-12"
                         :class="{ 'yourFaith': yourFaith, 'yourFaith2': !yourFaith }">
-                        <img class="" src="../../../assets/mobileonboarding/phone-three.png" alt="">
+                        <img class=" d-none d-md-block " src="../../../assets/mobileonboarding/phone-three.png" alt="">
                     </div>
                 </div>
             </div>
