@@ -299,7 +299,7 @@
               <div class="more-body mt-2">
                 Get a customized mobile app for your church.
               </div>
-              <router-link :to="{ name: 'MobileOnboarding' }" class="no-decoration">
+              <router-link :to="{ name: 'WelcomeOnboarding1' }" class="no-decoration">
                 <el-button class="mt-1" round>Set up now</el-button>
               </router-link>
             </div>
@@ -517,7 +517,7 @@
               <div class="more-body mt-2">
                 Get a customized mobile app for your church.
               </div>
-              <router-link :to="{ name: 'MobileOnboarding' }" class="no-decoration">
+              <router-link :to="{ name: 'WelcomeOnboarding1' }" class="no-decoration">
                 <el-button class="mt-1" round>Set up now</el-button>
               </router-link>
             </div>
