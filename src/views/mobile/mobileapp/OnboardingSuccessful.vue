@@ -184,7 +184,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 export default {
   setup() {
 
-    const link = ref("https://play.google.com/store/apps/details?id=com.churchplus.app.genericapp")
+    const link = ref("https://play.google.com/store/apps/details?id=com.faithconnect")
     const toast = useToast()
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
 

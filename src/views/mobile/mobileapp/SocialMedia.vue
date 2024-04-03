@@ -16,6 +16,9 @@
           <div v-if="socialMedia.name === 'youtube channel ID'" class="col-12 mt-1">
             <el-input v-if="socialMedia.name === 'youtube channel ID'" type="text"
               placeholder="Enter your Youtube channel id" v-model="socialMedia.url" class="w-100  outline-none " />
+              <div class="col-md-12 px-0 d-flex justify-content-end mt-1">
+                <a style="background: #B4F1F4; border-radius: 5px" class="py-1 text-decoration-none text-dark px-3 small text-font" href="https://www.youtube.com/watch?v=3mrKjzrIiq4" target="_blank" rel="noopener noreferrer">How to get it?</a>
+              </div>
           </div>
         </div>
         <div class="row mt-4">
