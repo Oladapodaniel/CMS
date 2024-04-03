@@ -419,6 +419,7 @@ export default {
     };
 
     const save = () => {
+      console.log(remitance.value, 'fjfjj')
       let contributionCategory = {
         name: name.value,
         incomeAccountId: selectedIncomeAccount.value
@@ -427,10 +428,10 @@ export default {
         cashAccountId: selectedCashAccount.value
           ? selectedCashAccount.value.id
           : "",
-        incomeRemittance: remitance.value
+        incomeRemittance: remitance.value ? remitance.value : ""
       };
 
-      if (remitance.value[0].account || remitance.value[0].percentage) {
+      if (remitance.value[0] && remitance.value[0].account || remitance.value[0] && remitance.value[0].percentage) {
         contributionCategory.incomeRemittance = remitance.value.map((i) => {
           if (!i.account.financialFundID) delete i.account.financialFundID;
           let payload = {};

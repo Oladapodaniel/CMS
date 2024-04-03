@@ -12,8 +12,8 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item v-for="(item, index) in createNew" :key="index" @click="router.push(item.to)">{{
-                item.name
-              }}</el-dropdown-item>
+    item.name
+  }}</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -26,13 +26,13 @@
               10 days remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -43,13 +43,13 @@
               9 days remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -60,13 +60,13 @@
               8 days remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -77,13 +77,13 @@
               7 days remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -94,13 +94,13 @@
               6 days remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -111,13 +111,13 @@
               5 days remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -128,13 +128,13 @@
               4 days remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -145,13 +145,13 @@
               3 days remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -162,13 +162,13 @@
               2 days remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -179,13 +179,13 @@
               1 day remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -220,7 +220,7 @@
                 <div class="">
                   <p class="mb-0 s-8">FIRST TIMERS</p>
                   <h4 class="primary--text font-weight-700 mt-1 s-16">{{ tenantInfoBasic &&
-                    tenantInfoBasic.firstTimerCount ? tenantInfoBasic.firstTimerCount : 0 }}</h4>
+    tenantInfoBasic.firstTimerCount ? tenantInfoBasic.firstTimerCount : 0 }}</h4>
                 </div>
               </div>
               <div>
@@ -267,9 +267,19 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-8 offset-2 offset-md-0 col-md-3 p-0" v-if="tenantInfoCeleb.length > 0 ||
-            (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.some(i => i > 0)) ||
-            (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.some(i => i > 0))
-            ">
+    (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.some(i => i > 0)) ||
+    (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.some(i => i > 0))
+    ">
+            <!-- <div class="more-things side p-3 mt-4" v-if="!tenantInfoExtra.hasMobileApp">
+              <img src="../../assets/mobileapp2.svg" class="w-100" />
+              <div class="mt-4">Mobile App</div>
+              <div class="more-body mt-2">
+                Get a customized mobile app for your church.
+              </div>
+              <router-link :to="{ name: 'WelcomeOnboarding1' }" class="no-decoration">
+                <el-button class="mt-1" round>Set up now</el-button>
+              </router-link>
+            </div> -->
             <div class="more-things side p-3" v-if="!tenantInfoExtra.hasWebsite">
 
               <img src="../../assets/website2.svg" class="w-100" />
@@ -292,29 +302,18 @@
                 <el-button class="mt-1" round>Set up now</el-button>
               </router-link>
             </div>
-
-            <div class="more-things side p-3 mt-4" v-if="!tenantInfoExtra.hasMobileApp">
-              <img src="../../assets/mobileapp2.svg" class="w-100" />
-              <div class="mt-4">Mobile App</div>
-              <div class="more-body mt-2">
-                Get a customized mobile app for your church.
-              </div>
-              <router-link :to="{ name: 'WelcomeOnboarding1' }" class="no-decoration">
-                <el-button class="mt-1" round>Set up now</el-button>
-              </router-link>
-            </div>
           </div>
 
           <div :class="{
-            'col-12 col-md-9':
-              !tenantInfoExtra.hasMobileApp ||
-              !tenantInfoExtra.hasOnlineGiving ||
-              !tenantInfoExtra.hasWebsite,
-            'col-md-12 px-0':
-              tenantInfoExtra.hasMobileApp &&
-              tenantInfoExtra.hasOnlineGiving &&
-              tenantInfoExtra.hasWebsite,
-          }">
+    'col-12 col-md-9':
+      !tenantInfoExtra.hasMobileApp ||
+      !tenantInfoExtra.hasOnlineGiving ||
+      !tenantInfoExtra.hasWebsite,
+    'col-md-12 px-0':
+      tenantInfoExtra.hasMobileApp &&
+      tenantInfoExtra.hasOnlineGiving &&
+      tenantInfoExtra.hasWebsite,
+  }">
 
             <div v-if="tenantInfoCeleb && tenantInfoCeleb.length > 0">
               <div class="celeb-header">
@@ -372,16 +371,16 @@
                         <el-dropdown-menu>
                           <el-dropdown-item>
                             <router-link :to="item.phone
-                                ? `/tenant/sms/compose?phone=${item.phone}`
-                                : ''
-                              " :class="{ 'fade-text': !item.phone, 'text-color': item.phone }">Send
+    ? `/tenant/sms/compose?phone=${item.phone}`
+    : ''
+    " :class="{ 'fade-text': !item.phone, 'text-color': item.phone }">Send
                               SMS</router-link>
                           </el-dropdown-item>
                           <el-dropdown-item>
                             <router-link :to="item.email
-                                ? `/tenant/email/compose?phone=${item.email}`
-                                : ''
-                              " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send
+    ? `/tenant/email/compose?phone=${item.email}`
+    : ''
+    " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send
                               Email</router-link>
                           </el-dropdown-item>
                         </el-dropdown-menu>
@@ -392,15 +391,15 @@
               </Table>
             </div>
             <div v-show="tenantInfoCeleb.length > 0 ||
-              (tenantInfoFirstTimerWeekly[0] &&
-                tenantInfoFirstTimerWeekly[0].data.length > 0) ||
-              (tenantInfoFirstTimerWeekly[0] &&
-                tenantInfoFirstTimerWeekly[0].data[0] > 0) ||
-              (tenantInfoAttendanceWeekly[0] &&
-                tenantInfoAttendanceWeekly[0].data.length > 0) ||
-              (tenantInfoAttendanceWeekly[0] &&
-                tenantInfoAttendanceWeekly[0].data[0] > 0)
-              ">
+    (tenantInfoFirstTimerWeekly[0] &&
+      tenantInfoFirstTimerWeekly[0].data.length > 0) ||
+    (tenantInfoFirstTimerWeekly[0] &&
+      tenantInfoFirstTimerWeekly[0].data[0] > 0) ||
+    (tenantInfoAttendanceWeekly[0] &&
+      tenantInfoAttendanceWeekly[0].data.length > 0) ||
+    (tenantInfoAttendanceWeekly[0] &&
+      tenantInfoAttendanceWeekly[0].data[0] > 0)
+    ">
               <div v-if="tenantInfoAttendanceWeekly && attendanceDataExist">
                 <div class="adjust-view col-10 col-sm-3 offset-sm-9 mt-5 mt-md-0">
                   <div class="view-report">View Reports</div>
@@ -412,7 +411,8 @@
                 </div>
                 <div v-if="attendanceBoolean" class="mt-4">
                   <ColumnChart domId="chart1" title="Event Attendance" subtitle="Weekly Attendance of Events"
-                    header="Members Attendance" :data="chartData" :series="series" :attendanceSeries="attendanceSeries" />
+                    header="Members Attendance" :data="chartData" :series="series"
+                    :attendanceSeries="attendanceSeries" />
                 </div>
                 <div v-else class="mt-4">
                   <ColumnChart domId="chart1" title="Event Attendance" subtitle="Monthly Attendance of Events"
@@ -449,15 +449,15 @@
                   <div class="row">
                     <div class="col-12 col-md-6 d-flex justify-content-center">
                       <ByGenderChart domId="source" title="Invitation Source" distance="5" :titleMargin="10" :summary="tenantInfoInvitationSource
-                          ? tenantInfoInvitationSource
-                          : []
-                        " />
+    ? tenantInfoInvitationSource
+    : []
+    " />
                     </div>
                     <div class="col-12 col-md-6 mt-3 mt-md-0 d-flex justify-content-center">
                       <ByMaritalStatusChart domId="join" title="Interested In Joining" :titleMargin="10" :summary="tenantInfoInterestedInJoining
-                          ? tenantInfoInterestedInJoining
-                          : []
-                        " />
+    ? tenantInfoInterestedInJoining
+    : []
+    " />
                     </div>
                   </div>
                 </div>
@@ -467,9 +467,9 @@
         </div>
       </div>
       <div v-if="tenantInfoCeleb.length === 0 &&
-        (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.every(i => i === 0)) &&
-        (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.every(i => i === 0))
-        ">
+    (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.every(i => i === 0)) &&
+    (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.every(i => i === 0))
+    ">
         <div class="container-fluid mt-5">
           <div class="row">
             <div class="col-12 more-things">
@@ -493,6 +493,20 @@
                 <el-button class="mt-1" round>Get one now</el-button>
               </a>
             </div>
+            <!-- <div class="col-12 col-sm-6 col-md-4 mt-5 mt-md-0 more-things">
+              <img src="../../assets/mobileapp2.svg" />
+              <div class="mt-4">
+                <div class="can-do">
+                  <h4>Mobile app</h4>
+                </div>
+              </div>
+              <div class="more-body mt-2">
+                Get a customized mobile app for your church.
+              </div>
+              <router-link :to="{ name: 'WelcomeOnboarding1' }" class="no-decoration">
+                <el-button class="mt-1" round>Set up now</el-button>
+              </router-link>
+            </div> -->
             <div class="col-12 col-sm-6 col-md-4 mt-5 mt-sm-0 more-things second">
               <img src="../../assets/onlinegiving2.svg" />
               <div class="mt-4">
@@ -504,20 +518,6 @@
                 Allow members to make online donations to your church.
               </div>
               <router-link to="/tenant/payments" class="no-decoration">
-                <el-button class="mt-1" round>Set up now</el-button>
-              </router-link>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 mt-5 mt-md-0 more-things">
-              <img src="../../assets/mobileapp2.svg" />
-              <div class="mt-4">
-                <div class="can-do">
-                  <h4>Mobile app</h4>
-                </div>
-              </div>
-              <div class="more-body mt-2">
-                Get a customized mobile app for your church.
-              </div>
-              <router-link :to="{ name: 'WelcomeOnboarding1' }" class="no-decoration">
                 <el-button class="mt-1" round>Set up now</el-button>
               </router-link>
             </div>

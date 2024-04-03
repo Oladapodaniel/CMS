@@ -3,10 +3,10 @@
         <div class="row" v-if="welcome">
             <div class="col-md-12" style="background: #F9FAFBE3;">
                 <div class="row">
-                    <div class="col-md-12  mt-3 d-flex justify-content-end">
-                        <img src="../../../assets/mobileonboarding/progressicon.png" alt="">
+                    <div class="col-md-12   mt-3 d-flex justify-content-end">
+                        <img class="d-none d-md-block" src="../../../assets/mobileonboarding/progressicon.png" alt="">
                     </div>
-                    <div class="col-md-6   d-flex justify-content-center col-12"
+                    <div class="col-md-6 d-none d-md-block   d-flex justify-content-center col-12"
                         :class="{ 'welcomebox': welcome, 'welcomebox2': !welcome }">
                         <img class="w-100" src="../../../assets/mobileonboarding/phone-one.png" alt="">
                     </div>
@@ -30,15 +30,17 @@
             </div>
         </div>
         <div class="row mt-3" :class="{ 'box3': gateway, 'box4': !gateway }">
-            <div class="col-md-12 " style="background: #F9FAFBE3;">
+            <div class="col-md-12  " style="background: #F9FAFBE3;">
                 <div class="row justify-content-center">
-                    <div class="col-md-12  mt-3 d-flex justify-content-end">
-                        <img src="../../../assets/mobileonboarding/progressicon2.png" alt="">
+                    <div class="col-md-12   mt-3 d-flex justify-content-end">
+                        <img class="d-none d-md-block" src="../../../assets/mobileonboarding/progressicon2.png" alt="">
                     </div>
-                    <div class="col-md-7 d-flex  col-12" :class="{ 'box1': gateway, 'box2': !gateway }">
-                        <img class="w-100" src="../../../assets/mobileonboarding/phone-two.png" alt="">
-                        <div class="col-md-2 align-items-end d-flex justify-content-end" style="height: 60vh">
-                            <el-button color="#120DFA" @click="next2" size="large" class="ml-2 pr-2 " round>Next
+                    <div class="col-md-7 d-flex     col-12"
+                        :class="{ 'box1': gateway, 'box2': !gateway }">
+                        <img class="w-100 d-none d-md-block" src="../../../assets/mobileonboarding/phone-two.png"
+                            alt="">
+                        <div class="col-md-2  align-items-end  d-flex justify-content-end" style="height: 60vh;">
+                            <el-button color="#120DFA" @click="next2" size="large" class="ml-2 p-0  d-none d-md-block " round>Next
                                 <el-icon :size="20">
                                     <Right />
                                 </el-icon> </el-button>
@@ -52,6 +54,12 @@
                                 <div class="text-font">Explore Inspirational Media, Engage in Worship, and Give Back
                                     Online.
                                 </div>
+                                <div class=" d-block d-md-none my-4">
+                                    <el-button color="#120DFA" @click="next2" size="large" class="ml-2 pr-2 " round>Next
+                                        <el-icon :size="20">
+                                            <Right />
+                                        </el-icon> </el-button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -61,10 +69,10 @@
         <div class="row mt-3" :class="{ 'yourFaith3': yourFaith, 'yourFaith4': !yourFaith }">
             <div class="col-md-12 " style="background: #F9FAFBE3;">
                 <div class="row">
-                    <div class="col-md-12  mt-3 d-flex justify-content-end">
-                        <img src="../../../assets/mobileonboarding/progressicon3.png" alt="">
+                    <div class="col-md-12   mt-3 d-md-flex justify-content-end">
+                        <img class="d-none d-md-block" src="../../../assets/mobileonboarding/progressicon3.png" alt="">
                     </div>
-                    <div class="col-md-6 d-flex  align-items-center col-12 "
+                    <div class="col-md-6  d-flex  align-items-center col-12 "
                         :class="{ 'yourFaithbox': yourFaith, 'yourFaithbox1': !yourFaith }">
                         <div class="row d-flex  align-items-center">
                             <div class="col-md-9  text-center ">
@@ -77,13 +85,13 @@
                             <div class="col-md-9 mt-4 d-flex  justify-content-center">
                                 <div></div>
                                 <router-link :to="{ name: 'OnboardingProcess' }"
-                                    class=" d-flex  justify-content-center text-decoration-none"><el-button round color="#120DFA"
-                                        size="large" class=" c-pointer">Start now for
+                                    class=" d-flex  justify-content-center text-decoration-none"><el-button round
+                                        color="#120DFA" size="large" class=" c-pointer">Start now for
                                         FREE</el-button></router-link>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 d-flex justify-content-center col-12"
+                    <div class="col-md-6 d-flex d-none d-md-block justify-content-center col-12"
                         :class="{ 'yourFaith': yourFaith, 'yourFaith2': !yourFaith }">
                         <img class="" src="../../../assets/mobileonboarding/phone-three.png" alt="">
                     </div>
@@ -230,96 +238,96 @@ export default {
     transition: all 0.3s ease-in-out;
 }
 
-@media screen  and (min-width : 781px ) {
+@media screen and (min-width : 781px) {
     .box1 {
-    transform: translateX(60%);
-    transition: all 0.3s ease-in-out;
-}
+        transform: translateX(60%);
+        transition: all 0.3s ease-in-out;
+    }
 
 
-.box2 {
-    transform: translateX(0%);
-    width: 0 !important;
-    height: 0;
-    overflow: hidden;
+    .box2 {
+        transform: translateX(0%);
+        width: 0 !important;
+        height: 0;
+        overflow: hidden;
 
-    transition: all 0.3s ease-in-out;
-}
+        transition: all 0.3s ease-in-out;
+    }
 
-.box3 {
-    width: 100% !important;
-}
+    .box3 {
+        width: 100% !important;
+    }
 
-.box4 {
-    width: 0 !important;
-    height: 0;
-    overflow: hidden;
-}
+    .box4 {
+        width: 0 !important;
+        height: 0;
+        overflow: hidden;
+    }
 
-.yourFaith3 {
-    width: 100% !important;
-}
+    .yourFaith3 {
+        width: 100% !important;
+    }
 
-.yourFaith4 {
-    width: 0 !important;
-    height: 0;
-    overflow: hidden;
-}
+    .yourFaith4 {
+        width: 0 !important;
+        height: 0;
+        overflow: hidden;
+    }
 
-.yourFaithbox {
-    transform: translateX(105%);
-    transition: all 0.3s ease-in-out;
-}
+    .yourFaithbox {
+        transform: translateX(105%);
+        transition: all 0.3s ease-in-out;
+    }
 
-.yourFaithbox1 {
-    transform: translateX(0%);
-    width: 0 !important;
-    height: 0;
-    overflow: hidden;
-}
+    .yourFaithbox1 {
+        transform: translateX(0%);
+        width: 0 !important;
+        height: 0;
+        overflow: hidden;
+    }
 
-.GatewayText {
-    transform: translateX(-140%);
-    width: 100% !important;
-    transition: all 0.3s ease-in-out;
-}
+    .GatewayText {
+        transform: translateX(-140%);
+        width: 100% !important;
+        transition: all 0.3s ease-in-out;
+    }
 
-.GatewayText2 {
-    transform: translateX(60%);
-    width: 0 !important;
-    height: 0;
-    overflow: hidden;
-    transition: all 0.3s ease-in-out;
-}
+    .GatewayText2 {
+        transform: translateX(60%);
+        width: 0 !important;
+        height: 0;
+        overflow: hidden;
+        transition: all 0.3s ease-in-out;
+    }
 
-.yourFaith {
-    transform: translateX(-95%);
-    width: 100% !important;
-    transition: all 0.3s ease-in-out;
-}
+    .yourFaith {
+        transform: translateX(-95%);
+        width: 100% !important;
+        transition: all 0.3s ease-in-out;
+    }
 
-.yourFaith2 {
-    transform: translateX(0%);
-    width: 0 !important;
-    height: 0;
-    overflow: hidden;
+    .yourFaith2 {
+        transform: translateX(0%);
+        width: 0 !important;
+        height: 0;
+        overflow: hidden;
 
-    transition: all 0.3s ease-in-out;
-    ;
-}
+        transition: all 0.3s ease-in-out;
+        ;
+    }
 
-.welcomebox {
-    /* transform: translateX(40% - 60%); */
-    transition: all 0.3s ease-in-out;
-    /* width: 100% !important; */
-}
+    .welcomebox {
+        /* transform: translateX(40% - 60%); */
+        transition: all 0.3s ease-in-out;
+        /* width: 100% !important; */
+    }
 
-.welcomebox2 {
-    /* transform: translateX(0); */
-    width: 0 !important;
-    height: 0;
-    overflow: hidden;
-    transition: all 0.3s ease-in-out;
-}
+    .welcomebox2 {
+        /* transform: translateX(0); */
+        width: 0 !important;
+        height: 0;
+        overflow: hidden;
+        transition: all 0.3s ease-in-out;
+    }
 }
 </style>
