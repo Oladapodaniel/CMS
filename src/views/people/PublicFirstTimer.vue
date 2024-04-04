@@ -307,7 +307,7 @@
                       >Save and add another</el-button
                     > -->
                     <el-button class="mx-0 mx-sm-2 text-white" :color="primarycolor" :loading="loading"
-                      :disabled="loading || !firstTimersObj.firstName" @click.prevent="onSubmit" round>Save</el-button>
+                      :disabled="loading || !firstTimersObj.firstName || !checked " @click.prevent="onSubmit" round>Save</el-button>
                   </div>
                 </div>
               </div>
