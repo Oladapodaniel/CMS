@@ -2,7 +2,7 @@
   <div class="container ward-table-wrapper">
     <div class="row my-3">
       <div class="col-md-10 mx-auto d-flex justify-content-end">
-        <!-- <button
+        <button
           class="default-btn font-weight-bold border primary-text add-ward-btn c-pointer"
           ref="showModal"
           data-toggle="modal"
@@ -10,8 +10,8 @@
           @click="addNewWard"
         >
           Add ward
-        </button> -->
-        <el-button
+        </button>
+        <!-- <el-button
           size="large"
           @click="addNewWard"
           data-toggle="modal"
@@ -20,7 +20,7 @@
           round
         >
           Add Ward
-        </el-button>
+        </el-button> -->
       </div>
     </div>
 

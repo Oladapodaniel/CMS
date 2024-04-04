@@ -668,43 +668,6 @@
                       </div>
                     </div>
                   </div>
-                  <!-- <div class="col-md-7">
-                    <el-dropdown class="w-100" trigger="click">
-                      <span class="el-dropdown-link w-100">
-                        <el-input type="text" v-model="userSearchString" @input="searchForUsers" autocomplete="off" />
-                      </span>
-                      <template #dropdown>
-                        <el-dropdown-menu>
-                          <el-icon class="is-loading" v-if="loading && userSearchString.length >= 3">
-                            <Loading />
-                          </el-icon>
-                          <el-dropdown-item v-for="(member, index) in searchedMembers" :key="index"
-                            @click="addExistingMember(member)">{{ member.name }} - {{ member.phone }}</el-dropdown-item>
-                          <el-dropdown-item v-if="userSearchString.length < 3" disabled>Enter 3 or more
-                            characters</el-dropdown-item>
-                          <el-dropdown-item @click="showAddMemberForm" divided><el-icon :size="20"
-                              class="text-primary ">
-                              <CirclePlus />
-                            </el-icon> <span class="text-primary font-weight-bold">Add new donor</span>
-                          </el-dropdown-item>
-                        </el-dropdown-menu>
-                      </template>
-                    </el-dropdown>
-
-                    <div class="row mt-4 d-flex justify-content-between">
-                      <div class="col-md-6">
-                        <el-button round size="large" class="w-100" data-dismiss="modal">
-                          Cancel
-                        </el-button>
-                      </div>
-                      <div class="col-md-6">
-                        <el-button class="w-100 border-0 text-white" data-dismiss="modal" @click="addDonor" size="large"
-                          round :color="primarycolor">
-                          Save
-                        </el-button>
-                      </div>
-                    </div>
-                  </div> -->
                 </div>
               </div>
             </div>

@@ -90,39 +90,23 @@
             </div> -->
             <el-dropdown class="w-100" trigger="click">
               <span class="el-dropdown-link w-100">
-                <el-input
-                  type="text"
-                  v-model="userSearchString"
-                  @input="searchForUsers"
-                  ref="searchRef"
-                  :disabled="routeParams !== ''"
-                  autocomplete="off"
-                />
+                <el-input type="text" v-model="userSearchString" @input="searchForUsers" ref="searchRef"
+                  :disabled="routeParams !== ''" autocomplete="off" />
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-icon
-                    class="is-loading"
-                    v-if="loading && userSearchString.length >= 3"
-                  >
+                  <el-icon class="is-loading" v-if="loading && userSearchString.length >= 3">
                     <Loading />
                   </el-icon>
-                  <el-dropdown-item
-                    v-for="(member, index) in searchedMembers"
-                    :key="index"
-                    @click="addExistingMember(member)"
-                    >{{ member.name }}
+                  <el-dropdown-item v-for="(member, index) in searchedMembers" :key="index"
+                    @click="addExistingMember(member)">{{ member.name }}
                   </el-dropdown-item>
-                  <el-dropdown-item v-if="userSearchString.length < 3" disabled
-                    >Enter 3 or more characters</el-dropdown-item
-                  >
-                  <el-dropdown-item
-                    @click="showAddMemberForm"
-                    style="color: #136acd"
-                    divided
-                    ><el-icon><CirclePlus /></el-icon>Add new
-                    member</el-dropdown-item
-                  >
+                  <el-dropdown-item v-if="userSearchString.length < 3" disabled>Enter 3 or more
+                    characters</el-dropdown-item>
+                  <el-dropdown-item @click="showAddMemberForm" style="color: #136acd" divided><el-icon>
+                      <CirclePlus />
+                    </el-icon>Add new
+                    member</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -208,45 +192,26 @@
 
             <el-dropdown class="w-100" trigger="click">
               <span class="el-dropdown-link w-100">
-                <el-input
-                  type="text"
-                  v-model="motherSearchString"
-                  @input="motherSearchForUsers"
-                  ref="searchRef"
-                  :disabled="routeParams !== ''"
-                  autocomplete="off"
-                />
+                <el-input type="text" v-model="motherSearchString" @input="motherSearchForUsers" ref="searchRef"
+                  :disabled="routeParams !== ''" autocomplete="off" />
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-icon
-                    class="is-loading"
-                    v-if="
-                    motherSearchingForMembers &&
-                    motherSearchedMembers.length === 0
-                  "
-                  >
+                  <el-icon class="is-loading" v-if="motherSearchingForMembers &&
+              motherSearchedMembers.length === 0
+              ">
                     <Loading />
                   </el-icon>
-                  <el-dropdown-item
-                    v-for="(member, index) in motherSearchedMembers"
-                    :key="index"
-                    @click="addExistingMemberForMother(member)"
-                    >{{ member.name }}
+                  <el-dropdown-item v-for="(member, index) in motherSearchedMembers" :key="index"
+                    @click="addExistingMemberForMother(member)">{{ member.name }}
                   </el-dropdown-item>
-                  <el-dropdown-item v-if="
-                    motherSearchString.length < 3 &&
-                    motherSearchedMembers.length === 0
-                  " disabled
-                    >Enter 3 or more characters</el-dropdown-item
-                  >
-                  <el-dropdown-item
-                    @click="showAddMemberFormForMother"
-                    style="color: #136acd"
-                    divided
-                    ><el-icon><CirclePlus /></el-icon>Add new
-                    member</el-dropdown-item
-                  >
+                  <el-dropdown-item v-if="motherSearchString.length < 3 &&
+              motherSearchedMembers.length === 0
+              " disabled>Enter 3 or more characters</el-dropdown-item>
+                  <el-dropdown-item @click="showAddMemberFormForMother" style="color: #136acd" divided><el-icon>
+                      <CirclePlus />
+                    </el-icon>Add new
+                    member</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -286,15 +251,9 @@
 
     <div class="row mt-5">
       <div class="col-md-10 mx-auto">
-        <FamilyWards
-          :familyMembers="familyMembers"
-          :memberRoles="memberRoles"
-          @edit-member="editMember"
-          @clear-field="clearField"
-          @member-index="memberOfIndex"
-          :showWardModal="showWardModal"
-          @remove-ward="removeWard"
-        />
+        <FamilyWards :familyMembers="familyMembers" :memberRoles="memberRoles" @edit-member="editMember"
+          @clear-field="clearField" @member-index="memberOfIndex" :showWardModal="showWardModal"
+          @remove-ward="removeWard" />
       </div>
     </div>
 
@@ -303,11 +262,7 @@
         <!-- <button class="default-btn text-dark font-weight-bold border mx-4">
           Cancel
         </button> -->
-        <el-button
-          round
-          size="large"
-          class="border-0 text-dark font-weight-bold mx-4"
-        >
+        <el-button round size="large" class="border-0 text-dark font-weight-bold mx-4">
           Cancel
         </el-button>
 
@@ -317,45 +272,27 @@
         >
           Save
         </button> -->
-        <el-button
-          size="large"
-          @click="createFamily"
-          :loading="loading"
-          class="font-weight-bold border text-white primary-bg mx-4"
-          round
-        >
+        <el-button size="large" @click="createFamily" :loading="loading"
+          class="font-weight-bold border text-white primary-bg mx-4" round>
           Save
         </el-button>
       </div>
     </div>
 
     <!-- Add Ward Modal -->
-    <div
-      class="modal fade"
-      id="addWard"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="addWard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header py-4">
-            <h4
-              class="modal-title font-weight-bold px-4"
-              id="exampleModalLabel"
-            >
+            <h4 class="modal-title font-weight-bold px-4" id="exampleModalLabel">
               Add New Ward
             </h4>
-            <button
-              type="button"
-              ref="close"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
+            <button type="button" ref="close" class="close" data-dismiss="modal" aria-label="Close">
               <!-- <span aria-hidden="true"><i class="pi pi-times"></i> </span> -->
-              <span><el-icon><Close /></el-icon></span>
+              <span><el-icon>
+                  <Close />
+                </el-icon></span>
             </button>
           </div>
 
@@ -363,69 +300,81 @@
             <!-- <MemberForm  @member-roles="getMemberRoles" @remove-modal="dismissModal" @push-to-view="pushToView" /> -->
             <div class="row px-4 pb-3">
               <div class="col-sm-10">Search for ward in church</div>
-              <div class="dropdown col-sm-10">
-                <!-- <el-input
-                  type="text"
-                  placeholder="Enter ward name"
-                  class="mt-2"
-                  id="dropdownMenuButton"
-                  data-toggle="dropdown"
-                  v-model="wardSearchString"
-                  @input="wardSearchForUsers"
-                /> -->
-                <!-- <div
-                  class="dropdown-menu w-100"
-                  aria-labelledby="dropdownMenuButton"
-                >
+              <div class="col-sm-10">
+                <div class="dropdown">
+                  <div class="input-group" id="dropdownMenuButton" data-toggle="dropdown">
+                    <input type="text" class="form-control" v-model="wardSearchString" @input="wardSearchForUsers"
+                      autocomplete="off" />
+                    <div class="input-group-append">
+                      <span class="input-group-text">
+                        <el-icon>
+                          <ArrowDownBold />
+                        </el-icon>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                    <div class="row w-100 mx-auto" v-if="false">
+                      <div class="col-md-12">
+                        <el-input type="text" class="w-100" placeholder="Find event" />
+                      </div>
+                    </div>
+
+                    <a class="dropdown-item font-weight-700 small-text" href="#"
+                      v-for="(member, index) in wardSearchedMembers" :key="index"
+                      @click="addExistingMemberForWard(member)">{{ member.name }} - {{ member.phone }}</a>
+                    <a class="dropdown-item font-weight-700 small-text" href="#"
+                      v-if="wardSearchingForMembers && wardSearchedMembers.length === 0">
+                      <el-icon class="is-loading">
+                        <Loading />
+                      </el-icon>
+                    </a>
+                    <p class="modal-promt pl-1 bg-secondary m-0"
+                      v-if="wardSearchingForMembers.length < 3 && wardSearchedMembers.length === 0">
+                      Enter 3 or more characters
+                    </p>
+                    <a class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary--text c-pointer"
+                      style="border-top: 1px solid #002044" @click="showAddMemberFormForWard" data-dismiss="modal">
+                      <el-icon class="d-flex align-items-center mr-1">
+                        <CirclePlus />
+                      </el-icon>
+                      Add new donor
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- <div class="dropdown col-sm-10"> -->
+                <!-- <el-input type="text" placeholder="Enter ward name" class="mt-2" id="dropdownMenuButton"
+                  data-toggle="dropdown" v-model="wardSearchString" @input="wardSearchForUsers" />
+                <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
                   <div class="row w-100 mx-auto" v-if="false">
                     <div class="col-md-12">
                       <el-input type="text" placeholder="Find event" />
                     </div>
                   </div>
 
-                  <a
-                    class="dropdown-item font-weight-700 small-text"
-                    href="#"
-                    v-for="(member, index) in wardSearchedMembers"
-                    :key="index"
-                    @click="addExistingMemberForWard(member)"
-                    >{{ member.name }}</a
-                  >
-                  <a
-                    class="dropdown-item font-weight-700 small-text"
-                    href="#"
-                    v-if="
-                      wardSearchingForMembers &&
-                      wardSearchedMembers.length === 0
-                    "
-                    ><i class="pi pi-spin pi-spinner"></i
-                  ></a>
-                  <p
-                    class="modal-promt pl-1 bg-secondary m-0"
-                    v-if="
-                      wardSearchString.length < 3 &&
-                      wardSearchedMembers.length === 0
-                    "
-                  >
+                  <a class="dropdown-item font-weight-700 small-text" href="#"
+                    v-for="(member, index) in wardSearchedMembers" :key="index"
+                    @click="addExistingMemberForWard(member)">{{ member.name }}</a>
+                  <a class="dropdown-item font-weight-700 small-text" href="#"
+                    v-if="wardSearchingForMembers && wardSearchedMembers.length === 0"><i
+                      class="pi pi-spin pi-spinner"></i></a>
+                  <p class="modal-promt pl-1 bg-secondary m-0"
+                    v-if="wardSearchString.length < 3 && wardSearchedMembers.length === 0">
                     Enter 3 or more characters
                   </p>
-                  <a
-                    class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
-                    style="border-top: 1px solid #002044; color: #136acd"
-                    @click="showAddMemberFormForWard"
-                    data-dismiss="modal"
-                  >
-                    <el-icon
-                      class="mr-2 primary-text d-flex align-items-center"
-                      style="color: #136acd"
-                      :size="20"
-                      ><CirclePlus
-                    /></el-icon>
+                  <a class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
+                    style="border-top: 1px solid #002044; color: #136acd" @click="showAddMemberFormForWard"
+                    data-dismiss="modal">
+                    <el-icon class="mr-2 primary-text d-flex align-items-center" style="color: #136acd" :size="20">
+                      <CirclePlus />
+                    </el-icon>
 
                     Add new member
                   </a>
                 </div> -->
-                <el-dropdown class="w-100" trigger="click">
+                <!-- <el-dropdown class="w-100" trigger="click">
                   <span class="el-dropdown-link w-100">
                     <el-input
                       type="text"
@@ -459,8 +408,8 @@
                       >
                     </el-dropdown-menu>
                   </template>
-                </el-dropdown>
-              </div>
+                </el-dropdown> -->
+              <!-- </div> -->
 
               <div class="col-sm-10 mt-3">Role</div>
               <div class="col-sm-10">
@@ -501,13 +450,10 @@
 
                 <el-dropdown class="w-100" trigger="click">
                   <span class="el-dropdown-link w-100">
-                    <div
-                      class="d-flex justify-content-between border-contribution text-dark w-100"
-                      size="large"
-                    >
+                    <div class="d-flex justify-content-between border-contribution text-dark w-100" size="large">
                       <span>{{
-                        roleId.name ? roleId.name : "Select role"
-                      }}</span>
+              roleId.name ? roleId.name : "Select role"
+            }}</span>
                       <div>
                         <el-icon class="el-icon--right">
                           <arrow-down />
@@ -518,17 +464,11 @@
 
                   <template #dropdown>
                     <el-dropdown-menu>
-                      <el-icon
-                        class="is-loading"
-                        v-if="loading && userSearchString.length >= 3"
-                      >
+                      <el-icon class="is-loading" v-if="loading && userSearchString.length >= 3">
                         <Loading />
                       </el-icon>
-                      <el-dropdown-item
-                        v-for="(itm, indx) in memberRoles"
-                        :key="indx"
-                        @click="selectmemberRole(itm)"
-                        >{{ itm.name }}
+                      <el-dropdown-item v-for="(itm, indx) in memberRoles" :key="indx" @click="selectmemberRole(itm)">{{
+              itm.name }}
                       </el-dropdown-item>
                     </el-dropdown-menu>
                   </template>
@@ -548,14 +488,8 @@
                   Save
                 </button> -->
 
-                <el-button
-                  round
-                  :color="primarycolor"
-                  size="large"
-                  data-dismiss="modal"
-                  class="border-0 text-white text-center"
-                  @click="addWard"
-                >
+                <el-button round :color="primarycolor" size="large" data-dismiss="modal"
+                  class="border-0 text-white text-center" @click="addWard">
                   Save
                 </el-button>
               </div>
@@ -565,19 +499,11 @@
       </div>
     </div>
 
-    <Dialog
-      header="Create New Member"
-      v-model:visible="display"
-      :style="{ width: '70vw', maxWidth: '600px' }"
-      :modal="true"
-      position="top"
-    >
+    <Dialog header="Create New Member" v-model:visible="display" :style="{ width: '70vw', maxWidth: '600px' }"
+      :modal="true" position="top">
       <div class="row">
         <div class="col-md-12">
-          <NewPerson
-            @cancel="() => (display = false)"
-            @person-id="getFatherId($event)"
-          />
+          <NewPerson @cancel="() => (display = false)" @person-id="getFatherId($event)" />
         </div>
       </div>
     </Dialog>
@@ -598,35 +524,24 @@
         </div>
       </div>
     </Dialog> -->
-    <el-dialog header= "Create New Member" v-model:visible="motherDisplay" :style="{ width: '70vw', maxWidth: '600px' }"
-      :modal="true"
-      position="top" >
+    <el-dialog header="Create New Member" v-model="motherDisplay" :style="{ width: '70vw', maxWidth: '600px' }"
+      :modal="true" position="top">
       <div class="row">
         <div class="col-md-12">
-          <NewPerson
-            @cancel="() => (motherDisplay = false)"
-            @person-id="getMotherId($event)"
-          />
+          <NewPerson @cancel="() => (motherDisplay = false)" @person-id="getMotherId($event)" />
         </div>
       </div>
     </el-dialog>
-    <Dialog
-      header="Create New Member"
-      v-model:visible="wardDisplay"
-      :style="{ width: '70vw', maxWidth: '600px' }"
-      :modal="true"
-      position="top"
-    >
+    <el-dialog header="Create New Member" v-model="wardDisplay" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+      :modal="true" position="top">
       <div class="row">
         <div class="col-md-12">
-          <NewPerson
-            @cancel="() => (wardDisplay = false)"
-            @person-id="getWardId($event)"
-            @show-ward-modal="setWardModal"
-          />
+          <NewPerson @cancel="() => (wardDisplay = false)" @person-id="getWardId($event)"
+            @show-ward-modal="setWardModal" />
+          <!-- <NewPerson @cancel="() => (wardDisplay = false)" @person-id="getWardId($event)"/> -->
         </div>
       </div>
-    </Dialog>
+    </el-dialog>
   </div>
 </template>
 
@@ -636,6 +551,7 @@ import FamilyWards from "./FamilyWards";
 import membershipService from "../../services/membership/membershipservice";
 import Dialog from "primevue/dialog";
 import NewPerson from "../../components/membership/NewDonor.vue";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
 import { useRoute } from "vue-router";
@@ -656,6 +572,7 @@ export default {
     // const toast = useToast();
     const route = useRoute();
     const primarycolor = inject("primarycolor");
+    const { lgAndUp, xlAndUp, mdAndUp } = deviceBreakpoint();
     const familyMembers = ref([]);
     const memberRoles = ref([]);
     const close = ref("");
@@ -692,7 +609,7 @@ export default {
         let { data } = await axios.get("/getfamilyroles");
         memberRoles.value = data.result;
         getFamilyDetails();
-      } catch (err) {}
+      } catch (err) { }
     };
     getFamilyRoles();
 
@@ -947,16 +864,16 @@ export default {
       if (!route.params.id) {
         try {
           let res = await axios.post("/api/family/createFamily", family);
-         
+
           if (res.status === 200) {
             ElMessage({
               type: "success",
               message: "Family created successfully",
             });
-             loading.value = false;
-             store.dispatch("family/getAllFamilies").then(() => {
-            router.push("/tenant/family");
-          });
+            loading.value = false;
+            store.dispatch("family/getAllFamilies").then(() => {
+              router.push("/tenant/family");
+            });
 
 
           } else {
@@ -965,8 +882,8 @@ export default {
               message: "Failed, try again",
             });
           }
-         
-          
+
+
         } catch (err) {
           // console.log(err.response, "MECHANIC")
           ElMessage({
@@ -975,7 +892,7 @@ export default {
             duration: 5000,
           });
         }
-        
+
       } else {
         try {
           let res = await axios.put("/api/family/editProfile", updateProfile);
@@ -1002,25 +919,21 @@ export default {
           console.log(res, "🎈🎈🎄");
           familyName.value = res.data.familyName;
 
-          userSearchString.value = `${
-            res.data.father && res.data.father.firstName
-              ? res.data.father.firstName
-              : ""
-          } ${
-            res.data.father && res.data.father.lastName
+          userSearchString.value = `${res.data.father && res.data.father.firstName
+            ? res.data.father.firstName
+            : ""
+            } ${res.data.father && res.data.father.lastName
               ? res.data.father.lastName
               : ""
-          }`;
+            }`;
 
-          motherSearchString.value = `${
-            res.data.mother && res.data.mother.firstName
-              ? res.data.mother.firstName
-              : ""
-          } ${
-            res.data.mother && res.data.mother.lastName
+          motherSearchString.value = `${res.data.mother && res.data.mother.firstName
+            ? res.data.mother.firstName
+            : ""
+            } ${res.data.mother && res.data.mother.lastName
               ? res.data.mother.lastName
               : ""
-          }`;
+            }`;
 
           father.value = { id: res.data.fatherID };
 
@@ -1074,6 +987,7 @@ export default {
     };
 
     const setWardModal = (payload) => {
+      console.log(payload, 'gshshhs');
       showWardModal.value = payload;
     };
 
@@ -1088,6 +1002,7 @@ export default {
       close,
       // pushToView,
       familyMembers,
+      lgAndUp, xlAndUp, mdAndUp,
       createFamily,
       mother,
       father,

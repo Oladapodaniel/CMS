@@ -10,13 +10,14 @@
                             </div>
                             <div class="col-md-8">
                                 <el-select-v2 v-model="memberClassificationId" @change="setSelectedMem"
-                                    :options="memberships.map(i => ({ label: i.name, value: i.id }))" placeholder="--Select membership--"
-                                    size="large" class="w-100" />
+                                    :options="memberships.map(i => ({ label: i.name, value: i.id }))"
+                                    placeholder="--Select membership--" size="large" class="w-100" />
                             </div>
                         </div>
                         <div class="row my-3">
                             <div class="col-md-4 text-md-right pr-md-0">
-                                <label for="" class="font-weight-700">Firstname<span class="text-danger">*</span></label>
+                                <label for="" class="font-weight-700">Firstname<span
+                                        class="text-danger">*</span></label>
                             </div>
                             <div class="col-md-8">
                                 <el-input type="text" v-model="donor.firstName" placeholder="Enter first name" />
@@ -55,7 +56,7 @@
                                     <div class="d-flex justify-content-between border-contribution text-dark w-100"
                                         size="large">
                                         <span>{{ Object.keys(genderType).length > 0 ? genderType.value : 'Gender'
-                                        }} </span>
+                                            }} </span>
                                         <div>
                                             <el-icon class="el-icon--right">
                                                 <arrow-down />
@@ -95,7 +96,8 @@
                                                 <el-dropdown-menu>
                                                     <el-dropdown-item v-for="(birthDay, index) in birthDaysArr"
                                                         :key="index">
-                                                        <a class="no-decoration text-dark" @click="addbirthDays(birthDay)">
+                                                        <a class="no-decoration text-dark"
+                                                            @click="addbirthDays(birthDay)">
                                                             {{ birthDay }}
                                                         </a>
                                                     </el-dropdown-item>
@@ -117,7 +119,8 @@
                                             <template #dropdown>
                                                 <el-dropdown-menu>
                                                     <el-dropdown-item v-for="(month, index) in months" :key="index">
-                                                        <a class="no-decoration text-dark" @click="addBirthMonth(month)">
+                                                        <a class="no-decoration text-dark"
+                                                            @click="addBirthMonth(month)">
                                                             {{ month }}
                                                         </a>
                                                     </el-dropdown-item>
@@ -176,6 +179,7 @@
 <script>
 import moment from "moment";
 import { reactive, ref, computed, inject } from 'vue'
+import { ElMessage } from "element-plus";
 import { useRoute } from "vue-router";
 import router from "@/router/index";
 import axios from "@/gateway/backendapi";
@@ -210,26 +214,26 @@ export default {
         const getPeopleClassifications = async () => {
             try {
                 const response = await axios.get(
-                "/api/Settings/GetTenantPeopleClassification"
+                    "/api/Settings/GetTenantPeopleClassification"
                 );
                 const { data } = response;
                 memberships.value = data;
                 console.log(memberships.value, 'kkkhhh');
             } catch (err) {
                 if (err.response && err.response.status === 401) {
-                localStorage.removeItem("token");
+                    localStorage.removeItem("token");
 
-                router.push("/");
+                    router.push("/");
                 }
                 console.log(err);
             }
-            };
-            getPeopleClassifications()
+        };
+        getPeopleClassifications()
 
-            const setSelectedMem = () => {
-                selectedMembership.value = memberships.value.find((i) => i.id == memberClassificationId.value )
-                // console.log(selectedMembership.value, 'hhhhh');
-            }
+        const setSelectedMem = () => {
+            selectedMembership.value = memberships.value.find((i) => i.id == memberClassificationId.value)
+            // console.log(selectedMembership.value, 'hhhhh');
+        }
 
         const addGenderType = (gender) => {
             genderType.value = gender;
@@ -291,7 +295,7 @@ export default {
             formData.append("mobilePhone", donor.mobilePhone ? donor.mobilePhone : "")
             formData.append("email", donor.email ? donor.email : "")
             formData.append("gender", genderType.value.id ? genderType.value.id : "")
-            formData.append("peopleClassificationID", selectedMembership.value ? selectedMembership.value.id : "" );
+            formData.append("peopleClassificationID", selectedMembership.value ? selectedMembership.value.id : "");
             formData.append("dayOfBirth", birthDay.value ? birthDay.value : "")
             formData.append("monthOfBirth", months.value.indexOf(birthMonth.value) + 1 ? months.value.indexOf(birthMonth.value) + 1 : "")
             formData.append("yearOfBirth", birthYear.value ? birthYear.value : "")
@@ -320,7 +324,14 @@ export default {
                             loading.value = false
                             console.log(error)
                             if (error.response) {
-                                console.log(error.response)
+                                console.log(error.response.data)
+                                ElMessage({
+                                    type: "warning",
+                                    showClose: true,
+                                    message: error.response.data.message,
+                                    duration: 5000,
+                                });
+
                             } else {
                                 reject(error);
                             }
