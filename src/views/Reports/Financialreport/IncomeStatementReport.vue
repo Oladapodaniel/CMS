@@ -507,18 +507,17 @@ export default {
     const columnChart = computed(() => {
       let expenseValue = groupofIcomeAndExpense.value.find(i => i.name === 'Expense')
       let incomeValue = groupofIcomeAndExpense.value.find(i => i.name === 'Income')
-      console.log(incomeValue ? incomeValue.value : 'nn', 'jjjjj');
       allIncomeAndExpenses.value  = []
       if (groupofIcomeAndExpense.value.length === 0) return [];
       allIncomeAndExpenses.value.push({
         name: "Expense",
-         color: '#CCCCCC',
+         color: '#0066FF',
         data: expenseValue ? [expenseValue.value] : []
       });
 
       allIncomeAndExpenses.value.push({
         name: "income",
-         color: '#0066FF',
+         color: '#CCCCCC',
         data: incomeValue ? [incomeValue.value] : []
       });
       return allIncomeAndExpenses.value;
