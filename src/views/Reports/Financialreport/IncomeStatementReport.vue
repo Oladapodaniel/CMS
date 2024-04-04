@@ -505,17 +505,19 @@ export default {
     });
 
     const columnChart = computed(() => {
+      console.log(groupofIcomeAndExpense.value, 'lkk');
+      allIncomeAndExpenses.value  = []
       if (groupofIcomeAndExpense.value.length === 0) return [];
       allIncomeAndExpenses.value.push({
-        name: "Income",
-        //  color: '#002044',
-        data: [groupofIcomeAndExpense.value[0].value],
+        name: "Expense",
+         color: '#CCCCCC',
+        data: [groupofIcomeAndExpense.value[1].value],
       });
 
       allIncomeAndExpenses.value.push({
-        name: "Expense",
-        //  color: '#002044',
-        data: [groupofIcomeAndExpense.value[1].value],
+        name: "income",
+         color: '#0066FF',
+        data: [groupofIcomeAndExpense.value[0].value],
       });
       return allIncomeAndExpenses.value;
     });

@@ -4,25 +4,14 @@
       <div class="col-md-12 d-flex justify-content-center my-3">
         <div class="col-md-3 mt-4 d-flex align-items-center">
           <div class="pl-2">
-            <img
-              :src="churchLogo"
-              v-if="churchLogo"
-              class="link-image"
-              alt=""
-              style="width: 60px"
-            />
-            <img
-              src="../../assets/dashboardlinks/churchcloud.png"
-              v-else
-              class="link-image"
-              alt=""
-            />
+            <img :src="churchLogo" v-if="churchLogo" class="link-image" alt="" style="width: 60px" />
+            <img src="../../assets/dashboardlinks/churchcloud.png" v-else class="link-image" alt="" />
           </div>
-          <span
-            ><h4 class="font-weight-bold mt-3">
+          <span>
+            <h4 class="font-weight-bold mt-3">
               {{ churchName ? churchName : "Churchplus" }}
-            </h4></span
-          >
+            </h4>
+          </span>
         </div>
       </div>
     </div>
@@ -39,55 +28,31 @@
           <div class="grey-bg">
             <div v-if="routeParams">
               <div class="person-img">
-                <img
-                  v-if="!memberToEdit.pictureUrl"
-                  src="../../assets/people/phone-import.svg"
-                  alt="Uploaded Image"
-                />
-                <img
-                  v-else
-                  :src="memberToEdit.pictureUrl"
-                  alt="Uploaded Image"
-                  style="
+                <img v-if="!memberToEdit.pictureUrl" src="../../assets/people/phone-import.svg" alt="Uploaded Image" />
+                <img v-else :src="memberToEdit.pictureUrl" alt="Uploaded Image" style="
                     width: 110px;
                     height: 110px;
                     border-radius: 50%;
                     object-fit: cover;
-                  "
-                />
+                  " />
               </div>
             </div>
             <div v-else>
               <div class="person-img">
-                <img
-                  v-if="!url"
-                  src="../../assets/people/phone-import.svg"
-                  alt="Uploaded Image"
-                />
-                <img
-                  v-else
-                  :src="url"
-                  alt="Uploaded Image"
-                  style="
+                <img v-if="!url" src="../../assets/people/phone-import.svg" alt="Uploaded Image" />
+                <img v-else :src="url" alt="Uploaded Image" style="
                     width: 110px;
                     height: 110px;
                     border-radius: 50%;
                     object-fit: cover;
-                  "
-                />
+                  " />
               </div>
             </div>
             <div>
               <div class="cs-input">
                 <label for="imgUpload" class="choose-file">
                   Choose image
-                  <input
-                    type="file"
-                    class="input file-input"
-                    placeholder=""
-                    id="imgUpload"
-                    @change="imageSelected"
-                  />
+                  <input type="file" class="input file-input" placeholder="" id="imgUpload" @change="imageSelected" />
                 </label>
               </div>
             </div>
@@ -96,159 +61,79 @@
         <el-col :sm="16" :md="16" :lg="16" :xl="16" class="p-0">
           <el-form :model="person" style="width: 100%">
             <el-form-item>
-              <div
-                class="d-flex flex-column flex-lg-row justify-content-end w-100"
-              >
-                <label for="firstName" class="mr-3 font-weight-600"
-                  >Membership</label
-                >
-                <el-select-v2
-                  v-model="memberClassificationId"
-                  @change="setSelectedMem"
-                  :options="
-                    memberships.map((i) => ({ label: i.name, value: i.id }))
-                  "
-                  placeholder="--Select membership--"
-                  size="large"
-                  class="input-width"
-                />
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="firstName" class="mr-3 font-weight-600">Membership</label>
+                <el-select-v2 v-model="memberClassificationId" @change="setSelectedMem" :options="memberships.map((i) => ({ label: i.name, value: i.id }))
+              " placeholder="--Select membership--" size="large" class="input-width" />
               </div>
             </el-form-item>
             <el-form-item>
-              <div
-                class="d-flex flex-column flex-lg-row justify-content-end w-100"
-              >
-                <label for="firstName" class="mr-3 font-weight-600"
-                  >Firstname<span style="color: red"> *</span></label
-                >
-                <el-input
-                  type="text"
-                  class="input-width"
-                  v-model="person.firstName"
-                  placeholder="First name"
-                />
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="firstName" class="mr-3 font-weight-600">Firstname<span style="color: red"> *</span></label>
+                <el-input type="text" class="input-width" v-model="person.firstName" placeholder="First name" />
               </div>
             </el-form-item>
             <el-form-item>
-              <div
-                class="d-flex flex-column flex-lg-row justify-content-end w-100"
-              >
-                <label for="firstName" class="mr-3 font-weight-600"
-                  >Surname</label
-                >
-                <el-input
-                  type="text"
-                  class="input-width"
-                  v-model="person.lastName"
-                  placeholder="Last name"
-                />
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="firstName" class="mr-3 font-weight-600">Surname</label>
+                <el-input type="text" class="input-width" v-model="person.lastName" placeholder="Last name" />
               </div>
             </el-form-item>
             <el-form-item>
-              <div
-                class="d-flex flex-column flex-lg-row justify-content-end w-100"
-              >
-                <label for="firstName" class="mr-3 font-weight-600"
-                  >Phone number</label
-                >
-                <vue-tel-input
-                  style="height: 40px"
-                  class="input-width"
-                  v-model="person.mobilePhone"
-                  mode="international"
-                ></vue-tel-input>
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="firstName" class="mr-3 font-weight-600">Phone number</label>
+                <vue-tel-input style="height: 40px" class="input-width" v-model="person.mobilePhone"
+                  mode="international"></vue-tel-input>
               </div>
             </el-form-item>
             <el-form-item>
-              <div
-                class="d-flex flex-column flex-lg-row justify-content-end w-100"
-              >
-                <label for="firstName" class="mr-3 font-weight-600"
-                  >Email</label
-                >
-                <el-input
-                  type="text"
-                  class="input-width"
-                  v-model="person.email"
-                  placeholder="Email"
-                />
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="firstName" class="mr-3 font-weight-600">Email</label>
+                <el-input type="text" class="input-width" v-model="person.email" placeholder="Email" />
               </div>
             </el-form-item>
             <el-form-item>
-              <div
-                class="d-flex flex-column flex-lg-row justify-content-end w-100"
-              >
-                <label for="firstName" class="mr-3 font-weight-600"
-                  >Address</label
-                >
-                <el-input
-                  type="text"
-                  class="input-width"
-                  v-model="person.address"
-                  placeholder="Address"
-                />
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="firstName" class="mr-3 font-weight-600">Address</label>
+                <el-input type="text" class="input-width" v-model="person.address" placeholder="Address" />
               </div>
             </el-form-item>
             <el-form-item>
-              <div
-                class="d-flex flex-column flex-lg-row justify-content-end w-100"
-              >
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <div class="input-width d-flex">
-                  <el-select-v2
-                    v-model="maritalStatusId"
-                    @change="setSelectedMaritalStatus"
-                    :options="
-                      maritalStatus.map((i) => ({
-                        label: i.value,
-                        value: i.id,
-                      }))
-                    "
-                    placeholder="Marital status"
-                    size="large"
-                    class="w-100 mr-1"
-                  />
-                  <el-select-v2
-                    v-model="genderId"
-                    @change="setSelectedGender"
-                    :options="
-                      genders && genders.length > 0
-                        ? genders.map((i) => ({ label: i.value, value: i.id }))
-                        : []
-                    "
-                    placeholder="Gender"
-                    size="large"
-                    class="w-100 ml-1"
-                  />
+                  <el-select-v2 v-model="maritalStatusId" @change="setSelectedMaritalStatus" :options="maritalStatus.map((i) => ({
+              label: i.value,
+              value: i.id,
+            }))
+              " placeholder="Marital status" size="large" class="w-100 mr-1" />
+                  <el-select-v2 v-model="genderId" @change="setSelectedGender" :options="genders && genders.length > 0
+              ? genders.map((i) => ({ label: i.value, value: i.id }))
+              : []
+              " placeholder="Gender" size="large" class="w-100 ml-1" />
                 </div>
               </div>
             </el-form-item>
             <el-form-item v-if="!route.query.groupID">
-              <div
-                class="d-flex flex-column flex-lg-row justify-content-end w-100"
-              >
-                <label for="" class="font-weight-600 related-info"
-                  >Which Group[s] Do You Belong To?
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <label for="" class="font-weight-600 related-info">Which Group[s] Do You Belong To?
                 </label>
                 <div class="input-width d-flex">
                   <el-tabs type="border-card" class="w-100">
                     <div class="  add-group bg-white">
-                      <div
-                        v-for="(item, index) in peopleInGroupIDs"
-                        :key="index"
-                      >
-                      <div class="d-flex justify-content-between align-items-center">
-                        <div class="pt-1"><span class="text-secondary">{{ index + 1 }}.</span> <span class="font-weight-700">{{ item.name }}</span></div>
-                        <el-icon class="text-danger" @click="showConfirmModal(index, item)"><CircleClose /></el-icon>
-                      </div>
+                      <div v-for="(item, index) in peopleInGroupIDs" :key="index">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div class="pt-1"><span class="text-secondary">{{ index + 1 }}.</span> <span
+                              class="font-weight-700">{{ item.name }}</span></div>
+                          <el-icon class="text-danger" @click="showConfirmModal(index, item)">
+                            <CircleClose />
+                          </el-icon>
+                        </div>
                       </div>
                       <div v-if="peopleInGroupIDs.length === 0">
                         No group added yet
                       </div>
-                      <div
-                        class="pt-2 mt-2 font-weight-700 text-primary border-top text-center c-pointer"
-                        data-toggle="modal"
-                        data-target="#addToGroup"
-                      >
+                      <div class="pt-2 mt-2 font-weight-700 text-primary border-top text-center c-pointer"
+                        data-toggle="modal" data-target="#addToGroup">
                         Choose group
                       </div>
                     </div>
@@ -280,10 +165,7 @@
               <div class="font-weight-700">Celebrations</div>
               <el-divider> </el-divider>
               <div>
-                <el-icon
-                  class="angle-icon"
-                  @click="showCelebration = !showCelebration"
-                >
+                <el-icon class="angle-icon" @click="showCelebration = !showCelebration">
                   <ArrowDownBold />
                 </el-icon>
               </div>
@@ -291,83 +173,42 @@
             <el-collapse-transition>
               <div v-show="showCelebration">
                 <el-form-item>
-                  <div
-                    class="d-flex flex-column flex-lg-row justify-content-end w-100"
-                  >
+                  <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                     <div class="mr-3 font-weight-600">Birthday</div>
                     <div class="input-width d-flex">
-                      <el-select-v2
-                        v-model="person.dayOfBirth"
-                        :options="[
-                          { label: 'Day', value: 0 },
-                          ...birthDaysArr.map((i) => ({ label: i, value: i })),
-                        ]"
-                        placeholder="Day"
-                        size="large"
-                        class="w-100 mr-1"
-                      />
-                      <el-select-v2
-                        v-model="person.monthOfBirth"
-                        :options="[
-                          { label: 'Month', value: 0 },
-                          ...months.map((i) => ({ label: i, value: i })),
-                        ]"
-                        placeholder="Month"
-                        size="large"
-                        class="w-100 ml-1"
-                      />
-                      <el-select-v2
-                        v-model="person.yearOfBirth"
-                        :options="[
-                          { label: 'Year', value: 0 },
-                          ...birthYearsArr.map((i) => ({ label: i, value: i })),
-                        ]"
-                        placeholder="Year"
-                        size="large"
-                        class="w-100 ml-1"
-                      />
+                      <el-select-v2 v-model="person.dayOfBirth" :options="[
+              { label: 'Day', value: 0 },
+              ...birthDaysArr.map((i) => ({ label: i, value: i })),
+            ]" placeholder="Day" size="large" class="w-100 mr-1" />
+                      <el-select-v2 v-model="person.monthOfBirth" :options="[
+              { label: 'Month', value: 0 },
+              ...months.map((i) => ({ label: i, value: i })),
+            ]" placeholder="Month" size="large" class="w-100 ml-1" />
+                      <el-select-v2 v-model="person.yearOfBirth" :options="[
+              { label: 'Year', value: 0 },
+              ...birthYearsArr.map((i) => ({ label: i, value: i })),
+            ]" placeholder="Year" size="large" class="w-100 ml-1" />
                     </div>
                   </div>
                 </el-form-item>
                 <el-form-item>
-                  <div
-                    class="d-flex flex-column flex-lg-row justify-content-end w-100"
-                  >
+                  <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                     <div class="mr-3 font-weight-600">Wedding Anniversary</div>
                     <div class="input-width d-flex">
-                      <el-select-v2
-                        v-model="person.dayOfWedding"
-                        :options="[
-                          { label: 'Day', value: 0 },
-                          ...annDaysArr.map((i) => ({ label: i, value: i })),
-                        ]"
-                        placeholder="Day"
-                        size="large"
-                        class="w-100 mr-1"
-                      />
-                      <el-select-v2
-                        v-model="person.monthOfWedding"
-                        @change="
-                          editAnnDateValue('month', person.monthOfWedding)
-                        "
-                        :options="[
-                          { label: 'Month', value: 0 },
-                          ...months.map((i) => ({ label: i, value: i })),
-                        ]"
-                        placeholder="Month"
-                        size="large"
-                        class="w-100 ml-1"
-                      />
-                      <el-select-v2
-                        v-model="person.yearOfWedding"
-                        :options="[
-                          { label: 'Year', value: 0 },
-                          ...birthYearsArr.map((i) => ({ label: i, value: i })),
-                        ]"
-                        placeholder="Year"
-                        size="large"
-                        class="w-100 ml-1"
-                      />
+                      <el-select-v2 v-model="person.dayOfWedding" :options="[
+              { label: 'Day', value: 0 },
+              ...annDaysArr.map((i) => ({ label: i, value: i })),
+            ]" placeholder="Day" size="large" class="w-100 mr-1" />
+                      <el-select-v2 v-model="person.monthOfWedding" @change="
+              editAnnDateValue('month', person.monthOfWedding)
+              " :options="[
+              { label: 'Month', value: 0 },
+              ...months.map((i) => ({ label: i, value: i })),
+            ]" placeholder="Month" size="large" class="w-100 ml-1" />
+                      <el-select-v2 v-model="person.yearOfWedding" :options="[
+              { label: 'Year', value: 0 },
+              ...birthYearsArr.map((i) => ({ label: i, value: i })),
+            ]" placeholder="Year" size="large" class="w-100 ml-1" />
                     </div>
                   </div>
                 </el-form-item>
@@ -384,132 +225,79 @@
               </div> -->
             </div>
             <!-- <el-collapse-transition> -->
-              <!-- <div v-show="showAddInfo"> -->
-              <div>
-                <el-form-item>
-                  <div
-                    class="d-flex flex-column flex-lg-row justify-content-end w-100"
-                  >
-                    <label for="occupation" class="mr-3 font-weight-600"
-                      >Occupation</label
-                    >
-                    <el-input
-                      type="text"
-                      class="input-width"
-                      v-model="person.occupation"
-                      placeholder="Occupation"
-                    />
+            <!-- <div v-show="showAddInfo"> -->
+            <div>
+              <el-form-item>
+                <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                  <label for="occupation" class="mr-3 font-weight-600">Occupation</label>
+                  <el-input type="text" class="input-width" v-model="person.occupation" placeholder="Occupation" />
+                </div>
+              </el-form-item>
+              <el-form-item>
+                <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                  <div class="mr-3 font-weight-600">Age group</div>
+                  <div class="input-width d-flex">
+                    <el-select-v2 v-model="ageGroupId" @change="setSelectedAgeGroup" :options="ageGroups.map((i) => ({ label: i.name, value: i.id }))
+              " placeholder="Age group" size="large" class="w-100 mr-1" />
                   </div>
-                </el-form-item>
-                <el-form-item>
-                  <div
-                    class="d-flex flex-column flex-lg-row justify-content-end w-100"
-                  >
-                    <div class="mr-3 font-weight-600">Age group</div>
-                    <div class="input-width d-flex">
-                      <el-select-v2
-                        v-model="ageGroupId"
-                        @change="setSelectedAgeGroup"
-                        :options="
-                          ageGroups.map((i) => ({ label: i.name, value: i.id }))
-                        "
-                        placeholder="Age group"
-                        size="large"
-                        class="w-100 mr-1"
-                      />
-                    </div>
+                </div>
+              </el-form-item>
+              <el-form-item v-for="(item, index) in dynamicCustomFields" :key="index">
+                <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                  <label for="occupation" class="mr-3 font-weight-600">{{
+              item.label
+            }}</label>
+                  <div class="input-width d-flex" v-if="item.controlType == 1">
+                    <el-select-v2 v-model="item.data" :options="item.parameterValues
+              .split(',')
+              .map((i) => ({ label: i, value: i }))
+              " :placeholder="item.label" size="large" class="w-100 mr-1" />
                   </div>
-                </el-form-item>
-                <el-form-item
-                  v-for="(item, index) in dynamicCustomFields"
-                  :key="index"
-                >
-                  <div
-                    class="d-flex flex-column flex-lg-row justify-content-end w-100"
-                  >
-                    <label for="occupation" class="mr-3 font-weight-600">{{
-                      item.label
-                    }}</label>
-                    <div
-                      class="input-width d-flex"
-                      v-if="item.controlType == 1"
-                    >
-                      <el-select-v2
-                        v-model="item.data"
-                        :options="
-                          item.parameterValues
-                            .split(',')
-                            .map((i) => ({ label: i, value: i }))
-                        "
-                        :placeholder="item.label"
-                        size="large"
-                        class="w-100 mr-1"
-                      />
-                    </div>
-                    <el-input
-                      type="text"
-                      class="input-width"
-                      v-model="item.data"
-                      :placeholder="item.label"
-                      v-if="item.controlType == 0"
-                    />
-                    <el-input
-                      type="number"
-                      class="input-width"
-                      v-model="item.data"
-                      :placeholder="item.label"
-                      v-if="item.controlType == 7"
-                    />
-                    <el-input
-                      type="email"
-                      class="input-width"
-                      v-model="item.data"
-                      :placeholder="item.label"
-                      v-if="item.controlType == 4"
-                    />
-                    <div class="input-width" v-if="item.controlType == 2">
-                      <el-checkbox v-model="item.data" size="large" />
-                    </div>
-                    <el-date-picker
-                      v-model="item.data"
-                      class="input-width"
-                      type="date"
-                      :placeholder="item.label"
-                      size="default"
-                      v-if="item.controlType == 3"
-                    />
-                    <div
-                      class="d-flex align-items-center"
-                      v-if="item.controlType == 6"
-                    >
-                      <input
-                        type="file"
-                        class="form-control input-width"
-                        @change="uploadImage($event, index)"
-                        :placeholder="item.label"
-                      />
-                      <el-icon class="is-loading ml-2" v-if="customFileLoading">
-                        <Loading />
-                      </el-icon>
-                    </div>
+                  <el-input type="text" class="input-width" v-model="item.data" :placeholder="item.label"
+                    v-if="item.controlType == 0" />
+                  <el-input type="number" class="input-width" v-model="item.data" :placeholder="item.label"
+                    v-if="item.controlType == 7" />
+                  <el-input type="email" class="input-width" v-model="item.data" :placeholder="item.label"
+                    v-if="item.controlType == 4" />
+                  <div class="input-width" v-if="item.controlType == 2">
+                    <el-checkbox v-model="item.data" size="large" />
                   </div>
-                </el-form-item>
-              </div>
+                  <el-date-picker v-model="item.data" class="input-width" type="date" :placeholder="item.label"
+                    size="default" v-if="item.controlType == 3" />
+                  <div class="d-flex align-items-center" v-if="item.controlType == 6">
+                    <input type="file" class="form-control input-width" @change="uploadImage($event, index)"
+                      :placeholder="item.label" />
+                    <el-icon class="is-loading ml-2" v-if="customFileLoading">
+                      <Loading />
+                    </el-icon>
+                  </div>
+                </div>
+              </el-form-item>
+                <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                  <label for="occupation" class="mr-3 font-weight-600"></label>
+                  <div class="input-width small-text  ">
+                    By checking the box below, you consent to {{ churchName ? churchName : "Churchplus" }} collecting
+                    and processing your personal
+                    information for communication and ministry database. You may withdraw this consent at any time. For
+                    more information, please review our <a class="text-decoration-none"
+                      href="https://churchplus.co/privacy-policy/" target="_blank"> Privacy Policy.</a>
+                  </div>
+                </div>
+                <div class="d-flex flex-column flex-lg-row mt-2 justify-content-end w-100">
+                  <div></div>
+                  <div class="d-flex input-width  ">
+                    <el-checkbox v-model="checked" size="large" />
+                    <div class="mt-2 ml-1 small-text">I consent to the collection and processing of my personal information.</div>
+                  </div>
+                </div>
+            </div>
             <!-- </el-collapse-transition> -->
-            <div
-              class="d-flex flex-column flex-lg-row justify-content-end w-100"
-            >
+
+            <div class="d-flex flex-column flex-lg-row justify-content-end mt-3 w-100">
               <div></div>
               <div class="input-width d-flex justify-content-center my-4">
-                <el-button
-                  :loading="loading"
-                  :disabled="loading || !person.firstName"
-                  :color="primarycolor"
-                  class="w-100"
-                  @click="addPerson"
-                  round
-                  >Save</el-button
-                >
+                <el-button :loading="loading" :disabled="loading || !person.firstName  || !checked" :color="primarycolor"
+                  class="w-100" @click="addPerson" round>Save</el-button>
               </div>
             </div>
           </el-form>
@@ -518,55 +306,31 @@
           <div class="grey-bg d-none d-md-block">
             <div v-if="routeParams">
               <div class="person-img">
-                <img
-                  v-if="!memberToEdit.pictureUrl"
-                  src="../../assets/people/phone-import.svg"
-                  alt="Uploaded Image"
-                />
-                <img
-                  v-else
-                  :src="memberToEdit.pictureUrl"
-                  alt="Uploaded Image"
-                  style="
+                <img v-if="!memberToEdit.pictureUrl" src="../../assets/people/phone-import.svg" alt="Uploaded Image" />
+                <img v-else :src="memberToEdit.pictureUrl" alt="Uploaded Image" style="
                     width: 110px;
                     height: 110px;
                     border-radius: 50%;
                     object-fit: cover;
-                  "
-                />
+                  " />
               </div>
             </div>
             <div v-else>
               <div class="person-img">
-                <img
-                  v-if="!url"
-                  src="../../assets/people/phone-import.svg"
-                  alt="Uploaded Image"
-                />
-                <img
-                  v-else
-                  :src="url"
-                  alt="Uploaded Image"
-                  style="
+                <img v-if="!url" src="../../assets/people/phone-import.svg" alt="Uploaded Image" />
+                <img v-else :src="url" alt="Uploaded Image" style="
                     width: 110px;
                     height: 110px;
                     border-radius: 50%;
                     object-fit: cover;
-                  "
-                />
+                  " />
               </div>
             </div>
             <div>
               <div class="cs-input">
                 <label for="imgUpload" class="choose-file">
                   Choose image
-                  <input
-                    type="file"
-                    class="input file-input"
-                    placeholder=""
-                    id="imgUpload"
-                    @change="imageSelected"
-                  />
+                  <input type="file" class="input file-input" placeholder="" id="imgUpload" @change="imageSelected" />
                 </label>
               </div>
             </div>
@@ -575,27 +339,14 @@
       </el-row>
     </el-container>
 
-    <div
-      class="modal fade"
-      id="addToGroup"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="addToGroup"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="addToGroup" tabindex="-1" role="dialog" aria-labelledby="addToGroup" aria-hidden="true">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header" style="background: #ebeff4">
             <h5 class="modal-title font-weight-bold" id="addToGroup">
               Group Membership
             </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-              ref="closeAddToGroup"
-            >
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ref="closeAddToGroup">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -606,17 +357,9 @@
                 <label for="" class="font-weight-600">Name</label>
               </div>
               <div class="col-md-7">
-                <el-tree-select
-                  v-model="selectedTree"
-                  class="w-100"
-                  placeholder="Select group"
-                  :data="groupMappedTree"
-                  :render-after-expand="false"
-                  :filter-node-method="filterNodeMethod"
-                  @change="setGroupValue"
-                  filterable
-                  check-strictly
-                />
+                <el-tree-select v-model="selectedTree" class="w-100" placeholder="Select group" :data="groupMappedTree"
+                  :render-after-expand="false" :filter-node-method="filterNodeMethod" @change="setGroupValue" filterable
+                  check-strictly />
               </div>
             </div>
             <div class="row">
@@ -624,12 +367,7 @@
                 <label for="" class="font-weight-600">Position</label>
               </div>
               <div class="col-md-7">
-                <input
-                  type="text"
-                  v-model="position"
-                  class="form-control"
-                  placeholder="e.g Member"
-                />
+                <input type="text" v-model="position" class="form-control" placeholder="e.g Member" />
               </div>
             </div>
 
@@ -646,20 +384,9 @@
                 </div>
                 <div class="col-12 p-0">
                   <div class="d-flex justify-content-end">
-                    <el-button
-                      class="secondary-button"
-                      data-dismiss="modal"
-                      round
-                      >Cancel</el-button
-                    >
-                    <el-button
-                      :color="primarycolor"
-                      :loading="addToGroupLoading"
-                      :data-dismiss="dismissAddToGroupModal"
-                      @click="addMemberToGroup"
-                      round
-                      >Save</el-button
-                    >
+                    <el-button class="secondary-button" data-dismiss="modal" round>Cancel</el-button>
+                    <el-button :color="primarycolor" :loading="addToGroupLoading" :data-dismiss="dismissAddToGroupModal"
+                      @click="addMemberToGroup" round>Save</el-button>
                   </div>
                 </div>
               </div>
@@ -669,26 +396,14 @@
       </div>
     </div>
 
-    <div
-      class="modal fade"
-      id="personNote"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="personNote"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="personNote" tabindex="-1" role="dialog" aria-labelledby="personNote" aria-hidden="true">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header" style="background: #ebeff4">
             <h5 class="modal-title font-weight-bold" id="personNote">
               Add Note
             </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -698,12 +413,7 @@
                 <label for="" class="font-weight-600">Title</label>
               </div>
               <div class="col-md-7">
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="noteDetails.noteTitle"
-                  placeholder="Enter title"
-                />
+                <input type="text" class="form-control" v-model="noteDetails.noteTitle" placeholder="Enter title" />
               </div>
             </div>
 
@@ -712,12 +422,8 @@
                 <label for="" class="font-weight-600">Description</label>
               </div>
               <div class="col-md-7">
-                <textarea
-                  rows="5"
-                  class="form-control"
-                  v-model="noteDetails.noteDesc"
-                  placeholder="Enter note description"
-                ></textarea>
+                <textarea rows="5" class="form-control" v-model="noteDetails.noteDesc"
+                  placeholder="Enter note description"></textarea>
               </div>
             </div>
 
@@ -734,11 +440,8 @@
                     </button>
                   </div>
                   <div class="col-6">
-                    <button
-                      class="default-btn primary-bg border-0 text-white"
-                      :data-dismiss="dismissAddToGroupModal"
-                      @click="savePersonNote"
-                    >
+                    <button class="default-btn primary-bg border-0 text-white" :data-dismiss="dismissAddToGroupModal"
+                      @click="savePersonNote">
                       Save
                     </button>
                   </div>
@@ -1417,6 +1120,7 @@ export default {
     const primarycolor = inject("primarycolor");
     const store = useStore();
     const hideCelebTab = ref(false);
+    const checked = ref(false);
     const hideAddInfoTab = ref(true);
     const showCelebTab = () => (hideCelebTab.value = !hideCelebTab.value);
     const showAddInfoTab = () => (hideAddInfoTab.value = !hideAddInfoTab.value);
@@ -1596,9 +1300,9 @@ export default {
       yearOfWedding: null,
     });
 
-    
 
-    const uploadImage = () => {};
+
+    const uploadImage = () => { };
 
     const errMessage = ref("");
     const showError = ref(false);
@@ -1691,11 +1395,11 @@ export default {
         "personGroups",
         peopleInGroupIDs.value.length > 0
           ? JSON.stringify(
-              peopleInGroupIDs.value.map((i) => {
-                delete i.name;
-                return i;
-              })
-            )
+            peopleInGroupIDs.value.map((i) => {
+              delete i.name;
+              return i;
+            })
+          )
           : []
       );
       formData.append(
@@ -2072,7 +1776,7 @@ export default {
         } catch (error) {
           console.log(error);
           addToGroupLoading.value = false;
-          
+
         }
       } else {
         peopleInGroupIDs.value.push({
@@ -2175,6 +1879,7 @@ export default {
       selectedGender,
       selectedMembership,
       memberships,
+      checked,
       selectedAgeGroup,
       ageGroups,
       getAgeGroups,
@@ -2228,6 +1933,7 @@ export default {
 .contn-btn:disabled {
   opacity: 0.3;
 }
+
 .input-width {
   width: 100%;
 }

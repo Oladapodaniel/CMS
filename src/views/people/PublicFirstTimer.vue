@@ -78,17 +78,17 @@
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <div class="input-width d-flex">
                   <el-select-v2 v-model="maritalStatusId" @change="setSelectedMaritalStatus" :options="maritalStatusArr.map((i) => ({
-                    label: i.value,
-                    value: i.id,
-                  }))
-                    " placeholder="Marital status" size="large" class="w-100 mr-1" />
+              label: i.value,
+              value: i.id,
+            }))
+              " placeholder="Marital status" size="large" class="w-100 mr-1" />
                   <el-select-v2 v-model="genderId" @change="setSelectedGender" :options="genderArr && genderArr.length > 0
-                      ? genderArr.map((i) => ({
-                        label: i.value,
-                        value: i.id,
-                      }))
-                      : []
-                    " placeholder="Gender" size="large" class="w-100 ml-1" />
+              ? genderArr.map((i) => ({
+                label: i.value,
+                value: i.id,
+              }))
+              : []
+              " placeholder="Gender" size="large" class="w-100 ml-1" />
                 </div>
               </div>
             </el-form-item>
@@ -161,7 +161,8 @@
                       <div v-for="(item, index) in firstTimerInGroup" :key="index">
                         <div class="d-flex justify-content-between align-items-center">
                           <div class="pt-1"><span class="text-secondary">{{ index + 1 }}.</span> <span
-                              class="font-weight-700">{{ item.name }}</span></div>
+                              class="font-weight-700">{{
+              item.name }}</span></div>
                           <el-icon class="text-danger" @click="showConfirmModal(index, item)">
                             <CircleClose />
                           </el-icon>
@@ -194,13 +195,13 @@
             <el-form-item v-for="(item, index) in dynamicCustomFields" :key="index">
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <label for="occupation" class="mr-3 font-weight-600">{{
-                  item.label
-                }}</label>
+              item.label
+            }}</label>
                 <div class="input-width d-flex" v-if="item.controlType == 1">
                   <el-select-v2 v-model="item.data" :options="item.parameterValues
-                      .split(',')
-                      .map((i) => ({ label: i, value: i }))
-                    " :placeholder="item.label" size="large" class="w-100 mr-1" />
+              .split(',')
+              .map((i) => ({ label: i, value: i }))
+              " :placeholder="item.label" size="large" class="w-100 mr-1" />
                 </div>
                 <el-input type="text" class="input-width" v-model="item.data" :placeholder="item.label"
                   v-if="item.controlType == 0" />
@@ -237,10 +238,10 @@
                   <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                     <div class="input-width">
                       <el-select-v2 v-model="sourceId" @change="setSelectedSource" :options="howDidYouAboutUs.map((i) => ({
-                        label: i.name,
-                        value: i.id,
-                      }))
-                        " placeholder="How did you hear about us?" size="large" class="w-100 mr-1" />
+              label: i.name,
+              value: i.id,
+            }))
+              " placeholder="How did you hear about us?" size="large" class="w-100 mr-1" />
                     </div>
                   </div>
                 </el-form-item>
@@ -248,7 +249,7 @@
                   <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                     <div class="input-width">
                       <el-select-v2 v-model="selectedCommunicationMeans" :options="comMeansArr.map((i) => ({ label: i, value: i }))
-                        " placeholder="Means of communication" size="large" class="w-100 mr-1" />
+              " placeholder="Means of communication" size="large" class="w-100 mr-1" />
                     </div>
                   </div>
                 </el-form-item>
@@ -256,7 +257,7 @@
                   <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                     <div class="input-width">
                       <el-select-v2 v-model="selectedJoinInterest" :options="joinInterestArr.map((i) => ({ label: i, value: i }))
-                        " placeholder="Interested in joining us?" size="large" class="w-100 mr-1" />
+              " placeholder="Interested in joining us?" size="large" class="w-100 mr-1" />
                     </div>
                   </div>
                 </el-form-item>
@@ -264,14 +265,32 @@
                   <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                     <div class="input-width">
                       <el-select-v2 v-model="selectedVisitOption" :options="wantVisitArr.map((i) => ({ label: i, value: i }))
-                        " placeholder="Want to be visited?" size="large" class="w-100 mr-1" />
+              " placeholder="Want to be visited?" size="large" class="w-100 mr-1" />
                     </div>
                   </div>
                 </el-form-item>
               </div>
             </el-collapse-transition>
+            <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+              <label for="occupation" class="mr-3 font-weight-600"></label>
+              <div class="input-width small-text  ">
+                By checking the box below, you consent to {{ churchName ? churchName : "Churchplus" }} collecting
+                and processing your personal
+                information for communication and ministry database. You may withdraw this consent at any time. For
+                more information, please review our <a class="text-decoration-none"
+                  href="https://churchplus.co/privacy-policy/" target="_blank"> Privacy Policy.</a>
+              </div>
+            </div>
+            <div class="d-flex flex-column flex-lg-row mt-2 justify-content-end w-100">
+              <div></div>
+              <div class="d-flex input-width  ">
+                <el-checkbox v-model="checked" size="large" />
+                <div class="mt-2 ml-1 small-text">I consent to the collection and processing of my personal information.
+                </div>
+              </div>
+            </div>
             <el-form-item>
-              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+              <div class="d-flex flex-column flex-lg-row justify-content-end mt-4 w-100">
                 <div class="input-width">
                   <div class="d-flex flex-column">
                     <!-- <el-button
@@ -1047,7 +1066,7 @@ import flatten from "../../services/groupArray/flatTree";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useStore } from "vuex";
 import swal from "sweetalert";
-import {ElMessageBox, ElMessage } from 'element-plus'
+import { ElMessageBox, ElMessage } from 'element-plus'
 
 export default {
   components: { Dropdown, Dialog, ImageForm, InputText, Calendar },
@@ -1134,6 +1153,7 @@ export default {
       sendWelcomeEmail: true,
     });
     const showCategory = ref(false);
+    const checked = ref(false);
     const formdatImage = ref("");
     const eventText = ref("");
     const displayModal = ref(false);
@@ -1826,6 +1846,7 @@ export default {
 
     return {
       onSubmit,
+      checked,
       searchGroupText,
       setSelectedMaritalStatus,
       setSelectedGender,
