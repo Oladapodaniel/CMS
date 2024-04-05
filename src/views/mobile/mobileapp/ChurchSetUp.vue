@@ -76,10 +76,10 @@
                     </div>
                   </div>
                   <div class="col-md-2 d-flex">
-                    <!-- <div class=" mr-3  align-self-center cursor-pointer " data-target="#other-info" data-toggle="modal"
+                    <div class=" mr-3  align-self-center cursor-pointer " data-target="#other-info" data-toggle="modal"
                       data-whatever="@fat" @click.prevent="editInfo(item)">
                       <i class="fa fa-pencil text-secondary"></i>
-                    </div> -->
+                    </div>
                     <div class=" align-self-center  cursor-pointer"
                       @click.prevent="showConfirmModalAbout(item.customAboutId, index)">
                       <i class="pi pi-trash text-secondary"></i>
@@ -612,10 +612,27 @@ export default {
 
     };
 
-    const otherInfoDetails = () => {
-      infoArray.value.push(otherInfo.value);
+    const otherInfoDetails = async () => {
+      console.log(otherInfo.value, 'gsgggsg')
+      if(otherInfo.value.customAboutId){
+        try{
+          const data = await axios.put('/mobile/v1/Profile/UpdateCustomAboutChurch', otherInfo.value)
+          console.log(data, 'ggggg');
+          // infoArray.value.push(data.data);
+         
+          displayOtherInfo.value = false
+
+          otherInfo.value = {}
+        }
+        catch(error){
+          console.log(error);
+        }
+      }else{
+        infoArray.value.push(otherInfo.value);
       otherInfo.value = {};
       displayOtherInfo.value = false
+      }
+      
     };
 
     const editPastor = (id, index) => {
@@ -811,6 +828,7 @@ export default {
     const editInfo = (item) => {
       console.log(item, 'edit itme');
       otherInfo.value = item
+      displayOtherInfo.value = true
 
     }
     //  const imageEdit = (e) => {

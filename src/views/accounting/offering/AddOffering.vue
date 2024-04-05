@@ -167,7 +167,10 @@
                     <label for="" class="label font-weight-bold">Event name</label>
                   </div>
                   <div class="col-md-7">
-                    <el-dropdown class="w-100" trigger="click">
+                    <el-select @change="individualEvent1" v-model="selectEventID" filterable  class="w-100" placeholder="Select" >
+                      <el-option v-for="item in newEvents" :key="item.id" :label="item.name" :value="item.id" />
+                    </el-select>
+                    <!-- <el-dropdown class="w-100" trigger="click">
                       <el-input class="w-100" placeholder="Select Events " v-model="selectEvent" />
                       <template #dropdown>
                         <el-dropdown-menu class="menu-height">
@@ -182,7 +185,7 @@
                           </el-dropdown-item>
                         </el-dropdown-menu>
                       </template>
-                    </el-dropdown>
+                    </el-dropdown> -->
                     <!-- <div
                       class="select-elem-con pointer d-flex justify-content-space-between"
                       @click="showCategory = !showCategory"
@@ -633,7 +636,8 @@
                         </div>
 
                         <a class="dropdown-item font-weight-700 small-text" href="#"
-                          v-for="(member, index) in searchedMembers" :key="index" @click="addExistingMember(member)">{{member.name }} - {{ member.phone }}</a>
+                          v-for="(member, index) in searchedMembers" :key="index"
+                          @click="addExistingMember(member)">{{ member.name }} - {{ member.phone }}</a>
                         <a class="dropdown-item font-weight-700 small-text" href="#"
                           v-if="searchingForMembers && searchedMembers.length === 0">
                           <el-icon class="is-loading">
@@ -748,12 +752,13 @@ export default {
     const route = useRoute();
     const { lgAndUp, xlAndUp, mdAndUp } = deviceBreakpoint();
     const offeringDrop = ref(null);
+    const selectEventID = ref(null);
     const showEventList = ref(false);
     const eventsAttended = ref([]);
     const eventsSearchString = ref("");
     const newEvents = ref([]);
     const selectedEventAttended = ref({});
-    const selectEvent = ref("");
+    const selectEvent = ref({});
     const primarycolor = inject("primarycolor");
     const showCategory = ref(false);
     const eventText = ref("");
@@ -876,13 +881,18 @@ export default {
       showCategory.value = false;
       console.log(obj);
     };
+    const individualEvent1 = () => {
+      selectEvent.value = newEvents.value.find((i) => i.id == selectEventID.value )
+      newEvent.value.activity.eventCategoryId = selectEvent.value.id;
+      // showCategory.value = false;
+    };
 
     const filterEventCategory = computed(() => {
       let arr = [];
       if (newEvents.value.length > 0) {
         console.log(newEvents.value, "new events");
         arr = newEvents.value.filter((i) => {
-          return i.name.toLowerCase().includes(selectEvent.value.toLowerCase());
+          return i.name.toLowerCase().includes(selectEvent.value.name.toLowerCase());
         });
       } else {
         return newEvents.value;
@@ -902,7 +912,7 @@ export default {
       try {
         let data;
         const theText =
-          eventParams === 1 ? selectEvent.value : newEventCategoryName.value;
+          eventParams === 1 ? selectEvent.value.name : newEventCategoryName.value;
         // eventParams === 1 ? eventText.value : newEventCategoryName.value;
         data = await axios.post(`/api/EventCategory?name=${theText}`);
         console.log(data.data);
@@ -1517,6 +1527,8 @@ export default {
 
     return {
       addOffering,
+      selectEventID,
+      individualEvent1,
       primarycolor,
       offeringDrop,
       hideModals,

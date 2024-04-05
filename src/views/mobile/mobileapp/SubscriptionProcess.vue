@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid mt-4">
         <div class="row justify-content-center">
-            <div class="col-md-10" v-if="monthRemaining < 12 || Plans.membershipSize < 500 && !paymentDone">
+            <div class="col-md-10" v-if="monthRemaining < 10 || Plans.membershipSize < 500 && !paymentDone">
                 <div class="row">
                     <div class="col-md-12 text-center text-head h2 font-weight-bold  ">
                         Payment (Subscription)
@@ -59,8 +59,7 @@
                                         year)
                                         active subscription</div>
                                     <hr class="col-md-8 my-3 hr">
-                                    <div class="col-md-8 mt-3 text-font font-weight-600 text-center">One year Mobile App
-                                        Subcription</div>
+                                    <div class="col-md-8 mt-3 text-font font-weight-600 text-center">One year Churchplus Subscription</div>
                                     <div class="col-md-12 mt-2">
                                         <div class="row justify-content-center">
                                             <div class="col-md-3 text-head font-weight-500 text-right">Amount</div>

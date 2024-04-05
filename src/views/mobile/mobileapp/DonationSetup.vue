@@ -108,6 +108,11 @@
                             Delete
                           </div>
                         </el-dropdown-item>
+                        <!-- <el-dropdown-item>
+                          <div @click.prevent="editForm(form.id, index)" class="text-color">
+                            Edit
+                          </div>
+                        </el-dropdown-item> -->
                       </el-dropdown-menu>
                     </template>
                   </el-dropdown>
@@ -121,17 +126,17 @@
         </div>
 
         <!-- Modal -->
-        <el-dialog v-model="displayPaymentModal" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" top>
+        <el-dialog style="border-radius: 20px;" v-model="displayPaymentModal" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" top>
           <div class=" row justify-content-center ">
             <div class="text-head font-weight-600 h2 text-center col-11 col-md-10">
               Online donation Form
             </div>
             <div class="col-11 col-md-10 pt-2">
-              <paymentform @formcreated="formCreated" />
+              <paymentform @formcreated="formCreated" :formID="formID" />
             </div>
           </div>
         </el-dialog>
-        <el-dialog v-model="displayPaymentOnBoardModal" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" top>
+        <el-dialog style="border-radius: 20px;" v-model="displayPaymentOnBoardModal" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" top>
           <div class="row justify-content-center">
             <div class=" col-11 col-md-10 d-flex justify-content-center pb-0">
               <div class="text-head h2 font-weight-600">
@@ -139,7 +144,7 @@
               </div>
             </div>
             <div class="col-11 col-md-10 pt-1">
-              <paymentonboarding @formcreated="formCreated" @closemodal="closeModal" />
+              <Paymentonboarding @formcreated="formCreated" @closemodal="closeModal" />
             </div>
           </div>
         </el-dialog>
@@ -234,6 +239,7 @@ export default {
     const { lgAndUp, xlAndUp, mdAndUp } = deviceBreakpoint();
     const accountNumber = ref("");
     const accountName = ref("");
+    const formID = ref("");
     const loading = ref(false);
     const displayPaymentModal = ref(false);
     const displayPaymentOnBoardModal = ref(false);
@@ -258,6 +264,11 @@ export default {
     }
     const openPaymentOnBoardModal = () => {
       displayPaymentOnBoardModal.value = true
+    }
+
+    const editForm = (id) => {
+      displayPaymentModal.value = true
+      formID.value = id
     }
 
     const completeSetUp = () => {
@@ -523,10 +534,12 @@ export default {
     };
     return {
       nigerianBanks,
+      formID,
       displayPaymentModal,
       displayPaymentOnBoardModal,
       selectedBank,
       accountNumber,
+      editForm,
       completeSetUp,
       slide,
       accountName,

@@ -24,10 +24,10 @@
               color: #6c757d;
             " id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {{
-              item && item.financialContribution
+            item && item.financialContribution
               ? item.financialContribution.name
               : "Select"
-            }}
+          }}
             <i class="pi pi-chevron-down manual-dd-icon float-right pr-1"></i>
           </button>
           <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
@@ -75,8 +75,7 @@
           </div>
         </div>
         <div class="col-1 align-self-center">
-          <i class="pi pi-trash"
-            @click="showConfirmModal(item.financialContribution.id, index)"></i>
+          <i class="pi pi-trash" @click="showConfirmModal(item.financialContribution.id, index)"></i>
         </div>
       </div>
       <div class="col-md-5  mt-3">
@@ -92,21 +91,21 @@
         <div class="font-weight-bold mt-3 col-md-11">Choose Bank</div>
         <div class="col-md-11">
           <div class="dropdown w-100">
-          <el-dropdown trigger="click" class="w-100">
-            <span class="el-dropdown-link w-100">
-              <el-input type="text" placeholder='Select Bank' v-model="bankSearchText" />
-            </span>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item v-for="item in filteredBanks" :key="item.id" @click="setSelectedBank(item)">
-                  {{ item ? item.name : "" }}
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
+            <el-dropdown trigger="click" class="w-100">
+              <span class="el-dropdown-link w-100">
+                <el-input type="text" placeholder='Select Bank' v-model="bankSearchText" />
+              </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item v-for="item in filteredBanks" :key="item.id" @click="setSelectedBank(item)">
+                    {{ item ? item.name : "" }}
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </div>
         </div>
-        </div>
-        
+
 
         <div class="
             col-md-11 mt-3 font-weight-bold
@@ -114,7 +113,7 @@
           <div>Enter account number</div>
         </div>
         <div class="col-md-11 ">
-          <el-input class="w-100"  v-model="accountNumber" @blur="resolveCustomerDetail" />
+          <el-input class="w-100" v-model="accountNumber" @blur="resolveCustomerDetail" />
         </div>
         <!-- <div class="col-2 d-none d-sm-block">
           <div class="spinner-border text-primary" style="width: 3rem; height: 3rem" role="status" v-if="loading">
@@ -122,12 +121,12 @@
           </div>
         </div> -->
         <div class="col-sm-2 col-lg-3 align-self-center mt-4" v-if="loading">
-      <div style="width: 3rem; height: 3rem" role="status">
-        <el-icon class="is-loading">
-          <Loading />
-        </el-icon>
-      </div>
-    </div>
+          <div style="width: 3rem; height: 3rem" role="status">
+            <el-icon class="is-loading">
+              <Loading />
+            </el-icon>
+          </div>
+        </div>
 
         <div class="
             mt-3
@@ -137,24 +136,25 @@
           <div>Account Name</div>
         </div>
         <div class="col-md-11 ">
-          <el-input type="text" v-model="accountName" placeholder="Account name"  class="w-100 "
-            disabled />
+          <el-input type="text" v-model="accountName" placeholder="Account name" class="w-100 " disabled />
           <div class="mt-1">
             <em class="mt-1">This will automatically come up, kindly confirm before clicking
               on save.</em>
           </div>
         </div>
 
-        <div class="col-md-11 mt-5 d-flex align-items-center c-pointer" @click="showPaymentSection">
-          <p class="mb-0">Payment</p>
+        <!-- <div class="col-md-11 mt-5 d-flex align-items-center c-pointer" @click="showPaymentSection">
+          <p class="mb-0">Select Payment Gateway</p>
           <hr class="mt-4" style="width: calc(100% - 80px)" />
-          <el-icon><ArrowDown /></el-icon>
-        </div>
+          <el-icon>
+            <ArrowDown />
+          </el-icon>
+        </div> -->
 
         <!-- <div class="mt-3 col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center">
                     <div>Payment Gateway</div>
                 </div> -->
-        <div class="
+        <!-- <div class="
             d-flex
             justify-content-center
             col-12 col-sm-10
@@ -168,6 +168,22 @@
           }">
           <input type="checkbox" class="px-2" checked />
           <h6 class="px-2">{{ paymentGatewayNeeded.name }}</h6>
+        </div> -->
+        <div class="col-md-11">
+          <div class="row justify-content-center mt-3">
+            <hr class="w-100">
+            <div class="text-font ">Select Payment Gateway</div>
+            <div class="col-sm-4 d-flex" v-for="(item, index) in gateways" :key="item.id">
+              <i class=" mr-2 check-box" @click="toggleCheckBox(item, index)">
+                <img v-if="item.isChecked" src="../../assets/check.png" class="child w-100">
+              </i>
+              <h6>{{ item.name }}</h6>
+            </div>
+            <hr class="w-100">
+          </div>
+        </div>
+        <div class="col-md-11 ml-2 text-center" v-if="gatewayNotification">
+          <div class="text-danger font-weight-bold small">Please select one or two payment gateway</div>
         </div>
       </div>
 
@@ -179,9 +195,9 @@
             </h5>
             <hr style="width: 60%" />
             <i class="pi pi-angle-up angle-icon mt-3" :class="{
-              rollIcon: templateDisplay,
-              closeIcon: !templateDisplay,
-            }" @click="toggleTemplate"></i>
+            rollIcon: templateDisplay,
+            closeIcon: !templateDisplay,
+          }" @click="toggleTemplate"></i>
           </div>
 
           <div class="row img-row hide-tem mt-4" :class="{
@@ -233,8 +249,8 @@
             pl-0
             mt-3
           ">
-          <el-button size="large" round :loading="loadingSave" class="w-100 " :class="{ 'disabled-bg': disabled, 'primary-bg': !disabled }"
-            @click.prevent="saveAndContinue" >
+          <el-button size="large" round :loading="loadingSave" class="w-100 "
+            :class="{ 'disabled-bg': disabled, 'primary-bg': !disabled }" @click.prevent="saveAndContinue">
             <span class="text-white">Save and Continue</span>
           </el-button>
         </div>
@@ -246,7 +262,7 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, watchEffect, computed } from "vue";
 import Dropdown from "primevue/dropdown";
 import Tooltip from "primevue/tooltip";
 import axios from "@/gateway/backendapi";
@@ -260,7 +276,6 @@ import store from "../../store/store";
 import ContributionItems from "@/components/firsttimer/contributionItemModal";
 import ImageModal from "../../views/donation/ImageModal";
 // import ToggleButton from  '../../views/donation/toggleButton'
-import { useConfirm } from "primevue/useconfirm";
 import { ElMessage, ElMessageBox } from "element-plus";
 import description from '../../views/workflow/helper/description';
 
@@ -270,12 +285,12 @@ export default {
     ContributionItems,
     ImageModal,
   },
-  props: ["header"],
+  props: ["header", "formID" ],
   emits: ["formcreated"],
   directives: {
     tooltip: Tooltip,
   },
-  setup(prop, { emit }) {
+  setup(props, { emit }) {
     const contributionItems = ref([]);
     const newContribution = ref({ payment: [{}] });
     const nigerianBanks = ref([]);
@@ -285,6 +300,7 @@ export default {
     const accountName = ref("");
     const bankSearchText = ref("");
     const loading = ref(false);
+    const gatewayNotification = ref(false);
     const disabled = ref(true);
     const route = useRoute();
     const firstTemplate = ref(true);
@@ -303,6 +319,8 @@ export default {
     const theContributionItems = ref([]);
     const templateDisplay = ref(false);
     const paymentSectionIsShown = ref(false);
+
+    console.log(props.formID, 'hhhhh');
 
     const showPaymentSection = () => {
       paymentSectionIsShown.value = !paymentSectionIsShown.value;
@@ -335,7 +353,7 @@ export default {
         }
       }
     };
-    getContributionItems();
+    getContributionItems()
 
     const getBanks = () => {
       axios
@@ -375,9 +393,9 @@ export default {
               isChecked: false,
             };
           });
-          paymentGatewayNeeded.value = paymentGateWaysDb.value.find(
-            (i) => i.name === "Paystack"
-          );
+          // paymentGatewayNeeded.value = paymentGateWaysDb.value.find(
+          //   (i) => i.name === "Paystack"
+          // );
           console.log(paymentGatewayNeeded.value, "God is Good");
           console.log(paymentGateWaysDb.value);
           // nigerianBanks.value = res.data.data
@@ -396,6 +414,25 @@ export default {
     //   }
     getGateWays();
 
+    const gateways = computed(() => {
+      // if (!route.params.editPayment) return paymentGateWaysDb.value;
+      const x = paymentGateWaysDb.value.filter(i => {
+        const index = paymentGateWays.value.findIndex(j => j.id === i.id);
+        if (index >= 0) {
+          // alert(j)
+          // console.log(i)
+          i.isChecked = true;
+        }
+
+        // alert(i)
+        return i.name.toLowerCase().includes("paystack") || i.name.toLowerCase().includes("flutterwave")
+      })
+
+      return x;
+    })
+
+
+
     // const deleteContribution = (item, index) => {
     //
     // if (route.params.editPayment) {
@@ -406,8 +443,6 @@ export default {
     // }
 
     // }
-
-    const confirm = useConfirm();
 
     const setSelectedBank = (item) => {
       bankSearchText.value = item.name;
@@ -549,101 +584,149 @@ export default {
     };
 
     const toggleCheckBox = (item) => {
-      item.isChecked = !item.isChecked;
-
-      if (
-        item.isChecked &&
-        paymentGateWays.value.findIndex((i) => i.id === item.id) < 0
-      ) {
-        paymentGateWays.value.push(item);
+      if (item.isChecked) {
+        gatewayNotification.value = true
       } else {
-        paymentGateWays.value = paymentGateWays.value.filter((i) => {
-          return i.id !== item.id;
-        });
-        // console.log(item.id)
-        // if (removePaymentGatewayIDs.value.findIndex(i => i.id === item.id) > 0) {
-        removePaymentGatewayIDs.value.push(item.id);
-        // }
-        // console.log(removePaymentGatewayIDs.value)
+        gatewayNotification.value = false
       }
-      // console.log(item, paymentGateWaysDb.value)
-    };
+
+      item.isChecked = !item.isChecked
+
+      if (item.isChecked && paymentGateWays.value.findIndex(i => i.id === item.id) < 0) {
+
+        if (item.name.toLowerCase().includes('flutterwave')) {
+          try {
+            axios.get(`/api/PaymentForm/subaccounts?accountNumber=${accountNumber.value}`).then(res => {
+              if (res.data.length > 0) {
+                ElMessageBox.confirm(
+                  `This account details has been recorded with Flutterwave as ${res.data[0].meta[0].meta_name}, Do you want to use it?`,
+                  // "Confirm delete",
+                  {
+                    confirmButtonText: "OK",
+                    cancelButtonText: "Cancel",
+                    type: "info",
+                  }
+                )
+                  .then(() => {
+                    ElMessage({
+                      type: "success",
+                      message: "Confirmed, The selected acount is now in use",
+                      duration: 3000,
+                    });
+                    item.subAccountID = res.data[0].subaccount_id
+                    paymentGateWays.value.push(item)
+                  })
+                  .catch(() => {
+                    ElMessage({
+                      type: "info",
+                      message: "Please enter another bank account details to enable Flutterwave subaccount integration",
+                      duration: 3000,
+                    });
+                    accountNumber.value = ""
+                    accountName.value = ""
+                    selectedBank.value = new Object()
+                  });
+              } else {
+                paymentGateWays.value.push(item)
+              }
+            })
+          }
+          catch (err) {
+            console.log(err)
+          }
+        } else {
+          paymentGateWays.value.push(item)
+        }
+      } else {
+        paymentGateWays.value = paymentGateWays.value.filter(i => {
+          return i.id !== item.id
+        })
+        removePaymentGatewayIDs.value.push(item.id)
+      }
+    }
 
     const saveAndContinue = async () => {
-      loadingSave.value = true;
-
-      let removeEmptyObj = newContribution.value.payment.filter((i) => {
-        return Object.keys(i.financialContribution).length > 0;
-      });
-
-      let paymentForm = {
-        name: newContribution.value.name,
-        bankCode: selectedBank.value.code,
-        accountName: accountName.value,
-        accountNumber: accountNumber.value,
-        // description: description.value,
-        isActive: isActive.value,
-        contributionItems: removeEmptyObj.map((i) => {
-          let id = i.financialContribution.id;
-          return { financialContributionID: id };
-        }),
-        paymentGateWays: [{ paymentGateWayID: paymentGatewayNeeded.value.id }],
-      };
-
-      if (!route.params.editPayment) {
-        try {
-          const res = await axios.post(
-            "/api/PaymentForm/newpaymentform",
-            paymentForm
-          );
-          console.log(res);
-          loadingSave.value = false;
-          // toast.add({severity:'success', summary: 'Account Check Error', detail:'Please check your banks details again', life: 3000});
-          // store.dispatch('contributions/paymentData', res.data)
-
-          finish();
-          paymentForm.bank = selectedBank.value.name;
-          emit("formcreated", paymentForm);
-        } catch (err) {
-          finish();
-          console.log(err);
-          loadingSave.value = false;
-
-          // toast.add({severity:'error', summary: '', detail:'Please check your banks details again', life: 3000});
-        }
+      if (gateways.value && gateways.value[0].isChecked === false && gateways.value && gateways.value[1].isChecked === false) {
+        gatewayNotification.value = true
       } else {
-        (paymentForm.contributionItems = newContribution.value.payment.map(
-          (i) => {
-            return { financialContributionID: i.financialContribution.id };
-          }
-        )),
-          // paymentForm.contributionItems = theContributionItems.value.map(i => {
-          //     return {
-          //         financialContributionID: i.financialContributionID,
-          //         id: i.id,
-          //         paymentFormID: i.paymentFormID
-          //     }
-          // })
-          (paymentForm.id = route.params.editPayment);
-        paymentForm.removeContributionIDs = removeContributionIDs.value;
-        paymentForm.removePaymentGatewayIDs = removePaymentGatewayIDs.value;
-        try {
-          const res = await axios.put(`/api/PaymentForm/update`, paymentForm);
-          console.log(res);
-          loadingSave.value = false;
-          store.dispatch("contributions/paymentData", res.data);
-          router.push({
-            name: "PaymentOption",
-            params: { paymentId: res.data.id },
-          });
+        gatewayNotification.value = false
+        loadingSave.value = true;
 
-          finish();
-        } catch (err) {
-          console.log(err);
-          loadingSave.value = false;
-          finish();
+        let removeEmptyObj = newContribution.value.payment.filter((i) => {
+          return Object.keys(i.financialContribution).length > 0;
+        });
+
+        let paymentForm = {
+          name: newContribution.value.name,
+          bankCode: selectedBank.value.code,
+          accountName: accountName.value,
+          accountNumber: accountNumber.value,
+          // description: description.value,
+          isActive: isActive.value,
+          contributionItems: removeEmptyObj.map((i) => {
+            let id = i.financialContribution.id;
+            return { financialContributionID: id };
+          }),
+          paymentGateWays: [{ paymentGateWayID: paymentGatewayNeeded.value.id }],
+        };
+
+        if (!props.formID) {
+          try {
+            const res = await axios.post(
+              "/api/PaymentForm/newpaymentform",
+              paymentForm
+            );
+            console.log(res);
+            loadingSave.value = false;
+            // toast.add({severity:'success', summary: 'Account Check Error', detail:'Please check your banks details again', life: 3000});
+            // store.dispatch('contributions/paymentData', res.data)
+
+            finish();
+            paymentForm.bank = selectedBank.value.name;
+            emit("formcreated", paymentForm);
+          } catch (err) {
+            finish();
+            console.log(err);
+            loadingSave.value = false;
+
+            // toast.add({severity:'error', summary: '', detail:'Please check your banks details again', life: 3000});
+          }
+        } else {
+          (paymentForm.contributionItems = newContribution.value.payment.map(
+            (i) => {
+              return { financialContributionID: i.financialContribution.id };
+            }
+          )),
+            // paymentForm.contributionItems = theContributionItems.value.map(i => {
+            //     return {
+            //         financialContributionID: i.financialContributionID,
+            //         id: i.id,
+            //         paymentFormID: i.paymentFormID
+            //     }
+            // })
+            (paymentForm.id = props.formID);
+          paymentForm.removeContributionIDs = removeContributionIDs.value;
+          paymentForm.removePaymentGatewayIDs = removePaymentGatewayIDs.value;
+          try {
+            const res = await axios.put(`/api/PaymentForm/update`, paymentForm);
+            console.log(res);
+            loadingSave.value = false;
+            store.dispatch("contributions/paymentData", res.data);
+            // router.push({
+            //   name: "PaymentOption",
+            //   params: { paymentId: res.data.id },
+            // });
+            emit("formcreated", paymentForm);
+
+            finish();
+          } catch (err) {
+            console.log(err);
+            loadingSave.value = false;
+            finish();
+          }
         }
       }
+
     };
     const selectContribution = (item, index) => {
       // if (newContribution.value.payment.findIndex(i => i.id === item.id) < 0) {
@@ -674,10 +757,10 @@ export default {
 
     const getEditPayment = async () => {
       loadingEdit.value = true;
-      if (route.params.editPayment) {
+      if (props.formID) {
         try {
           const res = await axios.get(
-            `/api/PaymentForm/GetOne?paymentFormID=${route.params.editPayment}`
+            `/api/PaymentForm/GetOne?paymentFormID=${props.formID}`
           );
           console.log(res);
           loadingEdit.value = false;
@@ -688,13 +771,8 @@ export default {
           );
           accountNumber.value = res.data.accountNumber;
           accountName.value = res.data.accountName;
-          (selectedBank.value = {
-            name:
-              nigerianBanks.value.length > 0
-                ? nigerianBanks.value.find((i) => i.id === res.data.bankID).name
-                : [],
-            id: res.data.bankID,
-          }),
+          // bankSearchText.value = nigerianBanks.value && nigerianBanks.value.find(i => i.code == res.data.bankCode).name  ? nigerianBanks.value.find(i => i.code == res.data.bankCode).name : "",
+          
             (isActive.value = res.data.isActive);
           paymentGateWays.value = res.data.paymentGateWays.map((i) => {
             return {
@@ -723,22 +801,13 @@ export default {
     };
     getEditPayment();
 
-    const gateways = computed(() => {
-      // if (!route.params.editPayment) return paymentGateWaysDb.value;
-      const x = paymentGateWaysDb.value.filter((i) => {
-        const index = paymentGateWays.value.findIndex((j) => j.id === i.id);
-        if (index >= 0) {
-          i.isChecked = true;
-        }
+    watchEffect(() => {
+      if(props.formID){
+        getEditPayment()
+      }
+    })
 
-        // alert(i)
-        return i;
-      });
-      // const x = paymentGateWaysDb.value.filter(i => (paymentGateWays.value.findIndex(j => j.paymentGateWayID === i.id)) >= 0)
-      // console.log(x, "XXX");
 
-      return x;
-    });
 
     const newConItems = (payload) => {
       console.log(payload);
@@ -787,6 +856,7 @@ export default {
 
     return {
       contributionItems,
+      gatewayNotification,
       newContribution,
       addContribution,
       deleteContribution,
@@ -826,6 +896,7 @@ export default {
       theContributionItems,
       templateDisplay,
       toggleTemplate,
+      active,
       showConfirmModal,
       paymentGatewayNeeded,
       showPaymentSection,

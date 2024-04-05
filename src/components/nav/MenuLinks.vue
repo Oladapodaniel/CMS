@@ -290,6 +290,13 @@ export default {
         route: '/tenant/social',
         submenu: []
       }
+      // const mobile = {
+      //   id: 8,
+      //   name: 'Mobile Onboarding',
+      //   logo: require('../../assets/dashboardlinks/social-icon.svg'),
+      //   route: '/tenant/welcomeonboarding1',
+      //   submenu: []
+      // }
       // const social = {
       //   name: 'Social & Mobile App',
       //   logo: '/',
