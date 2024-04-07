@@ -5,21 +5,24 @@
         <div class="welcome-onboard">
           <div class="welcome-intro">
             <div v-if="!processing">
-              <h1>{{ navigatorLang === "en-US" ? 'Hey' : $t('startingPointContent.hey') }} {{ userDetails.firstName ? userDetails.firstName : "" }}</h1>
-              <h2>{{ navigatorLang === "en-US" ? 'What would you like to do in Churchplus?' : $t('startingPointContent.what-to-do-in-ch') }}</h2>
+              <h1>{{ navigatorLang === "en-US" ? 'Hey' : $t('startingPointContent.hey') }} {{ userDetails.firstName ?
+        userDetails.firstName : "" }}</h1>
+              <h2>{{ navigatorLang === "en-US" ? 'What would you like to do in Churchplus?' :
+        $t('startingPointContent.what-to-do-in-ch') }}</h2>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="options-div" :class="{ box2: processing }">
+      <div class="options-div " :class="{ box2: processing }">
         <div class="options-container" v-if="screenWidth > 990 || !processing">
           <div class="step-count mt-4">
             <h3>{{ navigatorLang === "en-US" ? 'STEP 2 OF 2' : $t('startingPointContent.step') }}</h3>
           </div>
 
           <div class="start-text hidden-sm-and-down">
-            <h2>{{ navigatorLang === "en-US" ? 'Choose a starting point' : $t('startingPointContent.starting-point') }}</h2>
+            <h2>{{ navigatorLang === "en-US" ? 'Choose a starting point' : $t('startingPointContent.starting-point') }}
+            </h2>
           </div>
 
           <div class="more-later hidden-sm-and-down">
@@ -27,33 +30,41 @@
           </div>
 
           <div class="start-text hidden-md-and-up">
-            <h2>{{ navigatorLang === "en-US" ? 'Hey' : $t('startingPointContent.hey') }}  {{ userDetails.firstName ? userDetails.firstName : "" }}</h2>
+            <h2>{{ navigatorLang === "en-US" ? 'Hey' : $t('startingPointContent.hey') }} {{ userDetails.firstName ?
+        userDetails.firstName : "" }}</h2>
           </div>
 
           <div class="more-later hidden-md-and-up">
-            <span>{{ navigatorLang === "en-US" ? 'What would you like to do in churchplus' : $t('startingPointContent.what-to-do-in-ch') }} </span>
+            <span>{{ navigatorLang === "en-US" ? 'What would you like to do in churchplus' :
+        $t('startingPointContent.what-to-do-in-ch') }} </span>
           </div>
 
           <div class="all-options">
-            <div class="w-100 ml-2">
+            <router-link :to="{ name: 'WelcomeOnboarding1', params: { option: '/welcomeonboarding1' } }"
+              class="start-option">
+              <div class="icon">
+                <img class="link-icon" src="../../assets/dashboardlinks/social-icon.svg" alt="Sms Icon" />
+              </div>
+              <div class="link-n-icon">
+                <a class="start-link text-success" >Set up your Mobile App now </a>
+                <!-- <a class="start-link">{{ navigatorLang === "en-US" ? 'Send Email/SMS' :
+        $t('startingPointContent.send-email-sms') }}</a> -->
+                <p class="my-auto"><i class="fas fa-angle-right"></i></p>
+              </div>
+            </router-link>
+            <div class="w-100 mt-1 ml-2">
               <el-dropdown class="w-100" trigger="click">
                 <el-button type="primary" class="start-option">
                   <span class="icon">
-                    <img
-                      class="link-icon"
-                      src="../../assets/claim-sms-offer.png"
-                      alt="Sms Icon"
-                    />
+                    <img class="link-icon" src="../../assets/claim-sms-offer.png" alt="Sms Icon" />
                   </span>
                   <span class="font-weight-bold text-warning">
-                    <a class="start-link text-success">{{ navigatorLang === "en-US" ? 'Claim your 500 unit now' : $t('startingPointContent.claim-unit') }}</a>
+                    <a class="start-link text-success">{{ navigatorLang === "en-US" ? 'Claim your 500 unit now' :
+        $t('startingPointContent.claim-unit') }}</a>
                   </span>
                   <span class="d-flex justify-content-end font-weight-bold adjust-width">
                     <!-- <i class="fas fa-angle-down "></i> -->
-                    <i
-                      class="fas fa-angle-right"
-                      :class="{ 'tbb-icon-rotate': smsOfferDropped }"
-                    ></i>
+                    <i class="fas fa-angle-right" :class="{ 'tbb-icon-rotate': smsOfferDropped }"></i>
                   </span>
                   <!-- Dropdown List<el-icon class="el-icon--right"><arrow-down /></el-icon> -->
                 </el-button>
@@ -66,24 +77,26 @@
                       <el-icon color="green">
                         <CircleCheck />
                       </el-icon>
-                      {{ navigatorLang === "en-US" ? 'Buy 1000 units or above and get 500units free' : $t('startingPointContent.units-and-above') }} <br />
+                      {{ navigatorLang === "en-US" ? 'Buy 1000 units or above and get 500units free' :
+        $t('startingPointContent.units-and-above') }} <br />
                       <br />
                       <el-icon color="green">
                         <CircleCheck />
                       </el-icon>
-                      {{ navigatorLang === "en-US" ? 'Offer is open to both new and existing customers' : $t('startingPointContent.existing-customers') }} <br />
+                      {{ navigatorLang === "en-US" ? 'Offer is open to both new and existing customers' :
+        $t('startingPointContent.existing-customers') }} <br />
                       <br />
                       <el-icon color="green">
                         <CircleCheck />
                       </el-icon>
-                      {{ navigatorLang === "en-US" ? 'This is a one time offer for the duration of this campaign' : $t('startingPointContent.one-time-offer') }}
+                      {{ navigatorLang === "en-US" ? 'This is a one time offer for the duration of this campaign' :
+        $t('startingPointContent.one-time-offer') }}
                     </p>
                     <el-dropdown-item>
-                      <router-link
-                        :to="{ name: 'BuyUnits', params: { option: '/tenant/units' } }"
-                        class="d-flex justify-content-between text-primary font-weight-bold w-100 align-items-center"
-                      >
-                        <span>{{ navigatorLang === "en-US" ? 'Buy SMS now' : $t('startingPointContent.buy-sms') }}</span>
+                      <router-link :to="{ name: 'BuyUnits', params: { option: '/tenant/units' } }"
+                        class="d-flex justify-content-between text-primary font-weight-bold w-100 align-items-center">
+                        <span>{{ navigatorLang === "en-US" ? 'Buy SMS now' : $t('startingPointContent.buy-sms')
+                          }}</span>
                         <el-icon class="el-icon--right">
                           <arrow-right />
                         </el-icon>
@@ -93,69 +106,54 @@
                 </template>
               </el-dropdown>
             </div>
-            <router-link
-              :to="{ name: 'ProcessRequest', params: { option: '/tenant/sms/compose' } }"
-              class="start-option"
-            >
+            <router-link :to="{ name: 'ProcessRequest', params: { option: '/tenant/sms/compose' } }"
+              class="start-option">
               <div class="icon">
                 <img class="link-icon" src="../../assets/sms-email.svg" alt="Sms Icon" />
               </div>
               <div class="link-n-icon">
-                <a class="start-link">{{ navigatorLang === "en-US" ? 'Send Email/SMS' : $t('startingPointContent.send-email-sms') }}</a>
+                <a class="start-link">{{ navigatorLang === "en-US" ? 'Send Email/SMS' :
+        $t('startingPointContent.send-email-sms')
+                  }}</a>
                 <p class="my-auto"><i class="fas fa-angle-right"></i></p>
               </div>
             </router-link>
 
-            <router-link
-              class="start-option"
-              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/add' } }"
-            >
+            <router-link class="start-option"
+              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/add' } }">
               <div class="icon">
-                <img
-                  class="link-icon link-icon-no-bg"
-                  src="../../assets/people/add-church-members.svg"
-                  alt="Add member Icon"
-                />
+                <img class="link-icon link-icon-no-bg" src="../../assets/people/add-church-members.svg"
+                  alt="Add member Icon" />
               </div>
               <div class="link-n-icon">
-                <a class="start-link">{{ navigatorLang === "en-US" ? 'Add church members' : $t('startingPointContent.add-ch-members') }}</a>
+                <a class="start-link">{{ navigatorLang === "en-US" ? 'Add church members' :
+        $t('startingPointContent.add-ch-members') }}</a>
                 <p class="my-auto"><i class="fas fa-angle-right"></i></p>
               </div>
             </router-link>
 
-            <router-link
-              class="start-option"
-              :to="{
-                name: 'ProcessRequest',
-                params: { option: '/tenant/people/addfirsttimer' },
-              }"
-            >
+            <router-link class="start-option" :to="{
+        name: 'ProcessRequest',
+        params: { option: '/tenant/people/addfirsttimer' },
+      }">
               <div class="icon">
-                <img
-                  class="link-icon"
-                  src="../../assets/first-timers.svg"
-                  alt="First Timers Icon"
-                />
+                <img class="link-icon" src="../../assets/first-timers.svg" alt="First Timers Icon" />
               </div>
               <div class="link-n-icon">
-                <a class="start-link">{{ navigatorLang === "en-US" ? 'Add first timers' : $t('startingPointContent.add-fst-timers') }}</a>
+                <a class="start-link">{{ navigatorLang === "en-US" ? 'Add first timers' :
+                  $t('startingPointContent.add-fst-timers')
+                  }}</a>
                 <p class="my-auto"><i class="fas fa-angle-right"></i></p>
               </div>
             </router-link>
 
-            <router-link
-              class="start-option"
-              :to="{ name: 'ProcessRequest', params: { option: '/next' } }"
-            >
+            <router-link class="start-option" :to="{ name: 'ProcessRequest', params: { option: '/next' } }">
               <div class="icon">
-                <img
-                  class="link-icon"
-                  src="../../assets/not-sure.svg"
-                  alt="Question Icon"
-                />
+                <img class="link-icon" src="../../assets/not-sure.svg" alt="Question Icon" />
               </div>
               <div class="link-n-icon">
-                <a class="start-link">{{ navigatorLang === "en-US" ? 'Not sure yet' : $t('startingPointContent.not-yet') }}</a>
+                <a class="start-link">{{ navigatorLang === "en-US" ? 'Not sure yet' : $t('startingPointContent.not-yet')
+                  }}</a>
                 <p class="my-auto"><i class="fas fa-angle-right"></i></p>
               </div>
             </router-link>
@@ -189,7 +187,7 @@ export default {
 
     });
 
-    return{
+    return {
       navigatorLang
     }
   },
@@ -251,7 +249,7 @@ export default {
 
 .main {
   position: relative;
-  height: 100vh;
+  /* height: 100vh; */
   display: flex;
 }
 

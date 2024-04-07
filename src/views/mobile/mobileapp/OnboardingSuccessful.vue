@@ -1,25 +1,26 @@
 <template>
   <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
-    <div class="container-fluid  py-5" style="background: #F9FAFBE3;">
+    <div class="container-fluid  py-5 bg-image">
       <div class="row">
         <div class="col-md-12 ">
           <div class="row">
             <div class="col-md-5   mt-4">
               <!-- <div class="col-md-11 "> -->
               <div class="row justify-content-md-end justify-content-center">
-                <div class="col-md-9 col-sm-7 col-8"><img class="w-100"
-                    src="../../../assets/mobileonboarding/Iphone16.png" alt=""></div>
+                <div class="col-md-9 col-sm-7 px-0 col-8" style="z-index: 9999;"><img class="w-100"
+                    src="../../../assets/mobileonboarding/onboard-phone.png" alt=""></div>
               </div>
               <!-- </div> -->
             </div>
-            <div class="col-md-7 ">
+            <div class="col-md-7 pl-0 pr-5 mt-2  ">
               <div class="row align-items-center justify-content-center h-100">
-                <div class="col-md-12 ">
+                <div class="col-md-12  pl-5  bg-white" style="border-radius: 0 20px 20px 0">
                   <div class="row">
-                    <div class="col-md-12 h1 mt-4 text-head font-weight-600">Welldone! <br>
-                      Your app is ready</div>
-                    <div class="col-md-9 text-font mt-2" style="line-height: 25px; letter-spacing: -0.01em;">Congrats,
-                      you have successfully set up your Churchplus App.
+                    <!-- <div class="col-md-12 h1 mt-4 text-head font-weight-600">Welldone! <br>
+                      Your app is ready</div> -->
+                    <div class="col-md-10 text-head h2 font-weight-bold gradient mt-3">Good Job,
+                      Your Church
+                      App is Ready!
                     </div>
                     <div class="font-weight-600 mt-4 h4 col-md-12 text-head">
                       Here are your next steps
@@ -27,30 +28,28 @@
                     <div class="col-md-12 mt-2  d-flex flex-wrap  ">
                       <div class="col-md-8 px-0 d-flex ">
                         <div>
-                          <div class="primary-bg mr-1 d-flex align-items-center justify-content-center  text-white"
-                            style="width: 30px;  height: 30px; border-radius: 50%;">1
+                          <div class=" mr-1 d-flex align-items-center justify-content-center  text-white"
+                            style="width: 30px;  height: 30px; border-radius: 50%; background-color: #535960;">1
                           </div>
                         </div>
-                        <div class=" mt-1 text-font" style="line-height: 25px; letter-spacing: -0.01em;">Start Sharing
-                          with members of your church</div>
+                        <div class=" mt-1 text-font" style="line-height: 25px; letter-spacing: -0.01em;">Copy & Share
+                          Download Link </div>
                       </div>
                       <div class="col-md-4 px-0 mt-2 mt-sm-0  " @click="copyLink">
                         <el-button round class="  c-pointer">Copy downloadlink</el-button>
                       </div>
                     </div>
-                    <div class="col-md-8 mt-4 d-flex ">
+                    <div class="col-md-8 mt-3 d-flex ">
                       <div class="">
-                        <div class="primary-bg d-flex align-items-center justify-content-center  text-center  text-white"
-                          style="width: 30px; height: 30px; border-radius: 50%;">2</div>
+                        <div
+                          class=" d-flex align-items-center justify-content-center  text-center  text-white"
+                          style="width: 30px; height: 30px; border-radius: 50%;  background-color: #535960;">2</div>
                       </div>
                       <div class="text-font ml-1 " style="line-height: 25px; letter-spacing: -0.01em;">
-                        Click on the button below to make a post to your mobile app and your social media page for you to
-                        get
-                        your
-                        members engaged with events and activities going on in your church.
+                        Click on the button below to make a post
                       </div>
                     </div>
-                    <div class="col-md-8   mt-3" @click="post">
+                    <div class="col-md-8   mt-3 mb-2" @click="post">
                       <div class="row justify-content-center text-center">
                         <div class="col-md-11">
                           <el-button round size="large" class=" w-100 primary-bg text-white c-pointer ">Create First
@@ -234,6 +233,24 @@ export default {
 
 .text-font {
   font-family: Poppins !important;
+}
+
+.gradient {
+    /* color: linear-gradient(90deg, #F36850 0%, #C0279C 49.01%, #2E115B 100%); */
+    background-clip: text;
+    /* Clip the background to the text */
+    color: transparent;
+    /* Hide the text color */
+    background-image: linear-gradient(90deg, #F36850 0%, #C0279C 49.01%, #2E115B 100%);
+    /* Apply the linear gradient */
+
+}
+.bg-image{
+  background-image: url('../../../assets/mobileonboarding/onboard-image-bg.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 15px;
 }
 
 
@@ -422,5 +439,3 @@ export default {
   width: 83vw;
 }
 </style>
-
-

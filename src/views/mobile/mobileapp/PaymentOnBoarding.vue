@@ -2,9 +2,11 @@
   <Toast></Toast>
   <div class="row">
     <div class="col-md-12">
-      <div class="font-weight-bold">Choose Bank</div>
+      <div class="font-weight-bold">Bank name</div>
       <div class="col-md-12 px-0">
-        <div class="dropdown w-100">
+        <el-input class="w-100"  v-model="form.bankName" />
+
+        <!-- <div class="dropdown w-100">
           <el-dropdown trigger="click" class="w-100">
             <span class="el-dropdown-link w-100">
               <el-input type="text" placeholder='Select Bank' v-model="bankSearchText" />
@@ -17,7 +19,7 @@
               </el-dropdown-menu>
             </template>
           </el-dropdown>
-        </div>
+        </div> -->
 
         <!-- <div class="dropdown">
           <button class="
@@ -49,10 +51,20 @@
 
     <div class="col-md-12">
       <div class="mt-3">
-        <div class="font-weight-bold">Enter account number</div>
+        <div class="font-weight-bold">Account name</div>
       </div>
       <div class="">
-        <el-input class="w-100"  v-model="form.accountNumber" @blur="resolveCustomerDetail" />
+        <el-input class="w-100"  v-model="form.accountName"/>
+        <!-- <el-input class="w-100"  v-model="form.accountNumber" @blur="resolveCustomerDetail" /> -->
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="mt-3">
+        <div class="font-weight-bold">Account number</div>
+      </div>
+      <div class="">
+        <el-input class="w-100"  v-model="form.accountNumber"/>
+        <!-- <el-input class="w-100"  v-model="form.accountNumber" @blur="resolveCustomerDetail" /> -->
       </div>
     </div>
     <div class="col-sm-2 col-lg-3 align-self-center mt-4" v-if="loading">
@@ -63,18 +75,17 @@
       </div>
     </div>
 
-    <div class="col-md-12 mt-3">
+    <!-- <div class="col-md-12 mt-3">
       <div class="font-weight-bold">Account Name</div>
-    </div>
-    <div class="col-md-12">
-      <!-- <el-input type="text" v-model="form.accountName" placeholder="Account name" ref="accNameRef"
-          class="w-100" disabled /> -->
+    </div> -->
+    <!-- <div class="col-md-12">
+   
       <el-input type="text" v-model="form.accountName" placeholder="Account name" class="w-100" disabled />
       <div class="mt-1">
         <em class="mt-1">This will automatically come up, kindly confirm before clicking on
           save.</em>
       </div>
-    </div>
+    </div> -->
     <div class="col-md-12 mt-3">
       <div class="font-weight-bold" >Description</div>
       <el-input class="w-100" v-model="form.description" />
@@ -152,12 +163,15 @@ export default {
 
     const submitForm = () => {
       loading.value = true
-      form.value.bank = {
-        code: selectedBank.value.code,
-      };
+      // form.value.bank = {
+      //   code: '100',
+      // };
+      // form.value.bank = {
+      //   code: selectedBank.value.code,
+      // };
       console.log(form.value, 'hhhhjj');
       axios
-        .post("/saveTenantBank", form.value)
+        .post("/saveTenantBankWithOutCode", form.value)
         .then((res) => {
           console.log(res, "posted successfully");
           if (res.data.status) {

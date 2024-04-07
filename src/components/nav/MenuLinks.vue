@@ -46,6 +46,9 @@
             <el-tag type="warning" class="ml-3" effect="dark" size="" v-if="item.id == 5" round>
               <span style="display: flex; font-size: 14px">Beta</span>
             </el-tag>
+            <el-tag type="warning" class="ml-3" effect="dark" size="" v-if="item.id == 8" round>
+              <span style="display: flex; font-size: 14px">Beta</span>
+            </el-tag>
           </el-menu-item>
         </div>
       </el-menu>
@@ -290,13 +293,13 @@ export default {
         route: '/tenant/social',
         submenu: []
       }
-      // const mobile = {
-      //   id: 8,
-      //   name: 'Mobile Onboarding',
-      //   logo: require('../../assets/dashboardlinks/social-icon.svg'),
-      //   route: '/tenant/welcomeonboarding1',
-      //   submenu: []
-      // }
+      const mobile = {
+        id: 8,
+        name: 'Mobile Onboarding',
+        logo: require('../../assets/dashboardlinks/social-icon.svg'),
+        route: '/welcomeonboarding1',
+        submenu: []
+      }
       // const social = {
       //   name: 'Social & Mobile App',
       //   logo: '/',
@@ -304,7 +307,7 @@ export default {
       //   submenu: []
       // }
       const report = {
-        id: 8,
+        id: 9,
         name: 'Reports',
         logo: require('../../assets/dashboardlinks/reports-icon.svg'),
         route: '/tenant/reports',
@@ -400,7 +403,7 @@ export default {
       //   submenu: []
       // }
       const more = {
-        id: 9,
+        id: 10,
         name: 'More',
         logo: '',
         route: '/',
@@ -448,6 +451,10 @@ export default {
             menuLink.value.push(social)
             // menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(social, media)
           }
+          if (menuLink.value.findIndex(i => i.id == mobile.id) < 0) {
+            menuLink.value.push(mobile)
+            // menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(social, media)
+          }
         }
 
         if (i.toLowerCase() == 'groupleader') {
@@ -482,6 +489,9 @@ export default {
           if (menuLink.value.findIndex(i => i.id == social.id) < 0) {
             menuLink.value.push(social)
           }
+          if (menuLink.value.findIndex(i => i.id == mobile.id) < 0) {
+            menuLink.value.push(mobile)
+          }
           if (menuLink.value.findIndex(i => i.id == more.id) < 0) {
             menuLink.value.push(more)
             menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(media, branch, settings)
@@ -493,7 +503,7 @@ export default {
         }
 
         if (i.toLowerCase() == 'admin') {
-          menuLink.value.push(dashboard, people, communication, event, form, financial, social, report, more,)
+          menuLink.value.push(dashboard, people, communication, event, form, financial, social, mobile, report, more,)
           // menuLink.value.push(dashboard, people, communication, event, financial,  report, more)
           menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(members, firsttimers, groups, families)
           menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(media, branch, settings)
