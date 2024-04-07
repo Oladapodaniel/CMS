@@ -270,7 +270,7 @@
     (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.some(i => i > 0)) ||
     (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.some(i => i > 0))
     ">
-            <!-- <div class="more-things side p-3 mt-4" v-if="!tenantInfoExtra.hasMobileApp">
+            <div class="more-things side p-3 mt-4" v-if="!tenantInfoExtra.hasMobileApp">
               <img src="../../assets/mobileapp2.svg" class="w-100" />
               <div class="mt-4">Mobile App</div>
               <div class="more-body mt-2">
@@ -279,7 +279,7 @@
               <router-link :to="{ name: 'WelcomeOnboarding1' }" class="no-decoration">
                 <el-button class="mt-1" round>Set up now</el-button>
               </router-link>
-            </div> -->
+            </div>
             <div class="more-things side p-3" v-if="!tenantInfoExtra.hasWebsite">
 
               <img src="../../assets/website2.svg" class="w-100" />
@@ -493,7 +493,7 @@
                 <el-button class="mt-1" round>Get one now</el-button>
               </a>
             </div>
-            <!-- <div class="col-12 col-sm-6 col-md-4 mt-5 mt-md-0 more-things">
+            <div class="col-12 col-sm-6 col-md-4 mt-5 mt-md-0 more-things">
               <img src="../../assets/mobileapp2.svg" />
               <div class="mt-4">
                 <div class="can-do">
@@ -506,7 +506,7 @@
               <router-link :to="{ name: 'WelcomeOnboarding1' }" class="no-decoration">
                 <el-button class="mt-1" round>Set up now</el-button>
               </router-link>
-            </div> -->
+            </div>
             <div class="col-12 col-sm-6 col-md-4 mt-5 mt-sm-0 more-things second">
               <img src="../../assets/onlinegiving2.svg" />
               <div class="mt-4">
