@@ -181,6 +181,10 @@
             <div class="col-md-12" style="background: #F1F1F1; border-radius: 15px;">
                 <div class="row justify-content-center">
                     <div class="col-md-11 col-11  py-5">
+                        <div class="row my-3">
+                            <div class="col-md-12 text-center font-weight-600 the-game h3 text-head "> Why your Members
+                                will Love this App </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-4  h-100 ">
                                 <div class="col-md-12  " style="border-radius: 12px; overflow: hidden;">
@@ -201,7 +205,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 ">
+                            <div class="col-md-4 mt-4 mt-md-0 ">
                                 <div class="col-md-12  " style="border-radius: 12px; overflow: hidden;">
                                     <div class="row">
                                         <div class="col-md-12 px-0">
@@ -221,7 +225,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 ">
+                            <div class="col-md-4 mt-4 mt-md-0 ">
                                 <div class="col-md-12  " style="border-radius: 12px; overflow: hidden;">
                                     <div class="row">
                                         <div class="col-md-12 px-0">
@@ -243,10 +247,6 @@
                             </div>
                         </div>
                         <div class="row mt-3">
-                            <div class="col-md-12 text-center font-weight-600 the-game h3 text-head "> Why your Members
-                                will Love this App </div>
-                        </div>
-                        <div class="row mt-3">
                             <div class="col-md-4  ">
                                 <div class="col-md-12  " style="border-radius: 12px; overflow: hidden;">
                                     <div class="row">
@@ -266,7 +266,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 ">
+                            <div class="col-md-4 mt-4 mt-md-0 ">
                                 <div class="col-md-12  " style="border-radius: 12px; overflow: hidden;">
                                     <div class="row">
                                         <div class="col-md-12 px-0">
@@ -286,7 +286,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 ">
+                            <div class="col-md-4 mt-4 mt-md-0 ">
                                 <div class="col-md-12  " style="border-radius: 12px; overflow: hidden;">
                                     <div class="row">
                                         <div class="col-md-12 px-0">
