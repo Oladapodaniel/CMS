@@ -20,16 +20,16 @@
                                             with its amazing features.</div>
                                         <div class="font-weight-bold mt-4">How to download the App</div>
                                         <div class="col-md-10 px-0 mt-2 d-flex">
-                                            <div class="col-md-6 px-0">
+                                            <div class="col-md-6 col-6 px-0">
                                                 <img class="w-100"
                                                     src="../../../assets/mobileonboarding/Google-play-logo.png" alt="">
                                             </div>
-                                            <div class="col-md-6 px-0">
+                                            <div class="col-md-6 col-6 px-0">
                                                 <img class="w-100"
                                                     src="../../../assets/mobileonboarding/app-store-logo.png" alt="">
                                             </div>
                                         </div>
-                                        <div class="col-md-9 px-0 mt-4">
+                                        <div class="col-md-9 col-6 px-0 mt-4">
                                             <img class="w-50" src="../../../assets/mobileonboarding/playVideo.png"
                                                 alt="">
                                         </div>
@@ -40,7 +40,7 @@
                             <div class="col-md-6 pb-2 col-12"
                                 :class="{ 'welcomebox': welcome, 'welcomebox2': !welcome }">
                                 <div class="row ">
-                                    <div class="col-md-12 mt-5">
+                                    <div class="col-md-12  mt-5">
                                         <div class=" col-md-12 col-12  "><img class="w-100 h-100 d-none d-md-block"
                                                 src="../../../assets/mobileonboarding/handimage.png" alt="">
                                         </div>
@@ -87,7 +87,7 @@
                                                         Daily
                                                         Devotion</div>
                                                     <div class="col-md-6 d-flex justify-content-end   px-0">
-                                                        <div class="col-md-9 col-6 ">
+                                                        <div class="col-md-9 col-sm-6  col-10 mt-2 mt-sm-0 ">
                                                             <img class="w-100"
                                                                 src="../../../assets/mobileonboarding/praise-hand.png"
                                                                 alt="">
@@ -99,7 +99,7 @@
                                                         Live
                                                         Streams</div>
                                                     <div class="col-md-6 d-flex justify-content-end px-0">
-                                                        <div class="col-md-9">
+                                                        <div class="col-md-9 col-sm-6  col-10 mt-2 mt-sm-0">
                                                             <img class="w-100"
                                                                 src="../../../assets/mobileonboarding/radio.png" alt="">
                                                         </div>
@@ -111,7 +111,7 @@
                                                         Finance
                                                         & Giving</div>
                                                     <div class="col-md-6 d-flex justify-content-end px-0">
-                                                        <div class="col-md-9">
+                                                        <div class="col-md-9 col-sm-6  col-10 mt-2 mt-sm-0">
                                                             <img class="w-100"
                                                                 src="../../../assets/mobileonboarding/giving.png"
                                                                 alt="">
@@ -119,46 +119,46 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 col-6 mt-4 mt-md-0">
                                                 <img class="w-100"
                                                     src="../../../assets/mobileonboarding/phone-store.png" alt="">
                                             </div>
-                                            <div class="col-md-4 mt-4">
+                                            <div class="col-md-4 mt-3">
                                                 <div class="row flex-nowrap">
-                                                    <div class="col-md-6 d-flex justify-content-start px-0">
-                                                        <div class="col-md-9">
+                                                    <div class="col-md-6 d-flex justify-content-md-start justify-content-center px-0">
+                                                        <div class="col-md-9 col-sm-4  col-7 mt-2 mt-sm-0">
                                                             <img class="w-100"
                                                                 src="../../../assets/mobileonboarding/social-media.png"
                                                                 alt="">
                                                         </div>
                                                     </div>
                                                     <div
-                                                        class="col-md-6 px-0 small mt-2  d-flex justify-content-start  font-weight-bold text-head">
+                                                        class="col-md-6 px-0 small mt-3 mt-md-2 d-flex justify-content-md-start justify-content-center  font-weight-bold text-head">
                                                         Social
                                                         Media</div>
                                                 </div>
                                                 <div class="row flex-nowrap mt-5">
-                                                    <div class="col-md-6 d-flex justify-content-start px-0">
-                                                        <div class="col-md-9">
+                                                    <div class="col-md-6 d-flex justify-content-md-start justify-content-center px-0">
+                                                        <div class="col-md-9 col-sm-4 col-7 mt-2 mt-sm-0">
                                                             <img class="w-100"
                                                                 src="../../../assets/mobileonboarding/notification.png"
                                                                 alt="">
                                                         </div>
                                                     </div>
                                                     <div
-                                                        class="col-md-6 px-0 small mt-2  d-flex justify-content-start  font-weight-bold text-head">
+                                                        class="col-md-6 px-0 small mt-2  d-flex justify-content-md-start justify-content-center  font-weight-bold text-head">
                                                         Job Notifications</div>
                                                 </div>
                                                 <div class="row flex-nowrap mt-5">
-                                                    <div class="col-md-6 d-flex justify-content-start px-0">
-                                                        <div class="col-md-9">
+                                                    <div class="col-md-6 d-flex justify-content-md-start justify-content-center px-0">
+                                                        <div class="col-md-9 col-sm-4  col-7 mt-2 mt-sm-0">
                                                             <img class="w-100"
                                                                 src="../../../assets/mobileonboarding/social-media.png"
                                                                 alt="">
                                                         </div>
                                                     </div>
                                                     <div
-                                                        class="col-md-6 px-0 small mt-2 d-flex justify-content-start   font-weight-bold text-head shop-cart">
+                                                        class="col-md-6 px-0 small mt-2 d-flex justify-content-md-start justify-content-center    font-weight-bold text-head shop-cart">
                                                         Ecommerce & Media</div>
                                                 </div>
                                             </div>

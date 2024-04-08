@@ -296,7 +296,7 @@ export default {
       const mobile = {
         id: 8,
         name: 'Mobile Onboarding',
-        logo: require('../../assets/dashboardlinks/social-icon.svg'),
+        logo: require('../../assets/dashboardlinks/com-icon.svg'),
         route: '/welcomeonboarding1',
         submenu: []
       }
