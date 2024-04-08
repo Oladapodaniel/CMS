@@ -392,35 +392,35 @@
                             </div>
                         </div>
                         <div class="row  justify-content-center text-center">
-                            <div class="col-md-10 mt-3">
+                            <div class="col-md-10 col-10 mt-4">
                                 <div class="row">
-                                    <div class="col-12 col-sm-6 col-md-4 px-0">
+                                    <div class="col-12 col-sm-6 col-md-4 mt-4 mt-md-0 px-0">
                                         <div class="text-head col-md-12 font-weight-600 h5">Onboard and fill your
                                             details</div>
                                         <div class="text-head col-md-12 font-weight-600 small">We request for Basic info
                                             to get you started Quickly</div>
-                                        <div class="mt-3 col-md-12" style="border-radius: 10px;">
-                                            <img class="w-100 border" style="border-radius: 10px; height: 8rem;"
+                                        <div class="mt-2 col-md-12" style="border-radius: 10px;">
+                                            <img class="w-100 border" style="border-radius: 10px; "
                                                 src="../../../assets/mobileonboarding/onboard.png" alt="">
                                         </div>
                                     </div>
-                                    <div class="col-12 col-sm-6 col-md-4 px-0">
+                                    <div class="col-12 col-sm-6 col-md-4 mt-4 mt-md-0 px-0">
                                         <div class="text-head col-md-12 font-weight-600 h5">Pay and Share the App with
                                             your Members</div>
                                         <div class="text-head col-md-12  font-weight-600 small">A share link will be
                                             provided for you to share to all members </div>
-                                        <div class="mt-3 col-md-12" style="border-radius: 10px;">
-                                            <img class="w-100 border" style="border-radius: 10px; height: 8rem;"
+                                        <div class="mt-2 col-md-12" style="border-radius: 10px;">
+                                            <img class="w-100 border" style="border-radius: 10px;"
                                                 src="../../../assets/mobileonboarding/pay-now.png" alt="">
                                         </div>
                                     </div>
-                                    <div class="col-12 col-sm-6 col-md-4 px-0">
+                                    <div class="col-12 col-sm-6 col-md-4 mt-4 mt-md-0 px-0">
                                         <div class="text-head col-md-12  font-weight-600 h5">It’s Done! Start Posting
                                         </div>
                                         <div class="text-head col-md-12 font-weight-600 small">Create the First Post on
                                             your Application.</div>
-                                        <div class="mt-3 col-md-12">
-                                            <img class="w-100 border" style="border-radius: 10px; height: 8rem;"
+                                        <div class="mt-2 col-md-12 ">
+                                            <img class="w-100 border" style="border-radius: 10px;"
                                                 src="../../../assets/mobileonboarding/done-posting.png" alt="">
                                         </div>
                                     </div>
