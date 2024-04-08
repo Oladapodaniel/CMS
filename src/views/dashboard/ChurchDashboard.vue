@@ -277,7 +277,7 @@
                 Get a customized mobile app for your church.
               </div>
               <router-link :to="{ name: 'WelcomeOnboarding1' }" class="no-decoration">
-                <el-button class="mt-1" round>Set up now</el-button>
+                <el-button class="mt-1 bg-warning text-white" round>Set up now</el-button>
               </router-link>
             </div>
             <div class="more-things side p-3" v-if="!tenantInfoExtra.hasWebsite">
@@ -479,7 +479,21 @@
             </div>
           </div>
           <div class="row mt-4">
-            <div class="col-12 col-sm-6 col-md-4 more-things">
+            <div class="col-12 col-sm-6 col-md-4  more-things">
+              <img src="../../assets/mobileapp2.svg" />
+              <div class="mt-4">
+                <div class="can-do">
+                  <h4>Mobile app</h4>
+                </div>
+              </div>
+              <div class="more-body mt-2">
+                Get a customized mobile app for your church.
+              </div>
+              <router-link :to="{ name: 'WelcomeOnboarding1' }" class="no-decoration">
+                <el-button class="mt-1 bg-warning text-white" round>Set up now</el-button>
+              </router-link>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 mt-5 mt-md-0 more-things">
               <img src="../../assets/website2.svg" />
               <div class="mt-4">
                 <div class="can-do">
@@ -492,20 +506,6 @@
               <a href="https://churchplus.co/awoofwebsite/" class="no-decoration" target="_blank">
                 <el-button class="mt-1" round>Get one now</el-button>
               </a>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 mt-5 mt-md-0 more-things">
-              <img src="../../assets/mobileapp2.svg" />
-              <div class="mt-4">
-                <div class="can-do">
-                  <h4>Mobile app</h4>
-                </div>
-              </div>
-              <div class="more-body mt-2">
-                Get a customized mobile app for your church.
-              </div>
-              <router-link :to="{ name: 'WelcomeOnboarding1' }" class="no-decoration">
-                <el-button class="mt-1" round>Set up now</el-button>
-              </router-link>
             </div>
             <div class="col-12 col-sm-6 col-md-4 mt-5 mt-sm-0 more-things second">
               <img src="../../assets/onlinegiving2.svg" />

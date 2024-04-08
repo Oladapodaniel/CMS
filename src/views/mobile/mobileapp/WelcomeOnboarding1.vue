@@ -15,23 +15,30 @@
                                         <div class="h2 font-weight-bold the-game text-head mt-4 ">The Game changer for
                                             your
                                             Ministry</div>
-                                        <div class="text-font mt-2">Faith connect helps you stay connected with your
+                                        <div class="text-font mt-2" style="font-size: 15px">Faith connect helps you stay connected with your
                                             members
                                             with its amazing features.</div>
                                         <div class="font-weight-bold mt-4">How to download the App</div>
                                         <div class="col-md-10 px-0 mt-2 d-flex">
                                             <div class="col-md-6 col-6 px-0">
+                                               <a target="_blank" href="https://play.google.com/store/apps/details?id=com.faithconnect" class="w-100 text-decoration-none">
                                                 <img class="w-100"
-                                                    src="../../../assets/mobileonboarding/Google-play-logo.png" alt="">
+                                                    src="../../../assets/mobileonboarding/google-play.png" alt="">
+                                               </a>
                                             </div>
                                             <div class="col-md-6 col-6 px-0">
-                                                <img class="w-100"
-                                                    src="../../../assets/mobileonboarding/app-store-logo.png" alt="">
+                                                <a target="_blank" href="https://apps.apple.com/us/developer/peter-ihesie/id971087368" class="w-100 text-decoration-none">
+                                                    <img class="w-100"
+                                                    src="../../../assets/mobileonboarding/app-store.png" alt="">
+                                               </a>
+                                                
                                             </div>
                                         </div>
                                         <div class="col-md-9 col-6 px-0 mt-4">
-                                            <img class="w-50" src="../../../assets/mobileonboarding/playVideo.png"
+                                            <a target="_blank" href="https://www.youtube.com/watch?v=268s0A-21X4&t=118s" class="w-100 text-decoration-none">
+                                                <img class="w-50" src="../../../assets/mobileonboarding/playVideo.png"
                                                 alt="">
+                                               </a>
                                         </div>
                                     </div>
                                 </div>
@@ -42,14 +49,14 @@
                                 <div class="row ">
                                     <div class="col-md-12  mt-5">
                                         <div class=" col-md-12 col-12  "><img class="w-100 h-100 d-none d-md-block"
-                                                src="../../../assets/mobileonboarding/handimage.png" alt="">
+                                                src="../../../assets/mobileonboarding/handimage1.png" alt="">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 ">
                                 <div class="row justify-content-end">
-                                    <div class=" col-md-3 mt-2 mb-3 d-flex  align-items-end">
+                                    <div class=" col-md-3 mt-2 mb-3 d-flex  justify-content-end  align-items-end">
                                         <el-button color="#120DFA" @click="next1" size="large" class="ml-2 pr-2 "
                                             round>Next
                                             <el-icon :size="30" class="d-flex ">
@@ -67,8 +74,8 @@
             <div class="col-md-12  col-12 mb-4 gradient" style="border-radius: 15px;">
                 <div class="row justify-content-center">
                     <div class="col-md-9 col-11  pt-5">
-                        <div class="row mt-3">
-                            <div class="col-md-12 text-center font-weight-600 the-game h3 text-head "> Some amazing
+                        <div class="row mt-3 justify-content-center ml-md-5 ml-0">
+                            <div class="col-md-12 text-center  the-game h2 font-weight-bold text-head "> Some amazing
                                 Features </div>
                         </div>
                         <div class="row  justify-content-center mt-4 ">
@@ -120,8 +127,10 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4 col-6 mt-4 mt-md-0">
-                                                <img class="w-100"
+                                               <div class="row">
+                                                 <img class="col-md-12 col-12 px-0"
                                                     src="../../../assets/mobileonboarding/phone-store.png" alt="">
+                                               </div>
                                             </div>
                                             <div class="col-md-4 mt-3">
                                                 <div class="row flex-nowrap">
@@ -182,7 +191,7 @@
                 <div class="row justify-content-center">
                     <div class="col-md-11 col-11  py-5">
                         <div class="row my-3">
-                            <div class="col-md-12 text-center font-weight-600 the-game h3 text-head "> Why your Members
+                            <div class="col-md-12 text-center the-game h2 font-weight-bold text-head "> Why your Members
                                 will Love this App </div>
                         </div>
                         <div class="row">
@@ -361,7 +370,7 @@
                 <div class="row justify-content-center">
                     <div class="col-md-9 col-11  py-5">
                         <div class="row mt-3">
-                            <div class="col-md-12 text-center font-weight-600 the-game h3 text-head "> How to get the
+                            <div class="col-md-12 text-center h2 font-weight-bold the-game text-head "> How to get the
                                 App </div>
                         </div>
                         <div class="row  justify-content-end mt-3 ">

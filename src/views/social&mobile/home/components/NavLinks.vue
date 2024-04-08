@@ -91,9 +91,9 @@ import Badge from 'primevue/badge';
                     to: "/tenant/social/category",
                 },
                 {
-                    text: "Mobile App Onboarding",
+                    text: "Mobile App Setup",
                     icon: "pi pi-mobile",
-                    to: "/welcomeonboarding1",
+                    to: "/mobileonboarding",
                 },
                 // {
                 //     text: "Mobile App Onboarding",

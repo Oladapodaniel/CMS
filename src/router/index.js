@@ -1718,17 +1718,17 @@ const routes = [
             component: () =>
                 import( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/OnboardingProcess')
         },
+        // {
+        //     path: '/mobileonboarding',
+        //     name: 'MobileOnboarding',
+        //     meta: {
+        //         title: 'Churchplus - Mobile Onboarding',
+        //     },
+        //     component: () =>
+        //         import( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/MobileOnboarding')
+        // },
         {
             path: '/mobileonboarding',
-            name: 'MobileOnboarding',
-            meta: {
-                title: 'Churchplus - Mobile Onboarding',
-            },
-            component: () =>
-                import( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/MobileOnboarding')
-        },
-        {
-            path: '/welcomeonboarding1',
             name: 'WelcomeOnboarding1',
             meta: {
                 title: 'Churchplus - Mobile Onboarding',

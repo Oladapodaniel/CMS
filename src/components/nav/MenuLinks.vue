@@ -43,11 +43,11 @@
               <img :src="item.logo" class="link-icon" alt="" />
             </el-icon>
             <span>{{ item.name }}</span>
-            <el-tag type="warning" class="ml-3" effect="dark" size="" v-if="item.id == 5" round>
+            <!-- <el-tag type="warning" class="ml-3" effect="dark" size="" v-if="item.id == 5" round>
               <span style="display: flex; font-size: 14px">Beta</span>
-            </el-tag>
+            </el-tag> -->
             <el-tag type="warning" class="ml-3" effect="dark" size="" v-if="item.id == 8" round>
-              <span style="display: flex; font-size: 14px">Beta</span>
+              <span style="display: flex; font-size: 14px">New</span>
             </el-tag>
           </el-menu-item>
         </div>
@@ -295,9 +295,9 @@ export default {
       }
       const mobile = {
         id: 8,
-        name: 'Mobile Onboarding',
+        name: 'Mobile App Setup',
         logo: require('../../assets/dashboardlinks/com-icon.svg'),
-        route: '/welcomeonboarding1',
+        route: '/mobileonboarding',
         submenu: []
       }
       // const social = {

@@ -40,10 +40,10 @@
           </div>
 
           <div class="all-options">
-            <router-link :to="{ name: 'WelcomeOnboarding1', params: { option: '/welcomeonboarding1' } }"
+            <router-link :to="{ name: 'WelcomeOnboarding1', params: { option: '/mobileonboarding' } }"
               class="start-option">
               <div class="icon">
-                <img class="link-icon" src="../../assets/dashboardlinks/social-icon.svg" alt="Sms Icon" />
+                <img class="link-icon" src="../../assets/dashboardlinks/com-icon.svg" alt="Sms Icon" />
               </div>
               <div class="link-n-icon">
                 <a class="start-link text-success" >Set up your Mobile App now </a>
