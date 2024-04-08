@@ -15,30 +15,36 @@
                                         <div class="h2 font-weight-bold the-game text-head mt-4 ">The Game changer for
                                             your
                                             Ministry</div>
-                                        <div class="text-font mt-2" style="font-size: 15px">Faith connect helps you stay connected with your
+                                        <div class="text-font mt-2" style="font-size: 15px">Faith connect helps you stay
+                                            connected with your
                                             members
                                             with its amazing features.</div>
                                         <div class="font-weight-bold mt-4">How to download the App</div>
                                         <div class="col-md-10 px-0 mt-2 d-flex">
                                             <div class="col-md-6 col-6 px-0">
-                                               <a target="_blank" href="https://play.google.com/store/apps/details?id=com.faithconnect" class="w-100 text-decoration-none">
-                                                <img class="w-100"
-                                                    src="../../../assets/mobileonboarding/google-play.png" alt="">
-                                               </a>
+                                                <a target="_blank"
+                                                    href="https://play.google.com/store/apps/details?id=com.faithconnect"
+                                                    class="w-100 text-decoration-none">
+                                                    <img class="w-100"
+                                                        src="../../../assets/mobileonboarding/google-play.png" alt="">
+                                                </a>
                                             </div>
                                             <div class="col-md-6 col-6 px-0">
-                                                <a target="_blank" href="https://apps.apple.com/us/developer/peter-ihesie/id971087368" class="w-100 text-decoration-none">
+                                                <a target="_blank"
+                                                    href="https://apps.apple.com/us/developer/peter-ihesie/id971087368"
+                                                    class="w-100 text-decoration-none">
                                                     <img class="w-100"
-                                                    src="../../../assets/mobileonboarding/app-store.png" alt="">
-                                               </a>
-                                                
+                                                        src="../../../assets/mobileonboarding/app-store.png" alt="">
+                                                </a>
+
                                             </div>
                                         </div>
                                         <div class="col-md-9 col-6 px-0 mt-4">
-                                            <a target="_blank" href="https://www.youtube.com/watch?v=268s0A-21X4&t=118s" class="w-100 text-decoration-none">
+                                            <a target="_blank" href="https://www.youtube.com/watch?v=268s0A-21X4&t=118s"
+                                                class="w-100 text-decoration-none">
                                                 <img class="w-50" src="../../../assets/mobileonboarding/playVideo.png"
-                                                alt="">
-                                               </a>
+                                                    alt="">
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -87,7 +93,8 @@
                                             Features</div>
                                     </div>
                                     <div class="col-md-10 col-12 ">
-                                        <div class="row justify-content-center justify-content-md-between justify-content-md-start ">
+                                        <div
+                                            class="row justify-content-center justify-content-md-between justify-content-md-start ">
                                             <div class="col-md-4 col-8 mt-4 ">
                                                 <div class="row flex-nowrap ">
                                                     <div class="col-md-6 px-0 small  mt-1 font-weight-bold text-head">
@@ -127,14 +134,15 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4 col-6 mt-4 mt-md-0">
-                                               <div class="row">
-                                                 <img class="col-md-12 col-12 px-0"
-                                                    src="../../../assets/mobileonboarding/phone-store.png" alt="">
-                                               </div>
+                                                <div class="row">
+                                                    <img class="col-md-12 col-12 px-0"
+                                                        src="../../../assets/mobileonboarding/phone-store.png" alt="">
+                                                </div>
                                             </div>
                                             <div class="col-md-4 mt-3">
                                                 <div class="row flex-nowrap">
-                                                    <div class="col-md-6 d-flex justify-content-md-start justify-content-center px-0">
+                                                    <div
+                                                        class="col-md-6 d-flex justify-content-md-start justify-content-center px-0">
                                                         <div class="col-md-9 col-sm-4  col-7 mt-2 mt-sm-0">
                                                             <img class="w-100"
                                                                 src="../../../assets/mobileonboarding/social-media.png"
@@ -147,7 +155,8 @@
                                                         Media</div>
                                                 </div>
                                                 <div class="row flex-nowrap mt-5">
-                                                    <div class="col-md-6 d-flex justify-content-md-start justify-content-center px-0">
+                                                    <div
+                                                        class="col-md-6 d-flex justify-content-md-start justify-content-center px-0">
                                                         <div class="col-md-9 col-sm-4 col-7 mt-2 mt-sm-0">
                                                             <img class="w-100"
                                                                 src="../../../assets/mobileonboarding/notification.png"
@@ -159,7 +168,8 @@
                                                         Job Notifications</div>
                                                 </div>
                                                 <div class="row flex-nowrap mt-5">
-                                                    <div class="col-md-6 d-flex justify-content-md-start justify-content-center px-0">
+                                                    <div
+                                                        class="col-md-6 d-flex justify-content-md-start justify-content-center px-0">
                                                         <div class="col-md-9 col-sm-4  col-7 mt-2 mt-sm-0">
                                                             <img class="w-100"
                                                                 src="../../../assets/mobileonboarding/social-media.png"
@@ -178,7 +188,7 @@
                         </div>
                     </div>
                     <div class="col-md-12 d-flex justify-content-end mb-3">
-                        <el-button round color="#120DFA" size="large"  @click="next2" class=" c-pointer ">Next<el-icon
+                        <el-button round color="#120DFA" size="large" @click="next2" class=" c-pointer ">Next<el-icon
                                 :size="20">
                                 <Right />
                             </el-icon></el-button>
@@ -187,7 +197,7 @@
             </div>
         </div>
         <div class="row mt-3" :class="{ 'box3': gateway, 'box4': !gateway }">
-            <div class="col-md-12" style="background: #F1F1F1; border-radius: 15px;">
+            <div class="col-md-12" style="background: #F1F1F1; border-radius: 14px;">
                 <div class="row justify-content-center">
                     <div class="col-md-11 col-11  py-5">
                         <div class="row my-3">
@@ -206,10 +216,13 @@
                                     <div class="row">
                                         <div class="col-md-12 pt-2 pb-3 text-white text-center"
                                             style="background: #A9C307;">
-                                            <div class="font-weight-600">Daily Devotions</div>
-                                            <div class="small">
+                                            <div class="font-weight-bold text-head" style="font-size: 13px">With Daily
+                                                Devotions, Members
+                                                can join Your Early Morning
+                                                Prayer and messages easily</div>
+                                            <!-- <div class="small">
                                                 Find out why Faith Connect is the Next Game Changer for your Ministry
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -225,11 +238,13 @@
                                     <div class="row">
                                         <div class="col-md-12 pt-2 pb-3 text-white text-center"
                                             style="background: #FF7D04;">
-                                            <div class="font-weight-600">Live Streams</div>
-                                            <div class="small">
+                                            <div class="font-weight-bold text-head" style="font-size: 13px">Members stay connected to
+                                                Services and Event with
+                                                Livestream, they wont miss out</div>
+                                            <!-- <div class="small">
                                                 Stream events, & services conveniently from the comfort of your home or
                                                 wherever you are.
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -245,11 +260,13 @@
                                     <div class="row">
                                         <div class="col-md-12 pt-2 pb-3 text-white text-center"
                                             style="background: #6B34DF;">
-                                            <div class="font-weight-600">Finance & Giving</div>
-                                            <div class="small">
+                                            <div class="font-weight-bold text-head" style="font-size: 13px">Giving Conveniently. anywhere,
+                                                anytime and Privately
+                                                is the New Normal</div>
+                                            <!-- <div class="small">
                                                 Contribute your tithe, offerings, & special seeds effortlessly from
                                                 anywhere at any time.
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -266,11 +283,13 @@
                                     <div class="row">
                                         <div class="col-md-12 pt-2 pb-3 text-white text-center"
                                             style="background: #0971D2;">
-                                            <div class="font-weight-600">Social Media</div>
-                                            <div class="small">
+                                            <div class="font-weight-bold text-head" style="font-size: 13px">Your Church Members will
+                                                be connected on a space,
+                                                fosters growth & Connection</div>
+                                            <!-- <div class="small">
                                                 Engage with fellow members and cultivate a lively, thriving church
                                                 community.
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -286,11 +305,13 @@
                                     <div class="row">
                                         <div class="col-md-12 pt-2 pb-3 text-white text-center"
                                             style="background: #921173;">
-                                            <div class="font-weight-600">Get Job Notifications</div>
-                                            <div class="small">
+                                            <div class="font-weight-bold text-head" style="font-size: 13px">Opportunities and Job
+                                                notifications alert for
+                                                Members of the Church</div>
+                                            <!-- <div class="small">
                                                 Receive immediate notifications When there is a job opening in your
                                                 area.
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -306,11 +327,13 @@
                                     <div class="row">
                                         <div class="col-md-12 pt-2 pb-3 text-white text-center"
                                             style="background: #FF0000;">
-                                            <div class="font-weight-600">Ecommerce & Media</div>
-                                            <div class="small">
+                                            <div class="font-weight-bold text-head" style="font-size: 13px">Favorite Sermon, Audio,
+                                                Books and Videos can be paid
+                                                Secure & seamless</div>
+                                            <!-- <div class="small">
                                                 Conveniently purchase church merchandise, books, audio sermons, music,
                                                 and videos to empower your spiritual journey.
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -363,8 +386,8 @@
                 </div>
             </div> -->
         </div>
-        
-       
+
+
         <div class="row  mt-3" :class="{ 'yourFaith3': yourFaith, 'yourFaith4': !yourFaith }">
             <div class="col-md-12  col-12" style="background: #F1F1F1; border-radius: 15px;">
                 <div class="row justify-content-center">
