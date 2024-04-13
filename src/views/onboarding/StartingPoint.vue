@@ -46,7 +46,7 @@
                 <img class="link-icon" src="../../assets/dashboardlinks/com-icon.svg" alt="Sms Icon" />
               </div>
               <div class="link-n-icon">
-                <a class="start-link text-success" >Set up your Mobile App now </a>
+                <a class="start-link text-success" >Church Mobile App Setup </a>
                 <!-- <a class="start-link">{{ navigatorLang === "en-US" ? 'Send Email/SMS' :
         $t('startingPointContent.send-email-sms') }}</a> -->
                 <p class="my-auto"><i class="fas fa-angle-right"></i></p>

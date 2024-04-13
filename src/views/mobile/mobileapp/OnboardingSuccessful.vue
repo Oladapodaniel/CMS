@@ -18,34 +18,50 @@
                   <div class="row">
                     <!-- <div class="col-md-12 h1 mt-4 text-head font-weight-600">Welldone! <br>
                       Your app is ready</div> -->
-                    <div class="col-md-10 text-head h2 font-weight-bold gradient mt-3">Good Job,
+                    <div class="col-md-12 text-head h2 font-weight-bold gradient mt-3">Good Job,
                       Your Church
                       App is Ready!
                     </div>
-                    <div class="font-weight-600 mt-4 h4 col-md-12 text-head">
+                    <div class="font-weight-600 mt-2 h5 col-md-12 text-head">
                       Here are your next steps
                     </div>
-                    <div class="col-md-12 mt-2  d-flex flex-wrap  ">
+                    <div class="col-md-12 mt-1  d-flex flex-wrap  ">
                       <div class="col-md-8 px-0 d-flex ">
                         <div>
                           <div class=" mr-1 d-flex align-items-center justify-content-center  text-white"
                             style="width: 30px;  height: 30px; border-radius: 50%; background-color: #535960;">1
                           </div>
                         </div>
-                        <div class=" mt-1 text-font" style="line-height: 25px; letter-spacing: -0.01em;">Copy & Share
+                        <div class=" mt-1 text-font" >Copy & Share
                           Download Link </div>
                       </div>
-                      <div class="col-md-4 px-0 mt-2 mt-sm-0  " @click="copyLink">
-                        <el-button round class="  c-pointer">Copy downloadlink</el-button>
+                      <div class="col-md-11 col-10 px-0 mt-2 mt-sm-0 ">
+                        <div class="row mt-2">
+                          <div class="col-md-6   d-flex">
+                            <div class="col-md-5 col-5 px-0  ">
+                              <img class="w-100" src="../../../assets/mobileonboarding/small-google-store.png" alt="">
+                            </div>
+                            <div class="col-md-5 px-0  d-flex align-items-center "  @click="copyLink">
+                              <el-button round class="   small p-0   c-pointer"><span  class="small font-weight-600">Copylink</span> </el-button>
+                            </div>
+                          </div>
+                          <div class="col-md-6  d-flex ">
+                             <div class="col-md-5 col-5 px-0 mt-2 mt-md-0">
+                              <img class="w-100" src="../../../assets/mobileonboarding/small-apple-store.png" alt="">
+                            </div>
+                            <div class="col-md-5 px-0 d-flex align-items-center"  @click="copyLink2">
+                              <el-button round class=" small p-0  c-pointer"><span  class="small font-weight-600">Copylink</span> </el-button>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="col-md-8 mt-3 d-flex ">
                       <div class="">
-                        <div
-                          class=" d-flex align-items-center justify-content-center  text-center  text-white"
+                        <div class=" d-flex align-items-center justify-content-center  text-center  text-white"
                           style="width: 30px; height: 30px; border-radius: 50%;  background-color: #535960;">2</div>
                       </div>
-                      <div class="text-font ml-1 " style="line-height: 25px; letter-spacing: -0.01em;">
+                      <div class="text-font ml-1 ">
                         Click on the button below to make a post
                       </div>
                     </div>
@@ -184,6 +200,7 @@ export default {
   setup() {
 
     const link = ref("https://play.google.com/store/apps/details?id=com.faithconnect")
+    const link2 = ref("https://apps.apple.com/us/developer/peter-ihesie/id971087368")
     const toast = useToast()
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
 
@@ -205,12 +222,32 @@ export default {
         type: "success",
       });
     }
+    const copyLink2 = () => {
+      const textarea = document.createElement("textarea");
+      textarea.value = link2.value;
+
+      document.body.appendChild(textarea);
+
+      textarea.select();
+      textarea.setSelectionRange(0, 99999);
+
+      document.execCommand("copy");
+      document.body.removeChild(textarea)
+
+      ElMessage({
+        showClose: true,
+        message: "Copied to clipboard",
+        type: "success",
+      });
+    }
     const post = () => {
       router.push({ name: 'SocialPost' })
     }
     return {
       copyLink,
+      copyLink2,
       link,
+      link2,
       post,
       mdAndUp, lgAndUp, xlAndUp, xsOnly
     }
@@ -236,16 +273,17 @@ export default {
 }
 
 .gradient {
-    /* color: linear-gradient(90deg, #F36850 0%, #C0279C 49.01%, #2E115B 100%); */
-    background-clip: text;
-    /* Clip the background to the text */
-    color: transparent;
-    /* Hide the text color */
-    background-image: linear-gradient(90deg, #F36850 0%, #C0279C 49.01%, #2E115B 100%);
-    /* Apply the linear gradient */
+  /* color: linear-gradient(90deg, #F36850 0%, #C0279C 49.01%, #2E115B 100%); */
+  background-clip: text;
+  /* Clip the background to the text */
+  color: transparent;
+  /* Hide the text color */
+  background-image: linear-gradient(90deg, #F36850 0%, #C0279C 49.01%, #2E115B 100%);
+  /* Apply the linear gradient */
 
 }
-.bg-image{
+
+.bg-image {
   background-image: url('../../../assets/mobileonboarding/onboard-image-bg.png');
   background-position: center;
   background-size: cover;
