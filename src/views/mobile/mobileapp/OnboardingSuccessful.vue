@@ -187,12 +187,10 @@
     </div>
   </div> -->
 
-  <Toast />
 </template>
 
 <script>
 import { ref } from 'vue'
-import { useToast } from "primevue/usetoast";
 import router from '../../../router';
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -201,7 +199,6 @@ export default {
 
     const link = ref("https://play.google.com/store/apps/details?id=com.faithconnect")
     const link2 = ref("https://apps.apple.com/us/developer/peter-ihesie/id971087368")
-    const toast = useToast()
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
 
     const copyLink = () => {

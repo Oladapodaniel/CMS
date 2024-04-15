@@ -77,10 +77,10 @@
                 </el-dropdown>
             </template>
         </Table>
-        <div v-if="!loading && searchForm && searchForm.length <= 0">
+        <!-- <div v-if="!loading && searchForm && searchForm.length == 0">
             <el-alert title="Forms not found" type="warning" description="Try searching with another keyword" show-icon
                 center />
-        </div>
+        </div> -->
         <div class="row mt-4">
             <div v-if="(formItems && formItems.length === 0) && !loading && !networkError" class="no-person mt-4 col-md-12">
                 <div class="empty-img">
