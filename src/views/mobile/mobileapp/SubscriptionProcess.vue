@@ -59,7 +59,8 @@
                                         year)
                                         active subscription</div>
                                     <hr class="col-md-8 my-3 hr">
-                                    <div class="col-md-8 mt-3 text-font font-weight-600 text-center">One year Churchplus Subscription</div>
+                                    <div class="col-md-8 mt-3 text-font font-weight-600 text-center">One year Churchplus
+                                        Subscription</div>
                                     <div class="col-md-12 mt-2">
                                         <div class="row justify-content-center">
                                             <div class="col-md-3 text-head font-weight-500 text-right">Amount</div>
@@ -149,7 +150,7 @@
                 </div>
             </div>
             <!-- <div class="col-md-10 mt-4 h-100 bg-white mb-5"> -->
-            <div class="col-md-10 mt-4 h-100 bg-white mb-5"
+                <div class="col-md-10 mt-4 h-100 bg-white mb-5"
                 v-if="monthRemaining >= 12 && Plans.membershipSize >= 500 && !paymentDone">
                 <div class="row justify-content-center align-items-center">
                     <div class="col-md-10 d-flex justify-content-center">
@@ -168,13 +169,14 @@
                     <div class="col-md-10 d-flex my-5 justify-content-center">
                         <div class="col-md-8 ">
                             <el-button @click="finishSetup" :color="primarycolor" size="large" class="w-100"
-                                round>Finish
-                                setup</el-button>
+                                round>Finish setup and
+                                Activate</el-button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-10 mt-4 h-100 bg-white mb-5" v-if="paymentDone">
+            <!-- <div class="col-md-10 mt-4 h-100 bg-white mb-5"> -->
+                <div class="col-md-10 mt-4 h-100 bg-white mb-5" v-if="paymentDone">
                 <div class="row justify-content-center align-items-center">
                     <div class="col-md-10 d-flex justify-content-center">
                         <div class="col-md-6 ">
@@ -192,16 +194,18 @@
                     <div class="col-md-10 d-flex my-5 justify-content-center">
                         <div class="col-md-8 ">
                             <el-button @click="finishSetup" :color="primarycolor" size="large" class="w-100"
-                                round>Finish
-                                setup</el-button>
+                                round>Finish setup and
+                                Activate
+                            </el-button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <el-dialog class="" style="border-radius: 25px;" v-model="paymentFailed" title="" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+        <el-dialog class="" style="border-radius: 25px;" v-model="paymentFailed" title=""
+            :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
             <div class="row justify-content-center ">
-                <div class="col-md-10 mt-4 h-100 bg-white mb-5" >
+                <div class="col-md-10 mt-4 h-100 bg-white mb-5">
                     <div class="row justify-content-center align-items-center">
                         <div class="col-md-10 d-flex justify-content-center">
                             <div class="col-md-6 ">
@@ -218,8 +222,8 @@
                         </div>
                         <div class="col-md-10 d-flex my-5 justify-content-center">
                             <div class="col-md-8 ">
-                                <el-button @click="tryAgain" :color="primarycolor" size="large" class="w-100"
-                                    round>Try again</el-button>
+                                <el-button @click="tryAgain" :color="primarycolor" size="large" class="w-100" round>Try
+                                    again</el-button>
                             </div>
                         </div>
                     </div>
@@ -240,6 +244,7 @@ import membershipService from "../../../services/membership/membershipservice";
 import productPricing from "../../../services/user/productPricing";
 import { ElMessage, ElMessageBox } from "element-plus";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
+import swal from "sweetalert";
 export default {
     setup(props, { emit }) {
         const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
@@ -272,20 +277,46 @@ export default {
             { name: "4000-5000", constValue: 8 },
         ]);
 
-        const finishSetup = () => {
-            let changeState = {
-                tab: true,
-                churchSetup: false,
-                socialMedia: false,
-                appBranding: false,
-                subsciption: false,
-                donationForm: false,
-                subscription: true
-            };
-            emit("saved-sub", changeState);
-            setTimeout(() => {
-                router.push({ name: "OnboardingSuccessful" });
-            }, 1000);
+        const finishSetup = async () => {
+            try {
+                const res = await axios.post('mobile/v1/Profile/ActivateMobileApp')
+                console.log(res, 'boollen')
+                if (res.data) {
+                    swal({
+                        title: "Success!",
+                        text: 'Congrats,  Your Account is Activated  ',
+                        icon: "success",
+                        confirmButtonColor: '#8CD4F5',
+                        dangerMode: true,
+                    })
+                    let changeState = {
+                        tab: true,
+                        churchSetup: false,
+                        socialMedia: false,
+                        appBranding: false,
+                        subsciption: false,
+                        donationForm: false,
+                        subscription: true
+                    };
+                    emit("saved-sub", changeState);
+                    setTimeout(() => {
+                        router.push({ name: "OnboardingSuccessful" });
+                    }, 1000);
+                } else {
+                    swal({
+                        title: "Activation  Failed!",
+                        text: 'Please upgrade ur plan or make full year payment',
+                        icon: "error",
+                        confirmButtonColor: '#8CD4F5',
+                        dangerMode: true,
+                    })
+                    paymentDone.value = false
+                    paymentFailed.value = false
+                }
+            }
+            catch (error) {
+                console.log(error)
+            }
         }
 
         const tryAgain = () => {
@@ -319,7 +350,7 @@ export default {
             if (selectedSubscriptionPlan.value && selectedSubscriptionPlan.value.amount)
                 multiValue *= selectedSubscriptionPlan.value.amount;
             if (selectedSubscriptionPlan.value && selectedSubscriptionPlan.value.name) multiValue *= +selectedSubscriptionPlan.value.name;
-            return multiValue *12;
+            return multiValue * 12;
         });
 
         const TotalAmount = computed(() => {
@@ -377,7 +408,7 @@ export default {
                             paymentFailed.value = true;
                         }
 
-                        
+
                     })
                     .catch((err) => {
                         console.log(err);

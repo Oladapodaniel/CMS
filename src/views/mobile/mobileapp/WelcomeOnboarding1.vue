@@ -29,7 +29,7 @@
                                                         src="../../../assets/mobileonboarding/google-play.png" alt="">
                                                 </a>
                                             </div>
-                                            <div class="col-md-6 col-6 px-0">
+                                            <!-- <div class="col-md-6 col-6 px-0">
                                                 <a target="_blank"
                                                     href="https://apps.apple.com/us/developer/peter-ihesie/id971087368"
                                                     class="w-100 text-decoration-none">
@@ -37,14 +37,14 @@
                                                         src="../../../assets/mobileonboarding/app-store.png" alt="">
                                                 </a>
 
-                                            </div>
+                                            </div> -->
                                         </div>
-                                        <div class="col-md-9 col-6 px-0 mt-4">
-                                            <a target="_blank" href="https://www.youtube.com/watch?v=268s0A-21X4&t=118s"
-                                                class="w-100 text-decoration-none">
+                                        <div class="col-md-9 col-6 px-0 mt-4" @click="showVideoModal">
+                                            <!-- <a target="_blank" href="https://www.youtube.com/watch?v=268s0A-21X4&t=118s"
+                                                class="w-100 text-decoration-none"> -->
                                                 <img class="w-50" src="../../../assets/mobileonboarding/playVideo.png"
                                                     alt="">
-                                            </a>
+                                            <!-- </a> -->
                                         </div>
                                     </div>
                                 </div>
@@ -88,7 +88,7 @@
                             <div class="col-md-11">
                                 <div class="row">
                                     <div class="col-md-2 d-none d-md-block">
-                                        <div style="height: 20rem; width:16rem; "
+                                        <div style="height: 26rem; width:16rem; "
                                             class="feature-gradient text-head h1 font-weight-600">
                                             Features</div>
                                     </div>
@@ -503,6 +503,13 @@
                 </div>
             </div> -->
         </div>
+        <el-dialog style="border-radius: 20px;" v-model="showVideo" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" top>
+          <div class=" row justify-content-center ">
+            <div class="col-md-12 ">
+                <iframe width="100%" height="316" src="https://www.youtube.com/watch?v=268s0A-21X4&t=118s" frameborder="0" allowfullscreen></iframe>
+            </div>
+          </div>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -516,6 +523,7 @@ export default {
         const welcome = ref(true);
         const gateway = ref(false);
         const yourFaith = ref(false);
+        const showVideo = ref(false);
         const feature = ref(false);
         const next1 = () => {
             welcome.value = false;
@@ -535,6 +543,9 @@ export default {
             yourFaith.value = true
             feature.value = false
         }
+        const showVideoModal = () =>{
+            showVideo.value = true
+        }
 
         return {
             primarycolor,
@@ -542,9 +553,11 @@ export default {
             gateway,
             welcome,
             feature,
+            showVideo,
             next1,
             next2,
             next3,
+            showVideoModal,
             mdAndUp, lgAndUp, xlAndUp, xsOnly
         }
     },

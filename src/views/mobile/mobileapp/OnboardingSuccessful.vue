@@ -37,22 +37,22 @@
                       </div>
                       <div class="col-md-11 col-10 px-0 mt-2 mt-sm-0 ">
                         <div class="row mt-2">
-                          <div class="col-md-6   d-flex">
-                            <div class="col-md-5 col-5 px-0  ">
+                          <div class="col-md-10 col-10 justify-content-between    d-flex">
+                            <div class="col-md-4 col-5 px-0  ">
                               <img class="w-100" src="../../../assets/mobileonboarding/small-google-store.png" alt="">
                             </div>
                             <div class="col-md-5 px-0  d-flex align-items-center "  @click="copyLink">
                               <el-button round class="   small p-0   c-pointer"><span  class="small font-weight-600">Copylink</span> </el-button>
                             </div>
                           </div>
-                          <div class="col-md-6  d-flex ">
+                          <!-- <div class="col-md-6  d-flex ">
                              <div class="col-md-5 col-5 px-0 mt-2 mt-md-0">
                               <img class="w-100" src="../../../assets/mobileonboarding/small-apple-store.png" alt="">
                             </div>
                             <div class="col-md-5 px-0 d-flex align-items-center"  @click="copyLink2">
                               <el-button round class=" small p-0  c-pointer"><span  class="small font-weight-600">Copylink</span> </el-button>
                             </div>
-                          </div>
+                          </div> -->
                         </div>
                       </div>
                     </div>
