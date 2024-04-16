@@ -516,10 +516,10 @@
             :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" top>
             <div class=" row justify-content-center ">
                 <div class="col-md-12 ">
-                    <iframe width="100%" height="316" :src="videoURL"
-                        title="YouTube video" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen></iframe>
+                    <iframe width="100%" height="315" :src="videoURL"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
             </div>
         </el-dialog>
@@ -532,7 +532,7 @@ import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 export default {
     setup() {
         const primarycolor = inject('primarycolor')
-        const videoURL = ref('https://www.youtube.com/watch?v=268s0A-21X4&t=118s')
+        const videoURL = ref('https://www.youtube.com/embed/268s0A-21X4?si=1S-m6W_EeEovjw5F')
         const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
         const welcome = ref(true);
         const gateway = ref(false);
@@ -779,6 +779,13 @@ export default {
     height: 0;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
+}
+
+@media screen and(max-width: 787px) {
+    .feature-gradient {
+        height: 26.6rem;
+        width: 16rem;
+    }
 }
 
 @media screen and (min-width : 781px) {
