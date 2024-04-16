@@ -40,11 +40,8 @@
                                             </div> -->
                                         </div>
                                         <div class="col-md-9 col-6 px-0 mt-4" @click="showVideoModal">
-                                            <!-- <a target="_blank" href="https://www.youtube.com/watch?v=268s0A-21X4&t=118s"
-                                                class="w-100 text-decoration-none"> -->
                                             <img class="w-50" src="../../../assets/mobileonboarding/playVideo.png"
                                                 alt="">
-                                            <!-- </a> -->
                                         </div>
                                     </div>
                                 </div>
@@ -77,14 +74,14 @@
             </div>
         </div>
         <div class="row  mt-3" v-if="feature">
-            <div class="col-md-12  col-12 mb-4 gradient" style="border-radius: 15px;">
+            <div class="col-md-12   col-12 mb-4  gradient" style="border-radius: 15px;">
                 <div class="row justify-content-center">
                     <div class="col-md-9 col-11  pt-5">
                         <div class="row mt-3 justify-content-center ml-md-5 ml-0">
                             <div class="col-md-12 text-center  the-game h2 font-weight-bold text-head "> Some amazing
                                 Features </div>
                         </div>
-                        <div class="row  justify-content-center mt-4 ">
+                        <div class="row  justify-content-center mt-4 pb-5 pt-4 ">
                             <div class="col-md-11">
                                 <div class="row">
                                     <div class="col-md-2 d-none d-md-block">
@@ -188,7 +185,7 @@
                     </div>
                     <div class="col-md-11 d-flex justify-content-end mb-3">
                         <el-button round color="#120DFA" size="large" @click="next2" class=" c-pointer ">Next<el-icon
-                                :size="20">
+                                :size="30">
                                 <Right />
                             </el-icon></el-button>
                     </div>
@@ -206,12 +203,6 @@
                         <div class="row ">
                             <div class="col-md-4   ">
                                 <div class="col-md-12 bg-image1  " style="border-radius: 12px; overflow: hidden;">
-                                    <!-- <div class="row">
-                                        <div class="col-md-12 px-0">
-                                            <img src="../../../assets/mobileonboarding/devotion.png" class="w-100"devotionlive-streamsfinancesocialjob-searchecommerce
-                                                alt="">
-                                        </div>
-                                    </div> -->
                                     <div class="row h-100 align-items-end">
                                         <div class="col-md-12 pt-2 pb-3 text-white text-center"
                                             style="background: #A9C307;">
@@ -219,9 +210,6 @@
                                                 Devotions, Members
                                                 can join Your Early Morning
                                                 Prayer and messages easily</div>
-                                            <!-- <div class="small">
-                                                Find out why Faith Connect is the Next Game Changer for your Ministry
-                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -229,12 +217,6 @@
                             <div class="col-md-4 mt-4 mt-md-0 ">
                                 <div class="col-md-12 bg-image2 h-100   "
                                     style="border-radius: 12px; overflow: hidden;">
-                                    <!-- <div class="row">
-                                        <div class="col-md-12 px-0">
-                                            <img src="../../../assets/mobileonboarding/live-streams.png" class="w-100"
-                                                alt="">
-                                        </div>
-                                    </div> -->
                                     <div class="row h-100 align-items-end">
                                         <div class="col-md-12 pt-2 pb-3 text-white text-center"
                                             style="background: #FF7D04;">
@@ -242,10 +224,6 @@
                                                 connected to
                                                 Services and Event with
                                                 Livestream, they wont miss out</div>
-                                            <!-- <div class="small">
-                                                Stream events, & services conveniently from the comfort of your home or
-                                                wherever you are.
-                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -253,12 +231,6 @@
                             <div class="col-md-4 mt-4 mt-md-0 ">
                                 <div class="col-md-12 bg-image3 h-100   "
                                     style="border-radius: 12px; overflow: hidden;">
-                                    <!-- <div class="row">
-                                        <div class="col-md-12 px-0">
-                                            <img src="../../../assets/mobileonboarding/finance.png" class="w-100"
-                                                alt="">
-                                        </div>
-                                    </div> -->
                                     <div class="row h-100 align-items-end">
                                         <div class="col-md-12 pt-2 pb-3 text-white text-center"
                                             style="background: #6B34DF;">
@@ -266,10 +238,6 @@
                                                 Conveniently. anywhere,
                                                 anytime and Privately
                                                 is the New Normal</div>
-                                            <!-- <div class="small">
-                                                Contribute your tithe, offerings, & special seeds effortlessly from
-                                                anywhere at any time.
-                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -278,11 +246,6 @@
                         <div class="row mt-4 ">
                             <div class="col-md-4  ">
                                 <div class="col-md-12 bg-image4   " style="border-radius: 12px; overflow: hidden;">
-                                    <!-- <div class="row">
-                                        <div class="col-md-12 px-0">
-                                            <img src="../../../assets/mobileonboarding/social.png" class="w-100" alt="">
-                                        </div>
-                                    </div> -->
                                     <div class="row h-100 align-items-end">
                                         <div class="col-md-12 pt-2 pb-3 text-white text-center"
                                             style="background: #0971D2;">
@@ -290,22 +253,12 @@
                                                 Members will
                                                 be connected on a space,
                                                 fosters growth & Connection</div>
-                                            <!-- <div class="small">
-                                                Engage with fellow members and cultivate a lively, thriving church
-                                                community.
-                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4 mt-4 mt-md-0  ">
                                 <div class="col-md-12 bg-image5 h-100  " style="border-radius: 12px; overflow: hidden;">
-                                    <!-- <div class="row">
-                                        <div class="col-md-12 bg-image px-0">
-                                            <img src="../../../assets/mobileonboarding/job-search.png" class="w-100"
-                                                alt="">
-                                        </div>
-                                    </div> -->
                                     <div class="row h-100 align-items-end">
                                         <div class="col-md-12  pt-2 pb-3 text-white text-center"
                                             style="background: #921173;">
@@ -313,22 +266,12 @@
                                                 Opportunities and Job
                                                 notifications alert for
                                                 Members of the Church</div>
-                                            <!-- <div class="small">
-                                                Receive immediate notifications When there is a job opening in your
-                                                area.
-                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4 mt-4 mt-md-0 ">
                                 <div class="col-md-12 bg-image6 h-100  " style="border-radius: 12px; overflow: hidden;">
-                                    <!-- <div class="row">
-                                        <div class="col-md-12 px-0">
-                                            <img src="../../../assets/mobileonboarding/ecommerce.png" class="w-100"
-                                                alt="">
-                                        </div>
-                                    </div> -->
                                     <div class="row h-100 align-items-end">
                                         <div class="col-md-12 pt-2 pb-3 text-white text-center"
                                             style="background: #FF0000;">
@@ -336,10 +279,6 @@
                                                 Sermon, Audio,
                                                 Books and Videos can be paid
                                                 Secure & seamless</div>
-                                            <!-- <div class="small">
-                                                Conveniently purchase church merchandise, books, audio sermons, music,
-                                                and videos to empower your spiritual journey.
-                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -349,7 +288,7 @@
                             <div class="col-md-12 mt-4 d-flex justify-content-end">
                                 <div class="">
                                     <el-button color="#120DFA" @click="next3" size="large" class="ml-2 pr-2 " round>Next
-                                        <el-icon :size="20">
+                                        <el-icon :size="30">
                                             <Right />
                                         </el-icon> </el-button>
                                 </div>
@@ -359,41 +298,6 @@
 
                 </div>
             </div>
-            <!-- <div class="col-md-12  " style="background: #F9FAFBE3;">
-                <div class="row justify-content-center">
-                    <div class="col-md-12   mt-3 d-flex justify-content-end">
-                        <img class="d-none d-md-block" src="../../../assets/mobileonboarding/progressicon2.png" alt="">
-                    </div>
-                    <div class="col-md-7 d-flex     col-12" :class="{ 'box1': gateway, 'box2': !gateway }">
-                        <img class="w-100 d-none d-md-block" src="../../../assets/mobileonboarding/phone-two.png"
-                            alt="">
-                        <div class="col-md-2  align-items-end  d-flex justify-content-end" style="height: 60vh;">
-                            <el-button color="#120DFA" @click="next2" size="large" class="ml-2 p-0  d-none d-md-block "
-                                round>Next
-                                <el-icon :size="20">
-                                    <Right />
-                                </el-icon> </el-button>
-                        </div>
-                    </div>
-                    <div class="col-md-5 d-flex  align-items-center col-8 "
-                        :class="{ 'GatewayText': gateway, 'GatewayText2': !gateway }">
-                        <div class="row d-flex justify-content-end align-items-center">
-                            <div class="col-md-9  text-center ">
-                                <div class="h2 font-weight-600">Gateway to Faithful Living Starts Here.</div>
-                                <div class="text-font">Explore Inspirational Media, Engage in Worship, and Give Back
-                                    Online.
-                                </div>
-                                <div class=" d-block d-md-none my-4">
-                                    <el-button color="#120DFA" @click="next2" size="large" class="ml-2 pr-2 " round>Next
-                                        <el-icon :size="20">
-                                            <Right />
-                                        </el-icon> </el-button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
         </div>
 
 
@@ -433,36 +337,32 @@
                             </div>
                         </div>
                         <div class="row  justify-content-center text-center">
-                            <div class="col-md-10 col-10 mt-4">
+                            <div class="col-md-12 col-10 mt-4">
                                 <div class="row">
-                                    <div class="col-12 col-sm-6 col-md-4 mt-4 mt-md-0 px-0">
+                                    <div class="col-12 col-sm-6 col-md-4 mt-4 mt-md-0 ">
                                         <div class="text-head col-md-12 font-weight-600 h5">Onboard and fill your
                                             details</div>
                                         <div class="text-head col-md-12 font-weight-600 small">We request for Basic info
                                             to get you started Quickly</div>
-                                        <div class="mt-2 col-md-12" style="border-radius: 10px;">
-                                            <img class="w-100 border" style="border-radius: 10px; "
-                                                src="../../../assets/mobileonboarding/onboard.png" alt="">
+                                        <div class="mt-2 onboard-img col-md-12" style="border-radius: 10px;">
+
                                         </div>
                                     </div>
-                                    <div class="col-12 col-sm-6 col-md-4 mt-4 mt-md-0 px-0">
+                                    <div class="col-12 col-sm-6 col-md-4 mt-5 mt-sm-4 mt-md-0 ">
                                         <div class="text-head col-md-12 font-weight-600 h5">Pay and Share the App with
                                             your Members</div>
                                         <div class="text-head col-md-12  font-weight-600 small">A share link will be
                                             provided for you to share to all members </div>
-                                        <div class="mt-2 col-md-12" style="border-radius: 10px;">
-                                            <img class="w-100 border" style="border-radius: 10px;"
-                                                src="../../../assets/mobileonboarding/pay-now.png" alt="">
+                                        <div class="mt-2 col-md-12 pay-now-img" style="border-radius: 10px;">
                                         </div>
                                     </div>
-                                    <div class="col-12 col-sm-6 col-md-4 mt-4 mt-md-0 px-0">
+                                    <div class="col-12 col-sm-6 col-md-4 mt-5 mt-md-0 ">
                                         <div class="text-head col-md-12  font-weight-600 h5">It’s Done! Start Posting
                                         </div>
                                         <div class="text-head col-md-12 font-weight-600 small">Create the First Post on
                                             your Application.</div>
-                                        <div class="mt-2 col-md-12 ">
-                                            <img class="w-100 border" style="border-radius: 10px;"
-                                                src="../../../assets/mobileonboarding/done-posting.png" alt="">
+                                        <div class="mt-2 col-md-12 done-post-img " style="border-radius: 10px;">
+
                                         </div>
                                     </div>
                                 </div>
@@ -473,51 +373,19 @@
                         <div class="">
                             <router-link :to="{ name: 'OnboardingProcess' }"
                                 class=" d-flex  justify-content-center text-decoration-none"><el-button round
-                                    color="#FF4242" size="large" class=" c-pointer ">Get Started<el-icon :size="20">
+                                    color="#FF4242" size="large" class=" c-pointer ">Get Started<el-icon :size="30">
                                         <Right />
                                     </el-icon></el-button></router-link>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- <div class="col-md-12 " style="background: #F9FAFBE3;">
-                <div class="row">
-                    <div class="col-md-12   mt-3 d-md-flex justify-content-end">
-                        <img class="d-none d-md-block" src="../../../assets/mobileonboarding/progressicon3.png" alt="">
-                    </div>
-                    <div class="col-md-6  d-flex  align-items-center col-12 "
-                        :class="{ 'yourFaithbox': yourFaith, 'yourFaithbox1': !yourFaith }">
-                        <div class="row d-flex  align-items-center">
-                            <div class="col-md-9  text-center ">
-                                <div class="h2 font-weight-600 text-head">Your Faith, Anytime, Anywhere.</div>
-                                <div class="text-font">Seamlessly receive donations tithes and offerings, Stay
-                                    Connected,
-                                    and Grow
-                                    Spiritually with Faith Connect App.</div>
-                            </div>
-                            <div class="col-md-9 mt-4 d-flex  justify-content-center">
-                                <div></div>
-                                <router-link :to="{ name: 'OnboardingProcess' }"
-                                    class=" d-flex  justify-content-center text-decoration-none"><el-button round
-                                        color="#120DFA" size="large" class=" c-pointer">Start now for
-                                        FREE</el-button></router-link>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 d-flex justify-content-center col-12"
-                        :class="{ 'yourFaith': yourFaith, 'yourFaith2': !yourFaith }">
-                        <img class=" d-none d-md-block " src="../../../assets/mobileonboarding/phone-three.png" alt="">
-                    </div>
-                </div>
-            </div> -->
         </div>
         <el-dialog style="border-radius: 20px;" v-model="showVideo"
             :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" top>
             <div class=" row justify-content-center ">
                 <div class="col-md-12 ">
-                    <iframe width="100%" height="315" :src="videoURL"
-                        title="YouTube video player" frameborder="0"
+                    <iframe width="100%" height="315" :src="videoURL" title="YouTube video player" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
@@ -598,6 +466,31 @@ export default {
     background-size: cover;
 }
 
+.onboard-img {
+    background-image: url('../../../assets/mobileonboarding/onboard.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 9rem !important;
+}
+
+.pay-now-img {
+    background-image: url('../../../assets/mobileonboarding/pay-now.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 9rem !important;
+}
+
+.done-post-img {
+    background-image: url('../../../assets/mobileonboarding/done-posting.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 9rem !important;
+    /* border-radius: 10px; */
+}
+
 .bg-image1 {
     background-image: url('../../../assets/mobileonboarding/devotion.png');
     background-position: center;
@@ -664,7 +557,7 @@ export default {
     color: rgba(255, 255, 255, 0.8);
     white-space: nowrap;
     background-clip: text;
-    height: 26.6rem;
+    height: 22rem;
     width: 16rem;
     font-size: 90px !important;
 }
@@ -781,10 +674,33 @@ export default {
     transition: all 0.3s ease-in-out;
 }
 
-@media screen and(max-width: 787px) {
+@media screen and (min-width: 1000px) {
     .feature-gradient {
-        height: 26.6rem;
-        width: 16rem;
+        height: 19rem;
+    }
+}
+
+@media screen and (min-width: 1500px) {
+    .feature-gradient {
+        height: 27.6rem;
+    }
+}
+
+@media screen and (min-width: 1714px) {
+    .feature-gradient {
+        height: 23.6rem;
+    }
+}
+
+@media screen and (min-width: 1350px) {
+    .feature-gradient {
+        height: 23.6rem;
+    }
+}
+
+@media screen and (min-width: 1730px) {
+    .feature-gradient {
+        height: 34rem;
     }
 }
 

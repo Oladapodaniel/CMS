@@ -280,7 +280,6 @@ export default {
         const finishSetup = async () => {
             try {
                 const res = await axios.post('mobile/v1/Profile/ActivateMobileApp')
-                console.log(res, 'boollen')
                 if (res.data) {
                     swal({
                         title: "Success!",
@@ -522,14 +521,9 @@ export default {
         };
 
         const setSubscriptionPlan = (item) => {
-            console.log(item, 'jshhs');
             selectedSubscriptionPlan.value = item
         }
 
-        // const subscriptionDuration = computed(() => {
-        //     if (selectMonth.value.name) return +selectMonth.value.name;
-        //     return 0;
-        // });
 
         const calculatedProductPrice = (price) => {
             if (daysToEndOfSubscription.value < 1)
@@ -579,8 +573,6 @@ export default {
                 remainingMonths += 12;
             }
             monthRemaining.value = remainingMonths;
-            console.log(monthRemaining.value, 'ddjjsjj')
-
         }
 
         const getProductPricing = async (id) => {
@@ -612,42 +604,12 @@ export default {
             try {
                 const res = await axios.get("/api/Subscription/subscriptions");
                 Plans.value = res.data;
-                console.log(Plans.value, 'eheee');
                 existingPlan.value.id = Plans.value.id;
                 existingPlan.value.amount = Plans.value.amount;
                 existingPlan.value.description = Plans.value.description;
                 existingPlan.value.amountInDollar = Plans.value.amountInDollar;
                 existingPlan.value.membershipSize = Plans.value.membershipSize;
 
-                // res.data.subscriptionPlans.forEach((i) => {
-                //     if (i.membershipSize >= Plans.value.membershipSize) {
-                //         subscriptionPlans.value.push(i);
-                //     }
-                // });
-
-                // Get current plan
-
-                // selectedSubscriptionPlan.value = UserSubscriptionPlans.value.find(
-                //     (i) => i.id == Plans.value.id
-                // );
-                // selectedSubscriptionPlan.value = UserSubscriptionPlans.value.find(
-                //     (i) => i.id == Plans.value.id
-                // );
-
-                // console.log(selectedSubscriptionPlan.value, 'sddgags');
-
-                // selectedSubscriptionPlan.value = UserSubscriptionPlans.value.find((i) => {
-                //     return i.id == Plans.value.id;
-                // })
-                //     ? UserSubscriptionPlans.value.find((i) => {
-                //         return i.id == Plans.value.id;
-                //     }).id
-                //     : null;
-
-                // Remove preceeding plans from list
-
-                // const joined = UserSubscriptionPlans.value.map((i) => i.id).join("");
-                // const splitted = joined.split(selectedSubscriptionPlan.value.id);
                 UserSubscriptionPlans.value = UserSubscriptionPlans.value.filter((i) => i.id !== 2 && i.id !== 1);
 
                 if (selectedSubscriptionPlan.value == null) {
