@@ -88,8 +88,7 @@
                             <div class="col-md-11">
                                 <div class="row">
                                     <div class="col-md-2 d-none d-md-block">
-                                        <div style="height: 26.6rem; width:16rem; "
-                                            class="feature-gradient text-head h1 font-weight-600">
+                                        <div class="feature-gradient text-head h1 font-weight-600">
                                             Features</div>
                                     </div>
                                     <div class="col-md-10 col-12 ">
@@ -278,8 +277,7 @@
                         </div>
                         <div class="row mt-4 ">
                             <div class="col-md-4  ">
-                                <div class="col-md-12 bg-image4   "
-                                    style="border-radius: 12px; overflow: hidden;">
+                                <div class="col-md-12 bg-image4   " style="border-radius: 12px; overflow: hidden;">
                                     <!-- <div class="row">
                                         <div class="col-md-12 px-0">
                                             <img src="../../../assets/mobileonboarding/social.png" class="w-100" alt="">
@@ -518,8 +516,10 @@
             :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" top>
             <div class=" row justify-content-center ">
                 <div class="col-md-12 ">
-                    <iframe width="100%" height="316" src="https://www.youtube.com/watch?v=268s0A-21X4&t=118s"
-                        frameborder="0" allowfullscreen></iframe>
+                    <iframe width="100%" height="316" :src="videoURL"
+                        title="YouTube video" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
                 </div>
             </div>
         </el-dialog>
@@ -532,6 +532,7 @@ import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 export default {
     setup() {
         const primarycolor = inject('primarycolor')
+        const videoURL = ref('https://www.youtube.com/watch?v=268s0A-21X4&t=118s')
         const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
         const welcome = ref(true);
         const gateway = ref(false);
@@ -567,6 +568,7 @@ export default {
             welcome,
             feature,
             showVideo,
+            videoURL,
             next1,
             next2,
             next3,
@@ -662,6 +664,8 @@ export default {
     color: rgba(255, 255, 255, 0.8);
     white-space: nowrap;
     background-clip: text;
+    height: 26.6rem;
+    width: 16rem;
     font-size: 90px !important;
 }
 
