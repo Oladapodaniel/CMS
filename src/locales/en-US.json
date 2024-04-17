@@ -12,11 +12,23 @@
     "signup": "Get Started for",
     "free": "FREE"
   },
+  "home-content": {
+    "elevating": "Elevating Your Ministry, Empowering Your Leadership!",
+    "future": "Welcome to the Future of Church Management!",
+    "revolutionize": "Revolutionize Your Ministry",
+    "stewardship": "Financial Stewardship Made Simple",
+    "generosity": "Inspire Generosity with Ease"
+  },
   "loginContent": {
     "login-btntext": "Sign in",
-    "signup-btntext": "Sign up now",
-    "forgot-it": "Forgot it?",
-    "no-account-yet": "Don't have an account yet?"
+    "signin-with-google": "Sign in with Google",
+    "signup-btntext": "Create an account",
+    "labels": {
+      "email": "Email",
+      "password": "Password"
+    },
+    "forgot-it": "Forgot password?",
+    "no-account-yet": "New to Churchplus?"
   },
   "signupContent": {
     "church-software-text": "A church software that automates your entire",
@@ -31,18 +43,26 @@
     "privacy" : "Privacy Policy",
     "resetPassword" : "click here to reset your password"
   },
+  "forgot-passwordContent": {
+    "forgotPassword": "Forgot Password?",
+    "enterPrimaryEmail": "Enter your primary email and we'll send you instructions on how to reset your password.",
+    "label": "Email",
+    "sendReset": "Send Reset Instructions",
+    "rememberPassword": "You Remember your Password?",
+    "signIn": "Sign in."
+  },
   "onboardingContent": {
     "welcome-chplus": "Welcome to Churchplus!",
-    "about-ch" : "Tell us about you and your church",
+    "about-ch" : "Let us know more about you",
     "labels": {
       "ur-name" : "What's your name?",
-      "ur-ministry" : "What's the name of your ministry?",
-      "ur-phone" : "What's your phone number?",
-      "ur-country" : "Select your country",
-      "membership-size" : "What's the membership size of your ministry?",
-      "step" : "STEP 1 OF 2"
+      "ur-ministry" : "What's the name of your Ministry?",
+      "ur-phone" : "What's your Phone Number?",
+      "ur-country" : "Select Country",
+      "membership-size" : "What is your Membership size?",
+      "step" : "Step 1 of 2"
     },
-    "next-btntext" : "Next"
+    "next-btntext" : "Next step"
   },
   "startingPointContent": {
     "hey" : "Hey",

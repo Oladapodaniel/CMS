@@ -298,12 +298,12 @@
                       v-model="item.data" />
                   </div>
                 </div>
-                <div class="row">
+                <!-- <div class="row">
                   <div class="col-md-8 offset-md-3 mt-3 align-self-center">
                     <el-checkbox v-model="displayFamily" />
                     <span class="ml-3">Do you want to register your family for this event?</span>
                   </div>
-                </div>
+                </div> -->
 
                 <div class="row mt-4" v-if="displayFamily">
                   <FamilyWards :family="familyWards" :memberRoles="memberRoles" :fullEventData="fullEventData"

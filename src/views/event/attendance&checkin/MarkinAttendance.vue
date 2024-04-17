@@ -25,7 +25,7 @@
         <h5 class="font-weight-bold text-center">ATTENDANCE & CHECKIN</h5>
         <p class="text-center font-weight-500">
           {{ eventData.fullEventName }} -
-          {{ dateFormatter.monthDayTime(eventData.eventDate) }}
+          {{ dateFormatter.monthDayYear(eventData.eventDate) }}
         </p>
       </div>
     </div>
