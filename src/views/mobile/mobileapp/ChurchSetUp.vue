@@ -2,9 +2,8 @@
   <div class="">
     <!-- write up part -->
     <div class="row justify-content-center ">
-      <Toast />
-      <ConfirmDialog />
       <div class="col-md-9 mt-3 ">
+        <div class="col-md-12 d-flex  cursor-pointer" @click="watchVideo"> <el-icon :size="24" ><VideoPlay /></el-icon><span class="primary-text">Watch this video on how to setup</span></div>
         <div class="row ">
           <div class="col-md-3"></div>
           <div class=" col-md-7 justify-content-center d-flex text-center h2 font-weight-600  setup mt-5 text-head">Set
@@ -62,14 +61,14 @@
                     <div class="col-12 pb-2 pt-3 rounded-lg  mt-1 bg-white">
                       <p>
                         <span v-if="!item.showFullMessage" class="display:block">{{
-              item.details &&
-                item.details.toString().length > 20
-                ? `${item.details.substring(0, 20)}...`
-                : item.details
-            }}</span>
+          item.details &&
+            item.details.toString().length > 20
+            ? `${item.details.substring(0, 20)}...`
+            : item.details
+        }}</span>
                         <span v-else>{{ item.details }}</span>
                         <span @click="() => (item.showFullMessage = !item.showFullMessage)
-              " v-if="item.details && item.details.toString().length > 20" class="text-primary c-pointer pl-2">
+          " v-if="item.details && item.details.toString().length > 20" class="text-primary c-pointer pl-2">
                           {{ item.showFullMessage ? "see less" : "see more" }}
                         </span>
                       </p>
@@ -434,6 +433,17 @@
       </div>
 
     </div>
+    <el-dialog style="border-radius: 20px;" v-model="displayVideo"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" top>
+      <div class=" row justify-content-center ">
+        <div class="col-md-12 ">
+          <iframe width="100%" height="316" :src="videoURL"
+            title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -454,6 +464,8 @@ export default {
     const pastorDetails = ref({});
     const pastorsName = ref("");
     const pastorsEmail = ref("");
+    const displayVideo = ref(false);
+    const videoURL = ref("https://www.youtube.com/embed/X4Gtz6T4HLM?si=u9VJk_FsKC8nPzKR");
     const pastorSocialMedia = ref([
       {
         name: 'facebook',
@@ -493,6 +505,9 @@ export default {
     }
     const otherInfoForm = () => {
       displayOtherInfo.value = true
+    }
+    const watchVideo = () => {
+      displayVideo.value = true
     }
     const saveSetUp = async () => {
 
@@ -614,25 +629,25 @@ export default {
 
     const otherInfoDetails = async () => {
       console.log(otherInfo.value, 'gsgggsg')
-      if(otherInfo.value.customAboutId){
-        try{
+      if (otherInfo.value.customAboutId) {
+        try {
           const data = await axios.put('/mobile/v1/Profile/UpdateCustomAboutChurch', otherInfo.value)
           console.log(data, 'ggggg');
           // infoArray.value.push(data.data);
-         
+
           displayOtherInfo.value = false
 
           otherInfo.value = {}
         }
-        catch(error){
+        catch (error) {
           console.log(error);
         }
-      }else{
+      } else {
         infoArray.value.push(otherInfo.value);
-      otherInfo.value = {};
-      displayOtherInfo.value = false
+        otherInfo.value = {};
+        displayOtherInfo.value = false
       }
-      
+
     };
 
     const editPastor = (id, index) => {
@@ -1023,6 +1038,8 @@ export default {
 
     return {
       pastors,
+      displayVideo,
+      videoURL,
       saveSetUp,
       pastorDetails,
       pastorsName,
@@ -1064,7 +1081,8 @@ export default {
       showConfirmModalBranch,
       clearChurchBranch,
       setChurchBranch,
-      pastorForm
+      pastorForm,
+      watchVideo
     };
   },
 };

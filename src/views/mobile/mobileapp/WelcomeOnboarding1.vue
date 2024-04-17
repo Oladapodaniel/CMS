@@ -15,7 +15,7 @@
                                         <div class="h2 font-weight-bold the-game text-head mt-4 ">The Game changer for
                                             your
                                             Ministry</div>
-                                        <div class="text-font mt-2" style="font-size: 15px">Faith connect helps you stay
+                                        <div class="text-font mt-2" style="font-size: 14px">Faith connect helps you stay
                                             connected with your
                                             members
                                             with its amazing features.</div>
@@ -40,8 +40,8 @@
                                             </div> -->
                                         </div>
                                         <div class="col-md-9 col-6 px-0 mt-4" @click="showVideoModal">
-                                            <img class="w-50" src="../../../assets/mobileonboarding/playVideo.png"
-                                                alt="">
+                                            <img class="col-md-6 px-0"
+                                                src="../../../assets/mobileonboarding/playVideo.png" alt="">
                                         </div>
                                     </div>
                                 </div>
@@ -51,7 +51,7 @@
                                 :class="{ 'welcomebox': welcome, 'welcomebox2': !welcome }">
                                 <div class="row ">
                                     <div class="col-md-12  mt-5">
-                                        <div class=" col-md-12 col-12  "><img class="w-100 h-100 d-none d-md-block"
+                                        <div class=" col-md-12 col-12  "><img class="col-md-12 col-12 px-0 d-none d-md-block"
                                                 src="../../../assets/mobileonboarding/handimage1.png" alt="">
                                         </div>
                                     </div>
@@ -73,25 +73,25 @@
                 </div>
             </div>
         </div>
-        <div class="row  mt-3" v-if="feature">
-            <div class="col-md-12   col-12 mb-4  gradient" style="border-radius: 15px;">
-                <div class="row justify-content-center">
-                    <div class="col-md-9 col-11  pt-5">
+        <div class="row " v-if="feature">
+            <div class="col-md-12   col-12  " style="background: #F1F1F1; border-radius: 15px;">
+                <div class="row justify-content-center ">
+                    <div class="col-md-9 col-11 pt-5  ">
                         <div class="row mt-3 justify-content-center ml-md-5 ml-0">
                             <div class="col-md-12 text-center  the-game h2 font-weight-bold text-head "> Some amazing
                                 Features </div>
                         </div>
-                        <div class="row  justify-content-center mt-4 pb-5 pt-4 ">
+                        <div class="row  justify-content-center  pb-5 pt-4 ">
                             <div class="col-md-11">
                                 <div class="row">
-                                    <div class="col-md-2 d-none d-md-block">
+                                    <div class="col-md-1 d-none d-md-block">
                                         <div class="feature-gradient text-head h1 font-weight-600">
                                             Features</div>
                                     </div>
-                                    <div class="col-md-10 col-12 ">
+                                    <div class="col-md-11 col-12 ">
                                         <div
                                             class="row justify-content-center justify-content-md-between justify-content-md-start ">
-                                            <div class="col-md-4 col-8 mt-4 ">
+                                            <div class="col-md-4 col-8 mt-5 ">
                                                 <div class="row flex-nowrap ">
                                                     <div class="col-md-6 px-0 small  mt-1 font-weight-bold text-head">
                                                         Daily
@@ -131,14 +131,18 @@
                                             </div>
                                             <div class="col-md-4 col-6 mt-4 mt-md-0">
                                                 <div class="row">
-                                                    <img class="col-md-12 col-12 px-0"
-                                                        src="../../../assets/mobileonboarding/phone-store.png" alt="">
+                                                    <!-- <div class="col-md-12 col-12 px-0 phone-store"></div> -->
+                                                    <div class="col-md-12 px-0">
+                                                        <img class="col-md-12 px-0"
+                                                            src="../../../assets/mobileonboarding/phone-store.png"
+                                                            alt="">
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 mt-3">
+                                            <div class="col-md-4 mt-5">
                                                 <div class="row flex-nowrap">
                                                     <div
-                                                        class="col-md-6 d-flex justify-content-md-start justify-content-center px-0">
+                                                        class="col-md-6 d-flex justify-content-md-center justify-content-center px-0">
                                                         <div class="col-md-9 col-sm-4  col-7 mt-2 mt-sm-0">
                                                             <img class="w-100"
                                                                 src="../../../assets/mobileonboarding/social-media.png"
@@ -152,7 +156,7 @@
                                                 </div>
                                                 <div class="row flex-nowrap mt-5">
                                                     <div
-                                                        class="col-md-6 d-flex justify-content-md-start justify-content-center px-0">
+                                                        class="col-md-6 d-flex justify-content-md-center justify-content-center px-0">
                                                         <div class="col-md-9 col-sm-4 col-7 mt-2 mt-sm-0">
                                                             <img class="w-100"
                                                                 src="../../../assets/mobileonboarding/notification.png"
@@ -165,7 +169,7 @@
                                                 </div>
                                                 <div class="row flex-nowrap mt-5">
                                                     <div
-                                                        class="col-md-6 d-flex justify-content-md-start justify-content-center px-0">
+                                                        class="col-md-6 d-flex justify-content-md-center justify-content-center px-0">
                                                         <div class="col-md-9 col-sm-4  col-7 mt-2 mt-sm-0">
                                                             <img class="w-100"
                                                                 src="../../../assets/mobileonboarding/social-media.png"
@@ -183,12 +187,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-11 d-flex justify-content-end mb-3">
-                        <el-button round color="#120DFA" size="large" @click="next2" class=" c-pointer ">Next<el-icon
-                                :size="30">
-                                <Right />
-                            </el-icon></el-button>
+                    <div class="col-md-11 ">
+                        <div class="row justify-content-end">
+                            <div class=" col-md-3  mb-3 d-flex  justify-content-end  align-items-end">
+                                <el-button color="#120DFA" @click="next2" size="large" class="ml-2 pr-2 " round>Next
+                                    <el-icon :size="30" class="d-flex ">
+                                        <Right />
+                                    </el-icon> </el-button>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -466,6 +475,14 @@ export default {
     background-size: cover;
 }
 
+.phone-store {
+    background-image: url('../../../assets/mobileonboarding/phone-store.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 35rem !important;
+}
+
 .onboard-img {
     background-image: url('../../../assets/mobileonboarding/onboard.png');
     background-position: center;
@@ -679,28 +696,47 @@ export default {
         height: 19rem;
     }
 }
+@media screen and (min-width: 1288px) {
+    .feature-gradient {
+        height: 22rem;
+    }
+}
+
+
+@media screen and (min-width: 1350px) {
+    .feature-gradient {
+        height: 24rem;
+    }
+}
+
+@media screen and (min-width: 1410px) {
+    .feature-gradient {
+        height: 25.2rem;
+    }
+}
+
 
 @media screen and (min-width: 1500px) {
     .feature-gradient {
-        height: 27.6rem;
+        height: 28rem;
+    }
+}
+@media screen and (min-width: 1630px) {
+    .feature-gradient {
+        height: 32rem;
     }
 }
 
 @media screen and (min-width: 1714px) {
     .feature-gradient {
-        height: 23.6rem;
+        height: 35rem;
     }
 }
 
-@media screen and (min-width: 1350px) {
-    .feature-gradient {
-        height: 23.6rem;
-    }
-}
 
 @media screen and (min-width: 1730px) {
     .feature-gradient {
-        height: 34rem;
+        height: 35.5rem;
     }
 }
 
