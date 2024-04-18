@@ -1,70 +1,101 @@
 <template>
   <div>
-    <div class="main-section">
-      <div class="logo-con">
-        <a class="logo-link"><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" /></a>
-      </div>
-      <div class="header">
-        <h1>{{  navigatorLang === "en-US" ? 'Sign in' : $t('home-header.login') }}</h1>
-        <!-- <h1>Sign in</h1> -->
-      </div>
-
-      <div class="form-container">
-        <div class="error-div" v-if="state.showError && !state.notAUser">
-          <p class="error-message">{{ state.errorMessage }}</p>
-        </div>
-
-        <div class="error-div" v-if="state.notAUser">
-          <p class="error-message">
-            Not a registered user,
-            <a href="/register" class="primary-text font-weight-bold text-decoration-none">Register now</a>
-          </p>
-        </div>
-        <el-form :model="state" class="mt-3" @keyup.enter="login">
-          <el-form-item>
-            <el-input type="email" placeholder="Email" v-model="state.credentials.userName" />
-          </el-form-item>
-          <el-form-item>
-            <el-input type="password" placeholder="Password" v-model="state.credentials.password" show-password />
-          </el-form-item>
-          <div class="f-password-div">
-            <router-link to="/forgotpassword" class="forgot-password primary--text">{{ navigatorLang === "en-US" ? "Forgot password?" : $t('loginContent.forgot-it') }}</router-link>
+    <div class="main-section row">
+      <div class="col-md-6 d-flex justify-content-center align-items-center border">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12 d-flex justify-content-center ">
+              <img class="col-md-5" src="../../assets/home-image.png" alt="">
+            </div>
+            <div class="col-md-12 d-flex justify-content-center h4 ">
+              <div class="col-md-10 text-center">
+                {{ navigatorLang === "en-US" ? 'Elevating Your Ministry, Empowering Your Leadership!' : $t('home-content.elevating') }}
+              </div>
+            </div>
+            <div class="col-md-12 d-flex justify-content-center h5 ">
+              <div class="col-md-10 text-center">
+                {{ navigatorLang === "en-US" ? 'Welcome to the Future of Church Management!' : $t('home-content.future') }}
+              </div>
+            </div>
+            <div class="col-md-12 d-flex justify-content-center">
+              <div class="col-md-10 d-flex justify-content-between ">
+                <div><img src="../../assets/check-icon.png" alt=""></div>
+                <div class="mt-2">{{ navigatorLang === "en-US" ? 'Revolutionize Your Ministry' : $t('home-content.revolutionize') }}</div>
+              </div>
+            </div>
           </div>
-          <el-form-item>
-            <!-- <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>
+        </div>
+      </div>
+      <div class="col-md-6 border">
+        <div class="col-md-12" style="background: #EBEDFF; border-radius: 10px;">
+          <div class="logo-con">
+            <a class="logo-link"><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" /></a>
+          </div>
+          <div class="header">
+            <h1>{{ navigatorLang === "en-US" ? 'Sign in' : $t('home-header.login') }}</h1>
+            <!-- <h1>Sign in</h1> -->
+          </div>
+
+          <div class="form-container">
+            <div class="error-div" v-if="state.showError && !state.notAUser">
+              <p class="error-message">{{ state.errorMessage }}</p>
+            </div>
+
+            <div class="error-div" v-if="state.notAUser">
+              <p class="error-message">
+                Not a registered user,
+                <a href="/register" class="primary-text font-weight-bold text-decoration-none">Register now</a>
+              </p>
+            </div>
+            <el-form :model="state" class="mt-3" @keyup.enter="login">
+              <el-form-item>
+                <el-input type="email" placeholder="Email" v-model="state.credentials.userName" />
+              </el-form-item>
+              <el-form-item>
+                <el-input type="password" placeholder="Password" v-model="state.credentials.password" show-password />
+              </el-form-item>
+              <div class="f-password-div">
+                <router-link to="/forgotpassword" class="forgot-password primary--text">{{ navigatorLang === "en-US" ?
+              "Forgot password?" : $t('loginContent.forgot-it') }}</router-link>
+              </div>
+              <el-form-item>
+                <!-- <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>
               Sign In
             </el-button> -->
-            <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>
-              {{ navigatorLang === "en-US" ? 'Sign in' : $t('home-header.login') }}
-            </el-button>
+                <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading"
+                  round>
+                  {{ navigatorLang === "en-US" ? 'Sign in' : $t('home-header.login') }}
+                </el-button>
 
-            <!-- <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
+                <!-- <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
               <img src="../../assets/facebook-small.png" class="fb-icon" alt="Facebook Icon" />
               <span>Sign in with Facebook</span>
               <span></span>
             </div> -->
-          </el-form-item>
-          <!-- <el-form-item class="row"> -->
+              </el-form-item>
+              <!-- <el-form-item class="row"> -->
 
-          <!-- <div class="col-sm-6 col-12 mt-2 mt-sm-0 d-flex justify-content-center   justify-content-sm-end  ">
+              <!-- <div class="col-sm-6 col-12 mt-2 mt-sm-0 d-flex justify-content-center   justify-content-sm-end  ">
                 <a class="text-decoration-none apple-store" target="_blank" href="https://www.apple.com/safari/">
                   <img src="../../assets/mobileonboarding/app-store-logo.png" alt="">
                 </a>
               </div> -->
-          <!-- </el-form-item> -->
-        </el-form>
-        <div class="bottom-container">
-          <div>
-            <div class="sign-up-prompt">{{ navigatorLang === "en-US" ? "Don't have an account yet?" : $t('loginContent.no-account-yet') }}</div>
-          </div>
+              <!-- </el-form-item> -->
+            </el-form>
+            <div class="bottom-container">
+              <div>
+                <div class="sign-up-prompt">{{ navigatorLang === "en-US" ? "Don't have an account yet?" :
+              $t('loginContent.no-account-yet') }}</div>
+              </div>
 
-          <div class="mt-2">
-            <router-link to="/register" class="sign-up primary--text text-decoration-none"><el-button color="#17c5cf"
-                class="w-50" round><strong>{{ navigatorLang === "en-US" ? "Sign up now" : $t('loginContent.signup-btntext') }}</strong>
-              </el-button></router-link>
-          </div>
-        </div>
-        <!-- <div class="row">
+              <div class="mt-2">
+                <router-link to="/register" class="sign-up primary--text text-decoration-none"><el-button
+                    color="#17c5cf" class="w-50" round><strong>{{ navigatorLang === "en-US" ? "Sign up now" :
+              $t('loginContent.signup-btntext') }}</strong>
+                  </el-button></router-link>
+              </div>
+            </div>
+            <!-- <div class="row">
           <el-divider>
             Download the App
           </el-divider>
@@ -75,29 +106,32 @@
             </a>
           </div>
         </div> -->
+          </div>
+
+          <el-dialog v-model="displayModal" title="Please enter your email" width="80%" align-center>
+            <div class="container">
+              <div class="row mt-2">
+                <div class="col-12"></div>
+                <div class="col-sm-2 align-self-center">
+                  Email <span class="text-danger">*</span>
+                </div>
+                <div class="col-sm-10">
+                  <el-input type="text" label="Email" v-model="invalidEmailObj.email" />
+                </div>
+              </div>
+            </div>
+            <template #footer>
+              <span class="dialog-footer">
+                <el-button @click="displayModal = false" class="secondary-button" round>Cancel</el-button>
+                <el-button type="primary" @click="saveEmail" :loading="emailLoading" :color="primarycolor" round>
+                  Confirm
+                </el-button>
+              </span>
+            </template>
+          </el-dialog>
+        </div>
       </div>
 
-      <el-dialog v-model="displayModal" title="Please enter your email" width="80%" align-center>
-        <div class="container">
-          <div class="row mt-2">
-            <div class="col-12"></div>
-            <div class="col-sm-2 align-self-center">
-              Email <span class="text-danger">*</span>
-            </div>
-            <div class="col-sm-10">
-              <el-input type="text" label="Email" v-model="invalidEmailObj.email" />
-            </div>
-          </div>
-        </div>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="displayModal = false" class="secondary-button" round>Cancel</el-button>
-            <el-button type="primary" @click="saveEmail" :loading="emailLoading" :color="primarycolor" round>
-              Confirm
-            </el-button>
-          </span>
-        </template>
-      </el-dialog>
       <!-- <el-button @click="sendError">Clicked</el-button> -->
     </div>
   </div>
@@ -155,7 +189,7 @@ export default {
     const { locale } = useI18n({ useScope: 'global' });
     watch(locale, (val) => {
       setI18nLanguage(val);
-    
+
     });
 
     const login = async () => {
@@ -311,8 +345,8 @@ export default {
 }
 
 .main-section {
-  max-width: 400px;
-  margin: auto;
+  /* max-width: 400px; */
+  /* margin: auto; */
   padding: 10px;
 }
 
