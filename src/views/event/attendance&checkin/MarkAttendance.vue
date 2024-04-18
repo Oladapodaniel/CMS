@@ -29,25 +29,17 @@
         </p>
       </div>
     </div>
+    <div class="row">
+      <div class="col-md-12 mb-2 d-flex justify-content-end">
+        <el-button round size="large" class=" kiosk-mode mt-2 " @click="enterKioskMode">
+          {{ kioskButtonText }} kiosk mode
+        </el-button>
+      </div>
+    </div>
     <div class="row over-con">
       <div class="col-md-12 py-4">
-        <div class="row">
-          <div class="col-md-8">
-            <el-input v-model="searchText" class="w-100 m-md-2" placeholder="Search" :prefix-icon="Search" v-if="groupDetail && groupDetail.peopoleAttendancesDTOs && groupDetail.peopoleAttendancesDTOs.length > 0 && !attendanceTableLoading" />
-            <!-- <p class="search-span px-2">
-              <i class="pi pi-search p-2" style="height: 30px; width: 30px"></i>
-              <input
-                type="text"
-                class="search-control"
-                placeholder="Search"
-                v-model="searchText"
-              />
-            </p> -->
-          </div>
-          <div class="col-md-4">
-            <!-- <el-button round size="large" class=" kiosk-mode mt-2 " @click="enterKioskMode">
-              {{ kioskButtonText }} kiosk mode
-            </el-button> -->
+        <div class="row justify-content-between ">
+          <div class="col-md-4 col-12 ">
             <transition name="el-fade-in-linear">
               <div
                 v-show="marked.length > 0 && groupDetail && groupDetail.peopoleAttendancesDTOs && groupDetail.peopoleAttendancesDTOs.length > 0"
@@ -77,6 +69,11 @@
               </div>
             </transition>
           </div>
+          <div class="col-md-4 col-12 mt-3 mt-md-0">
+            <el-input v-model="searchText" class="w-100 m-md-2" placeholder="Search" :prefix-icon="Search"
+              v-if="groupDetail && groupDetail.peopoleAttendancesDTOs && groupDetail.peopoleAttendancesDTOs.length > 0 && !attendanceTableLoading" />
+          </div>
+
         </div>
 
         <!-- <div class="row mt-4 main-th font-weight-700 py-2 grey-rounded-bg" :class="{ 'kiosk-th-size': isKioskMode }">
@@ -113,7 +110,7 @@
                   :attendanceId="attendanceID" :searchText="searchText" /> -->
                 <Table :data="listOfPeople" :headers="attendanceHeader" :checkMultipleItem="true"
                   @checkedrow="handleSelectionChange" v-loading="attendanceTableLoading"
-                  v-if="groupDetail && groupDetail.peopoleAttendancesDTOs && groupDetail.peopoleAttendancesDTOs.length > 0">
+                  v-if="listOfPeople.length > 0 && groupDetail && groupDetail.peopoleAttendancesDTOs && groupDetail.peopoleAttendancesDTOs.length > 0">
                   <template v-slot:name="{ item }">
                     <div class="c-pointer">{{ item.name }}</div>
                   </template>
@@ -125,14 +122,16 @@
                     <!-- <div class="c-pointer">{{ item.isRegistered }}</div> -->
                   </template>
                   <template v-slot:isPresent="{ item }">
-                    <el-checkbox class="custom-checkbox" v-model="item.isPresent" @change="checkin($event, 1, item)"
-                      :disabled="checking" />
-                    <!-- <div class="c-pointer">{{ item.isPresent }}</div> -->
+                      <input type="checkbox"  v-model="item.isPresent" id="flexCheckDefault" @change="checkin($event, 1, item)"
+                      :disabled="checking">
+                    <!-- <el-checkbox class="custom-checkbox" v-model="item.isPresent" @change="checkin($event, 1, item)"
+                      :disabled="checking" /> -->
                   </template>
                   <template v-slot:isCheckedOut="{ item }">
-                    <el-checkbox class="custom-checkbox" v-model="item.isCheckedOut" @change="checkin($event, 2, item)"
-                      :disabled="checking" />
-                    <!-- <div class="c-pointer">{{ item.isCheckedOut }}</div> -->
+                      <input  type="checkbox"  v-model="item.isCheckedOut" id="flexCheckDefault" @change="checkin($event, 2, item)"
+                      :disabled="checking">
+                    <!-- <el-checkbox class="custom-checkbox" v-model="item.isCheckedOut" @change="checkin($event, 2, item)"
+                      :disabled="checking" /> -->
                   </template>
                   <template v-slot:action="{ item }">
                     <div class="text-decoration-none" @click="showConfirmModal(item)">
@@ -142,20 +141,21 @@
                     </div>
                   </template>
                 </Table>
-                <div class="row pb-4" v-if="listOfPeople.length === 0 && !attendanceTableLoading">
+                <div class="row pb-4"
+                  v-if="listOfPeople.length === 0 && !attendanceTableLoading && groupDetail && groupDetail.peopoleAttendancesDTOs && groupDetail.peopoleAttendancesDTOs.length > 0">
                   <div class="col-md-12 text-center">
                     <p class="my-2">No records found</p>
                   </div>
                   <div class="col-md-12 d-flex justify-content-center">
-                    <el-button class=" border-0 text-white" :color="primarycolor" data-toggle="modal"
-                      data-target="#exampleModal" size="large" round>
-                      Add member
-                    </el-button>
-                  </div> 
+                    <div class="col-md-4"><el-button class=" border-0 text-white w-100" :color="primarycolor"
+                        data-toggle="modal" data-target="#exampleModal" size="large" round>
+                        Add member
+                      </el-button></div>
                   </div>
-                  <AttendanceCheckinUpdate :contributionItems="contributionItems" :attendanceType="attendanceType"
-                    :groupDetail="groupDetail" />
                 </div>
+                <AttendanceCheckinUpdate :contributionItems="contributionItems" :attendanceType="attendanceType"
+                  :groupDetail="groupDetail" />
+              </div>
             </template>
             <template #fallback>
               <div class="row">
@@ -198,18 +198,18 @@
                           </div>
                         </div>
 
-                        <a class="dropdown-item font-weight-700 small-text"
-                          v-for="(member, index) in searchedMembers" :key="index" @click="addExistingMember(member)">{{
-                            member.name }}</a>
+                        <a class="dropdown-item font-weight-700 small-text" v-for="(member, index) in searchedMembers"
+                          :key="index" @click="addExistingMember(member)">{{
+      member.name }}</a>
                         <a class="dropdown-item font-weight-700 small-text" href="#" v-if="searchingForMembers && searchedMembers.length === 0
-                          ">
+      ">
                           <el-icon class="is-loading ">
                             <Loading />
                           </el-icon>
                         </a>
                         <p class="modal-promt pl-1 bg-secondary m-0" v-if="userSearchString.length < 3 &&
-                          searchedMembers.length === 0
-                          ">
+      searchedMembers.length === 0
+      ">
                           Enter 3 or more characters
                         </p>
                         <a class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary--text c-pointer"
@@ -232,8 +232,8 @@
                         <el-button class="secondary-button" round data-dismiss="modal">Cancel</el-button>
                       </div>
                       <div class="col-md-6">
-                        <el-button round :loading="loading" class="text-white" :color="primarycolor" data-dismiss="modal"
-                          @click="sendExistingUser">
+                        <el-button round :loading="loading" class="text-white" :color="primarycolor"
+                          data-dismiss="modal" @click="sendExistingUser">
                           Save
                         </el-button>
                       </div>
@@ -282,6 +282,7 @@ export default {
     const fetchUsers = ref(false);
     const contributionItems = ref([]);
     const attendanceType = ref([]);
+    const groupDetailShallowCopy = ref({});
     const groupDetail = ref({});
     const loading = ref(false);
     const attendanceTableLoading = ref(false);
@@ -377,6 +378,7 @@ export default {
     const refresh = () => {
       searchText.value = "";
       fetchUsers.value = true;
+      getGroupDetails()
     }
 
     const refreshed = () => {
@@ -410,6 +412,7 @@ export default {
       try {
         let data = await attendanceservice.getReport(route.query.id)
         groupDetail.value = data
+        groupDetailShallowCopy.value = data
         console.log(data, 'reaching');
         attendanceTableLoading.value = false
       }
@@ -421,8 +424,9 @@ export default {
     getGroupDetails()
 
     const listOfPeople = computed(() => {
+
       if (groupDetail.value && groupDetail.value.peopoleAttendancesDTOs && groupDetail.value.peopoleAttendancesDTOs.length > 0 && !searchText.value) return groupDetail.value.peopoleAttendancesDTOs;
-      if (groupDetail.value && groupDetail.value.peopoleAttendancesDTOs && groupDetail.value.peopoleAttendancesDTOs.length > 0 && searchText.value) return groupDetail.value.peopoleAttendancesDTOs.filter(i => i.name.toLowerCase().includes(searchText.value.toLowerCase()))
+      if (groupDetail.value && groupDetail.value.peopoleAttendancesDTOs && groupDetail.value.peopoleAttendancesDTOs.length > 0 && searchText.value) return groupDetailShallowCopy.value.peopoleAttendancesDTOs.filter(i => i.name.toLowerCase().includes(searchText.value.toLowerCase()))
       return []
     })
 
@@ -588,6 +592,7 @@ export default {
       attendanceType,
       Search,
       groupDetail,
+      groupDetailShallowCopy,
       loading,
       attendanceHeader,
       handleSelectionChange,

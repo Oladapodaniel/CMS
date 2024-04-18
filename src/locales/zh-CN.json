@@ -1,0 +1,81 @@
+{
+    "languages": {
+        "pt": "Portuguese",
+        "en-US": "English",
+        "zh-CN": "Chinese"
+    },
+    "title": {
+        "config": "Configuration"
+    },
+    "home-header": {
+        "login": "登入",
+        "signup": "开始使用",
+        "free": "自由的"
+    },
+    "loginContent": {
+        "login-btntext": "登入",
+        "signup-btntext": "立即注册",
+        "forgot-it": "忘了吧?",
+        "no-account-yet": "还没有帐户?"
+    },
+    "signupContent": {
+        "church-software-text": "一款可以自动化您整个教堂的软件",
+        "church-management-text": "教会管理流程.",
+        "pword-Character": "至少六个字符，但越长越好.",
+        "get-started": "开始使用",
+        "hve-an-account": "已有账户?",
+        "signin-text": "立即登录",
+        "indicated": "注册即表示您已阅读并同意",
+        "terms": "使用条款",
+        "and": "和",
+        "privacy": "隐私政策",
+        "resetPassword": "单击此处重置您的密码"
+    },
+    "onboardingContent": {
+        "welcome-chplus": "欢迎来到教会加!",
+        "about-ch": "告诉我们关于您和您的教会的信息",
+        "labels": {
+            "ur-name": "你叫什么名字?",
+            "ur-ministry": "你的事工叫什么名字?",
+            "ur-phone": "你的电话号码是什么?",
+            "ur-country": "选择您所在的国家/地区",
+            "membership-size": "你们事工的成员人数是多少?",
+            "step": "第 1 步（共 2 步）"
+        },
+        "next-btntext": "下一个"
+    },
+    "startingPointContent": {
+        "hey": "嘿",
+        "what-to-do-in-ch": "您想在 Churchplus 做什么?",
+        "step": "第 2 步（共 2 步）",
+        "starting-point": "选择一个起点",
+        "do-more": "您可以稍后做更多事情",
+        "claim-unit": "立即领取您的 500 单位",
+        "terms": "条款和条件",
+        "units-and-above": "购买 1000 件或以上送 500 件",
+        "existing-customers": "优惠对新老客户开放",
+        "one-time-offer": "这是本次活动期间的一次性优惠",
+        "buy-sms": "立即购买短信",
+        "send-email-sms": "发送电子邮件/短信",
+        "add-ch-members": "添加教会成员",
+        "add-fst-timers": "添加新手",
+        "not-yet": "尚未确定"
+    },
+    "processRequestContent": {
+        "hg-tight": "坚持住!",
+        "setting-things": "我们正在为您做好准备.",
+        "all-in-one": "一体化教会管理软件",
+        "get-ur-church": "轻松实现教会管理活动和流程的自动化."
+    },
+    "startDashboard": {
+        "wel": "欢迎",
+        "want-to-start": "你想从哪里开始 ?",
+        "add-member": "添加成员",
+        "stay-compliant": "通过保留会员的准确记录来保持合规性.",
+        "send-sms": "发简讯",
+        "communicate": "通过我们的无缝短信发送短信与您的会员进行沟通.",
+        "add-fst-timers": "添加首次计时器",
+        "keep-accurate": "使用我们的自动化系统保留准确的记录并跟进您的首次来访者.",
+        "skip-dashboard": "跳至仪表板"
+    }
+}

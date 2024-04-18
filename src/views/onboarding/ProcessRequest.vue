@@ -7,8 +7,8 @@
             <i class="loading-icon fas fa-circle-notch fa-spin"></i>
           </div>
           <div>
-            <h3 @click="test">Hang tight!</h3>
-            <h3>We 're setting things up for you.</h3>
+            <h3 @click="test">{{ navigatorLang === "en-US" ? 'Hang tight!' : $t('processRequestContent.hg-tight') }}</h3>
+            <h3>{{ navigatorLang === "en-US" ? "We 're setting things up for you." : $t('processRequestContent.setting-things') }}</h3>
           </div>
         </div>
         <!-- <i class="pi pi-spinner fa-spin"></i> -->
@@ -17,18 +17,18 @@
       <div class="desc" :class="{ box2: processing }">
         <div class="desc-details">
           <div class="desc-text mobile">
-            <h4>All-in-one Church management software</h4>
+            <h4>{{ navigatorLang === "en-US" ? 'All-in-one Church management software' : $t('processRequestContent.all-in-one') }}</h4>
             <p>
-              Get your church administrative activities and processes automated without hassle.
+              {{ navigatorLang === "en-US" ? 'Get your church administrative activities and processes automated without hassle.' : $t('processRequestContent.get-ur-church') }}
             </p>
           </div>
           <div class="image-box">
             <img src="../../assets/laptop.png" alt="" />
           </div>
           <div class="desc-text desktop">
-            <h4>All-in-one Church management software</h4>
+            <h4>{{ navigatorLang === "en-US" ? 'All-in-one Church management software' : $t('processRequestContent.all-in-one') }}</h4>
             <p>
-              Get your church administrative activities and processes automated without hassle.
+              {{ navigatorLang === "en-US" ? 'Get your church administrative activities and processes automated without hassle.' : $t('processRequestContent.get-ur-church') }}
             </p>
           </div>
           <div>
@@ -37,8 +37,8 @@
                 <i class="loading-icon fas fa-circle-notch fa-spin"></i>
               </div>
               <div class="mt-2">
-                <h3 @click="test">Hang tight!</h3>
-                <h3>We 're setting things up for you.</h3>
+                <h3 @click="test">{{ navigatorLang === "en-US" ? 'Hang tight!' : $t('processRequestContent.hg-tight') }}</h3>
+                <h3>{{ navigatorLang === "en-US" ? "We 're setting things up for you." : $t('processRequestContent.setting-things') }}</h3>
               </div>
             </div>
           </div>
@@ -49,10 +49,12 @@
 </template>
 
 <script>
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, watch, ref } from "vue";
 import store from "@/store/store";
 import router from "@/router/index";
 import { useRoute } from "vue-router";
+import { useI18n } from 'vue-i18n';
+import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from '../../i18n';
 
 export default {
   beforeRouteEnter(to, from, next) {
@@ -65,6 +67,13 @@ export default {
     const userSelectedRoute = route.params.option;
     // if (userSelectedRoute.includes("%")) userSelectedRoute.replace("%", "/")
     console.log(userSelectedRoute);
+    const navigatorLang = ref(navigator.language);
+    
+    const { locale } = useI18n({ useScope: 'global' });
+    watch(locale, (val) => {
+      setI18nLanguage(val);
+
+    });
 
     onMounted(() => {
       // const url = store.getters.userStartPoint;
@@ -90,7 +99,7 @@ export default {
       processing.value = !processing.value;
     };
 
-    return { processing };
+    return { processing, navigatorLang };
   },
 };
 </script>

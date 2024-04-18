@@ -77,7 +77,7 @@
                 </div>
               </template>
 
-              <template v-slot:description="{ item }">
+              <template v-slot:contribution="{ item }">
                 <div class="c-pointer">
                   {{ item.contribution }}
                 </div>
@@ -88,7 +88,7 @@
                   {{ item.currencyName }} {{ item.amount }}
                 </div>
               </template>
-              <template v-slot:event="{ item }">
+              <template v-slot:eventName="{ item }">
                 <div class="c-pointer">
                   {{ item.eventName }}
                 </div>
@@ -157,9 +157,9 @@ export default {
     const branchID = ref(localStorage.getItem("branchId"));
     const branchTransactionHeaders = ref([
       { name: "DATE", value: "date" },
-      { name: "DESCRIPTION", value: "description" },
+      { name: "DESCRIPTION", value: "contribution" },
       { name: "AMOUNT", value: "amount" },
-      { name: "EVENT", value: "event" },
+      { name: "EVENT", value: "eventName" },
       { name: "DONOR", value: "donor" },
       { name: "CHANNEL", value: "channel" },
     ]);

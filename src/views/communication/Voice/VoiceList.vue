@@ -22,7 +22,8 @@
             </template>
             <template #message="{ item }">
                 <div>
-                    <div class="font-weight-600"><el-button type="success" @click="copyToClipBoard(item)" plain round>Copy
+                    <div class="font-weight-600"><el-button type="success" @click="copyToClipBoard(item)" plain
+                            round>Copy
                             URL</el-button></div>
                 </div>
             </template>
@@ -43,14 +44,15 @@
             </template>
             <template #report="{ item }">
                 <div>
-                    <div class="font-weight-600 primary--text c-pointer" @click="$router.push(`/tenant/voice/report/${item.id}`)">View_report</div>
+                    <div class="font-weight-600 primary--text c-pointer"
+                        @click="$router.push(`/tenant/voice/report/${item.id}`)">View_report</div>
                 </div>
             </template>
         </Table>
         <div class="d-flex justify-content-end my-3">
-            <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
-                layout="total, sizes, prev, pager, next, jumper" :total="totalSentVoiceList" @size-change="handleSizeChange"
-                @current-change="handleCurrentChange" />
+            <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage"
+                background layout="total, sizes, prev, pager, next, jumper" :total="totalSentVoiceList"
+                @size-change="handleSizeChange" @current-change="handleCurrentChange" />
         </div>
     </div>
 </template>
@@ -93,43 +95,44 @@ export default {
         }
         getAllSentVoice();
 
-    const serverOptions = ref({
-      page: 1,
-      rowsPerPage: 50,
-    });
+        const serverOptions = ref({
+            page: 1,
+            rowsPerPage: 50,
+        });
 
-     watch(serverOptions, () => {
-      getTransactionByPage();
-    },
-      { deep: true }
-    );
-
-    const handleSizeChange = (val) => {
-      console.log(`${val} items per page`)
-    }
-    const handleCurrentChange = (val) => {
-      console.log(`current page: ${val}`)
-    }
-
-    const getTransactionByPage = async () => {
-      paginatedTableLoading.value = true
-      try {
-         voiceLoading.value = true
-        const { data } = await axios.get(
-          `api/Messaging/getAllSentVoice?Page=${serverOptions.value.page}`
+        watch(serverOptions, () => {
+            getTransactionByPage();
+        },
+            { deep: true }
         );
-        voiceLoading.value = false
-        sentVoiceList.value = data.data;
-        totalSentVoiceList.value = data.totalItems
-        paginationPage.value = data.page
-        console.log(sentVoiceList.value, "khkhkjhk");
-        paginatedTableLoading.value = false
-        getAllSentVoice()
-      } catch (error) {
-        paginatedTableLoading.value = false
-        console.log(error);
-      }
-    };
+
+        const handleSizeChange = (val) => {
+            console.log(`${val} items per page`)
+        }
+        const handleCurrentChange = (val) => {
+            console.log(`current page: ${val}`)
+        }
+        
+
+        const getTransactionByPage = async () => {
+            paginatedTableLoading.value = true
+            try {
+                voiceLoading.value = true
+                const { data } = await axios.get(
+                    `api/Messaging/getAllSentVoice?Page=${serverOptions.value.page}`
+                );
+                voiceLoading.value = false
+                sentVoiceList.value = data.data;
+                totalSentVoiceList.value = data.totalItems
+                paginationPage.value = data.page
+                console.log(sentVoiceList.value, "khkhkjhk");
+                paginatedTableLoading.value = false
+                getAllSentVoice()
+            } catch (error) {
+                paginatedTableLoading.value = false
+                console.log(error);
+            }
+        };
 
         const copyToClipBoard = async (item) => {
             await navigator.clipboard.writeText(item.message).then(() => {
@@ -142,10 +145,17 @@ export default {
         }
 
         const searchVoiceList = computed(() => {
-            if (searchVoiceText.value === "" && sentVoiceList.value.length > 0) return sentVoiceList.value;
-            return sentVoiceList.value.filter((i) => {
-                return i.subject && i.subject.toLowerCase().includes(searchVoiceText.value.toLowerCase())
-            });
+            if (searchVoiceText.value !== "" && sentVoiceList.value.length > 0) {
+                return sentVoiceList.value.filter((i) => {
+                    if (i.subject)
+                        return i.subject
+                            .toLowerCase()
+                            .includes(searchVoiceText.value.toLowerCase());
+                });
+            } else {
+                return sentVoiceList.value;
+            }
+
         });
         return {
             sentVoiceList,

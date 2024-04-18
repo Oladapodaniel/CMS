@@ -69,6 +69,14 @@
           </div>
           <div class="row mt-3">
             <div class="col-sm-12 col-md-4 text-md-right text-left">
+              <label for="">Date</label>
+            </div>
+            <div class="ofering col-md-8 col-12">
+              <el-date-picker v-model="pledgeDate" type="date" placeholder="To" format="DD/MM/YYYY" size="large" class="w-100" />
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-sm-12 col-md-4 text-md-right text-left">
               <label for="">Select Person</label>
             </div>
             <div class="ofering col-md-8 col-12">
@@ -255,6 +263,7 @@ export default {
     const route = useRoute();
     const showPerson = ref(false);
     const churchName = ref("");
+    const pledgeDate = ref("");
     const Address = ref("");
     const loading = ref(false);
     const loadingCode = ref(false);
@@ -340,6 +349,7 @@ export default {
         amount: donorAmountBase,
         amountBase: rangeBase,
         amountTop: selectedPledge.value.donorPaymentRangeToAmount,
+        date: pledgeDate.value ? new Date(pledgeDate.value).toLocaleDateString("en-US") : ""
       };
 
       loading.value = true;
@@ -351,6 +361,7 @@ export default {
           amount: donorAmountBase,
           amountBase: rangeBase,
           amountTop: selectedPledge.value.donorPaymentRangeToAmount,
+          date: pledgeDate.value ? new Date(pledgeDate.value).toLocaleDateString("en-US") : ""
         };
         try {
           const response = await axios.put(
@@ -472,6 +483,7 @@ export default {
       checkEmailValue,
       churchName,
       selectedContact,
+      pledgeDate,
       Address,
       value,
       loading,

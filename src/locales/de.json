@@ -1,0 +1,83 @@
+{
+    "languages": {
+      "pt": "Portuguese",
+      "en-US": "English",
+      "zh-CN": "Chinese"
+    },
+    "title": {
+      "config": "Configuration"
+    },
+    "home-header": {
+      "login": "anmelden",
+      "signup": "Beginnen Sie mit",
+      "free": "FREI"
+    },
+    "loginContent": {
+      "login-btntext": "anmelden",
+      "signup-btntext": "Jetzt registrieren",
+      "forgot-it": "Hab's vergessen?",
+      "no-account-yet": "Sie haben noch kein Konto?"
+    },
+    "signupContent": {
+      "church-software-text": "Eine Kirchensoftware, die Ihr gesamtes automatisiert",
+      "church-management-text": "Kirchenverwaltungsprozesse.",
+      "pword-Character" : "Mindestens 6 Zeichen, aber länger ist besser.",
+      "get-started": "Loslegen",
+      "hve-an-account" : "Sie haben bereits ein Konto?",
+      "signin-text": "Jetzt einschreiben",
+      "indicated": "Mit Ihrer Anmeldung erklären Sie, dass Sie die gelesen haben und damit einverstanden sind",
+      "terms": "Nutzungsbedingungen",
+      "and"  : "Und",
+      "privacy" : "Datenschutzrichtlinie",
+      "resetPassword" : "Klicken Sie hier, um Ihr Passwort zurückzusetzen"
+    },
+    "onboardingContent": {
+      "welcome-chplus": "Willkommen bei Churchplus!",
+      "about-ch" : "Erzählen Sie uns etwas über Sie und Ihre Kirche",
+      "labels": {
+        "ur-name" : "Wie heißen Sie?",
+        "ur-ministry" : "Wie heißt Ihr Ministerium?",
+        "ur-phone" : "Wie ist deine Telefonnummer?",
+        "ur-country" : "Wähle dein Land",
+        "membership-size" : "Wie groß ist die Mitgliederzahl Ihres Ministeriums??",
+        "step" : "SCHRITT 1 VON 2"
+      },
+      "next-btntext" : "Nächste"
+    },
+    "startingPointContent": {
+      "hey" : "Hey",
+      "what-to-do-in-ch" : "Was möchten Sie in Churchplus tun??",
+      "step" : "SCHRITT 2 VON 2",
+      "starting-point" : "Wählen Sie einen Ausgangspunkt",
+      "do-more" : "Sie können später mehr tun",
+      "claim-unit" : "Fordern Sie jetzt Ihre 500-Einheit an",
+      "terms" : "Geschäftsbedingungen",
+      "units-and-above" : "Kaufen Sie 1000 Einheiten oder mehr und erhalten Sie 500 Einheiten gratis",
+      "existing-customers" : "Das Angebot gilt sowohl für Neu- als auch für Bestandskunden",
+      "one-time-offer": "Dies ist ein einmaliges Angebot für die Dauer dieser Kampagne",
+      "buy-sms": "Jetzt SMS kaufen",
+      "send-email-sms": "E-Mail/SMS senden",
+      "add-ch-members": "Fügen Sie Kirchenmitglieder hinzu",
+      "add-fst-timers": "Fügen Sie Erstbesucher hinzu",
+      "not-yet": "Noch nicht sicher"
+    },
+  
+    "processRequestContent": {
+      "hg-tight": "Bleib 'dabei!",
+      "setting-things" : "Wir richten alles für Sie ein.",
+      "all-in-one" : "All-in-one-Kirchenverwaltungssoftware",
+      "get-ur-church" : "Automatisieren Sie Ihre kirchlichen Verwaltungsaktivitäten und -prozesse problemlos."
+    },
+  
+    "startDashboard" : {
+      "wel" : "Willkommen",
+      "want-to-start" : "Wo möchten Sie anfangen? ?",
+      "add-member" : "Fügen Sie Mitglieder hinzu",
+      "stay-compliant" : "Bleiben Sie konform, indem Sie genaue Aufzeichnungen über Ihre Mitglieder führen.",
+      "send-sms" : "SMS senden",
+      "communicate" : "Kommunizieren Sie mit Ihren Mitgliedern, indem Sie SMS mit unseren nahtlosen SMS senden.",
+      "add-fst-timers" : "Fügen Sie Erstbesucher hinzu",
+      "keep-accurate" : "Führen Sie genaue Aufzeichnungen und verfolgen Sie Ihre Erstkontakte mit unserem automatisierten System.",
+      "skip-dashboard" : "Zum Dashboard springen"
+    }
+  }

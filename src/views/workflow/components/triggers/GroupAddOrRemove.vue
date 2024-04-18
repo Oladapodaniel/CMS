@@ -1,97 +1,144 @@
 <template>
-    <div class="container max-height px-0 scroll-div">
-        <div class="row text-center dotted-border-bottom">
-            <div class="col-md-12 my-3">
-                <TriggerDescription :header="'Group — Add/Remove'" :description="description" @removetrigger="removeTrigger" />
-            </div>
-        </div>
-
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <label for="" class="font-weight-600">A member is</label>
-            </div>
-
-            <div class="col-md-12 mb-2">
-                <Dropdown :options="[ 'Added to', 'Removed from' ]" v-model="logicalOperatorAddOrRemove" @change="handleLogicalOperatorAddOrRemove" class="w-100" />
-            </div>
-
-            <div class="col-md-12 mb-2 mt-3">
-                <MultiSelect v-model="selectedGroups" optionLabel="name" @change="handleSelectedGroups" :options="groups"  placeholder="Select groups" class="w-100"  display="chip" />
-            </div>
-
-        </div>
-        
+  <div class="container max-height px-0 scroll-div">
+    <div class="row text-center dotted-border-bottom">
+      <div class="col-md-12 my-3">
+        <TriggerDescription
+          :header="'Group — Add/Remove'"
+          :description="description"
+          @removetrigger="removeTrigger"
+        />
+      </div>
     </div>
+
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <label for="" class="font-weight-600">A member is</label>
+      </div>
+
+      <div class="col-md-12 mb-2">
+        <el-dropdown trigger="click" class="w-100">
+          <span class="el-dropdown-link w-100">
+            <div
+              class="d-flex justify-content-between border-eldropdown w-100"
+              size="large"
+            >
+              <span class="text-secondary">{{
+                logicalOperatorAddOrRemove ? logicalOperatorAddOrRemove : "Select type"
+              }}</span>
+              <div>
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </div>
+            </div>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item
+                v-for="(item, index) in ['Added to', 'Removed from']"
+                :key="index"
+                @click="handleLogicalOperatorAddOrRemove(item)"
+                >{{ item }}
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </div>
+
+      <div class="col-md-12 mb-2 mt-3">
+        <el-tree-select
+          v-model="data.groups"
+          :data="groupMappedTree"
+          :render-after-expand="false"
+          check-strictly
+          multiple
+          show-checkbox
+          check-on-click-node
+          class="w-100"
+          @change="handleSelectedGroups"
+        />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import Dropdown from "primevue/dropdown"
-import TriggerDescription from "../TriggerDescription.vue"
-import { computed, reactive, ref, watch } from '@vue/runtime-core';
-import MultiSelect from "primevue/multiselect";
-import workflow_util from '../../utlity/workflow_util';
+import TriggerDescription from "../TriggerDescription.vue";
+import { computed, reactive, ref, watchEffect } from "@vue/runtime-core";
+import workflow_util from "../../utlity/workflow_util";
 export default {
-    components: { Dropdown, TriggerDescription, MultiSelect },
-    props: [ "groups", "selectedTriggerIndex", "condition" ],
-    setup (props, { emit }) {
-        const data = reactive({ })
+  components: { TriggerDescription },
+  props: ["groups", "selectedTriggerIndex", "condition", "groupMappedTree"],
+  emits: ["updatetrigger", "removetrigger"],
 
-        const selectedGroups = ref([ ]);
-        const handleSelectedGroups = e => {
-        const allGroupsIndex = selectedGroups.value.findIndex(i => i.id === "00000000-0000-0000-0000-000000000000");
-        data.groups = allGroupsIndex < 0 ? e.value.map(i => i.id).join(',') : "00000000-0000-0000-0000-000000000000";
-            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
-        }
+  setup(props, { emit }) {
+    const data = ref({});
 
-        const logicalOperatorAddOrRemove = ref('');
-        const handleLogicalOperatorAddOrRemove = e => {
-        data.logicalOperatorAddOrRemove = e.value;
-            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
-        }
+    const selectedGroups = ref("");
+    const handleSelectedGroups = () => {
+      emit("updatetrigger", JSON.stringify(data.value), props.selectedTriggerIndex);
+    };
 
-        const description = computed(() => {
-            return {
-                selectedGroups: selectedGroups.value && selectedGroups.value.length > 0 ? selectedGroups.value.map(i => i.name) : ['_____'],
-                logicalOperatorAddOrRemove: data.logicalOperatorAddOrRemove ? data.logicalOperatorAddOrRemove : '____',
-                id: 8,
-            };            
-        });
+    const logicalOperatorAddOrRemove = ref("");
+    const handleLogicalOperatorAddOrRemove = (item) => {
+      logicalOperatorAddOrRemove.value = data.value.logicalOperatorAddOrRemove = item;
+      emit("updatetrigger", JSON.stringify(data.value), props.selectedTriggerIndex);
+    };
 
-        const removeTrigger = () => {
-            emit("removetrigger")
-        }
+    const description = computed(() => {
+      return {
+        selectedGroups: selectedGroups.value
+          ? selectedGroups.value.map((i) => i.name)
+          : ["____"],
+        logicalOperatorAddOrRemove: logicalOperatorAddOrRemove.value
+          ? logicalOperatorAddOrRemove.value
+          : "____",
+        id: 8,
+      };
+    });
 
-        const parsedData = ref({ })
-        watch(() => {
-            console.log(props.condition, "NNNNN");
-            if (props.condition.jsonCondition) {
-                parsedData.value = JSON.parse(props.condition.jsonCondition);
-                logicalOperatorAddOrRemove.value = parsedData.value.logicalOperatorAddOrRemove;
-                data.logicalOperatorAddOrRemove = parsedData.value.logicalOperatorAddOrRemove;
+    const removeTrigger = () => {
+      emit("removetrigger");
+    };
 
-                selectedGroups.value = props.groups.length > 0 ? workflow_util.getGroups(parsedData.value.groups, props.groups) : [ ];
-                data.groups = parsedData.value.groups;
-            }
-        }) 
+    const parsedData = ref({});
 
-        return {
-            selectedGroups,
-            handleSelectedGroups,
-            description,
-            logicalOperatorAddOrRemove,
-            handleLogicalOperatorAddOrRemove,
-            removeTrigger,
-        }
-    }
-}
+    watchEffect(() => {
+      if (props.condition.jsonCondition) {
+        parsedData.value = JSON.parse(props.condition.jsonCondition);
+        logicalOperatorAddOrRemove.value = parsedData.value.logicalOperatorAddOrRemove;
+        data.value.logicalOperatorAddOrRemove =
+          parsedData.value.logicalOperatorAddOrRemove;
+
+        selectedGroups.value =
+          props.groups.length > 0
+            ? workflow_util.getGroups(parsedData.value.groups, props.groups)
+            : [];
+        data.value.groups = parsedData.value.groups
+          ? parsedData.value.groups.split(",")
+          : [];
+      }
+    });
+
+    return {
+      selectedGroups,
+      handleSelectedGroups,
+      description,
+      logicalOperatorAddOrRemove,
+      handleLogicalOperatorAddOrRemove,
+      removeTrigger,
+      data,
+    };
+  },
+};
 </script>
 
 <style scoped>
-    .dotted-border-bottom {
-        border-bottom: dotted 2px #ddd;
-    }
+.dotted-border-bottom {
+  border-bottom: dotted 2px #ddd;
+}
 
-    .max-height {
-        max-height: calc(100vh - 300px);
-    }
+.max-height {
+  max-height: calc(100vh - 300px);
+}
 </style>

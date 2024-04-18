@@ -419,6 +419,7 @@ export default {
     };
 
     const save = () => {
+      console.log(remitance.value, 'fjfjj')
       let contributionCategory = {
         name: name.value,
         incomeAccountId: selectedIncomeAccount.value
@@ -427,18 +428,20 @@ export default {
         cashAccountId: selectedCashAccount.value
           ? selectedCashAccount.value.id
           : "",
-        incomeRemittance: remitance.value,
+        incomeRemittance: remitance.value ? remitance.value : ""
       };
 
-      if (remitance.value[0].account || remitance.value[0].percentage) {
+      if (remitance.value[0] && remitance.value[0].account || remitance.value[0] && remitance.value[0].percentage) {
         contributionCategory.incomeRemittance = remitance.value.map((i) => {
           if (!i.account.financialFundID) delete i.account.financialFundID;
           let payload = {};
           if (i.account.accountType.toLowerCase().includes("assets"))
             payload.distinationCashBankAccount = i.account.id;
+            payload.id = i.id;
           if (i.account.accountType.toLowerCase().includes("income"))
             payload.distinationIncomeAccount = i.account.id;
           payload.percentage = i.percentage;
+          payload.id = i.id ;
           return payload;
         });
       } else {
@@ -478,6 +481,8 @@ export default {
       selectedCashAccount.value = cashBankAccount.value.find((i) => {
         return i.id === id;
       });
+      console.log(selectedCashAccount.value, 'llklll')
+      selectedCashAccountID.value = selectedCashAccount.value ? selectedCashAccount.value.text : ""
     };
 
     const getOffItems = async () => {
@@ -492,10 +497,15 @@ export default {
           });
           x(res.data.cashAccountID);
 
-          if (res.data.incomeRemittance && res.data.incomeRemittance.length > 0) applyRem.value = true
-          remitance.value = res.data.incomeRemittance.map(i => {
+          selectedIncomeAccountID.value = selectedIncomeAccount.value ? selectedIncomeAccount.value.text : ""
+
+          console.log(res.data, 'jhhbgjhg');
+
+          if (res.data && res.data.incomeRemittance && res.data.incomeRemittance.length > 0) applyRem.value = true
+          remitance.value =  res.data &&   res.data.incomeRemittance ?  res.data.incomeRemittance.map(i => {
             let data = {};
             data.percentage = i.percentage;
+            data.id = i.id
             if (i.distinationCashBankAccount == '00000000-0000-0000-0000-000000000000') {
               data.account = ungroupedRemittanceResult.value.find(j => {
                 return j.id == i.distinationIncomeAccount
@@ -506,7 +516,8 @@ export default {
               })
             }
             return data
-          })
+          }) : "";
+          console.log(remitance.value, 'jkjjjj');
         } catch (err) {
           console.log(err);
         }

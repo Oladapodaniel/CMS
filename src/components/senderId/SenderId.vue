@@ -19,8 +19,11 @@
             <el-icon class="el-icon--right"><arrow-down /></el-icon>
             <template #dropdown>
                 <el-dropdown-menu>
-                    <el-dropdown-item v-for="(item, index) in searchSenderIDs" :key="index" @click="setIdToSubject(item)">
-                        {{ item.mask }}
+                    <el-dropdown-item v-for="(item, index) in searchSenderIDs" :key="index">
+                        <div class="d-flex justify-content-between w-100">
+                        <div @click="setIdToSubject(item)">{{ item.mask }}</div>
+                         <el-icon color="red" @click="showConfirmModal(item)"><Delete /></el-icon>
+                        </div>
                     </el-dropdown-item>
                     <el-dropdown-item class="primary--text" data-toggle="modal" data-target="#senderIdModal" divided>
                         <el-icon>
@@ -30,6 +33,11 @@
                 </el-dropdown-menu>
             </template>
         </el-dropdown>
+        <div class="c-pointer mt-1 d-flex primary--text small font-weight-bold" data-toggle="modal" data-target="#senderIdModal">
+            <el-icon class=" pt-1">
+                <CirclePlusFilled />
+            </el-icon> <span class="mt-0"  >Request new sender ID</span>
+        </div>
 
         <!-- Create sender id modal -->
         <!-- Modal -->
@@ -75,7 +83,7 @@
 <script setup>
 import { ref, computed, reactive, inject } from 'vue';
 import axios from "@/gateway/backendapi";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 const primarycolor = inject('primarycolor')
 const emit = defineEmits(['setselectedsenderid'])
@@ -138,6 +146,46 @@ const submitSenderForm = async (formEl) => {
             console.log('error submit!', fields)
         }
     })
+}
+
+const showConfirmModal = (item) => {
+       ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
+            deletSenderId(item)
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Rejected",
+            duration: 5000,
+          });
+        });
+    };
+
+const deletSenderId = async (item) => {
+    try {
+        let { data } = await axios.delete(`/api/Messaging/DeleteSenderID?id=${item.id}`)
+        console.log(data)
+        if (data) {
+            ElMessage({
+            type: "success",
+            message: "Sender ID deleted successfully",
+            duration: 5000,
+          });
+          senderIDs.value = senderIDs.value.filter(i => i.id !== item.id)
+        }
+    }
+    catch (error) {
+        console.error(error)
+    }
 }
 
 const saveSenderId = async () => {

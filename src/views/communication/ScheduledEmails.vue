@@ -1,4 +1,4 @@
-!<template>
+<template>
   <div>
     <div class="container">
       <!-- Content Box -->
@@ -6,116 +6,76 @@
         <div class="container-fluid px-0">
           <div class="row px-0">
             <div class="col-md-12 px-0 mb-3">
-              <div
-                class="row d-md-flex align-items-center justify-content-between mt-3 mb-4"
-              >
+              <div class="row d-md-flex align-items-center justify-content-between mt-3 mb-4">
                 <div class="col-md-6 col-sm-12">
                   <div class="search-div d-flex  align-items-center">
-                    <span class="mr-2"
-                      ><el-icon><Search /></el-icon
-                    ></span>
-                    <input
-                      type="text"
-                      class="w-100"
-                      placeholder="Search here..."
-                      v-model="searchScheduled"
-                    />
+                    <span class="mr-2"><el-icon>
+                        <Search />
+                      </el-icon></span>
+                    <input type="text" class="w-100" placeholder="Search here..." v-model="searchScheduled" />
                   </div>
                 </div>
               </div>
 
               <!-- delete icon area -->
               <div class="table-options" v-loading="loading" v-if="markedMails.length > 0">
-                <el-tooltip
-                  class="box-item"
-                  effect="dark"
-                  v-if="markedMails.length > 0"
-                  content="delete marked"
-                  placement="top-start"
-                >
-                  <el-icon
-                    :size="20"
-                    class="color-deleteicon text-danger c-pointer"
-                    style="font-size: 15px"
-                    v-if="markedMails.length > 0"
-                    @click="showConfirmModal(false)"
-                  >
+                <el-tooltip class="box-item" effect="dark" v-if="markedMails.length > 0" content="delete marked"
+                  placement="top-start">
+                  <el-icon :size="20" class="color-deleteicon text-danger c-pointer" style="font-size: 15px"
+                    v-if="markedMails.length > 0" @click="showConfirmModal(false)">
                     <Delete />
                   </el-icon>
                 </el-tooltip>
               </div>
-              <Table
-                :data="scheduledMails"
-                :headers="ScheduledHeaders"
-                :checkMultipleItem="true"
-                @checkedrow="handleSelectionChange"
-                v-loading="loading"
-              >
-              <template #subject="{ item }">
-                <div>
-                  <router-link
-                    to=""
-                    class="text-decoration-none"
-                  >
-                    <span class="timestamp text-dark ml-1">{{!item.subject ? "(no subject)" : item.subject}}</span>
-                  </router-link>
-                </div>
-              </template>
-              <template #message="{ item }">
-                <div>
-                  <router-link
-                    to=""
-                    class="no-decoration primary--text"
-                  >
-                   <span class=" font-weight-600 ">
+              <Table :data="scheduledMails" :headers="ScheduledHeaders" :checkMultipleItem="true"
+                @checkedrow="handleSelectionChange" v-loading="loading">
+                <template #subject="{ item }">
+                  <div>
+                    <router-link to="" class="text-decoration-none">
+                      <span class="timestamp text-dark ml-1">{{ !item.subject ? "(no subject)" : item.subject }}</span>
+                    </router-link>
+                  </div>
+                </template>
+                <template #message="{ item }">
+                  <div>
+                    <router-link to="" class="no-decoration primary--text">
+                      <span class=" font-weight-600 ">
                         {{
                           `${item.message
                             .split("")
                             .slice(0, 30)
                             .join("")}...`
                         }}
-                    </span>
-                  </router-link>
-                </div>
-              </template>
-              <template #isExecuted="{ item }">
-                <div>
-                  <router-link
-                    to=""
-                    class="text-decoration-none"
-                  >
-                    <span class="primary--text small-text ml-1">{{ item.isExecuted === false ? "No" : "Yes" }}</span>
-                  </router-link>
-                </div>
-              </template>
-              <template #executionDate="{ item }">
-                <div>
-                  <router-link
-                    to=""
-                    class="text-decoration-none"
-                  >
-                    <span class="timestamp ml-1 text-dark small-text">{{ formattedDate(item.executionDate)}}</span>
-                  </router-link>
-                </div>
-              </template>
-              <template #delete="{ item }">
-                <span class="small-text">
-                    <el-icon
-                      :size="20"
-                      class="ml-2 color-deleteicon pt-2 c-pointer"
-                      style="font-size: 20px"
-                      @click="showConfirmModal(item.id)"
-                    >
+                      </span>
+                    </router-link>
+                  </div>
+                </template>
+                <template #isExecuted="{ item }">
+                  <div>
+                    <router-link to="" class="text-decoration-none">
+                      <span class="primary--text small-text ml-1">{{ item.isExecuted === false ? "No" : "Yes" }}</span>
+                    </router-link>
+                  </div>
+                </template>
+                <template #executionDate="{ item }">
+                  <div>
+                    <router-link to="" class="text-decoration-none">
+                      <span class="timestamp ml-1 text-dark small-text">{{ formattedDate(item.executionDate) }}</span>
+                    </router-link>
+                  </div>
+                </template>
+                <template #delete="{ item }">
+                  <span class="small-text">
+                    <el-icon :size="20" class="ml-2 color-deleteicon pt-2 c-pointer" style="font-size: 20px"
+                      @click="showConfirmModal(item.id)">
                       <Delete />
                     </el-icon>
                   </span>
-              </template>
+                </template>
               </Table>
               <div class="row" v-if="schedules.length === 0 && !loading">
                 <div class="col-md-12 d-flex justify-content-center">
-                  <span class="my-4 font-weight-bold"
-                    >No scheduled mesages</span
-                  >
+                  <span class="my-4 font-weight-bold">No scheduled mesages</span>
                 </div>
               </div>
 
@@ -143,9 +103,9 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import Table from "@/components/table/Table";
 
 export default {
-    components: { 
-      Table 
-    },
+  components: {
+    Table
+  },
   setup() {
     const schedules = ref([]);
     const loading = ref(false);
@@ -157,7 +117,7 @@ export default {
       { name: '', value: 'delete' },
     ]);
 
-    const getScheduledSMS = async () => {
+    const getScheduledEmails = async () => {
       try {
         loading.value = true;
         const res = await communicationService.getSchedules("/api/Messaging/getEmailSchedules");
@@ -171,12 +131,12 @@ export default {
     const formattedDate = (date) => {
       return dateFormatter.monthDayTime(date);
     };
-    const handleSelectionChange = (val) =>{
+    const handleSelectionChange = (val) => {
       markedMails.value = val
     }
 
     onMounted(() => {
-      getScheduledSMS();
+      getScheduledEmails();
     });
 
     // function to search
@@ -233,33 +193,32 @@ export default {
         )
         .then((res) => {
           if (res) {
-             ElMessage({
-                type: "success",
-                message: `${
-                      markedMails.value.length > 1
-                        ? "Selected Schedules have"
-                        : "Schedule has"
-                    } been deleted successfully `,
-                duration: 5000
-              });
+            ElMessage({
+              type: "success",
+              message: `${markedMails.value.length > 1
+                  ? "Selected Schedules have"
+                  : "Schedule has"
+                } been deleted successfully `,
+              duration: 5000
+            });
             schedules.value = !id
               ? removeDeletedScheduleFromSchedulesEmailsList(markedMails.value)
               : schedules.value.filter((i) => i.id !== id);
 
             markedMails.value = [];
           } else {
-             ElMessage({
-                type: "success",
-                message: res,
-                duration: 5000
-              });
+            ElMessage({
+              type: "success",
+              message: res,
+              duration: 5000
+            });
           }
         })
         .catch((err) => {
           stopProgressBar();
-           ElMessage({
+          ElMessage({
             type: "error",
-            message: `${ markedMails.value > 1 ? "Selected Schedules" : "Schedule" } could not be deleted,`,
+            message: `${markedMails.value > 1 ? "Selected Schedules" : "Schedule"} could not be deleted,`,
             duration: 5000
           });
           console.log(err);
@@ -278,7 +237,7 @@ export default {
       });
     };
     const showConfirmModal = (id) => {
-       ElMessageBox.confirm(
+      ElMessageBox.confirm(
         "Are you sure you want to proceed? This operation can't be reversed ",
         "Confirm delete",
         {
@@ -324,6 +283,7 @@ export default {
   background: #f5f8f9;
   border-radius: 200px;
 }
+
 .table-options {
   border: 1px solid rgb(212, 221, 227);
   border-bottom: none;
@@ -405,7 +365,7 @@ export default {
 
 .timestamp {
   font-size: 14px;
-  
+
 }
 
 .view-btn {

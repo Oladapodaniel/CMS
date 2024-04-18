@@ -7,13 +7,8 @@
             <h2 class="head-text">Pledge Overview</h2>
           </div>
           <div class="col-md-6 d-flex justify-content-md-end">
-            <el-button
-              :color="primarycolor"
-              class="header-btn text-white"
-              data-toggle="modal"
-              data-target="#exampleModalLong"
-              round
-            >
+            <el-button :color="primarycolor" class="header-btn text-white" data-toggle="modal"
+              data-target="#exampleModalLong" round>
               Record Payment
             </el-button>
           </div>
@@ -64,8 +59,7 @@
             <span class="theader">Balance</span>
             <div class="my-3">
               <span class="evt-name">
-                {{ Math.abs(pledgeBalance).toLocaleString() }}.00</span
-              >
+                {{ Math.abs(pledgeBalance).toLocaleString() }}.00</span>
             </div>
           </div>
         </div>
@@ -81,37 +75,20 @@
               </div>
               <div class="row">
                 <div class="col-12">
-                      <div class="border p-3">
-                        <div class="row">
-                        <div
-                          class="col-md-2 col-sm-2 d-flex justify-content-center image mt-2"
-                        >
-                          <img
-                            src="../../assets/link.svg"
-                            class="w-100"
-                            style="width: 60px; height: 60px"
-                          />
-                        </div>
-                        <div class="col-md-10 col-sm-10 mt-3">
-                          <a class="text-decoration-none"
-                            ><h4
-                              class="header4 link-color c-pointer"
-                              @click="copyRegLink"
-                            >
-                              Online Payment Link
-                            </h4></a
-                          >
-                          <p class="mb-4">
-                            <span
-                              class="d-flex align-items-center justify-content-between"
-                              ><el-input
-                                type="text"
-                                ref="selectedLink"
-                                v-model="pledgePaymentLink"
-                                class="border-0"
-                                placeholder="Link"
-                                
-                              >
+                  <div class="border p-3">
+                    <div class="row">
+                      <div class="col-md-2 col-sm-2 d-flex justify-content-center image mt-2">
+                        <img src="../../assets/link.svg" class="w-100" style="width: 60px; height: 60px" />
+                      </div>
+                      <div class="col-md-10 col-sm-10 mt-3">
+                        <a class="text-decoration-none">
+                          <h4 class="header4 link-color c-pointer" @click="copyRegLink">
+                            Online Payment Link
+                          </h4>
+                        </a>
+                        <p class="mb-4">
+                          <span class="d-flex align-items-center justify-content-between"><el-input type="text"
+                              ref="selectedLink" v-model="pledgePaymentLink" class="border-0" placeholder="Link">
                               <template #append>
                                 <el-button @click="copyLink">
                                   <el-icon>
@@ -120,12 +97,12 @@
                                 </el-button>
                               </template>
                             </el-input>
-                            </span>
-                          </p>
-                        </div>
+                          </span>
+                        </p>
                       </div>
-                
-                      </div>
+                    </div>
+
+                  </div>
                 </div>
               </div>
             </div>
@@ -136,13 +113,8 @@
             <h2 class="head-text">Payments</h2>
           </div>
           <div class="col-md-6 d-flex justify-content-md-end">
-            <el-button
-              :color="primarycolor"
-              class="header-btn text-white"
-              data-toggle="modal"
-              data-target="#exampleModalLong"
-              round
-            >
+            <el-button :color="primarycolor" class="header-btn text-white" data-toggle="modal"
+              data-target="#exampleModalLong" round>
               Record Payment
             </el-button>
           </div>
@@ -150,20 +122,15 @@
             <div class="col-md-12 px-0">
               <hr class="my-3" />
             </div>
-            <Table
-              :data="searchPledgePayment"
-              :headers="pledgeHeaders"
-              :checkMultipleItem="false"
-              v-loading="loading"
-              v-if="allPledgePaymentList.length > 0"
-            >
+            <Table :data="searchPledgePayment" :headers="pledgeHeaders" :checkMultipleItem="false" v-loading="loading"
+              v-if="allPledgePaymentList.length > 0">
               <template v-slot:date="{ item }">
                 <div class="c-pointer">{{ date(item.date) }}</div>
               </template>
               <template v-slot:channel="{ item }">
                 <div class="c-pointer">{{ item.channel }}</div>
               </template>
-              <template v-slot:amountPaid="{ item }">
+              <template v-slot:amount="{ item }">
                 <div class="c-pointer">
                   {{ Math.abs(item.amount).toLocaleString() }}.00
                 </div>
@@ -177,10 +144,7 @@
                     <el-dropdown-menu>
                       <el-dropdown-item> </el-dropdown-item>
                       <el-dropdown-item>
-                        <div
-                          @click.prevent="showConfirmModal(item.id, index)"
-                          class="text-color"
-                        >
+                        <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">
                           Delete
                         </div>
                       </el-dropdown-item>
@@ -193,25 +157,18 @@
         </div>
       </div>
       <!-- Modal -->
-      <div
-        class="modal fade"
-        id="exampleModalLong"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="exampleModalLongTitle"
-        aria-hidden="true"
-      >
-        <div
-          class="modal-dialog modal-lg modal-dialog-centered"
-          role="document"
-        >
+      <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title font-weight-bold">
                 Record a payment for this pledge
               </h5>
               <div class="btn-close" data-dismiss="modal" aria-label="Close" ref="closeRecordModal">
-                <el-icon><Close /></el-icon>
+                <el-icon>
+                  <Close />
+                </el-icon>
               </div>
             </div>
             <div class="modal-body">
@@ -226,17 +183,11 @@
                       <div class="col-md-10">
                         <div class="row">
                           <div class="col-md-4 text-md-right align-self-center">
-                            <label for="" class="font-weight-bold"
-                              >Payment date <sup class="text-danger">*</sup>
+                            <label for="" class="font-weight-bold">Payment date <sup class="text-danger">*</sup>
                             </label>
                           </div>
                           <div class="col-md-8">
-                            <el-input
-                              type="date"
-                              v-model="pledgeTime"
-                              :disabled="checking"
-                              size="large"
-                            />
+                            <el-input type="date" v-model="pledgeTime" :disabled="checking" size="large" />
                           </div>
                         </div>
                       </div>
@@ -245,17 +196,11 @@
                       <div class="col-md-10">
                         <div class="row">
                           <div class="col-md-4 text-md-right align-self-center">
-                            <label for="" class="font-weight-bold"
-                              >Donor <sup class="text-danger">*</sup>
+                            <label for="" class="font-weight-bold">Donor <sup class="text-danger">*</sup>
                             </label>
                           </div>
                           <div class="col-md-8">
-                            <el-input
-                              type="text"
-                              v-model="personName"
-                              :disabled="checking"
-                              size="large"
-                            />
+                            <el-input type="text" v-model="personName" :disabled="checking" size="large" />
                           </div>
                         </div>
                       </div>
@@ -270,11 +215,7 @@
                           </div>
 
                           <div class="col-md-8">
-                            <el-input
-                              type="text"
-                              v-model="pledgeName"
-                              :disabled="checking"
-                            />
+                            <el-input type="text" v-model="pledgeName" :disabled="checking" />
                           </div>
                         </div>
                       </div>
@@ -289,12 +230,7 @@
                           </div>
                           <div class="col-md-8 d-flex">
                             <div class="col-12 col-md-8 col-lg-12 m-0 p-0">
-                              <el-input
-                                type="number"
-                                v-model="pledgeBalance"
-                                :disabled="false"
-                                class="w-100"
-                              />
+                              <el-input type="number" v-model="pledgeBalance" :disabled="false" class="w-100" />
                             </div>
                           </div>
                         </div>
@@ -304,25 +240,16 @@
                       <div class="col-md-10">
                         <div class="row">
                           <div class="col-md-4 text-md-right align-self-center">
-                            <label for="" class="font-weight-bold"
-                              >Payment method <sup class="text-danger">*</sup>
+                            <label for="" class="font-weight-bold">Payment method <sup class="text-danger">*</sup>
                             </label>
                           </div>
 
                           <div class="col-md-8 d-flex flex-wrap">
-                            <el-select-v2
-                              v-model="SelectedChannelId"
-                              class="w-100 font-weight-normal"
-                              :options="
-                                channel.map((i) => ({
-                                  label: i.name,
-                                  value: i.id,
-                                }))
-                              "
-                              placeholder="Select a payment method"
-                              @change="selectChannel"
-                              size="large"
-                            />
+                            <el-select-v2 v-model="SelectedChannelId" class="w-100 font-weight-normal" :options="channel.map((i) => ({
+                              label: i.name,
+                              value: i.id,
+                            }))
+                              " placeholder="Select a payment method" @change="selectChannel" size="large" />
                           </div>
                         </div>
                       </div>
@@ -333,15 +260,9 @@
             </div>
             <div class="modal-footer">
               <el-button class="secondary-button" data-dismiss="modal" round>Cancel</el-button>
-              <el-button
-                :color="primarycolor"
-                class="header-btn text-white"
-                round
-                @click="recordPayment"
-              :loading="savingRecord"
-              >
-                Save</el-button
-              >
+              <el-button :color="primarycolor" class="header-btn text-white" round @click="recordPayment"
+                :loading="savingRecord">
+                Save</el-button>
             </div>
           </div>
         </div>
@@ -408,7 +329,7 @@ export default {
     const pledgeHeaders = ref([
       { name: "DATE", value: "date" },
       { name: "CHANNEL", value: "channel" },
-      { name: "AMOUNT PAID", value: "amountPaid" },
+      { name: "AMOUNT PAID", value: "amount" },
       { name: "ACTION", value: "action" },
     ]);
     const pledgeCategory = ref([
@@ -557,7 +478,7 @@ export default {
         );
         savingRecord.value = false
         closeRecordModal.value.click()
-        
+
         ElMessage({
           type: "success",
           message: "Pledge Payment recorded successfully",
@@ -566,11 +487,11 @@ export default {
         getSinglePledge();
         router.push(
           `/tenant/pledge/pledgemaking?pledgeTypeID=${route.query.pledgeTypeID}`
-          );
-        } catch (error) {
-          NProgress.done();
-          console.log(error);
-          savingRecord.value = false
+        );
+      } catch (error) {
+        NProgress.done();
+        console.log(error);
+        savingRecord.value = false
       }
     };
     const channel = ref([
@@ -825,6 +746,7 @@ export default {
   border-radius: 5px 5px 0px 0px;
   text-align: center;
 }
+
 .file-icon {
   color: #136acd;
   border: 1px solid #136acd;
@@ -837,6 +759,7 @@ export default {
   display: flex;
   align-items: center;
 }
+
 * {
   color: #1c252c;
   box-sizing: border-box;
@@ -900,6 +823,7 @@ a {
   font-weight: 800;
   color: #0f0220;
 }
+
 .evt-name {
   color: #136acd;
   font-weight: 800;
@@ -909,6 +833,7 @@ a {
 .evt-report {
   font-size: 25px;
 }
+
 .grey-text {
   color: #8296ae;
 }
@@ -952,8 +877,7 @@ a {
 }
 
 .header4 {
-  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold)
-    18px/24px var(--unnamed-font-family-nunito-sans);
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) 18px/24px var(--unnamed-font-family-nunito-sans);
   letter-spacing: var(--unnamed-character-spacing-0);
   text-align: left;
   font: normal normal bold 18px/24px Nunito Sans;
@@ -965,6 +889,7 @@ a {
 .recieve {
   font-size: 20px;
 }
+
 .bold-700 {
   font-weight: 700;
 }
@@ -982,6 +907,7 @@ a {
   align-items: center;
   border-radius: 5px 0px 0px 0px;
 }
+
 .bottom-section {
   box-shadow: 0px 3px 10px #00000029;
   border: 1px solid #dde2e6;

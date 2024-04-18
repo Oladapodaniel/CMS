@@ -190,7 +190,7 @@
                 {{ date(item.date) }}
               </div>
             </template>
-            <template v-slot:offering="{ item }">
+            <template v-slot:contribution="{ item }">
               <div class="c-pointer" @click="offeringDetails(item.id)">
                 {{ item.contribution }}
               </div>
@@ -201,7 +201,7 @@
                 }}{{ Math.abs(item.amount).toLocaleString() }}.00
               </div>
             </template>
-            <template v-slot:source="{ item }">
+            <template v-slot:channel="{ item }">
               <div class="c-pointer" @click="offeringDetails(item.id)">
                 {{ item.channel }}
               </div>
@@ -331,9 +331,9 @@ export default {
     const tenantCurrency = ref({});
     const offeringHeaders = ref([
       { name: "Date", value: "date" },
-      { name: "OFFERING", value: "offering" },
+      { name: "OFFERING", value: "contribution" },
       { name: "AMOUNT", value: "amount" },
-      { name: "SOURCE", value: "source" },
+      { name: "SOURCE", value: "channel" },
       { name: "DONOR", value: "donor" },
       { name: "ACTION", value: "action" },
     ]);

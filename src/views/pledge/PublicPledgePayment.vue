@@ -2,37 +2,32 @@
   <div class="container-fluid  mx-0 tool">
     <div class="row d-flex justify-content-center align-items-center">
       <div class="col-11 col-sm-8 col-md-7 col-lg-5 d-flex justify-content-center ">
-        <div class="d-flex    ">
-            <div class=" mb-2  ">
-              <img :src="churchLogo2" v-if="churchLogo2" class="link-image" alt="" style="width:45px" />
-              <img src="../../assets/dashboardlinks/churchcloud.png" style="width:100px" v-else class="link-image "
-                alt="" />
-            </div>
+        <div class="d-flex flex-column align-items-center mt-4">
+          <div class="mb-1">
+            <img :src="churchLogo2" v-if="churchLogo2" class="link-image" alt="" style="width:45px" />
+            <img src="../../assets/dashboardlinks/churchcloud.png" style="width:100px" v-else class="link-image "
+              alt="" />
+          </div>
 
-            <!-- <span>
-              <h4 class="font-weight-bold mt-3">{{ churchName ? churchName : "Churchplus" }}</h4>
-            </span> -->
-            
-              <div class=" font-weight-bold  text-small mt-2  px-0 ">
-                <!-- Moses Orimolade Education Foundation Pledge Portal -->
-                {{ contributionDetail.name }} {{ !route.query.tenantID && contributionDetail.name ? 'Payment' : "" }}
-              </div>
+          <div class=" font-weight-bold  text-small text-center mt-2 mb-3 px-0 ">
+            {{ contributionDetail.name }} {{ !route.query.tenantID && contributionDetail.name ? 'Payment' : "" }}
+          </div>
         </div>
       </div>
     </div>
 
     <div class="row d-flex justify-content-center">
-      <div class="col-11 col-sm-8 col-md-7 col-lg-5 card pb-2" v-loading="cardLoading">
+      <div class="col-11 col-sm-8 col-md-7 col-lg-5 card pb-2 p-3 px-md-5 py-md-4" v-loading="cardLoading">
         <div class="container-fluid">
           <div class="row mt-2 justify-content-center">
             <div class="col-md-12  px-0">
               <div class="col-md-12 px-0 ">
-                <label for="" class="text-small  m-0 ">Pledge Name<sup class="text-danger ">*</sup></label>
+                <label for="" class="text-small  m-0 mb-2">Pledge Name<sup class="text-danger ">*</sup></label>
               </div>
-              <div class="col-md-12 px-0">
-                <select class="form-control  text-small input-adjust" v-model="selectPledgeItemID" :disabled="!route.query.tenantID"
-                  @change="setSelectPledgeItem">
-                  <option  v-for="(itm, index) in contributionDetail.pledgeItemDTOs" :key="index" :value="itm.id">
+              <div class="col-md-12 px-0 mb-3">
+                <select class="form-control  text-small input-adjust" v-model="selectPledgeItemID"
+                  :disabled="!route.query.tenantID" @change="setSelectPledgeItem">
+                  <option v-for="(itm, index) in contributionDetail.pledgeItemDTOs" :key="index" :value="itm.id">
                     <p>{{ itm.name }}</p>
                   </option>
                 </select>
@@ -123,8 +118,8 @@
               <div class="col-md-12 px-0 ">
                 <div class=" d-flex flex-column flex-sm-row">
                   <!-- <span class="w-100 border d-flex  text-right align-items-center  "><sup class=" border mt-2 text-danger ">*</sup></span> -->
-                  <el-input @keyup.enter="checkContact"  @blur="checkContact" v-model="userSearchString" class=" input-adjustno"
-                    placeholder="Enter phone number" type="number"
+                  <el-input @keyup.enter="checkContact" @blur="checkContact" v-model="userSearchString"
+                    class=" input-adjustno" placeholder="Enter phone number" type="number"
                     :disabled="route.query.pledgeID && route.query.pledgeID.length > 0">
                     <template #prefix>
                       <el-icon>
@@ -132,7 +127,7 @@
                       </el-icon>
                     </template>
                   </el-input>
-                  <el-button  :disabled="route.query.pledgeID && route.query.pledgeID.length > 0"
+                  <el-button :disabled="route.query.pledgeID && route.query.pledgeID.length > 0"
                     class="ml-sm-2 mt-2 mt-sm-0 input-adjust" style="height: 42px" size="large" type="primary" plain>
                     <el-icon class="mr-1" style="vertical-align: middle">
                       <Search />
@@ -154,19 +149,17 @@
                   </div>
                 </div>
               </div>
-              
-              <div class="col-12 d-flex px-0 "  v-if="contactDetail || maxName " >
+
+              <div class="col-12 d-flex px-0 " v-if="contactDetail || maxName">
                 <div class="col-12  mx-0 px-0 d-flex  justify-content-between ">
-                  <div
-                  class="col-sm-6 mx-0 text-small text-lowercase px-0  ">
-                  <div class="mr-1"> {{ maxName ? maxName : "" }}</div>
+                  <div class="col-sm-6 mx-0 text-small text-lowercase px-0  ">
+                    <div class="mr-1"> {{ maxName ? maxName : "" }}</div>
+                  </div>
+                  <div class="col-sm-6  mx-0 px-0 text-small   text-lowercase   ">
+                    <div> {{ contactDetail && contactDetail.email && maxEmail ? maxEmail : "" }}</div>
+                  </div>
                 </div>
-                <div
-                  class="col-sm-6  mx-0 px-0 text-small   text-lowercase   ">
-                  <div> {{ contactDetail && contactDetail.email && maxEmail ? maxEmail : "" }}</div>
-                </div>
-                </div>
-                
+
               </div>
               <div class=" col-md-12 p-0 text-center  small" style="color: #f59b47;"
                 v-if="personToggle && Object.keys(contactDetail).length == 0" :class="{ 'mt-0': showLoading }">
@@ -267,12 +260,14 @@
               </div>
               <!-- For range -->
               <div class="col-md-12 px-0" v-if="donorDetail.donorPaymentType == 2">
-                <el-input v-model="amountToPledge" :class="{ 'is-invalid': !withinRange }" type="number" placeholder="Enter amount"
-                  @blur="validateRangeAmount" class="input-adjustno" :disabled="memberAlreadyPledgedToPledgeItem">
+                <el-input v-model="amountToPledge" :class="{ 'is-invalid': !withinRange }" type="number"
+                  placeholder="Enter amount" @blur="validateRangeAmount" class="input-adjustno"
+                  :disabled="memberAlreadyPledgedToPledgeItem">
                   <template #prepend>
-                    <el-select v-model="selectedCurrencyCode" class=" input-adjustnos  border-0" placeholder="Select" style="width: 115px"
-                      @change="setSelectedCurrency" filterable>
-                      <el-option v-for="item in FLWupportedCurrencies" :label="item.value" :value="item.value" :key="item.value" />
+                    <el-select v-model="selectedCurrencyCode" class=" input-adjustnos  border-0" placeholder="Select"
+                      style="width: 115px" @change="setSelectedCurrency" filterable>
+                      <el-option v-for="item in FLWupportedCurrencies" :label="item.value" :value="item.value"
+                        :key="item.value" />
                     </el-select>
                   </template>
                 </el-input>
@@ -296,9 +291,10 @@
                 <el-input v-model="amountToPledge" placeholder="Enter amount" type="number" class="input-adjustno"
                   :disabled="memberAlreadyPledgedToPledgeItem">
                   <template #prepend>
-                    <el-select v-model="selectedCurrencyCode" placeholder="Select" class="input-adjustnos" style="width: 115px"
-                      @change="setSelectedCurrency" filterable>
-                      <el-option v-for="item in FLWupportedCurrencies" :label="item.value" :value="item.value" :key="item.value" />
+                    <el-select v-model="selectedCurrencyCode" placeholder="Select" class="input-adjustnos"
+                      style="width: 115px" @change="setSelectedCurrency" filterable>
+                      <el-option v-for="item in FLWupportedCurrencies" :label="item.value" :value="item.value"
+                        :key="item.value" />
                     </el-select>
                   </template>
                 </el-input>
@@ -308,7 +304,8 @@
                   <template #prepend>
                     <el-select v-model="selectedCurrencyCode" placeholder="Select" style="width: 115px"
                       @change="setSelectedCurrency" filterable>
-                      <el-option v-for="item in FLWupportedCurrencies" :label="item.value" :value="item.value"  :key="item.value" />
+                      <el-option v-for="item in FLWupportedCurrencies" :label="item.value" :value="item.value"
+                        :key="item.value" />
                     </el-select>
                   </template>
                 </el-input>
@@ -318,29 +315,17 @@
               " class=" col-md-11">
               <hr class="w-100">
             </div> -->
-            <div class=" col-md-11">
+            <div class=" col-md-12 px-0">
               <hr class="w-100">
             </div>
-            <!-- <div class="col-md-12   px-0" v-if="personToggle && !showLoading"> -->
-              <!-- <Transition name="slide-fade">
-                <div class="col-md-12 font-weight-bold text-small" v-if="pledgeActionType == '1'">
-                  <label for="">How much do you want to pay now ?</label>
-                </div>
-              </Transition> -->
-              <!-- Range, Free will and Specific -->
-              <!-- <Transition name="slide-fade">
-                <div class="col-md-12 px-0 " v-if="pledgeActionType == '1'">
-                  <el-input type="number"   class="input-adjust mb-1" v-model="amountToPayNow" placeholder="Enter amount to pay" />
-                </div>
-              </Transition> -->
-            <!-- </div> -->
-            <div class="col-md-11  px-0  d-flex justify-content-center">
-              <div class="col-md-12">
+          
+            <div class="col-md-12  px-0  d-flex justify-content-center">
+              <div class="col-md-12 px-0">
                 <el-button class="w-100  text-small  input-adjust" :color="primarycolor" :loading="loading" size="large"
-                :disabled="!personToggle" @click="triggerPayment" round>{{ pledgeActionType
+                  :disabled="!personToggle" @click="triggerPayment" round>{{ pledgeActionType
                     == '1' ? 'Pay' : 'Pledge'
                   }}</el-button>
-                  <!-- <el-button class="w-100 secondary-button  ml-0" size="large" @click="cancelPledge" v-if="memberAlreadyPledgedToPledgeItem" round>
+                <!-- <el-button class="w-100 secondary-button  ml-0" size="large" @click="cancelPledge" v-if="memberAlreadyPledgedToPledgeItem" round>
                     Cancel
                     pledge
                     </el-button> -->
@@ -354,7 +339,7 @@
                   <!-- <div class="col-3">
                     <img src="../../assets/VisaDebit.png" class="w-100">
                   </div> -->
-                  <div class="col-md-10 col-12 text-small   d-flex">
+                  <div class="col-md-10 col-12 text-small mt-3 d-flex">
                     <div class=" col-md-6 text-center ">
                       <img src="../../assets/Full-Flutterwave.png" class="w-100">
                     </div>
@@ -370,10 +355,11 @@
             </div>
             <div class="row justify-content-center ">
               <div class=" col-10 col-sm-8 col-md-7   ">
-                <div class="row  justify-content-center"> 
+                <div class="row  justify-content-center">
                   <!-- <div class="col-md-12 d-flex    "> -->
-                    <div class=" col-md-6 text-center text-small  image-adjust  ">Powered by <img src="../../assets/logoblue.png" alt="churchplus Logo"  /></div>
-                    <!-- <div class="image-adjust col-md-5 border  ">
+                  <div class="col-md-12 text-center text-small image-adjust mt-3"><span class="text-small s-12">Powered by</span> <img
+                      src="../../assets/logoblue.png" alt="churchplus Logo" /></div>
+                  <!-- <div class="image-adjust col-md-5 border  ">
                       <img src="../../assets/logoblue.png" alt="churchplus Logo" class=" border " />
                     </div> -->
                   <!-- </div> -->
@@ -417,7 +403,8 @@
       </div>
       <div class="row">
         <div class="col-md-12 ">
-          <span class="notecolour text-small col-md-12 px-0 font-weight-bold "> <span class="text-dark  font-weight-bold">NB: </span  >FlutterWave currently processes only Credit Cards</span>
+          <span class="notecolour text-small col-md-12 px-0 font-weight-bold "> <span
+              class="text-dark  font-weight-bold">NB: </span>FlutterWave currently processes only Credit Cards</span>
         </div>
       </div>
     </el-dialog>
@@ -718,8 +705,8 @@ export default {
           console.log(3)
           // Generic page
           contributionDetail.value.pledgeItemDTOs = res.data.pledgeItemDTOs;
-          churchLogo2.value = res.data.pledgeItemDTOs[0].logo
-          churchName.value = res.data.pledgeItemDTOs[0].tenantName
+          churchLogo2.value = res.data.pledgeItemDTOs && res.data.pledgeItemDTOs[0].logo ? res.data.pledgeItemDTOs[0].logo : ""
+          churchName.value = res.data.pledgeItemDTOs && res.data.pledgeItemDTOs[0].tenantName ? res.data.pledgeItemDTOs[0].tenantName : ""
           contributionDetail.value.name = `${churchName.value} Pledge Portal`;
         }
         checking.value = true;
@@ -760,7 +747,7 @@ export default {
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
-        email: contactDetail.value.email ? contactDetail.value.email : newContact.value.email,
+        email: responseObject.person.email,
         // amount: amountToPayNow.value * 100,
         amount: amountToPledge.value * 100,
         currency: selectedCurrencyCode.value,
@@ -868,7 +855,7 @@ export default {
         customer: {
           name: contactDetail.value && Object.keys(contactDetail.value).length > 0 ? `${contactDetail.value.firstName} ${contactDetail.value.lastName}` : `${newContact.value.firstName} ${newContact.value.lastName}`,
           phone_number: userSearchString.value,
-          email: contactDetail.value.email ? contactDetail.value.email : newContact.value.email,
+          email: responseObject.person.email,
         },
         callback: (response) => {
           let trans_id = response.transaction_id
@@ -1183,33 +1170,38 @@ export default {
     margin: 12px 10px
   }
 }
+
 @media (max-width: 400px) {
-  .text-small{
-  font-size: 13px;
-}
-.input-adjust{
-  height: calc(1.2em + 0.81rem + 2px) !important;
-  padding: 0.3rem 0.4rem !important ;
-}
-.input-adjustno{
-  /* border: 1px solid red; */
-  height: calc(1.2em + 0.895rem + 2px) !important;
-  /* padding: 0.4rem 0.8rem !important ; */
-}
-.input-adjustnos{
-  /* border: 1px solid red; */
-  /* height: calc(1em + 0.5rem + 2px) !important; */
-  /* padding: 0.4rem 0.1rem !important ; */
-   /* width: 80% !important; */
-   height: calc(1.2em + 0.895rem + 2px) !important;
-   /* width: 30% !important; */
-   border: none !important;
-}
-.fontwght{
-  /* font-weight: 600 !important;
+  .text-small {
+    font-size: 13px;
+  }
+
+  .input-adjust {
+    height: calc(1.2em + 0.81rem + 2px) !important;
+    padding: 0.3rem 0.4rem !important;
+  }
+
+  .input-adjustno {
+    /* border: 1px solid red; */
+    height: calc(1.2em + 0.895rem + 2px) !important;
+    /* padding: 0.4rem 0.8rem !important ; */
+  }
+
+  .input-adjustnos {
+    /* border: 1px solid red; */
+    /* height: calc(1em + 0.5rem + 2px) !important; */
+    /* padding: 0.4rem 0.1rem !important ; */
+    /* width: 80% !important; */
+    height: calc(1.2em + 0.895rem + 2px) !important;
+    /* width: 30% !important; */
+    border: none !important;
+  }
+
+  .fontwght {
+    /* font-weight: 600 !important;
    */
-   font-size: 18px !important;
-}
+    font-size: 18px !important;
+  }
 }
 
 
@@ -1242,5 +1234,4 @@ export default {
   color: rgb(112, 192, 67);
   font-weight: 900;
   font-size: 30px;
-}
-</style>
+}</style>

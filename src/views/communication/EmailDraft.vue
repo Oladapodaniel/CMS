@@ -9,15 +9,10 @@
               <div class="row d-md-flex align-items-center mt-3 mb-4">
                 <div class="col-md-6 col-sm-12">
                   <div class="search-div d-flex  align-items-center">
-                    <span class="mr-2"
-                      ><el-icon><Search /></el-icon
-                    ></span>
-                    <input
-                      type="text"
-                      class="w-100"
-                      placeholder="Search here..."
-                      v-model="searchMails"
-                    />
+                    <span class="mr-2"><el-icon>
+                        <Search />
+                      </el-icon></span>
+                    <input type="text" class="w-100" placeholder="Search here..." v-model="searchMails" />
                   </div>
                 </div>
               </div>
@@ -26,87 +21,61 @@
                   <Delete />
                 </el-icon>
               </div>
-                <Table
-                :data="searchEmailDraft"
-                :headers="DraftHeaders"
-                :checkMultipleItem="true"
-                @checkedrow="handleSelectionChange"
-                v-loading="loading"
-              >
-              <template #message="{ item }">
+              <Table :data="searchEmailDraft" :headers="DraftHeaders" :checkMultipleItem="true"
+                @checkedrow="handleSelectionChange" v-loading="loading">
+                <template #subject="{ item }">
                   <div>
-                    <router-link
-                      :to="{
-                              name: 'ComposeEmail',
-                              query: { emaildraft: item.id },
-                            }"
-                      class="no-decoration primary--text"
-                    >
-                      <el-tooltip
-                        class="box-item"
-                        effect="dark"
-                        :content="item.subject"
-                        placement="top-start"
-                      >
+                    <router-link :to="{
+                      name: 'ComposeEmail',
+                      query: { emaildraft: item.id },
+                    }" class="no-decoration primary--text">
+                      <el-tooltip class="box-item" effect="dark" :content="item.subject" placement="top-start">
                         <div class="font-weight-600 text-dark">{{
                           item.subject && item.subject.length > 25
-                            ? `${item.subject
-                                .split("")
-                                .slice(0, 25)
-                                .join("")}...`
-                            : item.subject
+                          ? `${item.subject
+                            .split("")
+                            .slice(0, 25)
+                            .join("")}...`
+                          : item.subject
                             ? item.subject
                             : ""
                         }}</div>
                       </el-tooltip>
-                      <el-tooltip
-                        class="box-item"
-                        effect="dark"
-                        :content="item.body"
-                        placement="top-start"
-                      >
+                      <el-tooltip class="box-item" effect="dark" :content="item.body" placement="top-start">
                         <div class="font-weight-600">
                           {{
                             item.body && item.body.length > 25
-                              ? `${item.body
-                                  .split("")
-                                  .slice(0, 25)
-                                  .join("")}...`
-                              : item.body
+                            ? `${item.body
+                              .split("")
+                              .slice(0, 25)
+                              .join("")}...`
+                            : item.body
                               ? item.body
                               : ""
-                          }}</div
-                        >
+                          }}</div>
                       </el-tooltip>
                     </router-link>
                   </div>
                 </template>
-                <template #dateSent="{ item }">
+                <template #dateModified="{ item }">
                   <div>
-                    <router-link
-                     :to="{
-                              name: 'ComposeEmail',
-                              query: { emaildraft: item.id },
-                            }"
-                      class="no-decoration"
-                    >
+                    <router-link :to="{
+                      name: 'ComposeEmail',
+                      query: { emaildraft: item.id },
+                    }" class="no-decoration">
                       <span class="timestamp ml-1">{{ new Date(item.dateModified).toLocaleString() }}</span>
                     </router-link>
                   </div>
                 </template>
                 <template #delete="{ item }">
                   <span class="small-text">
-                      <el-icon
-                        :size="20"
-                        class="ml-2 color-deleteicon pt-2 c-pointer"
-                        style="font-size: 20px"
-                        @click="showConfirmModal(item.id)"
-                      >
-                        <Delete />
-                      </el-icon>
-                    </span>
+                    <el-icon :size="20" class="ml-2 color-deleteicon pt-2 c-pointer" style="font-size: 20px"
+                      @click="showConfirmModal(item.id)">
+                      <Delete />
+                    </el-icon>
+                  </span>
                 </template>
-               </Table>
+              </Table>
 
               <div class="row">
                 <div class="col-md-12">
@@ -117,9 +86,7 @@
                   </div>
                   <div class="row" v-if="drafts.length === 0 && !loading">
                     <div class="col-md-12 d-flex justify-content-center">
-                      <span class="my-4 font-weight-bold"
-                        >No draft messages</span
-                      >
+                      <span class="my-4 font-weight-bold">No draft messages</span>
                     </div>
                   </div>
 
@@ -154,8 +121,8 @@ export default {
     const drafts = ref(store.getters["communication/emailDrafts"]);
     const loading = ref(false);
     const DraftHeaders = ref([
-      { name: " MESSAGE", value: "message" },
-      { name: " DATE", value: "dateSent" },
+      { name: " MESSAGE", value: "subject" },
+      { name: " DATE", value: "dateModified" },
       { name: '', value: 'delete' },
     ]);
 
@@ -178,9 +145,9 @@ export default {
       const formatted =
         message && message.length > 25
           ? `${createElementFromHTML(message)
-              .split("")
-              .slice(0, 25)
-              .join("")}...`
+            .split("")
+            .slice(0, 25)
+            .join("")}...`
           : createElementFromHTML(message);
 
       return `${formatted}`;
@@ -249,14 +216,14 @@ export default {
         .then((res) => {
           if (res) {
             ElMessage({
-            type: "success",
-            message: `${ markEmailDraft.value.length > 1 ? 'Selected Drafts have' : 'Draft has'} been deleted successfully `,
-            duration: 5000
-          });
+              type: "success",
+              message: `${markEmailDraft.value.length > 1 ? 'Selected Drafts have' : 'Draft has'} been deleted successfully `,
+              duration: 5000
+            });
             drafts.value = !id
               ? removeDeletedDraftedEmailsFromDraftsEmailsList(
-                  markEmailDraft.value
-                )
+                markEmailDraft.value
+              )
               : drafts.value.filter((i) => i.id !== id);
             if (id) {
               store.dispatch("communication/removeEmailDrafts", id);
@@ -266,17 +233,17 @@ export default {
             markEmailDraft.value = [];
           } else {
             ElMessage({
-            type: "success",
-            message: res,
-            duration: 5000
-          });
+              type: "success",
+              message: res,
+              duration: 5000
+            });
           }
         })
         .catch((err) => {
           stopProgressBar();
           ElMessage({
             type: "error",
-            message: `${markEmailDraft.value > 1 ? "Selected Drafts" : "Draft" } could not be deleted,`,
+            message: `${markEmailDraft.value > 1 ? "Selected Drafts" : "Draft"} could not be deleted,`,
             duration: 5000
           });
           console.log(err);
@@ -302,7 +269,7 @@ export default {
     };
 
     const showConfirmModal = (id) => {
-       ElMessageBox.confirm(
+      ElMessageBox.confirm(
         "Are you sure you want to proceed? This operation can't be reversed ",
         "Confirm delete",
         {
@@ -348,6 +315,7 @@ export default {
   border-bottom: none;
   padding: 7px 7px 0 7px
 }
+
 .search-div {
   /* width: fit-content; */
   padding: 10px;

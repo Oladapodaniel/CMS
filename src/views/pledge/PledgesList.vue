@@ -97,9 +97,18 @@
       </div>
       <div class="col-12 col-md-6 col-lg-2 mt-3 mt-md-0 mt-lg-0 px-lg-1">
         <div class="mb-1">Select Category</div>
+        <!-- <div>
+          <el-select v-model="selectedCategoryID" multiple collapse-tags placeholder="Select" class="w-100">
+            <el-option @click="selectAllCategory" label="Select All" value="Select All" />
+            <el-option @click="setSelectedCategoryItem" v-for="item in allPledgeDefinitionList" :key="item.id" :label="item.name"
+              :value="item.id" />
+          </el-select>
+        </div> -->
+
         <div>
           <SelectAllDropdown :items="allPledgeDefinitionList" @selected-item="setSelectedCategory" />
         </div>
+
         <!-- <el-select-v2
           v-model="selectedCategoryID"
           @change="setSelectedCategory"
@@ -116,6 +125,13 @@
         <div>
           <SelectAllDropdown :items="allPledgeStatus" @selected-item="setSelectedStatus" />
         </div>
+        <!-- <div>
+          <el-select v-model="selectedStatusID" multiple collapse-tags placeholder="Select" class="w-100">
+            <el-option @click="selectAllStatus" label="Select All" value="Select All" />
+            <el-option @click="setSelectedStatusItem" v-for="item in allPledgeStatus" :key="item.id" :label="item.name"
+              :value="item.id" />
+          </el-select>
+        </div> -->
         <!-- <el-select-v2
           v-model="selectedStatusID"
           @change="setSelectedStatus"
@@ -156,7 +172,7 @@
             {{ item.pledgeNumber }}
           </div>
         </template>
-        <template v-slot:pledgeName="{ item }">
+        <template v-slot:pledgeItemName="{ item }">
           <div class="c-pointer" @click="pledgeListClick(item.id)">
             {{ item.pledgeItemName }}
           </div>
@@ -172,7 +188,7 @@
             {{ Math.abs(item.amount).toLocaleString() }}.00
           </div>
         </template>
-        <template v-slot:redeemed="{ item }">
+        <template v-slot:totalPaymentSum="{ item }">
           <div class="c-pointer" @click="pledgeListClick(item.id)">
             {{ item.currencySymbol
             }}{{ Math.abs(item.totalPaymentSum).toLocaleString() }}.00
@@ -263,8 +279,8 @@ export default {
     const primarycolor = inject("primarycolor");
     const networkError = ref(false);
     const route = useRoute();
-    const selectedStatusID = ref(null);
-    const selectedCategoryID = ref(null);
+    const selectedStatusID = ref([]);
+    const selectedCategoryID = ref([]);
     const filterLoading = ref(false);
     const allPledgeStatus = ref([
       { name: "Paid", id: '1' },
@@ -273,6 +289,7 @@ export default {
       { name: "Partial", id: '4' },
       { name: "---", id: '5' },
     ]);
+
     const allPledgeDefinitionList = ref([]);
     const selectedCategory = ref([]);
     const filterResult = ref([]);
@@ -296,10 +313,10 @@ export default {
     const pledgeHeaders = ref([
       { name: "STATUS", value: "status" },
       { name: "PLEDGE NO.", value: "pledgeNumber" },
-      { name: "PLEDGE NAME", value: "pledgeName" },
+      { name: "PLEDGE NAME", value: "pledgeItemName" },
       { name: "CONTACT", value: "contact" },
       { name: "AMOUNT", value: "amount" },
-      { name: "REDEEMED", value: "redeemed" },
+      { name: "REDEEMED", value: "totalPaymentSum" },
       { name: "DATE", value: "date" },
       { name: "ACTION", value: "action" },
     ]);
@@ -322,8 +339,11 @@ export default {
       showUpload.value = false;
     };
 
+    const setSelectedStatus = (payload) => {
+      selectedStatus.value = payload;
+    };
+
     const setSelectedCategory = (payload) => {
-      console.log(payload, 'ggggg');
       selectedCategory.value = payload
 
       // selectedCategory.value = allPledgeDefinitionList.value.find((i) => {
@@ -346,13 +366,7 @@ export default {
       });
     };
 
-    const setSelectedStatus = (payload) => {
-      console.log(payload, 'kkkkkk');
-      selectedStatus.value = payload;
-      // selectedStatus.value = allPledgeStatus.value.find((i) => {
-      //   return i.id == selectedStatusID.value;
-      // });
-    };
+
 
     const navigateToMakePledge = () => {
       router.push("/tenant/pledge/makepledge");
@@ -381,39 +395,12 @@ export default {
     const getAllTotalBalance = ref([]);
     const filterPledge = async () => {
       filterLoading.value = true;
-      // let selectedContactValue =
-      //   selectedContact.value && selectedContact.value.id
-      //     ? selectedContact.value.id
-      //     : "";
-      // let selectedCategoryValue = selectedCategory.value.map((i) => i.id);
-
-      // let selectedCategoryValue =
-      //   selectedCategory.value && selectedCategory.value.id
-      //     ? selectedCategory.value.id
-      //     : "";
-      // let selectedStatusValue =
-      //   selectedStatus.value && selectedStatus.value.name
-      //     ? selectedStatus.value.name
-      //     : "";
-      // let selectedStatusValue =  selectedStatus.value.map((i) => i.name);
-      // let startDateValue = startDate.value
-      //   ? new Date(startDate.value).toLocaleDateString("en-US")
-      //   : "";
-      // let endDateValue = endDate.value
-      //   ? new Date(endDate.value).toLocaleDateString("en-US")
-      //   : "";
-
       const payload = {
         personId: selectedContact.value && selectedContact.value.id ? selectedContact.value.id : "",
         status: selectedStatus.value.map((i) => i.name),
-        // status :  selectedStatus.value && selectedStatus.value.length > 0  ? selectedStatus.value.map((i) => i.name) : "",
         pledgeItemIDs: selectedCategory.value.map((i) => i.id),
-        // pledgeItemIDs : selectedCategory.value && selectedCategory.value.length > 0 ? selectedCategory.value.map((i) => i.id) : '' ,
         startDate: startDate.value ? new Date(startDate.value).toLocaleDateString("en-US") : "",
-        endDate: endDate.value ? new Date(endDate.value).toLocaleDateString("en-US") : ""
-
-
-
+        endDate: endDate.value ? new Date(endDate.value).toLocaleDateString("en-US") : "",
       }
       try {
         const res = await axios.post(
@@ -422,7 +409,6 @@ export default {
         // const res = await axios.get(
         //   `/api/Pledge/GetAllPledgesSearch?personId=${selectedContactValue}&status=${selectedStatusValue}&pledgeItemID=${selectedCategoryValue}&startDate=${startDateValue}&endDate=${endDateValue}`
         // );
-        console.log(res.data, 'gjhgjhfhg');
         if (res.data && res.data.returnObject.length == 0) {
           ElMessage({
             type: "warning",
@@ -440,7 +426,6 @@ export default {
         getAllTotalBalance.value = res.data.returnObject
           .map((i) => i.balance)
           .reduce((b, a) => b + a, 0);
-        console.log(getAllPledgeAmount.value, "jkkj");
         filterLoading.value = false;
       } catch (error) {
         filterLoading.value = false;
@@ -675,6 +660,8 @@ export default {
       allPledgeStatus,
       selectedStatus,
       date,
+      // closeDropDown,
+      // closeDropDown2,
       primarycolor,
       // singlePledge
     };

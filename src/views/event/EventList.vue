@@ -37,10 +37,24 @@
         <el-tooltip
           class="box-item"
           effect="dark"
-          :content="eventSummary.attendanceAverage.monthly.toString()"
+          :content="
+            eventSummary &&
+            eventSummary.attendanceAverage &&
+            eventSummary.attendanceAverage.monthly
+              ? eventSummary.attendanceAverage.monthly.toString()
+              : '--'
+          "
           placement="left-start"
         >
-          <div>{{ convert(eventSummary.attendanceAverage.monthly) }}</div>
+          <div>
+            {{
+              eventSummary &&
+              eventSummary.attendanceAverage &&
+              eventSummary.attendanceAverage.monthly
+                ? convert(eventSummary.attendanceAverage.monthly)
+                : "-- --"
+            }}
+          </div>
         </el-tooltip>
       </div>
       <div class="col-6 col-md-3">
@@ -57,7 +71,7 @@
             eventSummary.offeringAverage &&
             eventSummary.offeringAverage.monthly
               ? eventSummary.offeringAverage.monthly.toString()
-              : '-- --'
+              : '--'
           }`"
           placement="left-start"
         >
@@ -77,10 +91,24 @@
         <el-tooltip
           class="box-item"
           effect="dark"
-          :content="eventSummary.firstTimerAverage.monthly.toString()"
+          :content="
+            eventSummary &&
+            eventSummary.firstTimerAverage &&
+            eventSummary.firstTimerAverage.monthly
+              ? eventSummary.firstTimerAverage.monthly.toString()
+              : '--'
+          "
           placement="left-start"
         >
-          <div>{{ convert(eventSummary.firstTimerAverage.monthly) }}</div>
+          <div>
+            {{
+              eventSummary &&
+              eventSummary.firstTimerAverage &&
+              eventSummary.firstTimerAverage.monthly
+                ? convert(eventSummary.firstTimerAverage.monthly)
+                : "-- --"
+            }}
+          </div>
         </el-tooltip>
       </div>
       <div class="col-6 col-md-3">
@@ -88,10 +116,24 @@
         <el-tooltip
           class="box-item"
           effect="dark"
-          :content="eventSummary.newConvertAverage.monthly.toString()"
+          :content="
+            eventSummary &&
+            eventSummary.newConvertAverage &&
+            eventSummary.newConvertAverage.monthly
+              ? eventSummary.newConvertAverage.monthly.toString()
+              : '--'
+          "
           placement="left-start"
         >
-          <div>{{ convert(eventSummary.newConvertAverage.monthly) }}</div>
+          <div>
+            {{
+              eventSummary &&
+              eventSummary.newConvertAverage &&
+              eventSummary.newConvertAverage.monthly
+                ? convert(eventSummary.newConvertAverage.monthly)
+                : "-- --"
+            }}
+          </div>
         </el-tooltip>
       </div>
     </div>
@@ -143,7 +185,11 @@
         <el-tooltip
           class="box-item"
           effect="dark"
-          :content="eventSummary.firstTimerAverage.yearly.toString()"
+          :content="
+            eventSummary.firstTimerAverage
+              ? eventSummary.firstTimerAverage.yearly.toString()
+              : ''
+          "
           placement="left-start"
         >
           <div>{{ convert(eventSummary.firstTimerAverage.yearly) }}</div>
@@ -154,7 +200,11 @@
         <el-tooltip
           class="box-item"
           effect="dark"
-          :content="`${eventSummary.newConvertAverage.yearly.toString()}`"
+          :content="`${
+            eventSummary.newConvertAverage
+              ? eventSummary.newConvertAverage.yearly.toString()
+              : ''
+          }`"
           placement="left-start"
         >
           <div>{{ convert(eventSummary.newConvertAverage.yearly) }}</div>
@@ -209,7 +259,11 @@
         <el-tooltip
           class="box-item"
           effect="dark"
-          :content="eventSummary.firstTimerAverage.allTime.toString()"
+          :content="
+            eventSummary.firstTimerAverage
+              ? eventSummary.firstTimerAverage.allTime.toString()
+              : ''
+          "
           placement="top-start"
         >
           <div>{{ convert(eventSummary.firstTimerAverage.allTime) }}</div>
@@ -220,7 +274,11 @@
         <el-tooltip
           class="box-item"
           effect="dark"
-          :content="eventSummary.newConvertAverage.allTime.toString()"
+          :content="
+            eventSummary.newConvertAverage
+              ? eventSummary.newConvertAverage.allTime.toString()
+              : ''
+          "
           placement="top-start"
         >
           <div>{{ convert(eventSummary.newConvertAverage.allTime) }}</div>
@@ -234,9 +292,7 @@
     <div class="row">
       <div class="col-sm-12 p-0 mt-5">
         <div class="table-top p-3 mt-5">
-          <div
-            class="row d-flex flex-column flex-sm-row justify-content-sm-end"
-          >
+          <div class="row d-flex flex-column flex-sm-row justify-content-sm-end">
             <div class="col-md-2">
               <p
                 @click="toggleFilterFormVissibility"
@@ -289,11 +345,7 @@
                     <div
                       class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
                     >
-                      <el-input
-                        type="text"
-                        class="w-100"
-                        placeholder="First Name"
-                      />
+                      <el-input type="text" class="w-100" placeholder="First Name" />
                     </div>
 
                     <div class="col-12 col-sm-6 form-group d-none d-md-block">
@@ -309,19 +361,11 @@
 
                   <div class="row">
                     <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                      <el-input
-                        type="text"
-                        class="w-100"
-                        placeholder="Last Name"
-                      />
+                      <el-input type="text" class="w-100" placeholder="Last Name" />
                     </div>
 
                     <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                      <el-input
-                        type="text"
-                        class="w-100"
-                        placeholder="Phone Number"
-                      />
+                      <el-input type="text" class="w-100" placeholder="Phone Number" />
                     </div>
                   </div>
                 </div>
@@ -333,10 +377,7 @@
                   <span class="mt-2">
                     <a class="clear-link mr-2" @click="clearAll">Clear all</a>
                     <span class="mx-2"
-                      ><i
-                        class="fas fa-circle"
-                        style="font-size: 4px"
-                      ></i></span
+                      ><i class="fas fa-circle" style="font-size: 4px"></i></span
                     ><a class="hide-link ml-2" @click="hide">Hide</a>
                   </span>
                 </div>
@@ -378,7 +419,7 @@
               </router-link>
             </div>
           </template>
-          <template v-slot:date="{ item }">
+          <template v-slot:activityDate="{ item }">
             <div class="c-pointer">
               <router-link
                 :to="`/tenant/event/${item.activityId}`"
@@ -446,10 +487,7 @@
                 class="approveservicereport"
                 v-if="item.approved && !item.approvingServiceReport"
               >
-                <source
-                  src="../../assets/check_animated.mp4"
-                  type="video/mp4"
-                />
+                <source src="../../assets/check_animated.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>
@@ -534,7 +572,7 @@ export default {
     PaginationButtons,
     Table,
   },
-  props: ["eventList", "eventSummary",  "totalItems"],
+  props: ["eventList", "eventSummary", "totalItems"],
   setup(props, { emit }) {
     const primarycolor = inject("primarycolor");
     const filterFormIsVissible = ref(false);
@@ -551,7 +589,7 @@ export default {
       { name: "STATUS", value: "isSent" },
       { name: "EVENT NAME", value: "eventName" },
       { name: "TITLE", value: "title" },
-      { name: "DATE", value: "date" },
+      { name: "DATE", value: "activityDate" },
       { name: "ATTENDANCES", value: "attendances" },
       { name: "FIRST TIMERS", value: "firstTimers" },
       { name: "NEW CONVERTS", value: "newConverts" },
@@ -594,15 +632,11 @@ export default {
     });
 
     const showConfirmModal = (id, index) => {
-      ElMessageBox.confirm(
-        "Are you sure you want to proceed?",
-        "Confirm delete",
-        {
-          confirmButtonText: "OK",
-          cancelButtonText: "Cancel",
-          type: "error",
-        }
-      )
+      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "error",
+      })
         .then(() => {
           deleteEvent(id, index);
         })
@@ -629,9 +663,7 @@ export default {
     const filterEvents = computed(() => {
       if (searchText.value !== "") {
         return props.eventList.filter((i) => {
-          return i.eventName
-            .toLowerCase()
-            .includes(searchText.value.toLowerCase());
+          return i.eventName.toLowerCase().includes(searchText.value.toLowerCase());
         });
       } else {
         return props.eventList;
@@ -646,9 +678,7 @@ export default {
           message: "Member Deleted",
           duration: 3000,
         });
-        churchMembers.value = churchMembers.value.filter(
-          (item) => item.id !== id
-        );
+        churchMembers.value = churchMembers.value.filter((item) => item.id !== id);
         NProgress.done();
         if (err.response.status === 400) {
           ElMessage({
@@ -718,10 +748,7 @@ export default {
       }
     };
     const membersCount = computed(() => {
-      console.log(
-        props.eventSummary.activities.length,
-        "checking for pagination"
-      );
+      console.log(props.eventSummary.activities.length, "checking for pagination");
       if (props.eventSummary.activities.length > 50)
         return Math.ceil(props.eventSummary.activities.length / 20);
       return 1;
@@ -730,9 +757,7 @@ export default {
       if (searchText.value !== "" && props.eventList.length > 0) {
         return props.eventList.filter((i) => {
           if (i.name)
-            return i.name
-              .toLowerCase()
-              .includes(searchText.value.toLowerCase());
+            return i.name.toLowerCase().includes(searchText.value.toLowerCase());
         });
       } else {
         return props.eventList;
@@ -740,9 +765,7 @@ export default {
     };
 
     const approveReport = async (item, type) => {
-      const index = filterEvents.value.findIndex(
-        (i) => i.activityId == item.activityId
-      );
+      const index = filterEvents.value.findIndex((i) => i.activityId == item.activityId);
       filterEvents.value[index].approvingServiceReport = true;
       let payload = {
         preEvent: {
@@ -758,9 +781,7 @@ export default {
         filterEvents.value[index].approvingServiceReport = false;
         ElMessage({
           type: "success",
-          message: `Service report ${
-            type == 1 ? "approved successfully" : "unapproved"
-          }`,
+          message: `Service report ${type == 1 ? "approved successfully" : "unapproved"}`,
           duration: 5000,
         });
       } catch (err) {

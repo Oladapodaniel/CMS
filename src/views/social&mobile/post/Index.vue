@@ -10,22 +10,99 @@
       <div class="col-md-12">
         <div class="row">
           <div class="col-md-12 pl-md-0">
-            <label for="" class="small-text mb-0 label-color font-weight-700"
+            <label for="" class="small-text mb-2 label-color font-weight-700"
               >Post type <span class="text-danger">*</span></label
             >
           </div>
         </div>
-        <div class="row input-border">
+        <div class="row">
           <div class="col-md-12 px-0" id="post-icon">
-            <Dropdown
-              :options="postCategories"
-              v-model="postCategory"
-              optionLabel="name"
+            <el-select-v2
+              v-model="postCategoryId"
+              @change="setSelectedPostCategory"
+              :options="
+                postCategories.map((i) => ({ label: i.name, value: i.postCategoryId }))
+              "
               placeholder="Select category"
-              style="width: 100%"
+              size="large"
+              class="w-100"
             />
           </div>
         </div>
+        <el-collapse-transition>
+          <div class="row" v-show="showDevotionParameters">
+            <div class="col-md-12 px-0" id="post-icon">
+              <el-input
+                type="text"
+                placeholder="Enter the devotion title"
+                v-model="devotionTitle"
+                class="mt-3"
+              />
+              <el-input
+                type="text"
+                placeholder="Enter the scripture text i.e Matthew 5:7"
+                v-model="devotionScripture"
+                class="mt-3"
+              />
+              <el-input
+                type="textarea"
+                :rows="4"
+                placeholder="Enter the memory verse"
+                v-model="devotionMemoryVerse"
+                class="mt-3"
+              />
+            </div>
+          </div>
+        </el-collapse-transition>
+        <el-collapse-transition>
+          <div class="row" v-show="showEventParameters">
+            <div class="col-md-12 px-0 mt-3" id="post-icon">
+              <el-dropdown class="w-100" trigger="click">
+                <span class="el-dropdown-link w-100">
+                  <div
+                    class="d-flex justify-content-between border-contribution text-dark w-100"
+                    size="large"
+                  >
+                    <span
+                      >{{
+                        Object.keys(selectedCheckinEvent).length > 0
+                          ? selectedCheckinEvent.fullEventName +
+                            " --- " +
+                            selectedCheckinEvent.fullGroupName
+                          : "Select event"
+                      }}
+                    </span>
+                    <div>
+                      <el-icon class="el-icon--right">
+                        <arrow-down />
+                      </el-icon>
+                    </div>
+                  </div>
+                </span>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item
+                      v-for="(item, index) in checkInAttendanceList"
+                      :key="index"
+                      @click="setSelectedCheckinEvent(item)"
+                      >{{ item.fullEventName }} ---
+                      {{ item.fullGroupName }}</el-dropdown-item
+                    >
+                     <!--  <el-divider class="m-0" />
+                  <el-dropdown-item>
+                      <div class="d-flex justify-content-center w-100 py-1">
+                        <el-icon class="primary--text d-flex align-self-center mr-1">
+                          <CirclePlusFilled />
+                        </el-icon>
+                        <div class="primary--text font-weight-700" @click="(CheckinCreationDialog = true)">Add new event</div>
+                      </div>
+                    </el-dropdown-item> -->
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
+          </div>
+        </el-collapse-transition>
       </div>
     </div>
     <div class="row bordered">
@@ -95,17 +172,10 @@
     <div class="row my-4">
       <div class="col-md-12">
         <a
-          class="
-            primary-text
-            text-decoration-none
-            font-weight-700
-            mb-3
-            d-flex
-            align-items-center
-          "
+          class="primary-text text-decoration-none font-weight-700 mb-3 d-flex align-items-center"
         >
           <!-- <input type="checkbox" class="c-pointer" name="" id="" /> -->
-          <Checkbox id="binary" v-model="showOnMainThread" :binary="true"/>
+          <Checkbox id="binary" v-model="showOnMainThread" :binary="true" />
           <span class="mx-1">Show on main feed</span>
         </a>
       </div>
@@ -118,15 +188,7 @@
           </div>
           <div class="col-md-12 mb-2 d-flex flex-wrap">
             <a
-              class="
-                primary-text
-                text-decoration-none
-                font-weight-700
-                my-2
-                px-2
-                d-flex
-                align-items-center
-              "
+              class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
             >
               <span class="c-pointer"
                 ><img
@@ -138,15 +200,7 @@
               <input type="checkbox" class="c-pointer" checked name="" id="" />
             </a>
             <a
-              class="
-                primary-text
-                text-decoration-none
-                font-weight-700
-                my-2
-                px-2
-                d-flex
-                align-items-center
-              "
+              class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
               style="opacity: 0.4"
             >
               <span class="c-pointer"
@@ -156,48 +210,20 @@
                   alt="Whatsapp icon"
               /></span>
               <span class="mx-1">Twitter</span>
-              <input
-                type="checkbox"
-                class="c-pointer"
-                :disabled="true"
-                name=""
-                id=""
-              />
+              <input type="checkbox" class="c-pointer" :disabled="true" name="" id="" />
             </a>
             <a
-              class="
-                primary-text
-                text-decoration-none
-                font-weight-700
-                my-2
-                px-2
-                d-flex
-                align-items-center
-              "
+              class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
               style="opacity: 0.4"
             >
               <span class="c-pointer"
                 ><i class="pi pi-microsoft" style="font-size: 20px"></i
               ></span>
               <span class="mx-1">All Platforms</span>
-              <input
-                type="checkbox"
-                class="c-pointer"
-                :disabled="true"
-                name=""
-                id=""
-              />
+              <input type="checkbox" class="c-pointer" :disabled="true" name="" id="" />
             </a>
             <a
-              class="
-                primary-text
-                text-decoration-none
-                font-weight-700
-                my-2
-                px-2
-                d-flex
-                align-items-center
-              "
+              class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
             >
               <span class="c-pointer"
                 ><img
@@ -216,15 +242,7 @@
               />
             </a>
             <a
-              class="
-                primary-text
-                text-decoration-none
-                font-weight-700
-                my-2
-                px-2
-                d-flex
-                align-items-center
-              "
+              class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
               style="opacity: 0.4"
             >
               <span class="c-pointer"
@@ -234,13 +252,7 @@
                   alt="Whatsapp icon"
               /></span>
               <span class="mx-1">Instagram</span>
-              <input
-                type="checkbox"
-                class="c-pointer"
-                :disabled="true"
-                name=""
-                id=""
-              />
+              <input type="checkbox" class="c-pointer" :disabled="true" name="" id="" />
             </a>
           </div>
         </div>
@@ -248,31 +260,14 @@
 
       <div class="col-md-12">
         <a
-          class="
-            primary-text
-            text-decoration-none
-            font-weight-700
-            my-2
-            px-2
-            d-flex
-            align-items-center
-          "
+          class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
         >
           <input type="checkbox" class="c-pointer" name="" id="" />
           <span class="mx-1">Send push notification</span>
         </a>
       </div>
 
-      <div
-        class="
-          col-md-12
-          d-flex
-          align-items-center
-          justify-content-end
-          my-4
-          px-0
-        "
-      >
+      <div class="col-md-12 d-flex align-items-center justify-content-end my-4 px-0">
         <!-- <button
           class="
             default-btn
@@ -310,7 +305,7 @@
         position="top"
       >
         <ImagePicker @uploaded="fileUploaded" />
-         <!-- @uploadimage="imageUpload" -->
+        <!-- @uploadimage="imageUpload" -->
       </Dialog>
       <Dialog
         header="Select Date and Time"
@@ -335,11 +330,7 @@
             icon="pi pi-times"
             @click="() => (displayScheduleModal = false)"
             class="p-button-raised p-button-text p-button-plain mr-3"
-            style="
-              color: #136acd;
-              background: #fff !important;
-              border-radius: 22px;
-            "
+            style="color: #136acd; background: #fff !important; border-radius: 22px"
           />
           <Button
             label="Schedule"
@@ -349,12 +340,69 @@
           />
         </template>
       </Dialog>
+      <el-dialog
+        v-model="CheckinCreationDialog"
+        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+      >
+      <div class="row">
+        <!-- <el-dropdown class="w-100" trigger="click">
+                <span class="el-dropdown-link w-100">
+                  <div
+                    class="d-flex justify-content-between border-contribution text-dark w-100"
+                    size="large"
+                  >
+                    <span
+                      >{{
+                        Object.keys(selectedCheckinEvent).length > 0
+                          ? selectedCheckinEvent.fullEventName +
+                            " --- " +
+                            selectedCheckinEvent.fullGroupName
+                          : "Select event"
+                      }}
+                    </span>
+                    <div>
+                      <el-icon class="el-icon--right">
+                        <arrow-down />
+                      </el-icon>
+                    </div>
+                  </div>
+                </span>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item
+                      v-for="(item, index) in checkInAttendanceList"
+                      :key="index"
+                      @click="setSelectedCheckinEvent(item)"
+                      >{{ item.fullEventName }} ---
+                      {{ item.fullGroupName }}</el-dropdown-item
+                    >
+                    <el-divider class="m-0" />
+                    <el-dropdown-item>
+                      <div class="d-flex justify-content-center w-100 py-1">
+                        <el-icon class="primary--text d-flex align-self-center mr-1">
+                          <CirclePlusFilled />
+                        </el-icon>
+                        <div class="primary--text font-weight-700" @click="(CheckinCreationDialog = true)">Add new event</div>
+                      </div>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown> -->
+      </div>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="CheckinCreationDialog = false" size="large" round>Cancel</el-button>
+            <el-button :color="primarycolor" size="large" round >Save</el-button>
+          </span>
+        </template>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
 import Dropdown from "primevue/dropdown";
+import { inject } from "vue";
 import Dialog from "primevue/dialog";
 import { ref } from "@vue/reactivity";
 import social_service from "../../../services/social/social_service";
@@ -366,10 +414,12 @@ import { useRouter } from "vue-router";
 import ImagePicker from "../../../components/image-picker/ImagePicker";
 import { computed } from "@vue/runtime-core";
 import { useRoute } from "vue-router";
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 
 export default {
   components: { Dropdown, ProgressBar, Dialog, ImagePicker },
   setup() {
+    const primarycolor = inject('primarycolor')
     const router = useRouter();
     const postCategory = ref({});
     const postDestination = ref("Facebook");
@@ -379,6 +429,8 @@ export default {
     const showOnMainThread = ref(false);
     const fbVideoToPost = ref(null);
     const displayScheduleModal = ref(false);
+    const CheckinCreationDialog = ref(false);
+    const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
 
     // const store = useStore();
     const route = useRoute();
@@ -387,9 +439,9 @@ export default {
         label: "Schedule",
         icon: "pi pi-clock",
         command: () => {
-            showScheduleModal();
+          showScheduleModal();
         },
-      }
+      },
     ]);
 
     const message = ref("");
@@ -403,7 +455,7 @@ export default {
     const getPostById = async () => {
       try {
         const postData = await social_service.getPostById(route.query.postId);
-        console.log(postData, 'lijhkjk');
+        postCategoryId.value = postData.postCategoryId;
         postToEdit.value.content = postData.content;
         postToEdit.value.mediaUrl = postData.mediaUrl;
         postToEdit.value.postId = postData.postId;
@@ -413,6 +465,15 @@ export default {
         showOnMainThread.value = postData.showOnMainThread;
         isUrl.value = true;
         getPostCategoryById(postData.postCategoryId);
+        if (postData?.postCategoryName?.toLowerCase() === "devotional") {
+          showDevotionParameters.value = true;
+          devotionTitle.value = postData.title;
+          devotionScripture.value = postData.bibleVerse;
+          devotionMemoryVerse.value = postData.memoryVerse;
+        } else if (postData?.postCategoryName?.toLowerCase() === "event") {
+          showEventParameters.value = true;
+          selectedCheckinEvent.value.id = postData.checkInAttendanceID;
+        }
       } catch (error) {
         console.log(error);
       }
@@ -450,13 +511,21 @@ export default {
     const makePost = () => {
       if (route.query.postId) {
         const formData = new FormData();
-        console.log(file.value, "jjnkjk");
         // formData.append("mediaFile", file.value ? file.value : "");
         formData.append("content", message.value ? message.value : "");
         formData.append("mediaUrl", mediaUrl.value ? mediaUrl.value : "");
         formData.append("postId", route.query.postId);
-        formData.append("title", postCategory.value.name );
-        formData.append("showOnMainThread", showOnMainThread.value ? showOnMainThread.value : false );
+        formData.append("title", devotionTitle.value ? devotionTitle.value : "Announcement");
+        formData.append("bibleVerse", devotionScripture.value);
+        formData.append("memoryVerse", devotionMemoryVerse.value);
+        formData.append(
+          "checkInAttendanceID",
+          selectedCheckinEvent.value.id ? selectedCheckinEvent.value.id : ""
+        );
+        formData.append(
+          "showOnMainThread",
+          showOnMainThread.value ? showOnMainThread.value : false
+        );
         // const body = {
         //   content: message.value,
         //   mediaUrl: postToEdit.value.mediaUrl,
@@ -507,11 +576,8 @@ export default {
           fbVideoToPost.value = payload;
         } else {
           try {
-            let { data } = await axios.post(
-              "/api/Media/UploadProfilePicture",
-              formData
-            );
-            console.log(data, 'hhjlkdata');
+            let { data } = await axios.post("/api/Media/UploadProfilePicture", formData);
+            console.log(data, "hhjlkdata");
             mediaUrl.value = data.pictureUrl;
             getFacebookPhotoId(data.pictureUrl);
           } catch (err) {
@@ -547,26 +613,28 @@ export default {
       formData.append("mediaFile", file.value ? file.value : "");
       formData.append("content", message.value ? message.value : "");
       formData.append("mediaUrl", mediaUrl.value ? mediaUrl.value : "");
-      formData.append("title", "Anouncement");
+      formData.append("title", devotionTitle.value ? devotionTitle.value : "Announcement");
+      formData.append("bibleVerse", devotionScripture.value);
+      formData.append("memoryVerse", devotionMemoryVerse.value);
+      formData.append(
+        "checkInAttendanceID",
+        selectedCheckinEvent.value.id ? selectedCheckinEvent.value.id : ""
+      );
       formData.append("tenantId", tenantId.value);
-      formData.append("showOnMainThread", showOnMainThread.value ? showOnMainThread.value : false );
+      formData.append(
+        "showOnMainThread",
+        showOnMainThread.value ? showOnMainThread.value : false
+      );
       formData.append(
         "postCategoryId",
         postCategory.value ? postCategory.value.postCategoryId : ""
       );
+      formData.append("pageId", socialData.value.pageId ? socialData.value.pageId : "");
       formData.append(
-        "socialData.value.pageId",
-        socialData.value.pageId ? socialData.value.pageId : ""
-      );
-      formData.append(
-        "socialData.value.accessToken",
+        "accessToken",
         socialData.value.accessToken ? socialData.value.accessToken : ""
       );
-      formData.append(
-        "toFacebook",
-        toFacebook.value ? toFacebook.value : false
-      );
-       console.log(formData, "gjhhjjjhhg");
+      formData.append("toFacebook", toFacebook.value ? toFacebook.value : false);
       display.value = true;
       axios
         .post("/mobile/v1/Feeds/CreatePost", formData, {
@@ -636,6 +704,47 @@ export default {
       }
     };
 
+    const checkInAttendanceList = ref([]);
+    const eventAttendanceList = async () => {
+      try {
+        let { data } = await axios.get(
+          "/api/CheckInAttendance/AllCheckInAttendances?page=1"
+        );
+        checkInAttendanceList.value = data.data;
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    eventAttendanceList();
+
+    const postCategoryId = ref(null);
+    const setSelectedPostCategory = () => {
+      postCategory.value = postCategories.value.find(
+        (i) => i.postCategoryId == postCategoryId.value
+      );
+      if (postCategory.value?.name.toLowerCase().includes("devotional")) {
+        showDevotionParameters.value = true;
+        showEventParameters.value = false;
+      } else if (postCategory.value?.name.toLowerCase().includes("event")) {
+        showDevotionParameters.value = false;
+        showEventParameters.value = true;
+      } else {
+        showEventParameters.value = false;
+        showDevotionParameters.value = false;
+      }
+    };
+
+    const selectedCheckinEvent = ref({});
+    const setSelectedCheckinEvent = (item) => {
+      selectedCheckinEvent.value = item;
+    };
+
+    const showDevotionParameters = ref(false);
+    const showEventParameters = ref(false);
+    const devotionTitle = ref("");
+    const devotionScripture = ref("");
+    const devotionMemoryVerse = ref("");
+
     const removeFile = () => {
       file.value = "";
       fileUrl.value = "";
@@ -665,8 +774,8 @@ export default {
         // imageUpload()
         file.value = payload.data;
         fileUrl.value = URL.createObjectURL(payload.data);
-        console.log(fileUrl.value, 'jhjhjhj');
-        console.log(file.value, 'oooooj');
+        console.log(fileUrl.value, "jhjhjhj");
+        console.log(file.value, "oooooj");
         mediaUrl.value = payload.data;
       }
       showImagePicker.value = false;
@@ -674,7 +783,6 @@ export default {
       // Upload to get image url
       uploadPicture(payload.data);
     };
-    
 
     const rowsCount = computed(() => {
       if (!message.value) return 2;
@@ -683,9 +791,7 @@ export default {
 
     const getPostCategoryById = async (postCategoryId) => {
       try {
-        postCategory.value = await social_service.getPostCategoryById(
-          postCategoryId
-        );
+        postCategory.value = await social_service.getPostCategoryById(postCategoryId);
       } catch (error) {
         console.log(error);
       }
@@ -708,11 +814,10 @@ export default {
       displayScheduleModal.value = true;
     };
 
-    const executionDate = ref("")
+    const executionDate = ref("");
     const schedulePost = () => {
-        console.log('Post Scheduled')
-        displayScheduleModal.value = false
-    }
+      displayScheduleModal.value = false;
+    };
 
     return {
       toFacebook,
@@ -748,7 +853,22 @@ export default {
       showScheduleModal,
       displayScheduleModal,
       schedulePost,
-      executionDate
+      executionDate,
+      postCategoryId,
+      setSelectedPostCategory,
+      showDevotionParameters,
+      devotionTitle,
+      devotionScripture,
+      devotionMemoryVerse,
+      checkInAttendanceList,
+      showEventParameters,
+      setSelectedCheckinEvent,
+      selectedCheckinEvent,
+      CheckinCreationDialog,
+      primarycolor,
+      mdAndUp, 
+      lgAndUp, 
+      xlAndUp
     };
   },
 };

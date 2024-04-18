@@ -125,15 +125,16 @@
         </div>
 
         <div class="row mt-2 main-th font-weight-700 py-2 small-text grey-rounded-bg">
-          <div class="col-md-4">Name</div>
+          <div class="col-md-3">Name</div>
           <div class="col-md-3">Address</div>
           <div class="col-md-2">Phone</div>
-          <div class="col-md-2 c-pointer">Present </div>
+          <div class="col-md-1 c-pointer">Present </div>
+          <div class="col-md-2 c-pointer">Date </div>
           <div class="col-md-1">Channel</div>
         </div>
 
         <div class="row py-2 tb-row small-text" v-for="(person, index) in people" :key="index">
-          <div class="col-md-4">
+          <div class="col-md-3">
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Name</span>
               <span class="small-text">{{ person.name }}</span>
@@ -154,12 +155,20 @@
               <a class="small-text text-primary" href="#" @click="toggle(person, index)" v-else>{{ person.phoneNumber ? person.phoneNumber : 'view phone' }}</a>
             </span>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-1">
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Checked-in</span>
               <span>
                 <el-icon class="attended" v-if="person.isPresent"><Check /></el-icon>
                 <el-icon v-else><Close /></el-icon>
+              </span>
+            </span>
+          </div>
+          <div class="col-md-2">
+            <span class="d-flex justify-content-between">
+              <span class="hidden-header hide font-weight-700">Date</span>
+              <span>
+                {{ formatDateTime(person.checkInTime) }}
               </span>
             </span>
           </div>
@@ -228,6 +237,9 @@ export default {
 
         const formatDate = (date) => {
           return dateFormatter.monthDayYear(date);
+        }
+        const formatDateTime = (date) => {
+          return dateFormatter.monthDayTime(date);
         }
 
         const absentees = computed(() => {
@@ -366,6 +378,7 @@ export default {
             data,
             reportData,
             formatDate,
+            formatDateTime,
             totalAttendance,
             absentees,
             attendees,

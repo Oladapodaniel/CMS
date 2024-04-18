@@ -1,72 +1,62 @@
 <template>
-  <div class="container-wide">
-    <div class="row">
-      <div class="col-md-7 mt-5">
-        <div class="row">
-          <div class="col-12 col-md-10">
-            <div class="row">
-              <div class="col-12">
-                <h5 class="appBranding">Customize Your App</h5>
-                
-                <div class="mt-3"><span class="font-weight-700">NB:</span> Please choose a dark shade color, click out of the color box, the system will verify your color, then click save to continue.</div>
-              </div>
+  <div class="row justify-content-center">
+    <div class="col-md-11">
+      <div class="row justify-content-between">
+        <div class="col-md-7 mt-5">
+          <div class="row">
+            <div class="col-12 col-md-10">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="text-head font-weight-bold h2">Customize your App</div>
 
-              <!-- MOBILE AREA -->
-              <div class="my-2">
-                <div class="container"></div>
+                  <div class="mt-3"><span class="text-font ">NB:</span> <span class=" text-font ">Please choose a
+                      dark shade color, click out of the color box, the system will verify your color, then click save
+                      to
+                      continue.</span></div>
+                </div>
+
+                <!-- MOBILE AREA -->
+                <!-- <div class="my-2">
+                  <div class="container"></div>
+                </div> -->
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="row mt-1">
-          <div class="col-12 col-md-10">
-            <div
-              class="row  align-items-center"
-            >
-              <div class="d-flex align-items-center col-8">
-                <h5 class="primaryColour mb-0">Primary Colour</h5>
-                <i
-                  class="mt-1 pl-2 pi pi-question-circle c-pointer"
-                  v-tooltip.top="'Choose brand color'"
-                ></i>
-              </div>
+          <div class="row">
+            <div class="col-md-11 bg-white pb-5 px-3 rounded-lg">
+              <div class="row mt-1">
+                <div class="col-md-12">
+                  <div class="row  align-items-center">
+                    <div class="d-flex col-12 align-items-center col-md-6">
+                      <div class="text-font font-weight-600 mb-0">Choose Primary Colour</div>
+                      <!-- <i class="mt-1 pl-2 pi pi-question-circle c-pointer" v-tooltip.top="'Choose brand color'"></i> -->
+                    </div>
 
-              <div class="col-4 color-picker">
-                <img
-                  class="c-pointer w-50"
-                  src="../../../assets/mobileonboarding/colorpickericon.png"
-                  alt="color-picker"
-                  @click="showColorPallet"
-                />
+                    <div class="col-md-6  col-12  color-picker">
+                      <img class="c-pointer w-50" src="../../../assets/mobileonboarding/colorpickericon.png"
+                        alt="color-picker" @click="showColorPallet" />
 
-                <div class="col-4 col-sm-4 text-right">
-                  <!-- <label for="colorpicker"></label> -->
-                  <input
-                    type="color"
-                    id="colorpicker"
-                    class="no-border form-control c-pointer"
-                    v-model="colorPicked"
-                    @change="saveAppBranding"
-                    ref="colorBox"
-                    style="width: 0; height: 0"
-                  />
+                      <div class="col-4 col-sm-4 text-right">
+                        <!-- <label for="colorpicker"></label> -->
+                        <input type="color" id="colorpicker" class="no-border form-control c-pointer"
+                          v-model="colorPicked" @change="saveAppBranding" ref="colorBox" style="width: 0; height: 0" />
+                      </div>
+                    </div>
+                    <!-- <div class="col-md-3 col-12 col-sm-0"></div> -->
+                    <!-- <hr class="mt-2 d-none d-sm-none d-md-block" /> -->
+                  </div>
                 </div>
               </div>
-              <div class="col-md-3 col-12 col-sm-0"></div>
-              <hr class="mt-2 d-none d-sm-none d-md-block" />
-            </div>
-          </div>
-        </div>
-        <div class="row mt-1">
-          <div class="col-12 col-md-10">
-            <div class="row">
-              <div class="col-12 col-sm-6">
-                <h5 class="logo mt-3">Ministry Logo</h5>
-              </div>
-              <Toast />
-              <!-- testrun -->
-              <!-- <div class="col-md-5 col-12">
+              <div class="row mt-1">
+                <div class="col-md-12">
+                  <div class="row mt-2">
+                    <div class="col-12 col-sm-6">
+                      <div class="text-font font-weight-600 mt-2  ">Upload Ministry Logo</div>
+                    </div>
+                    <Toast />
+                    <!-- testrun -->
+                    <!-- <div class="col-md-5 col-12">
                   <div class="container mx-auto mx-md-0 mx-lg-0 pt-2">
                     <div class="photo-box border ml-1">
                       <img src="" class="w-100 h-100 img-responsive">
@@ -85,9 +75,9 @@
                     </div>
                   </div>
                 </div> -->
-              <!-- testrun -->
-              <div class="col-12 col-sm-6">
-                <!-- <div class="cs-input border-0 mt-2 ml-4">
+                    <!-- testrun -->
+                    <div class="col-12 col-sm-6">
+                      <!-- <div class="cs-input border-0 mt-2 ml-4">
                   Upload logo
                   <label
                     for="imgUpload"
@@ -95,266 +85,114 @@
                     :class="{ 'hide-input': imageURL }"
                   >
                   </label> -->
-                  <input
-                      type="file"
-                      class=" form-control"
-                      id="imgUpload"
-                      @change="imageSelected"
-                    />
-                <!-- </div> -->
+                      <input type="file" class=" form-control" id="imgUpload" @change="imageSelected" />
+                      <!-- </div> -->
+                    </div>
+                    <div class="row">
+                      <div class="col-12 mt-3 d-flex justify-content-center">
+                        <img :src="imageURL" style="width: 50%" />
+                      </div>
+                    </div>
+                    <LoadingComponent :loading="loading" style="font-size: 1rem" />
+
+                  </div>
+                </div>
+
               </div>
-               <div class="row">
-               <div class="col-12 mt-3 d-flex justify-content-center">
-                  <img
-                :src="imageURL"
-
-                style="width: 50%"
-              />
-               </div>
-             </div>
-              <LoadingComponent :loading="loading" style="fontsize: 1rem" />
-
-              <!-- <div class="col-md-3 col-12 col-sm-0"></div>
-              <div class="col-4"></div> -->
-              
             </div>
           </div>
-         
+          <div class="row justify-content-center  ">
+            <div class="col-md-6 mt-5 cursor-pointer  " @click="saveAppDetails">
+              <el-button size="large" round class="text-white w-100 primary-bg">Save and continue</el-button>
+            </div>
+          </div>
+          <div class="row justify-content-center mt-3">
+            <div @click="skip" class=" cursor-pointer text-center col-12 col-sm-6 ">
+              Skip for now
+            </div>
+          </div>
         </div>
-         <div class="row">
-            <div
-                class="col-6 offset-3 offset-md-2 btn primary-bg mt-5 mb-4 text-white default-btn border-0 px-0"
-                @click="saveAppDetails"
-              >
-                Save and continue
-              </div>
-               <div
-                  @click="skip"
-                  class="btn my-3 mb-5 text-primary text-right col-12 col-sm-6 offset-sm-2">
-                  Skip >>>
-                </div>
-          </div>
-      </div>
 
-      <div class="col-md-5 d-none d-md-block">
-     
-        <div class="smartphone">
-          <div class="content">
-            <iframe style="width: 100%; border: none; height: 100%" />
-            <!-- MOBILE AREA CONTAINER-->
-            <div class="mobile-container-holder">
-              <!-- MOBILE AREA -->
-              <div class="container mt-5">
-                <div class="row">
-                  <div class="col-12">
-                    <h4 class="Header-text-small text-left">My Profile</h4>
+        <div class="col-md-5 b mb-4  d-none d-md-block">
+          <!-- <img src="../../../assets/mobileonboarding/Iphone16.png" alt=""> -->
+
+          <div class="smartphone">
+            <div class="content">
+              <iframe style="width: 100%; border: none; height: 100%" />
+              <div class="mobile-container-holder ">
+                <div class="container py-2 text-white small-text mt-3 " :style="{ backgroundColor: colorPicked }">
+                  <div class="row">
+                    <div class="col-md-12 d-flex justify-content-between">
+                      <div class="small col-md-6 px-0">Faith Connect</div>
+                      <div class="col-md-6 px-0 d-flex justify-content-end">
+                        <div class="">
+                          <img class="w-100" style="height: 1rem;"
+                            src="../../../assets/mobileonboarding/MagnifyingGlass.png" alt="">
+                        </div>
+                        <div class="mx-1">
+                          <img class="w-100" style="height: 1rem;" src="../../../assets/mobileonboarding/Gift.png"
+                            alt="">
+                        </div>
+                        <div class="">
+                          <img class="w-100" style="height: 1rem;" src="../../../assets/mobileonboarding/DotsThree.png"
+                            alt="">
+                        </div>
+
+
+                      </div>
+                      <!-- <h4 class="Header-text-small text-left">My Profile</h4> -->
+                    </div>
+                    <div class="col-md-12 mt-2 small d-flex justify-content-between">
+                      <div>Faith</div>
+                      <div>Social</div>
+                      <div>Finance</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              <!-- picture area -->
-              <div class="container mb-2">
-                <div class="row d-flex justify-content-center">
-                  <div class="col-6">
-                    <div
-                      class="image-container-small"
-                      style="
-                        border: 1px solid #ebeff4;
-                        height: 50px;
-                        width: 50px;
-                        border-radius: 50%;
-                        background-color: #fff;
-                      "
-                      :style="{
-                        color: colorPicked,
-                        backgroundColor: colorPicked,
-                      }"
-                    >
-                      <img
-                        class="w-100 img-responsive"
-                        :style="{ border: colorPicked }"
-                        src="../../../assets/mobileonboarding/avatar-icon-images.png"
-                        alt=""
-                      />
+                <div class="container-fluid mb-2">
+                  <div class="row  justify-content-cent">
+                    <div class="col-md-12 d-flex px-0 justify-content-between mx-1 mt-2  small font-weight-700">
+                      <div class="text-small">Invite</div>
+                      <div class="text-small">Next Steps</div>
+                      <div class="text-small">Ministry info</div>
+                    </div>
+                    <div class="col-md-12 px-0" >
+                      <img class="w-100" style="height: 6rem;" src="../../../assets/mobileonboarding/familypic.png">
+                    </div>
+                    <div class="small col-md-12 px-0 mt-1">
+                      <span class="text-small font-weight-bold">Trending Messages</span>
+                    </div>
+                    <div class="col-md-12 d-flex px-1">
+                      <div class="">
+                        <img class="w-100" src="../../../assets/mobileonboarding/thanksgiving.png" alt="">
+                      </div>
+                      <div class=" mx-2">
+                        <img class="w-100" src="../../../assets/mobileonboarding/festival.png" alt="">
+                      </div>
+                      <div class="">
+                        <img class="w-100" src="../../../assets/mobileonboarding/prayer.png" alt="">
+                      </div>
+                    </div>
+                    <div class="col-md-12 px-0">
+                      <div>
+                        <img class="w-100" style="height: 4.5rem;" src="../../../assets/mobileonboarding/footericon.png" alt="">
+                      </div>
+                    </div>
+                    <div class="col-md-12 mt-1 d-flex justify-content-between" >
+                      <div class="" >
+                        <homeicon :colorCode="colorPicked" />
+                      </div>
+                      <div class="">
+                        <img class="w-100" style="height: 2.3rem;" src="../../../assets/mobileonboarding/media.png" alt="">
+                      </div>
+                      <div class="">
+                        <img class="w-100" style="height: 2.3rem;" src="../../../assets/mobileonboarding/give.png" alt="">
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <!--end picture area -->
-
-              <!--name & email area -->
-              <div class="container">
-                <div class="row">
-                  <div
-                    class="col-12 text-center d-flex flex-column align-items-center"
-                  >
-                    <span class="font-size-small">John Doe</span>
-                    <span class="font-size-small">johndoee@gmail.com</span>
-                  </div>
-                </div>
-              </div>
-              <!--name & email area -->
-
-              <!-- profile list -->
-              <div class="container mt-1">
-                <!-- user area -->
-                <div class="row d-flex align-items-center">
-                  <div class="col-2">
-                    <i
-                      class="pi pi-user text-center c-pointer reduced-icon-small"
-                      :style="{ color: colorPicked }"
-                    ></i>
-                  </div>
-                  <div class="col-8">
-                    <p class="profile-text-small text-left c-pointer mb-0">
-                      Profile
-                    </p>
-                  </div>
-                </div>
-                <!--end user area -->
-
-                <!-- download area -->
-                <div class="row d-flex align-items-center">
-                  <div class="col-2">
-                    <i
-                      class="pi pi-download text-center c-pointer reduced-icon-small"
-                      :style="{ color: colorPicked }"
-                    ></i>
-                  </div>
-                  <div class="col-8">
-                    <p class="profile-text-small text-left c-pointer mb-0">
-                      My Downloads
-                    </p>
-                  </div>
-                </div>
-                <!--end download area -->
-
-                <!-- attendance area -->
-                <div class="row d-flex align-items-center">
-                  <div class="col-2">
-                    <i
-                      class="pi pi-check-circle text-center c-pointer reduced-icon-small"
-                      :style="{ color: colorPicked }"
-                    ></i>
-                  </div>
-                  <div class="col-8">
-                    <p class="profile-text-small text-left c-pointer mb-0">
-                      Attendance
-                    </p>
-                  </div>
-                </div>
-                <!--end attendance area -->
-
-                <!-- church-information area -->
-                <div class="row d-flex align-items-center">
-                  <div class="col-2">
-                    <i
-                      class="pi pi-home text-center c-pointer reduced-icon-small"
-                      :style="{ color: colorPicked }"
-                    ></i>
-                  </div>
-                  <div class="col-9">
-                    <p class="profile-text-small text-left c-pointer mb-0">
-                      Church Information
-                    </p>
-                  </div>
-                </div>
-                <!--end church-information area -->
-
-                <!-- log-in area -->
-                <div class="row d-flex align-items-center">
-                  <div class="col-2">
-                    <i
-                      class="pi pi-sign-in text-center c-pointer reduced-icon-small"
-                      :style="{ color: colorPicked }"
-                    ></i>
-                  </div>
-                  <div class="col-8">
-                    <p class="profile-text-small text-left c-pointer mb-0">
-                      Log in
-                    </p>
-                  </div>
-                </div>
-                <!--end log-in area -->
-              </div>
-              <!-- end profile list -->
-
-              <!-- Footer Area -->
-              <div class="background-color-small mt-1">
-                <div class="container">
-                  <div class="row d-flex flex-row justify-content-center pt-1">
-                    <div
-                      class="col-2 text-center d-flex flex-column align-items-center"
-                    >
-                      <i
-                        class="pi pi-home text-center c-pointer pi-font-small"
-                      ></i>
-                      <span class="font-size-small">Home</span>
-                    </div>
-                    <div
-                      class="col-2 text-center d-flex flex-column align-items-center"
-                    >
-                      <i
-                        class="pi pi-youtube text-center c-pointer pi-font-small"
-                      ></i>
-                      <span class="font-size-small">Media</span>
-                    </div>
-                    <div
-                      class="col-2 text-center d-flex flex-column align-items-center"
-                    >
-                      <i
-                        class="pi pi-money-bill text-center c-pointer pi-font-small"
-                      ></i>
-                      <span class="font-size-small">Give</span>
-                    </div>
-                    <div
-                      class="col-2 text-center d-flex flex-column align-items-center"
-                    >
-                      <i
-                        class="pi pi-comments text-center c-pointer pi-font-small"
-                      ></i>
-                      <span class="font-size-small"> Chat</span>
-                    </div>
-                    <div
-                      class="col-2 text-center d-flex flex-column align-items-center"
-                    >
-                      <i
-                        class="pi pi-tag text-center c-pointer pi-font-small"
-                        :style="{ color: colorPicked }"
-                      ></i>
-                      <span
-                        class="font-size-small"
-                        :style="{ color: colorPicked }"
-                        >More</span
-                      >
-                    </div>
-                  </div>
-
-                  <div class="row pt-1">
-                    <div class="col-4 text-right px-0">
-                      <i
-                        class="pi pi-window-minimize text-center c-pointer pi-font-small"
-                      ></i>
-                    </div>
-                    <div class="col-4 text-center">
-                      <i
-                        class="pi pi-circle-off text-center c-pointer pi-font-small"
-                      ></i>
-                    </div>
-                    <div class="col-4 text-left px-0">
-                      <i
-                        class="pi pi-spinner text-center c-pointer pi-font-small"
-                      ></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!--End of Footer Area -->
-
-              <!--END MOBILE AREA -->
             </div>
-            <!--END MOBILE AREA CONTAINER -->
           </div>
         </div>
       </div>
@@ -365,12 +203,14 @@
 <script>
 // import router from "../../../router";
 import { ref, computed } from "vue";
+import homeicon from "../../../components/svg/homeicon"
 // import store from "../../../store/store";
 import axios from "@/gateway/backendapi";
 import Tooltip from "primevue/tooltip";
 import LoadingComponent from "../../../components/loading/LoadingComponent";
 import { useToast } from "primevue/usetoast";
 import mobile_service from "../../../services/mobile/mobile-service"
+import { color } from "highcharts";
 
 // import {ref} from 'vue'
 export default {
@@ -379,6 +219,7 @@ export default {
   },
   components: {
     LoadingComponent,
+    homeicon
   },
   setup(props, context) {
     const image = ref("");
@@ -404,26 +245,26 @@ export default {
       mobile_service.validateColor(stringedColor)
         .then((res) => {
           console.log(res);
-           colorValid.value = res.data ;
+          colorValid.value = res.data;
           loading.value = false;
 
-            toast.add({
-              severity: "success",
-              summary: "Color Matched",
-              detail: "Choose logo or click save button to continue",
-              life: 6000,
-            });
+          toast.add({
+            severity: "success",
+            summary: "Color Matched",
+            detail: "Choose logo or click save button to continue",
+            life: 6000,
+          });
 
 
 
         })
         .catch((err) => {
-               toast.add({
-              severity: "info",
-              summary: "",
-              detail: "Choose darker shade of the color",
-              life: 4000,
-            });
+          toast.add({
+            severity: "info",
+            summary: "",
+            detail: "Choose darker shade of the color",
+            life: 4000,
+          });
           console.log(err);
           loading.value = false;
         });
@@ -437,7 +278,7 @@ export default {
           imageURL.value = res.data.returnObject.logoUrl
           colorPicked.value = res.data.returnObject.churchAppBackgroundColor
 
-            
+
         })
         .catch((err) => {
           console.log(err);
@@ -445,29 +286,30 @@ export default {
     };
     getSocialMediaDetails()
 
- const saveAppDetails = () => {
-        const formData = new FormData();
-        formData.append("Logo", image.value);
-        formData.append("BackgroundColour", colorPicked.value);
+    const saveAppDetails = () => {
+      const formData = new FormData();
+      formData.append("Logo", image.value);
+      formData.append("BackgroundColour", colorPicked.value);
 
-        axios
-          .put(`/mobile/v1/Profile/CustomizeApp`, formData)
-          .then((res) => {
-            console.log(res);
-            let changeState = {
+      axios
+        .put(`/mobile/v1/Profile/CustomizeApp`, formData)
+        .then((res) => {
+          console.log(res);
+          let changeState = {
             tab: true,
             churchSetup: false,
             socialMedia: false,
             appBranding: false,
-            donationForm: true
+            donationForm: true,
+            subscription: false
           }
           context.emit('saved-appbranding', changeState)
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      };
-      //saveAppDetails();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    //saveAppDetails();
     const imageURL = ref("");
     const imageSelected = (e) => {
       image.value = e.target.files[0];
@@ -479,38 +321,40 @@ export default {
     const skip = () => {
       if (imageURL.value && colorPicked.value) {
         let changeState = {
-            tab: true,
-            churchSetup: false,
-            socialMedia: false,
-            appBranding: false,
-            donationForm: true
-          }
-          context.emit('saved-appbranding', changeState)
-          console.log('all filllted');
+          tab: true,
+          churchSetup: false,
+          socialMedia: false,
+          appBranding: false,
+          donationForm: true,
+          subscription: false
+        }
+        context.emit('saved-appbranding', changeState)
+        console.log('all filllted');
       } else {
         let changeState = {
           // tab: true,
-            churchSetup: false,
-            socialMedia: false,
-            appBranding: false,
-            donationForm: true
-          }
-          context.emit('saved-appbranding', changeState)
-          console.log('not all')
+          churchSetup: false,
+          socialMedia: false,
+          appBranding: false,
+          donationForm: true,
+          subscription: false
+        }
+        context.emit('saved-appbranding', changeState)
+        console.log('not all')
       }
 
-    //   let changeState = {
-    //       // tab: true,
-    //       churchSetup: false,
-    //       socialMedia: false,
-    //       appBranding: false,
-    //       donationForm: true
-    //     }
-    //     context.emit('saved-appbranding', changeState)
+      //   let changeState = {
+      //       // tab: true,
+      //       churchSetup: false,
+      //       socialMedia: false,
+      //       appBranding: false,
+      //       donationForm: true
+      //     }
+      //     context.emit('saved-appbranding', changeState)
     }
 
     return {
-    saveAppDetails,
+      saveAppDetails,
       saveAppBranding,
       colorPicked,
       changeColors,
@@ -527,6 +371,21 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Raleway:wght@100..900&family=Roboto:wght@100&display=swap');
+
+/* * {
+    font-family: Poppins;
+} */
+
+.text-head {
+  font-family: Raleway !important;
+}
+
+.text-font {
+  font-family: Poppins !important;
+  ;
+}
+
 .hide-input {
   height: 0;
   width: 0;
@@ -558,6 +417,7 @@ export default {
   color: #031c39;
   font: normal normal 200 20px Nunito Sans;
 }
+
 /*end of  profile image area */
 
 /*css for mobile frame */
@@ -604,6 +464,7 @@ export default {
 .reduced-icon-small {
   font-size: 12px;
 }
+
 /*end style in iframe */
 
 /* The device with borders */
@@ -652,10 +513,12 @@ export default {
 /* The screen (or content) of the device */
 .smartphone .content {
   position: relative;
-  width: 169px;
-  height: 290px;
+  width: 100%;
+  height: 100%;
+  /* height: 290px; */
   background: white;
 }
+
 /*end of css for mobile frame */
 
 .backgroundImage {
@@ -668,6 +531,7 @@ export default {
   width: 100%;
   position: relative;
 }
+
 .appHeading1 {
   font: normal normal 800 20px/60px Nunito Sans;
   letter-spacing: 0px;
@@ -689,6 +553,7 @@ hr {
   height: 0px;
   margin: auto;
 }
+
 #logoBox {
   background: #ffffff 0% 0% no-repeat padding-box;
   border: 1px solid #dde2e6;
@@ -697,6 +562,7 @@ hr {
   width: 437px;
   height: 45px;
 }
+
 .colourText {
   text-align: left;
   font: normal normal bold 18px/24px Nunito Sans;
@@ -704,10 +570,12 @@ hr {
   color: #020e1c;
   opacity: 1;
 }
+
 .appBranding {
   color: #031c39;
   font: normal normal 800 30px/40px Nunito Sans;
 }
+
 /* #colorpicker{
 text-align: left;
 font: normal normal bold 18px/24px Nunito Sans;
@@ -716,30 +584,27 @@ color: #020E1C;
 opacity: 1;
 } */
 #colorpicker {
-  -webkit-appearance: none;
+  /* -webkit-appearance: none; */
   padding: 0;
   border: none;
   border-radius: 10px;
   /* width: 20px;
   height: 20px; */
 }
+
 #colorpicker::-webkit-color-swatch {
   border: none;
   border-radius: 10px;
   padding: 0;
 }
+
 #colorpicker::-webkit-color-swatch-wrapper {
   border: none;
   border-radius: 10px;
   padding: 0;
 }
-.logo {
-  text-align: left;
-  /* font: normal normal bold 24px/32px Nunito Sans; */
-  letter-spacing: 0px;
-  color: #020e1c;
-  opacity: 1;
-}
+
+
 .button1 {
   background: #f1faff 0% 0% no-repeat padding-box;
   border: 0.20000000298023224px solid #7894a6;
@@ -749,6 +614,7 @@ opacity: 1;
   height: 46px;
   color: #136acd;
 }
+
 .button2 {
   text-align: center;
   height: 0;
@@ -756,6 +622,7 @@ opacity: 1;
   top: 80%;
   right: 40%;
 }
+
 .dash {
   width: 41px;
   height: 4px;
@@ -763,6 +630,7 @@ opacity: 1;
   border-radius: 11px;
   opacity: 1;
 }
+
 .dash1 {
   width: 41px;
   height: 4px;
@@ -770,6 +638,7 @@ opacity: 1;
   border-radius: 11px;
   opacity: 1;
 }
+
 .smallButton {
   background: #f1faff 0% 0% no-repeat padding-box;
   border: 0.20000000298023224px solid #7894a6;
@@ -787,4 +656,3 @@ opacity: 1;
   opacity: 1;
 }
 </style>
-

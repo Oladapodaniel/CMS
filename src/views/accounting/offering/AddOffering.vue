@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="container-top"
-    :class="{ 'container-slim': lgAndUp || xlAndUp }"
-    @click="hideModals"
-  >
+  <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }" @click="hideModals">
     <div class="col-md-12 px-0">
       <div class="row">
         <div class="text-center text-sm-left col-sm-5 page-header">
@@ -14,36 +10,21 @@
             <div class="col-md-12 d-lg-flex justify-content-end">
               <div class="dropdown" v-if="false">
                 <router-link to="/tenant/offeringcategory">
-                  <el-button
-                    class="more-btn header-btn button"
-                    round
-                    size="large"
-                    id="dropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
+                  <el-button class="more-btn header-btn button" round size="large" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     More
                     <span>
-                      <el-icon><ArrowDown /></el-icon>
-                    </span> </el-button
-                ></router-link>
+                      <el-icon>
+                        <ArrowDown />
+                      </el-icon>
+                    </span> </el-button></router-link>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item">
-                    <router-link to="/tenant/addoffering"
-                      >Add Offering Category</router-link
-                    ></a
-                  >
+                    <router-link to="/tenant/addoffering">Add Offering Category</router-link></a>
                 </div>
               </div>
-              <el-button
-                class="header-btn border-0"
-                @click="post"
-                :loading="loading"
-                :color="primarycolor"
-                size="large"
-                round
-              >
+              <el-button class="header-btn border-0" @click="post" :loading="loading" :color="primarycolor" size="large"
+                round>
                 <span class="text-white">Save and Continue</span>
                 <span></span>
               </el-button>
@@ -61,20 +42,21 @@
               </div>
               <div class="col-10 col-md-9">
                 <el-dropdown class="w-100" trigger="click">
-                <el-input class="w-100" placeholder="Select Events " v-model="selectedEventAttended.name" />
-                <template #dropdown>
-                  <el-dropdown-menu class="menu-height">
-                    <el-dropdown-item v-for="(event, index) in filteredEvents" :key="index" @click="eventAttendedSelected(event)">{{
-                      event.name }}</el-dropdown-item>
-                    <el-dropdown-item class="d-flex justify-content-center text-primary font-weight-700"
-                      data-toggle="modal" data-target="#eventModal" ref="openModalBtn" divided><el-icon>
-                        <CirclePlus />
-                      </el-icon>
-                      Create new event
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
+                  <el-input class="w-100" placeholder="Select Events " v-model="selectedEventAttended.name" />
+                  <template #dropdown>
+                    <el-dropdown-menu class="menu-height">
+                      <el-dropdown-item v-for="(event, index) in filteredEvents" :key="index"
+                        @click="eventAttendedSelected(event)">{{
+    event.name }}</el-dropdown-item>
+                      <el-dropdown-item class="d-flex justify-content-center text-primary font-weight-700"
+                        data-toggle="modal" data-target="#eventModal" ref="openModalBtn" divided><el-icon>
+                          <CirclePlus />
+                        </el-icon>
+                        Create new event
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
                 <!-- <button
                   @click.prevent="selectEventAttended"
                   class="form-control dd text-left close-modal"
@@ -161,64 +143,49 @@
                 <label for="date">Date</label>
               </div>
               <div class="col-10 col-md-9">
-                <el-date-picker
-                  v-model="eventDate"
-                  type="date"
-                  size="large"
-                  class="w-100"
-                  format="MM/DD/YYYY"
-                />
+                <el-date-picker v-model="eventDate" type="date" size="large" class="w-100" format="MM/DD/YYYY" />
               </div>
             </div>
           </div>
         </div>
 
-        <div
-          class="modal fade"
-          id="eventModal"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="eventModalLabel"
-          aria-hidden="true"
-        >
+        <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
+          aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content py-2 px-2">
               <div class="modal-header">
                 <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
                   Create New Event
                 </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body new-event-modal">
                 <div class="row my-4">
                   <div class="col-md-4 text-md-right align-self-center">
-                    <label for="" class="label font-weight-bold"
-                      >Event name</label
-                    >
+                    <label for="" class="label font-weight-bold">Event name</label>
                   </div>
                   <div class="col-md-7">
-                    <el-dropdown class="w-100" trigger="click">
+                    <el-select @change="individualEvent1" v-model="selectEventID" filterable  class="w-100" placeholder="Select" >
+                      <el-option v-for="item in newEvents" :key="item.id" :label="item.name" :value="item.id" />
+                    </el-select>
+                    <!-- <el-dropdown class="w-100" trigger="click">
                       <el-input class="w-100" placeholder="Select Events " v-model="selectEvent" />
                       <template #dropdown>
                         <el-dropdown-menu class="menu-height">
-                          <el-dropdown-item v-for="(eventCategory, index) in filterEventCategory" :key="index" @click="individualEvent(eventCategory)">{{
-                            eventCategory.name }}</el-dropdown-item>
+                          <el-dropdown-item v-for="(eventCategory, index) in filterEventCategory" :key="index"
+                            @click="individualEvent(eventCategory)">{{
+    eventCategory.name }}</el-dropdown-item>
                           <el-dropdown-item class="d-flex justify-content-center text-primary font-weight-700"
-                            data-toggle="modal" data-target="#exampleModalEvent"  divided><el-icon>
+                            data-toggle="modal" data-target="#exampleModalEvent" divided><el-icon>
                               <CirclePlus />
                             </el-icon>
                             Add New Event
                           </el-dropdown-item>
                         </el-dropdown-menu>
                       </template>
-                    </el-dropdown>
+                    </el-dropdown> -->
                     <!-- <div
                       class="select-elem-con pointer d-flex justify-content-space-between"
                       @click="showCategory = !showCategory"
@@ -274,19 +241,11 @@
                 </div>
                 <div class="row mt-4 mb-4">
                   <div class="col-md-4 text-md-right align-self-center">
-                    <label for="" class="label font-weight-bold"
-                      >Event date</label
-                    >
+                    <label for="" class="label font-weight-bold">Event date</label>
                   </div>
-                  <div class="col-md-7"> 
-                    <!-- {{newEvent.activity.date}} -->
-                    <el-date-picker
-                      v-model="newEvent.activity.date"
-                      type="date"
-                      size="large"
-                      class="w-100"
-                      format="MM/DD/YYYY"
-                    />
+                  <div class="col-md-7">
+                    <el-date-picker v-model="newEvent.activity.date" type="date" size="large" class="w-100"
+                      format="MM/DD/YYYY" />
                   </div>
                 </div>
               </div>
@@ -298,31 +257,16 @@
                     <div class="col-md-7">
                       <div class="row">
                         <div class="col-md-12 text-md-right">
-                          <p
-                            class="mb-1 text-danger"
-                            v-if="invalidEventDetails"
-                          >
+                          <p class="mb-1 text-danger" v-if="invalidEventDetails">
                             Enter event name and date
                           </p>
                         </div>
                         <div class="col-md-12 d-md-flex  justify-content-sm-center justify-content-md-end">
-                          <el-button
-                            class="w-100 px-4"
-                            data-dismiss="modal"
-                            color="#EBEFF4"
-                            round
-                            size="large"
-                          >
+                          <el-button class="w-100 px-4" data-dismiss="modal" color="#EBEFF4" round size="large">
                             Close
                           </el-button>
-                          <el-button
-                            class="w-100 px-4 mx-0 mt-md-0 mt-2 text-white"
-                            data-dismiss="modal"
-                            round
-                            size="large"
-                            :color="primarycolor"
-                            @click="createNewEvent"
-                          >
+                          <el-button class="w-100 px-4 mx-0 mt-md-0 mt-2 text-white" data-dismiss="modal" round
+                            size="large" :color="primarycolor" @click="createNewEvent">
                             Save
                           </el-button>
                         </div>
@@ -335,44 +279,27 @@
           </div>
         </div>
 
-        <div
-          class="modal fade"
-          id="exampleModalEvent"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel2"
-          aria-hidden="true"
-        >
+        <div class="modal fade" id="exampleModalEvent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2"
+          aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content border-bottom-0 shadow">
               <div class="modal-header border-bottom-0">
-                <div
-                  class="modal-title font-weight-bold"
-                  id="exampleModalLabel2"
-                >
+                <div class="modal-title font-weight-bold" id="exampleModalLabel2">
                   Add Event
                 </div>
-                <el-button
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <el-icon class="mt-3" :size="16"><CloseBold /></el-icon>
+                <el-button class="close" data-dismiss="modal" aria-label="Close">
+                  <el-icon class="mt-3" :size="16">
+                    <CloseBold />
+                  </el-icon>
                 </el-button>
               </div>
               <div class="modal-body">
                 <div class="row">
-                  <div
-                    class="offset-sm-1 col-sm-3 text-sm-right align-self-center"
-                  >
+                  <div class="offset-sm-1 col-sm-3 text-sm-right align-self-center">
                     Event Name
                   </div>
                   <div class="col-sm-7">
-                    <el-input
-                      type="text"
-                      v-model="newEventCategoryName"
-                      class="w-100"
-                    />
+                    <el-input type="text" v-model="newEventCategoryName" class="w-100" />
                   </div>
                 </div>
               </div>
@@ -380,15 +307,8 @@
                 <el-button class="" data-dismiss="modal" round size="large">
                   Cancel
                 </el-button>
-                <el-button
-                  class=""
-                  id="closeEvent"
-                  data-dismiss="modal"
-                  round
-                  :color="primarycolor"
-                  size="large"
-                  @click="createNewCat(2)"
-                >
+                <el-button class="" id="closeEvent" data-dismiss="modal" round :color="primarycolor" size="large"
+                  @click="createNewCat(2)">
                   Save
                 </el-button>
               </div>
@@ -407,111 +327,56 @@
             </div>
           </div>
         </div>
-        <div
-          class="attendance-body stretch"
-          id="offeringBody"
-          v-for="(item, index) in offeringItem"
-          :key="index"
-        >
+        <div class="attendance-body  stretch" id="offeringBody" v-for="(item, index) in offeringItem" :key="index">
           <div class="row">
             <div class="col-12 col-sm-8 col-lg-3">
-              <select
-                class="form-control"
-                v-if="item.financialContributionID && !routeParams"
-              >
-                <option
-                  v-for="(newOffering, index) in newOfferings"
-                  :key="index"
-                  :value="newOffering.id"
-                  :selected="newOffering.id === item.financialContributionID"
-                >
+              <select class="form-control" v-if="item.financialContributionID && !routeParams">
+                <option v-for="(newOffering, index) in newOfferings" :key="index" :value="newOffering.id"
+                  :selected="newOffering.id === item.financialContributionID">
                   {{ newOffering.name }}
                 </option>
               </select>
 
-              <select
-                class="form-control"
-                v-else-if="item.financialContributionID && routeParams"
-                v-model="item.financialContributionID"
-                @change="updateOfferingId"
-              >
-                <option
-                  v-for="(newOffering, index) in newOfferings"
-                  :key="index"
-                  :value="newOffering.id"
-                >
+              <select class="form-control" v-else-if="item.financialContributionID && routeParams"
+                v-model="item.financialContributionID" @change="updateOfferingId">
+                <option v-for="(newOffering, index) in newOfferings" :key="index" :value="newOffering.id">
                   <p>{{ newOffering.name }}</p>
                 </option>
               </select>
-              <el-input
-                type="text"
-                class="w-100"
-                name=""
-                id=""
-                v-else-if="!item.financialContributionID"
-                v-model="item.name"
-                placeholder="Enter Offering Item"
-                ref="offeringInput"
-              />
+              <el-input type="text" class="w-100" name="" id="" v-else-if="!item.financialContributionID"
+                v-model="item.name" placeholder="Enter Offering Item" ref="offeringInput" />
             </div>
             <div class="col-3 col-sm-4 col-lg-2">
-              <el-select-v2
-                  v-model="item.paymentChannel"
-                  class="w-100 font-weight-normal"
-                  :options="
-                    paymentChannels.map((i) => ({
-                      label: i,
-                      value: i,
-                    }))
-                  "
-                  size="large"
-                />
+              <el-select-v2 v-model="item.paymentChannel" class="w-100 font-weight-normal" :options="paymentChannels.map((i) => ({
+    label: i,
+    value: i,
+  }))
+    " size="large" />
             </div>
             <div class="col-3 col-sm-2 col-lg-1">
-              <div
-                class="currency pointer d-flex justify-content-around align-items-center close-modal"
-                @click="item.showCurrency = !item.showCurrency"
-              >
+              <div class="currency pointer d-flex justify-content-around align-items-center close-modal"
+                @click="item.showCurrency = !item.showCurrency">
                 <span class="ofering close-modal">{{
-                  currencyList
-                    ? currencyList.find((i) => i.id == item.currencyID)
-                      ? currencyList.find((i) => i.id == item.currencyID).name
-                      : tenantCurrency
-                    : ""
-                }}</span
-                ><span style="margin-top: 4px">
-                  <el-icon class="close-modal" :size="13"
-                    ><ArrowDown
-                  /></el-icon>
+    currencyList
+      ? currencyList.find((i) => i.id == item.currencyID)
+        ? currencyList.find((i) => i.id == item.currencyID).name
+        : tenantCurrency
+      : ""
+  }}</span><span style="margin-top: 4px">
+                  <el-icon class="close-modal" :size="13">
+                    <ArrowDown />
+                  </el-icon>
                 </span>
               </div>
-              <div
-                class="ofering close-modal"
-                :class="{ 'style-account': item.showCurrency }"
-                v-if="item.showCurrency"
-              >
+              <div class="ofering close-modal" :class="{ 'style-account': item.showCurrency }" v-if="item.showCurrency">
                 <div class="p-2">
-                  <el-input
-                    type="text"
-                    placeholder="Search"
-                    class="w-100 close-modal ofering mb-1"
-                    v-model="currencyText"
-                  />
+                  <el-input type="text" placeholder="Search" class="w-100 close-modal ofering mb-1"
+                    v-model="currencyText" />
                 </div>
-                <div
-                  class="header-border close-modal"
-                  v-if="filterCurrency.length > 0"
-                >
-                  <div
-                    class="manual-dd-item close-modal"
-                    v-for="item in filterCurrency"
-                    :key="item.id"
-                  >
+                <div class="header-border close-modal" v-if="filterCurrency.length > 0">
+                  <div class="manual-dd-item close-modal" v-for="item in filterCurrency" :key="item.id">
                     <div class="d-flex justify-content-between p-1 close-modal">
-                      <div
-                        class="close-modal"
-                        @click="addCurrency($event, index, item)"
-                      >
+                      <div class="close-modal" @click="addCurrency($event, index, item)">
                         {{ item.name }} - {{ item.country }}
                       </div>
                     </div>
@@ -523,114 +388,68 @@
               </div>
             </div>
             <div class="col-6 col-lg-3">
-              <el-input
-                type="text"
-                class="w-100"
-                v-model="item.amount"
-                placeholder="Enter Amount"
-                @input="sendAmount($event, index)"
-              />
+              <el-input type="text" class="w-100" v-model="item.amount" placeholder="Enter Amount"
+                @input="sendAmount($event, index)" />
             </div>
             <div class="col-1 d-none d-lg-block">
               {{ item.amount }}
             </div>
             <div class="col-md-2 mt-1" @click="delOffering(index)">
-              <el-icon :size="20"><Delete /></el-icon>
+              <el-icon :size="20">
+                <Delete />
+              </el-icon>
             </div>
 
-            <div
-              v-if="item.donor == ''"
-              data-toggle="modal"
-              data-target="#exampleModal"
-              class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center"
-              @click="setAddToDonor(index)"
-            >
+            <div v-if="item.donor == ''" data-toggle="modal" data-target="#exampleModal"
+              class="col-8 col-sm-3  offset-sm-5 donor-text pt-0 align-self-center" @click="setAddToDonor(index)">
               Add Donor
             </div>
-            <div
-              v-else
-              class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"
-              @click="setAddToDonor(index)"
-              data-toggle="modal"
-              data-target="#exampleModal"
-            >
+            <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"
+              @click="setAddToDonor(index)" data-toggle="modal" data-target="#exampleModal">
               {{ item.donor }} <span class="donor-text">edit</span>
             </div>
           </div>
         </div>
 
-        <div
-          class="col-sm-12 text-center add-attendance ofering"
-          id="addOffering"
-          @click="addOffering"
-        >
-          <el-icon :size="20" class="mr-2"><CirclePlus /></el-icon>Add Offering
+        <div class="col-sm-12 text-center  mt-4 mt-md-0 add-attendance ofering" id="addOffering" @click="addOffering">
+          <el-icon :size="20" class="mr-2">
+            <CirclePlus />
+          </el-icon>Add Offering
           Item
         </div>
         <div class="display ofering" id="showList" ref="offeringDrop">
-          <input
-            type="text"
-            class="form-control mb-3 ofering"
-            v-model="offeringText"
-            placeholder="Search Offering item"
-            ref="focusInp"
-          />
-          <el-icon style="position: absolute; right: 20px; margin-top: -42px"
-            ><Search
-          /></el-icon>
+          <input type="text" class="form-control mb-3 ofering" v-model="offeringText" placeholder="Search Offering item"
+            ref="focusInp" />
+          <el-icon style="position: absolute; right: 20px; margin-top: -42px">
+            <Search />
+          </el-icon>
 
-          <div
-            class="ofering pointer"
-            v-for="(newOffering, index) in filterOffering"
-            :key="index"
-            @click="offering(newOffering)"
-          >
+          <div class="ofering pointer" v-for="(newOffering, index) in filterOffering" :key="index"
+            @click="offering(newOffering)">
             {{ newOffering.name }}
           </div>
-          <div
-            type="button"
-            data-toggle="modal"
-            data-target="#exampleModalCenter"
-            class="create ofering pointer"
-          >
+          <div type="button" data-toggle="modal" data-target="#exampleModalCenter" class="create ofering pointer">
             Create New Offering Item
           </div>
         </div>
-        <button
-          hidden
-          type="button"
-          id="modalTogglerOffering"
-          class="btn btn-primary"
-          data-toggle="modal"
-          data-target="#exampleModalOffering"
-        >
+        <button hidden type="button" id="modalTogglerOffering" class="btn btn-primary" data-toggle="modal"
+          data-target="#exampleModalOffering">
           Launch demo modal
         </button>
 
         <!-- Modal -->
-        <div
-          class="modal fade"
-          id="exampleModalCenter"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalCenterTitle"
-          aria-hidden="true"
-        >
-          <div
-            class="modal-dialog modal-lg modal-dialog-centered"
-            role="document"
-          >
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
               <div class="modal-header" style="border: none">
                 <h5 class="modal-title" id="exampleModalLongTitle">
                   Add Offering
                 </h5>
-                <el-button
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <el-icon class="mt-3" :size="20"><CloseBold /></el-icon>
+                <el-button class="close" data-dismiss="modal" aria-label="Close">
+                  <el-icon class="mt-3" :size="20">
+                    <CloseBold />
+                  </el-icon>
                 </el-button>
               </div>
               <div class="modal-body">
@@ -640,31 +459,20 @@
                       <label>Name</label>
                     </div>
                     <div class="col-lg-5 col-sm-12 my-auto">
-                      <el-input
-                        type="text"
-                        class="w-100 textbox-height w-100"
-                        placeholder=""
-                        v-model="name"
-                        required
-                      />
+                      <el-input type="text" class="w-100 textbox-height w-100" placeholder="" v-model="name" required />
                     </div>
-                    <div
-                      class="col-sm-4 mt-3 text-right pr-0 "
-                    >
+                    <div class="col-sm-4 mt-3 text-right pr-0 ">
                       <label>Income Account</label>
                     </div>
                     <div class="col-lg-5 col-sm-12 mt-3">
                       <el-dropdown trigger="click" class="w-100">
                         <span class="el-dropdown-link w-100">
-                          <div
-                            class="d-flex justify-content-between border-contribution w-100"
-                            size="large"
-                          >
+                          <div class="d-flex justify-content-between border-contribution w-100" size="large">
                             <span class="text-secondary">{{
-                              selectedIncomeAccount.text
-                                ? selectedIncomeAccount.text
-                                : "Select"
-                            }}</span>
+    selectedIncomeAccount.text
+      ? selectedIncomeAccount.text
+      : "Select"
+  }}</span>
                             <div>
                               <el-icon class="el-icon--right">
                                 <arrow-down />
@@ -674,11 +482,8 @@
                         </span>
                         <template #dropdown>
                           <el-dropdown-menu>
-                            <el-dropdown-item
-                              v-for="(itm, indx) in incomeAccount"
-                              :key="indx"
-                              @click="selectIncomeAccount(itm)"
-                              >{{ itm.text }}
+                            <el-dropdown-item v-for="(itm, indx) in incomeAccount" :key="indx"
+                              @click="selectIncomeAccount(itm)">{{ itm.text }}
                             </el-dropdown-item>
                           </el-dropdown-menu>
                         </template>
@@ -690,15 +495,12 @@
                     <div class="col-lg-5 col-sm-12 mt-3">
                       <el-dropdown trigger="click" class="w-100">
                         <span class="el-dropdown-link w-100">
-                          <div
-                            class="d-flex justify-content-between border-contribution w-100"
-                            size="large"
-                          >
+                          <div class="d-flex justify-content-between border-contribution w-100" size="large">
                             <span class="text-secondary">{{
-                              selectedCashAccount.text
-                              ? selectedCashAccount.text
-                              : "Select"
-                            }}</span>
+    selectedCashAccount.text
+      ? selectedCashAccount.text
+      : "Select"
+  }}</span>
                             <div>
                               <el-icon class="el-icon--right">
                                 <arrow-down />
@@ -708,11 +510,8 @@
                         </span>
                         <template #dropdown>
                           <el-dropdown-menu>
-                            <el-dropdown-item
-                              v-for="(itm, indx) in cashBankAccount"
-                              :key="indx"
-                              @click="selectCashBankAccount(itm)"
-                              >{{ itm.text }}
+                            <el-dropdown-item v-for="(itm, indx) in cashBankAccount" :key="indx"
+                              @click="selectCashBankAccount(itm)">{{ itm.text }}
                             </el-dropdown-item>
                           </el-dropdown-menu>
                         </template>
@@ -730,103 +529,66 @@
                   </div>
 
                   <div v-if="applyRem">
-                    <div
-                      class="row"
-                      v-for="(item, index) in remitance"
-                      :key="index"
-                    >
-                      <div
-                        class="col-sm-4 mt-5 text-right pr-0 align-self-center"
-                      >
+                    <div class="row" v-for="(item, index) in remitance" :key="index">
+                      <div class="col-sm-4 mt-5 text-right pr-0 align-self-center">
                         <label>Income Account</label>
                       </div>
                       <div class="col-lg-5 col-sm-12 mt-5">
                         <el-dropdown trigger="click" class="w-100">
-                        <span class="el-dropdown-link w-100">
-                          <div
-                            class="d-flex justify-content-between border-contribution w-100"
-                            size="large"
-                          >
-                            <span class="text-secondary">{{
-                              item && item.account
-                                ? item.account.text
-                                : "Select Account"
-                            }}</span>
-                            <div>
-                              <el-icon class="el-icon--right">
-                                <arrow-down />
-                              </el-icon>
+                          <span class="el-dropdown-link w-100">
+                            <div class="d-flex justify-content-between border-contribution w-100" size="large">
+                              <span class="text-secondary">{{
+    item && item.account
+      ? item.account.text
+      : "Select Account"
+  }}</span>
+                              <div>
+                                <el-icon class="el-icon--right">
+                                  <arrow-down />
+                                </el-icon>
+                              </div>
                             </div>
-                          </div>
-                        </span>
-                        <template #dropdown>
-                          <el-dropdown-menu>
-                            <el-dropdown-item
-                              v-for="(itm, indx) in incomeAccount"
-                              :key="indx"
-                              @click="selectIncomeAccount2(itm, index)"
-                              >{{ itm.text }}
-                            </el-dropdown-item>
-                          </el-dropdown-menu>
-                        </template>
-                      </el-dropdown>
+                          </span>
+                          <template #dropdown>
+                            <el-dropdown-menu>
+                              <el-dropdown-item v-for="(itm, indx) in incomeAccount" :key="indx"
+                                @click="selectIncomeAccount2(itm, index)">{{ itm.text }}
+                              </el-dropdown-item>
+                            </el-dropdown-menu>
+                          </template>
+                        </el-dropdown>
                       </div>
 
                       <div class="col-sm-4 text-right align-self-center mt-3">
                         <label>Percentage %</label>
                       </div>
                       <div class="col-lg-5 col-sm-12 mt-3">
-                        <el-input
-                          type="text"
-                          class="textbox-height w-100"
-                          placeholder=""
-                          v-model="item.percentage"
-                          required
-                        />
+                        <el-input type="text" class="textbox-height w-100" placeholder="" v-model="item.percentage"
+                          required />
                       </div>
 
                       <div class="col-sm-2 col-12 adjust-down">
-                        <el-button
-                          v-on:click="addRemittance"
-                          class="text-primary"
-                          round
-                          color="#dde2e6"
-                          size="large"
-                        >
-                          <el-icon :size="20" class="mr-1" ><CirclePlus /></el-icon>
+                        <el-button v-on:click="addRemittance" class="text-primary" round color="#dde2e6" size="large">
+                          <el-icon :size="20" class="mr-1">
+                            <CirclePlus />
+                          </el-icon>
                           Add
                         </el-button>
                       </div>
-                      <div
-                        class="col-sm-1 adjust-down"
-                        @click="deleteItem(index)"
-                      >
-                        <el-icon  :size="20"><Delete /></el-icon>
+                      <div class="col-sm-1 adjust-down" @click="deleteItem(index)">
+                        <el-icon :size="20">
+                          <Delete />
+                        </el-icon>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div
-                class="modal-footer d-flex justify-content-center mt-4 ml-5"
-                style="border: none"
-              >
-                <el-button
-                  color="#EBEFF4"
-                  round
-                  class=" px-5"
-                  size="large"
-                  data-dismiss="modal"
-                >
+              <div class="modal-footer d-flex justify-content-center mt-4 ml-5" style="border: none">
+                <el-button color="#EBEFF4" round class=" px-5" size="large" data-dismiss="modal">
                   Close
                 </el-button>
-                <el-button
-                  class=" px-5 border-0"
-                  @click="createNewCon"
-                  :color="primarycolor"
-                  round
-                  size="large"
-                >
+                <el-button class=" px-5 border-0" @click="createNewCon" :color="primarycolor" round size="large">
                   Save
                 </el-button>
               </div>
@@ -836,26 +598,15 @@
         <!-- Event Modal Button -->
 
         <!-- Modal -->
-        <div
-          class="modal fade"
-          id="exampleModal"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
                   Add Donor
                 </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -865,42 +616,57 @@
                     <label for="" class="font-weight-600">Search Name</label>
                   </div>
                   <div class="col-md-7">
-                    <el-dropdown class="w-100" trigger="click">
-                      <span class="el-dropdown-link w-100">
-                        <el-input 
-                        type="text"
-                        v-model="userSearchString"
-                        @input="searchForUsers"
-                        autocomplete="off"
-                        />
-                      </span>
-                      <template #dropdown>
-                        <el-dropdown-menu>
-                          <el-icon class="is-loading" v-if="loading && userSearchString.length >= 3">
+                    <div class="dropdown">
+                      <div class="input-group" id="dropdownMenuButton" data-toggle="dropdown">
+                        <input type="text" class="form-control" v-model="userSearchString" @input="searchForUsers"
+                          autocomplete="off" />
+                        <div class="input-group-append">
+                          <span class="input-group-text">
+                            <el-icon>
+                              <ArrowDownBold />
+                            </el-icon>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                        <div class="row w-100 mx-auto" v-if="false">
+                          <div class="col-md-12">
+                            <el-input type="text" class="w-100" placeholder="Find event" />
+                          </div>
+                        </div>
+
+                        <a class="dropdown-item font-weight-700 small-text" href="#"
+                          v-for="(member, index) in searchedMembers" :key="index"
+                          @click="addExistingMember(member)">{{ member.name }} - {{ member.phone }}</a>
+                        <a class="dropdown-item font-weight-700 small-text" href="#"
+                          v-if="searchingForMembers && searchedMembers.length === 0">
+                          <el-icon class="is-loading">
                             <Loading />
                           </el-icon>
-                          <el-dropdown-item v-for="(member, index) in searchedMembers" :key="index" @click="addExistingMember(member)">{{ member.name }} - {{ member.phone }}</el-dropdown-item>
-                          <el-dropdown-item v-if="userSearchString.length < 3" disabled>Enter 3 or more characters</el-dropdown-item>
-                          <el-dropdown-item @click="showAddMemberForm"    divided><el-icon  :size="20" class="text-primary "><CirclePlus /></el-icon> <span class="text-primary font-weight-bold">Add new donor</span> </el-dropdown-item>
-                        </el-dropdown-menu>
-                      </template>
-                    </el-dropdown>
+                        </a>
+                        <p class="modal-promt pl-1 bg-secondary m-0"
+                          v-if="userSearchString.length < 3 && searchedMembers.length === 0">
+                          Enter 3 or more characters
+                        </p>
+                        <a class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary--text c-pointer"
+                          style="border-top: 1px solid #002044" @click="showAddMemberForm" data-dismiss="modal">
+                          <el-icon class="d-flex align-items-center mr-1">
+                            <CirclePlus />
+                          </el-icon>
+                          Add new donor
+                        </a>
+                      </div>
+                    </div>
 
                     <div class="row mt-4 d-flex justify-content-between">
-                      <div class="col-md-6">
-                        <el-button round size="large" class="w-100" data-dismiss="modal">
+                      <div class="col-6">
+                        <el-button round class="secondary-button" data-dismiss="modal" size="large">
                           Cancel
                         </el-button>
                       </div>
-                      <div class="col-md-6">
-                        <el-button
-                          class="w-100 border-0 text-white"
-                          data-dismiss="modal"
-                          @click="addDonor"
-                          size="large"
-                          round
-                          :color="primarycolor"
-                        >
+                      <div class="col-6">
+                        <el-button class="border-0 text-white" size="large" data-dismiss="modal" @click="addDonor"
+                          :color="primarycolor" round>
                           Save
                         </el-button>
                       </div>
@@ -911,29 +677,10 @@
             </div>
           </div>
         </div>
-        <el-dialog v-model="display" title="Create New Member" 
-          :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
-         <div class="row">
-            <div class="col-md-12">
-              <NewDonor
-                @cancel="() => (display = false)"
-                @person-id="getPersonId($event)"
-              />
-            </div>
-          </div>
-        </el-dialog>
 
         <!-- Giver Modal Button -->
-        <el-button
-          hidden
-          ref="modalTogglerGiver"
-          id="modalTogglerGiver"
-          class=" btn-primary"
-          data-toggle="modal"
-          data-target="#exampleGiver"
-          size="large"
-          round
-        >
+        <el-button hidden ref="modalTogglerGiver" id="modalTogglerGiver" class=" btn-primary" data-toggle="modal"
+          data-target="#exampleGiver" size="large" round>
           Launch demo modal
         </el-button>
 
@@ -942,58 +689,42 @@
             <div class="col-2 col-md-6"></div>
             <div class="col-3 col-md-3 total-2">TOTAL</div>
             <div class="col-3 col-md-1">
-              <CurrencyConverter
-                :tenantCurrency="tenantCurrency"
-                :selectedCurrency="selectedCurrencyName"
-                :currencyList="currencyList"
-                :currencyAmount="addOfferingTotal"
-                @conversion-result="convertResult"
-                @currency-rate="setCurrencyRate"
-              />
+              <CurrencyConverter :tenantCurrency="tenantCurrency" :selectedCurrency="selectedCurrencyName"
+                :currencyList="currencyList" :currencyAmount="addOfferingTotal" @conversion-result="convertResult"
+                @currency-rate="setCurrencyRate" />
             </div>
             <div class="col-4 col-md-2 align-self-center">
               {{
-                convertedResult
-                  ? convertedResult.toFixed(2)
-                  : addOfferingTotal
-                  ? addOfferingTotal.toFixed(2)
-                  : 0.0
+              convertedResult
+              ? convertedResult.toFixed(2)
+              : addOfferingTotal
+              ? addOfferingTotal.toFixed(2)
+              : 0.0
               }}
             </div>
           </div>
         </div>
-        <el-button
-          hidden
-          id="modalTogglerFirstTimers"
-          class=" btn-primary"
-          round
-          size="large"
-          data-toggle="modal"
-          data-target="#exampleModalFirstTimers"
-        >
+        <el-button hidden id="modalTogglerFirstTimers" class=" btn-primary" round size="large" data-toggle="modal"
+          data-target="#exampleModalFirstTimers">
           Launch demo modal
         </el-button>
-        <el-input
-          :rows="5"
-          class="w-100"
-          type="textarea"
-          placeholder="Notes..."
-        />
+        <el-input :rows="5" class="w-100" type="textarea" placeholder="Notes..." />
       </div>
       <div class="col-md-12 mt-3 mb-2 justify-content-end d-flex px-0">
-        <el-button
-          class="header-btn border-0"
-          @click="post"
-          :loading="loading"
-          :color="primarycolor"
-          size="large"
-          round
-        >
+        <el-button class="header-btn border-0" @click="post" :loading="loading" :color="primarycolor" size="large"
+          round>
           <span class="text-white">Save and Continue</span>
           <span></span>
         </el-button>
       </div>
     </div>
+    <el-dialog v-model="display" title="Create New Member" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+      <div class="row">
+        <div class="col-md-12">
+          <NewDonor @cancel="() => (display = false)" @person-id="getPersonId($event)" />
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -1021,12 +752,13 @@ export default {
     const route = useRoute();
     const { lgAndUp, xlAndUp, mdAndUp } = deviceBreakpoint();
     const offeringDrop = ref(null);
+    const selectEventID = ref(null);
     const showEventList = ref(false);
     const eventsAttended = ref([]);
     const eventsSearchString = ref("");
     const newEvents = ref([]);
     const selectedEventAttended = ref({});
-    const selectEvent = ref("");
+    const selectEvent = ref({});
     const primarycolor = inject("primarycolor");
     const showCategory = ref(false);
     const eventText = ref("");
@@ -1070,14 +802,15 @@ export default {
     const currencyRate = ref("");
     const convertedResult = ref(0);
     const iSoStringFormat = ref("")
-    const paymentChannels = ref(['Cheque', 'Cash', 'Cheque', 'POS', 'Online', 'Bank Transfer' , 'USSDText'],)
+    const iSoStringFormat2 = ref("")
+    const paymentChannels = ref(['Cheque', 'Cash', 'Cheque', 'POS', 'Online', 'Bank Transfer', 'USSDText'],)
 
     const addOffering = () => {
       offeringDrop.value.classList.toggle("offering-drop");
       focusInp.value.focus();
     };
 
-    
+
 
     const hideModals = (e) => {
       if (!e.target.classList.contains("ofering")) {
@@ -1140,7 +873,7 @@ export default {
       activity: {},
     });
 
-    
+
 
     const individualEvent = (obj) => {
       selectEvent.value = obj.name;
@@ -1148,13 +881,18 @@ export default {
       showCategory.value = false;
       console.log(obj);
     };
+    const individualEvent1 = () => {
+      selectEvent.value = newEvents.value.find((i) => i.id == selectEventID.value )
+      newEvent.value.activity.eventCategoryId = selectEvent.value.id;
+      // showCategory.value = false;
+    };
 
     const filterEventCategory = computed(() => {
       let arr = [];
       if (newEvents.value.length > 0) {
         console.log(newEvents.value, "new events");
         arr = newEvents.value.filter((i) => {
-          return i.name.toLowerCase().includes(selectEvent.value.toLowerCase());
+          return i.name.toLowerCase().includes(selectEvent.value.name.toLowerCase());
         });
       } else {
         return newEvents.value;
@@ -1174,23 +912,23 @@ export default {
       try {
         let data;
         const theText =
-          eventParams === 1 ? selectEvent.value : newEventCategoryName.value;
-          // eventParams === 1 ? eventText.value : newEventCategoryName.value;
+          eventParams === 1 ? selectEvent.value.name : newEventCategoryName.value;
+        // eventParams === 1 ? eventText.value : newEventCategoryName.value;
         data = await axios.post(`/api/EventCategory?name=${theText}`);
         console.log(data.data);
         newEvents.value = data.data;
         ElMessage({
-            type: "success",
-            message: "Your new event was created successfully",
-            duration: 5000,
-          });
-        
+          type: "success",
+          message: "Your new event was created successfully",
+          duration: 5000,
+        });
+
       } catch (error) {
         ElMessage({
-            type: "error",
-            message: error.response.data,
-            duration: 5000,
-          });
+          type: "error",
+          message: error.response.data,
+          duration: 5000,
+        });
       }
       displayModal.value = false;
       console.log(newEventCategoryName.value);
@@ -1212,7 +950,7 @@ export default {
             `${data.currentEvent.name} (${data.currentEvent.id})`
               ? data.currentEvent.name
               : "New event selected";
-           ElMessage({
+          ElMessage({
             type: "success",
             message: "Your new event was created successfully",
             duration: 5000,
@@ -1230,12 +968,15 @@ export default {
       displayModal.value = false;
     };
 
-    watchEffect(() =>{
+    watchEffect(() => {
       // console.log(newEvent.value, "jjkjjl");/
-      if(eventDate.value){
-       iSoStringFormat.value = dateFormatter.getISOStringGMT(eventDate.value)
+      if (eventDate.value) {
+        iSoStringFormat.value = dateFormatter.getISOStringGMT(eventDate.value)
+      };
+      if (newEvent.value.activity.date) {
+        newEvent.value.activity.date = dateFormatter.getISOStringGMT(newEvent.value.activity.date)
       }
-  })
+    })
 
     const getOffering = () => {
       axios.get("/api/financials/contributions/items").then((res) => {
@@ -1263,8 +1004,8 @@ export default {
           financialContributionID: offObj.id,
           paymentChannel:
             offObj.paymentChannel == undefined ||
-            offObj.paymentChannel == "" ||
-            offObj.paymentChannel == null
+              offObj.paymentChannel == "" ||
+              offObj.paymentChannel == null
               ? "Cash"
               : offObj.paymentChannel,
           donor: "",
@@ -1273,11 +1014,10 @@ export default {
           currencyID:
             currencyList.value && tenantCurrency.value
               ? currencyList.value.find((i) => i.name === tenantCurrency.value)
-                  .id
+                .id
               : "",
-          fromCurrencyRate: `usd${
-            tenantCurrency.value ? tenantCurrency.value.toLowerCase() : ""
-          }`,
+          fromCurrencyRate: `usd${tenantCurrency.value ? tenantCurrency.value.toLowerCase() : ""
+            }`,
         });
       }
 
@@ -1321,7 +1061,7 @@ export default {
     };
     getCurrentlySignedInUser();
 
-    onMounted(() => {});
+    onMounted(() => { });
 
     const getAllCurrencies = () => {
       axios
@@ -1447,10 +1187,10 @@ export default {
       let invalidOfferingItem = offeringItem.value.find((i) => !i.amount);
       if (invalidOfferingItem) {
         ElMessage({
-            type: "warning",
-            message: "Enter amount for Offering item",
-            duration: 5000,
-          });
+          type: "warning",
+          message: "Enter amount for Offering item",
+          duration: 5000,
+        });
         return false;
       }
 
@@ -1486,24 +1226,24 @@ export default {
               JSON.stringify(res.data.returnObject)
             );
             loading.value = false;
-             store.dispatch('contributions/setContributionList').then(() =>{
+            store.dispatch('contributions/setContributionList').then(() => {
               if (Object.keys(selectedEventAttended.value).length > 0) {
-              router.push({
-                name: "OfferingReport",
-                query: {
-                  report: iSoStringFormat.value,
-                  activityID: selectedEventAttended.value.activityID,
-                },
-              });
-            } else {
-              store.dispatch('contributions/setContributionList').then(() =>{
-                  router.push({
+                router.push({
                   name: "OfferingReport",
-                  query: { report: iSoStringFormat.value },
+                  query: {
+                    report: iSoStringFormat.value,
+                    activityID: selectedEventAttended.value.activityID,
+                  },
                 });
-              })
-            }
-             })
+              } else {
+                store.dispatch('contributions/setContributionList').then(() => {
+                  router.push({
+                    name: "OfferingReport",
+                    query: { report: iSoStringFormat.value },
+                  });
+                })
+              }
+            })
 
             // if (Object.keys(selectedEventAttended.value).length > 0) {
             //   router.push({
@@ -1525,9 +1265,8 @@ export default {
                 amount: i.amount,
                 contribution: i.contribution.name,
                 date: i.date,
-                donor: `${
-                  i.person && i.person.firstName ? i.person.firstName : ""
-                } ${i.person && i.person.lastName ? i.person.lastName : ""}`,
+                donor: `${i.person && i.person.firstName ? i.person.firstName : ""
+                  } ${i.person && i.person.lastName ? i.person.lastName : ""}`,
                 eventDate: selectedEventAttended.value.name,
                 eventName: selectedEventAttended.value.name,
                 id: i.id,
@@ -1546,10 +1285,10 @@ export default {
           .catch((err) => {
             loading.value = false;
             ElMessage({
-            type: "error",
-            message: "Error, Please try again",
-            duration: 5000,
-          });
+              type: "error",
+              message: "Error, Please try again",
+              duration: 5000,
+            });
             console.log(err);
           });
       } else {
@@ -1566,33 +1305,33 @@ export default {
               JSON.stringify(res.data.returnObject)
             );
             loading.value = false;
-            store.dispatch('contributions/setContributionList').then(() =>{
+            store.dispatch('contributions/setContributionList').then(() => {
               if (Object.keys(selectedEventAttended.value).length > 0) {
-              router.push({
-                name: "OfferingReport",
-                query: {
-                  report: iSoStringFormat.value,
-                  activityID: selectedEventAttended.value.activityID,
-                },
-              });
-            } else {
-              store.dispatch('contributions/setContributionList').then(() =>{
                 router.push({
-                name: "OfferingReport",
-                query: { report: iSoStringFormat.value },
-              });
-              })
-            }
+                  name: "OfferingReport",
+                  query: {
+                    report: iSoStringFormat.value,
+                    activityID: selectedEventAttended.value.activityID,
+                  },
+                });
+              } else {
+                store.dispatch('contributions/setContributionList').then(() => {
+                  router.push({
+                    name: "OfferingReport",
+                    query: { report: iSoStringFormat.value },
+                  });
+                })
+              }
             })
-            
+
           })
           .catch((err) => {
             loading.value = false;
             ElMessage({
-            type: "error",
-            message: "Error, Please try again",
-            duration: 5000,
-          });
+              type: "error",
+              message: "Error, Please try again",
+              duration: 5000,
+            });
             console.log(err);
           });
       }
@@ -1776,9 +1515,8 @@ export default {
             `/api/People/GetPersonInfoWithAssignments/${personId}`
           );
           console.log(data);
-          offeringItem.value[offeringToAddDonor.value].donor = `${
-            data.firstName ? data.firstName : ""
-          } ${data.lastName ? data.lastName : ""}`;
+          offeringItem.value[offeringToAddDonor.value].donor = `${data.firstName ? data.firstName : ""
+            } ${data.lastName ? data.lastName : ""}`;
 
           offeringItem.value[offeringToAddDonor.value].personID = personId;
         } catch (error) {
@@ -1789,6 +1527,8 @@ export default {
 
     return {
       addOffering,
+      selectEventID,
+      individualEvent1,
       primarycolor,
       offeringDrop,
       hideModals,
@@ -1876,7 +1616,8 @@ export default {
       currencyRate,
       convertResult,
       convertedResult,
-      iSoStringFormat
+      iSoStringFormat,
+      iSoStringFormat2
     };
   },
 };
@@ -1900,9 +1641,11 @@ export default {
   border: 1px solid #dde2e6;
   border-radius: 7px;
 }
+
 .form .second-form.row.first-row {
   padding: 50px;
 }
+
 .form-body {
   padding: 30px;
 }
@@ -1930,6 +1673,7 @@ export default {
 .attendance-body div {
   padding: 2px;
 }
+
 .attendance-header div {
   color: #002044;
   font-weight: 700;
@@ -1961,9 +1705,11 @@ export default {
   max-height: 300px;
   overflow: auto;
 }
+
 .offering-drop div {
   padding: 3px;
 }
+
 .offering-drop div:hover {
   padding: 3px;
   background: #ecf0f3;
@@ -2015,8 +1761,10 @@ export default {
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .manual-dd {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .manual-dd-item {
@@ -2091,6 +1839,7 @@ export default {
   max-height: 20em;
   overflow-y: scroll;
 }
+
 .style-category div:hover {
   background-color: #ecf0f3;
   cursor: pointer;
@@ -2098,20 +1847,22 @@ export default {
 
 .attendance-body {
   padding: 0 50px;
+  height: 100%;
   background-color: #ecf0f3;
 }
 
-.attendance-body.stretch {
+/* .attendance-body.stretch {
   height: 85px;
-}
+} */
 
 @media (max-width: 991px) {
   .row.form-body.reg .row div {
     margin-top: 2em;
   }
-  .attendance-body.stretch {
+
+  /* .attendance-body.stretch {
     height: 135px;
-  }
+  } */
 }
 
 .currency {
@@ -2137,6 +1888,7 @@ export default {
   max-height: 16em;
   overflow-y: auto;
 }
+
 .style-account div div:hover {
   background-color: #ecf0f3;
   cursor: pointer;
@@ -2198,6 +1950,7 @@ export default {
   font-weight: 600px;
   font-size: 0.9em;
 }
+
 .donor-text-name {
   color: black;
   text-decoration: none;
@@ -2208,6 +1961,7 @@ export default {
   max-height: 400px;
   overflow: scroll;
 }
+
 .border-contribution {
   border: 1.6px solid rgb(229, 232, 237);
   border-radius: 4px;

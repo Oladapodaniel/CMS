@@ -6,6 +6,7 @@ import Highcharts from 'highcharts';
 import VueHighcharts from 'vue-highcharts';
 import loadFunnel from 'highcharts/modules/funnel';
 import ElementPlus from 'element-plus'
+import i18n from './i18n';
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import 'element-plus/theme-chalk/display.css'
@@ -17,6 +18,7 @@ import Toaster from '@meforma/vue-toaster';
 // import 'vue3-tel-input/dist/vue3-tel-input.css'
 import VueTelInput from 'vue-tel-input';
 import 'vue-tel-input/dist/vue-tel-input.css';
+import * as Sentry from "@sentry/vue";
 
 const VueTelInputOptions = {
   mode: "international",
@@ -122,4 +124,24 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 app.provide('primarycolor', '#136acd')
 
 
-app.use(store).use(router).use(VueHighcharts, { Highcharts }).use(CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).use(ElementPlus).use(VueTelInput, VueTelInputOptions).mount('#app')
+// Sentry.init({
+//   app,
+//   dsn: "https://7cff418eccb8c7340141c13304c531a2@o4506353832099840.ingest.sentry.io/4506353869258752",
+//   integrations: [
+//     new Sentry.BrowserTracing({
+//       // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
+//       tracePropagationTargets: ["localhost", /^https:\/\/yourserver\.io\/api/],
+//       routingInstrumentation: Sentry.vueRouterInstrumentation(router),
+//     }),
+//     new Sentry.Replay(),
+//   ],
+//   // Performance Monitoring
+//   tracesSampleRate: 1.0, // Capture 100% of the transactions
+//   // Session Replay
+//   replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
+//   replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
+// });
+
+
+
+app.use(store).use(router).use(VueHighcharts, { Highcharts }).use(CKEditor).use(i18n()).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).use(ElementPlus).use(VueTelInput, VueTelInputOptions).mount('#app')

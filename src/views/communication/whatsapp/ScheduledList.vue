@@ -1,6 +1,8 @@
 <template>
-    <el-tooltip class="box-item" effect="dark" v-if="markedSchedules.length > 0" content="Delete schedule(s)" placement="top-start">
-        <el-icon :size="20" class="mt-4 c-pointer" v-if="markedSchedules.length > 0" @click="showConfirmModal('','multiple')">
+    <el-tooltip class="box-item" effect="dark" v-if="markedSchedules.length > 0" content="Delete schedule(s)"
+        placement="top-start">
+        <el-icon :size="20" class="mt-4 c-pointer" v-if="markedSchedules.length > 0"
+            @click="showConfirmModal('', 'multiple')">
             <Delete />
         </el-icon>
     </el-tooltip>
@@ -89,7 +91,7 @@ export default {
             }
         }
         if (scheduledWhatsappList.value.length == 0) whatsappScheduledList()
-        
+
         const deleteWhatsappSchedule = async (id, type) => {
             let payload = type == 'single' ? id : markedSchedules.value.map(i => i.id).join(",")
             try {

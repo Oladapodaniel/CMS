@@ -5,74 +5,98 @@
         <div class="welcome-onboard">
           <div class="welcome-intro">
             <div v-if="!processing">
-              <h1>Hey {{ userDetails.firstName ? userDetails.firstName : "" }}</h1>
-              <h2>What would you like to do in Churchplus?</h2>
+              <h1>{{ navigatorLang === "en-US" ? 'Hey' : $t('startingPointContent.hey') }} {{ userDetails.firstName ?
+        userDetails.firstName : "" }}</h1>
+              <h2>{{ navigatorLang === "en-US" ? 'What would you like to do in Churchplus?' :
+        $t('startingPointContent.what-to-do-in-ch') }}</h2>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="options-div" :class="{ box2: processing }">
+      <div class="options-div " :class="{ box2: processing }">
         <div class="options-container" v-if="screenWidth > 990 || !processing">
           <div class="step-count mt-4">
-            <h3>STEP 2 OF 2</h3>
+            <h3>{{ navigatorLang === "en-US" ? 'STEP 2 OF 2' : $t('startingPointContent.step') }}</h3>
           </div>
 
           <div class="start-text hidden-sm-and-down">
-            <h2>Choose a starting point</h2>
+            <h2>{{ navigatorLang === "en-US" ? 'Choose a starting point' : $t('startingPointContent.starting-point') }}
+            </h2>
           </div>
 
           <div class="more-later hidden-sm-and-down">
-            <span>You can do more later</span>
+            <span>{{ navigatorLang === "en-US" ? 'You can do more later' : $t('startingPointContent.do-more') }}</span>
           </div>
 
           <div class="start-text hidden-md-and-up">
-            <h2>Hey {{ userDetails.firstName ? userDetails.firstName : "" }}</h2>
+            <h2>{{ navigatorLang === "en-US" ? 'Hey' : $t('startingPointContent.hey') }} {{ userDetails.firstName ?
+        userDetails.firstName : "" }}</h2>
           </div>
 
           <div class="more-later hidden-md-and-up">
-            <span>What would you like to do in churchplus</span>
+            <span>{{ navigatorLang === "en-US" ? 'What would you like to do in churchplus' :
+        $t('startingPointContent.what-to-do-in-ch') }} </span>
           </div>
 
-
           <div class="all-options">
-            <div class=" w-100 ml-2 ">
+            <router-link :to="{ name: 'WelcomeOnboarding1', params: { option: '/mobileonboarding' } }"
+              class="start-option">
+              <div class="icon">
+                <img class="link-icon" src="../../assets/dashboardlinks/com-icon.svg" alt="Sms Icon" />
+              </div>
+              <div class="link-n-icon">
+                <a class="start-link text-success" >Church Mobile App Setup </a>
+                <!-- <a class="start-link">{{ navigatorLang === "en-US" ? 'Send Email/SMS' :
+        $t('startingPointContent.send-email-sms') }}</a> -->
+                <p class="my-auto"><i class="fas fa-angle-right"></i></p>
+              </div>
+            </router-link>
+            <div class="w-100 mt-1 ml-2">
               <el-dropdown class="w-100" trigger="click">
                 <el-button type="primary" class="start-option">
-                  <span class="icon  ">
-                    <img class="link-icon " src="../../assets/claim-sms-offer.png" alt="Sms Icon" />
+                  <span class="icon">
+                    <img class="link-icon" src="../../assets/claim-sms-offer.png" alt="Sms Icon" />
                   </span>
                   <span class="font-weight-bold text-warning">
-
-                    <a class="start-link text-success">Claim your 500 unit now</a>
+                    <a class="start-link text-success">{{ navigatorLang === "en-US" ? 'Claim your 500 unit now' :
+        $t('startingPointContent.claim-unit') }}</a>
                   </span>
-                  <span class="d-flex justify-content-end  font-weight-bold adjust-width">
+                  <span class="d-flex justify-content-end font-weight-bold adjust-width">
                     <!-- <i class="fas fa-angle-down "></i> -->
-                    <i class="fas fa-angle-right " :class="{ 'tbb-icon-rotate': smsOfferDropped }"></i>
+                    <i class="fas fa-angle-right" :class="{ 'tbb-icon-rotate': smsOfferDropped }"></i>
                   </span>
                   <!-- Dropdown List<el-icon class="el-icon--right"><arrow-down /></el-icon> -->
                 </el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <p class="font-weight-bold px-3 pt-3" style="font-size: 1.2em">Terms and Conditions</p>
+                    <p class="font-weight-bold px-3 pt-3" style="font-size: 1.2em">
+                      {{ navigatorLang === "en-US" ? 'Terms and Conditions' : $t('startingPointContent.terms') }}
+                    </p>
                     <p style="font-size: 1.2em" class="px-3">
                       <el-icon color="green">
                         <CircleCheck />
-                      </el-icon> Buy 1000 units or above and get 500units free <br> <br>
+                      </el-icon>
+                      {{ navigatorLang === "en-US" ? 'Buy 1000 units or above and get 500units free' :
+        $t('startingPointContent.units-and-above') }} <br />
+                      <br />
                       <el-icon color="green">
                         <CircleCheck />
-                      </el-icon> Offer is
-                      open
-                      to both new and existing customers <br> <br>
+                      </el-icon>
+                      {{ navigatorLang === "en-US" ? 'Offer is open to both new and existing customers' :
+        $t('startingPointContent.existing-customers') }} <br />
+                      <br />
                       <el-icon color="green">
                         <CircleCheck />
-                      </el-icon> This is a one time offer for the duration of this
-                      campaign
+                      </el-icon>
+                      {{ navigatorLang === "en-US" ? 'This is a one time offer for the duration of this campaign' :
+        $t('startingPointContent.one-time-offer') }}
                     </p>
                     <el-dropdown-item>
                       <router-link :to="{ name: 'BuyUnits', params: { option: '/tenant/units' } }"
                         class="d-flex justify-content-between text-primary font-weight-bold w-100 align-items-center">
-                        <span>Buy SMS now</span>
+                        <span>{{ navigatorLang === "en-US" ? 'Buy SMS now' : $t('startingPointContent.buy-sms')
+                          }}</span>
                         <el-icon class="el-icon--right">
                           <arrow-right />
                         </el-icon>
@@ -88,7 +112,9 @@
                 <img class="link-icon" src="../../assets/sms-email.svg" alt="Sms Icon" />
               </div>
               <div class="link-n-icon">
-                <a class="start-link">Send Email/SMS</a>
+                <a class="start-link">{{ navigatorLang === "en-US" ? 'Send Email/SMS' :
+        $t('startingPointContent.send-email-sms')
+                  }}</a>
                 <p class="my-auto"><i class="fas fa-angle-right"></i></p>
               </div>
             </router-link>
@@ -100,18 +126,23 @@
                   alt="Add member Icon" />
               </div>
               <div class="link-n-icon">
-                <a class="start-link">Add church members</a>
+                <a class="start-link">{{ navigatorLang === "en-US" ? 'Add church members' :
+        $t('startingPointContent.add-ch-members') }}</a>
                 <p class="my-auto"><i class="fas fa-angle-right"></i></p>
               </div>
             </router-link>
 
-            <router-link class="start-option"
-              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/addfirsttimer' } }">
+            <router-link class="start-option" :to="{
+        name: 'ProcessRequest',
+        params: { option: '/tenant/people/addfirsttimer' },
+      }">
               <div class="icon">
                 <img class="link-icon" src="../../assets/first-timers.svg" alt="First Timers Icon" />
               </div>
               <div class="link-n-icon">
-                <a class="start-link">Add first timers</a>
+                <a class="start-link">{{ navigatorLang === "en-US" ? 'Add first timers' :
+                  $t('startingPointContent.add-fst-timers')
+                  }}</a>
                 <p class="my-auto"><i class="fas fa-angle-right"></i></p>
               </div>
             </router-link>
@@ -121,7 +152,8 @@
                 <img class="link-icon" src="../../assets/not-sure.svg" alt="Question Icon" />
               </div>
               <div class="link-n-icon">
-                <a class="start-link">Not sure yet</a>
+                <a class="start-link">{{ navigatorLang === "en-US" ? 'Not sure yet' : $t('startingPointContent.not-yet')
+                  }}</a>
                 <p class="my-auto"><i class="fas fa-angle-right"></i></p>
               </div>
             </router-link>
@@ -137,10 +169,27 @@
 
 <script>
 import axios from "@/gateway/backendapi";
+import { ref, watch } from "vue";
+import { useI18n } from 'vue-i18n';
+import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from '../../i18n';
 export default {
   beforeRouteEnter(to, from, next) {
-    if (localStorage.getItem("userSetup")) return next('/');
+    if (localStorage.getItem("userSetup")) return next("/");
     return next(true);
+  },
+
+  setup() {
+
+    const navigatorLang = ref(navigator.language);
+    const { locale } = useI18n({ useScope: 'global' });
+    watch(locale, (val) => {
+      setI18nLanguage(val);
+
+    });
+
+    return {
+      navigatorLang
+    }
   },
 
   data() {
@@ -149,13 +198,13 @@ export default {
       processing: false,
       screenWidth: window.innerWidth,
       userId: "",
-      userDetails: {}
+      userDetails: {},
     };
   },
 
   methods: {
     toggleSmsOffer() {
-      this.smsOfferDropped = !this.smsOfferDropped
+      this.smsOfferDropped = !this.smsOfferDropped;
     },
     onboardUser(url) {
       const userData = this.$store.getters.onboardingData;
@@ -178,7 +227,7 @@ export default {
   },
 
   async created() {
-    this.userDetails = this.$store.getters.onboardingData
+    this.userDetails = this.$store.getters.onboardingData;
   },
 
   mounted() {
@@ -200,7 +249,7 @@ export default {
 
 .main {
   position: relative;
-  height: 100vh;
+  /* height: 100vh; */
   display: flex;
 }
 
@@ -302,7 +351,7 @@ a {
 .start-option {
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   justify-self: center;
   width: 97%;
   text-align: center;

@@ -114,7 +114,6 @@ const routes = [
         component: () =>
             import( /* webpackChunkName: "emailsent" */ '../views/account/EmailSent.vue')
     },
-
     {
         path: '/tenant',
         name: 'Home',
@@ -209,6 +208,44 @@ const routes = [
 
             ]
 
+        },
+        {
+            path: 'forms',
+            name: 'FormList',
+            meta: {
+                title: 'Churchplus - Form',
+            },
+            component: () =>
+                import( /* webpackChunkName: "addfirsttimer" */ '../views/form/Forms.vue'),
+                children: [
+
+                    {
+                        path: '',
+                        meta: {
+                            title: 'Churchplus - Forms',
+                        },
+                        component: () =>
+                            import( /* webpackChunkName: "peopleempty" */ '../views/form/FormList.vue')
+                    },
+                    {
+                        path: 'create/:id?',
+                        name: 'CreateForm',
+                        meta: {
+                            title: 'Churchplus - Form',
+                        },
+                        component: () =>
+                            import( /* webpackChunkName: "addfirsttimer" */ '../views/form/CreateForm.vue')
+                    },
+                    {
+                        path: 'view/:id?',
+                        name: 'SingleFormList',
+                        meta: {
+                            title: 'Churchplus - Form',
+                        },
+                        component: () =>
+                            import( /* webpackChunkName: "addfirsttimer" */ '../views/form/SingleFormList.vue')
+                    },
+                ]
         },
         {
             path: 'firsttimermanagement/:personId?',
@@ -697,7 +734,7 @@ const routes = [
                 import( /* webpackChunkName: "event" */ '@/views/family/Family.vue')
         },
         {
-            path: 'addfamily/:familyId?',
+            path: 'addfamily/:id?',
             name: 'AddFamily',
             component: () =>
                 import( /* webpackChunkName: "event" */ '@/views/family/AddFamily.vue')
@@ -1152,6 +1189,15 @@ const routes = [
                     },
                     component: () =>
                         import( /* webpackChunkName: "voicelist" */ '@/views/communication/Voice/VoiceList')
+                },
+                {
+                    path: 'schedulelist',
+                    name: 'ScheduledVoice',
+                    meta: {
+                        title: 'Churchplus -Voice List',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "voicelist" */ '@/views/communication/Voice/ScheduledVoice')
                 },
                 {
                     path: 'sendvoicemessage',
@@ -1672,15 +1718,33 @@ const routes = [
             component: () =>
                 import( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/OnboardingProcess')
         },
+        // {
+        //     path: '/mobileonboarding',
+        //     name: 'MobileOnboarding',
+        //     meta: {
+        //         title: 'Churchplus - Mobile Onboarding',
+        //     },
+        //     component: () =>
+        //         import( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/MobileOnboarding')
+        // },
         {
             path: '/mobileonboarding',
-            name: 'MobileOnboarding',
+            name: 'WelcomeOnboarding1',
             meta: {
                 title: 'Churchplus - Mobile Onboarding',
             },
             component: () =>
-                import( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/MobileOnboarding')
+                import( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/WelcomeOnboarding1')
         },
+        // {
+        //     path: '/subscriptionprocess',
+        //     name: 'SubscriptionProcess',
+        //     meta: {
+        //         title: 'Churchplus - Mobile Onboarding',
+        //     },
+        //     component: () =>
+        //         import( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/SubscriptionProcess')
+        // },
         {
             path: '/appbranding',
             name: 'AppBranding',
@@ -1785,6 +1849,15 @@ const routes = [
         }
 
         ],
+    },
+    {
+        path: '/forms/:id',
+        name: 'PublicForm',
+        meta: {
+            title: 'Churchplus - Form',
+        },
+        component: () =>
+            import( /* webpackChunkName: "addfirsttimer" */ '../views/form/PublicForm.vue')
     },
     {
         path: '/partnership/pay/',
@@ -2115,6 +2188,7 @@ router.beforeEach((to, from, next) => {
         to.name === "PublicNewConvert" ||
         to.name === "EventRegistration" ||
         to.name === "PricingPage" ||
+        to.name === "PublicForm" ||
         to.name === "PublicPledgePayment") && !tokenIsValid) return next(true)
 
 

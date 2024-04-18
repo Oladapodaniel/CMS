@@ -7,9 +7,7 @@
         you need for your church growth.
       </div>
 
-      <div
-        class="col-md-4 col-lg-4 col-12 offset-md-1 sub mt-5 d-block d-md-none card-bg"
-      >
+      <div class="col-md-4 col-lg-4 col-12 offset-md-1 sub mt-5 d-block d-md-none card-bg">
         <div class="row rounded pb-2">
           <div class="col-12 col-sm-6">
             <div class="small-header">Current plan</div>
@@ -28,49 +26,33 @@
             <div class="py-2 small-header">
               Select Subscription Plan <span class="text-danger">*</span>
             </div>
-            <el-select-v2
-              :options="
-                UserSubscriptionPlans.map((i) => ({
-                  label: i.description,
-                  value: i.id,
-                }))
-              "
-              v-model="selectedPlanId"
-              placeholder="Select plan"
-              @change="setSelectedPlan"
-              size="large"
-              class="w-100"
-            />
-            <div
-              class="mt-3 normal-text text-right text-md-left italic pl-md-0"
-            >
+            <el-select-v2 :options="UserSubscriptionPlans.map((i) => ({
+              label: i.description,
+              value: i.id,
+            }))
+              " v-model="selectedPlanId" placeholder="Select plan" @change="setSelectedPlan" size="large"
+              class="w-100" />
+            <div class="mt-3 normal-text text-right text-md-left italic pl-md-0">
               Membership:
               {{
                 selectedPlan && selectedPlan.membershipSize
-                  ? selectedPlan.membershipSize.toLocaleString()
-                  : ""
+                ? selectedPlan.membershipSize.toLocaleString()
+                : ""
               }}
             </div>
           </div>
           <div class="col-md-6 col-lg-6 col-12">
             <div class="py-2 small-header">Select Duration (month)</div>
-            <el-select-v2
-              :options="
-                selectMonths.map((i) => ({ label: i.name, value: i.name }))
-              "
-              v-model="selectMonthId"
-              placeholder="Select duration"
-              @change="setSelectedDuration"
-              size="large"
-              class="w-100"
-            />
+            <el-select-v2 :options="selectMonths.map((i) => ({ label: i.name, value: i.name }))
+                " v-model="selectMonthId" placeholder="Select duration" @change="setSelectedDuration" size="large"
+              class="w-100" />
             <div class="ml-1 mt-3 normal-text pl-md-0">
               {{
                 selectedPlan &&
                 Object.keys(selectedPlan).length > 0 &&
                 selectedPlan.currency
-                  ? selectedPlan.currency.symbol
-                  : ""
+                ? selectedPlan.currency.symbol
+                : ""
               }}
               {{ subselectedDuratn.toLocaleString() }}
             </div>
@@ -78,9 +60,7 @@
         </div>
       </div>
 
-      <div
-        class="col-md-4 col-lg-4 col-12 offset-md-1 sub mt-5 d-none d-md-block card-bg"
-      >
+      <div class="col-md-4 col-lg-4 col-12 offset-md-1 sub mt-5 d-none d-md-block card-bg">
         <div class="row rounded pb-2">
           <div class="col-12">
             <div class="small-header">Current plan</div>
@@ -102,12 +82,7 @@
           <div class="row mt-3 normal-text">
             <div class="col-md-2 col-lg-2 col-4">SMS</div>
             <div class="col-md-6 offset-md-1 col-4 mb-2">
-              <input
-                type="number"
-                v-model.number="smsValue"
-                class="form-control w-50"
-                placeholder="SMS Unit"
-              />
+              <input type="number" v-model.number="smsValue" class="form-control w-50" placeholder="SMS Unit" />
             </div>
             <div class="col-md-2 col-4">
               {{ smsAmount }}
@@ -116,30 +91,17 @@
           <div class="row mt-2 normal-text">
             <div class="col-md-2 col-lg-2 col-4">Email</div>
             <div class="col-md-6 offset-md-1 col-4">
-              <el-select-v2
-                :options="
-                  selectEmailUnit.map((i) => ({ label: i.name, value: i.name }))
-                "
-                v-model="selectEmail"
-                placeholder="Email unit"
-                size="large"
-                class="w-100"
-              />
+              <el-select-v2 :options="selectEmailUnit.map((i) => ({ label: i.name, value: i.name }))
+                " v-model="selectEmail" placeholder="Email unit" size="large" class="w-100" />
             </div>
             <div class="col-md-2 col-4">
               {{ selectEmail.constValue ? emailAmount : 0 }}
             </div>
           </div>
           <div class="my-3 small-header">
-            Accounting <br /><small
-              >Product price is multiplied by subscrption duration</small
-            >
+            Accounting <br /><small>Product price is multiplied by subscrption duration</small>
           </div>
-          <div
-            class="row normal-text"
-            v-for="item in productsList"
-            :key="item.id"
-          >
+          <div class="row normal-text" v-for="item in productsList" :key="item.id">
             <div class="col-12" v-if="item.type === 0">
               <div class="row">
                 <div class="col-md-6 col-4">{{ item.name }}</div>
@@ -160,20 +122,16 @@
             Payment Summary({{ selectedCurrency.shortCode }})
           </div>
           <!-- Selected Products -->
-          <div
-            class="row mt-3 normal-text"
-            v-for="item in checkedBoxArr"
-            :key="item.id"
-          >
+          <div class="row mt-3 normal-text" v-for="item in checkedBoxArr" :key="item.id">
             <div class="col-md-6 col-6">{{ item.name }}</div>
             <div class="col-md-6 col-6 text-right font-weight-bold">
               {{
                 daysToEndOfSubscription > 0
-                  ? (
-                      item.price * subscriptionDuration +
-                      (item.price / 30) * daysToEndOfSubscription
-                    ).toFixed(2)
-                  : (item.price * subscriptionDuration).toFixed(2)
+                ? (
+                  item.price * subscriptionDuration +
+                  (item.price / 30) * daysToEndOfSubscription
+                ).toFixed(2)
+                : (item.price * subscriptionDuration).toFixed(2)
               }}
             </div>
           </div>
@@ -185,39 +143,49 @@
             </div>
           </div>
           <div class="row mt-5">
-            <div
-              class="col-12"
-              data-toggle="modal"
-              data-target="#PaymentOptionModal"
-            >
-              <el-button
-                :color="primarycolor"
-                class="w-100"
-                round
-                :disabled="!selectedPlanId"
-              >
+            <div class="col-12" data-toggle="modal" data-target="#PaymentOptionModal">
+              <el-button :color="primarycolor" class="w-100" round :disabled="!selectedPlanId">
                 Pay Now
               </el-button>
             </div>
           </div>
         </div>
       </div>
+      <div class="col-md-4 col-lg-4 col-12 offset-md-1 sub mt-2  card-bg">
+        <div class="row rounded pb-2">
+          <div class="font-weight-bold col-md-8">
+          Direct Bank Transfer
+        </div>
+          <div class="col-md-12   pb-2"
+            :class="{ 'showDropdownMenu': showTransferDetail, 'hideDropdownMenu': !showTransferDetail }">
+            <div class="col-md-12 d-flex justify-content-start"> <el-icon :size="18">
+                <Bottom />
+              </el-icon> </div>
+            <div class="row   ">
+              <div class="col-md-12 d-flex justify-content-between ">
+                <div>Account Name: </div> <span class="font-weight-bold ">Complustech Limited</span>
+              </div>
+              <div class="col-md-12 d-flex justify-content-between">
+                <div>Account Number: </div> <span class="font-weight-bold ">0017934252</span>
+              </div>
+              <div class="col-md-12 d-flex justify-content-between ">
+                <div>Bank: </div> <span class="font-weight-bold ">Access</span>
+              </div>
+              <div class="col-md-12 d-flex justify-content-between ">
+                <div>Send Prove of Payment to: </div> <span class="font-weight-bold ">08023739961</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <el-dialog
-        title="Payment status"
-        v-model="display"
-        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
-        align-center
-        :modal="true"
-      >
+      <el-dialog title="Payment status" v-model="display"
+        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center :modal="true">
         <div class="row">
           <div class="col-md-12" v-if="!paymentFailed">
             <div class="col-12">
               <div class="d-flex justify-content-center">
-                <img
-                  src="../../assets/successful_payment.png"
-                  style="width: 250px; margin: auto"
-                />
+                <img src="../../assets/successful_payment.png" style="width: 250px; margin: auto" />
               </div>
               <h3 class="text-center mt-5 font-weight-bold success">
                 Congrats
@@ -229,9 +197,7 @@
               </div>
               <div class="d-flex justify-content-center mb-5">
                 <a :href="dashboardURL" class="no-decoration">
-                  <el-button color="#70c043" class="text-white mt-3" round
-                    >Go to dashboard</el-button
-                  >
+                  <el-button color="#70c043" class="text-white mt-3" round>Go to dashboard</el-button>
                 </a>
               </div>
             </div>
@@ -248,26 +214,15 @@
       </el-dialog>
       <!-- payment summary end -->
       <!-- Modal -->
-      <div
-        class="modal fade"
-        id="PaymentOptionModal"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true"
-      >
+      <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header bg-modal">
               <h5 class="modal-title" id="exampleModalLongTitle">
                 Payment methods
               </h5>
-              <button
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" ref="close">&times;</span>
               </button>
             </div>
@@ -277,32 +232,23 @@
                   Continue payment with
                 </div>
               </div>
-              <div
-                class="row row-button c-pointer d-flex justify-content-center"
-                @click="initializePayment(0)"
-                v-if="
-                  currentUser.currency == 'NGN' || currentUser.currency == 'GHS'
-                "
-              >
+              <div class="row row-button c-pointer d-flex justify-content-center" @click="initializePayment(0)" v-if="currentUser.currency == 'NGN' || currentUser.currency == 'GHS'
+                ">
                 <div>
-                  <img
-                    style="width: 150px"
-                    src="../../assets/4PaystackLogo.png"
-                    alt="paystack"
-                  />
+                  <img style="width: 150px" src="../../assets/4PaystackLogo.png" alt="paystack" />
                 </div>
               </div>
-              <div
-                class="row row-button c-pointer d-flex justify-content-center"
-                @click="initializePayment(1)"
-              >
+              <div class="row row-button c-pointer d-flex justify-content-center" @click="initializePayment(1)">
                 <div>
-                  <img
-                    style="width: 150px"
-                    src="../../assets/flutterwave_logo_color@2x.png"
-                    alt="flutterwave"
-                  />
+                  <img style="width: 150px" src="../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
                 </div>
+              </div>
+              <div class="row row-button c-pointer d-flex justify-content-center">
+                <a href="https://www.paypal.me/GeorgeOnyeama?locale.x=en_GB" target="_blank">
+                  <div>
+                    <img style="width: 150px; height: 2rem;" src="../../assets/PayPal2.png" alt="paypal" />
+                  </div>
+                </a>
               </div>
             </div>
           </div>
@@ -370,6 +316,7 @@ export default {
     const paymentSummary = ref([]);
     const paymentSummObj = ref({});
     const isChecked = ref(false);
+    const showTransferDetail = ref(false);
     const checkedBoxArr = ref([]);
     const selectCurrencyArr = ref([]);
     const Plans = ref({});
@@ -459,8 +406,8 @@ export default {
           return i.id == Plans.value.id;
         })
           ? UserSubscriptionPlans.value.find((i) => {
-              return i.id == Plans.value.id;
-            }).id
+            return i.id == Plans.value.id;
+          }).id
           : null;
 
         // Remove preceeding plans from list
@@ -792,6 +739,7 @@ export default {
       expiryDate,
       subselectedDuratn,
       expenseApp,
+      showTransferDetail,
       fixedAsset,
       acctReceived,
       paymentSummary,

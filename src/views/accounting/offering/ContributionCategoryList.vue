@@ -130,12 +130,12 @@
               {{ item.name }}
             </div>
           </template>
-          <template v-slot:cashaccount="{ item }">
+          <template v-slot:cashBankAccount="{ item }">
             <div class="c-pointer" @click="contributionItemClick(item.id)">
               {{ item.cashBankAccount }}
             </div>
           </template>
-          <template v-slot:incomeaccount="{ item }">
+          <template v-slot:incomeAccount="{ item }">
             <div class="c-pointer" @click="contributionItemClick(item.id)" >
               {{ item.incomeAccount }}
             </div>
@@ -259,6 +259,7 @@ import axios from "@/gateway/backendapi";
 import store from "../../../store/store"
 import Pagination from "../../../components/pagination/PaginationButtons";
 import moment from "moment";
+import router from "../../../router";
 import Table from "@/components/table/Table";
 import { ElMessage, ElMessageBox } from 'element-plus'
 import finish from "../../../services/progressbar/progress";
@@ -307,8 +308,8 @@ export default {
 
     const offeringItemsHeader = ref([
       { name: "NAME", value: "name" },
-      { name: "CASH ACCOUNT", value: "cashaccount" },
-      { name: "INCOME ACCOUNT", value: "incomeaccount" },
+      { name: "CASH ACCOUNT", value: "cashBankAccount" },
+      { name: "INCOME ACCOUNT", value: "incomeAccount" },
       { name: "ACTION", value: "action" },
     ]);
 

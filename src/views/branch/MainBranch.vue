@@ -4,12 +4,9 @@
       <div class="head-text">Manage Branches</div>
       <div class="mb-3">
         <div class="c-pointer">
-          <!-- <router-link to="/tenant/branch/addbranch"> -->
-          <el-button round class="header-btn" data-toggle="modal" data-target="#statusmodal" :color="primarycolor"
-            ref="statusmodalBtn">
+          <el-button round class="header-btn" @click="showModal" :color="primarycolor">
             Add Branch
           </el-button>
-          <!-- </router-link> -->
         </div>
       </div>
     </div>
@@ -517,119 +514,12 @@
           </div>
         </div>
       </div>
-
-      <div data-toggle="modal" data-target="#levelmodal" ref="levelmodalBtn" hidden>
-        Show modal
-      </div>
-      <div class="modal fade" id="levelmodal" tabindex="-1" role="dialog" aria-labelledby="importgroupModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document" ref="modal">
-          <div class="modal-content pr-2">
-            <div class="modal-header py-3">
-              <h5 class="modal-title font-weight-700" id="importgroupModalLabel">
-                <!-- Set up your branch level -->
-                Church Hierarchies and Organisation Structure
-              </h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close" ref="closeGroupModal">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="mb-3" style="font-size: 1.2em">
-                    Set up your branch hierarchies, your branch hierarchies represent the church organisation structure,
-                    Fill the form below to create yours. For example Headquarter, Region etc.
-                    <!-- You dont have branch hierarchies set up yet, create the
-                  hierarchies, then you can proceed to create your branch -->
-                  </div>
-                  <BranchSettings />
-                  <button
-                    class="mt-3 mb-3 offset-5 col-4 default-btn primary-bg text-white font-weight-bold c-pointer border-0 text-center"
-                    data-dismiss="modal" @click="goToAddBranch">
-                    Proceed
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div data-toggle="modal" data-target="#joinmodal" ref="joinmodalBtn" hidden>
-        Show modal
-      </div>
-      <div class="modal fade" id="joinmodal" tabindex="-1" role="dialog" aria-labelledby="importgroupModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document" ref="modal">
-          <div class="modal-content pr-2">
-            <div class="modal-header py-3">
-              <h5 class="modal-title font-weight-700" id="importgroupModalLabel">
-                Enter your code to join a branch network
-              </h5>
-              <el-button ref="closeJoinNetworkModal" class="close d-flex" size="large" data-dismiss="modal"
-                aria-label="Close">
-                <el-icon :size="16" class=" mt-3">
-                  <CloseBold />
-                </el-icon>
-              </el-button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="p-field p-col-12 p-md-4">
-                    <!-- <span class="p-float-label"> -->
-                    <el-input class="w-100" id="inputtext" placeholder="Enter your code" type="text" v-model="code" />
-                    <!-- <label for="inputtext">Enter your code</label> -->
-                    <!-- </span> -->
-                  </div>
-                </div>
-                <div class="col-md-12 d-flex justify-content-center ">
-                  <el-button class="mt-3 mb-3  col-4  text-white font-weight-bold c-pointer border-0 text-center"
-                    :color="primarycolor" size="large" round @click="joinNetwork">
-                    Join network
-                  </el-button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal fade" id="statusmodal" tabindex="-1" role="dialog" aria-labelledby="importgroupModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document" ref="modal">
-          <div class="modal-content pr-2">
-            <div class="modal-header py-3">
-              <h5 class="modal-title font-weight-700">
-                Which of these option best suit your intentions?
-              </h5>
-              <el-button class="close  d-flex" data-dismiss="modal" aria-label="Close" ref="closeStatusModal">
-                <el-icon :size="16" class="mt-4">
-                  <CloseBold />
-                </el-icon>
-              </el-button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-md-10 offset-1">
-                  <div class="default-btn border mb-3 text-center c-pointer" @click="setUpBranch">
-                    Setup branch network
-                  </div>
-                  <div class="default-btn border mb-3 text-center c-pointer" data-dismiss="modal" @click="joinBranch">
-                    Join branch network
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
     <div class="no-person" v-if="!loading && allBranchDetail && allBranchDetail.length === 0 && !networkError">
       <div class="empty-img">
         <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
         <p class="tip">You haven't added any Branch yet</p>
-        <el-button round class="header-btn" data-toggle="modal" data-target="#statusmodal" :color="primarycolor"
-          ref="statusmodalBtn">
+        <el-button round class="header-btn" @click="showModal" :color="primarycolor">
           Add Branch
         </el-button>
       </div>
@@ -684,6 +574,80 @@
         <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
       </template>
     </el-skeleton>
+    <el-dialog v-model="displayModal" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" align-center>
+      <div class="row ">
+        <div class="col-md-12 d-flex justify-content-center">
+          <div class="font-weight-700 h5">
+            Which of these option best suit your intentions?
+          </div>
+        </div>
+        <div class="col-md-12 mt-4">
+          <div class="row">
+            <div class="col-md-10 offset-1">
+              <div class="default-btn border mb-3 text-center c-pointer" @click="setUpBranch">
+                Setup branch network
+              </div>
+              <div class="default-btn border mb-3 text-center c-pointer" @click="joinBranch">
+                Join branch network
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog v-model="displayJoinModal" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" align-center>
+      <div class="row justify-content-center ">
+        <div class="col-md-10 ">
+          <div class=" col-md-12 text-center py-3">
+            <h5 class=" font-weight-700" id="importgroupModalLabel">
+              Enter your code to join a branch network
+            </h5>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+                <el-input class="w-100" id="inputtext" placeholder="Enter your code" type="text" v-model="code" />
+            </div>
+            <div class="col-md-12 d-flex justify-content-center ">
+              <el-button class="mt-3 mb-3  col-md-5  text-white font-weight-bold c-pointer border-0 text-center"
+                :color="primarycolor" size="large" round @click="joinNetwork">
+                Join network
+              </el-button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog v-model="displayHierarchiesModal" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" align-center>
+      <div class="row ">
+        <div class=" col-md-12">
+          <div class=" py-3 col-md-12">
+            <h5 class=" font-weight-700" id="importgroupModalLabel">
+              <!-- Set up your branch level -->
+              Church Hierarchies and Organisation Structure
+            </h5>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="mb-3" style="font-size: 1.2em">
+                Set up your branch hierarchies, your branch hierarchies represent the church organisation structure,
+                Fill the form below to create yours. For example Headquarter, Region etc.
+                <!-- You dont have branch hierarchies set up yet, create the
+                  hierarchies, then you can proceed to create your branch -->
+              </div>
+              <BranchSettings />
+              <button
+                class="mt-3 mb-3 offset-5 col-4 default-btn primary-bg text-white font-weight-bold c-pointer border-0 text-center"
+                data-dismiss="modal" @click="goToAddBranch">
+                Proceed
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -735,6 +699,7 @@ export default {
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
     const showbranchHierachy = ref(false);
     const sendWhatsappToMultiple = ref(false);
+    const displayHierarchiesModal = ref(false);
     const branchItemSection = ref(false);
     const showBranchDetail = ref(true);
     const viewBranchDetail = ref(false);
@@ -744,12 +709,11 @@ export default {
     const averageIncomeChartResult = ref([]);
     const colorChange = ref(false);
     const loading = ref(false);
+    const displayJoinModal = ref(false);
     const branchLoading = ref(false);
     const branchChatDetail = ref([]);
     const allBranchDetail = ref(store.getters["branch/getbranches"]);
-    console.log(allBranchDetail.value, 'ddgagsg')
     const series = ref([]);
-    const joinmodalBtn = ref();
     const firstTimerData = ref([]);
     const mainMembersData = ref([]);
     const mainIncomeExpenseData = ref([]);
@@ -763,12 +727,11 @@ export default {
     const selection = ref({});
     const getAverageIncomeChart = ref([]);
     const hierarchies = ref([]);
-    const closeStatusModal = ref();
-    const levelmodalBtn = ref();
     const sendingwhatsappmessage = ref(false);
     const branchSideShow = ref(false);
     const showWhatsapp = ref(false);
     const showEmail = ref(false);
+    const displayModal = ref(false);
     const getAverageAttendanceItem = ref([]);
     const tenantId = ref(
       store.getters.currentUser && store.getters.currentUser.tenantId
@@ -783,6 +746,14 @@ export default {
       }
     };
     getRoute();
+
+    const closeModal = () => {
+      displayModal.value = false;
+    }
+
+    const showModal = () => {
+      displayModal.value = true;
+    }
 
     const getTotalPeopleBch = computed(() => {
       if (allBranchDetail.value && allBranchDetail.value.length > 0) {
@@ -893,15 +864,16 @@ export default {
 
     const setUpBranch = () => {
       if (hierarchies.value.length === 0) {
-        levelmodalBtn.value.click();
+        displayHierarchiesModal.value = true;
       } else {
-        closeStatusModal.value.ref.click();
+        displayModal.value = false;
         router.push("/tenant/branch/addbranch");
       }
     };
 
     const joinBranch = () => {
-      joinmodalBtn.value.click();
+      displayJoinModal.value = true
+      displayModal.value = false;
     };
 
     const membersAttendanceChart = computed(() => {
@@ -1174,7 +1146,7 @@ export default {
     getBranchesAnalytics();
 
     const goToAddBranch = () => {
-      closeStatusModal.value.ref.click();
+      displayModal.value = false;
       router.push("/tenant/branch/addbranch");
     };
     const joinNetwork = async () => {
@@ -1182,7 +1154,8 @@ export default {
         let { data } = await axios.post("/api/Branching/joinnetwork", {
           code: code.value,
         });
-        closeJoinNetworkModal.value.ref.click();
+        // closeJoinNetworkModal.value.ref.click();
+        displayJoinModal.value = false
         ElMessage({
           type: "success",
           message: data.response,
@@ -1223,10 +1196,12 @@ export default {
 
     return {
       primarycolor,
+      displayModal,
       mappedBranch,
       membersAttendanceChart,
       // mappAllBranchDetail,
       joinNetwork,
+      displayJoinModal,
       mdAndUp,
       lgAndUp,
       xlAndUp,
@@ -1256,8 +1231,11 @@ export default {
       mainIncomeExpenseData,
       incomeData,
       showWhatsapp,
+      displayHierarchiesModal,
       setUpBranch,
       joinBranch,
+      closeModal,
+      showModal,
       hierarchies,
       showSMS,
       code,
@@ -1282,7 +1260,6 @@ export default {
       selectedType2,
       branchSideShow,
       selectedType3,
-      joinmodalBtn,
       viewBranchDetail,
       membersData,
       IncomeExpHeader,
@@ -1290,9 +1267,7 @@ export default {
       tenantId,
       hideOpen,
       data1,
-      levelmodalBtn,
       sendMarkedMemberSms,
-      closeStatusModal,
       chartItemdropdown,
       openHideAmonut,
       goToAddBranch,

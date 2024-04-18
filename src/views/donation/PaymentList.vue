@@ -86,7 +86,7 @@
                   {{ date(item.date) }}
                 </div>
               </template>
-              <template v-slot:status="{ item }">
+              <template v-slot:isActive="{ item }">
                 <div class="c-pointer" @click="paymentListClick(item.id)">
                   {{ item.isActive ? "Active" : "Inactive" }}
                 </div>
@@ -173,7 +173,7 @@ export default {
             { name: "NAME", value: "name" },
             { name: "BANK", value: "bank" },
             { name: "DATE", value: "date" },
-            { name: "STATUS", value: "status" },
+            { name: "STATUS", value: "isActive" },
             { name: "ACTION", value: "action" },
           ]);
         const toggleFilterFormVissibility = () =>

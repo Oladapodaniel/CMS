@@ -180,7 +180,7 @@
                 {{ date(item.date) }}
               </div>
             </template>
-            <template v-slot:donation="{ item }">
+            <template v-slot:contribution="{ item }">
               <div class="c-pointer">
                 {{ item.contribution }}
               </div>
@@ -308,7 +308,7 @@ export default {
     ]);
     const donationHeaders = ref([
       { name: "date", value: "date" },
-      { name: "DONATION", value: "donation" },
+      { name: "DONATION", value: "contribution" },
       { name: "AMOUNT", value: "amount" },
       { name: "CHANNEL", value: "channel" },
       { name: "DONOR", value: "donor" },

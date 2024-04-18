@@ -95,7 +95,7 @@
                     <span class="small-text">{{ item.smsUnitsUsed }}</span>
                   </div>
                 </template>
-                <template #sentBy="{ item }">
+                <template #sentByUser="{ item }">
                   <div>
                     <router-link
                       :to="{
@@ -170,7 +170,7 @@ export default {
       { name: " MESSAGE", value: "message" },
       { name: " DATE", value: "dateSent" },
       { name: " UNIT", value: "smsUnitsUsed" },
-      { name: " SENTBY", value: "sentBy" },
+      { name: " SENTBY", value: "sentByUser" },
       { name: "", value: "delete" },
     ]);
 

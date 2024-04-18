@@ -12,8 +12,8 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item v-for="(item, index) in createNew" :key="index" @click="router.push(item.to)">{{
-                item.name
-              }}</el-dropdown-item>
+    item.name
+  }}</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -26,13 +26,13 @@
               10 days remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -43,13 +43,13 @@
               9 days remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -60,13 +60,13 @@
               8 days remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -77,13 +77,13 @@
               7 days remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -94,13 +94,13 @@
               6 days remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -111,13 +111,13 @@
               5 days remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -128,13 +128,13 @@
               4 days remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -145,13 +145,13 @@
               3 days remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -162,13 +162,13 @@
               2 days remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -179,13 +179,13 @@
               1 day remaining before your subscription expires, kindly
               subscribe before
               {{
-                moment
-                  .parseZone(
-                    new Date(getRenewalDate).toDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )
-                  ._i.substr(4, 11)
-              }}
+    moment
+      .parseZone(
+        new Date(getRenewalDate).toDateString(),
+        "YYYY MM DD HH ZZ"
+      )
+      ._i.substr(4, 11)
+  }}
             </div>
             <div class="cursor-pointer " @click="subscribeNow">
               <el-button round>Subscribe now</el-button>
@@ -220,7 +220,7 @@
                 <div class="">
                   <p class="mb-0 s-8">FIRST TIMERS</p>
                   <h4 class="primary--text font-weight-700 mt-1 s-16">{{ tenantInfoBasic &&
-                    tenantInfoBasic.firstTimerCount ? tenantInfoBasic.firstTimerCount : 0 }}</h4>
+    tenantInfoBasic.firstTimerCount ? tenantInfoBasic.firstTimerCount : 0 }}</h4>
                 </div>
               </div>
               <div>
@@ -266,11 +266,20 @@
 
       <div class="container-fluid">
         <div class="row">
-          <div class="col-8 offset-2 offset-md-0 col-md-3 p-0" v-if="
-            tenantInfoCeleb.length > 0 ||
-            (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.some(i => i > 0)) ||
-            (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.some(i => i > 0))
-          ">
+          <div class="col-8 offset-2 offset-md-0 col-md-3 p-0" v-if="tenantInfoCeleb.length > 0 ||
+    (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.some(i => i > 0)) ||
+    (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.some(i => i > 0))
+    ">
+            <div class="more-things side p-3 mt-4" v-if="!tenantInfoExtra.hasMobileApp">
+              <img src="../../assets/mobileapp2.svg" class="w-100" />
+              <div class="mt-4">Mobile App</div>
+              <div class="more-body mt-2">
+                Get a customized mobile app for your church.
+              </div>
+              <router-link :to="{ name: 'WelcomeOnboarding1' }" class="no-decoration">
+                <el-button class="mt-1 bg-warning text-white" round>Set up now</el-button>
+              </router-link>
+            </div>
             <div class="more-things side p-3" v-if="!tenantInfoExtra.hasWebsite">
 
               <img src="../../assets/website2.svg" class="w-100" />
@@ -293,29 +302,18 @@
                 <el-button class="mt-1" round>Set up now</el-button>
               </router-link>
             </div>
-
-            <!-- <div class="more-things side p-3 mt-4" v-if="!tenantInfoExtra.hasMobileApp">
-              <img src="../../assets/mobileapp2.svg" class="w-100" />
-              <div class="mt-4">Mobile App</div>
-              <div class="more-body mt-2">
-                Get a customized mobile app for your church.
-              </div>
-              <router-link :to="{ name: 'MobileOnboarding' }" class="no-decoration">
-                <el-button class="mt-1" round>Set up now</el-button>
-              </router-link>
-            </div> -->
           </div>
 
           <div :class="{
-            'col-12 col-md-9':
-              !tenantInfoExtra.hasMobileApp ||
-              !tenantInfoExtra.hasOnlineGiving ||
-              !tenantInfoExtra.hasWebsite,
-            'col-md-12 px-0':
-              tenantInfoExtra.hasMobileApp &&
-              tenantInfoExtra.hasOnlineGiving &&
-              tenantInfoExtra.hasWebsite,
-          }">
+    'col-12 col-md-9':
+      !tenantInfoExtra.hasMobileApp ||
+      !tenantInfoExtra.hasOnlineGiving ||
+      !tenantInfoExtra.hasWebsite,
+    'col-md-12 px-0':
+      tenantInfoExtra.hasMobileApp &&
+      tenantInfoExtra.hasOnlineGiving &&
+      tenantInfoExtra.hasWebsite,
+  }">
 
             <div v-if="tenantInfoCeleb && tenantInfoCeleb.length > 0">
               <div class="celeb-header">
@@ -349,7 +347,7 @@
                   </div>
                 </template>
                 <template v-slot:dayOfCelebration="{ item }">
-                  <div class="c-pointer" @click="showCelebrationDetail(item)" >
+                  <div class="c-pointer" @click="showCelebrationDetail(item)">
                     {{ item.dayOfCelebration }}
                   </div>
                 </template>
@@ -364,7 +362,7 @@
                   </div>
                 </template>
                 <template v-slot:action="{ item }">
-                  <div class="cursor-pointer" >
+                  <div class="cursor-pointer">
                     <el-dropdown trigger="click">
                       <el-icon>
                         <MoreFilled />
@@ -372,19 +370,17 @@
                       <template #dropdown>
                         <el-dropdown-menu>
                           <el-dropdown-item>
-                            <router-link :to="
-                              item.phone
-                                ? `/tenant/sms/compose?phone=${item.phone}`
-                                : ''
-                            " :class="{ 'fade-text': !item.phone, 'text-color': item.phone }">Send
+                            <router-link :to="item.phone
+    ? `/tenant/sms/compose?phone=${item.phone}`
+    : ''
+    " :class="{ 'fade-text': !item.phone, 'text-color': item.phone }">Send
                               SMS</router-link>
                           </el-dropdown-item>
                           <el-dropdown-item>
-                            <router-link :to="
-                              item.email
-                                ? `/tenant/email/compose?phone=${item.email}`
-                                : ''
-                            " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send
+                            <router-link :to="item.email
+    ? `/tenant/email/compose?phone=${item.email}`
+    : ''
+    " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send
                               Email</router-link>
                           </el-dropdown-item>
                         </el-dropdown-menu>
@@ -394,17 +390,16 @@
                 </template>
               </Table>
             </div>
-            <div v-show="
-              tenantInfoCeleb.length > 0 ||
-              (tenantInfoFirstTimerWeekly[0] &&
-                tenantInfoFirstTimerWeekly[0].data.length > 0) ||
-              (tenantInfoFirstTimerWeekly[0] &&
-                tenantInfoFirstTimerWeekly[0].data[0] > 0) ||
-              (tenantInfoAttendanceWeekly[0] &&
-                tenantInfoAttendanceWeekly[0].data.length > 0) ||
-              (tenantInfoAttendanceWeekly[0] &&
-                tenantInfoAttendanceWeekly[0].data[0] > 0)
-            ">
+            <div v-show="tenantInfoCeleb.length > 0 ||
+    (tenantInfoFirstTimerWeekly[0] &&
+      tenantInfoFirstTimerWeekly[0].data.length > 0) ||
+    (tenantInfoFirstTimerWeekly[0] &&
+      tenantInfoFirstTimerWeekly[0].data[0] > 0) ||
+    (tenantInfoAttendanceWeekly[0] &&
+      tenantInfoAttendanceWeekly[0].data.length > 0) ||
+    (tenantInfoAttendanceWeekly[0] &&
+      tenantInfoAttendanceWeekly[0].data[0] > 0)
+    ">
               <div v-if="tenantInfoAttendanceWeekly && attendanceDataExist">
                 <div class="adjust-view col-10 col-sm-3 offset-sm-9 mt-5 mt-md-0">
                   <div class="view-report">View Reports</div>
@@ -416,7 +411,8 @@
                 </div>
                 <div v-if="attendanceBoolean" class="mt-4">
                   <ColumnChart domId="chart1" title="Event Attendance" subtitle="Weekly Attendance of Events"
-                    header="Members Attendance" :data="chartData" :series="series" :attendanceSeries="attendanceSeries" />
+                    header="Members Attendance" :data="chartData" :series="series"
+                    :attendanceSeries="attendanceSeries" />
                 </div>
                 <div v-else class="mt-4">
                   <ColumnChart domId="chart1" title="Event Attendance" subtitle="Monthly Attendance of Events"
@@ -452,18 +448,16 @@
                 <div class="">
                   <div class="row">
                     <div class="col-12 col-md-6 d-flex justify-content-center">
-                      <ByGenderChart domId="source" title="Invitation Source" distance="5" :titleMargin="10" :summary="
-                        tenantInfoInvitationSource
-                          ? tenantInfoInvitationSource
-                          : []
-                      " />
+                      <ByGenderChart domId="source" title="Invitation Source" distance="5" :titleMargin="10" :summary="tenantInfoInvitationSource
+    ? tenantInfoInvitationSource
+    : []
+    " />
                     </div>
                     <div class="col-12 col-md-6 mt-3 mt-md-0 d-flex justify-content-center">
-                      <ByMaritalStatusChart domId="join" title="Interested In Joining" :titleMargin="10" :summary="
-                        tenantInfoInterestedInJoining
-                          ? tenantInfoInterestedInJoining
-                          : []
-                      " />
+                      <ByMaritalStatusChart domId="join" title="Interested In Joining" :titleMargin="10" :summary="tenantInfoInterestedInJoining
+    ? tenantInfoInterestedInJoining
+    : []
+    " />
                     </div>
                   </div>
                 </div>
@@ -472,11 +466,10 @@
           </div>
         </div>
       </div>
-      <div v-if="
-        tenantInfoCeleb.length === 0 &&
-        (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.every(i => i === 0)) &&
-        (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.every(i => i === 0))
-      ">
+      <div v-if="tenantInfoCeleb.length === 0 &&
+    (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.every(i => i === 0)) &&
+    (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.every(i => i === 0))
+    ">
         <div class="container-fluid mt-5">
           <div class="row">
             <div class="col-12 more-things">
@@ -486,7 +479,21 @@
             </div>
           </div>
           <div class="row mt-4">
-            <div class="col-12 col-sm-6 col-md-4 more-things">
+            <div class="col-12 col-sm-6 col-md-4  more-things">
+              <img src="../../assets/mobileapp2.svg" />
+              <div class="mt-4">
+                <div class="can-do">
+                  <h4>Mobile app</h4>
+                </div>
+              </div>
+              <div class="more-body mt-2">
+                Get a customized mobile app for your church.
+              </div>
+              <router-link :to="{ name: 'WelcomeOnboarding1' }" class="no-decoration">
+                <el-button class="mt-1 bg-warning text-white" round>Set up now</el-button>
+              </router-link>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 mt-5 mt-md-0 more-things">
               <img src="../../assets/website2.svg" />
               <div class="mt-4">
                 <div class="can-do">
@@ -514,25 +521,12 @@
                 <el-button class="mt-1" round>Set up now</el-button>
               </router-link>
             </div>
-            <!-- <div class="col-12 col-sm-6 col-md-4 mt-5 mt-md-0 more-things">
-              <img src="../../assets/mobileapp2.svg" />
-              <div class="mt-4">
-                <div class="can-do">
-                  <h4>Mobile app</h4>
-                </div>
-              </div>
-              <div class="more-body mt-2">
-                Get a customized mobile app for your church.
-              </div>
-              <router-link :to="{ name: 'MobileOnboarding' }" class="no-decoration">
-                <el-button class="mt-1" round>Set up now</el-button>
-              </router-link>
-            </div> -->
           </div>
         </div>
       </div>
     </div>
-    <el-dialog v-model="pastorsDialog" title="" class="pastorsDialog" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" align-center>
+    <el-dialog v-model="pastorsDialog" title="" class="pastorsDialog"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" align-center>
       <div class="row">
         <div class="col-md-12">
           <div class="pastor-text text-center">
@@ -544,50 +538,50 @@
 
           <div class="row">
             <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-8 order-2 order-md-1">
-                        <div class="row my-3">
-                            <div class="col-md-4 text-md-right pr-md-0">
-                                <label for="" class="font-weight-700">Name<span class="text-danger">*</span></label>
-                            </div>
-                            <div class="col-md-8">
-                                <el-input type="text" v-model="pastordata.name" placeholder="Enter name" />
-                            </div>
-                        </div>
+              <div class="row">
+                <div class="col-md-8 order-2 order-md-1">
+                  <div class="row my-3">
+                    <div class="col-md-4 text-md-right pr-md-0">
+                      <label for="" class="font-weight-700">Name<span class="text-danger">*</span></label>
+                    </div>
+                    <div class="col-md-8">
+                      <el-input type="text" v-model="pastordata.name" placeholder="Enter name" />
+                    </div>
+                  </div>
 
-                        <div class="row my-3">
-                            <div class="col-md-4 text-md-right pr-md-0">
-                                <label for="" class="font-weight-700">Phone Number</label>
-                            </div>
-                            <div class="col-md-8">
-                                <el-input type="text" v-model="pastordata.mobilePhone" placeholder="Enter phone number" />
-                            </div>
-                        </div>
-                        <div class="row my-3">
-                            <div class="col-md-4 text-md-right pr-md-0">
-                                <label for="" class="font-weight-700">Email</label>
-                            </div>
-                            <div class="col-md-8">
-                                <el-input type="text" v-model="pastordata.email" placeholder="Email" />
-                            </div>
-                        </div>
+                  <div class="row my-3">
+                    <div class="col-md-4 text-md-right pr-md-0">
+                      <label for="" class="font-weight-700">Phone Number</label>
                     </div>
-                    <div class="col-md-4 order-1 order-md-2 mt-3 mt-md-0">
-                        <ImageForm @image="setImage" />
+                    <div class="col-md-8">
+                      <el-input type="text" v-model="pastordata.mobilePhone" placeholder="Enter phone number" />
                     </div>
+                  </div>
+                  <div class="row my-3">
+                    <div class="col-md-4 text-md-right pr-md-0">
+                      <label for="" class="font-weight-700">Email</label>
+                    </div>
+                    <div class="col-md-8">
+                      <el-input type="text" v-model="pastordata.email" placeholder="Email" />
+                    </div>
+                  </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-3 text-md-right">
-                        <h4 class="header4 text-md-right"></h4>
-                    </div>
-                    <div class="col-md-5 px-0 mt-3 d-flex justify-content-end">
-                        <el-button class="secondary-button" @click="pastorsDialog = false" round>Maybe later</el-button>
-                        <el-button :color="primarycolor" :loading="savingPastorData" @click="savepastordata"
-                            round>Save</el-button>
-                    </div>
+                <div class="col-md-4 order-1 order-md-2 mt-3 mt-md-0">
+                  <ImageForm @image="setImage" />
                 </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3 text-md-right">
+                  <h4 class="header4 text-md-right"></h4>
+                </div>
+                <div class="col-md-5 px-0 mt-3 d-flex justify-content-end">
+                  <el-button class="secondary-button" @click="pastorsDialog = false" round>Maybe later</el-button>
+                  <el-button :color="primarycolor" :loading="savingPastorData" @click="savepastordata"
+                    round>Save</el-button>
+                </div>
+              </div>
             </div>
-        </div>
+          </div>
         </div>
       </div>
     </el-dialog>
@@ -641,7 +635,7 @@ export default {
     const firstTimerDataExist = ref(false);
     const firstTimerPieExist = ref(false);
     const notifiedDays = ref()
-    const planUserIs = ref(store.getters['dashboard/getSubPlan'] ? store.getters['dashboard/getSubPlan'].description : 'loading plan') 
+    const planUserIs = ref(store.getters['dashboard/getSubPlan'] ? store.getters['dashboard/getSubPlan'].description : 'loading plan')
 
 
 
@@ -650,7 +644,7 @@ export default {
     const toggleMoreLinkVissibility = () => {
       moreLinksVissible.value != moreLinksVissible.value;
     };
-    const showCelebrationDetail = (item) =>{
+    const showCelebrationDetail = (item) => {
       router.push(`/tenant/people/add/${item.id}`)
 
     }
@@ -932,10 +926,10 @@ export default {
 
     const getSubscriptionData = () => {
       store.dispatch("dashboard/getUserSubscriptionPlan").then(response => {
-          planUserIs.value = response.description;
-          getRenewalDate.value = response.subscriptionExpiration;
-          useSubscriptionResponse.value = response
-          countDownDate()
+        planUserIs.value = response.description;
+        getRenewalDate.value = response.subscriptionExpiration;
+        useSubscriptionResponse.value = response
+        countDownDate()
       })
     }
 
@@ -1005,23 +999,23 @@ export default {
         savingPastorData.value = false
         pastorsDialog.value = false
         swal(
-            "Success!",
-            "Pastor's data saved successfully!",
-            "success"
-          );
-        }
-        catch (err) {
-          console.error(err);
-          savingPastorData.value = false
-          ElMessage({
-            type: 'error',
-            message: 'Unable to add pastors data, please try again',
-            duration: 5000
-          })
+          "Success!",
+          "Pastor's data saved successfully!",
+          "success"
+        );
+      }
+      catch (err) {
+        console.error(err);
+        savingPastorData.value = false
+        ElMessage({
+          type: 'error',
+          message: 'Unable to add pastors data, please try again',
+          duration: 5000
+        })
       }
     }
 
-    
+
     const getChurchProfile = async () => {
       try {
         let { data } = await axios.get(`/GetChurchProfileById?tenantId=${getUser.value.tenantId}`)

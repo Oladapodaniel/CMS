@@ -6,7 +6,7 @@
     <el-container>
       <el-row :gutter="15" class="w-100 m-0">
         <el-col class="d-block d-md-none">
-            <div class="grey-bg">
+          <div class="grey-bg">
             <div>
               <div class="person-img">
                 <img v-if="!url" src="../../assets/people/phone-import.svg" alt="Uploaded Image" />
@@ -54,6 +54,15 @@
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <div class="input-width d-flex">
+                  <el-input type="text" class="w-50" v-model="firstTimersObj.zipPostalCode" placeholder="Postal code" />
+                  <div class="p-1"></div>
+                  <el-input type="text" class="input-width" v-model="firstTimersObj.address" placeholder="Address" />
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <div class="input-width d-flex">
                   <el-select-v2 v-model="maritalStatusId" @change="setSelectedMaritalStatus"
                     :options="maritalStatusArr.map(i => ({ label: i.value, value: i.id }))" placeholder="Marital status"
                     size="large" class="w-100 mr-1" />
@@ -83,12 +92,13 @@
                 </div>
               </div>
             </el-form-item>
-            <el-form-item>
+            <!-- <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <label for="firstName" class="mr-3 font-weight-600">Address</label>
                 <el-input type="text" class="input-width" v-model="firstTimersObj.address" placeholder="Address" />
               </div>
-            </el-form-item>
+            </el-form-item> -->
+           
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <div class="mr-3 font-weight-600">Birthday</div>
@@ -116,23 +126,20 @@
                 <div class="input-width d-flex">
                   <el-tabs type="border-card" class="w-100">
                     <div class="  add-group bg-white">
-                      <div
-                        v-for="(item, index) in firstTimerInGroup"
-                        :key="index"
-                      >
-                      <div class="d-flex justify-content-between align-items-center">
-                        <div class="pt-1"><span class="text-secondary">{{ index + 1 }}.</span> <span class="font-weight-700">{{ item.name }}</span></div>
-                        <el-icon class="text-danger" @click="showConfirmModal(index, item)"><CircleClose /></el-icon>
-                      </div>
+                      <div v-for="(item, index) in firstTimerInGroup" :key="index">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div class="pt-1"><span class="text-secondary">{{ index + 1 }}.</span> <span
+                              class="font-weight-700">{{ item.name }}</span></div>
+                          <el-icon class="text-danger" @click="showConfirmModal(index, item)">
+                            <CircleClose />
+                          </el-icon>
+                        </div>
                       </div>
                       <div v-if="firstTimerInGroup.length === 0">
                         No group added yet
                       </div>
-                      <div
-                        class="pt-2 mt-2 font-weight-700 text-primary border-top text-center c-pointer"
-                        data-toggle="modal"
-                        data-target="#addToGroup"
-                      >
+                      <div class="pt-2 mt-2 font-weight-700 text-primary border-top text-center c-pointer"
+                        data-toggle="modal" data-target="#addToGroup">
                         Choose group
                       </div>
                     </div>
@@ -241,10 +248,10 @@
                 <div class="input-width">
                   <div class="d-flex flex-column">
                     <el-button class="secondary-button" @click.prevent="onCancel" round>Cancel</el-button>
-                    <el-button @click.prevent="onSubmit" :loading="loading" class="secondary-button my-3 mx-0"
-                      round>Save and add another</el-button>
-                    <el-button class="mx-0 mx-sm-2" :color="primarycolor" :loading="loadingtwo" @click.prevent="saveAndRoute"
-                      round>Save</el-button>
+                    <el-button @click.prevent="onSubmit" :loading="loading" class="secondary-button my-3 mx-0" round>Save
+                      and add another</el-button>
+                    <el-button class="mx-0 mx-sm-2" :color="primarycolor" :loading="loadingtwo"
+                      @click.prevent="saveAndRoute" round>Save</el-button>
                   </div>
                 </div>
               </div>
@@ -256,22 +263,22 @@
         <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
           <div class="grey-bg d-none d-md-block">
             <div class="grey-bg">
-            <div>
-              <div class="person-img">
-                <img v-if="!url" src="../../assets/people/phone-import.svg" alt="Uploaded Image" />
-                <img v-else :src="url" alt="Uploaded Image"
-                  style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover" />
+              <div>
+                <div class="person-img">
+                  <img v-if="!url" src="../../assets/people/phone-import.svg" alt="Uploaded Image" />
+                  <img v-else :src="url" alt="Uploaded Image"
+                    style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover" />
+                </div>
+              </div>
+              <div>
+                <div class="cs-input">
+                  <label for="imgUpload" class="choose-file">
+                    Choose image
+                    <input type="file" class="input file-input" placeholder="" id="imgUpload" @change="imageSelected" />
+                  </label>
+                </div>
               </div>
             </div>
-            <div>
-              <div class="cs-input">
-                <label for="imgUpload" class="choose-file">
-                  Choose image
-                  <input type="file" class="input file-input" placeholder="" id="imgUpload" @change="imageSelected" />
-                </label>
-              </div>
-            </div>
-          </div>
           </div>
         </el-col>
       </el-row>
@@ -448,7 +455,7 @@ import GroupTree from "../groups/component/GroupTree.vue";
 import collector from "../../services/groupArray/mapTree";
 import flatten from "../../services/groupArray/flatTree";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
-import {ElMessageBox , ElMessage } from 'element-plus'
+import { ElMessageBox, ElMessage } from 'element-plus'
 
 export default {
   components: {
@@ -586,10 +593,11 @@ export default {
       formData.append('lastName', firstTimersObj.value && firstTimersObj.value.lastName ? firstTimersObj.value.lastName : "")
       formData.append('phoneNumber', firstTimersObj.value && firstTimersObj.value.phoneNumber ? firstTimersObj.value.phoneNumber : "")
       formData.append('email', firstTimersObj.value && firstTimersObj.value.email ? firstTimersObj.value.email : "")
-      formData.append('genderId', selectedGender.value ? selectedGender.value.id : 0)
-      formData.append('maritalStatusId', selectedMaritalStatus.value ? selectedMaritalStatus.value.id : 0)
-      formData.append('activityID', selectedEventAttended.value && selectedEventAttended.value.activityID ? selectedEventAttended.value.activityID : "" )
-      formData.append('howDidYouAboutUsId', selectedAboutUsSource.value ? selectedAboutUsSource.value.id : "00000000-0000-0000-0000-000000000000")
+      formData.append('zipPostalCode', firstTimersObj.value && firstTimersObj.value.zipPostalCode ? firstTimersObj.value.zipPostalCode : "")
+      formData.append('genderId', selectedGender.value && selectedGender.value.id ? selectedGender.value.id : 0)
+      formData.append('maritalStatusId', selectedMaritalStatus.value && selectedMaritalStatus.value.id ? selectedMaritalStatus.value.id : 0)
+      formData.append('activityID', selectedEventAttended.value && selectedEventAttended.value.activityID ? selectedEventAttended.value.activityID : "")
+      formData.append('howDidYouAboutUsId', selectedAboutUsSource.value && selectedAboutUsSource.value.id ? selectedAboutUsSource.value.id : "00000000-0000-0000-0000-000000000000")
       formData.append('communicationMeans', selectedCommunicationMeans.value ? comMeansArr.value.indexOf(selectedCommunicationMeans.value) + 1 : 0)
       formData.append('interestedInJoining', selectedJoinInterest.value ? joinInterestArr.value.indexOf(selectedJoinInterest.value) + 1 : 0)
       formData.append('wantToBeVisited', selectedVisitOption.value ? wantVisitArr.value.indexOf(selectedVisitOption.value) + 1 : 0)
@@ -619,68 +627,68 @@ export default {
       //   ? wantVisitArr.value.indexOf(selectedVisitOption.value) + 1
       //   : 0;
       // firstTimersObj.value.groups =
-        // firstTimerInGroup.value.length > 0
-        //   ? firstTimerInGroup.value.map((i) => {
-        //     return {
-        //       groupId: i.groupId,
-        //       position: i.position,
-        //     };
-        //   })
-        //   : [];
+      // firstTimerInGroup.value.length > 0
+      //   ? firstTimerInGroup.value.map((i) => {
+      //     return {
+      //       groupId: i.groupId,
+      //       position: i.position,
+      //     };
+      //   })
+      //   : [];
 
       switch (birthMonth.value) {
         case "January":
           formData.append('birthMonth', "1")
           // firstTimersObj.value.birthMonth = "1";
           break;
-          case "February":
+        case "February":
           formData.append('birthMonth', "2")
           // firstTimersObj.value.birthMonth = "2";
           break;
-          case "March":
+        case "March":
           formData.append('birthMonth', "3")
           // firstTimersObj.value.birthMonth = "3";
           break;
-          case "April":
+        case "April":
           formData.append('birthMonth', "4")
           // firstTimersObj.value.birthMonth = "4";
           break;
-          case "May":
+        case "May":
           formData.append('birthMonth', "5")
           // firstTimersObj.value.birthMonth = "5";
           break;
-          case "June":
+        case "June":
           formData.append('birthMonth', "6")
           // firstTimersObj.value.birthMonth = "6";
           break;
-          case "July":
+        case "July":
           formData.append('birthMonth', "7")
           // firstTimersObj.value.birthMonth = "7";
           break;
-          case "August":
-            formData.append('birthMonth', "8")
-            // firstTimersObj.value.birthMonth = "8";
-            break;
-            case "September":
+        case "August":
+          formData.append('birthMonth', "8")
+          // firstTimersObj.value.birthMonth = "8";
+          break;
+        case "September":
           formData.append('birthMonth', "9")
           // firstTimersObj.value.birthMonth = "9";
           break;
-          case "October":
+        case "October":
           formData.append('birthMonth', "10")
           // firstTimersObj.value.birthMonth = "10";
           break;
-          case "November":
-            formData.append('birthMonth', "11")
-            // firstTimersObj.value.birthMonth = "11";
-            break;
-            case "December":
-              formData.append('birthMonth', "12")
-              // firstTimersObj.value.birthMonth = "12";
-              break;
-              default:
-                break;
-              }
-              
+        case "November":
+          formData.append('birthMonth', "11")
+          // firstTimersObj.value.birthMonth = "11";
+          break;
+        case "December":
+          formData.append('birthMonth', "12")
+          // firstTimersObj.value.birthMonth = "12";
+          break;
+        default:
+          break;
+      }
+
       formData.append('customAttributeDataString', JSON.stringify(dynamicCustomFields.value.map(
         (i) => {
           if (route.params.personId) {
@@ -688,7 +696,7 @@ export default {
               customAttributeID: i.id,
               data: i.data,
               entityID: route.params.personId,
-              }
+            }
           } else {
             return {
               customAttributeID: i.id,
@@ -726,6 +734,7 @@ export default {
           email: firstTimersObj.value.email,
           activityID: firstTimersObj.value && firstTimersObj.value.activityID ? firstTimersObj.value.activityID : "",
           address: firstTimersObj.value.address,
+          zipPostalCode: firstTimersObj.value.zipPostalCode,
           birthday: firstTimersObj.value.birthday,
           birthMonth: firstTimersObj.value.birthMonth,
           birthYear: firstTimersObj.value.birthYear,
@@ -808,10 +817,10 @@ export default {
               selectedVisitOption.value = {};
               birthMonth.value = "";
 
-              validatePhone.value.classList.remove("is-valid");
-              validateEmail.value.classList.remove("is-valid");
-              validatePhone.value.classList.remove("is-invalid");
-              validateEmail.value.classList.remove("is-invalid");
+              // validatePhone.value.classList.remove("is-valid");
+              // validateEmail.value.classList.remove("is-valid");
+              // validatePhone.value.classList.remove("is-invalid");
+              // validateEmail.value.classList.remove("is-invalid");
             } else {
               setTimeout(() => {
                 router.push(
@@ -822,6 +831,7 @@ export default {
             }
           })
           .catch((err) => {
+            console.log(err, 'hhhhh');
             finish();
             loading.value = false;
             loadingtwo.value = false;
@@ -1187,7 +1197,7 @@ export default {
       ],
     })
 
-    const imageSelected = async(e) => {
+    const imageSelected = async (e) => {
       url.value = URL.createObjectURL(e.target.files[0]);
       await uploadImage(e)
       console.log(url.value)
@@ -1325,10 +1335,10 @@ export default {
       try {
         await axios.post("/api/Media/UploadProfilePicture", formData).then(res => {
           if (index) {
-              customFileLoading.value = false
-              dynamicCustomFields.value[index].data = res.data.pictureUrl
-            }
-            firstTimersObj.value.imageUrl = res.data.pictureUrl;
+            customFileLoading.value = false
+            dynamicCustomFields.value[index].data = res.data.pictureUrl
+          }
+          firstTimersObj.value.imageUrl = res.data.pictureUrl;
         })
       }
       catch (err) {

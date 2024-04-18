@@ -4,11 +4,13 @@
       <div class="row">
         <div class="col-md-12 px-0">
           <div class="parent-table">
-            <div class=" px-0 container-fluid mt-4" style="height: fit-content"
-              :class="{ 'bordered': !showEditTransaction, 'removeTable': showEditTransaction }">
-              <div class="container-fluid table-top  py-3">
+            <div class="px-0 container-fluid mt-4" style="height: fit-content" :class="{
+              bordered: !showEditTransaction,
+              removeTable: showEditTransaction,
+            }">
+              <div class="container-fluid table-top py-3">
                 <div class="row justify-content-end">
-                  <div class="col-md-3 col-lg-3 col-8  py-md-0 d-flex align-items-center justify-content-end">
+                  <div class="col-md-3 col-lg-3 col-8 py-md-0 d-flex align-items-center justify-content-end">
                     <p @click="toggleFilterFormVissibility"
                       class="mb-0 c-pointer mt-2 mt-sm-0 mt-md-0 mt-lg-0 font-weight-700">
                       <el-icon :size="13">
@@ -17,7 +19,7 @@
                       <span class="ml-1"> FILTER</span>
                     </p>
                   </div>
-                  <div class=" col-md-5  col-12  d-flex align-items-center justify-content-center mt-2 py-2 py-md-0">
+                  <div class="col-md-5 col-12 d-flex align-items-center justify-content-center mt-2 py-2 py-md-0">
                     <el-input size="small" v-model="searchText" placeholder="Search..." @input="searchingMember = true"
                       @keyup.enter.prevent="searchTrancInDB" class="input-with-select">
                       <template #suffix>
@@ -40,25 +42,24 @@
                 <div class="filter-options" :class="{ 'filter-options-shown': filterFormIsVissible }">
                   <div class="container-fluid">
                     <div class="row mt-3">
-                      <div class="col-md-9 ">
+                      <div class="col-md-9">
                         <div class="row">
                           <div class="col-12 col-sm-12 col-md-6 offset-sm-0 offset-md-0 inp w-100">
                             <el-input type="text" class="w-100" placeholder="Category" />
                           </div>
 
-                          <div class="col-12 col-sm-6  d-none d-md-block">
+                          <div class="col-12 col-sm-6 d-none d-md-block">
                             <el-date-picker v-model="datete" type="date" placeholder="Date" size="large" class="w-100"
                               format="MM/DD/YYYY" value-format="MM-DD-YYYY" />
                           </div>
                         </div>
 
                         <div class="row">
-                          <div class="col-12 col-sm-6  d-none d-md-block">
+                          <div class="col-12 col-sm-6 d-none d-md-block">
                             <el-input type="text" class="w-100" placeholder="Description" />
                           </div>
 
-                          <div class="col-12 col-sm-6 d-none d-md-block">
-                          </div>
+                          <div class="col-12 col-sm-6 d-none d-md-block"></div>
                         </div>
                       </div>
 
@@ -86,22 +87,32 @@
               <Table :data="selectedTransactions" :headers="transactionHeaders" :checkMultipleItem="true"
                 @checkedrow="handleSelectionChange" v-loading="loading">
                 <template v-slot:date="{ item }">
-                  <div @click="rowSelected(item)" class="c-pointer">{{ formatDate(item.date) }}</div>
+                  <div @click="rowSelected(item)" class="c-pointer">
+                    {{ formatDate(item.date) }}
+                  </div>
                 </template>
-                <template v-slot:description="{ item }">
-                  <div @click="rowSelected(item)" class="c-pointer">{{ item.narration }}</div>
+                <template v-slot:narration="{ item }">
+                  <div @click="rowSelected(item)" class="c-pointer">
+                    {{ item.narration }}
+                  </div>
                 </template>
                 <template v-slot:amount="{ item }">
-                  <div @click="rowSelected(item)" class="c-pointer"
-                    :class="{ 'text-danger': item.amount < 0, 'text-success': item.amount > 0 }">{{ item.currency ?
-                      item.currency.symbol : "" }}{{ amountWithCommas(Math.abs(item.amount)) }}</div>
+                  <div @click="rowSelected(item)" class="c-pointer" :class="{
+                    'text-danger': item.amount < 0,
+                    'text-success': item.amount > 0,
+                  }">
+                    {{ item.currency ? item.currency.symbol : ""
+                    }}{{ amountWithCommas(Math.abs(item.amount)) }}
+                  </div>
                 </template>
                 <template v-slot:category="{ item }">
-                  <div @click="rowSelected(item)" class="c-pointer primary-text">{{ item.category }}</div>
+                  <div @click="rowSelected(item)" class="c-pointer primary-text">
+                    {{ item.category }}
+                  </div>
                 </template>
                 <template v-slot:approve="{ item }">
                   <div class="c-pointer">
-                    <div class="spinner-border text-primary" style="font-size: 10px; width: 26px; height: 26px;"
+                    <div class="spinner-border text-primary" style="font-size: 10px; width: 26px; height: 26px"
                       role="status" v-show="item.approvingServiceReport">
                       <span class="sr-only">Loading...</span>
                     </div>
@@ -144,8 +155,8 @@
                   </el-dropdown>
                 </template>
               </Table>
-              <div class="d-flex justify-content-center my-2 "
-                v-if="(allTransactions && allTransactions.length === 0) && !loading">
+              <div class="d-flex justify-content-center my-2"
+                v-if="allTransactions && allTransactions.length === 0 && !loading">
                 <div>No data</div>
               </div>
               <div class="d-flex justify-content-end my-3">
@@ -156,11 +167,15 @@
             </div>
 
             <div
-              class="table edit-transac col-12 border col-sm-10 col-md-8 w-100 w-sm-50 w-md-50 w-lg-50 col-lg-4 mobile-form mywidt "
+              class="table edit-transac col-12 border col-sm-10 col-md-8 w-100 w-sm-50 w-md-50 w-lg-50 col-lg-4 mobile-form mywidt"
               v-if="showEditTransaction">
-              <TransactionForm v-if="transactionDetails.type !== 'ledger'" @close-it="closeIt" @transac-obj="transacObj"
-                :transactionDetails="transactionDetails" :showEditTransaction="showEditTransaction"
-                @reload="getTransactions" :gettingSelectedTrsn="gettingSelectedTrsn" />
+              <TransferForm v-if="transactionDetails.type === 'Transfer'" :transactionDetails="transactionDetails"
+                @entrysaved="journalEntrySaved" @close-ledger="closeLedgerForm" :journalEntry="journalEntry"
+                :gettingSelectedTrsn="gettingSelectedTrsn" />
+              <TransactionForm v-else-if="transactionDetails.type !== 'ledger' && transactionDetails.type !== 'Transfer'"
+                @close-it="closeIt" @transac-obj="transacObj" :transactionDetails="transactionDetails"
+                :showEditTransaction="showEditTransaction" @reload="getTransactions"
+                :gettingSelectedTrsn="gettingSelectedTrsn" />
               <LedgerForm v-else @entrysaved="journalEntrySaved" @close-ledger="closeLedgerForm"
                 :journalEntry="journalEntry" :gettingSelectedTrsn="gettingSelectedTrsn" />
             </div>
@@ -171,8 +186,8 @@
                 <img :src="selectedFileUrl" v-show="fileImage" alt="">
               </div>
               <div class="col-md-12  d-flex justify-content-center ">
-                <el-upload class="upload-demo " multiple :show-file-list="false" :on-change="chooseFile" :on-remove="handleRemove"
-                  :auto-upload="false" >
+                <el-upload class="upload-demo " multiple :show-file-list="false" :on-change="chooseFile"
+                  :on-remove="handleRemove" :auto-upload="false">
                   <el-button :color="primarycolor">Click to upload</el-button>
                   <template #tip>
                     <el-icon class="ml-2" style="font-size: 20px; color: #7d7d7d">
@@ -214,34 +229,36 @@ import { ref, computed, inject, onMounted, watchEffect, watch } from "vue";
 import axios from "@/gateway/backendapi";
 import finish from "../../services/progressbar/progress";
 import TransactionForm from "../../views/accounting/transaction/EditTransaction";
+import TransferForm from "../../views/accounting/transaction/TransferForm";
 import transaction_service from "../../services/financials/transaction_service";
 import dateFormatter from "../../services/dates/dateformatter";
 // import transactionService from "../../services/financials/transaction_service";
 import LedgerForm from "../../views/accounting/transaction/components/LedgerForm";
-import numbers_formatter from "../../services/numbers/numbers_formatter"
-import Table from "@/components/table/Table"
+import numbers_formatter from "../../services/numbers/numbers_formatter";
+import Table from "@/components/table/Table";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import store from "../../store/store";
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox } from "element-plus";
 
 export default {
   props: [
     "showEditTransaction",
     "transactionDetails",
     "selectedTransactionType",
-    "journalEntry"
+    "journalEntry",
   ],
   components: {
     TransactionForm,
     LedgerForm,
-    Table
+    TransferForm,
+    Table,
   },
   setup(props, { emit }) {
     const transactions = ref([]);
     const primarycolor = inject("primarycolor");
     const allTransactions = ref(store.getters["transaction/gettransactions"].records);
     const totalTransaction = ref(store.getters["transaction/gettransactions"].totalItems);
-    const datete = ref('');
+    const datete = ref("");
     const { lgAndUp, xlAndUp, mdAndUp } = deviceBreakpoint();
     const searchingMember = ref(true);
     const paginatedTableLoading = ref(false);
@@ -250,21 +267,21 @@ export default {
     const selectedFileUrl = ref("");
     // const totalTransaction = ref(0)
     const transactionHeaders = ref([
-      { name: 'DATE', value: 'date' },
-      { name: 'DESCRIPTION', value: 'description' },
-      { name: 'AMOUNT', value: 'amount' },
-      { name: 'CATEGORY', value: 'category' },
-      { name: 'Approve', value: 'approve' },
-      { name: 'ACTION', value: 'action' },
-    ])
+      { name: "DATE", value: "date" },
+      { name: "DESCRIPTION", value: "narration" },
+      { name: "AMOUNT", value: "amount" },
+      { name: "CATEGORY", value: "category" },
+      { name: "Approve", value: "approve" },
+      { name: "ACTION", value: "action" },
+    ]);
     // const types = ["assets", "liability", "income", "expense", "equity"];
     const handleSelectionChange = (val) => {
       // checkedFirstTimer.value = val
-    }
+    };
 
     const showReciept = () => {
-      displayReciept.value = true
-    }
+      displayReciept.value = true;
+    };
 
     const handleRemove = () => {
       selectedFileUrl.value = "";
@@ -294,22 +311,24 @@ export default {
       rowsPerPage: 50,
     });
 
-    watch(serverOptions.value, () => {
-      getTransactionByPage();
-    },
+    watch(
+      serverOptions.value,
+      () => {
+        getTransactionByPage();
+      },
       { deep: true }
     );
 
     const getTransactionByPage = async () => {
-      paginatedTableLoading.value = true
+      paginatedTableLoading.value = true;
       try {
         const { data } = await axios.get(
           `/api/Financials/Accounts/v2/Transactions?page=${serverOptions.value.page}`
         );
         allTransactions.value = data.records;
-        paginatedTableLoading.value = false
+        paginatedTableLoading.value = false;
       } catch (error) {
-        paginatedTableLoading.value = false
+        paginatedTableLoading.value = false;
         console.log(error);
       }
     };
@@ -318,9 +337,7 @@ export default {
       if (searchText.value !== "" && allTransactions.value.length > 0) {
         return allTransactions.value.filter((i) => {
           if (i.narration)
-            return i.narration
-              .toLowerCase()
-              .includes(searchText.value.toLowerCase());
+            return i.narration.toLowerCase().includes(searchText.value.toLowerCase());
         });
       } else {
         return allTransactions.value;
@@ -439,8 +456,7 @@ export default {
     const filterAccount = computed(() => {
       if (accountText.value !== "" && accountType.value.length > 0) {
         return accountType.value.filter((i) => {
-          if (i)
-            return i.toLowerCase().includes(accountText.value.toLowerCase());
+          if (i) return i.toLowerCase().includes(accountText.value.toLowerCase());
         });
       } else {
         return accountType.value;
@@ -450,8 +466,7 @@ export default {
     const filterLiabilities = computed(() => {
       if (accountText.value !== "" && liabilities.value.length > 0) {
         return liabilities.value.filter((i) => {
-          if (i)
-            return i.toLowerCase().includes(accountText.value.toLowerCase());
+          if (i) return i.toLowerCase().includes(accountText.value.toLowerCase());
         });
       } else {
         return liabilities.value;
@@ -469,21 +484,21 @@ export default {
     const refreshing = ref(false);
     const getTransactions = async () => {
       loading.value = true;
-      emit("tableloading", loading.value)
+      emit("tableloading", loading.value);
       try {
         refreshing.value = true;
         await store.dispatch("transaction/getTransaction").then((res) => {
           finish();
           loading.value = false;
-          emit("tableloading", loading.value)
+          emit("tableloading", loading.value);
           refreshing.value = false;
           allTransactions.value = res.records;
-          totalTransaction.value = res.totalItems
+          totalTransaction.value = res.totalItems;
         });
       } catch (error) {
         console.log(error);
         loading.value = false;
-        emit("tableloading", loading.value)
+        emit("tableloading", loading.value);
         refreshing.value = false;
       }
     };
@@ -491,16 +506,13 @@ export default {
     const searchText = ref("");
 
     const selectedTransactions = computed(() => {
-      if (!allTransactions.value || allTransactions.value.length === 0)
-        return [];
+      if (!allTransactions.value || allTransactions.value.length === 0) return [];
       const targeted = allTransactions.value;
       if (!searchText.value) return targeted;
       return targeted.filter((i) => {
         return (
           (i.narration &&
-            i.narration
-              .toLowerCase()
-              .includes(searchText.value.toLowerCase())) ||
+            i.narration.toLowerCase().includes(searchText.value.toLowerCase())) ||
           (i.amount && i.amount.toString().includes(searchText.value))
         );
       });
@@ -520,7 +532,9 @@ export default {
         } else {
           emit("select-row", {});
         }
-        const response = await transaction_service.getEditTransactions(item.transactionNumber);
+        const response = await transaction_service.getEditTransactions(
+          item.transactionNumber
+        );
         gettingSelectedTrsn.value = false;
         if (item.category === "Journal") {
           emit("select-journal", response.data);
@@ -533,17 +547,19 @@ export default {
       }
     };
 
-    const getGroupedTransactions = async accountGroupId => {
+    const getGroupedTransactions = async (accountGroupId) => {
       try {
         refreshing.value = true;
-        const { data } = await transaction_service.getTransactionsByAccount(accountGroupId);
+        const { data } = await transaction_service.getTransactionsByAccount(
+          accountGroupId
+        );
         refreshing.value = false;
         allTransactions.value = data;
       } catch (error) {
         console.log(error);
         refreshing.value = false;
       }
-    }
+    };
 
     watch(
       () => props.selectedTransactionType,
@@ -555,10 +571,9 @@ export default {
 
     const closeLedgerForm = () => {
       emit("toggle-edit-form", false);
-    }
+    };
 
-    const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount);
-
+    const amountWithCommas = (amount) => numbers_formatter.amountWithCommas(amount);
 
     const delTransaction = async (id, index) => {
       refreshing.value = true;
@@ -566,17 +581,15 @@ export default {
         const response = await transaction_service.deleteTransaction(id);
         if (response.data.status) {
           // allTransactions.value.splice(index, 1);
-          allTransactions.value = allTransactions.value.filter(
-            (item) => item.id !== id
-          );
-          emit("reload-accounts")
+          allTransactions.value = allTransactions.value.filter((item) => item.id !== id);
+          emit("reload-accounts");
           ElMessage({
             type: "success",
             message: response.data.response,
             duration: 3000,
           });
           refreshing.value = false;
-          store.dispatch('transaction/removeTransactionFromStore', id)
+          store.dispatch("transaction/removeTransactionFromStore", id);
         } else {
           ElMessage({
             type: "error",
@@ -593,18 +606,14 @@ export default {
           duration: 3000,
         });
       }
-    }
+    };
 
     const showConfirmModal = (id, index) => {
-      ElMessageBox.confirm(
-        "Are you sure you want to proceed?",
-        "Confirm delete",
-        {
-          confirmButtonText: "OK",
-          cancelButtonText: "Cancel",
-          type: "error",
-        }
-      )
+      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "error",
+      })
         .then(() => {
           delTransaction(id, index);
         })
@@ -617,45 +626,49 @@ export default {
         });
     };
     const handleSizeChange = (val) => {
-      console.log(`${val} items per page`)
-    }
+      console.log(`${val} items per page`);
+    };
     const handleCurrentChange = (val) => {
-      console.log(`current page: ${val}`)
-    }
+      console.log(`current page: ${val}`);
+    };
 
     const journalEntrySaved = () => {
       getTransactions();
-      emit('reload-accounts');
-    }
+      emit("reload-accounts");
+    };
     onMounted(() => {
-      if ((!allTransactions.value) || (allTransactions.value && allTransactions.value.records && allTransactions.value.records.length == 0)) {
+      if (
+        !allTransactions.value ||
+        (allTransactions.value &&
+          allTransactions.value.records &&
+          allTransactions.value.records.length == 0)
+      ) {
         getTransactions();
       }
     });
 
     const approveReport = async (item, type) => {
-      const index = selectedTransactions.value.findIndex(i => i.id == item.id)
-      selectedTransactions.value[index].approvingServiceReport = true
+      const index = selectedTransactions.value.findIndex((i) => i.id == item.id);
+      selectedTransactions.value[index].approvingServiceReport = true;
       let payload = {
         id: item.id,
         approved: type == 1 ? true : false,
-        memo: item.narration
-      }
+        memo: item.narration,
+      };
 
       try {
-        await transaction_service.approveFinancialReport(payload)
+        await transaction_service.approveFinancialReport(payload);
         if (index >= 0) {
-          selectedTransactions.value[index].approved = type == 1 ? true : false
+          selectedTransactions.value[index].approved = type == 1 ? true : false;
         }
-        selectedTransactions.value[index].approvingServiceReport = false
+        selectedTransactions.value[index].approvingServiceReport = false;
         ElMessage({
           type: "success",
           message: `Transaction ${type == 1 ? "approved successfully" : "unapproved"}`,
           duration: 5000,
         });
-      }
-      catch (err) {
-        selectedTransactions.value[index].approvingServiceReport = false
+      } catch (err) {
+        selectedTransactions.value[index].approvingServiceReport = false;
         console.error(err);
         ElMessage({
           type: "error",
@@ -663,8 +676,7 @@ export default {
           duration: 5000,
         });
       }
-    }
-
+    };
 
     return {
       transactions,
@@ -675,7 +687,9 @@ export default {
       serverOptions,
       handleSelectionChange,
       paginatedTableLoading,
-      lgAndUp, xlAndUp, mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      mdAndUp,
       datete,
       transactionHeaders,
       filterFormIsVissible,
@@ -731,7 +745,7 @@ export default {
       refreshing,
       gettingSelectedTrsn,
       journalEntrySaved,
-      approveReport
+      approveReport,
     };
   },
 };
@@ -818,7 +832,7 @@ html {
   font-weight: 800;
   font-size: 12px;
   background: #fff;
-  border: 1px solid #E0E0E0;
+  border: 1px solid #e0e0e0;
   border-bottom: none;
 }
 
@@ -891,19 +905,15 @@ html {
 }
 
 @media screen and (max-width: 991px) {
-
   .removeTable {
     display: none;
   }
-
 }
 
 @media screen and (max-width: 991px) {
-
   .table.edit-transac {
     border-radius: 22px;
   }
-
 }
 
 /* .parent-desc {
@@ -932,7 +942,7 @@ html {
 .t-header div {
   background: #dde2e6 0% 0% no-repeat padding-box;
   font-size: 16px;
-  padding: .5rem 0;
+  padding: 0.5rem 0;
 }
 
 .manual-dd-item {
@@ -1083,7 +1093,7 @@ html {
 @media (max-width: 600px) {
   .actions {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     /* flex-direction: column */
   }
 }

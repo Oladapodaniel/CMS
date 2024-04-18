@@ -90,6 +90,11 @@ import Badge from 'primevue/badge';
                     icon: "pi pi-sitemap",
                     to: "/tenant/social/category",
                 },
+                {
+                    text: "Mobile App Setup",
+                    icon: "pi pi-mobile",
+                    to: "/mobileonboarding",
+                },
                 // {
                 //     text: "Mobile App Onboarding",
                 //     icon: "pi pi-mobile",

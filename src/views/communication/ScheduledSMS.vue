@@ -30,13 +30,13 @@
                 <template #subject="{ item }">
                   <span>
                     <span class="font-weight-600">{{
-                    !item.subject ? "(no subject)" : item.subject
+                      !item.subject ? "(no subject)" : item.subject
                     }}</span>
                   </span>
                 </template>
                 <template #message="{ item }">
                   <span class="font-weight-600 ">{{
-                  `${item.message ? item.message
+                    `${item.message ? item.message
                       .split("")
                       .slice(0, 30)
                       .join("") : ''}...`
@@ -95,7 +95,7 @@ export default {
     const getScheduledSMS = async () => {
       try {
         loading.value = true;
-        const res = await communicationService.getSchedules();
+        const res = await communicationService.getSchedules("/api/Messaging/getSmsSchedules");
         loading.value = false;
         schedules.value = res;
       } catch (error) {
@@ -138,11 +138,11 @@ export default {
         .then(() => {
           if (sub) {
             schedules.value = schedules.value.filter((item) => {
-            const p = markedSchedules.value.findIndex((i) => i.id === item.id);
-            if (p >= 0) return false;
-            return true;
-          });
-          markedSchedules.value = [];
+              const p = markedSchedules.value.findIndex((i) => i.id === item.id);
+              if (p >= 0) return false;
+              return true;
+            });
+            markedSchedules.value = [];
           } else {
             schedules.value = schedules.value.filter((del) => {
               return del.id != id

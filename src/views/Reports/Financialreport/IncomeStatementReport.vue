@@ -113,8 +113,15 @@
               title=""
               distance="5"
               :titleMargin="10"
-              :summary="groupofIcomeAndExpense"
+              :summary="mappedIncomeAndExpensePieChart"
             />
+            <!-- <IncomeStatementChart
+              domId="chart"
+              title=""
+              distance="5"
+              :titleMargin="10"
+              :summary="groupofIcomeAndExpense"
+            /> -->
           </div>
 
           <div
@@ -484,25 +491,34 @@ export default {
       for (const prop in result) {
         groupofIcomeAndExpense.value.push({
           name: prop,
-          value: result[prop].reduce((acc, cur) => {
-            return Math.abs(acc + cur.amount);
-          }, 0),
+          value: result[prop].length,
+          // value: result[prop].reduce((acc, cur) => {
+          //   return Math.abs(acc + cur.amount);
+          // }, 0),
         });
       }
     };
 
+    const mappedIncomeAndExpensePieChart = computed(() => {
+      if (groupofIcomeAndExpense.value.length === 0) return [];
+      return groupofIcomeAndExpense.value.map((i) => i);
+    });
+    
     const columnChart = computed(() => {
+      let expenseValue = groupofIcomeAndExpense.value.find(i => i.name === 'Expense')
+      let incomeValue = groupofIcomeAndExpense.value.find(i => i.name === 'Income')
+      allIncomeAndExpenses.value  = []
       if (groupofIcomeAndExpense.value.length === 0) return [];
       allIncomeAndExpenses.value.push({
-        name: "Income",
-        //  color: '#002044',
-        data: [groupofIcomeAndExpense.value[0].value],
+        name: expenseValue ? expenseValue.name : '',
+        //  color:  expenseValue.name == 'Expense' ? '#0066FF' : '',
+        data: expenseValue ? [expenseValue.value] : []
       });
 
       allIncomeAndExpenses.value.push({
-        name: "Expense",
-        //  color: '#002044',
-        data: [groupofIcomeAndExpense.value[1].value],
+        name: incomeValue ? incomeValue.name : '',
+        //  color: incomeValue.name ? '#CCCCCC' : '',
+        data: incomeValue ? [incomeValue.value] : []
       });
       return allIncomeAndExpenses.value;
     });
@@ -561,6 +577,7 @@ export default {
     return {
       sumOfDiffAcctInFunds,
       groupAccountCategoery,
+      mappedIncomeAndExpensePieChart,
       primarycolor,
       loading,
       fundSum,

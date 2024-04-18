@@ -9,7 +9,7 @@
               <div class="row d-md-flex align-items-center mt-2 mb-4">
                 <div class="col-md-12">
                   <router-link to="/tenant/sms/addgroup" class="create-btn">
-                  <el-button color="#EBEFF4" round class="head-btn">Create new group</el-button>
+                    <el-button color="#EBEFF4" round class="head-btn">Create new group</el-button>
                   </router-link>
                 </div>
               </div>
