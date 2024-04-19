@@ -1,42 +1,59 @@
 <template>
-  <div>
-    <div class="main-section row">
-      <div class="col-md-6 d-flex justify-content-center align-items-center border">
-        <div class="col-md-12">
+  <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
+    <div class="main-section  row">
+      <div class="col-md-6 mt-4  d-flex  align-items-center ">
+        <div class="col-md-12 d-none d-md-block" >
           <div class="row">
             <div class="col-md-12 d-flex justify-content-center ">
               <img class="col-md-5" src="../../assets/home-image.png" alt="">
             </div>
             <div class="col-md-12 d-flex justify-content-center h4 ">
               <div class="col-md-10 text-center">
-                {{ navigatorLang === "en-US" ? 'Elevating Your Ministry, Empowering Your Leadership!' : $t('home-content.elevating') }}
+                {{ navigatorLang === "en-US" ? 'Elevating Your Ministry, Empowering Your Leadership!' :
+                  $t('home-content.elevating') }}
               </div>
             </div>
-            <div class="col-md-12 d-flex justify-content-center h5 ">
+            <div class="col-md-12 mt-2 d-flex justify-content-center h5 ">
               <div class="col-md-10 text-center">
-                {{ navigatorLang === "en-US" ? 'Welcome to the Future of Church Management!' : $t('home-content.future') }}
+                {{ navigatorLang === "en-US" ? 'Welcome to the Future of Church Management!' : $t('home-content.future')
+                }}
               </div>
             </div>
-            <div class="col-md-12 d-flex justify-content-center">
-              <div class="col-md-10 d-flex justify-content-between ">
-                <div><img src="../../assets/check-icon.png" alt=""></div>
-                <div class="mt-2">{{ navigatorLang === "en-US" ? 'Revolutionize Your Ministry' : $t('home-content.revolutionize') }}</div>
+            <div class="col-md-12 mt-4 d-flex justify-content-center">
+              <div class="col-md-9  ">
+                <span class=""><img src="../../assets/check-icon.png" alt=""></span>
+                <span class="mt-2 ml-2">{{ navigatorLang === "en-US" ? 'Revolutionize Your Ministry' :
+                  $t('home-content.revolutionize') }}</span>
+              </div>
+            </div>
+            <div class="col-md-12 mt-4 d-flex justify-content-center">
+              <div class="col-md-9 ">
+                <span class=""><img src="../../assets/check-icon.png" alt=""></span>
+                <span class="mt-2 ml-2  text-right">{{ navigatorLang === "en-US" ? 'Financial Stewardship Made Simple' :
+                  $t('home-content.stewarship') }}</span>
+              </div>
+            </div>
+            <div class="col-md-12 mt-4 d-flex justify-content-center">
+              <div class="col-md-9  ">
+                <span><img src="../../assets/check-icon.png" alt=""></span>
+                <span class="mt-2 ml-2 text-right">{{ navigatorLang === "en-US" ? 'Inspire Generosity with Ease' :
+                  $t('home-content.generosity') }}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-md-6 border">
-        <div class="col-md-12" style="background: #EBEDFF; border-radius: 10px;">
-          <div class="logo-con">
+      <div class="col-md-6 mt-4 d-flex  align-items-center  ">
+        <div class="col-md-12 p-4" style="background: #EBEDFF; border-radius: 10px;">
+          <div class="logo-con  mt-2">
             <a class="logo-link"><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" /></a>
           </div>
-          <div class="header">
+          <div class="header mt-2">
             <h1>{{ navigatorLang === "en-US" ? 'Sign in' : $t('home-header.login') }}</h1>
             <!-- <h1>Sign in</h1> -->
           </div>
 
-          <div class="form-container">
+          <div class="form-container  ">
             <div class="error-div" v-if="state.showError && !state.notAUser">
               <p class="error-message">{{ state.errorMessage }}</p>
             </div>
@@ -49,14 +66,18 @@
             </div>
             <el-form :model="state" class="mt-3" @keyup.enter="login">
               <el-form-item>
-                <el-input type="email" placeholder="Email" v-model="state.credentials.userName" />
+                <div>{{ navigatorLang === "en-US" ? "Email" : $t('loginContent.labels.email') }}</div>
+                <el-input type="email" placeholder="Email" v-model="state.credentials.userName"
+                  :prefix-icon="Message" />
               </el-form-item>
               <el-form-item>
-                <el-input type="password" placeholder="Password" v-model="state.credentials.password" show-password />
+                <div>{{ navigatorLang === "en-US" ? "Password" : $t('loginContent.labels.password') }}</div>
+                <el-input type="password" placeholder="Password" v-model="state.credentials.password"
+                  :prefix-icon="Lock" show-password />
               </el-form-item>
               <div class="f-password-div">
                 <router-link to="/forgotpassword" class="forgot-password primary--text">{{ navigatorLang === "en-US" ?
-              "Forgot password?" : $t('loginContent.forgot-it') }}</router-link>
+                  "Forgot password?" : $t('loginContent.forgot-it') }}</router-link>
               </div>
               <el-form-item>
                 <!-- <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>
@@ -68,10 +89,15 @@
                 </el-button>
 
                 <!-- <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
-              <img src="../../assets/facebook-small.png" class="fb-icon" alt="Facebook Icon" />
-              <span>Sign in with Facebook</span>
-              <span></span>
-            </div> -->
+                  <img src="../../assets/small-google.png" class="ggle-icon" alt="Facebook Icon" />
+                  <span>Sign in with Google</span>
+                  <span></span>
+                </div> -->
+                <!-- <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
+                  <img src="../../assets/facebook-small.png" class="fb-icon" alt="Facebook Icon" />
+                  <span>Sign in with Facebook</span>
+                  <span></span>
+                </div> -->
               </el-form-item>
               <!-- <el-form-item class="row"> -->
 
@@ -82,18 +108,22 @@
               </div> -->
               <!-- </el-form-item> -->
             </el-form>
-            <div class="bottom-container">
-              <div>
-                <div class="sign-up-prompt">{{ navigatorLang === "en-US" ? "Don't have an account yet?" :
-              $t('loginContent.no-account-yet') }}</div>
+            <div class="bottom-container  row justify-content-center">
+              <div class="col-md-11 justify-content-center  d-flex">
+                <div class="sign-up-prompt">{{ navigatorLang === "en-US" ? "New to Churchplus?" :
+                  $t('loginContent.no-account-yet') }}</div>
+                <router-link to="/register" class="sign-up text-dark "><strong>{{ navigatorLang ===
+                  "en-US" ? "Create an account" :
+                  $t('loginContent.signup-btntext') }}</strong>
+                </router-link>
               </div>
 
-              <div class="mt-2">
+              <!-- <div class="mt-2">
                 <router-link to="/register" class="sign-up primary--text text-decoration-none"><el-button
                     color="#17c5cf" class="w-50" round><strong>{{ navigatorLang === "en-US" ? "Sign up now" :
-              $t('loginContent.signup-btntext') }}</strong>
+                  $t('loginContent.signup-btntext') }}</strong>
                   </el-button></router-link>
-              </div>
+              </div> -->
             </div>
             <!-- <div class="row">
           <el-divider>
@@ -139,6 +169,7 @@
 
 <script>
 import axios from "@/gateway/backendapi";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import axio from "axios";
 import { ElNotification } from "element-plus";
 import { reactive, ref, inject, watch } from "vue";
@@ -146,6 +177,7 @@ import router from "../../router/index";
 import setupService from "../../services/setup/setupservice";
 import { useGtag } from "vue-gtag-next";
 import FBlogin from "@/mixins/facebookLogin";
+import { Message, Lock } from '@element-plus/icons-vue'
 import { useI18n } from 'vue-i18n';
 import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from '../../i18n';
 // import * as Sentry from '@sentry/vue'
@@ -153,6 +185,7 @@ import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from '../../i18n';
 export default {
   setup() {
     const { event } = useGtag();
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
     const track = () => {
       event("aaa", {
         event_category: "login",
@@ -305,7 +338,10 @@ export default {
       navigatorLang,
       state,
       login,
+      mdAndUp, lgAndUp, xlAndUp, xsOnly,
       loading,
+      Message,
+      Lock,
       displayModal,
       invalidEmailObj,
       emailLoading,
@@ -321,23 +357,17 @@ export default {
 <style scoped>
 .logo-con {
   display: flex;
-  margin-top: 24px;
+  /* margin-top: 24px; */
 }
 
 .logo-link {
   width: 100%;
-  text-align: center;
+  /* text-align: center; */
 }
 
 .logo-link img {
-  width: 9rem;
-  height: 6rem;
-}
-
-.header {
-  text-align: center;
-  margin-bottom: 41px;
-  margin-top: 41px;
+  width: 8rem;
+  height: 5rem;
 }
 
 .header h1 {
@@ -469,6 +499,12 @@ export default {
 .fb-icon {
   background: #fff;
   padding: 0.23rem 0.6rem;
+  border-radius: 50%;
+  margin: 0.25rem;
+}
+.ggle-icon {
+  background: #fff;
+  padding: 0.23rem 0.3rem;
   border-radius: 50%;
   margin: 0.25rem;
 }

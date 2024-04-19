@@ -46,7 +46,9 @@
   "forgot-passwordContent": {
     "forgotPassword": "Forgot Password?",
     "enterPrimaryEmail": "Enter your primary email and we'll send you instructions on how to reset your password.",
-    "label": "Email",
+    "label": {
+      "email": "Email"
+    },
     "sendReset": "Send Reset Instructions",
     "rememberPassword": "You Remember your Password?",
     "signIn": "Sign in."
