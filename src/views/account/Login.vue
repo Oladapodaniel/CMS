@@ -1,6 +1,6 @@
 <template>
   <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
-    <div class="main-section  row">
+    <div class=" row">
       <div class="col-md-6 mt-4  d-flex  align-items-center ">
         <div class="col-md-12 d-none d-md-block" >
           <div class="row">
@@ -43,8 +43,8 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6 mt-4 d-flex  align-items-center  ">
-        <div class="col-md-12 p-4" style="background: #EBEDFF; border-radius: 10px;">
+      <div class="col-md-6 mt-4 d-flex justify-content-center  align-items-center  ">
+        <div class="col-md-12 col-11 p-4" style="background: #EBEDFF; border-radius: 10px;">
           <div class="logo-con  mt-2">
             <a class="logo-link"><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" /></a>
           </div>
