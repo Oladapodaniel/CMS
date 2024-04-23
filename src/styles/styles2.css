@@ -4,10 +4,16 @@
 /* ====================================================== */
 
 /* Primary reusable classes */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Raleway:wght@100..900&family=Roboto:wght@100&display=swap');
 
 .primary--text {
   color: #136acd !important;
 }
+
+.text-head {
+  font-family: Raleway !important;
+}
+
 /* Button */
 
 .secondary-button {

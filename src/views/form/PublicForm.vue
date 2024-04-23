@@ -3,9 +3,9 @@
         <div class="container " :class="{ 'container-slim': lgAndUp || xlAndUp }">
             <div class="row  justify-content-center ">
 
-                <div class="col-md-6 col-lg-5   py-3 bg-white mt-0 mt-sm-5 ">
+                <div class="col-md-6 col-lg-5   pb-3 bg-white mt-0 mt-sm-5 ">
                     <div class="row justify-content-center">
-                        <div class="col-md-10  mt-3 " v-if="formLogo">
+                        <div class="col-md-12 px-0 image-upload  " v-if="formLogo">
                             <img v-if="formLogo" :src="formLogo" class="w-100" style="height: 9rem" alt="">
                         </div>
                         <div class="col-md-10  text-center h4  mt-4 font-weight-600">
@@ -294,6 +294,11 @@ export default {
 
 * {
     font-family: Poppins;
+}
+
+.image-upload img {
+    object-fit: cover;
+    object-position: center;
 }
 
 .chip-container {

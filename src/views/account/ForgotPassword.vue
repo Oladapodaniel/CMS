@@ -1,55 +1,57 @@
 <template>
   <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
-    <div class="row">
-      <div class="col-md-6 mt-4  d-flex  align-items-center ">
-        <div class="col-md-12 d-none d-md-block">
-          <div class="row">
-            <div class="col-md-12 d-flex justify-content-center ">
-              <img class="col-md-5" src="../../assets/home-image.png" alt="">
-            </div>
-            <div class="col-md-12 d-flex mt-3 justify-content-center h4 ">
-              <div class="col-md-10 text-center">
-                {{ navigatorLang === "en-US" ? 'Elevating Your Ministry, Empowering Your Leadership!' :
-    $t('home-content.elevating') }}
-              </div>
-            </div>
-            <div class="col-md-12 mt-2 d-flex justify-content-center h5 ">
-              <div class="col-md-10 text-center">
-                {{ navigatorLang === "en-US" ? 'Welcome to the Future of Church Management!' : $t('home-content.future')
-                }}
-              </div>
-            </div>
-            <div class="col-md-12 mt-4 d-flex justify-content-center">
-              <div class="col-md-9  ">
-                <span class=""><img src="../../assets/check-icon.png" alt=""></span>
-                <span class="mt-2 ml-2">{{ navigatorLang === "en-US" ? 'Revolutionize Your Ministry' :
-    $t('home-content.revolutionize') }}</span>
-              </div>
-            </div>
-            <div class="col-md-12 mt-4 d-flex justify-content-center">
-              <div class="col-md-9 ">
-                <span class=""><img src="../../assets/check-icon.png" alt=""></span>
-                <span class="mt-2 ml-2  text-right">{{ navigatorLang === "en-US" ? 'Financial Stewardship Made Simple' :
-    $t('home-content.stewarship') }}</span>
-              </div>
-            </div>
-            <div class="col-md-12 mt-4 d-flex justify-content-center">
-              <div class="col-md-9  ">
-                <span><img src="../../assets/check-icon.png" alt=""></span>
-                <span class="mt-2 ml-2 text-right">{{ navigatorLang === "en-US" ? 'Inspire Generosity with Ease' :
-    $t('home-content.generosity') }}</span>
+    <div class="row mt-4 justify-content-center">
+      <div class="col-md-11 px-0 col-sm-12  mt-4">
+        <div class="row justify-content-between ">
+          <div class="col-md-5 px-0 mt-4  d-flex  align-items-center ">
+            <div class="col-md-12 col-lg-11 px-0   d-none d-md-block" >
+              <div class="row">
+                <div class="col-md-12 d-flex justify-content-center ">
+                  <img class="col-md-6" src="../../assets/home-image.png" alt="">
+                </div>
+                <div class="col-md-12 d-flex mt-4 justify-content-center h4 ">
+                  <div class="col-md-11 col-sm-12 text-center text-head font-weight-bold">
+                    {{ navigatorLang === "en-US" ? 'Elevating Your Ministry, Empowering Your Leadership!' :
+                      $t('home-content.elevating') }}
+                  </div>
+                </div>
+                <div class="col-md-12 mt-2 d-flex justify-content-center h5 ">
+                  <div class="col-md-11 col-sm-12 text-center">
+                    {{ navigatorLang === "en-US" ? 'Welcome to the Future of Church Management!' : $t('home-content.future')
+                    }}
+                  </div>
+                </div>
+                <div class="col-md-12 mt-4 d-flex justify-content-center">
+                  <div class="col-md-11 d-flex justify-content-center col-sm-12  ">
+                    <span class=""><img src="../../assets/check-icon.png" alt=""></span>
+                    <span class="mt-2 ml-2">{{ navigatorLang === "en-US" ? 'Revolutionize Your Ministry' :
+                      $t('home-content.revolutionize') }}</span>
+                  </div>
+                </div>
+                <div class="col-md-12  mt-4 d-flex justify-content-center">
+                  <div class="col-md-11 d-flex justify-content-center  col-sm-12 ">
+                    <span class="ml-md-4 ml-lg-5 ml-sm-2"><img src="../../assets/check-icon.png" alt=""></span>
+                    <span class="mt-2 ml-2 ">{{ navigatorLang === "en-US" ? 'Financial Stewardship Made Simple' :
+                      $t('home-content.stewarship') }}</span>
+                  </div>
+                </div>
+                <div class="col-md-12 mt-4 d-flex justify-content-center">
+                  <div class="col-md-11 d-flex justify-content-center  ">
+                    <span><img src="../../assets/check-icon.png" alt=""></span>
+                    <span class="mt-2 ml-2 text-right">{{ navigatorLang === "en-US" ? 'Inspire Generosity with Ease' :
+                      $t('home-content.generosity') }}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="col-md-6 mt-4 d-flex  justify-content-center align-items-center">
+          <div class="col-md-5 px-0 mt-4 d-flex justify-content-center  align-items-center">
         <!-- <div class="fp-con"> -->
-      <div class="col-md-12 col-11 p-4" style="background: #EBEDFF; border-radius: 10px;">
-      <div class="logo-con">
+      <div class="col-md-12 col-sm-10 col-11 p-md-4 p-lg-4" style="background: #EBEDFF; border-radius: 10px;">
+      <div class="logo-con mt-2">
         <a class="logo-link"><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" /></a>
       </div>
-      <div class="fp-header mt-4">
+      <div class="fp-header text-head mt-4">
         <h2>{{ navigatorLang === "en-US" ? "Forgot Password?" : $t('forgot-passwordContent.forgotPassword') }}</h2>
       </div>
       <div class="fp-form-con">
@@ -86,6 +88,10 @@
       </div>
     </div>
       </div>
+        </div>
+      </div>
+  
+      
     </div>
   </div>
 </template>
@@ -169,7 +175,9 @@ export default {
 
 .fp-header {
   /* text-align: center; */
-  color: #1C252C;
+  font-size: 32px;
+  font-weight: 500;
+  color: #1D2939;
 }
 
 /* .fp-con {

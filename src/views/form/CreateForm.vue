@@ -8,22 +8,22 @@
                 <div class="row mt-3">
                     <div class="col-md-3 "></div>
                     <div class="col-md-8">
-                        <div class="col-md-12  border d-flex justify-content-center py-3 rounded "
+                        <div class="col-md-12  border d-flex justify-content-center  rounded "
                             style="background-color: #EBEBEB">
                             <div class="row">
-                                <div class="col-md-12 d-flex justify-content-center" v-if="route.params.id">
-                                    <div v-if="url" class="col-md-12  mb-3  image-upload">
+                                <div class="col-md-12 d-flex px-0 justify-content-center" v-if="route.params.id">
+                                    <div v-if="url" class="col-md-12 px-0  mb-3  image-upload">
                                         <img :src="url" alt="" class="w-100" >
                                     </div>
                                 </div>
-                                <div class="col-md-12 d-flex justify-content-center " v-else>
-                                    <div v-if="url" class="col-md-12 mb-3   image-upload">
+                                <div class="col-md-12 px-0 d-flex justify-content-center " v-else>
+                                    <div v-if="url" class="col-md-12 px-0 mb-3   image-upload">
                                         <img :src="url" alt="" class="w-100" >
                                     </div>
                                 </div>
-                                <el-upload class="upload-demo col-md-12 d-flex justify-content-center" multiple :show-file-list="false" :on-change="chooseFile"
+                                <el-upload class="upload-demo col-md-12 d-flex justify-content-center " :class="{'py-3' : !url }" multiple :show-file-list="false" :on-change="chooseFile"
                                     :on-remove="handleRemove" :auto-upload="false">
-                                    <el-button round class="d-flex ">
+                                    <el-button round class="d-flex  ">
                                         <el-icon :size="18">
                                             <Picture />
                                         </el-icon>
@@ -185,15 +185,15 @@
                     <div class="continer-fluid pb-4  h-100 " style="background: #EAECF0;">
                         <div class="row  justify-content-center ">
 
-                            <div class="col-md-6  py-3 bg-white mt-5 ">
-                                <div class="row justify-content-center">
-                                    <div class="col-md-9 mt-3 " v-if="url">
+                            <div class="col-md-6  border  bg-white mt-5 ">
+                                <div class="row  justify-content-center">
+                                    <div class="col-md-12 px-0  image-upload " v-if="url">
                                         <img v-if="url" :src="url" class="w-100" style="height: 9rem" alt="">
                                     </div>
                                     <div class="col-md-9 text-center h4  mt-4 font-weight-600">
                                         {{ formName }}
                                     </div>
-                                    <div class="col-md-9 text-center">
+                                    <div class="col-md-9 mb-2 text-center">
                                         {{ description }}
                                     </div>
                                 </div>
@@ -633,7 +633,10 @@ export default {
 
 .image-upload img {
     height: 8rem;
+    object-fit: cover;
+    object-position: center;
 }
+
 
 .font-weight {
     font-weight: 500;

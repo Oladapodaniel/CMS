@@ -1,164 +1,168 @@
 <template>
   <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
-    <div class=" row">
-      <div class="col-md-6 mt-4  d-flex  align-items-center ">
-        <div class="col-md-12 d-none d-md-block" >
-          <div class="row">
-            <div class="col-md-12 d-flex justify-content-center ">
-              <img class="col-md-5" src="../../assets/home-image.png" alt="">
-            </div>
-            <div class="col-md-12 d-flex justify-content-center h4 ">
-              <div class="col-md-10 text-center">
-                {{ navigatorLang === "en-US" ? 'Elevating Your Ministry, Empowering Your Leadership!' :
-                  $t('home-content.elevating') }}
-              </div>
-            </div>
-            <div class="col-md-12 mt-2 d-flex justify-content-center h5 ">
-              <div class="col-md-10 text-center">
-                {{ navigatorLang === "en-US" ? 'Welcome to the Future of Church Management!' : $t('home-content.future')
-                }}
-              </div>
-            </div>
-            <div class="col-md-12 mt-4 d-flex justify-content-center">
-              <div class="col-md-9  ">
-                <span class=""><img src="../../assets/check-icon.png" alt=""></span>
-                <span class="mt-2 ml-2">{{ navigatorLang === "en-US" ? 'Revolutionize Your Ministry' :
-                  $t('home-content.revolutionize') }}</span>
-              </div>
-            </div>
-            <div class="col-md-12 mt-4 d-flex justify-content-center">
-              <div class="col-md-9 ">
-                <span class=""><img src="../../assets/check-icon.png" alt=""></span>
-                <span class="mt-2 ml-2  text-right">{{ navigatorLang === "en-US" ? 'Financial Stewardship Made Simple' :
-                  $t('home-content.stewarship') }}</span>
-              </div>
-            </div>
-            <div class="col-md-12 mt-4 d-flex justify-content-center">
-              <div class="col-md-9  ">
-                <span><img src="../../assets/check-icon.png" alt=""></span>
-                <span class="mt-2 ml-2 text-right">{{ navigatorLang === "en-US" ? 'Inspire Generosity with Ease' :
-                  $t('home-content.generosity') }}</span>
+    <div class=" row mt-4 justify-content-center">
+      <div class="col-md-11 px-0 col-sm-12  mt-4">
+        <div class="row justify-content-between ">
+          <div class="col-md-5 px-0 mt-4  d-flex  align-items-center ">
+            <div class="col-md-12 col-lg-11 px-0   d-none d-md-block" >
+              <div class="row">
+                <div class="col-md-12 d-flex justify-content-center ">
+                  <img class="col-md-6" src="../../assets/home-image.png" alt="">
+                </div>
+                <div class="col-md-12 d-flex mt-4 justify-content-center h4 ">
+                  <div class="col-md-11 col-sm-12 text-center text-head font-weight-bold">
+                    {{ navigatorLang === "en-US" ? 'Elevating Your Ministry, Empowering Your Leadership!' :
+                      $t('home-content.elevating') }}
+                  </div>
+                </div>
+                <div class="col-md-12 mt-2 d-flex justify-content-center h5 ">
+                  <div class="col-md-11 col-sm-12 text-center">
+                    {{ navigatorLang === "en-US" ? 'Welcome to the Future of Church Management!' : $t('home-content.future')
+                    }}
+                  </div>
+                </div>
+                <div class="col-md-12 mt-4 d-flex justify-content-center">
+                  <div class="col-md-11 d-flex justify-content-center col-sm-12  ">
+                    <span class=""><img src="../../assets/check-icon.png" alt=""></span>
+                    <span class="mt-2 ml-2">{{ navigatorLang === "en-US" ? 'Revolutionize Your Ministry' :
+                      $t('home-content.revolutionize') }}</span>
+                  </div>
+                </div>
+                <div class="col-md-12  mt-4 d-flex justify-content-center">
+                  <div class="col-md-11 d-flex justify-content-center  col-sm-12 ">
+                    <span class="ml-md-4 ml-lg-5 ml-sm-2"><img src="../../assets/check-icon.png" alt=""></span>
+                    <span class="mt-2 ml-2 ">{{ navigatorLang === "en-US" ? 'Financial Stewardship Made Simple' :
+                      $t('home-content.stewarship') }}</span>
+                  </div>
+                </div>
+                <div class="col-md-12 mt-4 d-flex justify-content-center">
+                  <div class="col-md-11 d-flex justify-content-center  ">
+                    <span><img src="../../assets/check-icon.png" alt=""></span>
+                    <span class="mt-2 ml-2 text-right">{{ navigatorLang === "en-US" ? 'Inspire Generosity with Ease' :
+                      $t('home-content.generosity') }}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="col-md-6 mt-4 d-flex justify-content-center  align-items-center  ">
-        <div class="col-md-12 col-11 p-4" style="background: #EBEDFF; border-radius: 10px;">
-          <div class="logo-con  mt-2">
-            <a class="logo-link"><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" /></a>
-          </div>
-          <div class="header mt-2">
-            <h1>{{ navigatorLang === "en-US" ? 'Sign in' : $t('home-header.login') }}</h1>
-            <!-- <h1>Sign in</h1> -->
-          </div>
-
-          <div class="form-container  ">
-            <div class="error-div" v-if="state.showError && !state.notAUser">
-              <p class="error-message">{{ state.errorMessage }}</p>
-            </div>
-
-            <div class="error-div" v-if="state.notAUser">
-              <p class="error-message">
-                Not a registered user,
-                <a href="/register" class="primary-text font-weight-bold text-decoration-none">Register now</a>
-              </p>
-            </div>
-            <el-form :model="state" class="mt-3" @keyup.enter="login">
-              <el-form-item>
-                <div>{{ navigatorLang === "en-US" ? "Email" : $t('loginContent.labels.email') }}</div>
-                <el-input type="email" placeholder="Email" v-model="state.credentials.userName"
-                  :prefix-icon="Message" />
-              </el-form-item>
-              <el-form-item>
-                <div>{{ navigatorLang === "en-US" ? "Password" : $t('loginContent.labels.password') }}</div>
-                <el-input type="password" placeholder="Password" v-model="state.credentials.password"
-                  :prefix-icon="Lock" show-password />
-              </el-form-item>
-              <div class="f-password-div">
-                <router-link to="/forgotpassword" class="forgot-password primary--text">{{ navigatorLang === "en-US" ?
-                  "Forgot password?" : $t('loginContent.forgot-it') }}</router-link>
+          <div class="col-md-5 px-0 mt-4 d-flex justify-content-center  align-items-center  ">
+            <div class="col-md-12 col-sm-10 col-11 p-md-4 p-lg-4" style="background: #EBEDFF; border-radius: 10px;">
+              <div class="logo-con  mt-2">
+                <a class="logo-link"><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" /></a>
               </div>
-              <el-form-item>
-                <!-- <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>
-              Sign In
-            </el-button> -->
-                <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading"
-                  round>
-                  {{ navigatorLang === "en-US" ? 'Sign in' : $t('home-header.login') }}
-                </el-button>
+              <div class="header text-head mt-2">
+                {{ navigatorLang === "en-US" ? 'Sign in' : $t('home-header.login') }}
+                <!-- <h1>Sign in</h1> -->
+              </div>
 
-                <!-- <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
-                  <img src="../../assets/small-google.png" class="ggle-icon" alt="Facebook Icon" />
-                  <span>Sign in with Google</span>
-                  <span></span>
-                </div> -->
-                <!-- <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
-                  <img src="../../assets/facebook-small.png" class="fb-icon" alt="Facebook Icon" />
-                  <span>Sign in with Facebook</span>
-                  <span></span>
-                </div> -->
-              </el-form-item>
-              <!-- <el-form-item class="row"> -->
+              <div class="form-container  ">
+                <div class="error-div" v-if="state.showError && !state.notAUser">
+                  <p class="error-message">{{ state.errorMessage }}</p>
+                </div>
 
-              <!-- <div class="col-sm-6 col-12 mt-2 mt-sm-0 d-flex justify-content-center   justify-content-sm-end  ">
-                <a class="text-decoration-none apple-store" target="_blank" href="https://www.apple.com/safari/">
-                  <img src="../../assets/mobileonboarding/app-store-logo.png" alt="">
+                <div class="error-div" v-if="state.notAUser">
+                  <p class="error-message">
+                    Not a registered user,
+                    <a href="/register" class="primary-text font-weight-bold text-decoration-none">Register now</a>
+                  </p>
+                </div>
+                <el-form :model="state" class="mt-3" @keyup.enter="login">
+                  <el-form-item>
+                    <div>{{ navigatorLang === "en-US" ? "Email" : $t('loginContent.labels.email') }}</div>
+                    <el-input type="email" placeholder="Email" v-model="state.credentials.userName"
+                      :prefix-icon="Message" />
+                  </el-form-item>
+                  <el-form-item>
+                    <div>{{ navigatorLang === "en-US" ? "Password" : $t('loginContent.labels.password') }}</div>
+                    <el-input type="password" placeholder="Password" v-model="state.credentials.password"
+                      :prefix-icon="Lock" show-password />
+                  </el-form-item>
+                  <div class="f-password-div">
+                    <router-link to="/forgotpassword" class="forgot-password primary--text">{{ navigatorLang === "en-US" ?
+                      "Forgot password?" : $t('loginContent.forgot-it') }}</router-link>
+                  </div>
+                  <el-form-item>
+                    <!-- <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>
+                  Sign In
+                </el-button> -->
+                    <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading"
+                      round>
+                      {{ navigatorLang === "en-US" ? 'Sign in' : $t('home-header.login') }}
+                    </el-button>
+
+                    <div class="google-btn btn-logo mt-4  sign-in-btn" @click="facebookLogin">
+                      <img src="../../assets/small-google.png" class="ggle-icon" alt="Facebook Icon" />
+                      <span>Sign in with Google</span>
+                      <span></span>
+                    </div>
+                    <!-- <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
+                      <img src="../../assets/facebook-small.png" class="fb-icon" alt="Facebook Icon" />
+                      <span>Sign in with Facebook</span>
+                      <span></span>
+                    </div> -->
+                  </el-form-item>
+                  <!-- <el-form-item class="row"> -->
+
+                  <!-- <div class="col-sm-6 col-12 mt-2 mt-sm-0 d-flex justify-content-center   justify-content-sm-end  ">
+                    <a class="text-decoration-none apple-store" target="_blank" href="https://www.apple.com/safari/">
+                      <img src="../../assets/mobileonboarding/app-store-logo.png" alt="">
+                    </a>
+                  </div> -->
+                  <!-- </el-form-item> -->
+                </el-form>
+                <div class="bottom-container  row justify-content-center">
+                  <div class="col-md-11 justify-content-center  d-flex">
+                    <div class="sign-up-prompt">{{ navigatorLang === "en-US" ? "New to Churchplus?" :
+                      $t('loginContent.no-account-yet') }}</div>
+                    <router-link to="/register" class="sign-up text-dark "><strong>{{ navigatorLang ===
+                      "en-US" ? "Create an account" :
+                      $t('loginContent.signup-btntext') }}</strong>
+                    </router-link>
+                  </div>
+
+                  <!-- <div class="mt-2">
+                    <router-link to="/register" class="sign-up primary--text text-decoration-none"><el-button
+                        color="#17c5cf" class="w-50" round><strong>{{ navigatorLang === "en-US" ? "Sign up now" :
+                      $t('loginContent.signup-btntext') }}</strong>
+                      </el-button></router-link>
+                  </div> -->
+                </div>
+                <!-- <div class="row">
+              <el-divider>
+                Download the App
+              </el-divider>
+              <div class="col-md-12 col-12 d-flex justify-content-center   ">
+                <a class="text-decoration-none googleplay  " target="_blank"
+                  href="https://play.google.com/store/apps/details?id=com.complustech.co">
+                  <img src="../../assets/mobileonboarding/Google-play-logo.png" alt="">
                 </a>
-              </div> -->
-              <!-- </el-form-item> -->
-            </el-form>
-            <div class="bottom-container  row justify-content-center">
-              <div class="col-md-11 justify-content-center  d-flex">
-                <div class="sign-up-prompt">{{ navigatorLang === "en-US" ? "New to Churchplus?" :
-                  $t('loginContent.no-account-yet') }}</div>
-                <router-link to="/register" class="sign-up text-dark "><strong>{{ navigatorLang ===
-                  "en-US" ? "Create an account" :
-                  $t('loginContent.signup-btntext') }}</strong>
-                </router-link>
+              </div>
+            </div> -->
               </div>
 
-              <!-- <div class="mt-2">
-                <router-link to="/register" class="sign-up primary--text text-decoration-none"><el-button
-                    color="#17c5cf" class="w-50" round><strong>{{ navigatorLang === "en-US" ? "Sign up now" :
-                  $t('loginContent.signup-btntext') }}</strong>
-                  </el-button></router-link>
-              </div> -->
-            </div>
-            <!-- <div class="row">
-          <el-divider>
-            Download the App
-          </el-divider>
-          <div class="col-md-12 col-12 d-flex justify-content-center   ">
-            <a class="text-decoration-none googleplay  " target="_blank"
-              href="https://play.google.com/store/apps/details?id=com.complustech.co">
-              <img src="../../assets/mobileonboarding/Google-play-logo.png" alt="">
-            </a>
-          </div>
-        </div> -->
-          </div>
-
-          <el-dialog v-model="displayModal" title="Please enter your email" width="80%" align-center>
-            <div class="container">
-              <div class="row mt-2">
-                <div class="col-12"></div>
-                <div class="col-sm-2 align-self-center">
-                  Email <span class="text-danger">*</span>
+              <el-dialog v-model="displayModal" title="Please enter your email" width="80%" align-center>
+                <div class="container">
+                  <div class="row mt-2">
+                    <div class="col-12"></div>
+                    <div class="col-sm-2 align-self-center">
+                      Email <span class="text-danger">*</span>
+                    </div>
+                    <div class="col-sm-10">
+                      <el-input type="text" label="Email" v-model="invalidEmailObj.email" />
+                    </div>
+                  </div>
                 </div>
-                <div class="col-sm-10">
-                  <el-input type="text" label="Email" v-model="invalidEmailObj.email" />
-                </div>
-              </div>
+                <template #footer>
+                  <span class="dialog-footer">
+                    <el-button @click="displayModal = false" class="secondary-button" round>Cancel</el-button>
+                    <el-button type="primary" @click="saveEmail" :loading="emailLoading" :color="primarycolor" round>
+                      Confirm
+                    </el-button>
+                  </span>
+                </template>
+              </el-dialog>
             </div>
-            <template #footer>
-              <span class="dialog-footer">
-                <el-button @click="displayModal = false" class="secondary-button" round>Cancel</el-button>
-                <el-button type="primary" @click="saveEmail" :loading="emailLoading" :color="primarycolor" round>
-                  Confirm
-                </el-button>
-              </span>
-            </template>
-          </el-dialog>
+          </div>
         </div>
       </div>
 
@@ -370,8 +374,10 @@ export default {
   height: 5rem;
 }
 
-.header h1 {
-  font-size: 30px;
+.header{
+  font-size: 32px;
+  font-weight: 500;
+  color: #1D2939;
 }
 
 .main-section {
@@ -450,7 +456,7 @@ export default {
   vertical-align: middle;
   text-decoration: none;
   appearance: none;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 16px;
   outline: none;
 }
@@ -495,6 +501,10 @@ export default {
   background: #3b5998;
   cursor: pointer;
 }
+.google-btn {
+  background: #475467;
+  cursor: pointer;
+}
 
 .fb-icon {
   background: #fff;
@@ -504,7 +514,7 @@ export default {
 }
 .ggle-icon {
   background: #fff;
-  padding: 0.23rem 0.3rem;
+  padding: 0.2rem 0.23rem;
   border-radius: 50%;
   margin: 0.25rem;
 }
