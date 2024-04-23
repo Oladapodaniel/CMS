@@ -185,7 +185,7 @@
                     <div class="continer-fluid pb-4  h-100 " style="background: #EAECF0;">
                         <div class="row  justify-content-center ">
 
-                            <div class="col-md-6  border  bg-white mt-5 ">
+                            <div class="col-md-6 col-lg-5  border  bg-white mt-5 ">
                                 <div class="row  justify-content-center">
                                     <div class="col-md-12 px-0  image-upload " v-if="url">
                                         <img v-if="url" :src="url" class="w-100" style="height: 9rem" alt="">
@@ -201,7 +201,7 @@
                         </div>
 
                         <div class="row justify-content-center mt-3 ">
-                            <div class="col-md-6 py-4 rounded bg-white  ">
+                            <div class="col-md-6 col-lg-5 py-4 rounded bg-white  ">
                                 <div class="row">
                                     <div class="col-md-12" v-for="(item, index) in cutomFieldData " :key="index">
                                         <div class="row mt-3 justify-content-center ">
@@ -632,7 +632,7 @@ export default {
 }
 
 .image-upload img {
-    height: 8rem;
+    max-height: 9rem;
     object-fit: cover;
     object-position: center;
 }

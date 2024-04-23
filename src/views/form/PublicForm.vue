@@ -1,17 +1,17 @@
 <template>
-    <div class="continer-fluid pb-4  h-100 " style="background: #EAECF0;" v-loading="loadingPage">
-        <div class="container " :class="{ 'container-slim': lgAndUp || xlAndUp }">
+    <div class="continer-fluid  pb-4  h-100 " style="background: #EAECF0;" v-loading="loadingPage">
+        <div class="container  " :class="{ 'container-slim': lgAndUp || xlAndUp }">
             <div class="row  justify-content-center ">
 
-                <div class="col-md-6 col-lg-5   pb-3 bg-white mt-0 mt-sm-5 ">
+                <div class="col-md-6 col-sm-11 col-lg-4    pb-3 bg-white mt-0 mt-sm-5 ">
                     <div class="row justify-content-center">
                         <div class="col-md-12 px-0 image-upload  " v-if="formLogo">
-                            <img v-if="formLogo" :src="formLogo" class="w-100" style="height: 9rem" alt="">
+                            <img v-if="formLogo" :src="formLogo" class="w-100" style="height: 9rem;" alt="">
                         </div>
-                        <div class="col-md-10  text-center h4  mt-4 font-weight-600">
+                        <div class="col-md-11  col-lg-11  text-center h4  mt-4 font-weight-600">
                             {{ singleFormData && singleFormData.name ? singleFormData.name : "" }}
                         </div>
-                        <div class="col-md-10 text-center">
+                        <div class="col-md-11 col-lg-11 text-center">
                             {{ singleFormData && singleFormData.description === "null" ? "" : singleFormData.description
                             }}
                         </div>
@@ -23,9 +23,9 @@
             </div>
             <div class="row justify-content-center mt-3 "
                 v-if="singleFormData && singleFormData.customAttributes && singleFormData.customAttributes.length > 0 && !networkError && !disabledBtn && !loadingPage">
-                <div class="col-md-6 col-lg-5 py-4 rounded bg-white  ">
+                <div class="col-md-6 col-sm-11 col-lg-4   py-4 rounded bg-white  ">
                     <div class="row">
-                        <div class="col-md-12" v-for="(item, index) in singleFormData.customAttributes " :key="index">
+                        <div class="col-md-12 " v-for="(item, index) in singleFormData.customAttributes " :key="index">
                             <div class="row mt-3 justify-content-center ">
 
                                 <div class="col-md-10  " style="font-weight: 450; font-size: 14px;">
@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import { ref, inject } from 'vue'
+import { ref, inject, watchEffect } from 'vue'
 import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
@@ -172,6 +172,12 @@ export default {
 
         }
         getSingleForm()
+
+        watchEffect(() => {
+            if (singleFormData && singleFormData.pictureUrl) {
+                formLogo.value = singleFormData.pictureUrl
+            }
+        })
 
         const filterIsRequired = ref({})
         const requiredField = ref(false)
