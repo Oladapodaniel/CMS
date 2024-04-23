@@ -18,6 +18,7 @@ import Toaster from '@meforma/vue-toaster';
 // import 'vue3-tel-input/dist/vue3-tel-input.css'
 import VueTelInput from 'vue-tel-input';
 import 'vue-tel-input/dist/vue-tel-input.css';
+// import "./styles/index.scss";
 import * as Sentry from "@sentry/vue";
 
 const VueTelInputOptions = {
