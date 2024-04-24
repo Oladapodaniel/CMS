@@ -8,7 +8,7 @@
                         <div class="col-md-12 px-0 image-upload  " v-if="formLogo">
                             <img v-if="formLogo" :src="formLogo" class="w-100" style="height: 9rem;" alt="">
                         </div>
-                        <div class="col-md-11  col-lg-11   text-center h4  mt-4 font-weight-600">
+                        <div class="col-md-11  col-lg-11   text-center h5  mt-3 font-weight-600">
                             {{ singleFormData && singleFormData.name ? singleFormData.name : "" }}
                         </div>
                         <div class="col-md-11 col-lg-11 text-center">
