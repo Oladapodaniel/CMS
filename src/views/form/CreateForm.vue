@@ -520,7 +520,8 @@ export default {
             formData2.append("name", formName.value);
             formData2.append("description", description.value);
             formData2.append("date", dateUpdated.value);
-            formData2.append("pictureUrl", url.value ? url.value : selectedImage.value);
+            // formData2.append("pictureUrl", url.value ? url.value : selectedImage.value);
+            formData2.append("picture", selectedImage.value ? selectedImage.value : '');
             formData2.append("tenantID", tenantId.value);
             formData2.append("customAttributesString", JSON.stringify(cutomFieldData.value.map(i => {
                 return {
