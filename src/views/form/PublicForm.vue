@@ -71,8 +71,8 @@
 
 
 
-                <div class="col-md-9  text-center mt-4">
-                    ChurchPlus Forms
+                <div class="col-md-9 d-flex justify-content-center  text-center mt-4">
+                    <a href="https://churchplus.co" class="text-decoration-none" target="_blank" >ChurchPlus</a>
                 </div>
 
             </div>
