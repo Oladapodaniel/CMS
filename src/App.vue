@@ -47,7 +47,7 @@ export default {
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: var(--ep-text-color-primary);
+  color: var(--el-text-color-primary);
 }
 
 .btn-loading {
