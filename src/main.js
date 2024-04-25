@@ -20,6 +20,9 @@ import VueTelInput from 'vue-tel-input';
 import 'vue-tel-input/dist/vue-tel-input.css';
 // import "./styles/index.scss";
 import * as Sentry from "@sentry/vue";
+// if you just want to import css
+import 'element-plus/theme-chalk/dark/css-vars.css';
+import './styles/dark/css-vars.css'
 
 const VueTelInputOptions = {
   mode: "international",
@@ -145,4 +148,16 @@ app.provide('primarycolor', '#136acd')
 
 
 
-app.use(store).use(router).use(VueHighcharts, { Highcharts }).use(CKEditor).use(i18n()).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).use(ElementPlus).use(VueTelInput, VueTelInputOptions).mount('#app')
+app
+.use(store)
+.use(router)
+.use(VueHighcharts, { Highcharts })
+.use(CKEditor)
+.use(i18n())
+.use(Toaster)
+.use(PrimeVue)
+.use(ToastService)
+.use(ConfirmationService)
+.use(ElementPlus)
+.use(VueTelInput, VueTelInputOptions)
+.mount('#app')
