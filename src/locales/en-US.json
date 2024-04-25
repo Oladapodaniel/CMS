@@ -60,8 +60,10 @@
       "ur-name" : "What's your name?",
       "ur-ministry" : "What's the name of your Ministry?",
       "ur-phone" : "What's your Phone Number?",
+      "ur-email" : "Email Address",
       "ur-country" : "Select Country",
       "membership-size" : "What is your Membership size?",
+      "churchWebiste" : "Do you have a Church Website?",
       "step" : "Step 1 of 2"
     },
     "next-btntext" : "Next step"

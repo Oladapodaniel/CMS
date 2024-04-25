@@ -5,19 +5,23 @@
         <div id="onboarding-form" :class="{ 'swap-box1': toggle }">
           <div class="onboarding-form-container">
             <div class="title-div">
-              <div class="main-title">
+              <div class="logo-con  mt-2">
+                <a class="logo-link"><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" /></a>
+              </div>
+              <div class="main-title mt-3">
                 <h1>{{ navigatorLang === "en-US" ? 'Welcome to Churchplus!' : $t('onboardingContent.welcome-chplus') }}
                 </h1>
               </div>
               <div class="sub-title">
-                <p> {{ navigatorLang === "en-US" ? 'Tell us about you and your church' : $t('onboardingContent.about-ch')
-                }}</p>
+                <p> {{ navigatorLang === "en-US" ? 'Let us know more about you' :
+          $t('onboardingContent.about-ch')
+                  }}</p>
               </div>
             </div>
             <el-form ref="ruleFormRef" :rules="rules" :model="userDetails" style="width: 100%">
-              <div class="input-div">
+              <div class="input-div ">
                 <label class="mb-0">{{ navigatorLang === "en-US" ? "What's your name?" :
-                  $t('onboardingContent.labels.ur-name') }}</label>
+          $t('onboardingContent.labels.ur-name') }}</label>
                 <el-row :gutter="15">
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item prop="firstName">
@@ -34,43 +38,68 @@
 
               <div class="input-div">
                 <label class="mb-0">{{ navigatorLang === "en-US" ? "What's the name of your ministry?" :
-                  $t('onboardingContent.labels.ur-ministry') }}</label>
+          $t('onboardingContent.labels.ur-ministry') }}</label>
                 <el-form-item prop="churchName">
                   <el-input type="text" v-model="userDetails.churchName" placeholder="Name of church" />
                 </el-form-item>
               </div>
 
               <div class="input-div">
-                <label class="mb-0">{{ navigatorLang === "en-US" ? "What's your phone number?" :
-                  $t('onboardingContent.labels.ur-phone') }}</label>
-                <div class="w-100">
-                  <!-- <vue-tel-input :value="userDetails.phoneNumber" @input="onInput" mode="international"
-                    style="height: 40px" @blur="invalidResponse"></vue-tel-input> -->
-                  <vue-tel-input style="height: 40px" @blur="invalidResponse" v-model="userDetails.phoneNumber"
-                    @input="onInput" mode="international"></vue-tel-input>
-                </div>
+                <el-row :gutter="15">
+                  <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+                    <label class="mb-0 ">{{ navigatorLang === "en-US" ? "Email Address" :
+          $t('onboardingContent.labels.ur-email') }}</label>
+                    <el-form-item prop="email">
+                      <el-input type="email" v-model="userDetails.email" placeholder="Email" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+                    <label class="mb-0">{{ navigatorLang === "en-US" ? "What's your phone number?" :
+          $t('onboardingContent.labels.ur-phone') }}</label>
+                    <vue-tel-input style="height: 40px" @blur="invalidResponse" v-model="userDetails.phoneNumber"
+                      @input="onInput" mode="international"></vue-tel-input>
+                  </el-col>
+                </el-row>
               </div>
 
               <div class="input-div">
-                <label class="mb-0">{{ navigatorLang === "en-US" ? "Select your country" :
-                  $t('onboardingContent.labels.ur-country') }}</label>
-                <div class="w-100">
-                  <el-select-v2 v-model="selectedCountryId" :options="countries.map(i => ({ label: i.name, value: i.id }))"
-                    @change="setSelectedCountry" filterable placeholder="Select country" size="large" class="w-100" />
+                <el-row :gutter="15">
+                  <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+                    <label class="mb-0">{{ navigatorLang === "en-US" ? "Select Country" :
+          $t('onboardingContent.labels.ur-country') }}</label>
+                    <div class="w-100">
+                      <el-select-v2 v-model="selectedCountryId"
+                        :options="countries.map(i => ({ label: i.name, value: i.id }))" @change="setSelectedCountry"
+                        filterable placeholder="Select country" size="large" class="w-100" />
+                    </div>
+                  </el-col>
+                  <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+                    <label class="mb-0 mt-3 mt-sm-0">{{ navigatorLang === "en-US" ? "What is your Membership size?" :
+          $t('onboardingContent.labels.membership-size') }}</label>
+                    <el-form-item prop="churchSize">
+                      <el-select-v2 v-model="userDetails.churchSize" :options="membershipSizeList"
+                        placeholder="Select size range" size="large" class="w-100" />
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="input-div">
+                <label class="mb-0">{{ navigatorLang === "en-US" ? "Do you have a Church Website?" :
+          $t('onboardingContent.labels.churchWebsite') }}</label>
+
+                <div class="row">
+                  <div class="col-md-12 d-flex">
+                    <el-checkbox-group v-model="checkboxGroup" size="large">{{checkboxGroup}}
+                      <el-checkbox-button v-for="item in websiteOpt" :key="item" :value="item">
+                        {{item}}
+                      </el-checkbox-button>
+                    </el-checkbox-group>
+                  </div>
                 </div>
               </div>
-
-              <div class="input-div cstm-select w-100">
-                <label class="mb-0">{{ navigatorLang === "en-US" ? "What's the membership size of your ministry?" :
-                  $t('onboardingContent.labels.membership-size') }}</label>
-                <el-form-item prop="churchSize">
-                  <el-select-v2 v-model="userDetails.churchSize" :options="membershipSizeList"
-                    placeholder="Select size range" size="large" class="w-100" />
-                </el-form-item>
-              </div>
               <el-button class="w-100" :color="primarycolor" size="large" :disabled="!disableNext" :loading="loading"
-                @click="submitForm(ruleFormRef)" round>{{ navigatorLang === "en-US" ? "Next" :
-                  $t('onboardingContent.next-btntext') }}</el-button>
+                @click="submitForm(ruleFormRef)" round>{{ navigatorLang === "en-US" ? "Next step" :
+          $t('onboardingContent.next-btntext') }}</el-button>
             </el-form>
           </div>
         </div>
@@ -119,6 +148,8 @@ export default {
   setup() {
     const primarycolor = inject('primarycolor')
     const ruleFormRef = ref()
+    const checkboxGroup = ref("")
+    const websiteOpt = ref(['No', 'Yes'])
     const navigatorLang = ref(navigator.language);
     const rules = reactive({
       firstName: [
@@ -129,6 +160,9 @@ export default {
       ],
       churchName: [
         { required: true, message: 'Please input your church name', trigger: 'blur' },
+      ],
+      email: [
+        { required: true, message: 'Please input your email', trigger: 'blur' },
       ],
       churchSize: [
         { required: true, message: 'Please input your church size', trigger: 'change' },
@@ -143,7 +177,9 @@ export default {
       ruleFormRef,
       rules,
       primarycolor,
-      navigatorLang
+      navigatorLang,
+      websiteOpt,
+      checkboxGroup,
     }
   },
 
@@ -278,6 +314,22 @@ export default {
   height: 100vh;
 }
 
+.logo-con {
+  display: flex;
+  /* margin-top: 24px; */
+}
+
+.logo-link {
+  width: 100%;
+  /* text-align: center; */
+}
+
+.logo-link img {
+  width: 8rem;
+  height: 5rem;
+}
+
+
 #onboarding {
   display: flex;
   height: 100vh;
@@ -401,4 +453,5 @@ span .select2-selection--single {
   .main-title {
     font-size: 33px;
   }
-}</style>
+}
+</style>
