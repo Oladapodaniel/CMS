@@ -1,133 +1,230 @@
 <template>
-  <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
-    <div class=" row mt-4 justify-content-center">
-      <div class="col-md-11 px-0 col-sm-12  mt-4">
-        <div class="row justify-content-between ">
-          <div class="col-md-5 px-0 mt-4  d-flex  align-items-center ">
-            <div class="col-md-12 col-lg-11 px-0   d-none d-md-block" >
-              <div class="row">
-                <div class="col-md-12 d-flex justify-content-center ">
-                  <img class="col-md-6" src="../../assets/home-image.png" alt="">
-                </div>
-                <div class="col-md-12 d-flex mt-4 justify-content-center h4 ">
-                  <div class="col-md-11 col-sm-12 text-center text-head font-weight-bold">
-                    {{ navigatorLang === "en-US" ? 'Elevating Your Ministry, Empowering Your Leadership!' :
-                      $t('home-content.elevating') }}
+  <div
+    :style="{ backgroundColor: theme.bg_900, color: theme.text_900 }"
+    style="display: flex; min-height: 100vh"
+  >
+    <div :class="{ 'container-slim': lgAndUp || xlAndUp }"
+      style="margin: auto;">
+      <div class="row justify-content-center">
+        <button @click="toggleTheme">Toggle Theme</button>
+        <div class="col-md-11 px-0 col-sm-12 mt-4">
+          <div class="row justify-content-between">
+            <div class="col-md-5 px-0 mt-4 d-flex align-items-center">
+              <div class="col-md-12 col-lg-11 px-0 d-none d-md-block">
+                <div class="row">
+                  <div class="col-md-12 d-flex justify-content-center">
+                    <img class="col-md-6" src="../../assets/home-image.png" alt="" />
                   </div>
-                </div>
-                <div class="col-md-12 mt-2 d-flex justify-content-center h5 ">
-                  <div class="col-md-11 col-sm-12 text-center">
-                    {{ navigatorLang === "en-US" ? 'Welcome to the Future of Church Management!' : $t('home-content.future')
-                    }}
+                  <div class="col-md-12 d-flex mt-4 justify-content-center h4">
+                    <div
+                      class="col-md-11 col-sm-12 text-center text-head font-weight-bold"
+                    >
+                      {{
+                        navigatorLang === "en-US"
+                          ? "Elevating Your Ministry, Empowering Your Leadership!"
+                          : $t("home-content.elevating")
+                      }}
+                    </div>
                   </div>
-                </div>
-                <div class="col-md-12 mt-4 d-flex justify-content-center">
-                  <div class="col-md-11 d-flex justify-content-center col-sm-12  ">
-                    <span class=""><img src="../../assets/check-icon.png" alt=""></span>
-                    <span class="mt-2 ml-2">{{ navigatorLang === "en-US" ? 'Revolutionize Your Ministry' :
-                      $t('home-content.revolutionize') }}</span>
+                  <div class="col-md-12 mt-2 d-flex justify-content-center h5">
+                    <div class="col-md-11 col-sm-12 text-center">
+                      {{
+                        navigatorLang === "en-US"
+                          ? "Welcome to the Future of Church Management!"
+                          : $t("home-content.future")
+                      }}
+                    </div>
                   </div>
-                </div>
-                <div class="col-md-12  mt-4 d-flex justify-content-center">
-                  <div class="col-md-11 d-flex justify-content-center  col-sm-12 ">
-                    <span class="ml-md-4 ml-lg-5 ml-sm-2"><img src="../../assets/check-icon.png" alt=""></span>
-                    <span class="mt-2 ml-2 ">{{ navigatorLang === "en-US" ? 'Financial Stewardship Made Simple' :
-                      $t('home-content.stewarship') }}</span>
+                  <div class="col-md-12 mt-4 d-flex justify-content-center">
+                    <div class="col-md-11 d-flex justify-content-center col-sm-12">
+                      <span class=""
+                        ><img src="../../assets/check-icon.png" alt=""
+                      /></span>
+                      <span class="mt-2 ml-2">{{
+                        navigatorLang === "en-US"
+                          ? "Revolutionize Your Ministry"
+                          : $t("home-content.revolutionize")
+                      }}</span>
+                    </div>
                   </div>
-                </div>
-                <div class="col-md-12 mt-4 d-flex justify-content-center">
-                  <div class="col-md-11 d-flex justify-content-center  ">
-                    <span><img src="../../assets/check-icon.png" alt=""></span>
-                    <span class="mt-2 ml-2 text-right">{{ navigatorLang === "en-US" ? 'Inspire Generosity with Ease' :
-                      $t('home-content.generosity') }}</span>
+                  <div class="col-md-12 mt-4 d-flex justify-content-center">
+                    <div class="col-md-11 d-flex justify-content-center col-sm-12">
+                      <span class="ml-md-4 ml-lg-5 ml-sm-2"
+                        ><img src="../../assets/check-icon.png" alt=""
+                      /></span>
+                      <span class="mt-2 ml-2">{{
+                        navigatorLang === "en-US"
+                          ? "Financial Stewardship Made Simple"
+                          : $t("home-content.stewarship")
+                      }}</span>
+                    </div>
+                  </div>
+                  <div class="col-md-12 mt-4 d-flex justify-content-center">
+                    <div class="col-md-11 d-flex justify-content-center">
+                      <span><img src="../../assets/check-icon.png" alt="" /></span>
+                      <span class="mt-2 ml-2 text-right">{{
+                        navigatorLang === "en-US"
+                          ? "Inspire Generosity with Ease"
+                          : $t("home-content.generosity")
+                      }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-5 px-0 mt-4 d-flex justify-content-center  align-items-center  ">
-            <div class="col-md-12 col-sm-10 col-11 p-md-4 p-lg-4" style="background: #EBEDFF; border-radius: 10px;">
-              <div class="logo-con  mt-2">
-                <a class="logo-link"><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" /></a>
-              </div>
-              <div class="header text-head mt-2">
-                {{ navigatorLang === "en-US" ? 'Sign in' : $t('home-header.login') }}
-                <!-- <h1>Sign in</h1> -->
-              </div>
-
-              <div class="form-container  ">
-                <div class="error-div" v-if="state.showError && !state.notAUser">
-                  <p class="error-message">{{ state.errorMessage }}</p>
+            <div
+              class="col-md-5 px-0 mt-4 d-flex justify-content-center align-items-center"
+            >
+              <div
+                class="col-md-12 col-sm-10 col-11 p-md-4 p-lg-5"
+                :style="{ backgroundColor: theme.light_primary, borderRadius: '10px' }"
+              >
+                <div class="logo-con mt-2">
+                  <a class="logo-link"
+                    ><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo"
+                  /></a>
+                </div>
+                <div class="header text-head mt-2">
+                  {{ navigatorLang === "en-US" ? "Sign in" : $t("home-header.login") }}
+                  <!-- <h1>Sign in</h1> -->
                 </div>
 
-                <div class="error-div" v-if="state.notAUser">
-                  <p class="error-message">
-                    Not a registered user,
-                    <a href="/register" class="primary-text font-weight-bold text-decoration-none">Register now</a>
-                  </p>
-                </div>
-                <el-form :model="state" class="mt-3" @keyup.enter="login">
-                  <el-form-item>
-                    <div>{{ navigatorLang === "en-US" ? "Email" : $t('loginContent.labels.email') }}</div>
-                    <el-input type="email" placeholder="Email" v-model="state.credentials.userName"
-                      :prefix-icon="Message" />
-                  </el-form-item>
-                  <el-form-item>
-                    <div>{{ navigatorLang === "en-US" ? "Password" : $t('loginContent.labels.password') }}</div>
-                    <el-input type="password" placeholder="Password" v-model="state.credentials.password"
-                      :prefix-icon="Lock" show-password />
-                  </el-form-item>
-                  <div class="f-password-div">
-                    <router-link to="/forgotpassword" class="forgot-password primary--text">{{ navigatorLang === "en-US" ?
-                      "Forgot password?" : $t('loginContent.forgot-it') }}</router-link>
+                <div class="form-container">
+                  <div class="error-div" v-if="state.showError && !state.notAUser">
+                    <p class="error-message">{{ state.errorMessage }}</p>
                   </div>
-                  <el-form-item>
-                    <!-- <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>
+
+                  <div class="error-div" v-if="state.notAUser">
+                    <p class="error-message">
+                      Not a registered user,
+                      <a
+                        href="/register"
+                        class="primary-text font-weight-bold text-decoration-none"
+                        >Register now</a
+                      >
+                    </p>
+                  </div>
+                  <el-form :model="state" class="mt-3" @keyup.enter="login">
+                    <el-form-item>
+                      <div>
+                        {{
+                          navigatorLang === "en-US"
+                            ? "Email"
+                            : $t("loginContent.labels.email")
+                        }}
+                      </div>
+                      <el-input
+                        type="email"
+                        placeholder="Email"
+                        v-model="state.credentials.userName"
+                        :prefix-icon="Message"
+                      />
+                    </el-form-item>
+                    <el-form-item>
+                      <div>
+                        {{
+                          navigatorLang === "en-US"
+                            ? "Password"
+                            : $t("loginContent.labels.password")
+                        }}
+                      </div>
+                      <el-input
+                        type="password"
+                        placeholder="Password"
+                        v-model="state.credentials.password"
+                        :prefix-icon="Lock"
+                        show-password
+                      />
+                    </el-form-item>
+                    <div class="f-password-div">
+                      <router-link
+                        to="/forgotpassword"
+                        class="forgot-password primary--text"
+                        >{{
+                          navigatorLang === "en-US"
+                            ? "Forgot password?"
+                            : $t("loginContent.forgot-it")
+                        }}</router-link
+                      >
+                    </div>
+                    <el-form-item>
+                      <!-- <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>
                   Sign In
                 </el-button> -->
-                    <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading"
-                      round>
-                      {{ navigatorLang === "en-US" ? 'Sign in' : $t('home-header.login') }}
-                    </el-button>
+                      <el-button
+                        size="large"
+                        :color="primarycolor"
+                        @click="login"
+                        class="w-100"
+                        :loading="signInLoading"
+                        round
+                      >
+                        {{
+                          navigatorLang === "en-US" ? "Sign in" : $t("home-header.login")
+                        }}
+                      </el-button>
 
-                    <div class="google-btn btn-logo mt-4  sign-in-btn" @click="facebookLogin">
-                      <img src="../../assets/small-google.png" class="ggle-icon" alt="Facebook Icon" />
-                      <span>Sign in with Google</span>
-                      <span></span>
-                    </div>
-                    <!-- <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
+                      <div
+                        class="google-btn btn-logo mt-4 sign-in-btn"
+                        @click="facebookLogin"
+                      >
+                        <img
+                          src="../../assets/small-google.png"
+                          class="ggle-icon"
+                          alt="Facebook Icon"
+                        />
+                        <span>Sign in with Google</span>
+                        <span></span>
+                      </div>
+                      <!-- <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
                       <img src="../../assets/facebook-small.png" class="fb-icon" alt="Facebook Icon" />
                       <span>Sign in with Facebook</span>
                       <span></span>
                     </div> -->
-                  </el-form-item>
-                  <!-- <el-form-item class="row"> -->
+                    </el-form-item>
+                    <!-- <el-form-item class="row"> -->
 
-                  <!-- <div class="col-sm-6 col-12 mt-2 mt-sm-0 d-flex justify-content-center   justify-content-sm-end  ">
+                    <!-- <div class="col-sm-6 col-12 mt-2 mt-sm-0 d-flex justify-content-center   justify-content-sm-end  ">
                     <a class="text-decoration-none apple-store" target="_blank" href="https://www.apple.com/safari/">
                       <img src="../../assets/mobileonboarding/app-store-logo.png" alt="">
                     </a>
                   </div> -->
-                  <!-- </el-form-item> -->
-                </el-form>
-                <div class="bottom-container  row justify-content-center">
-                  <div class="col-md-11 justify-content-center  d-flex">
-                    <div class="sign-up-prompt">{{ navigatorLang === "en-US" ? "New to Churchplus?" :
-                      $t('loginContent.no-account-yet') }}</div>
-                    <router-link to="/register" class="sign-up text-dark "><strong>{{ navigatorLang ===
-                      "en-US" ? "Create an account" :
-                      $t('loginContent.signup-btntext') }}</strong>
-                    </router-link>
-                  </div>
+                    <!-- </el-form-item> -->
+                  </el-form>
 
-                  <!-- <div class="mt-2">
+                  <div
+                    class="bottom-container row justify-content-center"
+                    :style="{ color: theme.type == 'light' ? '#4d6575' : '#FFFFFF' }"
+                  >
+                    <div class="col-md-11 justify-content-center d-flex">
+                      <div class="sign-up-prompt">
+                        {{
+                          navigatorLang === "en-US"
+                            ? "New to Churchplus?"
+                            : $t("loginContent.no-account-yet")
+                        }}
+                        &nbsp;
+                      </div>
+                      <router-link
+                        to="/register"
+                        class="sign-up"
+                        :style="{ color: theme.type == 'light' ? '#343a40' : '#FFFFFF' }"
+                        ><strong>{{
+                          navigatorLang === "en-US"
+                            ? "Create an account"
+                            : $t("loginContent.signup-btntext")
+                        }}</strong>
+                      </router-link>
+                    </div>
+
+                    <!-- <div class="mt-2">
                     <router-link to="/register" class="sign-up primary--text text-decoration-none"><el-button
                         color="#17c5cf" class="w-50" round><strong>{{ navigatorLang === "en-US" ? "Sign up now" :
                       $t('loginContent.signup-btntext') }}</strong>
                       </el-button></router-link>
                   </div> -->
-                </div>
-                <!-- <div class="row">
+                  </div>
+                  <!-- <div class="row">
               <el-divider>
                 Download the App
               </el-divider>
@@ -138,35 +235,56 @@
                 </a>
               </div>
             </div> -->
-              </div>
+                </div>
 
-              <el-dialog v-model="displayModal" title="Please enter your email" width="80%" align-center>
-                <div class="container">
-                  <div class="row mt-2">
-                    <div class="col-12"></div>
-                    <div class="col-sm-2 align-self-center">
-                      Email <span class="text-danger">*</span>
-                    </div>
-                    <div class="col-sm-10">
-                      <el-input type="text" label="Email" v-model="invalidEmailObj.email" />
+                <el-dialog
+                  v-model="displayModal"
+                  title="Please enter your email"
+                  width="80%"
+                  align-center
+                >
+                  <div class="container">
+                    <div class="row mt-2">
+                      <div class="col-12"></div>
+                      <div class="col-sm-2 align-self-center">
+                        Email <span class="text-danger">*</span>
+                      </div>
+                      <div class="col-sm-10">
+                        <el-input
+                          type="text"
+                          label="Email"
+                          v-model="invalidEmailObj.email"
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <template #footer>
-                  <span class="dialog-footer">
-                    <el-button @click="displayModal = false" class="secondary-button" round>Cancel</el-button>
-                    <el-button type="primary" @click="saveEmail" :loading="emailLoading" :color="primarycolor" round>
-                      Confirm
-                    </el-button>
-                  </span>
-                </template>
-              </el-dialog>
+                  <template #footer>
+                    <span class="dialog-footer">
+                      <el-button
+                        @click="displayModal = false"
+                        class="secondary-button"
+                        round
+                        >Cancel</el-button
+                      >
+                      <el-button
+                        type="primary"
+                        @click="saveEmail"
+                        :loading="emailLoading"
+                        :color="primarycolor"
+                        round
+                      >
+                        Confirm
+                      </el-button>
+                    </span>
+                  </template>
+                </el-dialog>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- <el-button @click="sendError">Clicked</el-button> -->
+        <!-- <el-button @click="sendError">Clicked</el-button> -->
+      </div>
     </div>
   </div>
 </template>
@@ -181,15 +299,17 @@ import router from "../../router/index";
 import setupService from "../../services/setup/setupservice";
 import { useGtag } from "vue-gtag-next";
 import FBlogin from "@/mixins/facebookLogin";
-import { Message, Lock } from '@element-plus/icons-vue'
-import { useI18n } from 'vue-i18n';
-import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from '../../i18n';
+import { Message, Lock } from "@element-plus/icons-vue";
+import { useI18n } from "vue-i18n";
+import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from "../../i18n";
+import { useTheme } from "../../theme/ThemeProvider";
 // import * as Sentry from '@sentry/vue'
 
 export default {
   setup() {
     const { event } = useGtag();
-    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
+    const { theme, toggleTheme } = useTheme();
     const track = () => {
       event("aaa", {
         event_category: "login",
@@ -199,7 +319,6 @@ export default {
     track();
     const signInLoading = ref(false);
     const navigatorLang = ref(navigator.language);
-    console.log(navigatorLang.value, 'dddsdsd');
     const primarycolor = inject("primarycolor");
 
     const state = reactive({
@@ -223,10 +342,9 @@ export default {
       // Sentry.captureMessage('Button clicked')
       // Sentry.captureMessage('Button clicked');
     };
-    const { locale } = useI18n({ useScope: 'global' });
+    const { locale } = useI18n({ useScope: "global" });
     watch(locale, (val) => {
       setI18nLanguage(val);
-
     });
 
     const login = async () => {
@@ -277,7 +395,12 @@ export default {
                 router.push("/next");
               }
             }
-          } else if ((adminIndex === -1 && roleIndex !== -1) && (basicUserIndex === -1 && roleIndex !== -1)) {
+          } else if (
+            adminIndex === -1 &&
+            roleIndex !== -1 &&
+            basicUserIndex === -1 &&
+            roleIndex !== -1
+          ) {
             localStorage.clear();
             ElNotification({
               title: "Unauthorized",
@@ -342,7 +465,10 @@ export default {
       navigatorLang,
       state,
       login,
-      mdAndUp, lgAndUp, xlAndUp, xsOnly,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      xsOnly,
       loading,
       Message,
       Lock,
@@ -353,6 +479,8 @@ export default {
       saveEmail,
       primarycolor,
       sendError,
+      theme,
+      toggleTheme,
     };
   },
 };
@@ -374,10 +502,10 @@ export default {
   height: 5rem;
 }
 
-.header{
+.header {
   font-size: 32px;
   font-weight: 500;
-  color: #1D2939;
+  /* color: #1d2939; */
 }
 
 .main-section {
@@ -528,7 +656,6 @@ export default {
 
 .bottom-container {
   text-align: center;
-  color: #4d6575;
   font-size: 14px;
   line-height: 1.4;
   margin-top: 10px;
