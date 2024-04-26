@@ -67,9 +67,22 @@
       "websiteUrl" : "If Yes, Please input the Website Address or URL",
       "step" : "Step 1 of 2"
     },
+    "otpContent": {
+      "chVerification" : "ChurchPlus Verification",
+      "digitCodeText" : "We sent a 5 Digits Code to your",
+      "completeVerify" : "Complete Verification",
+      "didNotGet" : "Didn’t get code? ",
+      "resendCode" : "Resend code",
+      "cancel": "Cancel"
+      
+    },
     "emailVerification": "We will Verify your Email & Phone Number",
     "continue": "Continue",
     "cancel" : "Cancel",
+    "verifySuccess" : "Verification was Successful!",
+    "verifyFailed" : "We couldn’t verify your  information",
+    "whatNext" : "See What’s Next",
+    "tryAgain" : "Try again",
     "next-btntext" : "Next step"
   },
   "startingPointContent": {

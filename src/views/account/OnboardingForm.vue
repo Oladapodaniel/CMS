@@ -113,8 +113,8 @@
           </div>
         </div>
         <div class="col-xs-12 col-md-6" id="onboarding-visuals" :class="{ 'swap-box2': toggle }" ref="box2">
-          <div class="step">
-            <h3>{{ navigatorLang === "en-US" ? "STEP 1 OF 2" : $t('onboardingContent.labels.step') }}</h3>
+          <div class="step text-head">
+            <h4>{{ navigatorLang === "en-US" ? "Step 1 of 2" : $t('onboardingContent.labels.step') }}</h4>
           </div>
 
           <div>
@@ -220,8 +220,17 @@ export default {
     const nextStep = () =>{
       displayVerifyModal.value = true
     }
-    const verifyEmail = () =>{
-      // displayVerifyModal.value = true
+    const verifyEmail =  () =>{
+      // try{
+      //   const res = await axios.get(`/mobile/v1/Account/SendOTP?phoneNumber=${phoneNumber}&email=${email}&tenantId='176bb861-d22e-4598-b2fe-f877888d819c' `)
+      //   console.log(res,'hh');
+
+        router.push('/onetimepassword');
+      // }
+      // catch(error){
+      //   console.log(error)
+      // }
+        
     }
 
     return {
@@ -478,14 +487,17 @@ export default {
 
 .step {
   text-align: center;
-  color: #fff;
+  color: #FFFFFF;
   margin: 30px 0;
-  font-weight: bold;
+  opacity: 0.5;
+
 }
+
 
 .onboarding-image-con {
   width: 80%;
-  margin-left: auto;
+  /* margin-left: auto; */
+  float: right;
   position: relative;
 }
 
