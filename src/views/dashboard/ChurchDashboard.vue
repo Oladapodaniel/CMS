@@ -287,7 +287,10 @@
               <div class="more-body mt-2">
                 Get a user engaging website for your church.
               </div>
-              <a href="https://churchplus.co/awoofwebsite/" target="_blank" class="no-decoration">
+              <!-- <a href="https://churchplus.co/awoofwebsite/" target="_blank" class="no-decoration">
+                <el-button class="mt-1" round>Get one now</el-button>
+              </a> -->
+              <a href="https://my.churchplus.co/forms/9ab06eed-c8fc-4257-2968-08dc652324f2" target="_blank" class="no-decoration">
                 <el-button class="mt-1" round>Get one now</el-button>
               </a>
             </div>
@@ -503,9 +506,12 @@
               <div class="more-body mt-2">
                 Get a user engaging website for your church.
               </div>
-              <a href="https://churchplus.co/awoofwebsite/" class="no-decoration" target="_blank">
+              <a href="https://my.churchplus.co/forms/9ab06eed-c8fc-4257-2968-08dc652324f2" class="no-decoration" target="_blank">
                 <el-button class="mt-1" round>Get one now</el-button>
               </a>
+              <!-- <a href="https://churchplus.co/awoofwebsite/" class="no-decoration" target="_blank">
+                <el-button class="mt-1" round>Get one now</el-button>
+              </a> -->
             </div>
             <div class="col-12 col-sm-6 col-md-4 mt-5 mt-sm-0 more-things second">
               <img src="../../assets/onlinegiving2.svg" />
