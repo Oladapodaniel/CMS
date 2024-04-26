@@ -22,7 +22,6 @@ import 'vue-tel-input/dist/vue-tel-input.css';
 import * as Sentry from "@sentry/vue";
 // if you just want to import css
 import 'element-plus/theme-chalk/dark/css-vars.css';
-import './styles/dark/css-vars.css'
 
 const VueTelInputOptions = {
   mode: "international",

@@ -88,24 +88,33 @@
           $t('onboardingContent.labels.churchWebsite') }}</label>
 
                 <div class="row">
-                  <div class="col-md-12 d-flex">
-                    <el-checkbox-group v-model="checkboxGroup" size="large">{{checkboxGroup}}
-                      <el-checkbox-button v-for="item in websiteOpt" :key="item" :value="item">
-                        {{item}}
-                      </el-checkbox-button>
-                    </el-checkbox-group>
+                  <div class="col-md-12 d-flex ">
+                    <div class="border choice d-flex align-items-center mr-2 mt-2  px-3 py-2 rounded"
+                      v-for="(item, index) in websiteOpt" :key="index" @click="setChoice(item)">
+                      {{ item }}
+                    </div>
                   </div>
                 </div>
               </div>
+              <div class="input-div" v-if="showWebsite">
+                <label class="mb-0">{{ navigatorLang === "en-US" ? "If Yes, Please input the Website Address or URL" :
+          $t('onboardingContent.labels.websiteUrl') }}</label>
+                <el-form-item>
+                  <el-input type="text" v-model="userDetails.websiteUrl" placeholder="Website Address/URL" />
+                </el-form-item>
+              </div>
               <el-button class="w-100" :color="primarycolor" size="large" :disabled="!disableNext" :loading="loading"
-                @click="submitForm(ruleFormRef)" round>{{ navigatorLang === "en-US" ? "Next step" :
+                @click="nextStep" round>{{ navigatorLang === "en-US" ? "Next step" :
           $t('onboardingContent.next-btntext') }}</el-button>
+              <!-- <el-button class="w-100" :color="primarycolor" size="large" :disabled="!disableNext" :loading="loading"
+                @click="submitForm(ruleFormRef)" round>{{ navigatorLang === "en-US" ? "Next step" :
+          $t('onboardingContent.next-btntext') }}</el-button> -->
             </el-form>
           </div>
         </div>
         <div class="col-xs-12 col-md-6" id="onboarding-visuals" :class="{ 'swap-box2': toggle }" ref="box2">
           <div class="step">
-            <h3>{{ navigatorLang === "en-US" ? "STEP 1 OF 2" : $t('onboardingContent.step') }}</h3>
+            <h3>{{ navigatorLang === "en-US" ? "STEP 1 OF 2" : $t('onboardingContent.labels.step') }}</h3>
           </div>
 
           <div>
@@ -119,6 +128,36 @@
         </div>
       </div>
     </div>
+    <el-dialog class="" style="border-radius: 25px;" v-model="displayVerifyModal" title=""
+            :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+            <div class="row justify-content-center ">
+                <div class="col-md-10 col-11  mt-4 h-100 bg-white mb-5">
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-md-10 d-flex justify-content-center">
+                            <div class="col-md-3 col-5 col-sm-3 ">
+                                <img class="w-100 " src="../../assets/verifyIcon.png" alt="">
+                            </div>
+                        </div>
+                        <div class="col-md-12  mt-2 d-flex justify-content-center">
+                            <div class="col-md-7 col-12 col-sm-8">
+                                <div class="text-font font-weight-600 col-md-12 col-12 px-0 h4 text-center"
+                                    style="color: #111111;">
+                                    {{ navigatorLang === "en-US" ? "We will Verify your Email & Phone Number" : $t('onboardingContent.emailVerification') }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 my-3 d-flex flex-column justify-content-center align-items-center ">
+                            <div class="col-md-6  ">
+                                <el-button @click="verifyEmail" :color="primarycolor" size="large" class="w-100" round>{{ navigatorLang === "en-US" ? "Continue" : $t('onboardingContent.continue') }}</el-button>
+                            </div>
+                            <div class="col-md-6  ">
+                                <el-button size="large" class="w-100 mt-3" round>{{ navigatorLang === "en-US" ? "Cancel" : $t('onboardingContent.cancel') }}</el-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </el-dialog>
   </div>
 </template>
 
@@ -130,6 +169,7 @@ import router from "../../router/index";
 import { ref, reactive, watch, inject } from "vue";
 import finish from "../../services/progressbar/progress";
 import { ElNotification } from 'element-plus'
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useI18n } from 'vue-i18n';
 import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from '../../i18n';
 export default {
@@ -148,7 +188,10 @@ export default {
   setup() {
     const primarycolor = inject('primarycolor')
     const ruleFormRef = ref()
-    const checkboxGroup = ref("")
+    const displayVerifyModal = ref(false)
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
+    const checkboxGroup = ref([])
+    const checkboxGroup1 = ref([])
     const websiteOpt = ref(['No', 'Yes'])
     const navigatorLang = ref(navigator.language);
     const rules = reactive({
@@ -173,6 +216,14 @@ export default {
       setI18nLanguage(val);
 
     });
+
+    const nextStep = () =>{
+      displayVerifyModal.value = true
+    }
+    const verifyEmail = () =>{
+      // displayVerifyModal.value = true
+    }
+
     return {
       ruleFormRef,
       rules,
@@ -180,6 +231,13 @@ export default {
       navigatorLang,
       websiteOpt,
       checkboxGroup,
+      checkboxGroup1,
+      displayVerifyModal,
+      mdAndUp, lgAndUp, xlAndUp, xsOnly,
+      nextStep,
+      verifyEmail
+      // showWebsite,
+      // setChoice,
     }
   },
 
@@ -198,6 +256,7 @@ export default {
       selectedCountry: {},
       countries: [],
       loading: false,
+      showWebsite: false,
       codeUrl: {},
       disableNext: false,
       membershipSizeList: ['1 - 100', '101 - 200', '201 - 500', '501 - 2000', '2001 - 10,000'].map(i => ({ value: i, label: i })),
@@ -214,6 +273,20 @@ export default {
           (i) => i.phoneCode == phoneObject.countryCallingCode
         );
       }
+    },
+
+    setChoice(item) {
+      if (item === "Yes") {
+        this.showWebsite = true
+        console.log(item, 'kjjkk');
+        // this.checkboxGroup 
+      } else {
+        this.showWebsite = false
+        console.log(item, 'kjjkk');
+        // this.checkboxGroup
+        this.userDetails.websiteUrl = ""
+      }
+      // this.checkboxGroup = []
     },
 
     async submitForm(formEl) {
@@ -328,6 +401,17 @@ export default {
   width: 8rem;
   height: 5rem;
 }
+
+.choice{
+  background: #ffffff;
+}
+.choice:hover{
+  background: #D1FDFF;
+}
+/* .choicehover{
+  background: #7af2f8;
+} */
+
 
 
 #onboarding {
