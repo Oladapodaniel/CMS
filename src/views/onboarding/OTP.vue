@@ -21,10 +21,19 @@
                             <div class="text-center d-flex mb-3 text-font justify-content-center ">
                                 <div>
                                     <span class="text-center">
-                                        {{ navigatorLang === "en-US" ? "We sent a 5 Digits Code to your" :
-                                $t('onboardingContent.otpContent.digitCodeText') }} <br /> <span
-                                            class="text-dark">{{ partialEmail ? partialEmail : "" }} and {{
-                                partialNumber ? partialNumber : "" }}</span>
+                                        {{ navigatorLang === "en-US" ? "We sent a 4 Digits Code to your" :
+                                $t('onboardingContent.otpContent.digitCodeText') }} 
+                                
+                                <br /> 
+                                <span
+                                            class="font-weight-600">
+                                            {{ setOnboardingData ? setOnboardingData.email : "Email" }} and {{
+                                setOnboardingData ? setOnboardingData.phoneNumber : "Phone Number" }}</span>
+                                <!-- <br /> 
+                                <span
+                                            class="">
+                                            {{ partialEmail ? partialEmail : "" }} and {{
+                                partialNumber ? partialNumber : "" }}</span> -->
                                     </span>
                                 </div>
                             </div>
@@ -45,12 +54,12 @@
                                         <input ref="fourthFocus" v-model="fourthInput"
                                             class="m-2 form-control rounded inputtwo bg-secondary" type="text"
                                             maxlength="2" @input="handleOTPInputFour" />
-                                        <input ref="fifthFocus" v-model="fifthInput"
+                                        <!-- <input ref="fifthFocus" v-model="fifthInput"
                                             class="m-2 form-control rounded inputtwo bg-secondary" type="text"
                                             maxlength="1" @input="handleOTPInputFive" />
                                         <input ref="sixFocus" v-model="sixthInput"
                                             class="m-2 form-control rounded inputtwo bg-secondary" type="text"
-                                            maxlength="1" @input="handleOTPInputSix" />
+                                            maxlength="1" @input="handleOTPInputSix" /> -->
                                     </div>
                                 </div>
                                 <div class="col-md-12 mt-4 d-flex justify-content-center">
@@ -97,8 +106,8 @@
                 <div class="col-md-10 col-11  mt-4 h-100 bg-white mb-5">
                     <div class="row justify-content-center align-items-center">
                         <div class="col-md-10 d-flex justify-content-center">
-                            <div class="col-md-3 col-5 col-sm-3 ">
-                                <img class="w-100 " src="../../assets/shield.png" alt="">
+                            <div class="col-md-4 col-5 col-sm-3 ">
+                                <img class="w-100 " src="../../assets/shieldGif.gif" alt="">
                             </div>
                         </div>
                         <div class="col-md-12  mt-2 d-flex justify-content-center">
@@ -180,6 +189,9 @@ export default {
         const fifthFocus = ref("")
         const sixFocus = ref("")
         const myonboardingData = ref(store.getters.onboardingObject);
+        const setOnboardingData = ref(store.getters.onboardingData);
+        console.log(setOnboardingData.value, 'jjhhdhd');
+        console.log(myonboardingData.value, 'jjhhdhd');
         const userPassword = ref(store.getters.userPassword);
         const firstInput = ref();
         const secondInput = ref();
@@ -213,6 +225,8 @@ export default {
             fifthFocus.value.focus()
             if (!fourthInput.value) {
                 thirdFocus.value.focus()
+            }else{
+                verifyOTP();
             }
         }
         const handleOTPInputFive = () => {
@@ -224,9 +238,10 @@ export default {
         const handleOTPInputSix = () => {
             if (!sixthInput.value) {
                 fifthFocus.value.focus()
-            } else {
-                verifyOTP();
-            }
+            } 
+            // else {
+            //     verifyOTP();
+            // }
         }
 
         const { locale } = useI18n({ useScope: 'global' });
@@ -237,11 +252,15 @@ export default {
 
         const completeVerification = () => {
             displaySuccess.value = true
-            displayFailed.value = true
+            // displayFailed.value = true
         }
 
         const cancel = () => {
             router.push('/onboarding')
+        }
+
+        const whatNext = () => {
+            router.push("/onboarding/step2");
         }
 
         const verifyOTP = async () => {
@@ -312,6 +331,7 @@ export default {
             mdAndUp, lgAndUp, xlAndUp, xsOnly,
             handleOTPInputTwo,
             displayFailed,
+            setOnboardingData,
             completeVerification,
             displaySuccess,
             handleOTPInputFour,
@@ -319,6 +339,7 @@ export default {
             handleOTPInputThree,
             handleOTPInputSix,
             verifyOTP,
+            whatNext,
             navigatorLang,
             firstFocus,
             secondFocus,
@@ -353,7 +374,8 @@ export default {
     border-radius: 0px;
     margin: 2px;
     border: none;
-    background: #EBEBEB !important;
+    /* background: #EBEBEB !important; */
+    background: #F8F8F8 !important;
     font-weight: bold;
     color: #fff;
     outline: none;
@@ -362,7 +384,7 @@ export default {
 
 .otp-field input:focus {
     /* border: 1px solid #900a39; */
-    box-shadow: 0 0 2px 2px #900a39c7;
+    box-shadow: 0 0 2px 2px #0048C2;
 }
 
 .disabled {
@@ -375,7 +397,7 @@ export default {
 
 .inputtwo {
     color: #8d8d8d !important;
-    font: normal normal 800 1.5rem Nunito sans;
+    /* font: normal normal 800 1.5rem Nunito sans; */
     font-size: 35px;
 }
 

@@ -6,7 +6,7 @@
     <div :class="{ 'container-slim': lgAndUp || xlAndUp }"
       style="margin: auto;">
       <div class="row justify-content-center">
-        <button @click="toggleTheme">Toggle Theme</button>
+        <!-- <button @click="toggleTheme">Toggle Theme</button> -->
         <div class="col-md-11 px-0 col-sm-12 mt-4">
           <div class="row justify-content-between">
             <div class="col-md-5 px-0 mt-4 d-flex align-items-center">

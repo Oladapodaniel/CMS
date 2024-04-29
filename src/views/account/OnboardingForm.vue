@@ -104,7 +104,7 @@
                 </el-form-item>
               </div>
               <el-button class="w-100" :color="primarycolor" size="large" :disabled="!disableNext" :loading="loading"
-                @click="nextStep" round>{{ navigatorLang === "en-US" ? "Next step" :
+                @click="nextStep(ruleFormRef)" round>{{ navigatorLang === "en-US" ? "Next step" :
           $t('onboardingContent.next-btntext') }}</el-button>
               <!-- <el-button class="w-100" :color="primarycolor" size="large" :disabled="!disableNext" :loading="loading"
                 @click="submitForm(ruleFormRef)" round>{{ navigatorLang === "en-US" ? "Next step" :
@@ -217,20 +217,20 @@ export default {
 
     });
 
-    const nextStep = () =>{
-      displayVerifyModal.value = true
-    }
-    const verifyEmail =  () =>{
-      // try{
-      //   const res = await axios.get(`/mobile/v1/Account/SendOTP?phoneNumber=${phoneNumber}&email=${email}&tenantId='176bb861-d22e-4598-b2fe-f877888d819c' `)
-      //   console.log(res,'hh');
-
-        router.push('/onetimepassword');
-      // }
-      // catch(error){
-      //   console.log(error)
-      // }
-        
+    const nextStep =  async (formEl) =>{
+      if (!formEl) return
+      await formEl.validate((valid, fields) => {
+        if (valid) {
+          displayVerifyModal.value = true
+        } else {
+          console.log('error submit!', fields)
+          ElNotification({
+            title: 'Some fields empty',
+            message: 'Fill all fields and submit again',
+            type: 'warning',
+          })
+        }
+      })
     }
 
     return {
@@ -244,7 +244,7 @@ export default {
       displayVerifyModal,
       mdAndUp, lgAndUp, xlAndUp, xsOnly,
       nextStep,
-      verifyEmail
+      // verifyEmail
       // showWebsite,
       // setChoice,
     }
@@ -284,6 +284,21 @@ export default {
       }
     },
 
+    async verifyEmail() {
+      try{
+        const res = await axios.get(`/mobile/v1/Account/SendOTP?phoneNumber=${this.userDetails.phoneNumber}&email=${this.userDetails.email}&tenantId=176bb861-d22e-4598-b2fe-f877888d819c `)
+        console.log(res,'hh');
+        this.next()
+          this.$router.push('/onetimepassword');
+
+      }
+      catch(error){
+        console.log(error)
+      }
+      
+      // this.$router.push('/onetimepassword');
+      // this.checkboxGroup = []
+    },
     setChoice(item) {
       if (item === "Yes") {
         this.showWebsite = true
@@ -298,53 +313,54 @@ export default {
       // this.checkboxGroup = []
     },
 
-    async submitForm(formEl) {
-      if (!formEl) return
-      await formEl.validate((valid, fields) => {
-        if (valid) {
-          this.next();
-        } else {
-          console.log('error submit!', fields)
-          ElNotification({
-            title: 'Some fields empty',
-            message: 'Fill all fields and submit again',
-            type: 'warning',
-          })
-        }
-      })
-    },
+    // async submitForm(formEl) {
+    //   if (!formEl) return
+    //   await formEl.validate((valid, fields) => {
+    //     if (valid) {
+    //       this.next();
+    //     } else {
+    //       console.log('error submit!', fields)
+    //       ElNotification({
+    //         title: 'Some fields empty',
+    //         message: 'Fill all fields and submit again',
+    //         type: 'warning',
+    //       })
+    //     }
+    //   })
+    // },
 
     next() {
       if (!this.userDetails.email) return false;
       this.userDetails.countryId = this.selectedCountry.id;
       this.loading = true;
-      axios
-        .post("/api/onboarding", this.userDetails)
-        .then((res) => {
-          if (res.data.isOnboarded) {
-            ElNotification({
-              title: 'Well done',
-              message: 'Onboarding successful',
-              type: 'success',
-            })
-          }
-          if (!res.data.token) {
-            const preToken = localStorage.getItem("pretoken");
-            localStorage.setItem("token", preToken);
-            localStorage.removeItem("pretoken");
-          } else {
-            localStorage.setItem("token", res.data.token);
-            localStorage.setItem("roles", JSON.stringify(["Admin"]));
-          }
+      // axios
+      //   .post("/api/onboarding", this.userDetails)
+      //   .then((res) => {
+          // if (res.data.isOnboarded) {
+          //   ElNotification({
+          //     title: 'Well done',
+          //     message: 'Onboarding successful',
+          //     type: 'success',
+          //   })
+          // }
+          // if (!res.data.token) {
+          //   const preToken = localStorage.getItem("pretoken");
+          //   localStorage.setItem("token", preToken);
+          //   localStorage.removeItem("pretoken");
+          // } else {
+          //   localStorage.setItem("token", res.data.token);
+          //   localStorage.setItem("roles", JSON.stringify(["Admin"]));
+          // }
+          console.log(this.userDetails,'hhjhh');
           this.loading = false;
           this.$store.dispatch("setOnboardingData", this.userDetails);
-          this.$router.push("/onboarding/step2");
-        })
-        .catch((err) => {
-          finish()
-          this.loading = false;
-          console.log(err.response);
-        });
+          // this.$router.push("/onboarding/step2");
+        // })
+        // .catch((err) => {
+        //   finish()
+        //   this.loading = false;
+        //   console.log(err.response);
+        // });
     },
 
     invalidResponse() {

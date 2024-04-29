@@ -1,13 +1,15 @@
 <template>
   <div>
-    <div class="main">
-      <div class="greeting" :class="{ box1: processing }">
+    <div class="main ">
+      <div class="greeting " :class="{ box1: processing }">
         <div class="welcome-onboard">
-          <div class="welcome-intro">
+          <div class="welcome-intro p-5 rounded ml-4 ">
             <div v-if="!processing">
-              <h1>{{ navigatorLang === "en-US" ? 'Hey' : $t('startingPointContent.hey') }} {{ userDetails.firstName ?
-        userDetails.firstName : "" }}</h1>
-              <h2>{{ navigatorLang === "en-US" ? 'What would you like to do in Churchplus?' :
+              <div class="h2 text-head font-weight-600">{{ navigatorLang === "en-US" ? 'Hey' :
+        $t('startingPointContent.hey') }} {{ userDetails.firstName ?
+        userDetails.firstName : "" }} <span><img class="" style="height: 1.5rem; width: 1.5rem"
+                    src="../../assets/verifyIcon.png" alt=""></span></div>
+              <h2>{{ navigatorLang === "en-US" ? 'Get started with our amazing features' :
         $t('startingPointContent.what-to-do-in-ch') }}</h2>
             </div>
           </div>
@@ -16,26 +18,28 @@
 
       <div class="options-div " :class="{ box2: processing }">
         <div class="options-container" v-if="screenWidth > 990 || !processing">
-          <div class="step-count mt-4">
-            <h3>{{ navigatorLang === "en-US" ? 'STEP 2 OF 2' : $t('startingPointContent.step') }}</h3>
+          <div class="step-count font-weight-600 text-head mt-4">
+            <div>{{ navigatorLang === "en-US" ? 'Step 2 of 2' : $t('startingPointContent.step') }}</div>
           </div>
 
-          <div class="start-text hidden-sm-and-down">
-            <h2>{{ navigatorLang === "en-US" ? 'Choose a starting point' : $t('startingPointContent.starting-point') }}
+          <div class="start-text text-head font-weight-600  hidden-sm-and-down">
+            <h2>{{ navigatorLang === "en-US" ? 'Choose a Starting Point' : $t('startingPointContent.starting-point') }}
             </h2>
           </div>
 
-          <div class="more-later hidden-sm-and-down">
-            <span>{{ navigatorLang === "en-US" ? 'You can do more later' : $t('startingPointContent.do-more') }}</span>
+          <div class="more-later  hidden-sm-and-down">
+            <span class="h5" style="font-weight: 300;">{{ navigatorLang === "en-US" ? 'You can do more later' :
+        $t('startingPointContent.do-more') }}</span>
           </div>
 
           <div class="start-text hidden-md-and-up">
             <h2>{{ navigatorLang === "en-US" ? 'Hey' : $t('startingPointContent.hey') }} {{ userDetails.firstName ?
-        userDetails.firstName : "" }}</h2>
+        userDetails.firstName : "" }}<span><img class="" style="height: 1.5rem; width: 1.5rem"
+                  src="../../assets/verifyIcon.png" alt=""></span></h2>
           </div>
 
           <div class="more-later hidden-md-and-up">
-            <span>{{ navigatorLang === "en-US" ? 'What would you like to do in churchplus' :
+            <span>{{ navigatorLang === "en-US" ? 'Get started with our amazing features' :
         $t('startingPointContent.what-to-do-in-ch') }} </span>
           </div>
 
@@ -43,68 +47,30 @@
             <router-link :to="{ name: 'WelcomeOnboarding1', params: { option: '/mobileonboarding' } }"
               class="start-option">
               <div class="icon">
-                <img class="link-icon" src="../../assets/dashboardlinks/com-icon.svg" alt="Sms Icon" />
+                <img class="" src="../../assets/dashboardlinks/com-icon.svg" alt="Sms Icon" />
               </div>
               <div class="link-n-icon">
-                <a class="start-link text-success" >Church Mobile App Setup </a>
+                <a class="start-link ">Church Mobile App Setup </a>
                 <!-- <a class="start-link">{{ navigatorLang === "en-US" ? 'Send Email/SMS' :
         $t('startingPointContent.send-email-sms') }}</a> -->
-                <p class="my-auto"><i class="fas fa-angle-right"></i></p>
+                <!-- <p class="my-auto"><i class="fas fa-angle-right"></i></p> -->
               </div>
             </router-link>
-            <div class="w-100 mt-1 ml-2">
-              <el-dropdown class="w-100" trigger="click">
-                <el-button type="primary" class="start-option">
-                  <span class="icon">
-                    <img class="link-icon" src="../../assets/claim-sms-offer.png" alt="Sms Icon" />
-                  </span>
-                  <span class="font-weight-bold text-warning">
-                    <a class="start-link text-success">{{ navigatorLang === "en-US" ? 'Claim your 500 unit now' :
+            <div class="w-100  ml-2">
+              <div class="start-option offer-bg" @click="showOfferModal">
+                <span class=" offer-image">
+                  <img class="link-icon" src="../../assets/offerImage.png" alt="Sms Icon" />
+                </span>
+                <span class="font-weight-bold">
+                  <a class="start-link ">{{ navigatorLang === "en-US" ? 'Claim Free 500 units now!' :
         $t('startingPointContent.claim-unit') }}</a>
-                  </span>
-                  <span class="d-flex justify-content-end font-weight-bold adjust-width">
-                    <!-- <i class="fas fa-angle-down "></i> -->
-                    <i class="fas fa-angle-right" :class="{ 'tbb-icon-rotate': smsOfferDropped }"></i>
-                  </span>
-                  <!-- Dropdown List<el-icon class="el-icon--right"><arrow-down /></el-icon> -->
-                </el-button>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <p class="font-weight-bold px-3 pt-3" style="font-size: 1.2em">
-                      {{ navigatorLang === "en-US" ? 'Terms and Conditions' : $t('startingPointContent.terms') }}
-                    </p>
-                    <p style="font-size: 1.2em" class="px-3">
-                      <el-icon color="green">
-                        <CircleCheck />
-                      </el-icon>
-                      {{ navigatorLang === "en-US" ? 'Buy 1000 units or above and get 500units free' :
-        $t('startingPointContent.units-and-above') }} <br />
-                      <br />
-                      <el-icon color="green">
-                        <CircleCheck />
-                      </el-icon>
-                      {{ navigatorLang === "en-US" ? 'Offer is open to both new and existing customers' :
-        $t('startingPointContent.existing-customers') }} <br />
-                      <br />
-                      <el-icon color="green">
-                        <CircleCheck />
-                      </el-icon>
-                      {{ navigatorLang === "en-US" ? 'This is a one time offer for the duration of this campaign' :
-        $t('startingPointContent.one-time-offer') }}
-                    </p>
-                    <el-dropdown-item>
-                      <router-link :to="{ name: 'BuyUnits', params: { option: '/tenant/units' } }"
-                        class="d-flex justify-content-between text-primary font-weight-bold w-100 align-items-center">
-                        <span>{{ navigatorLang === "en-US" ? 'Buy SMS now' : $t('startingPointContent.buy-sms')
-                          }}</span>
-                        <el-icon class="el-icon--right">
-                          <arrow-right />
-                        </el-icon>
-                      </router-link>
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
+                </span>
+                <span class="d-flex justify-content-end font-weight-bold adjust-width">
+                  <!-- <i class="fas fa-angle-down "></i> -->
+                  <!-- <i class="fas fa-angle-right" :class="{ 'tbb-icon-rotate': smsOfferDropped }"></i> -->
+                </span>
+                <!-- Dropdown List<el-icon class="el-icon--right"><arrow-down /></el-icon> -->
+              </div>
             </div>
             <router-link :to="{ name: 'ProcessRequest', params: { option: '/tenant/sms/compose' } }"
               class="start-option">
@@ -115,7 +81,6 @@
                 <a class="start-link">{{ navigatorLang === "en-US" ? 'Send Email/SMS' :
         $t('startingPointContent.send-email-sms')
                   }}</a>
-                <p class="my-auto"><i class="fas fa-angle-right"></i></p>
               </div>
             </router-link>
 
@@ -128,7 +93,7 @@
               <div class="link-n-icon">
                 <a class="start-link">{{ navigatorLang === "en-US" ? 'Add church members' :
         $t('startingPointContent.add-ch-members') }}</a>
-                <p class="my-auto"><i class="fas fa-angle-right"></i></p>
+                <!-- <p class="my-auto"><i class="fas fa-angle-right"></i></p> -->
               </div>
             </router-link>
 
@@ -141,20 +106,20 @@
               </div>
               <div class="link-n-icon">
                 <a class="start-link">{{ navigatorLang === "en-US" ? 'Add first timers' :
-                  $t('startingPointContent.add-fst-timers')
+        $t('startingPointContent.add-fst-timers')
                   }}</a>
-                <p class="my-auto"><i class="fas fa-angle-right"></i></p>
+                <!-- <p class="my-auto"><i class="fas fa-angle-right"></i></p> -->
               </div>
             </router-link>
 
-            <router-link class="start-option" :to="{ name: 'ProcessRequest', params: { option: '/next' } }">
+            <router-link class="start-option " :to="{ name: 'ProcessRequest', params: { option: '/next' } }">
               <div class="icon">
                 <img class="link-icon" src="../../assets/not-sure.svg" alt="Question Icon" />
               </div>
               <div class="link-n-icon">
                 <a class="start-link">{{ navigatorLang === "en-US" ? 'Not sure yet' : $t('startingPointContent.not-yet')
                   }}</a>
-                <p class="my-auto"><i class="fas fa-angle-right"></i></p>
+                <!-- <p class="my-auto"><i class="fas fa-angle-right"></i></p> -->
               </div>
             </router-link>
           </div>
@@ -162,16 +127,66 @@
       </div>
     </div>
     <div class="logo">
-      <img src="../../assets/churchplus-logo.png" alt="" />
+      <!-- <img src="../../assets/churchplus-logo.png" alt="" /> -->
+      <img class="w-100" src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" />
     </div>
+    <el-dialog class="" style="border-radius: 25px;" v-model="displayOfferModal" title=""
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+      <div class="row justify-content-center ">
+        <div class="col-md-10 col-11  mt-4 h-100 bg-white mb-5">
+          <div class="row justify-content-center align-items-center">
+            <div class="col-md-10 d-flex justify-content-center">
+              <div class="col-md-3 col-5 col-sm-3 ">
+                <img class="w-100" src="../../assets/offerImage.png" alt="Sms Icon" />
+              </div>
+            </div>
+            <div class="col-md-12  mt-2 d-flex justify-content-center">
+              <div class="col-md-7 col-12 col-sm-8">
+                <div class="text-font font-weight-600 col-md-12 col-12 px-0 h4 text-center" style="color: #03063F;">
+                  {{ navigatorLang === "en-US" ? "Easy Steps to Claiming Free 500 units now!" :
+        $t('startingPointContent.easySteps') }}
+                </div>
+                <div class="text-font col-md-12 col-12 px-0   " style="color: #111111;">
+                  {{ navigatorLang === "en-US" ? "1. Buy NGN 1,000 Worth of SMS" : $t('startingPointContent.stepOne') }}
+                </div>
+                <div class="text-font  col-md-12 col-12 px-0 " style="color: #111111;">
+                  {{ navigatorLang === "en-US" ? '2. Offer is open to both new and existing customers' :
+        $t('startingPointContent.existing-customers') }}
+                </div>
+                <div class="text-font  col-md-12 col-12 px-0  " style="color: #111111;">
+                  {{ navigatorLang === "en-US" ? '3. This is a one time offer for the duration of this campaign' :
+        $t('startingPointContent.one-time-offer') }}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 my-3 d-flex justify-content-center align-items-center ">
+              <div class="col-md-6  ">
+                <router-link :to="{ name: 'BuyUnits', params: { option: '/tenant/units' } }"
+                  class="d-flex justify-content-between  text-decoration-none font-weight-bold w-100 align-items-center">
+                  <el-button  :color="primarycolor" size="large" class="w-100" round>{{
+                    navigatorLang
+                    === "en-US" ? 'Buy SMS Units now' : $t('startingPointContent.buy-sms')
+                    }}</el-button>
+                </router-link>
+                <!-- <el-button @click="verifyEmail" :color="primarycolor" size="large" class="w-100" round>{{ navigatorLang
+                  ===
+                  "en-US" ? "Continue" : $t('onboardingContent.continue') }}</el-button> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import axios from "@/gateway/backendapi";
-import { ref, watch } from "vue";
+import { ref, watch, inject } from "vue";
 import { useI18n } from 'vue-i18n';
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from '../../i18n';
+
 export default {
   beforeRouteEnter(to, from, next) {
     if (localStorage.getItem("userSetup")) return next("/");
@@ -181,14 +196,25 @@ export default {
   setup() {
 
     const navigatorLang = ref(navigator.language);
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
+    const displayOfferModal = ref(false)
+    const primarycolor = inject('primarycolor')
     const { locale } = useI18n({ useScope: 'global' });
     watch(locale, (val) => {
       setI18nLanguage(val);
 
     });
 
+    const showOfferModal = () => {
+      displayOfferModal.value = true
+    }
+
     return {
-      navigatorLang
+      navigatorLang,
+      displayOfferModal,
+      mdAndUp, lgAndUp, xlAndUp, xsOnly,
+      showOfferModal,
+      primarycolor
     }
   },
 
@@ -263,6 +289,11 @@ a {
   left: 30px;
 }
 
+.logo img {
+  width: 4rem;
+  height: 4rem
+}
+
 .greeting {
   width: 55%;
   transition: all 0.7s ease-in-out;
@@ -282,47 +313,39 @@ a {
 
 .welcome-intro {
   max-width: 92%;
-  margin: auto;
-}
+  /* margin: auto; */
+  background: #F7F9FD;
+  border-radius: 10px;
+  color: #111111;
 
-.welcome-intro h1 {
-  line-height: 1.4;
-  font-weight: bold;
-  display: block;
-  margin: 24px 0 16px;
-  font-family: Averta, sans-serif;
-  color: #1c252c;
-  letter-spacing: -0.015em;
-  font-size: 33px;
+
 }
 
 .welcome-intro h2 {
-  color: #4d6575;
-  font-weight: 400;
-  margin-top: 0;
-  font-size: 30px;
+  color: #111111;
+  font-weight: 300;
+  /* margin-top: 0; */
+  font-size: 24px;
+  opacity: 0.6;
+
 }
 
 .start-text,
 .step-count {
   text-align: center;
   color: #fff;
-  font-weight: 900;
 }
 
 .step-count {
   margin: 30px 0;
+  font-size: 24px;
+  opacity: 0.5;
 }
 
-.step-count h3 {
-  font-size: 16px;
-}
 
 .more-later {
   text-align: center;
   color: #fff;
-  margin: 16px 0;
-  font-weight: bold;
 }
 
 .start-text h1 {
@@ -331,7 +354,7 @@ a {
 }
 
 .start-text h2 {
-  font-size: 30px;
+  font-size: 32px;
 }
 
 .all-options {
@@ -354,19 +377,34 @@ a {
   justify-content: flex-start;
   justify-self: center;
   width: 97%;
-  text-align: center;
+  /* text-align: center; */
   padding: 10px;
   margin-top: 8px;
-  background: #fff;
-  border-radius: 8px;
+  border-radius: 10px;
+  border: 1px solid #03E5F3;
   box-sizing: border-box;
-  height: 76px;
-  opacity: 0.8;
+  background: #0551D2;
+  height: 65px;
+  /* opacity: 0.8; */
   cursor: pointer;
 }
 
+.offer-bg {
+  background: #68E4FF !important;
+  color: #03063F !important;
+
+
+}
+
+.offer-bg a {
+  color: #03063F !important;
+  padding: 0 !important;
+  font-size: 600 !important;
+  /* font-size: 24px; */
+}
+
 .start-option:hover {
-  background: #fff;
+  /* background: #fff; */
   opacity: 1;
 }
 
@@ -374,6 +412,16 @@ a {
   width: 20%;
   max-width: 40px;
 }
+
+.offer-image {
+  width: 30%;
+  max-width: 55px;
+}
+
+/* .offer-image img {
+  width: 4rem;
+  max-width: 80px;
+} */
 
 .link-n-icon {
   display: flex;
@@ -391,11 +439,11 @@ a {
 }
 
 .start-link {
-  font-weight: 900;
+  font-weight: 500;
   padding: 0 1rem;
   text-decoration: none;
-  text-transform: capitalize;
-  color: #215fc4;
+  /* text-transform: capitalize; */
+  color: #ffffff;
 }
 
 .claim-offer {
