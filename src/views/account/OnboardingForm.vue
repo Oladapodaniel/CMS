@@ -129,35 +129,37 @@
       </div>
     </div>
     <el-dialog class="" style="border-radius: 25px;" v-model="displayVerifyModal" title=""
-            :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
-            <div class="row justify-content-center ">
-                <div class="col-md-10 col-11  mt-4 h-100 bg-white mb-5">
-                    <div class="row justify-content-center align-items-center">
-                        <div class="col-md-10 d-flex justify-content-center">
-                            <div class="col-md-3 col-5 col-sm-3 ">
-                                <img class="w-100 " src="../../assets/verifyIcon.png" alt="">
-                            </div>
-                        </div>
-                        <div class="col-md-12  mt-2 d-flex justify-content-center">
-                            <div class="col-md-7 col-12 col-sm-8">
-                                <div class="text-font font-weight-600 col-md-12 col-12 px-0 h4 text-center"
-                                    style="color: #111111;">
-                                    {{ navigatorLang === "en-US" ? "We will Verify your Email & Phone Number" : $t('onboardingContent.emailVerification') }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 my-3 d-flex flex-column justify-content-center align-items-center ">
-                            <div class="col-md-6  ">
-                                <el-button @click="verifyEmail" :color="primarycolor" size="large" class="w-100" round>{{ navigatorLang === "en-US" ? "Continue" : $t('onboardingContent.continue') }}</el-button>
-                            </div>
-                            <div class="col-md-6  ">
-                                <el-button size="large" class="w-100 mt-3" round>{{ navigatorLang === "en-US" ? "Cancel" : $t('onboardingContent.cancel') }}</el-button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+      <div class="row justify-content-center ">
+        <div class="col-md-10 col-11  mt-4 h-100 bg-white mb-5">
+          <div class="row justify-content-center align-items-center">
+            <div class="col-md-10 d-flex justify-content-center">
+              <div class="col-md-3 col-5 col-sm-3 ">
+                <img class="w-100 " src="../../assets/verifyIcon.png" alt="">
+              </div>
             </div>
-        </el-dialog>
+            <div class="col-md-12  mt-2 d-flex justify-content-center">
+              <div class="col-md-7 col-12 col-sm-8">
+                <div class="text-font font-weight-600 col-md-12 col-12 px-0 h4 text-center" style="color: #111111;">
+                  {{ navigatorLang === "en-US" ? "We will Verify your Email & Phone Number" :
+          $t('onboardingContent.emailVerification') }}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 my-3 d-flex flex-column justify-content-center align-items-center ">
+              <div class="col-md-6  ">
+                <el-button @click="verifyEmail" :loading="loading" :color="primarycolor" size="large" class="w-100"
+                  round>{{ navigatorLang === "en-US" ? "Continue" : $t('onboardingContent.continue') }}</el-button>
+              </div>
+              <div class="col-md-6  ">
+                <el-button size="large" class="w-100 mt-3" round>{{ navigatorLang === "en-US" ? "Cancel" :
+                  $t('onboardingContent.cancel') }}</el-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -168,7 +170,7 @@ import router from "../../router/index";
 // import "vue3-tel-input/dist/vue3-tel-input.css";
 import { ref, reactive, watch, inject } from "vue";
 import finish from "../../services/progressbar/progress";
-import { ElNotification } from 'element-plus'
+import { ElNotification, ElMessage } from 'element-plus'
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useI18n } from 'vue-i18n';
 import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from '../../i18n';
@@ -217,7 +219,7 @@ export default {
 
     });
 
-    const nextStep =  async (formEl) =>{
+    const nextStep = async (formEl) => {
       if (!formEl) return
       await formEl.validate((valid, fields) => {
         if (valid) {
@@ -285,28 +287,42 @@ export default {
     },
 
     async verifyEmail() {
-      try{
+      this.loading = true;
+      try {
         const res = await axios.get(`/mobile/v1/Account/SendOTP?phoneNumber=${this.userDetails.phoneNumber}&email=${this.userDetails.email}&tenantId=176bb861-d22e-4598-b2fe-f877888d819c `)
-        console.log(res,'hh');
-        this.next()
+        console.log(res, 'hh');
+        if (res.data.status) {
+          this.$store.dispatch("setVerifyEmailData", res.data);
+          this.next()
           this.$router.push('/onetimepassword');
+          this.loading = false;
+        }
+        else {
+          ElMessage({
+            type: "error",
+            message: "Request Failed",
+            duration: 5000,
+          });
+        }
+
+
+
 
       }
-      catch(error){
+      catch (error) {
         console.log(error)
+        this.loading = false;
       }
-      
+
       // this.$router.push('/onetimepassword');
       // this.checkboxGroup = []
     },
     setChoice(item) {
       if (item === "Yes") {
         this.showWebsite = true
-        console.log(item, 'kjjkk');
         // this.checkboxGroup 
       } else {
         this.showWebsite = false
-        console.log(item, 'kjjkk');
         // this.checkboxGroup
         this.userDetails.websiteUrl = ""
       }
@@ -336,31 +352,30 @@ export default {
       // axios
       //   .post("/api/onboarding", this.userDetails)
       //   .then((res) => {
-          // if (res.data.isOnboarded) {
-          //   ElNotification({
-          //     title: 'Well done',
-          //     message: 'Onboarding successful',
-          //     type: 'success',
-          //   })
-          // }
-          // if (!res.data.token) {
-          //   const preToken = localStorage.getItem("pretoken");
-          //   localStorage.setItem("token", preToken);
-          //   localStorage.removeItem("pretoken");
-          // } else {
-          //   localStorage.setItem("token", res.data.token);
-          //   localStorage.setItem("roles", JSON.stringify(["Admin"]));
-          // }
-          console.log(this.userDetails,'hhjhh');
-          this.loading = false;
-          this.$store.dispatch("setOnboardingData", this.userDetails);
-          // this.$router.push("/onboarding/step2");
-        // })
-        // .catch((err) => {
-        //   finish()
-        //   this.loading = false;
-        //   console.log(err.response);
-        // });
+      // if (res.data.isOnboarded) {
+      //   ElNotification({
+      //     title: 'Well done',
+      //     message: 'Onboarding successful',
+      //     type: 'success',
+      //   })
+      // }
+      // if (!res.data.token) {
+      //   const preToken = localStorage.getItem("pretoken");
+      //   localStorage.setItem("token", preToken);
+      //   localStorage.removeItem("pretoken");
+      // } else {
+      //   localStorage.setItem("token", res.data.token);
+      //   localStorage.setItem("roles", JSON.stringify(["Admin"]));
+      // }
+      this.loading = false;
+      this.$store.dispatch("setOnboardingData", this.userDetails);
+      // this.$router.push("/onboarding/step2");
+      // })
+      // .catch((err) => {
+      //   finish()
+      //   this.loading = false;
+      //   console.log(err.response);
+      // });
     },
 
     invalidResponse() {
@@ -427,12 +442,14 @@ export default {
   height: 5rem;
 }
 
-.choice{
+.choice {
   background: #ffffff;
 }
-.choice:hover{
+
+.choice:hover {
   background: #D1FDFF;
 }
+
 /* .choicehover{
   background: #7af2f8;
 } */

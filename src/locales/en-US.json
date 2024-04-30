@@ -91,6 +91,7 @@
     "step" : "Stpe 2 oF 2",
     "starting-point" : "Choose a Starting Point",
     "do-more" : "You can do more later",
+    "churchMobile" : "Church Mobile App Setup",
     "claim-unit" : "Claim Free 500 units now!",
     "terms" : "Terms and Conditions",
     "easySteps" : "Easy Steps to Claiming Free 500 units now!",
@@ -113,13 +114,13 @@
 
   "startDashboard" : {
     "wel" : "Welcome",
-    "want-to-start" : "Where do you want to start ?",
+    "want-to-start" : "How would you like to start?",
     "add-member" : "Add members",
-    "stay-compliant" : "Stay compliant by keeping accurate records of your members.",
+    "stay-compliant" : "Stay connected by keeping accurate records of your members.",
     "send-sms" : "Send SMS",
-    "communicate" : "Communicate with your members by sending sms with our seamless sms.",
-    "add-fst-timers" : "Add first timers",
-    "keep-accurate" : "Keep accurate record and follow up your first timers with our automated system.",
+    "communicate" : "Communicate with your members by sending SMS with our seamless SMS.",
+    "add-fst-timers" : "Add First timers",
+    "keep-accurate" : "Keep accurate record and follow up your first timers with our Automated system.",
     "skip-dashboard" : "Skip To Dashboard"
   },
   "dashboard": {

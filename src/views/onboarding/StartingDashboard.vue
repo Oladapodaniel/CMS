@@ -1,27 +1,28 @@
 <template>
   <div>
-    <div class="logo-con">
-      <a class="logo-link"><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo" /></a>
+    <div class="logo-con mt-5">
+      <!-- <a class="logo-link"><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo" /></a> -->
+      <img class="logo-link mt-4" src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" />
     </div>
     <div class="main-con">
       <div class="main-section">
         <div class="intro-div">
           <h1 class="intro-header">{{ navigatorLang === "en-US" ? 'Welcome' : $t('startDashboard.wel') }} {{ data && data.churchName ? data.churchName : "" }}</h1>
-          <p class="intro-subtext">{{ navigatorLang === "en-US" ? 'Where do you want to start ?' : $t('startDashboard.want-to-start') }}</p>
+          <p class="intro-subtext">{{ navigatorLang === "en-US" ? 'How would you like to start?' : $t('startDashboard.want-to-start') }}</p>
         </div>
         <div class="boxes-con">
           <router-link class="box" to="/tenant/people/add" style="text-decoration: none">
             <el-card shadow="hover">
               <div class="inner-box">
               <div class="img-box">
-                <img src="../../assets/add-member-big.svg" alt="Add Member Icon" />
+                <img src="../../assets/addmember-icon.svg" alt="Add Member Icon" />
               </div>
               <div class="box-text can-dogi">
                 <div class="box-header-text">
                   <h4>{{ navigatorLang === "en-US" ? 'Add members' : $t('startDashboard.add-member') }}</h4>
                 </div>
                 <div class="box-small-text">
-                  <p>{{ navigatorLang === "en-US" ? 'Stay compliant by keeping accurate records of your members.' : $t('startDashboard.stay-compliant') }}</p>
+                  <p>{{ navigatorLang === "en-US" ? 'Stay connected by keeping accurate records of your members.' : $t('startDashboard.stay-compliant') }}</p>
                 </div>
               </div>
             </div>
@@ -32,14 +33,14 @@
             <el-card shadow="hover">
             <div class="inner-box">
               <div class="img-box">
-                <img src="../../assets/sms-email-big.svg" alt="Add Member Icon" />
+                <img src="../../assets/sendsms-icon.svg" alt="Add Member Icon" />
               </div>
               <div class="box-text can-do">
                 <div class="box-header-text">
                   <h4>{{ navigatorLang === "en-US" ? 'Send SMS' : $t('startDashboard.send-sms') }}</h4>
                 </div>
                 <div class="box-small-text">
-                  <p>{{ navigatorLang === "en-US" ? 'Communicate with your members by sending sms with our seamless sms.' : $t('startDashboard.communicate') }}</p>
+                  <p>{{ navigatorLang === "en-US" ? 'Communicate with your members by sending SMS with our seamless SMS.' : $t('startDashboard.communicate') }}</p>
                 </div>
               </div>
             </div>
@@ -50,14 +51,14 @@
             <el-card shadow="hover">
             <div class="inner-box">
               <div class="img-box">
-                <img src="../../assets/add-first-timer.svg" alt="Add Member Icon" />
+                <img src="../../assets/addfirsttimer-icon.svg" alt="Add Member Icon" />
               </div>
               <div class="box-text can-do">
                 <div class="box-header-text">
-                  <h4>{{ navigatorLang === "en-US" ? 'Add first timers' : $t('startDashboard.add-fst-timers') }}</h4>
+                  <h4>{{ navigatorLang === "en-US" ? 'Add First timers' : $t('startDashboard.add-fst-timers') }}</h4>
                 </div>
                 <div class="box-small-text">
-                  <p>{{ navigatorLang === "en-US" ? 'Keep accurate record and follow up your first timers with our automated system.' : $t('startDashboard.keep-accurate') }}</p>
+                  <p>{{ navigatorLang === "en-US" ? 'Keep accurate record and follow up your first timers with our Automated system.' : $t('startDashboard.keep-accurate') }}</p>
                 </div>
 
               </div>
@@ -71,8 +72,8 @@
     <div class="rcontainer">
       <div class="row">
         <div class="col-md-10 offset-2 text-center my-4 text-lg-right" style="max-width: 900px; margin: auto">
-          <router-link to="/tenant" class="font-weight-bold text-decoration-none">
-            <el-button class="font-weight-bold primary--text" text>{{ navigatorLang === "en-US" ? 'Skip To Dashboard' : $t('startDashboard.skip-dashboard') }} >>></el-button>
+          <router-link to="/tenant" class="font-weight-bold text-dark ">
+            <el-button class="font-weight-bold text-dark" text> <u>{{ navigatorLang === "en-US" ? 'Skip To Dashboard' : $t('startDashboard.skip-dashboard') }} </u></el-button>
           </router-link>
         </div>
       </div>
@@ -125,7 +126,8 @@ export default {
 <style scoped>
 .logo-con {
   display: flex;
-  margin-top: 24px;
+  /* margin-top: 24px; */
+  justify-content: center;
 }
 
 .can-do a:hover {
@@ -133,13 +135,13 @@ export default {
 }
 
 .logo-link {
-  width: 100%;
+  width: 8rem;
   text-align: center;
 }
 
 .main-con {
   display: flex;
-  margin-top: 3em;
+  margin-top: 1.5em;
 }
 
 .nav-con {

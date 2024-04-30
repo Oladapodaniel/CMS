@@ -1,10 +1,10 @@
 <template>
-  <div
+  <!-- <div
     :style="{ backgroundColor: theme.bg_900, color: theme.text_900 }"
     style="display: flex; min-height: 100vh"
-  >
-    <div :class="{ 'container-slim': lgAndUp || xlAndUp }"
-      style="margin: auto;">
+  > -->
+  <!-- style="margin: auto;" -->
+    <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
       <div class="row justify-content-center">
         <!-- <button @click="toggleTheme">Toggle Theme</button> -->
         <div class="col-md-11 px-0 col-sm-12 mt-4">
@@ -286,7 +286,7 @@
         <!-- <el-button @click="sendError">Clicked</el-button> -->
       </div>
     </div>
-  </div>
+  <!-- </div> -->
 </template>
 
 <script>

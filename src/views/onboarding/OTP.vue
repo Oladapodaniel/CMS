@@ -22,14 +22,13 @@
                                 <div>
                                     <span class="text-center">
                                         {{ navigatorLang === "en-US" ? "We sent a 4 Digits Code to your" :
-                                $t('onboardingContent.otpContent.digitCodeText') }} 
-                                
-                                <br /> 
-                                <span
-                                            class="font-weight-600">
-                                            {{ setOnboardingData ? setOnboardingData.email : "Email" }} and {{
-                                setOnboardingData ? setOnboardingData.phoneNumber : "Phone Number" }}</span>
-                                <!-- <br /> 
+                                $t('onboardingContent.otpContent.digitCodeText') }}
+
+                                        <br />
+                                        <span class="font-weight-600">
+                                            {{ onboardingDatas ? onboardingDatas.email : "Email" }} and {{
+                                onboardingDatas ? onboardingDatas.phoneNumber : "Phone Number" }}</span>
+                                        <!-- <br /> 
                                 <span
                                             class="">
                                             {{ partialEmail ? partialEmail : "" }} and {{
@@ -64,8 +63,9 @@
                                 </div>
                                 <div class="col-md-12 mt-4 d-flex justify-content-center">
                                     <div class="col-md-4">
-                                        <el-button @click="completeVerification" :color="primarycolor" size="large"
-                                            class="w-100 " round>{{ navigatorLang === "en-US" ? "Complete Verification"
+                                        <el-button @click="completeVerification" :loading="loading"
+                                            :color="primarycolor" size="large" class="w-100 " round>{{ navigatorLang ===
+                                "en-US" ? "Complete Verification"
                                 : $t('onboardingContent.otpContent.completeVerify') }}</el-button>
                                     </div>
                                 </div>
@@ -77,11 +77,13 @@
                             flex-wrap
                             justify-content-center
                             ">
-                                        <span>{{ navigatorLang === "en-US" ? "Didn't get the code? " :
+                                        <span>{{ navigatorLang === "en-US" ? "Didn't get code? " :
                                 $t('onboardingContent.otpContent.didNotGet') }}</span>
-                                        <a href="#" class="text-decoration-none ms-3 primary--text">&nbsp;
+                                        <div @click="reSendCode" style="color: #959595;" class=" ms-3">&nbsp;
                                             {{ navigatorLang === "en-US" ? "Resend code " :
-                                $t('onboardingContent.otpContent.resendCode') }}</a>
+                                $t('onboardingContent.otpContent.resendCode') }}
+                                            <span>{{ formattedTime }}</span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12 mt-3 d-flex justify-content-center">
@@ -115,15 +117,15 @@
                                 <div class="text-font font-weight-600 col-md-12 col-12 px-0 h4 text-center"
                                     style="color: #111111;">
                                     {{ navigatorLang === "en-US" ? "Verification was Successful!" :
-                                    $t('onboardingContent.verifySuccess') }}
+                                $t('onboardingContent.verifySuccess') }}
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 my-3 d-flex flex-column justify-content-center align-items-center ">
                             <div class="col-md-6  ">
-                                <el-button @click="whatNext" :color="primarycolor" size="large" class="w-100"
-                                    round>{{ navigatorLang === "en-US" ? "See What’s Next" : $t('onboardingContent.whatNext')
-                                    }}</el-button>
+                                <el-button @click="whatNext" :loading="loading" :color="primarycolor" size="large" class="w-100" round>{{
+                                navigatorLang === "en-US" ? "See What’s Next" : $t('onboardingContent.whatNext')
+                            }}</el-button>
                             </div>
                         </div>
                     </div>
@@ -145,14 +147,14 @@
                                 <div class="text-font font-weight-600 col-md-12 col-12 px-0 h4 text-center"
                                     style="color: #111111;">
                                     {{ navigatorLang === "en-US" ? "We couldn’t verify your information" :
-                                    $t('onboardingContent.verifyFailed') }}
+                                $t('onboardingContent.verifyFailed') }}
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 my-3 d-flex flex-column justify-content-center align-items-center ">
                             <div class="col-md-6  ">
-                                <el-button @click="tryAgain" :color="primarycolor" size="large" class="w-100"
-                                    round>{{ navigatorLang === "en-US" ? "Try again" : $t('onboardingContent.tryAgain')
+                                <el-button @click="tryAgain" :color="primarycolor" size="large" class="w-100" round>{{
+                                navigatorLang === "en-US" ? "Try again" : $t('onboardingContent.tryAgain')
                                     }}</el-button>
                             </div>
                         </div>
@@ -164,15 +166,16 @@
 </template>
 
 <script>
-import { ref, watch, inject } from "vue";
+import { ref, watch, inject, onMounted } from "vue";
 import router from "../../router";
 import { useStore } from "vuex";
 import axios from "@/gateway/backendapi";
-import { ElLoading } from 'element-plus';
+import { ElLoading, ElMessage } from 'element-plus';
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useI18n } from 'vue-i18n';
 import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from '../../i18n';
 import { ElNotification } from 'element-plus'
+import { trim } from 'lodash';
 export default {
     setup() {
         const store = useStore();
@@ -188,19 +191,22 @@ export default {
         const primarycolor = inject('primarycolor')
         const fifthFocus = ref("")
         const sixFocus = ref("")
-        const myonboardingData = ref(store.getters.onboardingObject);
-        const setOnboardingData = ref(store.getters.onboardingData);
-        console.log(setOnboardingData.value, 'jjhhdhd');
-        console.log(myonboardingData.value, 'jjhhdhd');
+        // const myonboardingData = ref(store.getters.onboardingObject);
+        const onboardingDatas = ref(store.getters.onboardingData);
+        const optVerifyData = ref(store.getters.verifyEmailData);
+        console.log(onboardingDatas.value, 'jjhhdhd');
+        console.log(optVerifyData.value, 'jj9000');
         const userPassword = ref(store.getters.userPassword);
+        const countdownTime = ref(12 * 60);
         const firstInput = ref();
         const secondInput = ref();
         const thirdInput = ref();
         const fourthInput = ref();
         const fifthInput = ref();
         const sixthInput = ref();
-        const partialEmail = ref(myonboardingData.value && myonboardingData.value.email ? myonboardingData.value.email.replace(/(\w{3})[\w.-]+@([\w.]+\w)/, "$1***@$2") : "");
-        const partialNumber = ref(myonboardingData.value && myonboardingData.value.phoneNumber ? myonboardingData.value.phoneNumber.slice(0, 6) + myonboardingData.value.phoneNumber.slice(2).replace(/.(?=...)/g, '*') : "");
+        const timerInterval = ref();
+        const partialEmail = ref(onboardingDatas.value && onboardingDatas.value.email ? onboardingDatas.value.email.replace(/(\w{3})[\w.-]+@([\w.]+\w)/, "$1***@$2") : "");
+        const partialNumber = ref(onboardingDatas.value && onboardingDatas.value.phoneNumber ? onboardingDatas.value.phoneNumber.slice(0, 6) + onboardingDatas.value.phoneNumber.slice(2).replace(/.(?=...)/g, '*') : "");
 
         const handleOTPInputOne = () => {
             secondFocus.value.focus()
@@ -222,26 +228,28 @@ export default {
             }
         }
         const handleOTPInputFour = () => {
-            fifthFocus.value.focus()
             if (!fourthInput.value) {
                 thirdFocus.value.focus()
-            }else{
-                verifyOTP();
             }
-        }
-        const handleOTPInputFive = () => {
-            sixFocus.value.focus()
-            if (!fifthInput.value) {
-                fourthFocus.value.focus()
-            }
-        }
-        const handleOTPInputSix = () => {
-            if (!sixthInput.value) {
-                fifthFocus.value.focus()
-            } 
             // else {
             //     verifyOTP();
             // }
+        }
+        // const handleOTPInputFive = () => {
+        //     sixFocus.value.focus()
+        //     if (!fifthInput.value) {
+        //         fourthFocus.value.focus()
+        //     }
+        // }
+        // const handleOTPInputSix = () => {
+        //     if (!sixthInput.value) {
+        //         fifthFocus.value.focus()
+        //     }
+
+        // }
+
+        const tryAgain = () => {
+            displayFailed.value = false
         }
 
         const { locale } = useI18n({ useScope: 'global' });
@@ -250,8 +258,92 @@ export default {
 
         });
 
-        const completeVerification = () => {
-            displaySuccess.value = true
+        const formatTime = (time) => {
+            const minutes = Math.floor(time / 60);
+            const seconds = time % 60;
+            return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        };
+        const formattedTime = ref(formatTime(countdownTime.value));
+
+        const countdownTimer = () => {
+            countdownTime.value--;
+            formattedTime.value = formatTime(countdownTime.value);
+            if (countdownTime.value <= 0) {
+                clearInterval(timerInterval.value);
+                formattedTime.value = "Time's up!";
+            }
+        };
+
+        watch(countdownTime, () => {
+            if (countdownTime.value <= 0) {
+                clearInterval(timerInterval.value);
+                formattedTime.value = "Time's up!";
+            }
+        });
+
+
+
+        // Start the countdown timer when component is mounted
+        onMounted(() => {
+            timerInterval.value = setInterval(countdownTimer, 1000);
+        });
+
+        const reSendCode = async () => {
+            try {
+                const res = await axios.get(`/mobile/v1/Account/SendOTP?phoneNumber=${(onboardingDatas.value.phoneNumber).trim()}&email=${onboardingDatas.value.email}&tenantId=176bb861-d22e-4598-b2fe-f877888d819c `)
+                console.log(res, 'hh');
+                if (res.data.status) {
+                    ElMessage({
+                        type: "success",
+                        message: "Request sent",
+                        duration: 5000,
+                    });
+                    countdownTimer()
+                } else {
+                    ElMessage({
+                        type: "error",
+                        message: "Request Failed",
+                        duration: 5000,
+                    });
+                }
+            }
+            catch (error) {
+                console.log(error)
+            }
+
+            // Function to format time in MM:SS
+
+
+            // Formatted time computed property
+
+
+            // Countdown timer function
+
+
+            // Watch for changes in countdownTime
+
+        }
+
+        const completeVerification = async () => {
+            loading.value = true
+            let allInputValue = `${firstInput.value}${secondInput.value}${thirdInput.value}${fourthInput.value}`;
+            try {
+                const res = await axios.get(`/mobile/v1/Account/ConfirmOTP?token=${optVerifyData.value.returnObject.token}&otp=${allInputValue}`)
+                console.log(res, 'git');
+                if (res.data.status) {
+                    displaySuccess.value = true
+
+                } else {
+                    displayFailed.value = true
+                }
+
+
+                loading.value = false
+            } catch (error) {
+                console.log(error);
+                loading.value = false
+            }
+            // displaySuccess.value = true
             // displayFailed.value = true
         }
 
@@ -259,87 +351,123 @@ export default {
             router.push('/onboarding')
         }
 
-        const whatNext = () => {
-            router.push("/onboarding/step2");
-        }
-
-        const verifyOTP = async () => {
-
-            const loading = ElLoading.service({
-                lock: true,
-                text: 'Verifying...',
-                background: 'rgba(255, 255, 255, 0.9)',
-            })
-
-
-            let allInputValue = `${firstInput.value}${secondInput.value}${thirdInput.value}${fourthInput.value}${fifthInput.value}${sixthInput.value}`;
-            let obj = {
-                id: myonboardingData.value.id,
-                churchName: myonboardingData.value.churchName,
-                email: myonboardingData.value.email,
-                phoneNumber: myonboardingData.value.phoneNumber,
-                password: myonboardingData.value.password,
-                countryID: myonboardingData.value.countryID,
-                subscriptionPlanID: myonboardingData.value.subscriptionPlanID,
-                bankCode: "035",
-                bankName: "Wema bank",
-                activationCode: allInputValue,
-                password: userPassword.value,
-                referrer: "WEMA",
-            };
-            console.log(obj, "🙌🙌😥😒🤷‍♂️🤷‍♂️🤦‍♂️");
-
+        const whatNext = async () => {
+            loading.value = true;
             try {
-                const response = await axios.post("/OTPConfirmation", obj);
-                loading.close()
-                if (!response.data.token) {
+                const res = await axios.post("/api/onboarding", onboardingDatas.value)
+                if (res.data.isOnboarded) {
+                    ElNotification({
+                        title: 'Well done',
+                        message: 'Onboarding successful',
+                        type: 'success',
+                    })
+                    loading.value = false;
+                }
+                if (!res.data.token) {
                     const preToken = localStorage.getItem("pretoken");
                     localStorage.setItem("token", preToken);
                     localStorage.removeItem("pretoken");
                 } else {
-                    localStorage.setItem("token", response.data.token);
+                    localStorage.setItem("token", res.data.token);
                     localStorage.setItem("roles", JSON.stringify(["Admin"]));
                 }
-                ElNotification({
-                    title: 'Verification successful',
-                    message: `Congrats, your account has successful`,
-                    type: 'success',
-                    duration: 8000
-                })
-                router.push("/next");
+                loading.value = false;
+                router.push("/onboarding/step2");
             } catch (error) {
-                ElNotification({
-                    title: 'Verification failed',
-                    message: error.response.data.title + ' Please try again',
-                    type: 'error',
-                    duration: 5000
-                })
-                loading.close()
-                console.log(error.response);
+                console.log(error);
+                loading.value = false;
             }
 
             firstInput.value = "";
             secondInput.value = "";
             thirdInput.value = "";
             fourthInput.value = "";
-            fifthInput.value = "";
-            sixthInput.value = "";
             firstFocus.value.focus()
-        };
+
+        }
+
+        // const verifyOTP = async () => {
+
+        //     const loading = ElLoading.service({
+        //         lock: true,
+        //         text: 'Verifying...',
+        //         background: 'rgba(255, 255, 255, 0.9)',
+        //     })
+
+
+        //     let allInputValue = `${firstInput.value}${secondInput.value}${thirdInput.value}${fourthInput.value}`;
+        //     let obj = {
+        //         id: myonboardingData.value.id,
+        //         churchName: myonboardingData.value.churchName,
+        //         email: myonboardingData.value.email,
+        //         phoneNumber: myonboardingData.value.phoneNumber,
+        //         password: myonboardingData.value.password,
+        //         countryID: myonboardingData.value.countryID,
+        //         subscriptionPlanID: myonboardingData.value.subscriptionPlanID,
+        //         bankCode: "035",
+        //         bankName: "Wema bank",
+        //         activationCode: allInputValue,
+        //         password: userPassword.value,
+        //         referrer: "WEMA",
+        //     };
+
+        //     try {
+        //         const response = await axios.post("/OTPConfirmation", obj);
+        //         loading.close()
+        //         if (!response.data.token) {
+        //             const preToken = localStorage.getItem("pretoken");
+        //             localStorage.setItem("token", preToken);
+        //             localStorage.removeItem("pretoken");
+        //         } else {
+        //             localStorage.setItem("token", response.data.token);
+        //             localStorage.setItem("roles", JSON.stringify(["Admin"]));
+        //         }
+        //         ElNotification({
+        //             title: 'Verification successful',
+        //             message: `Congrats, your account has successful`,
+        //             type: 'success',
+        //             duration: 8000
+        //         })
+        //         router.push("/next");
+        //     } catch (error) {
+        //         ElNotification({
+        //             title: 'Verification failed',
+        //             message: error.response.data.title + ' Please try again',
+        //             type: 'error',
+        //             duration: 5000
+        //         })
+        //         loading.close()
+        //         console.log(error.response);
+        //     }
+
+        //     firstInput.value = "";
+        //     secondInput.value = "";
+        //     thirdInput.value = "";
+        //     fourthInput.value = "";
+        //     fifthInput.value = "";
+        //     sixthInput.value = "";
+        //     firstFocus.value.focus()
+        // };
 
         return {
             mdAndUp, lgAndUp, xlAndUp, xsOnly,
             handleOTPInputTwo,
             displayFailed,
-            setOnboardingData,
+            onboardingDatas,
+            formattedTime,
+            countdownTime,
+            timerInterval,
+            tryAgain,
             completeVerification,
             displaySuccess,
             handleOTPInputFour,
-            handleOTPInputFive,
+            // handleOTPInputFive,
             handleOTPInputThree,
-            handleOTPInputSix,
-            verifyOTP,
+            // handleOTPInputSix,
+            // verifyOTP,
             whatNext,
+            reSendCode,
+            optVerifyData,
             navigatorLang,
             firstFocus,
             secondFocus,
@@ -350,7 +478,7 @@ export default {
             handleOTPInputOne,
             partialEmail,
             partialNumber,
-            myonboardingData,
+            // myonboardingData,
             firstInput,
             secondInput,
             thirdInput,

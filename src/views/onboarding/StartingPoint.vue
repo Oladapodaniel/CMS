@@ -46,17 +46,19 @@
           <div class="all-options">
             <router-link :to="{ name: 'WelcomeOnboarding1', params: { option: '/mobileonboarding' } }"
               class="start-option">
-              <div class="icon">
-                <img class="" src="../../assets/dashboardlinks/com-icon.svg" alt="Sms Icon" />
+              <div class="icon  d-flex justify-content-center">
+                <!-- <img class="" src="../../assets/dashboardlinks/com-icon.svg" alt="Sms Icon" /> -->
+                <el-icon :size="25" class="text-white"><Iphone /></el-icon>
               </div>
               <div class="link-n-icon">
-                <a class="start-link ">Church Mobile App Setup </a>
+                <a class="start-link "> {{ navigatorLang === "en-US" ? 'Church Mobile App Setup' :
+        $t('startingPointContent.churchMobile') }} </a>
                 <!-- <a class="start-link">{{ navigatorLang === "en-US" ? 'Send Email/SMS' :
         $t('startingPointContent.send-email-sms') }}</a> -->
                 <!-- <p class="my-auto"><i class="fas fa-angle-right"></i></p> -->
               </div>
             </router-link>
-            <div class="w-100  ml-2">
+            <div class="w-100 ">
               <div class="start-option offer-bg" @click="showOfferModal">
                 <span class=" offer-image">
                   <img class="link-icon" src="../../assets/offerImage.png" alt="Sms Icon" />
@@ -75,7 +77,7 @@
             <router-link :to="{ name: 'ProcessRequest', params: { option: '/tenant/sms/compose' } }"
               class="start-option">
               <div class="icon">
-                <img class="link-icon" src="../../assets/sms-email.svg" alt="Sms Icon" />
+                <img class="link-icon" src="../../assets/ChatCircleDots.png" alt="Sms Icon" />
               </div>
               <div class="link-n-icon">
                 <a class="start-link">{{ navigatorLang === "en-US" ? 'Send Email/SMS' :
@@ -87,7 +89,7 @@
             <router-link class="start-option"
               :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/add' } }">
               <div class="icon">
-                <img class="link-icon link-icon-no-bg" src="../../assets/people/add-church-members.svg"
+                <img class="link-icon link-icon-no-bg" src="../../assets/Users.png"
                   alt="Add member Icon" />
               </div>
               <div class="link-n-icon">
@@ -102,7 +104,7 @@
         params: { option: '/tenant/people/addfirsttimer' },
       }">
               <div class="icon">
-                <img class="link-icon" src="../../assets/first-timers.svg" alt="First Timers Icon" />
+                <img class="link-icon" src="../../assets/UserPlus.png" alt="First Timers Icon" />
               </div>
               <div class="link-n-icon">
                 <a class="start-link">{{ navigatorLang === "en-US" ? 'Add first timers' :
@@ -112,14 +114,11 @@
               </div>
             </router-link>
 
-            <router-link class="start-option " :to="{ name: 'ProcessRequest', params: { option: '/next' } }">
-              <div class="icon">
-                <img class="link-icon" src="../../assets/not-sure.svg" alt="Question Icon" />
-              </div>
+            <router-link class=" d-flex justify-content-center w-100 mt-5" :to="{ name: 'ProcessRequest', params: { option: '/next' } }">
+              
               <div class="link-n-icon">
-                <a class="start-link">{{ navigatorLang === "en-US" ? 'Not sure yet' : $t('startingPointContent.not-yet')
-                  }}</a>
-                <!-- <p class="my-auto"><i class="fas fa-angle-right"></i></p> -->
+                <a class="start-link">{{ navigatorLang === "en-US" ? 'Not sure yet?' : $t('startingPointContent.not-yet')
+                  }} <span><u>Skip for now</u></span> </a>
               </div>
             </router-link>
           </div>
@@ -303,6 +302,7 @@ a {
   width: 45%;
   background-image: -webkit-linear-gradient(top, #3362c9 0%, #582994 100%);
   transition: all 0.7s ease-in-out;
+  height:  100vh;
 }
 
 .welcome-onboard {
@@ -376,15 +376,15 @@ a {
   align-items: center;
   justify-content: flex-start;
   justify-self: center;
-  width: 97%;
+  width: 100%;
   /* text-align: center; */
   padding: 10px;
-  margin-top: 8px;
+  margin-top: 15px;
   border-radius: 10px;
   border: 1px solid #03E5F3;
   box-sizing: border-box;
   background: #0551D2;
-  height: 65px;
+  height: 60px;
   /* opacity: 0.8; */
   cursor: pointer;
 }
@@ -409,8 +409,8 @@ a {
 }
 
 .icon {
-  width: 20%;
-  max-width: 40px;
+  width: 10%;
+  max-width: 30px;
 }
 
 .offer-image {
@@ -439,7 +439,7 @@ a {
 }
 
 .start-link {
-  font-weight: 500;
+  /* font-weight: 500; */
   padding: 0 1rem;
   text-decoration: none;
   /* text-transform: capitalize; */

@@ -6,6 +6,7 @@ export default {
     state: {
         userEmail: "",
         onboardingData: {},
+        verifyEmailData: {},
         userRole: "",
         userData: {},
         currentUser: {},
@@ -31,6 +32,10 @@ export default {
 
     setOnboardingData(state, payload) {
       state.onboardingData = payload;
+    },
+
+    setVerifyEmailData(state, payload) {
+      state.verifyEmailData = payload;
     },
 
     setStartPoint(state, payload) {
@@ -108,6 +113,10 @@ export default {
     setOnboardingData({ commit }, payload) {
       commit("setOnboardingData", payload)
     },
+    
+    setVerifyEmailData({ commit }, payload) {
+      commit("setVerifyEmailData", payload)
+    },
 
     setStartPoint({ commit }, payload) {
       commit("setStartPoint", payload)
@@ -139,6 +148,7 @@ export default {
     userEmail: state => state.userEmail,
     email: state => state.currentUser.email,
     onboardingData: state => state.onboardingData,
+    verifyEmailData: state => state.verifyEmailData,
     userRole: state => state.userRole,
     userData: state => state.userData,
     initialSignUpDetails: state => state.initialSignUpDetails,
