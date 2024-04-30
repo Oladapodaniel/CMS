@@ -123,7 +123,8 @@
                         </div>
                         <div class="col-md-12 my-3 d-flex flex-column justify-content-center align-items-center ">
                             <div class="col-md-6  ">
-                                <el-button @click="whatNext" :loading="loading" :color="primarycolor" size="large" class="w-100" round>{{
+                                <el-button @click="whatNext" :loading="loading" :color="primarycolor" size="large"
+                                    class="w-100" round>{{
                                 navigatorLang === "en-US" ? "See What’s Next" : $t('onboardingContent.whatNext')
                             }}</el-button>
                             </div>
@@ -194,8 +195,6 @@ export default {
         // const myonboardingData = ref(store.getters.onboardingObject);
         const onboardingDatas = ref(store.getters.onboardingData);
         const optVerifyData = ref(store.getters.verifyEmailData);
-        console.log(onboardingDatas.value, 'jjhhdhd');
-        console.log(optVerifyData.value, 'jj9000');
         const userPassword = ref(store.getters.userPassword);
         const countdownTime = ref(12 * 60);
         const firstInput = ref();
@@ -235,18 +234,6 @@ export default {
             //     verifyOTP();
             // }
         }
-        // const handleOTPInputFive = () => {
-        //     sixFocus.value.focus()
-        //     if (!fifthInput.value) {
-        //         fourthFocus.value.focus()
-        //     }
-        // }
-        // const handleOTPInputSix = () => {
-        //     if (!sixthInput.value) {
-        //         fifthFocus.value.focus()
-        //     }
-
-        // }
 
         const tryAgain = () => {
             displayFailed.value = false
@@ -291,7 +278,6 @@ export default {
         const reSendCode = async () => {
             try {
                 const res = await axios.get(`/mobile/v1/Account/SendOTP?phoneNumber=${(onboardingDatas.value.phoneNumber).trim()}&email=${onboardingDatas.value.email}&tenantId=176bb861-d22e-4598-b2fe-f877888d819c `)
-                console.log(res, 'hh');
                 if (res.data.status) {
                     ElMessage({
                         type: "success",
@@ -329,7 +315,6 @@ export default {
             let allInputValue = `${firstInput.value}${secondInput.value}${thirdInput.value}${fourthInput.value}`;
             try {
                 const res = await axios.get(`/mobile/v1/Account/ConfirmOTP?token=${optVerifyData.value.returnObject.token}&otp=${allInputValue}`)
-                console.log(res, 'git');
                 if (res.data.status) {
                     displaySuccess.value = true
 
