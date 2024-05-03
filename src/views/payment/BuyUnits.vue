@@ -121,12 +121,12 @@
                   Continue payment with
                 </div>
               </div>
-              <div class="row row-button c-pointer d-flex justify-content-center" @click="initializePayment(0)"
+              <!-- <div class="row row-button c-pointer d-flex justify-content-center" @click="initializePayment(0)"
                 v-if="selectedCurrency == 'NGN' || selectedCurrency == 'GHS'">
                 <div>
                   <img style="width: 150px" src="../../assets/4PaystackLogo.png" alt="paystack" />
                 </div>
-              </div>
+              </div> -->
               <div class="row row-button c-pointer d-flex justify-content-center" @click="initializePayment(1)">
                 <div>
                   <img style="width: 150px" src="../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
