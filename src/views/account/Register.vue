@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-md-12 mt-4 d-flex justify-content-center">
                   <div class="col-md-11 d-flex justify-content-center col-sm-12  ">
-                    <span class=""><img src="../../assets/check-icon.png" alt=""></span>
+                    <span><img src="../../assets/check-icon.png" alt=""></span>
                     <span class="mt-2 ml-2">{{ navigatorLang === "en-US" ? 'Revolutionize Your Ministry' :
                       $t('home-content.revolutionize') }}</span>
                   </div>
@@ -131,7 +131,7 @@
                     <p class="sign-up-prompt">
                       {{ navigatorLang ===
         "en-US" ? "Already have an account" : $t('signupContent.hve-an-account') }}
-                      <router-link to="/" class="sign-up"><span class="primary-">{{ navigatorLang ===
+                      <router-link to="/" class="sign-up"><span class="primar">{{ navigatorLang ===
                           "en-US" ? "Sign in" : $t('signupContent.signin-text') }}</span></router-link>
                     </p>
                   </div>

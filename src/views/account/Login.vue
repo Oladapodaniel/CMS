@@ -37,7 +37,7 @@
                   </div>
                   <div class="col-md-12 mt-4 d-flex justify-content-center">
                     <div class="col-md-11 d-flex justify-content-center col-sm-12">
-                      <span class=""
+                      <span
                         ><img src="../../assets/check-icon.png" alt=""
                       /></span>
                       <span class="mt-2 ml-2">{{
