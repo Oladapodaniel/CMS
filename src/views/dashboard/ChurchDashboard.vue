@@ -1,6 +1,65 @@
 <template>
   <main :class="{ 'container-slim': lgAndUp || xlAndUp }" id="main">
     <div class="second-col container-top">
+      <div class="row justify-content-end">
+        <div class="col-md-10">
+          <div class="row">
+            <div class="col-md-4">
+              <el-input type="text" placeholder="Search" class="w-100" v-model="searchData" :prefix-icon="Search" />
+            </div>
+            <div class="col-md-4 d-flex justify-content-between align-items-center"
+              style="background: #F2F4F7; border-radius: 20px">
+              <div class="text-capitalize" style="font-size: 14px; font-weight: 500;">{{ planUserIs }}</div>
+              <div>
+                <router-link :to="{ name: 'Subscription' }" class="mt-1 no-decoration">
+                  <el-button :color="!buttonTextCheck.color ? primarycolor : ''"
+                    :class="[buttonTextCheck.color, { 'bg-warning': calculatedPercentage >= 90, 'border-0  bg-danger': notifiedDays <= 4 }]"
+                    round>
+                    <p class="mb-0" :class="[buttonTextCheck.color]">{{ buttonTextCheck.text }}</p>
+                  </el-button>
+                </router-link>
+              </div>
+            </div>
+            <div class="col-md-4 d-flex">
+              <div>
+                <img :src="churchLogo" v-if="churchLogo" class="link-image" alt="" />
+                <img src="../../assets/dashboardlinks/churchcloud.png" v-else class="link-image" alt="" />
+              </div>
+              <div>
+                <div style="font-size: 14px; font-weight: 600;">{{ tenantDisplayName }}</div>
+                <div style="font-size: 14px;">{{ tenantRole }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12  text-head h2 font-weight-600">
+          Overview
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 ">
+          <div class="col-md-12 dashboardCard" >
+            <div class="row">
+              <div class="col-md-12 justify-content-between d-flex">
+                <div class="font-weight-600 text-font">
+                  Total Income
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 ">
+          <div class="col-md-12 dashboardCard"></div>
+        </div>
+        <div class="col-md-3">
+          <div class="col-md-12 dashboardCard"></div>
+        </div>
+        <div class="col-md-3">
+          
+        </div>
+      </div>
       <div class="create-btn-div">
         <div>
           <h2 class="head-text">Dashboard</h2>
@@ -12,8 +71,7 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item v-for="(item, index) in createNew" :key="index" @click="router.push(item.to)">{{
-    item.name
-  }}</el-dropdown-item>
+    item.name }}</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -606,6 +664,7 @@ import store from "../../store/store"
 import ImageForm from "../../components/membership/ImageForm.vue"
 import swal from "sweetalert";
 import { ElMessage } from 'element-plus'
+import { Search } from "@element-plus/icons-vue";
 // import { useStore } from 'vuex';
 
 export default {
@@ -637,10 +696,6 @@ export default {
     const notifiedDays = ref()
     const planUserIs = ref(store.getters['dashboard/getSubPlan'] ? store.getters['dashboard/getSubPlan'].description : 'loading plan')
 
-
-
-
-
     const toggleMoreLinkVissibility = () => {
       moreLinksVissible.value != moreLinksVissible.value;
     };
@@ -654,6 +709,8 @@ export default {
     }
     const celebrations = [];
     const tenantInfo = ref({});
+    const tenantData = ref({});
+    const churchLogo = ref('');
     const tenantInfoBasic = ref(store.getters['dashboard/getdashboard']);
     const celeb = ref(store.getters['dashboard/getcelebration']);
     const attendanceSeries = ref("weekly");
@@ -671,6 +728,14 @@ export default {
     });
     const subscriptionPlan = ref([]);
     const dashboardLoading = ref(false)
+    const searchData = ref('')
+    const roles = ref(localStorage.getItem("roles"))
+
+    const tenantRole = computed(() => {
+      if (roles.value)
+        return roles.value.toString()
+    })
+
 
     const xAxis = ref([]);
     const monthXaxis = ref([
@@ -720,6 +785,42 @@ export default {
     const series2 = computed(() => {
       if (firstTimerSeries.value === "weekly") return xAxis.value;
       return monthXaxis.value;
+    });
+
+    const getChurchProfile = async () => {
+      try {
+        let { data } = await axios.get(`/GetChurchProfileById?tenantId=${getUser.value.tenantId}`)
+        console.log(data);
+        churchLogo.value = data.returnObject.logo
+        if (!data.returnObject.pastorName) {
+          pastorsDialog.value = true
+        }
+      }
+      catch (err) {
+        console.error(err);
+      }
+    }
+
+    const getUser = computed(() => {
+      if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
+      return store.getters.currentUser
+    })
+
+    watchEffect(() => {
+      if (getUser.value) {
+        tenantData.value = getUser.value;
+        getChurchProfile()
+        // emit('tenantname', tenantData.value)
+      }
+    })
+
+    const tenantDisplayName = computed(() => {
+      if (!tenantData.value.churchName) return "";
+      const name =
+        tenantData.value.churchName.length < 15
+          ? tenantData.value.churchName
+          : `${tenantData.value.churchName.slice(0, 15)}...`;
+      return name;
     });
 
     // onMounted(() => {
@@ -946,22 +1047,22 @@ export default {
 
     const buttonTextCheck = computed(() => {
       if (checkRenewalDate.value && planUserIs.value === "TRIAL") return {
-        text: "SUBSCRIBE",
+        text: "Subscribe",
         color: "btn-danger-upgrade"
       };
 
       if (checkRenewalDate.value && planUserIs.value !== "FREE PLAN") return {
-        text: "RENEW",
+        text: "Renew",
         color: "renew-btn-color",
       };
 
       if (checkRenewalDate.value && planUserIs.value === "FREE PLAN") return {
-        text: "SUBSCRIBE",
+        text: "Subscribe",
         color: "btn-danger-upgrade",
       };
 
       if (planUserIs.value === "UNLIMITED") return { text: "PRODUCT" };
-      return { text: "UPGRADE" };
+      return { text: "Upgrade" };
 
     });
 
@@ -978,11 +1079,6 @@ export default {
     const setImage = (payload) => {
       pastordata.value.image = payload
     }
-
-    const getUser = computed(() => {
-      if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
-      return store.getters.currentUser
-    })
 
     const savepastordata = async () => {
       savingPastorData.value = true
@@ -1016,26 +1112,6 @@ export default {
     }
 
 
-    const getChurchProfile = async () => {
-      try {
-        let { data } = await axios.get(`/GetChurchProfileById?tenantId=${getUser.value.tenantId}`)
-        console.log(data);
-        if (!data.returnObject.pastorName) {
-          pastorsDialog.value = true
-        }
-      }
-      catch (err) {
-        console.error(err);
-      }
-    }
-
-    watchEffect(() => {
-      if (getUser.value) {
-        getChurchProfile()
-      }
-    })
-
-
 
 
     return {
@@ -1044,10 +1120,12 @@ export default {
       notifiedDays,
       subscribeNow,
       getRenewalDate,
+      tenantDisplayName,
       tenantInfo,
       tenantInfoBasic,
       tenantInfoCeleb,
       moreLinksVissible,
+      tenantData,
       toggleMoreLinkVissibility,
       offering,
       moment,
@@ -1064,6 +1142,7 @@ export default {
       series,
       showPieChart,
       chartData2,
+      Search,
       series2,
       monthlyFirstTimerObj,
       chartDataNewConvert,
@@ -1090,10 +1169,15 @@ export default {
       celeb,
       attendanceSeries,
       mdAndUp,
+      getUser,
       lgAndUp,
       xlAndUp,
+      tenantRole,
+      churchLogo,
+      roles,
       celebHeaders,
       dashboardLoading,
+      searchData,
       createNew,
       router,
       primarycolor,
@@ -1101,7 +1185,8 @@ export default {
       pastordata,
       savepastordata,
       savingPastorData,
-      setImage
+      setImage,
+      tenantDisplayName
     };
   },
 };
@@ -1225,6 +1310,12 @@ export default {
   padding: 4px;
 }
 
+.link-image {
+  width: 55px;
+  height: 40px;
+  padding-right: 0;
+  object-fit: cover;
+}
 
 
 .create-dd {
@@ -1288,6 +1379,13 @@ export default {
   background: #F1F5F8;
   box-shadow: 0px 11px 17px rgba(206, 205, 205, 0.360784);
   border-radius: 0px 0px 15px 15px;
+}
+
+.dashboardCard{
+  border-radius: 15px;
+  height: 5rem;
+  background: #F2F4F7;
+
 }
 
 

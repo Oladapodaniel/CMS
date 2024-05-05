@@ -1,13 +1,12 @@
-
-
 <template>
   <el-row @click="linkClicked">
     <el-col :span="24">
-      <div class="user mr-3 mt-4">
-        <img :src="churchLogo" v-if="churchLogo" class="link-image" alt="" />
+      <div class=" ml-3  mt-4">
+        <div class="font-weight-600">MAIN MENU</div>
+        <!-- <img :src="churchLogo" v-if="churchLogo" class="link-image" alt="" />
         <img src="../../assets/dashboardlinks/churchcloud.png" v-else class="link-image" alt="" />
         <a class="user-link">{{ tenantDisplayName }}
-          <span class="user-link-icon c-pointer"><i class="pi pi-angle-right"></i></span></a>
+          <span class="user-link-icon c-pointer"><i class="pi pi-angle-right"></i></span></a> -->
       </div>
       <el-menu default-active="1" :active-text-color="primarycolor" background-color="#ebeff4"
         class="el-menu-vertical-demo mt-3" text-color="#02172e" :unique-opened="true">
@@ -37,7 +36,7 @@
           </el-sub-menu>
           <el-menu-item :index="`${index + 1}`" class="w-100" @click="routeToPage(item)" v-else>
             <el-icon v-if="item.id === 5">
-              <img style="width: 45px" :src="item.logo" class="link-icon" alt="" />
+              <img style="width: 40px" :src="item.logo" class="link-icon" alt="" />
             </el-icon>
             <el-icon v-else>
               <img :src="item.logo" class="link-icon" alt="" />
@@ -58,12 +57,26 @@
     <el-col :span="24">
       <div class="nav">
         <div class="w-100 align-self-end">
-          <hr class="hr" />
-          <div class="d-flex ml-3">
-            <el-icon class="mt-1">
+          <!-- <hr class="hr" /> -->
+          <div class="ml-3 font-weight-600">ACCOUNT</div>
+          <div class="d-flex ml-3 mt-3">
+            <!-- <el-icon class="mt-1">
               <TopLeft />
-            </el-icon>
-            <div class="ml-3 c-pointer" @click="logout">Logout</div>
+            </el-icon> -->
+            <img style="width: 40px; height: 40px; padding-right: 14px "
+              src="../../assets/dashboardlinks/dashboard-icon/SignOut.svg" alt="">
+            <div class="ml-3 mt-2 c-pointer" @click="logout">Logout</div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-12 mt-4 d-flex justify-content-center">
+              <div class="col-md-11">
+                <a class="logo-link col-md-12 d-flex justify-content-center"><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" /></a>
+                <div class="text-small text-center col-md-12">
+                  NO. 1 Church
+                  Management Software
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <a class="link routelink" v-if="false"> Integration </a>
@@ -159,7 +172,7 @@ export default {
 
       const dashboard = {
         name: 'Dashboard',
-        logo: require('../../assets/dashboardlinks/dashboard-icon.svg'),
+        logo: require('../../assets/dashboardlinks/dashboard-icon/House.svg'),
         route: '/tenant',
         submenu: [],
         id: 1
@@ -168,15 +181,15 @@ export default {
       const people = {
         id: 2,
         name: 'People',
-        logo: require('../../assets/dashboardlinks/people.svg'),
+        logo: require('../../assets/dashboardlinks/dashboard-icon/Users.svg'),
         route: '/',
         submenu: []
       }
-      
+
       const communication = {
         id: 3,
         name: 'Communication',
-        logo: require('../../assets/dashboardlinks/com-icon.svg'),
+        logo: require('../../assets/dashboardlinks/dashboard-icon/ChatCenteredDots.svg'),
         route: '/',
         submenu: [
           {
@@ -205,7 +218,7 @@ export default {
       const event = {
         id: 4,
         name: 'Events',
-        logo: require('../../assets/dashboardlinks/events-icon.svg'),
+        logo: require('../../assets/dashboardlinks/dashboard-icon/CalendarPlus.svg'),
         route: '/',
         submenu: [
           {
@@ -223,7 +236,7 @@ export default {
       const form = {
         id: 5,
         name: 'Forms',
-        logo: require('../../assets/form/formIcon.png'),
+        logo: require('../../assets/dashboardlinks/dashboard-icon/Table.svg'),
         route: '/tenant/forms',
         submenu: []
       }
@@ -232,7 +245,7 @@ export default {
       const financial = {
         id: 6,
         name: 'Financials',
-        logo: require('../../assets/dashboardlinks/acc-icon.svg'),
+        logo: require('../../assets/dashboardlinks/dashboard-icon/Wallet.svg'),
         route: '/',
         submenu: [
           {
@@ -289,7 +302,7 @@ export default {
       const social = {
         id: 7,
         name: 'Social & Mobile App',
-        logo: require('../../assets/dashboardlinks/social-icon.svg'),
+        logo: require('../../assets/dashboardlinks/dashboard-icon/Devices.svg'),
         route: '/tenant/social',
         submenu: []
       }
@@ -309,7 +322,7 @@ export default {
       const report = {
         id: 9,
         name: 'Reports',
-        logo: require('../../assets/dashboardlinks/reports-icon.svg'),
+        logo: require('../../assets/dashboardlinks/dashboard-icon/ChartBar.svg'),
         route: '/tenant/reports',
         submenu: []
       }
@@ -577,6 +590,10 @@ export default {
   cursor: pointer
 }
 
+.logo-link img {
+  width: 8rem;
+  height: 5rem;
+}
 
 
 .nav .user {
@@ -592,11 +609,16 @@ export default {
 }
 
 .link-icon {
-  padding-right: 10px;
+  padding-right: 14px;
+  height: 40px;
+  width: 40px;
 }
 
 .link-icon.branch {
   opacity: .6;
+  height: 35px;
+  width: 35px;
+  padding-right: 14px;
 }
 
 .link-image {
