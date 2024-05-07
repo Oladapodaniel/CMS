@@ -4,9 +4,9 @@
     <div class="row">
       <div class="col-sm-12 p-4 text-center continue-text">Continue payment with</div>
     </div>
-    <!-- <div class="row row-button d-flex justify-content-center" @click="initializePayment(0)" v-if="paystackGate">
+    <div class="row row-button d-flex justify-content-center" @click="initializePayment(0)" v-if="paystackGate">
       <img class="img-pay" src="../../assets/4PaystackLogo.png" alt="paystack" />
-    </div> -->
+    </div>
 
 
     <div class="row row-button d-flex justify-content-center" v-if="flutterwaveGate" @click="initializePayment(1)">
