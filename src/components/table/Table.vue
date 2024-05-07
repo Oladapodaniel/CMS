@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dropdown trigger="click" class="el-dropdown w-100 py-2 d-flex justify-content-end">
+    <el-dropdown trigger="click" class="el-dropdown border-0 w-100 py-2 d-flex justify-content-end">
       <span class="el-dropdown-link">
         <el-tooltip class="box-item" effect="dark" content="Export data on table to excel" placement="top-start">
           <el-button type="" class="mr-3" text bg>
@@ -71,6 +71,71 @@
       </div>
     </div>
   </div>
+  <!-- <div>
+    <el-dropdown trigger="click" class="el-dropdown w-100 py-2 d-flex justify-content-end">
+      <span class="el-dropdown-link">
+        <el-tooltip class="box-item" effect="dark" content="Export data on table to excel" placement="top-start">
+          <el-button type="" class="mr-3" text bg>
+            Export to excel<el-icon class="el-icon--right">
+              <Download />
+            </el-icon>
+          </el-button>
+        </el-tooltip>
+      </span>
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item v-for="(bookType, index) in bookTypeList" :key="index">
+            <div @click="downloadFile(bookType)">
+              {{ bookType.name }}
+            </div>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
+    <div ref="scrollRef">
+      <div class="table-parent">
+        <table class="table-border w-100">
+          <thead class="table-head mobile">
+            <tr>
+              <th v-if="checkMultipleItem">
+                <el-checkbox v-model="checked" @change="checkAllRows" :indeterminate="isIndeterminate"
+                  :checked="data.length > 0 && data.length === checkedRow.length" size="large" />
+              </th>
+            </tr>
+          </thead>
+          <thead class="table-head desktop">
+            <tr>
+              <th v-if="checkMultipleItem">
+                <el-checkbox v-model="checked" @change="checkAllRows" :indeterminate="isIndeterminate"
+                  :checked="data.length > 0 && data.length === checkedRow.length" size="large" />
+              </th>
+              <th v-for="(head, index) in headers" :key="index" :class="{ 'py-3': !checkMultipleItem }">
+                <h2>{{ head.name }}</h2>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in dataInView" :key="index">
+              <td v-if="checkMultipleItem" class="py-3">
+                <input type="checkbox"  v-model="item.check" id="flexCheckDefault" @change="checkSingleRow(index)">
+              </td>
+              <td v-for="(head, index) in headers" :key="index" :class="{ 'py-2': !checkMultipleItem }">
+                <span>
+                  <h2>{{ head.name }}</h2>
+                </span>
+                <slot :name="head.value" v-bind:item="item">-</slot>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="infinite-loader" v-if="tableInfiniteLoading">
+        <el-icon class="is-loading">
+          <Loading />
+        </el-icon>
+      </div>
+    </div>
+  </div> -->
 </template>
 
 <script>
@@ -239,24 +304,22 @@ export default {
 }
 
 .table-border {
-  border: 1px solid rgb(212, 221, 227);
+  /* border: 1px solid rgb(212, 221, 227); */
   color: #47545c;
   box-sizing: border-box;
 }
 
-/* .table-head {
-    background: #ecf0f3;
-    height: 56px;
-} */
+.table-head {
+  background: #F4F4F4AB;
+}
 
 .table-head h2 {
-  font-weight: 600;
+  font-weight: 500;
   /* font-weight: bold; */
-  font-size: 15px;
-  font-style: normal;
+  font-size: 14px;
   text-transform: lowercase;
   margin: 0;
-  color: #646464;
+  color: #000000;
   /* color: #172B4D; */
 }
 
@@ -267,16 +330,16 @@ export default {
 
 tbody tr td {
   font-size: 14px;
-  /* font-weight: 600; */
+  font-weight: 400;
+  color: #000000;
 }
 
 tbody h2 {
-  font-weight: 600;
-  font-size: 15px;
-  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
   text-transform: lowercase;
   margin: 0;
-  color: #646464;
+  color: #000000;
 }
 
 tbody h2:first-letter,
@@ -299,9 +362,9 @@ table tbody tr:hover {
   background-color: #fafafa;
 }
 
-table tbody tr:nth-child(even) {
+/* table tbody tr:nth-child(even) {
   background-color: #fafafa;
-}
+} */
 
 table tbody tr td:first-child input {
   width: 20px;

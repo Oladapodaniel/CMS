@@ -213,6 +213,9 @@ rect.highcharts-background[fill] {
   .small-text {
     font-size: 14px;
   }
+  .xs-text{
+    font-size: 10px;
+  }
 
   .pagination-container {
     display: flex;
