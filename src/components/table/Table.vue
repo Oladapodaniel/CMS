@@ -332,6 +332,7 @@ tbody tr td {
   font-size: 14px;
   font-weight: 400;
   color: #000000;
+  text-transform: lowercase;
 }
 
 tbody h2 {
@@ -342,6 +343,10 @@ tbody h2 {
   color: #000000;
 }
 
+tbody tr td:first-letter,
+tbody tr td:first-line {
+  text-transform: capitalize;
+}
 tbody h2:first-letter,
 tbody h2:first-line {
   text-transform: capitalize;

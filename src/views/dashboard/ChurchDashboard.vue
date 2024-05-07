@@ -2,9 +2,9 @@
   <main :class="{ 'container-fluid': lgAndUp || xlAndUp }" id="main">
     <div class="second-col container-top">
       <div class="row justify-content-end">
-        <div class="col-md-10">
+        <div class="col-lg-8  col-md-12 ">
           <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-5">
               <el-input
                 type="text"
                 placeholder="Search"
@@ -46,7 +46,7 @@
                 </router-link>
               </div>
             </div>
-            <div class="col-md-4 mt-md-0 mt-sm-3 d-flex">
+            <div class="col-md-3 mt-md-0 mt-sm-3 d-flex justify-content-md-end justify-content-start">
               <div>
                 <img
                   :src="churchLogo"
@@ -65,7 +65,7 @@
                 <div style="font-size: 14px; font-weight: 600">
                   {{ tenantDisplayName }}
                 </div>
-                <div style="font-size: 14px">{{ tenantRole }}</div>
+                <div style="font-size: 14px">{{ tenantRole.toString() }}</div>
               </div>
             </div>
           </div>
@@ -553,7 +553,7 @@
                 :checkMultipleItem="false"
               >
                 <template #name="{ item }">
-                  <div class="c-pointer" @click="showCelebrationDetail(item)">
+                  <div class="c-pointer  " @click="showCelebrationDetail(item)">
                     <el-card
                       shadow="hover"
                       class="c-pointer person-image"
@@ -571,13 +571,13 @@
                         "
                       />
                     </el-card>
-                    <!-- <img src="../../asset" alt=""> -->
-                    <el-avatar :size="25" class="mt-1" v-else
+                    <img src="../../assets/table-icon.png" class="mt-1" v-else alt="">
+                    <!-- <el-avatar :size="25" class="mt-1" v-else
                       ><el-icon color="#000000">
                         <UserFilled />
                       </el-icon>
-                    </el-avatar>
-                    <span class="ml-3">{{ item.name }}</span>
+                    </el-avatar> -->
+                    <span class="ml-3 table-font  ">{{ item.name }}</span>
                     <div
                       class="celeb-badge-desc celeb-badge"
                       v-if="
