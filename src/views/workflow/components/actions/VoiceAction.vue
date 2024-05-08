@@ -1,4 +1,4 @@
-<template>{{ tenantId }}
+<template>
     <div class="container max-height scroll-div" v-for="(item, index) in removeOthers"
     :key="index">
         <div class="row mt-4">
@@ -161,23 +161,36 @@ export default {
             formData.append("tenantId", tenantId.value);
 
             try {
-                let data = await media_service.uploadMedia(formData)
-                console.log(data)
+                let data2 = await media_service.uploadMedia(formData)
+                console.log(data2)
+
+                if (data[props.selectedActionIndex]) {
+                data[props.selectedActionIndex].JSONActionParameters.voiceUrl = data2.returnObject.filePath
+            } else {
+                data[props.selectedActionIndex] = new Object();
+                data[props.selectedActionIndex].JSONActionParameters = new Object();
+                data[props.selectedActionIndex].JSONActionParameters.voiceUrl = data2.returnObject.filePath
+            }
+            emit('updateaction', data, props.selectedActionIndex, actionType);
+            
+                // localStorage.setItem("filePath", data2.returnObject.filePath)
             } catch (err) {
                 console.log(err)
             }
-            // data.JSONActionParameters.voiceUrl = e.target.value;
+            // data.JSONActionParameters.voiceUrl = data.returnObject.filePath;
 
             // if (data[props.selectedActionIndex]) {
             //     data[props.selectedActionIndex].JSONActionParameters.voiceUrl =
-            //     removeOthers.value[0].voiceURL;
+            //     removeOthers.value[0].voiceUrL;
             // } else {
             //     data[props.selectedActionIndex] = new Object();
             //     data[props.selectedActionIndex].JSONActionParameters = new Object();
             //     data[props.selectedActionIndex].JSONActionParameters.voiceUrl =
-            //     removeOthers.value[0].voiceURL;
+            //     removeOthers.value[0].voiceUrL;
             // }
             // emit('updateaction', data, props.selectedActionIndex, actionType);
+
+           
         }
 
         const parsedData = ref({ })
