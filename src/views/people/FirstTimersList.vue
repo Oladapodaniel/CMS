@@ -1175,7 +1175,7 @@ export default {
           }
         }
         checkedFirstTimer.value = [];
-        // store.dispatch("membership/setMembers");
+        store.dispatch("membership/setFirstTimerData");
         store.dispatch("dashboard/getDashboard");
       } catch (error) {
         console.log(error);
