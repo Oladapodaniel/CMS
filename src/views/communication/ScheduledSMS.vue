@@ -60,6 +60,11 @@
                   </span>
                 </template>
               </Table>
+              <div class="row" v-if="schedules.length === 0 && !loading">
+                <div class="col-md-12 d-flex justify-content-center">
+                  <span class="my-4 font-weight-bold">No scheduled mesages</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -150,7 +155,7 @@ export default {
           }
           ElMessage({
             type: 'success',
-            message: 'Draft deleted successfully',
+            message: 'ScheduledSMS deleted successfully',
             duration: 5000
           })
         })

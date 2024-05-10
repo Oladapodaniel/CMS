@@ -133,6 +133,7 @@ export default {
     };
     const handleSelectionChange = (val) => {
       markedMails.value = val
+      console.log(val, 'hhhh');
     }
 
     onMounted(() => {

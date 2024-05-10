@@ -59,6 +59,7 @@
                     <div class="row justify-content-center mt-4">
                         <!-- <div class="col-md-3"></div> -->
                         <div class="col-md-9" @click="saveForm">
+                            <!-- {{filterIsRequired}} -->
                             <el-button class="w-100" size="large"
                                 :disabled="disabledBtn || (filterIsRequired && filterIsRequired.isRequired && !filterIsRequired.data)"
                                 :loading="loading" round :color="primarycolor"> Submit
@@ -150,6 +151,8 @@ export default {
         const saveCustomField = () => {
             centerDialogVisible.value = false
         }
+
+        const allTrueRequired = ref([])
         const getSingleForm = async () => {
             loadingPage.value = true
             try {
@@ -157,6 +160,10 @@ export default {
                 singleFormData.value = data
                 formLogo.value = data.pictureUrl
                 loadingPage.value = false
+
+                
+
+
 
             } catch (error) {
                 // finish()
@@ -181,13 +188,24 @@ export default {
 
         const filterIsRequired = ref({})
         const requiredField = ref(false)
-
-
+        
         const saveForm = async () => {
 
             let isRequiredFalse = singleFormData.value.customAttributes.find(i => i.isRequired === false)
             let isRequiredNull = singleFormData.value.customAttributes.find(i => i.isRequired === null)
             filterIsRequired.value = singleFormData.value.customAttributes.find(i => i.isRequired === true)
+
+            // allTrueRequired.value = singleFormData.value.customAttributes.forEach((i)  => {
+            //         if(i.data === "" && i.isRequired === true ){
+            //             console.log('Please filled the required field');
+            //         }
+            //         else{
+            //             console.log('Weldone');
+            //         }
+            //     })
+            //     console.log(allTrueRequired.value, 'jjhhdhd');
+            
+            
             loading.value = true
             if (isRequiredFalse && filterIsRequired.value === undefined) {
                 try {
@@ -196,6 +214,7 @@ export default {
                         data: i.data,
                         isRequired: i.isRequired
                     })))
+                    console.log(data, '1')
                     swal({
                         title: "Success!",
                         text: 'Form Successfully Submitted ',
@@ -210,13 +229,14 @@ export default {
                     console.log(error);
                     loading.value = false
                 }
-            } else if (filterIsRequired.value && filterIsRequired.value.data && filterIsRequired.value.isRequired === true) {
+            } else if (filterIsRequired.value && filterIsRequired.value.data && filterIsRequired.value.isRequired === true && allTrueRequired.value && allTrueRequired.value.length > 0) {
                 try {
                     const { data } = await axios.post(`/api/public/saveformdata?formID=${route.params.id}`, singleFormData.value.customAttributes.map((i) => ({
                         customAttributeID: i.id,
                         data: i.data,
                         isRequired: i.isRequired
                     })))
+                    console.log(data, '2')
                     swal({
                         title: "Success!",
                         text: 'Form Successfully Submitted ',
@@ -239,6 +259,7 @@ export default {
                         data: i.data,
                         isRequired: i.isRequired
                     })))
+                    console.log(data, '3')
                     swal({
                         title: "Success!",
                         text: 'Form Successfully Submitted ',
@@ -283,6 +304,7 @@ export default {
             networkError,
             filterIsRequired,
             requiredField,
+            allTrueRequired,
             addNewField,
             saveForm,
             checkComma,
