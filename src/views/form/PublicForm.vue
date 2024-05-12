@@ -273,8 +273,8 @@ export default {
     const requiredField = ref(false);
 
     const saveForm = async () => {
-      let isRequiredFalse = singleFormData.value.customAttributes.find(i => i.isRequired === false)
-      let isRequiredNull = singleFormData.value.customAttributes.find(i => i.isRequired === null)
+    //   let isRequiredFalse = singleFormData.value.customAttributes.find(i => i.isRequired === false)
+    //   let isRequiredNull = singleFormData.value.customAttributes.find(i => i.isRequired === null)
       filterIsRequired.value = singleFormData.value.customAttributes.find(i => i.isRequired === true)
       let allRequiredFieldsFilled = true;
       loading.value = false
@@ -323,7 +323,6 @@ export default {
       // console.log(allTrueRequired, 'jjhhdhd');
       // console.log(singleFormData.value.customAttributes, 'jjhhdhd');
 
-      loading.value = true;
       // if (isRequiredFalse && filterIsRequired.value === undefined) {
       //     try {
       //         const { data } = await axios.post(`/api/public/saveformdata?formID=${route.params.id}`, singleFormData.value.customAttributes.map((i) => ({
