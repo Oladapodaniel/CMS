@@ -1,12 +1,12 @@
 <template>
-  <!-- <div
+  <div
     :style="{ backgroundColor: theme.bg_900, color: theme.text_900 }"
     style="display: flex; min-height: 100vh"
-  > -->
+  >
   <!-- style="margin: auto;" -->
-    <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
-      <div class="row justify-content-center">
-        <!-- <button @click="toggleTheme">Toggle Theme</button> -->
+    <div class="container-top"  :class="{ 'container-slim': lgAndUp || xlAndUp }">
+      <div class="row justify-content-center" >
+        <!-- <button class="col-md-12" @click="toggleTheme">Toggle Theme</button> -->
         <div class="col-md-11 px-0 col-sm-12 mt-4">
           <div class="row justify-content-between">
             <div class="col-md-5 px-0 mt-4 d-flex align-items-center">
@@ -286,7 +286,7 @@
         <!-- <el-button @click="sendError">Clicked</el-button> -->
       </div>
     </div>
-  <!-- </div> -->
+  </div>
 </template>
 
 <script>

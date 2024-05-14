@@ -6,7 +6,7 @@
 }
 
 .container-wide {
-    width: 90%;
+    width: 95%;
     margin: 0 auto
 }
 
@@ -28,7 +28,18 @@
 }
 
 .head-text {
-  font: normal normal 800 29px Nunito sans;
+  font-weight: 600 !important;
+  font-size: 32px !important;
+  }
+  .text-black{
+    color: #111111 !important;
+  }
+  .text-dak{
+    color: #000000 !important;
+  }
+
+  .text-green{
+    color: #06B22C !important;
   }
 
 .s-8 {
@@ -36,6 +47,9 @@
 }
 .s-12 {
   font-size: 12px
+}
+.s-14 {
+  font-size: 14px
 }
 .s-16 {
   font-size: 16px
@@ -57,6 +71,9 @@
 }
 .s-42 {
   font-size: 42px
+}
+.fw-500{
+  font-weight: 500 !important;
 }
 
 rect.highcharts-background[fill] {
@@ -89,6 +106,17 @@ rect.highcharts-background[fill] {
     /* border: 1px solid #02172E30; */
     border: 1px solid #b2c2cd !important;
     border-radius: 4px;
+  }
+  .border-radius-border-8{
+    border-radius: 8px !important;
+    border: 1px solid #C9C9C9 !important;
+  }
+  .border-radius-8{
+    border-radius: 8px !important;
+  }
+  .border-radius-20{
+    border-radius: 20px !important;
+    /* border: 1px solid #C9C9C9 !important; */
   }
 
   .border-none {

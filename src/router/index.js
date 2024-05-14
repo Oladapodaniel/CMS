@@ -157,11 +157,28 @@ const routes = [
                 import( /* webpackChunkName: "dashboard" */ '../views/dashboard/Subscription.vue')
         },
         {
+            path: 'contacts',
+            name: 'AllContacts',
+            meta: {
+                title: 'Churchplus - All Contacts Form',
+            },
+            component: () =>
+                import( /* webpackChunkName: "AllContacts" */ '../views/people/AllContacts.vue')
+        },
+        {
             path: 'people',
             component: () =>
                 import( /* webpackChunkName: "people" */ '../views/people/People.vue'),
             children: [
-
+                // {
+                //     path: 'contacts',
+                //     name: 'AllContacts',
+                //     meta: {
+                //         title: 'Churchplus - All Contacts Form',
+                //     },
+                //     component: () =>
+                //         import( /* webpackChunkName: "addfirsttimer" */ '../views/people/AllContacts.vue')
+                // },
                 {
                     path: '',
                     meta: {

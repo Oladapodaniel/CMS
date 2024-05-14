@@ -131,7 +131,8 @@ export default {
 .links-menu {
   width: 266px;
   min-height: 100vh !important;
-  background: #ebeff4;
+  box-shadow: 0px 4px 4px 0px #00000040;
+  /* background: #ebeff4; */
   height: inherit;
   overflow: auto;
   z-index: 1;

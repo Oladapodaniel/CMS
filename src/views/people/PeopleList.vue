@@ -1,10 +1,44 @@
 <template>
-  <div class="my-con">
-    <div class="summary px-3">
-      <p class="summary-header primary--text">Summary</p>
+  <div class="my-con mt-5">
+    <div class="summary px-3 pt-2 pb-3 border-radius-border-8">
+      <!-- <p class="summary-header primary--text">Summary</p> -->
 
-      <div class="boards">
-        <div class="board">
+      <div class="row">
+        <div class="col-md-12 s-14 d-flex justify-content-end mt-2">
+          <div>
+            <span class="text-green"
+              >+{{ membershipSummary.percentageGrowth }}%
+            </span>
+            <span> Since last month</span>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="text-head s-18 font-weight-600">Total Members</div>
+          <div class="h2 font-weight-600">
+            {{ membershipSummary.totalMember }}
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="ml-md-4 col-md-12 chart1">
+            <ByGenderChart
+              domId="chart"
+              title="By Gender"
+              distance="10"
+              :summary="membershipSummary.genders"
+            />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="chart2 col-md-12">
+            <ByMaritalStatusChart
+              domId="second"
+              distance="10"
+              title="By Marital Status"
+              :summary="membershipSummary.maritalStatus"
+            />
+          </div>
+        </div>
+        <!-- <div class="board">
           <div class="board-top">
             <p class="total-text mb-0">TOTAL MEMBERS</p>
             <img class="trend-icon" src="../../assets/dashboardlinks/trend-icon.svg" alt="" />
@@ -14,8 +48,8 @@
             <span class="primary--text">+{{ membershipSummary.percentageGrowth }}% </span>
             <span> Since last month</span>
           </p>
-        </div>
-        <div class="chart-con">
+        </div> -->
+        <!-- <div class="chart-con">
           <div style="width: 45%" class="ml-md-4 chart1">
             <ByGenderChart domId="chart" title="By Gender" distance="5" :titleMargin="10"
               :summary="membershipSummary.genders" />
@@ -24,173 +58,475 @@
             <ByMaritalStatusChart domId="second" title="By Marital Status" :titleMargin="5"
               :summary="membershipSummary.maritalStatus" />
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
 
-    <el-dialog v-model="addToGroupDialog" title="Add all Members To Group"
-      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" align-center>
-      <el-select-v2 v-model="chooseGrouptoMoveAllMembers" :options="getAllGroups" label="Select a group"
-        placeholder="Select a group" size="large" class="w-100" />
+    <el-dialog
+      v-model="addToGroupDialog"
+      title="Add all Members To Group"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+      align-center
+    >
+      <el-select-v2
+        v-model="chooseGrouptoMoveAllMembers"
+        :options="getAllGroups"
+        label="Select a group"
+        placeholder="Select a group"
+        size="large"
+        class="w-100"
+      />
       <template #footer>
         <span class="dialog-footer">
-          <el-button class="secondary-button" @click="addToGroupDialog = false" round>Cancel</el-button>
-          <el-button type="primary" :color="primarycolor" :loading="allGroupLoading" @click="getAllMembersAndAddToGroup"
-            round>
+          <el-button
+            class="secondary-button"
+            @click="addToGroupDialog = false"
+            round
+            >Cancel</el-button
+          >
+          <el-button
+            type="primary"
+            :color="primarycolor"
+            :loading="allGroupLoading"
+            @click="getAllMembersAndAddToGroup"
+            round
+          >
             Add to group
           </el-button>
         </span>
       </template>
     </el-dialog>
 
-    <el-dialog v-model="addToGroupSingle" title="Add Member(s) To Group"
-      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" align-center>
-      <el-select-v2 v-model="chooseGrouptoMoveto" :options="getAllGroups" label="Select a group"
-        placeholder="Select a group" size="large" class="w-100" />
+    <el-dialog
+      v-model="addToGroupSingle"
+      title="Add Member(s) To Group"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+      align-center
+    >
+      <el-select-v2
+        v-model="chooseGrouptoMoveto"
+        :options="getAllGroups"
+        label="Select a group"
+        placeholder="Select a group"
+        size="large"
+        class="w-100"
+      />
       <template #footer>
         <span class="dialog-footer">
-          <el-button class="secondary-button" @click="addToGroupSingle = false" round>Cancel</el-button>
-          <el-button type="primary" :color="primarycolor" :loading="singleGroupLoading" @click="moveMemberToGroup" round>
+          <el-button
+            class="secondary-button"
+            @click="addToGroupSingle = false"
+            round
+            >Cancel</el-button
+          >
+          <el-button
+            type="primary"
+            :color="primarycolor"
+            :loading="singleGroupLoading"
+            @click="moveMemberToGroup"
+            round
+          >
             Add to group
           </el-button>
         </span>
       </template>
     </el-dialog>
 
-    <el-dialog v-model="displayPositionArchive" title="Archive member(s)"
-      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" align-center>
+    <el-dialog
+      v-model="displayPositionArchive"
+      title="Archive member(s)"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+      align-center
+    >
       <p class="p-m-0">
         You are about to archive your member(s). Do you want to continue ?
       </p>
       <template #footer>
         <span class="dialog-footer">
-          <el-button class="secondary-button" @click="displayPositionArchive = false" round>No</el-button>
-          <el-button :color="primarycolor" :loading="archiveLoading" @click="archive('', 'multiple')" round>
+          <el-button
+            class="secondary-button"
+            @click="displayPositionArchive = false"
+            round
+            >No</el-button
+          >
+          <el-button
+            :color="primarycolor"
+            :loading="archiveLoading"
+            @click="archive('', 'multiple')"
+            round
+          >
             Yes
           </el-button>
         </span>
       </template>
     </el-dialog>
 
-    <div class="table-top p-3 mt-5">
-      <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
+   <div class="tab-options d-block d-md-none  mt-5">
+    <div class=" s-14 fw-500 col-md-10 px-0  mt-5">
+      <div class="d-flex flex-column flex-sm-row justify-content-md-between">
         <div>
-          <el-tooltip class="box-item" effect="dark" content="Add all members to group" placement="top-start">
-            <el-icon :size="20" class="c-pointer" @click="addToGroupDialog = true">
+          <el-tooltip
+            class="box-item "
+            effect="dark"
+            content="Add all members to group"
+            placement="top-start"
+          >
+            <el-icon
+              :size="28"
+              class="c-pointer primary--text"
+              @click="addToGroupDialog = true"
+            >
               <CirclePlus />
             </el-icon>
           </el-tooltip>
-          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Add to group"
-            placement="top-start">
-            <el-icon class="ml-2 c-pointer" :size="20" @click="addToGroupSingle = true">
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            v-if="marked.length > 0"
+            content="Add to group"
+            placement="top-start"
+          >
+            <el-icon
+              class="ml-2 c-pointer primary--text"
+              :size="28"
+              @click="addToGroupSingle = true"
+            >
               <User />
             </el-icon>
           </el-tooltip>
-          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Archive member(s)"
-            placement="top-start">
-            <el-icon class="ml-2 c-pointer" :size="20" @click="displayPositionArchive = true" v-if="marked.length > 0">
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            v-if="marked.length > 0"
+            content="Archive member(s)"
+            placement="top-start"
+          >
+            <el-icon
+              class="ml-2 c-pointer primary--text"
+              :size="28"
+              @click="displayPositionArchive = true"
+              v-if="marked.length > 0"
+            >
               <DocumentRemove />
             </el-icon>
           </el-tooltip>
-          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Delete member(s)"
-            placement="top-start">
-            <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="showConfirmModal1">
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            v-if="marked.length > 0"
+            content="Delete member(s)"
+            placement="top-start"
+          >
+            <el-icon
+              :size="28"
+              class="ml-2 c-pointer primary--text"
+              v-if="marked.length > 0"
+              @click="showConfirmModal1"
+            >
               <Delete />
             </el-icon>
           </el-tooltip>
-          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send SMS" placement="top-start">
-            <img src="../../assets/sms.png" style="width: 20px; margin-top: -13px" class="ml-2 c-pointer"
-              @click="sendMarkedMemberSms" alt="Send SMS" />
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            v-if="marked.length > 0"
+            content="Send SMS"
+            placement="top-start"
+          >
+            <img
+              src="../../assets/ChatCenteredDots.png"
+              style="width: 32px; margin-top: -20px"
+              class="ml-2 c-pointer"
+              @click="sendMarkedMemberSms"
+              alt="Send SMS"
+            />
           </el-tooltip>
-          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send Email" placement="top-start">
-            <el-icon :size="20" class="ml-2 c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberEmail">
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            v-if="marked.length > 0"
+            content="Send Email"
+            placement="top-start"
+          >
+            <el-icon
+              :size="28"
+              class="ml-2 c-pointer primary--text"
+              v-if="marked.length > 0"
+              @click="sendMarkedMemberEmail"
+            >
               <Message />
             </el-icon>
           </el-tooltip>
-          <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Send Whatsapp message"
-            placement="top-start">
-            <img src="../../assets/whatsappblackwhite.svg" style="width: 20px; margin-top: -13px" class="ml-2 c-pointer"
-              @click="displayWhatsappDrawer(null)" alt="Send Whatsapp message" />
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            v-if="marked.length > 0"
+            content="Send Whatsapp message"
+            placement="top-start"
+          >
+            <img
+              src="../../assets/WhatsappLogo.png"
+              style="width: 32px; margin-top: -20px"
+              class="ml-2 c-pointer "
+              @click="displayWhatsappDrawer(null)"
+              alt="Send Whatsapp message"
+            />
           </el-tooltip>
         </div>
-        <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
-          <div>
-            <p @click="toggleFilterFormVissibility" class="mb-0 mr-3 d-flex my-3 my-sm-0 c-pointer">
-              <el-icon :size="13">
-                <Filter />
-              </el-icon>
-              <span class="ml-1"> FILTER</span>
-            </p>
-          </div>
-          <el-input size="small" v-model="searchText" placeholder="Search..." @input="searchingMember = true"
-            @keyup.enter.prevent="searchPeopleInDB($event)" class="input-with-select">
+        <div class="d-flex flex-column flex-sm-row justify-content-md-between">
+          <el-input
+            size="small"
+            v-model="searchText"
+            placeholder="Search..."
+            @input="searchingMember = true"
+            @keyup.enter.prevent="searchPeopleInDB($event)"
+            class="search-input"
+          >
             <template #suffix>
-              <el-button style="padding: 5px; height: 22px" @click.prevent="searchText = ''">
+              <el-button
+                style="padding: 5px; height: 22px"
+                @click.prevent="searchText = ''"
+              >
                 <el-icon :size="13">
                   <Close />
                 </el-icon>
               </el-button>
             </template>
             <template #append>
-              <el-button @click.prevent="searchPeopleInDB($event)">
+              <el-button class="btn-search" @click.prevent="searchPeopleInDB($event)">
                 <el-icon :size="13">
                   <Search />
                 </el-icon>
               </el-button>
             </template>
           </el-input>
-        </div>
-      </div>
-    </div>
-    <div class="filter-options" :class="{ 'filter-options-shown': filterFormIsVissible }">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-9">
-            <div class="row">
-              <div class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100">
-                <el-input placeholder="First name" class="w-100" v-model="filter.name" @input="setFilteredValue" />
-              </div>
-              <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                <el-input placeholder="Phone number" class="w-100" v-model="filter.phoneNumber" />
-              </div>
+          <div  style="background: #EEEEEE;" class="ml-2 mt-3 mt-sm-0 d-flex w-50 align-items-center justify-content-center border-radius-8">
+            <div
+              @click="toggleFilterFormVissibility"
+              class="mb-0 px-3 d-flex my-3 my-sm-0 c-pointer"
+            >
+              
+              <span class="mr-1"> Filter</span>
+              <el-icon  :size="18">
+                <Filter />
+              </el-icon>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
 
-          <div class="col-md-3 d-flex flex-column align-items-center">
-            <el-button :color="primarycolor" @click="applyFilter" :loading="applyLoading" :disabled="disableBtn"
-              round>Apply</el-button>
-            <span class="mt-2">
-              <el-button @click="clearAll" class="mr-2" text>Clear all</el-button>
-              <el-button @click="hide" class="mx-2" text>Hide</el-button>
-            </span>
+   </div>
+   <div class="tab-options d-none  d-md-block  mt-5">
+    <div class="table-top col-12 col-md-7  col-lg-7 col-xl-8 px-0  mt-5">
+      <div class="d-flex flex-column flex-md-row justify-content-md-between">
+        <div>
+          <el-tooltip
+            class="box-item "
+            effect="dark"
+            content="Add all members to group"
+            placement="top-start"
+          >
+            <el-icon
+              :size="28"
+              class="c-pointer primary--text"
+              @click="addToGroupDialog = true"
+            >
+              <CirclePlus />
+            </el-icon>
+          </el-tooltip>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            v-if="marked.length > 0"
+            content="Add to group"
+            placement="top-start"
+          >
+            <el-icon
+              class="ml-2 c-pointer primary--text"
+              :size="28"
+              @click="addToGroupSingle = true"
+            >
+              <User />
+            </el-icon>
+          </el-tooltip>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            v-if="marked.length > 0"
+            content="Archive member(s)"
+            placement="top-start"
+          >
+            <el-icon
+              class="ml-2 c-pointer primary--text"
+              :size="28"
+              @click="displayPositionArchive = true"
+              v-if="marked.length > 0"
+            >
+              <DocumentRemove />
+            </el-icon>
+          </el-tooltip>
+          <el-tooltip
+            class="box-item d-flex"
+            effect="dark"
+            v-if="marked.length > 0"
+            content="Delete member(s)"
+            placement="top-start"
+          >
+            <el-icon
+              :size="28"
+              class="ml-2 c-pointer primary--text"
+              v-if="marked.length > 0"
+              @click="showConfirmModal1"
+            >
+              <Delete />
+            </el-icon>
+          </el-tooltip>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            v-if="marked.length > 0"
+            content="Send SMS"
+            placement="top-start"
+          >
+            <img
+              src="../../assets/ChatCenteredDots.png"
+              style="width: 32px; margin-top: -20px"
+              class="ml-2 c-pointer primary--text"
+              @click="sendMarkedMemberSms"
+              alt="Send SMS"
+            />
+          </el-tooltip>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            v-if="marked.length > 0"
+            content="Send Email"
+            placement="top-start"
+          >
+            <el-icon
+              :size="28"
+              class="ml-2 c-pointer primary--text"
+              v-if="marked.length > 0"
+              @click="sendMarkedMemberEmail"
+            >
+              <Message />
+            </el-icon>
+          </el-tooltip>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            v-if="marked.length > 0"
+            content="Send Whatsapp message"
+            placement="top-start"
+          >
+            <img
+              src="../../assets/WhatsappLogo.png"
+              style="width: 32px;  margin-top: -20px"
+              class="ml-2 c-pointer primary--text"
+              @click="displayWhatsappDrawer(null)"
+              alt="Send Whatsapp message"
+            />
+          </el-tooltip>
+        </div>
+        <div class="d-flex flex-column flex-md-row justify-content-md-between">
+          <el-input
+            size="small"
+            v-model="searchText"
+            placeholder="Search..."
+            @input="searchingMember = true"
+            @keyup.enter.prevent="searchPeopleInDB($event)"
+            class="search-input col-md-12 col-9"
+          >
+            <template #suffix>
+              <el-button
+                style="padding: 5px; height: 22px"
+                @click.prevent="searchText = ''"
+              >
+                <el-icon :size="13">
+                  <Close />
+                </el-icon>
+              </el-button>
+            </template>
+            <template #append>
+              <el-button class="btn-search" @click.prevent="searchPeopleInDB($event)">
+                <el-icon :size="13">
+                  <Search />
+                </el-icon>
+              </el-button>
+            </template>
+          </el-input>
+          <div  style="background: #EEEEEE;" class="ml-2 mt-3 py-2 mt-md-0 d-flex align-items-center justify-content-center border-radius-8">
+            <p
+              @click="toggleFilterFormVissibility"
+              class="mb-0 px-3 d-flex my-3 my-sm-0 c-pointer"
+            >
+              
+              <span class="mr-1"> Filter</span>
+              <el-icon  :size="18">
+                <Filter />
+              </el-icon>
+            </p>
           </div>
         </div>
       </div>
     </div>
 
-    <Table :data="searchMember" :headers="memberHeaders" :checkMultipleItem="true" @checkedrow="handleSelectionChange"
-      v-loading="paginatedTableLoading" v-if="searchMember.length > 0">
+   </div>
+    <Table
+      :data="searchMember"
+      :headers="memberHeaders"
+      :checkMultipleItem="true"
+      @checkedrow="handleSelectionChange"
+      v-loading="paginatedTableLoading"
+      v-if="searchMember.length > 0"
+    >
       <template #pictureUrl="{ item }">
-        <el-card shadow="hover" class="c-pointer person-image" v-if="item.pictureUrl"
-          style="border-radius: 50%; height: 26px; width: 26px">
-          <el-tooltip class="box-item" effect="dark" content="Click to view" placement="top-start">
-            <el-image style="border-radius: 50%; height: 26px; width: 26px" :src="item.pictureUrl" fit="cover"
-              @click="(selectedImage = item), (imageDialog = true)" :lazy="true" />
+        <el-card
+          shadow="hover"
+          class="c-pointer person-image"
+          v-if="item.pictureUrl"
+          style="border-radius: 50%; height: 26px; width: 26px"
+        >
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            content="Click to view"
+            placement="top-start"
+          >
+            <el-image
+              style="border-radius: 50%; height: 26px; width: 26px"
+              :src="item.pictureUrl"
+              fit="cover"
+              @click="(selectedImage = item), (imageDialog = true)"
+              :lazy="true"
+            />
           </el-tooltip>
         </el-card>
-        <el-avatar :size="25" v-else><el-icon color="#000000">
+        <img src="../../assets/table-icon.png" class="mt-1" v-else alt="" />
+        <!-- <el-avatar :size="25" v-else><el-icon color="#000000">
             <UserFilled />
           </el-icon>
-        </el-avatar>
+        </el-avatar> -->
       </template>
       <template v-slot:firstName="{ item }">
-        <div class="c-pointer" @click="showMemberRow(item)">
+        <div class="c-pointer fw-500 s-16" @click="showMemberRow(item)">
           {{ item.firstName }}
         </div>
       </template>
       <template v-slot:lastName="{ item }">
-        <div class="c-pointer" @click="showMemberRow(item)">
+        <div class="c-pointer fw-500 s-16" @click="showMemberRow(item)">
           {{ item.lastName }}
+        </div>
+      </template>
+      <!-- <template v-slot:gender="{ item }">
+        <div class="c-pointer " @click="showMemberRow(item)">
+          {{ item.gender }}
+        </div>
+      </template> -->
+      <template v-slot:email="{ item }">
+        <div class="c-pointer " @click="showMemberRow(item)">
+          {{ item.email }}
         </div>
       </template>
       <template v-slot:mobilePhone="{ item }">
@@ -207,21 +543,34 @@
             <ul class="dropdown-menu">
               <li class="dropdown-item">
                 <a>
-                  <router-link :to="item.mobilePhone
-                    ? `/tenant/sms/compose?phone=${item.mobilePhone}`
-                    : ''
-                    " :class="{
-    'fade-text': !item.mobilePhone,
-    'text-color': item.mobilePhone,
-  }">Send SMS</router-link>
+                  <router-link
+                    :to="
+                      item.mobilePhone
+                        ? `/tenant/sms/compose?phone=${item.mobilePhone}`
+                        : ''
+                    "
+                    :class="{
+                      'fade-text': !item.mobilePhone,
+                      'text-color': item.mobilePhone,
+                    }"
+                    >Send SMS</router-link
+                  >
                 </a>
               </li>
               <li>
                 <a class="dropdown-item" href="#">
-                  <router-link :to="item.email ? `/tenant/email/compose?phone=${item.email}` : ''" :class="{
-                    'fade-text': !item.email,
-                    'text-color': item.email,
-                  }">Send Email</router-link>
+                  <router-link
+                    :to="
+                      item.email
+                        ? `/tenant/email/compose?phone=${item.email}`
+                        : ''
+                    "
+                    :class="{
+                      'fade-text': !item.email,
+                      'text-color': item.email,
+                    }"
+                    >Send Email</router-link
+                  >
                 </a>
               </li>
               <li @click="displayWhatsappDrawer(item)">
@@ -234,19 +583,29 @@
               </li>
               <li>
                 <a class="dropdown-item" href="#">
-                  <router-link :to="`/tenant/firsttimermanagement/${item.id}?memberType=1`" class="text-color">
+                  <router-link
+                    :to="`/tenant/firsttimermanagement/${item.id}?memberType=1`"
+                    class="text-color"
+                  >
                     Follow Up
                   </router-link>
                 </a>
               </li>
               <li>
                 <a class="dropdown-item" href="#">
-                  <router-link :to="`/tenant/people/add/${item.id}`" class="text-color">Edit</router-link>
+                  <router-link
+                    :to="`/tenant/people/add/${item.id}`"
+                    class="text-color"
+                    >Edit</router-link
+                  >
                 </a>
               </li>
               <li>
                 <a class="dropdown-item" href="#">
-                  <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">
+                  <div
+                    @click.prevent="showConfirmModal(item.id, index)"
+                    class="text-color"
+                  >
                     Delete
                   </div>
                 </a>
@@ -257,17 +616,32 @@
       </template>
     </Table>
     <div v-if="searchMember.length == 0">
-      <el-alert title="Member not found" type="warning" description="Try searching with another keyword" show-icon
-        center />
+      <el-alert
+        title="Member not found"
+        type="warning"
+        description="Try searching with another keyword"
+        show-icon
+        center
+      />
     </div>
     <div class="d-flex justify-content-end my-3" v-if="searchMember.length > 0">
-      <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
-        layout="total, prev, pager, next, jumper" :total="totalItems" @size-change="handleSizeChange"
-        @current-change="handleCurrentChange" />
+      <el-pagination
+        v-model:current-page="serverOptions.page"
+        v-model:page-size="serverOptions.rowsPerPage"
+        background
+        layout="total, prev, pager, next, jumper"
+        :total="totalItems"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </div>
 
-    <el-dialog v-model="imageDialog" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center
-      class="person-image-dialog">
+    <el-dialog
+      v-model="imageDialog"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
+      align-center
+      class="person-image-dialog"
+    >
       <el-image class="w-100" :src="selectedImage.pictureUrl" fit="contain" />
       <template #footer>
         <span class="dialog-footer person-image-dialog-footer">
@@ -279,16 +653,26 @@
           </div>
           <div class="text-secondary small">{{ selectedImage.email }}</div>
           <div class="mt-2">
-            <router-link :to="selectedImage.mobilePhone
-              ? `/tenant/sms/compose?phone=${selectedImage.mobilePhone}`
-              : ''
-              " v-if="selectedImage.mobilePhone">
-              <el-button @click="imageDialog = false" round> Send SMS </el-button>
+            <router-link
+              :to="
+                selectedImage.mobilePhone
+                  ? `/tenant/sms/compose?phone=${selectedImage.mobilePhone}`
+                  : ''
+              "
+              v-if="selectedImage.mobilePhone"
+            >
+              <el-button @click="imageDialog = false" round>
+                Send SMS
+              </el-button>
             </router-link>
-            <router-link :to="selectedImage.email
-              ? `/tenant/email/compose?phone=${selectedImage.email}`
-              : ''
-              " v-if="selectedImage.email">
+            <router-link
+              :to="
+                selectedImage.email
+                  ? `/tenant/email/compose?phone=${selectedImage.email}`
+                  : ''
+              "
+              v-if="selectedImage.email"
+            >
               <el-button @click="imageDialog = false" class="ml-2" round>
                 Send Email
               </el-button>
@@ -298,40 +682,62 @@
       </template>
     </el-dialog>
 
-    <el-drawer v-model="showSMS" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+    <el-drawer
+      v-model="showSMS"
+      :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
+      direction="rtl"
+    >
       <template #header>
         <h4>Send SMS</h4>
       </template>
       <template #default>
         <div>
-          <smsComponent :phoneNumbers="contacts" @closesidemodal="() => (showSMS = false)" />
+          <smsComponent
+            :phoneNumbers="contacts"
+            @closesidemodal="() => (showSMS = false)"
+          />
         </div>
       </template>
     </el-drawer>
 
-    <el-drawer v-model="showEmail" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+    <el-drawer
+      v-model="showEmail"
+      :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
+      direction="rtl"
+    >
       <template #header>
         <h4>Send Email</h4>
       </template>
       <template #default>
         <div>
-          <emailComponent :selectedGroupMembers="markedMembers" @closesidemodal="() => (showEmail = false)" />
+          <emailComponent
+            :selectedGroupMembers="markedMembers"
+            @closesidemodal="() => (showEmail = false)"
+          />
         </div>
       </template>
     </el-drawer>
 
-    <el-drawer v-model="showWhatsapp" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl"
-      class="whatsappdrawer">
+    <el-drawer
+      v-model="showWhatsapp"
+      :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
+      direction="rtl"
+      class="whatsappdrawer"
+    >
       <template #header> </template>
       <template #default>
         <div v-if="whatsappClientState">
           <div class="d-flex justify-content-center align-items-center">
             <img src="../../assets/whatsappwhiteoutline.svg" />
-            <h4 class="font-weight-700 text-dark mb-0 ml-2">Send Whatsapp message to</h4>
+            <h4 class="font-weight-700 text-dark mb-0 ml-2">
+              Send Whatsapp message to
+            </h4>
           </div>
           <h4 class="text-center text-secondary font-weight-600">
             {{
-              sendWhatsappToMultiple ? "Selected Members" : whatsappRecipient.firstName
+              sendWhatsappToMultiple
+                ? "Selected Members"
+                : whatsappRecipient.firstName
             }}
           </h4>
         </div>
@@ -339,18 +745,33 @@
           <div>
             <div>
               Recipient{{ sendWhatsappToMultiple ? "s" : "" }}
-              <el-tooltip class="box-item" effect="customized"
+              <el-tooltip
+                class="box-item"
+                effect="customized"
                 content="<div>Make sure that the numbers are correctly formatted.</div> <div>A correct format should include the country code with the phone number. E.g +2349059403948.</div> <div>It works either with the '+' symbol or without it.</div>"
-                raw-content placement="top">
+                raw-content
+                placement="top"
+              >
                 <el-icon>
                   <InfoFilled />
                 </el-icon>
               </el-tooltip>
             </div>
-            <div class="d-flex align-items-center flex-wrap" v-if="sendWhatsappToMultiple">
-              <el-tag class="mx-1" size="large" closable
-                v-for="(item, index) in marked.filter((i) => i.mobilePhone).splice(0, 10)" :key="item.id"
-                @close="marked.splice(index, 1)">{{ item.mobilePhone }}</el-tag>
+            <div
+              class="d-flex align-items-center flex-wrap"
+              v-if="sendWhatsappToMultiple"
+            >
+              <el-tag
+                class="mx-1"
+                size="large"
+                closable
+                v-for="(item, index) in marked
+                  .filter((i) => i.mobilePhone)
+                  .splice(0, 10)"
+                :key="item.id"
+                @close="marked.splice(index, 1)"
+                >{{ item.mobilePhone }}</el-tag
+              >
               <!-- <div class="multiple_numbers d-flex align-items-center mr-2 mt-2"
                 v-for="(item, index) in marked.filter(i => i.mobilePhone).splice(0, 10)" :key="item.id">
                 <span>{{ item.mobilePhone }}</span>
@@ -359,16 +780,29 @@
                 </el-icon>
               </div> -->
             </div>
-            <vue-tel-input class="mt-2" style="height: 40px" v-model="whatsappRecipient.mobilePhone" mode="international"
-              v-else></vue-tel-input>
-            <div v-if="sendWhatsappToMultiple && marked.length > 10" class="text-secondary font-weight-600 mt-2">
+            <vue-tel-input
+              class="mt-2"
+              style="height: 40px"
+              v-model="whatsappRecipient.mobilePhone"
+              mode="international"
+              v-else
+            ></vue-tel-input>
+            <div
+              v-if="sendWhatsappToMultiple && marked.length > 10"
+              class="text-secondary font-weight-600 mt-2"
+            >
               and {{ marked.length - 10 }}
               {{ marked.length - 10 > 1 ? "others" : "other" }}
             </div>
           </div>
           <!-- <div class="mt-3">Message</div> -->
           <div class="mt-4">
-            <el-input type="textarea" rows="8" placeholder="Enter your message" v-model="whatsappmessage"></el-input>
+            <el-input
+              type="textarea"
+              rows="8"
+              placeholder="Enter your message"
+              v-model="whatsappmessage"
+            ></el-input>
           </div>
         </div>
         <div v-else class="mt-5">
@@ -376,10 +810,74 @@
         </div>
       </template>
       <template #footer v-if="whatsappClientState">
-        <el-button :color="primarycolor" :loading="sendingwhatsappmessage" @click="sendWhatsapp()" round>Send <img
-            src="../../assets/send-jet.svg" class="ml-2" /></el-button>
+        <el-button
+          :color="primarycolor"
+          :loading="sendingwhatsappmessage"
+          @click="sendWhatsapp()"
+          round
+          >Send <img src="../../assets/send-jet.svg" class="ml-2"
+        /></el-button>
       </template>
     </el-drawer>
+
+    <el-dialog
+      v-model="showFilter"
+      title=""
+      :width="mdAndUp || lgAndUp || xlAndUp ? `35%` : xsOnly ? `90%` : `70%`"
+      class="QRCodeDialog border-radius-20"
+      align-center
+    >
+      <div class="filter-optio">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12 text-center text-black h2 fw-500">
+              Filter
+            </div>
+            <div class="col-md-12 text-center text-black s-24">
+              Narrow down your search
+            </div>
+            <div class="col-md-12 mt-3">
+              <div class="row justify-content-center">
+                <div class="col-11 form-group">
+                  <div class="text-black">First name</div>
+                  <el-input
+                    placeholder="First name"
+                    class="w-100"
+                    v-model="filter.name"
+                    @input="setFilteredValue"
+                  />
+                </div>
+                <div class="col-md-11 form-group">
+                  <div class="text-black">Phone number</div>
+                  <el-input
+                    placeholder="Phone number"
+                    class="w-100"
+                    v-model="filter.phoneNumber"
+                  />
+                </div>
+                <div class="col-md-12 d-flex justify-content-center">
+                  <el-button
+                    class="col-md-11"
+                    :color="primarycolor"
+                    @click="applyFilter"
+                    :loading="applyLoading"
+                    :disabled="disableBtn"
+                    round
+                    >Apply</el-button
+                  >
+                  <!-- <div class="mt-2 col-md-11">
+                    <el-button @click="clearAll" class="mr-2" text
+                      >Clear all</el-button
+                    > -->
+                    <!-- <el-button @click="hide" class="mx-2" text>Hide</el-button> -->
+                  <!-- </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -423,6 +921,7 @@ export default {
     const filterFormIsVissible = ref(false);
     const filter = ref({});
     const searchIsVisible = ref(false);
+    const showFilter = ref(false);
     const filterResult = ref([]);
     const selectAll = ref(false);
     const noRecords = ref(false);
@@ -440,8 +939,10 @@ export default {
     const filtered = ref(false);
     const memberHeaders = ref([
       { name: "PICTURE", value: "pictureUrl" },
-      { name: "FIRSTNAME", value: "firstName" },
-      { name: "LASTNAME", value: "lastName" },
+      { name: "FIRST NAME", value: "firstName" },
+      { name: "LAST NAME", value: "lastName" },
+      // { name: "GENDER", value: "gender" },
+      { name: "EMAIL", value: "email" },
       { name: "PHONE", value: "mobilePhone" },
       { name: "ACTION", value: "action" },
     ]);
@@ -495,10 +996,14 @@ export default {
       router.push(`/tenant/people/add/${item.id}`);
     };
 
-    const toggleFilterFormVissibility = () =>
-      (filterFormIsVissible.value = !filterFormIsVissible.value);
+    const toggleFilterFormVissibility = () => {
+      showFilter.value = true;
+      // (filterFormIsVissible.value = !filterFormIsVissible.value);
+    };
 
-    const membershipSummary = ref(store.getters["membership/membershipSummary"]);
+    const membershipSummary = ref(
+      store.getters["membership/membershipSummary"]
+    );
 
     const chooseGroupto = (items) => {
       chooseGrouptoMoveto.value = items;
@@ -512,7 +1017,9 @@ export default {
       axios
         .delete(`/api/People/DeleteOnePerson/${id}`)
         .then((res) => {
-          churchMembers.value = churchMembers.value.filter((item) => item.id !== id);
+          churchMembers.value = churchMembers.value.filter(
+            (item) => item.id !== id
+          );
           if (res.data.response.includes("@")) {
             let disRes = res.data.response.split("@");
 
@@ -529,11 +1036,20 @@ export default {
           store.dispatch("membership/removeMember", id);
           store.dispatch("dashboard/getDashboard");
 
-          if (filterResult.value.length > 0 && filtered.value && filter.value.name) {
-            filterResult.value = filterResult.value.filter((item) => item.id !== id);
+          if (
+            filterResult.value.length > 0 &&
+            filtered.value &&
+            filter.value.name
+          ) {
+            filterResult.value = filterResult.value.filter(
+              (item) => item.id !== id
+            );
           }
 
-          if (searchText.value !== "" && searchPeopleNamesInDB.value.length > 0) {
+          if (
+            searchText.value !== "" &&
+            searchPeopleNamesInDB.value.length > 0
+          ) {
             searchPeopleNamesInDB.value = searchPeopleNamesInDB.value.filter(
               (item) => item.id !== id
             );
@@ -560,11 +1076,15 @@ export default {
     };
 
     const showConfirmModal = (id, index) => {
-      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
-        confirmButtonText: "OK",
-        cancelButtonText: "Cancel",
-        type: "error",
-      })
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
         .then(() => {
           deleteMember(id, index);
         })
@@ -729,7 +1249,8 @@ export default {
 
     const applyFilter = () => {
       applyLoading.value = true;
-      filter.value.name = filter.value.name == undefined ? "" : filter.value.name;
+      filter.value.name =
+        filter.value.name == undefined ? "" : filter.value.name;
       filter.value.phoneNumber =
         filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber;
 
@@ -813,9 +1334,17 @@ export default {
         !searchingMember.value
       ) {
         return [];
-      } else if (filterResult.value.length > 0 && filtered.value && filter.value.name) {
+      } else if (
+        filterResult.value.length > 0 &&
+        filtered.value &&
+        filter.value.name
+      ) {
         return filterResult.value;
-      } else if (filterResult.value.length == 0 && filtered.value && filter.value.name) {
+      } else if (
+        filterResult.value.length == 0 &&
+        filtered.value &&
+        filter.value.name
+      ) {
         return [];
       } else {
         return churchMembers.value;
@@ -930,7 +1459,8 @@ export default {
     const getUser = computed(() => {
       if (
         !store.getters.currentUser ||
-        (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)
+        (store.getters.currentUser &&
+          Object.keys(store.getters.currentUser).length == 0)
       )
         return "";
       return store.getters.currentUser;
@@ -1056,8 +1586,6 @@ export default {
 
     getAllCountries();
 
-
-
     return {
       churchMembers,
       chooseGroupto,
@@ -1143,9 +1671,10 @@ export default {
       whatsappClientState,
       getUser,
       allcountries,
+      showFilter,
       tenantCountry,
       sendingwhatsappmessage,
-      clientSessionId
+      clientSessionId,
     };
   },
 };
@@ -1225,11 +1754,18 @@ export default {
 }
 
 .table-top {
-  font-weight: 800;
-  font-size: 12px;
+  position: absolute;
+  top: -40px;
+  /* width: 100%; */
+  font-weight: 500 !important;
+  font-size: 14px;
   background: #fff;
-  border: 1px solid #d4dde3;
-  border-bottom: none;
+  color: #000000;
+  /* border: 1px solid #d4dde3; */
+  /* max-width: 83.333333% !important; */
+}
+.tab-options{
+  position: relative;
 }
 
 .filter-options {
@@ -1265,7 +1801,6 @@ export default {
 }
 
 @media screen and (max-width: 500px) {
-
   .chart1,
   .chart2,
   .board,
@@ -1279,7 +1814,7 @@ export default {
 }
 
 @media screen and (min-width: 500px) {
-  .picture>p {
+  .picture > p {
     margin-left: 43px;
   }
 
@@ -1348,7 +1883,6 @@ export default {
 }
 
 @media screen and (max-width: 947px) {
-
   .m-wrapper,
   .m-wrapper2 {
     width: 700px;
@@ -1357,7 +1891,6 @@ export default {
 }
 
 @media screen and (max-width: 767px) {
-
   .m-wrapper,
   .m-wrapper2 {
     width: 400px;
@@ -1366,7 +1899,6 @@ export default {
 }
 
 @media screen and (max-width: 575px) {
-
   .m-wrapper,
   .m-wrapper2 {
     width: 350px;

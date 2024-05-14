@@ -8,8 +8,8 @@
         <a class="user-link">{{ tenantDisplayName }}
           <span class="user-link-icon c-pointer"><i class="pi pi-angle-right"></i></span></a> -->
       </div>
-      <el-menu default-active="1" :active-text-color="primarycolor" background-color="#ebeff4"
-        class="el-menu-vertical-demo mt-3" text-color="#02172e" :unique-opened="true">
+      <el-menu default-active="1" :active-text-color="primarycolor"
+        class="el-menu-vertical-demo  mt-3" text-color="#02172e" :unique-opened="true">
         <div v-for="(item, index) in menuLink" :key="index">
           <el-sub-menu :index="`${index + 1}`" v-if="item.submenu.length > 0">
             <template #title>
@@ -27,7 +27,7 @@
               </el-sub-menu>
               <el-menu-item-group @click="routeToPage(x)" v-else>
                 <el-menu-item :index="`${index + 1}-${indexe + 1}`">{{ x.name }}
-                  <el-tag type="warning" class="ml-3" effect="dark" v-if="index === 2 && indexe === 3" size="" round>
+                  <el-tag type="success" class="ml-3" effect="dark" v-if="index === 2 && indexe === 3" size="" round>
                     <span style="display: flex; font-size: 14px">Beta</span>
                   </el-tag>
                 </el-menu-item>
@@ -45,8 +45,8 @@
             <!-- <el-tag type="warning" class="ml-3" effect="dark" size="" v-if="item.id == 5" round>
               <span style="display: flex; font-size: 14px">Beta</span>
             </el-tag> -->
-            <el-tag type="warning" class="ml-3" effect="dark" size="" v-if="item.id == 8" round>
-              <span style="display: flex; font-size: 14px">New</span>
+            <el-tag type="success" class="ml-3" effect="dark" size="" v-if="item.id == 8" round>
+              <span style="display: flex; font-size: 14px">Beta</span>
             </el-tag>
           </el-menu-item>
         </div>
@@ -276,6 +276,12 @@ export default {
         ]
       }
 
+      const allContacts = {
+        name: 'All Contacts',
+        logo: '/',
+        route: '/tenant/contacts',
+      }
+
       const members = {
         name: 'Members',
         logo: '/',
@@ -309,7 +315,8 @@ export default {
       const mobile = {
         id: 8,
         name: 'Mobile App Setup',
-        logo: require('../../assets/dashboardlinks/com-icon.svg'),
+        logo: require('../../assets/dashboardlinks/dashboard-icon/Devices.svg'),
+        // logo: require('../../assets/dashboardlinks/com-icon.svg'),
         route: '/mobileonboarding',
         submenu: []
       }
@@ -485,9 +492,9 @@ export default {
           }
           if (menuLink.value.findIndex(i => i.id == people.id) < 0) {
             menuLink.value.push(people)
-            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(members, firsttimers, groups, families)
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(allContacts, members, firsttimers, groups, families)
           } else {
-            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(members, firsttimers, groups, families)
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(allContacts, members, firsttimers, groups, families)
           }
 
           if (menuLink.value.findIndex(i => i.id == communication.id) < 0) {
@@ -518,7 +525,7 @@ export default {
         if (i.toLowerCase() == 'admin') {
           menuLink.value.push(dashboard, people, communication, event, form, financial, social, mobile, report, more,)
           // menuLink.value.push(dashboard, people, communication, event, financial,  report, more)
-          menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(members, firsttimers, groups, families)
+          menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(allContacts, members, firsttimers, groups, families)
           menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(media, branch, settings)
           // menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push( workflow, social, media, branch,  archivedpeople, settings)
         }

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <el-dropdown trigger="click" class="el-dropdown border-0 w-100 py-2 d-flex justify-content-end">
-      <span class="el-dropdown-link">
+    <el-dropdown trigger="click"   class="el-dropdown  border-0 w-100 py-2 d-flex justify-content-end">
+      <span class="el-dropdown-link" >
         <el-tooltip class="box-item" effect="dark" content="Export data on table to excel" placement="top-start">
-          <el-button type="" class="mr-3" text bg>
+          <el-button type="" style="background: #EEEEEE;" class="mr-3 py-3 text-dak fw-excel" >
             Export to excel<el-icon class="el-icon--right">
               <Download />
             </el-icon>
@@ -21,7 +21,7 @@
       </template>
     </el-dropdown>
     <div ref="scrollRef">
-      <div class="table-parent">
+      <div class="table-parent mt-3">
         <table class="table-border w-100">
           <thead class="table-head mobile">
             <tr>

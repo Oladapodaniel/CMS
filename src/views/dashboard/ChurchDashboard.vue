@@ -1,5 +1,5 @@
 <template>
-  <main :class="{ 'container-fluid': lgAndUp || xlAndUp }" id="main">
+  <main :class="{ 'container-wide': lgAndUp || xlAndUp }" id="main">
     <div class="second-col container-top">
       <div class="row justify-content-end">
         <div class="col-lg-8  col-md-12 ">
