@@ -644,7 +644,6 @@ export default {
     }
 
     const chooseVoiceFile = (e) => {
-      console.log(audioPlayer.value)
       const mediaPlayer = audioPlayer.value
       file.value = e.raw;
       const reader = new FileReader();
@@ -1218,7 +1217,6 @@ export default {
     const getAllVoiceAudio = async () => {
       try {
         let data = await communicationService.getAllUploadedVoiceAudio();
-        console.log(data)
         voiceAudioList.value = data
       }
       catch (err) {

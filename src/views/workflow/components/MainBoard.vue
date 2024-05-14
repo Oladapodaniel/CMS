@@ -147,7 +147,7 @@
                   }"
                 >
                   <div
-                    class="col-12 animate border scr-height"
+                    class="col-12 animate border scr-height pb-4"
                     style="height: 400px"
                     :class="{
                       'col-md-4': actionSelected,
@@ -1050,7 +1050,7 @@ export default {
         if (status) {
           ElMessage({
             type: "success",
-            message: "Workflow created successfully",
+            message: "Workflow updated successfully",
             duration: 3000,
           });
           setTimeout(() => {
