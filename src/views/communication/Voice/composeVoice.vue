@@ -20,7 +20,7 @@
             <template #footer>
               <span class="dialog-footer">
                 <el-button class="secondary-button" round @click="() => (display = false)">Cancel</el-button>
-                <el-button round :color="primarycolor" :loading="loadingSchedule"
+                <el-button round :color="primarycolor" :disabled="disableBtn" :loading="loadingSchedule"
                   @click="contructScheduleMessageBody(2, 'dotgovoice')">
                   Schedule
                 </el-button>
@@ -955,6 +955,7 @@ export default {
     };
 
     const contructScheduleMessageBody = (sendOrSchedule, gateway) => {
+      disableBtn.value = true
       const data = {
         subject: subject.value,
         // message: editorData.value,
@@ -1043,6 +1044,7 @@ export default {
           message: `Voice message scheduled for ${new Date(data.date).toLocaleTimeString()}`,
           duration: 6000
         })
+        disableBtn.value = false;
         console.log(response, "Schedule response");
       } catch (error) {
         console.log(error);
