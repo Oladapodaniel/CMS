@@ -1061,7 +1061,7 @@ export default {
           ElMessage({
             type: "error",
             message: `${
-              response && response.length < 50 ? response : "Workflow could not be update"
+              response && response.length < 50 ? response : "Workflow could not be updated"
             }`,
             duration: 3000,
           });
