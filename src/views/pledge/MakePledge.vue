@@ -151,7 +151,7 @@
             You can only pledge within the range of
           </div>
           <h3 class="font-weight-700 text-center mt-3 mb-0">
-            NGN
+             {{selectedPledge && selectedPledge.currencySymbol  ? selectedPledge.currencySymbol : selectedPledge.currency.symbol}}
             {{
               Math.abs(
                 selectedPledge.donorPaymentRangeFromAmount
@@ -160,7 +160,7 @@
           </h3>
           <div class="text-center">&</div>
           <h3 class="font-weight-700 text-center">
-            NGN
+            {{selectedPledge && selectedPledge.currencySymbol  ? selectedPledge.currencySymbol : selectedPledge.currency.symbol}}
             {{
               Math.abs(
                 selectedPledge.donorPaymentRangeToAmount
@@ -181,7 +181,7 @@
             You can only pledge
           </div>
           <h3 class="font-weight-700 text-center mt-3 mb-0">
-            NGN
+            {{selectedPledge && selectedPledge.currencySymbol  ? selectedPledge.currencySymbol : selectedPledge.currency.symbol}}
             {{
               Math.abs(
                 selectedPledge.donorPaymentSpecificAmount
@@ -287,6 +287,7 @@ export default {
 
     const PledgesType = (item) => {
       selectedPledge.value = item;
+      console.log(item, 'hjj')
     };
     const selectPerson = () => {
       selectedContact.value = {};
@@ -308,6 +309,7 @@ export default {
           `/api/Pledge/GetOnePledge?ID=${route.query.id}`
         );
         selectedPledge.value = res.data.returnObject.pledgeType;
+        console.log(selectedPledge.value,'dgd')
         selectedContact.value = res.data.returnObject.contact;
         selectedContact.value = `${
           res.data.returnObject.contact ? res.data.returnObject.contact : ""
