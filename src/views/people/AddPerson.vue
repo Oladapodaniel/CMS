@@ -1,11 +1,14 @@
 <template>
   <div>
-    <div class="head-text">
-      <div>Add Contact</div>
+    <div class="text-head font-weight-600 h2">
+      <div>Add Member</div>
     </div>
 
-    <div class="bio-div mt-2">
-      <p class="form-section-header">Bio:</p>
+    <div class="row mt-2">
+      <!-- <p class="form-section-header">Bio:</p> -->
+      <div class="col-md-12 d-flex justify-content-center">
+        <div class="col-md-6 fw-500 s-24 mr-3 mb-3">Biodata</div>
+      </div>
     </div>
     <el-container>
       <el-row :gutter="15" class="w-100 m-0">
@@ -68,24 +71,24 @@
           </div>
         </el-col>
         <el-col :sm="16" :md="16" :lg="16" :xl="16" class="p-0">
-          <el-form :model="person" style="width: 100%">
+          <el-form :model="person" style="width: 100%" class="text-head ">
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 font-weight-600">Membership</label>
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak text-head">Membership</label>
                 <el-select-v2
                   v-model="memberClassificationId"
                   @change="setSelectedMem"
                   :options="memberships.map((i) => ({ label: i.name, value: i.id }))"
-                  placeholder="--Select membership--"
+                  placeholder="Select Membership"
                   size="large"
-                  class="input-width"
+                  class="input-width "
                 />
               </div>
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 font-weight-600"
-                  >Firstname<span style="color: red"> *</span></label
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak"
+                  >First Name<span style="color: red"> *</span></label
                 >
                 <el-input
                   type="text"
@@ -97,7 +100,7 @@
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 font-weight-600">Surname</label>
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak">Surname</label>
                 <el-input
                   type="text"
                   class="input-width"
@@ -108,7 +111,7 @@
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 font-weight-600">Phone number</label>
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak">Phone number</label>
                 <!-- <el-input type="number" class="input-width" v-model="person.mobilePhone" placeholder="Phone number" /> -->
                 <vue-tel-input
                   style="height: 40px"
@@ -120,7 +123,7 @@
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 font-weight-600">Email</label>
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak">Email</label>
                 <el-input
                   type="text"
                   class="input-width"
@@ -165,7 +168,7 @@
             </el-form-item> -->
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 font-weight-600"
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak"
                   >Person to follow-up</label
                 >
                 <div class="input-width">
@@ -209,7 +212,7 @@
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="" class="font-weight-600 related-info"
+                <label for="" class="s-18 fw-500 text-dak related-info"
                   >Which Group[s] Do You Belong To?
                 </label>
                 <div class="input-width d-flex">
@@ -263,7 +266,7 @@
               </div>
             </el-form-item>
             <div class="d-flex align-items-center">
-              <div class="font-weight-700">Celebrations</div>
+              <div class="font-weight-600 s-18 text-dak">Celebrations</div>
               <el-divider> </el-divider>
               <div>
                 <el-icon class="angle-icon" @click="showCelebration = !showCelebration">
@@ -275,7 +278,7 @@
               <div v-show="showCelebration">
                 <el-form-item>
                   <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                    <div class="mr-3 font-weight-600">Birthday</div>
+                    <div class="mr-3 s-18 fw-500 text-dak">Birthday</div>
                     <div class="input-width d-flex">
                       <el-select-v2
                         v-model="person.dayOfBirth"
@@ -312,7 +315,7 @@
                 </el-form-item>
                 <el-form-item>
                   <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                    <div class="mr-3 font-weight-600">Wedding Anniversary</div>
+                    <div class="mr-3 s-18 fw-500 text-dak">Wedding Anniversary</div>
                     <div class="input-width d-flex">
                       <el-select-v2
                         v-model="person.dayOfWedding"
@@ -352,7 +355,7 @@
             </el-collapse-transition>
 
             <div class="d-flex align-items-center">
-              <div class="font-weight-700">Additional~Information:</div>
+              <div class="font-weight-600 s-18 text-dak">Additional~Information:</div>
               <el-divider> </el-divider>
               <div>
                 <el-icon class="angle-icon" @click="showAddInfo = !showAddInfo">
@@ -364,7 +367,7 @@
               <div v-show="showAddInfo">
                 <el-form-item>
                   <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                    <label for="occupation" class="mr-3 font-weight-600"
+                    <label for="occupation" class="mr-3 s-18 fw-500 text-dak"
                       >Occupation</label
                     >
                     <el-input
@@ -377,7 +380,7 @@
                 </el-form-item>
                 <el-form-item>
                   <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                    <div class="mr-3 font-weight-600">Age group</div>
+                    <div class="mr-3 s-18 fw-500 text-dak">Age group</div>
                     <div class="input-width d-flex">
                       <el-select-v2
                         v-model="ageGroupId"
@@ -392,7 +395,7 @@
                 </el-form-item>
                 <el-form-item v-for="(item, index) in dynamicCustomFields" :key="index">
                   <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                    <label for="occupation" class="mr-3 font-weight-600">{{
+                    <label for="occupation" class="mr-3 s-18 fw-500 text-dak">{{
                       item.label
                     }}</label>
                     <div class="input-width d-flex" v-if="item.controlType == 1">
