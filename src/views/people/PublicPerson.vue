@@ -95,7 +95,7 @@
         </el-col>
         <el-col :sm="16" :md="16" :lg="16" :xl="16" class="p-0">
           <el-form :model="person" style="width: 100%">
-            <el-form-item v-if="branchItems && branchList.length > 0">
+            <el-form-item v-if="branchItems  && branchList.length > 1">
               <div
                 class="d-flex flex-column flex-lg-row justify-content-end w-100"
               >
