@@ -35,6 +35,14 @@
   border-color: #136acd0f !important;
   color: #136acd !important;
   transition: all .2s ease-in-out;
+
+}
+
+.input-width>div.el-tabs--border-card{
+  border: none !important;
+}
+.input-width>div.el-tabs--border-card.el-tabs--border-card>.el-tabs__header{
+  border: none !important;
 }
 
 /* Pagination */

@@ -976,7 +976,7 @@ const routes = [
                 import( /* webpackChunkName: "addfirsttimer" */ '../views/people/FirstTimerEmpty.vue')
         },
         {
-            path: 'newconvertlist',
+            path: 'newconverts',
             name: 'NewConvert',
             meta: {
                 title: 'Churchplus - New Convert',
@@ -1031,6 +1031,76 @@ const routes = [
                 },
                 component: () =>
                     import( /* webpackChunkName: "draftmessages" */ '@/views/communication/DraftMessages')
+            },
+            {
+                path: 'contacts',
+                component: () =>
+                    import( /* webpackChunkName: "people" */ '../views/people/AllContacts.vue'),
+                children: [
+                    // {
+                    //     path: 'contacts',
+                    //     name: 'AllContacts',
+                    //     meta: {
+                    //         title: 'Churchplus - All Contacts Form',
+                    //     },
+                    //     component: () =>
+                    //         import( /* webpackChunkName: "addfirsttimer" */ '../views/people/AllContacts.vue')
+                    // },
+                    {
+                        path: '',
+                        meta: {
+                            title: 'Churchplus - Church Members',
+                        },
+                        component: () =>
+                            import( /* webpackChunkName: "peopleempty" */ '../views/people/ContactEmpty.vue')
+                    },
+                    // {
+                    //     path: 'import',
+                    //     meta: {
+                    //         title: 'Churchplus - Import Members',
+                    //     },
+                    //     component: () =>
+                    //         import( /* webpackChunkName: "importpeople" */ '../views/people/ImportPeople.vue'),
+                    //     name: 'ImportPeople'
+                    // },
+                    // {
+                    //     path: 'addfirsttimer',
+                    //     name: 'AddFirstTimer',
+                    //     meta: {
+                    //         title: 'Churchplus - First Timer Form',
+                    //     },
+                    //     component: () =>
+                    //         import( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
+                    // },
+                    // {
+                    //     path: 'addnewconvert',
+                    //     name: 'AddNewConvert',
+                    //     meta: {
+                    //         title: 'Churchplus - New Convert Form',
+                    //     },
+                    //     component: () =>
+                    //         import( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddNewConvert.vue')
+                    // },
+                    {
+                        path: 'add/:personId?',
+                        name: 'AddPerson',
+                        meta: {
+                            title: 'Churchplus - Member Form',
+                        },
+                        component: () =>
+                            import( /* webpackChunkName: "addperson" */ '../views/people/AddPerson.vue')
+                    },
+                    {
+                        path: 'addfirsttimer/:firstTimerId?',
+                        meta: {
+                            title: 'Churchplus - First Timer Form',
+                        },
+                        component: () =>
+                            import( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
+                    }
+    
+                ]
+    
             },
             {
                 path: 'contacts',

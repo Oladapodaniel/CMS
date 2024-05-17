@@ -6,8 +6,8 @@
           v-if="!isFormPage"
         >
           <div >
-            <div class="text-head font-weight-600 h2 py-0 my-0 text-black">{{ header }}</div>
-            <div class="s-18">Showing all members</div>
+            <div class="text-head font-weight-600 h2 py-0 my-0 text-black">All Contacts</div>
+            <div class="s-18">Showing all Contacts</div>
           </div>
           <div class="d-flex flex-wrap flex-sm-nowrap mt-3 mt-sm-0">
             <div class="d-flex mt-1 w-100" @click="watchVideo">
@@ -58,7 +58,7 @@
                 :color="primarycolor"
                 class="ml-0 ml-sm-2 mt-sm-0 mt-3 header-btn"
                 round
-                >Add Member</el-button
+                >Add New</el-button
               >
             </router-link>
           </div>
@@ -73,7 +73,7 @@
         </div>
         <div
           class="col-md-10 pl-0 py-md-4 mt-3"
-          v-if="route.fullPath == '/tenant/people'"
+          v-if="route.fullPath == '/tenant/contact'"
         >
           <div class="font-weight-bold">
             Share the link to your members to enable them to add their details to

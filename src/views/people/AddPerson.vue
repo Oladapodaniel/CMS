@@ -1,57 +1,67 @@
 <template>
   <div>
-    <div class="text-head font-weight-600 h2">
-      <div>Add Member</div>
+    <div>
+      <div class="text-head font-weight-600 h2">Add Member</div>
+      <div class="grey-backg py-2 border-radius-8 col-md-4">
+        <router-link
+          to="/tenant/people"
+          class="text-decor ation-none s-18 text-dak"
+        >
+          <span class="linear-gradient">Members > Add Member</span>
+        </router-link>
+      </div>
     </div>
 
     <div class="row mt-2">
       <!-- <p class="form-section-header">Bio:</p> -->
       <div class="col-md-12 d-flex justify-content-center">
-        <div class="col-md-6 fw-500 s-24 mr-3 mb-3">Biodata</div>
+        <div class="col-md-8 col-8 fw-500 s-24  mb-4">Biodata</div>
       </div>
     </div>
     <el-container>
       <el-row :gutter="15" class="w-100 m-0">
         <el-col class="d-block d-md-none">
           <div class="grey-bg">
-            <div v-if="routeParams">
-              <div class="person-img">
-                <img
-                  v-if="!memberToEdit.pictureUrl"
-                  src="../../assets/people/phone-import.svg"
-                  alt="Uploaded Image"
-                />
-                <img
-                  v-else
-                  :src="memberToEdit.pictureUrl"
-                  alt="Uploaded Image"
-                  style="
-                    width: 110px;
-                    height: 110px;
-                    border-radius: 50%;
-                    object-fit: cover;
-                  "
-                />
+            <div class="bg-photo border-radius-8 py-4">
+              <div v-if="routeParams">
+                <div class="person-img">
+                  <img
+                    v-if="!memberToEdit.pictureUrl"
+                    src="../../assets/people/phone-import.svg"
+                    alt="Uploaded Image"
+                  />
+                  <img
+                    v-else
+                    :src="memberToEdit.pictureUrl"
+                    alt="Uploaded Image"
+                    style="
+                      width: 110px;
+                      height: 110px;
+                      border-radius: 50%;
+                      object-fit: cover;
+                    "
+                  />
+                </div>
               </div>
-            </div>
-            <div v-else>
-              <div class="person-img">
-                <img
-                  v-if="!url"
-                  src="../../assets/people/phone-import.svg"
-                  alt="Uploaded Image"
-                />
-                <img
-                  v-else
-                  :src="url"
-                  alt="Uploaded Image"
-                  style="
-                    width: 110px;
-                    height: 110px;
-                    border-radius: 50%;
-                    object-fit: cover;
-                  "
-                />
+              <div v-else>
+                <div class="person-img">
+                  <img
+                    v-if="!url"
+                    src="../../assets/people/phone-import.svg"
+                    alt="Uploaded Image"
+                  />
+                  <img
+                    v-else
+                    :src="url"
+                    alt="Uploaded Image"
+                    style="
+                      width: 110px;
+                      height: 110px;
+                      border-radius: 50%;
+                      object-fit: cover;
+                    "
+                  />
+                </div>
               </div>
             </div>
             <div>
@@ -71,22 +81,32 @@
           </div>
         </el-col>
         <el-col :sm="16" :md="16" :lg="16" :xl="16" class="p-0">
-          <el-form :model="person" style="width: 100%" class="text-head ">
+          <el-form :model="person" style="width: 100%" class="text-head">
             <el-form-item>
-              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 s-18 fw-500 text-dak text-head">Membership</label>
+              <div
+                class="d-flex flex-column flex-lg-row justify-content-end w-100"
+              >
+                <label
+                  for="firstName"
+                  class="mr-3 s-18 fw-500 text-dak text-head"
+                  >Membership</label
+                >
                 <el-select-v2
                   v-model="memberClassificationId"
                   @change="setSelectedMem"
-                  :options="memberships.map((i) => ({ label: i.name, value: i.id }))"
+                  :options="
+                    memberships.map((i) => ({ label: i.name, value: i.id }))
+                  "
                   placeholder="Select Membership"
                   size="large"
-                  class="input-width "
+                  class="input-width"
                 />
               </div>
             </el-form-item>
             <el-form-item>
-              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+              <div
+                class="d-flex flex-column flex-lg-row justify-content-end w-100"
+              >
                 <label for="firstName" class="mr-3 s-18 fw-500 text-dak"
                   >First Name<span style="color: red"> *</span></label
                 >
@@ -99,8 +119,12 @@
               </div>
             </el-form-item>
             <el-form-item>
-              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 s-18 fw-500 text-dak">Surname</label>
+              <div
+                class="d-flex flex-column flex-lg-row justify-content-end w-100"
+              >
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak"
+                  >Surname</label
+                >
                 <el-input
                   type="text"
                   class="input-width"
@@ -110,8 +134,12 @@
               </div>
             </el-form-item>
             <el-form-item>
-              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 s-18 fw-500 text-dak">Phone number</label>
+              <div
+                class="d-flex flex-column flex-lg-row justify-content-end w-100"
+              >
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak"
+                  >Phone number</label
+                >
                 <!-- <el-input type="number" class="input-width" v-model="person.mobilePhone" placeholder="Phone number" /> -->
                 <vue-tel-input
                   style="height: 40px"
@@ -122,8 +150,12 @@
               </div>
             </el-form-item>
             <el-form-item>
-              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 s-18 fw-500 text-dak">Email</label>
+              <div
+                class="d-flex flex-column flex-lg-row justify-content-end w-100"
+              >
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak"
+                  >Email</label
+                >
                 <el-input
                   type="text"
                   class="input-width"
@@ -133,7 +165,9 @@
               </div>
             </el-form-item>
             <el-form-item>
-              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+              <div
+                class="d-flex flex-column flex-lg-row justify-content-end w-100"
+              >
                 <div class="input-width d-flex">
                   <el-input
                     type="text"
@@ -167,7 +201,9 @@
               </div>
             </el-form-item> -->
             <el-form-item>
-              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+              <div
+                class="d-flex flex-column flex-lg-row justify-content-end w-100"
+              >
                 <label for="firstName" class="mr-3 s-18 fw-500 text-dak"
                   >Person to follow-up</label
                 >
@@ -180,7 +216,9 @@
               </div>
             </el-form-item>
             <el-form-item>
-              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+              <div
+                class="d-flex flex-column flex-lg-row justify-content-end w-100"
+              >
                 <div class="input-width d-flex">
                   <el-select-v2
                     v-model="maritalStatusId"
@@ -211,15 +249,22 @@
               </div>
             </el-form-item>
             <el-form-item>
-              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+              <div
+                class="d-flex flex-column flex-lg-row justify-content-end w-100"
+              >
                 <label for="" class="s-18 fw-500 text-dak related-info"
                   >Which Group[s] Do You Belong To?
                 </label>
                 <div class="input-width d-flex">
-                  <el-tabs type="border-card" class="w-100">
+                  <el-tabs type="border-card" class="w-100 border-0">
                     <div class="add-group bg-white">
-                      <div v-for="(item, index) in peopleInGroupIDs" :key="index">
-                        <div class="d-flex justify-content-between align-items-center">
+                      <div
+                        v-for="(item, index) in peopleInGroupIDs"
+                        :key="index"
+                      >
+                        <div
+                          class="d-flex justify-content-between align-items-center"
+                        >
                           <div class="pt-1">
                             <span class="text-secondary">{{ index + 1 }}.</span>
                             <span class="font-weight-700">{{ item.name }}</span>
@@ -231,11 +276,15 @@
                           /></el-icon>
                         </div>
                       </div>
-                      <div v-if="peopleInGroupIDs.length === 0">No group added yet</div>
+                      <div v-if="peopleInGroupIDs.length === 0">
+                        <div class="s-18 fw-500 text-head text-dak">Group</div>
+                        <div class="s-18 text-head text-dak">
+                          No group added yet
+                        </div>
+                      </div>
                       <div
-                        class="pt-2 mt-2 font-weight-700 text-primary border-top text-center c-pointer"
-                        data-toggle="modal"
-                        data-target="#addToGroup"
+                        class="py-2 mt-2 font-weight-600 text-head border-line primary--text text-center c-pointer"
+                        @click="chooseGroup"
                       >
                         Choose group
                       </div>
@@ -269,7 +318,10 @@
               <div class="font-weight-600 s-18 text-dak">Celebrations</div>
               <el-divider> </el-divider>
               <div>
-                <el-icon class="angle-icon" @click="showCelebration = !showCelebration">
+                <el-icon
+                  class="angle-icon"
+                  @click="showCelebration = !showCelebration"
+                >
                   <ArrowDownBold />
                 </el-icon>
               </div>
@@ -277,7 +329,9 @@
             <el-collapse-transition>
               <div v-show="showCelebration">
                 <el-form-item>
-                  <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                  <div
+                    class="d-flex flex-column flex-lg-row justify-content-end w-100"
+                  >
                     <div class="mr-3 s-18 fw-500 text-dak">Birthday</div>
                     <div class="input-width d-flex">
                       <el-select-v2
@@ -314,8 +368,12 @@
                   </div>
                 </el-form-item>
                 <el-form-item>
-                  <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                    <div class="mr-3 s-18 fw-500 text-dak">Wedding Anniversary</div>
+                  <div
+                    class="d-flex flex-column flex-lg-row justify-content-end w-100"
+                  >
+                    <div class="mr-3 s-18 fw-500 text-dak">
+                      Wedding Anniversary
+                    </div>
                     <div class="input-width d-flex">
                       <el-select-v2
                         v-model="person.dayOfWedding"
@@ -329,7 +387,9 @@
                       />
                       <el-select-v2
                         v-model="person.monthOfWedding"
-                        @change="editAnnDateValue('month', person.monthOfWedding)"
+                        @change="
+                          editAnnDateValue('month', person.monthOfWedding)
+                        "
                         :options="[
                           { label: 'Month', value: 0 },
                           ...months.map((i) => ({ label: i, value: i })),
@@ -355,7 +415,9 @@
             </el-collapse-transition>
 
             <div class="d-flex align-items-center">
-              <div class="font-weight-600 s-18 text-dak">Additional~Information:</div>
+              <div class="font-weight-600 s-18 text-dak">
+                Additional~Information:
+              </div>
               <el-divider> </el-divider>
               <div>
                 <el-icon class="angle-icon" @click="showAddInfo = !showAddInfo">
@@ -366,7 +428,9 @@
             <el-collapse-transition>
               <div v-show="showAddInfo">
                 <el-form-item>
-                  <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                  <div
+                    class="d-flex flex-column flex-lg-row justify-content-end w-100"
+                  >
                     <label for="occupation" class="mr-3 s-18 fw-500 text-dak"
                       >Occupation</label
                     >
@@ -379,13 +443,17 @@
                   </div>
                 </el-form-item>
                 <el-form-item>
-                  <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                  <div
+                    class="d-flex flex-column flex-lg-row justify-content-end w-100"
+                  >
                     <div class="mr-3 s-18 fw-500 text-dak">Age group</div>
                     <div class="input-width d-flex">
                       <el-select-v2
                         v-model="ageGroupId"
                         @change="setSelectedAgeGroup"
-                        :options="ageGroups.map((i) => ({ label: i.name, value: i.id }))"
+                        :options="
+                          ageGroups.map((i) => ({ label: i.name, value: i.id }))
+                        "
                         placeholder="Age group"
                         size="large"
                         class="w-100 mr-1"
@@ -393,12 +461,20 @@
                     </div>
                   </div>
                 </el-form-item>
-                <el-form-item v-for="(item, index) in dynamicCustomFields" :key="index">
-                  <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <el-form-item
+                  v-for="(item, index) in dynamicCustomFields"
+                  :key="index"
+                >
+                  <div
+                    class="d-flex flex-column flex-lg-row justify-content-end w-100"
+                  >
                     <label for="occupation" class="mr-3 s-18 fw-500 text-dak">{{
                       item.label
                     }}</label>
-                    <div class="input-width d-flex" v-if="item.controlType == 1">
+                    <div
+                      class="input-width d-flex"
+                      v-if="item.controlType == 1"
+                    >
                       <el-select-v2
                         v-model="item.data"
                         :options="
@@ -443,7 +519,10 @@
                       size="default"
                       v-if="item.controlType == 3"
                     />
-                    <div class="d-flex align-items-center" v-if="item.controlType == 6">
+                    <div
+                      class="d-flex align-items-center"
+                      v-if="item.controlType == 6"
+                    >
                       <input
                         type="file"
                         class="form-control input-width"
@@ -458,7 +537,9 @@
                 </el-form-item>
               </div>
             </el-collapse-transition>
-            <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+            <div
+              class="d-flex flex-column flex-lg-row justify-content-end w-100"
+            >
               <div></div>
               <div class="input-width d-flex justify-content-center my-4">
                 <el-button
@@ -468,7 +549,7 @@
                   class="w-100"
                   @click="addPerson"
                   round
-                  >Save</el-button
+                  >Save Information</el-button
                 >
               </div>
             </div>
@@ -476,44 +557,46 @@
         </el-col>
         <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
           <div class="grey-bg d-none d-md-block">
-            <div v-if="routeParams">
-              <div class="person-img">
-                <img
-                  v-if="!memberToEdit.pictureUrl"
-                  src="../../assets/people/phone-import.svg"
-                  alt="Uploaded Image"
-                />
-                <img
-                  v-else
-                  :src="memberToEdit.pictureUrl"
-                  alt="Uploaded Image"
-                  style="
-                    width: 110px;
-                    height: 110px;
-                    border-radius: 50%;
-                    object-fit: cover;
-                  "
-                />
+            <div class="bg-photo border-radius-8 py-4">
+              <div v-if="routeParams">
+                <div class="person-img">
+                  <img
+                    v-if="!memberToEdit.pictureUrl"
+                    src="../../assets/people/phone-import.svg"
+                    alt="Uploaded Image"
+                  />
+                  <img
+                    v-else
+                    :src="memberToEdit.pictureUrl"
+                    alt="Uploaded Image"
+                    style="
+                      width: 110px;
+                      height: 110px;
+                      border-radius: 50%;
+                      object-fit: cover;
+                    "
+                  />
+                </div>
               </div>
-            </div>
-            <div v-else>
-              <div class="person-img">
-                <img
-                  v-if="!url"
-                  src="../../assets/people/phone-import.svg"
-                  alt="Uploaded Image"
-                />
-                <img
-                  v-else
-                  :src="url"
-                  alt="Uploaded Image"
-                  style="
-                    width: 110px;
-                    height: 110px;
-                    border-radius: 50%;
-                    object-fit: cover;
-                  "
-                />
+              <div v-else>
+                <div class="person-img">
+                  <img
+                    v-if="!url"
+                    src="../../assets/people/phone-import.svg"
+                    alt="Uploaded Image"
+                  />
+                  <img
+                    v-else
+                    :src="url"
+                    alt="Uploaded Image"
+                    style="
+                      width: 110px;
+                      height: 110px;
+                      border-radius: 50%;
+                      object-fit: cover;
+                    "
+                  />
+                </div>
               </div>
             </div>
             <div>
@@ -535,100 +618,6 @@
       </el-row>
     </el-container>
 
-    <!-- Group Modal -->
-    <div
-      class="modal fade"
-      id="addToGroup"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="addToGroup"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header" style="background: #ebeff4">
-            <h5 class="modal-title font-weight-bold" id="addToGroup">Group Membership</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-              ref="closeAddToGroup"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="row my-4"></div>
-            <div class="row my-4">
-              <div class="col-md-4 text-md-right">
-                <label for="" class="font-weight-600">Name</label>
-              </div>
-              <div class="col-md-7">
-                <el-tree-select
-                  v-model="selectedTree"
-                  class="w-100"
-                  placeholder="Select group"
-                  :data="groupMappedTree"
-                  :render-after-expand="false"
-                  :filter-node-method="filterNodeMethod"
-                  @change="setGroupValue"
-                  filterable
-                  check-strictly
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4 text-md-right">
-                <label for="" class="font-weight-600">Position</label>
-              </div>
-              <div class="col-md-7">
-                <input
-                  type="text"
-                  v-model="position"
-                  class="form-control"
-                  placeholder="e.g Member"
-                />
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-4">
-                <label for="" class="font-weight-600"></label>
-              </div>
-
-              <div class="col-md-7">
-                <div class="col-md-12 mt-3 text-center">
-                  <p class="my-1 text-danger" v-if="addToGroupError">
-                    Please select a group
-                  </p>
-                </div>
-                <div class="col-12 p-0">
-                  <div class="d-flex justify-content-end">
-                    <el-button
-                      ref="closegroupmodal"
-                      class="secondary-button"
-                      data-dismiss="modal"
-                      round
-                      >Cancel</el-button
-                    >
-                    <el-button
-                      :color="primarycolor"
-                      :loading="addToGroupLoading"
-                      :data-dismiss="dismissAddToGroupModal"
-                      @click="addMemberToGroup"
-                      round
-                      >Save</el-button
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Note Modal -->
     <div
       class="modal fade"
@@ -641,8 +630,15 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header" style="background: #ebeff4">
-            <h5 class="modal-title font-weight-bold" id="personNote">Add Note</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <h5 class="modal-title font-weight-bold" id="personNote">
+              Add Note
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -683,7 +679,9 @@
               <div class="col-md-7 mt-3">
                 <div class="row mt-2 d-flex justify-content-end">
                   <div class="col-6">
-                    <button class="default-btn" data-dismiss="modal">Cancel</button>
+                    <button class="default-btn" data-dismiss="modal">
+                      Cancel
+                    </button>
                   </div>
                   <div class="col-6">
                     <button
@@ -701,6 +699,87 @@
         </div>
       </div>
     </div>
+    <el-dialog
+      style="border-radius: 20px"
+      v-model="showChooseGroup"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+      top
+    >
+      <div class="row justify-content-center">
+        <div class="col-md-12">
+          <div class="s-32 fw-500 text-center text-black">Group Membership</div>
+        </div>
+        <div class="col-md-12 d-flex justify-content-center">
+          <div class="col-md-9">
+            <div class="row my-4">
+              <div class="col-md-12">
+                <label for="" class="fw-500 s-18">Group</label>
+              </div>
+              <div class="col-md-12">
+                <el-tree-select
+                  v-model="selectedTree"
+                  class="w-100"
+                  placeholder="Select group"
+                  :data="groupMappedTree"
+                  :render-after-expand="false"
+                  :filter-node-method="filterNodeMethod"
+                  @change="setGroupValue"
+                  filterable
+                  check-strictly
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <label for="" class="fw-500 s-18">Position</label>
+              </div>
+              <div class="col-md-12">
+                <el-input
+                  type="text"
+                  v-model="position"
+                  class="w-100"
+                  placeholder="e.g Member"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="col-md-12 mt-2 text-center">
+                  <p class="my-1 text-danger" v-if="addToGroupError">
+                    Please select a group
+                  </p>
+                </div>
+                <div class="col-md-12 mt-3">
+                  <div>
+                    <el-button
+                      :color="primarycolor"
+                      :loading="addToGroupLoading"
+                      :data-dismiss="dismissAddToGroupModal"
+                      @click="addMemberToGroup"
+                      size="large"
+                      class="w-100"
+                      round
+                      >Continue</el-button
+                    >
+                  </div>
+                </div>
+                <div class="col-md-12 mt-2">
+                  <div>
+                    <el-button
+                      class="w-100 border-0"
+                      @click="cancelGroupModal"
+                      round
+                      >Cancel</el-button
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -715,6 +794,7 @@ import membershipService from "../../services/membership/membershipservice";
 import grousService from "../../services/groups/groupsservice";
 import SearchMembers from "../../components/membership/MembersSearch.vue";
 import allCustomFields from "../../services/customfield/customField";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { ElMessage, ElMessageBox } from "element-plus";
 import collector from "../../services/groupArray/mapTree";
 import flatten from "../../services/groupArray/flatTree";
@@ -726,6 +806,8 @@ export default {
     const primarycolor = inject("primarycolor");
     const store = useStore();
     const hideCelebTab = ref(false);
+    const showChooseGroup = ref(false);
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
     const hideAddInfoTab = ref(true);
     const showCelebTab = () => (hideCelebTab.value = !hideCelebTab.value);
     const showAddInfoTab = () => (hideAddInfoTab.value = !hideAddInfoTab.value);
@@ -771,41 +853,18 @@ export default {
     const birthDate = moment();
     const daysInBirthMonth = ref(birthDate.daysInMonth());
     const daysinMonth = ref([
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20,
-      21,
-      22,
-      23,
-      24,
-      25,
-      26,
-      27,
-      28,
-      29,
-      30,
-      31,
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+      22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
     ]);
     const birthDaysArr = computed(() => {
       return daysinMonth.value;
     });
+    const chooseGroup = () => {
+      showChooseGroup.value = true;
+    };
+    const cancelGroupModal = () => {
+      showChooseGroup.value = false;
+    };
     const birthYearsArr = computed(() => {
       const arrOfYears = [];
       let currentYear = new Date().getFullYear();
@@ -878,16 +937,27 @@ export default {
       errMessage.value = "";
 
       const formData = new FormData();
-      formData.append("firstName", personObj.firstName ? personObj.firstName : "");
+      formData.append(
+        "firstName",
+        personObj.firstName ? personObj.firstName : ""
+      );
       formData.append("lastName", personObj.lastName ? personObj.lastName : "");
       formData.append("picture", image.value ? image.value : "");
       formData.append(
         "mobilePhone",
-        personObj.mobilePhone ? personObj.mobilePhone.trim().replaceAll(" ", "") : ""
+        personObj.mobilePhone
+          ? personObj.mobilePhone.trim().replaceAll(" ", "")
+          : ""
       );
       formData.append("email", personObj.email ? personObj.email : "");
-      formData.append("occupation", personObj.occupation ? personObj.occupation : "");
-      formData.append("dayOfBirth", personObj.dayOfBirth > 0 ? +personObj.dayOfBirth : 0);
+      formData.append(
+        "occupation",
+        personObj.occupation ? personObj.occupation : ""
+      );
+      formData.append(
+        "dayOfBirth",
+        personObj.dayOfBirth > 0 ? +personObj.dayOfBirth : 0
+      );
       formData.append(
         "monthOfBirth",
         months.indexOf(personObj.monthOfBirth) >= 0
@@ -898,7 +968,10 @@ export default {
         "yearOfBirth",
         personObj.yearOfBirth > 0 ? +personObj.yearOfBirth : 0
       );
-      formData.append("occupation", personObj.occupation ? personObj.occupation : "");
+      formData.append(
+        "occupation",
+        personObj.occupation ? personObj.occupation : ""
+      );
       formData.append(
         "yearOfWedding",
         personObj.yearOfWedding > 0 ? +personObj.yearOfWedding : 0
@@ -928,13 +1001,22 @@ export default {
             )
           : []
       );
-      formData.append("homeAddress", personObj.address ? personObj.address : "");
-      formData.append("zipPostalCode", personObj.zipPostalCode ? personObj.zipPostalCode : "");
+      formData.append(
+        "homeAddress",
+        personObj.address ? personObj.address : ""
+      );
+      formData.append(
+        "zipPostalCode",
+        personObj.zipPostalCode ? personObj.zipPostalCode : ""
+      );
       formData.append(
         "maritalStatusID",
         selectedMaritalStatus.value ? selectedMaritalStatus.value.id : ""
       );
-      formData.append("genderID", selectedGender.value ? selectedGender.value.id : "");
+      formData.append(
+        "genderID",
+        selectedGender.value ? selectedGender.value.id : ""
+      );
       formData.append(
         "ageGroupID",
         selectedAgeGroup.value ? selectedAgeGroup.value.id : ""
@@ -945,7 +1027,10 @@ export default {
           ? followupPerson.value.id
           : "00000000-0000-0000-0000-000000000000"
       );
-      formData.append("note", personNotes.value ? JSON.stringify(personNotes.value) : []);
+      formData.append(
+        "note",
+        personNotes.value ? JSON.stringify(personNotes.value) : []
+      );
 
       formData.append(
         "customAttributeDataString",
@@ -1003,7 +1088,9 @@ export default {
                 : "Update operation was not succesfull";
             ElMessage({
               type: "warning",
-              message: errMessage.value ? errMessage.value : "Update operation failed",
+              message: errMessage.value
+                ? errMessage.value
+                : "Update operation failed",
               duration: 5000,
             });
           }
@@ -1041,7 +1128,9 @@ export default {
               errMessage.value = err.response.data.message;
               ElMessage({
                 type: "warning",
-                message: errMessage.value ? errMessage.value : "Save operation failed",
+                message: errMessage.value
+                  ? errMessage.value
+                  : "Save operation failed",
                 duration: 5000,
               });
             }
@@ -1065,7 +1154,9 @@ export default {
       axios
         .get("/api/LookUp/GetAllLookUps")
         .then((res) => {
-          genders.value = res.data.find((i) => i.type.toLowerCase() === "gender").lookUps;
+          genders.value = res.data.find(
+            (i) => i.type.toLowerCase() === "gender"
+          ).lookUps;
 
           maritalStatus.value = res.data.find(
             (i) => i.type.toLowerCase() === "maritalstatus"
@@ -1076,7 +1167,9 @@ export default {
 
     const getPeopleClassifications = async () => {
       try {
-        const response = await axios.get("/api/Settings/GetTenantPeopleClassification");
+        const response = await axios.get(
+          "/api/Settings/GetTenantPeopleClassification"
+        );
         const { data } = response;
         memberships.value = data;
         peopleClassifications.value = data.map((i) => i.name);
@@ -1189,13 +1282,16 @@ export default {
       person.zipPostalCode = data.zipPostalCode;
       person.occupation = data.occupation;
       person.dayOfBirth = data.dayOfBirth == 0 ? null : data.dayOfBirth;
-      person.monthOfBirth = data.monthOfBirth ? months[data.monthOfBirth - 1] : null;
+      person.monthOfBirth = data.monthOfBirth
+        ? months[data.monthOfBirth - 1]
+        : null;
       person.dayOfWedding = data.dayOfWedding == 0 ? null : data.dayOfWedding;
       person.yearOfBirth = data.yearOfBirth == 0 ? null : data.yearOfBirth;
       person.monthOfWedding = data.monthOfWedding
         ? months[data.monthOfWedding - 1]
         : null;
-      person.yearOfWedding = data.yearOfWedding == 0 ? null : data.yearOfWedding;
+      person.yearOfWedding =
+        data.yearOfWedding == 0 ? null : data.yearOfWedding;
       peopleInGroupIDs.value = data.personSpecificGroups.map((i) => {
         return {
           groupId: i.id,
@@ -1241,7 +1337,9 @@ export default {
     const allGroups = ref([]);
 
     const setGroupValue = () => {
-      const response = flattenedTree.value.find((i) => i.value == selectedTree.value);
+      const response = flattenedTree.value.find(
+        (i) => i.value == selectedTree.value
+      );
       groupToAddTo.value = {
         name: response.label,
         id: response.value,
@@ -1274,7 +1372,6 @@ export default {
 
     const addToGroupError = ref(false);
     const dismissAddToGroupModal = ref("");
-    const closegroupmodal = ref(null);
 
     const addMemberToGroup = async () => {
       let groupObj = groupToAddTo.value;
@@ -1297,7 +1394,10 @@ export default {
         };
 
         try {
-          await membershipService.addMemberToGroup(personInfo, groupToAddTo.value.id);
+          await membershipService.addMemberToGroup(
+            personInfo,
+            groupToAddTo.value.id
+          );
           ElMessage({
             type: "success",
             message: `${person.firstName} is added to ${groupToAddTo.value.name}`,
@@ -1305,7 +1405,7 @@ export default {
           });
           addToGroupLoading.value = false;
           dismissAddToGroupModal.value = "modal";
-          closegroupmodal.value.ref.click();
+          showChooseGroup.value = false;
 
           peopleInGroupIDs.value.push({
             name: groupObj.name,
@@ -1370,11 +1470,15 @@ export default {
     };
 
     const showConfirmModal = (index, item) => {
-      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
-        confirmButtonText: "OK",
-        cancelButtonText: "Cancel",
-        type: "error",
-      })
+      ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
         .then(() => {
           removeFromGroup(index, item);
         })
@@ -1399,7 +1503,9 @@ export default {
       if (!searchGroupText.value && allGroups.value > 0) return allGroups.value;
       return allGroups.value.filter((i) => {
         if (i.name)
-          return i.name.toLowerCase().includes(searchGroupText.value.toLowerCase());
+          return i.name
+            .toLowerCase()
+            .includes(searchGroupText.value.toLowerCase());
       });
     });
 
@@ -1513,7 +1619,10 @@ export default {
       addMemberToGroup,
       addToGroupError,
       dismissAddToGroupModal,
-      closegroupmodal,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      xsOnly,
       routeParams,
       peopleInGroupIDs,
       setContact,
@@ -1544,6 +1653,9 @@ export default {
       selectedTree,
       filterNodeMethod,
       setGroupValue,
+      chooseGroup,
+      cancelGroupModal,
+      showChooseGroup,
       flattenedTree,
       addToGroupLoading,
       primarycolor,
@@ -1573,6 +1685,16 @@ export default {
   .related-info {
     width: 137px;
   }
+}
+.border-line {
+  border-radius: 30px;
+  border: 1px dashed #0745af;
+}
+
+.linear-gradient {
+  background: linear-gradient(90deg, #777777 48%, #111111 62%);
+  background-clip: text;
+  color: transparent;
 }
 
 .angle-icon {

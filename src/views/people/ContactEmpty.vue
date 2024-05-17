@@ -29,7 +29,7 @@
   
   <script>
   import { ref, onMounted } from "vue";
-  import PeopleList from "@/views/people/PeopleList.vue";
+  import PeopleList from "@/views/people/AllContactList.vue";
   import ImportPeople from "@/views/people/ImportPeople.vue";
   import { useStore } from 'vuex';
   import store from '../../store/store'

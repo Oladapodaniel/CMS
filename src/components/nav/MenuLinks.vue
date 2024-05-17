@@ -294,6 +294,12 @@ export default {
         route: '/tenant/firsttimerslist',
       }
 
+      const newconverts = {
+        name: 'New Converts',
+        logo: '/',
+        route: '/tenant/newconverts',
+      }
+
       const groups = {
         name: 'Groups / Departments',
         logo: '/',
@@ -492,9 +498,9 @@ export default {
           }
           if (menuLink.value.findIndex(i => i.id == people.id) < 0) {
             menuLink.value.push(people)
-            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(allContacts, members, firsttimers, groups, families)
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(allContacts, members, firsttimers, newconverts, groups, families)
           } else {
-            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(allContacts, members, firsttimers, groups, families)
+            menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(allContacts, members, firsttimers, newconverts, groups, families)
           }
 
           if (menuLink.value.findIndex(i => i.id == communication.id) < 0) {
@@ -525,7 +531,7 @@ export default {
         if (i.toLowerCase() == 'admin') {
           menuLink.value.push(dashboard, people, communication, event, form, financial, social, mobile, report, more,)
           // menuLink.value.push(dashboard, people, communication, event, financial,  report, more)
-          menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(allContacts, members, firsttimers, groups, families)
+          menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(allContacts, members, firsttimers, newconverts, groups, families)
           menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(media, branch, settings)
           // menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push( workflow, social, media, branch,  archivedpeople, settings)
         }
