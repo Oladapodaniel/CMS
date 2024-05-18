@@ -1,5 +1,5 @@
 <template>
-    <PeopleList :list="peopleInStore" :totalItems="totalItems" v-if="!loading && (peopleInStore && peopleInStore.length > 0 || errorGettingPeople)" />
+    <AllContactList :list="peopleInStore" :totalItems="totalItems" v-if="!loading && (peopleInStore && peopleInStore.length > 0 || errorGettingPeople)" />
     <div class="no-person mt-5" v-else-if="!loading && peopleInStore && peopleInStore.length === 0 && !errorGettingPeople">
       <div class="container">
         <div class="row">
@@ -29,13 +29,13 @@
   
   <script>
   import { ref, onMounted } from "vue";
-  import PeopleList from "@/views/people/AllContactList.vue";
+  import AllContactList from "@/views/people/AllContactList.vue";
   import ImportPeople from "@/views/people/ImportPeople.vue";
   import { useStore } from 'vuex';
   import store from '../../store/store'
   
   export default {
-    components: { PeopleList, ImportPeople },
+    components: { AllContactList, ImportPeople },
   
     setup() {
       const people = ref([]);
