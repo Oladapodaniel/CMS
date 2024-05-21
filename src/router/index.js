@@ -106,6 +106,15 @@ const routes = [
             import( /* webpackChunkName: "resetpassword" */ '../views/account/ResetPassword.vue')
     },
     {
+        path: '/alat',
+        name: 'LandingPage',
+        meta: {
+            title: 'Alat Faith - Landing Page',
+        },
+        component: () =>
+            import( /* webpackChunkName: "resetpassword" */ '../views/dashboard/alartFaith/LandingPage.vue')
+    },
+    {
         path: '/emailsent/:email',
         name: 'EmailSent',
         meta: {
@@ -2188,6 +2197,7 @@ router.beforeEach((to, from, next) => {
         to.name === "PublicNewConvert" ||
         to.name === "EventRegistration" ||
         to.name === "PricingPage" ||
+        to.name === "LandingPage" ||
         to.name === "PublicForm" ||
         to.name === "PublicPledgePayment") && !tokenIsValid) return next(true)
 
