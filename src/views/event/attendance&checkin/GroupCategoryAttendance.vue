@@ -494,8 +494,8 @@ export default {
     const showMoreField = ref(false);
     const showCheckQRCode = ref(false);
     const showRegQRCode = ref(false);
-    const qrCodeCheckin = ref('');
-    const qrCodeRegistration = ref('');
+    const qrCodeRegistration = ref(store.getters["attendance/attendanceItemData"].qrCodeRegistration);
+    const qrCodeCheckin = ref(store.getters["attendance/attendanceItemData"].qrCodeCheckin);
     const regLink = ref(null);
     const paymentFormLink = ref(null);
     const iframeLink = ref(null);
