@@ -4,7 +4,7 @@
       <div>
         <FirstTimersChartArea @firsttimers="setFirsttimer" @totalfirstimer="setTotalFirstTimer" />
       </div>
-      <div class="table-top p-3 mt-5">
+      <div class="table-to p-3 mt-5">
         <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
           <div>
             <el-tooltip class="box-item" effect="dark" v-if="false" content="Delete member(s)" placement="top-start">

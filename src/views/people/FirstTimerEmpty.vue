@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="{ 'container-slim': lgAndUp || xlAndUp }"
+    :class="{ 'container-wide': lgAndUp || xlAndUp }"
     class="container-top h-100"
   >
     <!-- <div
@@ -25,32 +25,67 @@
       </div>
     </div> -->
     <div
-      class="d-flex flex-column flex-md-row justify-content-md-between"
-    >
-      <div class="head-text">
-        <div>First Timers</div>
-      </div>
-      <div class="mt-3 mt-md-0 d-flex flex-sm-nowrap flex-wrap">
-        <el-button
-          class="header-btn secondary-button w-100"
-          @click="importFirstTimer"
-          round
-          >Import</el-button
-        >
-        <router-link
-          :to="{ name: 'AddFirstTimer' }"
-          class="no-decoration w-100"
-        >
-          <el-button
-            :color="primarycolor"
-            class="ml-sm-2 ml-0 mt-2 mt-sm-0 w-100 header-btn"
-            round
-            >Add First Timers</el-button
+        class="d-flex flex-column flex-sm-row justify-content-sm-between"
+      >
+        <div >
+          <div class="text-head font-weight-600 h2 py-0 my-0 text-black">First Timers</div>
+          <div class="s-18">Showing all First Timers</div>
+        </div>
+        <div class="d-flex flex-wrap flex-sm-nowrap mt-3 mt-sm-0">
+          <div class="d-flex mt-1 w-100" @click="watchVideo">
+            <span class="s-18 primary--text">Watch Video </span>
+            <span class="mt-0 ml-1"
+              ><el-icon :size="27" class="primary--text"><VideoPlay /></el-icon
+            ></span>
+          </div>
+          <el-dropdown
+            trigger="click"
+            class="align-items-center justify-content-center d-flex ml-md-3 ml-0 default-btn py-0 m-0 border"
+            style="height: 2.2rem"
           >
-        </router-link>
+            <span class="el-dropdown-link w-100 primary--text text-center font-weight-600">
+              Menu
+              <el-icon class="el-icon--right">
+                <arrow-down />
+              </el-icon>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu >
+                <el-dropdown-item class="text-black" @click="copylink"
+                  >Copy Public Link
+                  <img
+                    class="ml-2"
+                    src="../../assets/copyurl-icon.png"
+                    alt=""
+                  />
+                </el-dropdown-item>
+                <el-dropdown-item
+                  @click="getQrCode"
+                  class="text-black"
+                >
+                  Show QR Code
+                </el-dropdown-item>
+                <el-dropdown-item class="text-black" @click="showAnalysis"
+                  >Analysis</el-dropdown-item
+                >
+                <el-dropdown-item class="text-black" @click="importFirstTimer"
+                  >Import</el-dropdown-item
+                >
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+          <!-- <el-button @click="importMembers" class="header-btn secondary-button" round>Import</el-button> -->
+          <router-link :to="`/tenant/people/addfirsttimer`" class="no-decoration">
+            <el-button
+              :color="primarycolor"
+              class="ml-0 ml-sm-2 mt-sm-0 mt-3 header-btn"
+              round
+              >Add First Timers</el-button
+            >
+          </router-link>
+        </div>
       </div>
-    </div>
-    <div class="row" v-if="showFirsttimer">
+    <div class="row" v-if="false">
       <div class="col-md-2">
         <div class="font-weight-bold py-md-2 mt-4">QR Code</div>
         <div class="image" @click="getQrCode">
@@ -219,6 +254,27 @@
         />
       </template>
     </el-skeleton>
+    <el-dialog
+      style="border-radius: 20px"
+      v-model="showAddMemberVideo"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+      top
+    >
+      <div class="row justify-content-center" v-loading>
+        <div class="col-md-12">
+          <iframe
+            width="100%"
+            height="315"
+            :src="videoURL"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -251,7 +307,11 @@ export default {
     // const showNewConvert = ref(false);
     const importFile = ref("");
     const image = ref("");
+    const videoURL = ref(
+      "https://www.youtube.com/embed/OOsP6uUwnIo?si=gA3fxJ1_E1s52q-L" 
+    );
     const QRCodeDialog = ref(false);
+    const showAddMemberVideo  = ref(false);
     const displayModal = ref(false);
     const firstTimerData = ref([]);
     const networkError = ref(false);
@@ -296,6 +356,13 @@ export default {
 
     const firttimerDetail = async () => {
       showFirsttimer.value = true;
+    };
+
+    const watchVideo = () => {
+      showAddMemberVideo.value = true;
+    };
+    const showAnalysis = () => {
+      // showAddMemberVideo.value = true;
     };
 
     // const newConvertDetail = async () => {
@@ -397,37 +464,39 @@ export default {
       }
     };
 
+    // const copylink = () => {
+    //   selectedLink.value.input.setSelectionRange(
+    //     0,
+    //     selectedLink.value.input.value.length
+    //   ); /* For mobile devices */
+    //   selectedLink.value.input.select();
+
+    //   /* Copy the text inside the text field */
+    //   document.execCommand("copy");
+    //   ElMessage({
+    //     showClose: true,
+    //     message: "Copied to clipboard",
+    //     type: "success",
+    //   });
+    // };
     const copylink = () => {
-      selectedLink.value.input.setSelectionRange(
-        0,
-        selectedLink.value.input.value.length
-      ); /* For mobile devices */
-      selectedLink.value.input.select();
+            const textarea = document.createElement("textarea");
+            textarea.value = firstTimerLink.value;
 
-      /* Copy the text inside the text field */
-      document.execCommand("copy");
-      ElMessage({
-        showClose: true,
-        message: "Copied to clipboard",
-        type: "success",
-      });
-    };
+            document.body.appendChild(textarea);
 
-    const copylink2 = () => {
-      selectedLink.value.input.setSelectionRange(
-        0,
-        selectedLink.value.input.value.length
-      ); /* For mobile devices */
-      selectedLink.value.input.select();
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
 
-      /* Copy the text inside the text field */
-      document.execCommand("copy");
-      ElMessage({
-        showClose: true,
-        message: "Copied to clipboard",
-        type: "success",
-      });
-    };
+            document.execCommand("copy");
+            document.body.removeChild(textarea)
+
+            ElMessage({
+                showClose: true,
+                message: "URL Copied Successfully!",
+                type: "success",
+            });
+        };
 
     const importFirstTimer = () => {
       router.push({
@@ -459,6 +528,7 @@ export default {
       if (!tenantID.value) return "";
       return `${window.location.origin}/createfirsttimer/${tenantID.value}`;
     });
+    
 
     const getQrCode = async () => {
       try {
@@ -492,9 +562,10 @@ export default {
 
     return {
       firstTimersList,
+      showAddMemberVideo,
+       videoURL,
       totalItems,
       showFirsttimerPage,
-      copylink2,
       QRCodeDialog,
       xsOnly,
       qrCode,
@@ -526,6 +597,8 @@ export default {
       lgAndUp,
       xlAndUp,
       primarycolor,
+      watchVideo,
+      showAnalysis
     };
   },
 };

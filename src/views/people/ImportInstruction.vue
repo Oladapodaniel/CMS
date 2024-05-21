@@ -6,28 +6,74 @@
     }"
   >
     <div class="row">
-      <div class="col-12 col-md-12 col-lg-12 header" v-if="!isModal">
-        <div>Import {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }}s</div>
-        <div class="border-bottom w-100 my-4 col-12 col-md-12 col-lg-12"></div>
+      <div class="col-12 col-md-12 col-lg-12" v-if="!isModal">
+        <div class="s-32 text-head font-weight-600">
+          Import
+          {{
+            route.query.query == "importfirsttimer"
+              ? firstTimerText
+              : route.query.query == "importpeople"
+              ? memberText
+              : newConvert
+          }}s
+        </div>
+        <!-- <div class="border-bottom w-100 my-4 col-12 col-md-12 col-lg-12"></div> -->
       </div>
 
       <div class="col-12 col-md-10 col-lg-11 col-xl-11">
-        <p>
-          You can easily import {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }}s from any spreadsheet with .xlsx or .csv file
-          format.
-        </p>
+        <div class="fw-500 s-18 mt-4">
+          You can easily import
+          {{
+            route.query.query == "importfirsttimer"
+              ? firstTimerText
+              : route.query.query == "importpeople"
+              ? memberText
+              : newConvert
+          }}s from any spreadsheet with .xlsx or .csv file format.
+        </div>
       </div>
       <div class="col-12 text-secondary font-weight-normal lead d-none d-md-block mb-3">
-        {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }}s Excel/CSV template file
+        {{
+          route.query.query == "importfirsttimer"
+            ? firstTimerText
+            : route.query.query == "importpeople"
+            ? memberText
+            : newConvert
+        }}s Excel/CSV template file
       </div>
-      <div class="col-12 col-md-12 mb-3">
-        <a
-          href="/files/Template.csv"
-          class="no-decoration primary--text font-weight-bold"
-          download
-          >Click here to download and view our {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }}s Excel/CSV template.</a
-        >
-        <span> You can use this as a template for creating your Excel/CSV file.</span>
+      <div
+        class="col-12 col-md-12 d-flex justify-content-center p-3 mb-3"
+        style="background: #d1f7ff"
+      >
+        <div class="col-md-8 d-flex">
+          <div class="col-md-2 col-2 d-flex align-items-center px-0">
+            <img
+              class="primary-bg p-2 col-md-8"
+              src="../../assets/DownloadSimple.png"
+              style="width: 3rem"
+              alt=""
+            />
+          </div>
+          <div class="col-md-10 px-0">
+            <a href="/files/Template.csv" class="no-decoration text-dak s-24" download>
+              <u
+                >Click here to download and view our
+                {{
+                  route.query.query == "importfirsttimer"
+                    ? firstTimerText
+                    : route.query.query == "importpeople"
+                    ? memberText
+                    : newConvert
+                }}s Excel/CSV template.</u
+              >
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="s-18 col-12 col-md-12 d-flex justify-content-center">
+        <div class="col md-10 text-center  my-0 linear-gradient p-3">
+          You can use this as a template for creating your Excel/CSV file.
+        </div>
       </div>
       <div class="col-12 col-md-6 mb-3" v-if="route.query.query == 'importfirsttimer'">
         <span class="font-weight-700">Select event attended</span>
@@ -53,10 +99,10 @@
             <template #dropdown>
               <div class="p-2">
                 <el-input
-                class="w-100"
-                placeholder="Search for events"
-                v-model="eventsSearchString"
-              />
+                  class="w-100"
+                  placeholder="Search for events"
+                  v-model="eventsSearchString"
+                />
               </div>
               <el-dropdown-menu class="menu-height">
                 <el-dropdown-item
@@ -80,28 +126,26 @@
           </el-dropdown>
         </div>
       </div>
-      <div class="col-12">
+      <div class="col-12 col-md-10">
         <div class="py-2 rounded bg-white">
           <div class="mt-3">
             <el-upload
-                class="upload-demo"
-                :limit="1"
-                :on-change="imageSelected"
-                :on-remove="handleRemove" 
-                :auto-upload="false"
-                accept="text/csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                drag
-              >
-                <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-                <div class="el-upload__text">
-                  Drop file here or <em>click to upload</em>
-                </div>
-                <template #tip>
-                  <div class="el-upload__tip">
-                    csv/xlsx files with a size less than 3mb
-                  </div>
-                </template>
-              </el-upload>
+              class="upload-demo"
+              :limit="1"
+              :on-change="imageSelected"
+              :on-remove="handleRemove"
+              :auto-upload="false"
+              accept="text/csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              drag
+            >
+              <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+              <div class="el-upload__text">
+                Drop file here or <em>click to upload</em>
+              </div>
+              <template #tip>
+                <div class="el-upload__tip">csv/xlsx files with a size less than 3mb</div>
+              </template>
+            </el-upload>
             <!-- <input
               type="file"
               @change="imageSelected"
@@ -115,7 +159,14 @@
               @click="uploadFile"
               :loading="uploadLoading"
               round
-              >Upload and preview {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }}s</el-button
+              >Upload and preview
+              {{
+                route.query.query == "importfirsttimer"
+                  ? firstTimerText
+                  : route.query.query == "importpeople"
+                  ? memberText
+                  : newConvert
+              }}s</el-button
             >
           </div>
           <div class="border-bottom w-100 my-2 col-md-12"></div>
@@ -153,8 +204,23 @@
           </div>
           <div class="col-10 col-md-12">
             <span
-              >The first line of your {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }}s Excel/CSV must include all of the headers
-              listed below, which are included in the {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }} Excel/CSV template</span
+              >The first line of your
+              {{
+                route.query.query == "importfirsttimer"
+                  ? firstTimerText
+                  : route.query.query == "importpeople"
+                  ? memberText
+                  : newConvert
+              }}s Excel/CSV must include all of the headers listed below, which are
+              included in the
+              {{
+                route.query.query == "importfirsttimer"
+                  ? firstTimerText
+                  : route.query.query == "importpeople"
+                  ? memberText
+                  : newConvert
+              }}
+              Excel/CSV template</span
             >
           </div>
           <div class="row ml-1 bg-secondary my-3 mx-1 rounded h-100 w-100">
@@ -167,75 +233,194 @@
               <p>FirstName</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>The first name of your {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }}</p>
+              <p>
+                The first name of your
+                {{
+                  route.query.query == "importfirsttimer"
+                    ? firstTimerText
+                    : route.query.query == "importpeople"
+                    ? memberText
+                    : newConvert
+                }}
+              </p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>LastName</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>The last name of your {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }}.</p>
+              <p>
+                The last name of your
+                {{
+                  route.query.query == "importfirsttimer"
+                    ? firstTimerText
+                    : route.query.query == "importpeople"
+                    ? memberText
+                    : newConvert
+                }}.
+              </p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>Email</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>The email address of your {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }}</p>
+              <p>
+                The email address of your
+                {{
+                  route.query.query == "importfirsttimer"
+                    ? firstTimerText
+                    : route.query.query == "importpeople"
+                    ? memberText
+                    : newConvert
+                }}
+              </p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>PhoneNumber</p>
             </div>
-            <div class="col-8 col-md-8 col-lg-8">The phone number of your {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }}.</div>
+            <div class="col-8 col-md-8 col-lg-8">
+              The phone number of your
+              {{
+                route.query.query == "importfirsttimer"
+                  ? firstTimerText
+                  : route.query.query == "importpeople"
+                  ? memberText
+                  : newConvert
+              }}.
+            </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>Address</p>
             </div>
-            <div class="col-8 col-md-8 col-lg-8">The address of the {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }}.</div>
+            <div class="col-8 col-md-8 col-lg-8">
+              The address of the
+              {{
+                route.query.query == "importfirsttimer"
+                  ? firstTimerText
+                  : route.query.query == "importpeople"
+                  ? memberText
+                  : newConvert
+              }}.
+            </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>Birthday</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>The birthday of the {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }}</p>
+              <p>
+                The birthday of the
+                {{
+                  route.query.query == "importfirsttimer"
+                    ? firstTimerText
+                    : route.query.query == "importpeople"
+                    ? memberText
+                    : newConvert
+                }}
+              </p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>BirthMonth</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>The birth month of the {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }}</p>
+              <p>
+                The birth month of the
+                {{
+                  route.query.query == "importfirsttimer"
+                    ? firstTimerText
+                    : route.query.query == "importpeople"
+                    ? memberText
+                    : newConvert
+                }}
+              </p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>BirthYear</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>The birth year of the {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }}</p>
+              <p>
+                The birth year of the
+                {{
+                  route.query.query == "importfirsttimer"
+                    ? firstTimerText
+                    : route.query.query == "importpeople"
+                    ? memberText
+                    : newConvert
+                }}
+              </p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>Gender</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>The gender of the {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }}</p>
+              <p>
+                The gender of the
+                {{
+                  route.query.query == "importfirsttimer"
+                    ? firstTimerText
+                    : route.query.query == "importpeople"
+                    ? memberText
+                    : newConvert
+                }}
+              </p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>MaritalStatus</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>The marital status of the {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }}</p>
+              <p>
+                The marital status of the
+                {{
+                  route.query.query == "importfirsttimer"
+                    ? firstTimerText
+                    : route.query.query == "importpeople"
+                    ? memberText
+                    : newConvert
+                }}
+              </p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>CommunicationMeans</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>Preferred communcation means of the {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }}</p>
+              <p>
+                Preferred communcation means of the
+                {{
+                  route.query.query == "importfirsttimer"
+                    ? firstTimerText
+                    : route.query.query == "importpeople"
+                    ? memberText
+                    : newConvert
+                }}
+              </p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>InterestedInJoining</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>If {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }} is interested in joining</p>
+              <p>
+                If
+                {{
+                  route.query.query == "importfirsttimer"
+                    ? firstTimerText
+                    : route.query.query == "importpeople"
+                    ? memberText
+                    : newConvert
+                }}
+                is interested in joining
+              </p>
             </div>
             <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
               <p>WantToBeVisited</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
-              <p>If {{ route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert }} wants to be visited.</p>
+              <p>
+                If
+                {{
+                  route.query.query == "importfirsttimer"
+                    ? firstTimerText
+                    : route.query.query == "importpeople"
+                    ? memberText
+                    : newConvert
+                }}
+                wants to be visited.
+              </p>
             </div>
           </div>
         </div>
@@ -243,7 +428,13 @@
 
       <el-dialog
         v-model="displayModal"
-        :title="`${route.query.query == 'importfirsttimer' ? firstTimerText : route.query.query == 'importpeople'  ? memberText  : newConvert}s to import from file`"
+        :title="`${
+          route.query.query == 'importfirsttimer'
+            ? firstTimerText
+            : route.query.query == 'importpeople'
+            ? memberText
+            : newConvert
+        }s to import from file`"
         :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
       >
         <div class="row">
@@ -307,9 +498,9 @@ export default {
     const image = ref("");
     const displayModal = ref(false);
     const memberData = ref([]);
-    const firstTimerText = ref('firstTimer');
-    const memberText = ref('member');
-    const newConvert = ref('newConvert');
+    const firstTimerText = ref("firstTimer");
+    const memberText = ref("member");
+    const newConvert = ref("newConvert");
     const addInstructionClass = ref(false);
     const loading = ref(false);
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
@@ -465,11 +656,17 @@ export default {
           }
           console.log(err);
         }
-      } else if (route.fullPath.includes("/tenant/event") || (route.query.query === 'importfirsttimer' && Object.keys(selectedEventAttended.value).length > 0)) {
-        console.log(selectedEventAttended.value)
+      } else if (
+        route.fullPath.includes("/tenant/event") ||
+        (route.query.query === "importfirsttimer" &&
+          Object.keys(selectedEventAttended.value).length > 0)
+      ) {
+        console.log(selectedEventAttended.value);
         let payload = {
           data: memberData.value,
-          activityID: route.params.event ? route.params.event : selectedEventAttended.value.activityID,
+          activityID: route.params.event
+            ? route.params.event
+            : selectedEventAttended.value.activityID,
           activateFollowUpWorkflow: true,
         };
         try {
@@ -572,8 +769,8 @@ export default {
     };
 
     const handleRemove = () => {
-        image.value = null
-    }
+      image.value = null;
+    };
 
     return {
       imageSelected,
@@ -600,7 +797,7 @@ export default {
       eventAttendedSelected,
       eventsSearchString,
       handleRemove,
-      route
+      route,
     };
   },
 };
@@ -621,6 +818,19 @@ export default {
   height: 0;
   overflow: hidden;
   transition: all 1s ease-in-out;
+}
+
+.border-line {
+  border-radius: 20px;
+  border: 1px dashed #A0A0A0;
+}
+
+.linear-gradient{
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #F2F4F7 36%);
+  border-radius: 0px 0px 20px 0px;
+  /* position: absolute;
+  top: -23px;
+  z-index: -99; */
 }
 
 .rollIcon {
