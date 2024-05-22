@@ -194,7 +194,7 @@
                                         {{ formName }}
                                     </div>
                                     <div class="col-md-9 mb-2 text-center">
-                                        {{ description }}
+                                        {{ description }} {{cutomFieldData}}
                                     </div>
                                 </div>
                             </div>
@@ -438,7 +438,7 @@ export default {
                     isRequired: i.isRequired,
                     label: i.label,
                     order: i.order,
-                    parameterValues: i.parameterValues.split(','),
+                    parameterValues: i &&  i.parameterValues ?  i.parameterValues.split(',') : '',
                     tenantID: i.tenantID
                 }
             })
