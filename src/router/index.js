@@ -82,6 +82,15 @@ const routes = [
         }
     },
     {
+        path: '/alatregister',
+        name: 'AlatRegister',
+        component: () =>
+            import( /* webpackChunkName: "startingdashboard" */ '../views/account/AlatRegister.vue'),
+        meta: {
+            title: 'Churchplus - Starting Board',
+        }
+    },
+    {
         path: '/processing/:option',
         name: 'ProcessRequest',
         component: () =>
@@ -2199,10 +2208,11 @@ router.beforeEach((to, from, next) => {
         to.name === "PricingPage" ||
         to.name === "LandingPage" ||
         to.name === "PublicForm" ||
+        to.name === "AlatRegister" ||
         to.name === "PublicPledgePayment") && !tokenIsValid) return next(true)
 
 
-    if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
+    if ((to.name !== "Login" && to.name !== "Register") && to.name !== "AlatRegister" && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
     if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/tenant")
 
     if ((role && role.length === 1 && role[0] === "FollowUp" && token) && (to.path !== "/tenant/followup" && to.name !== "FirsttimerManagement")) {

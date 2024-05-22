@@ -222,10 +222,10 @@
                 </div> -->
           </div>
         </div>
-        <div class="col-md-6  bg-position d-none d-md-block">
+        <div class="col-md-6 bg-position d-none d-md-block">
           <div class="col-md-12 d-flex align-items-center h-100 px-0 move-image">
             <img
-              class="w-100 "
+              class="w-100"
               src="../../../assets/alartfaith-icon/Rectangle4348.png"
               alt=""
             />
@@ -238,17 +238,16 @@
         </div>
         <div class="col-md-12 d-none d-md-block">
           <div class="col-md-12 d-flex justify-content-end mt-5">
-          <img src="../../../assets/alartfaith-icon/dotted-icon.png" alt="" />
+            <img src="../../../assets/alartfaith-icon/dotted-icon.png" alt="" />
+          </div>
         </div>
-        </div>
-        
       </div>
     </div>
     <div class="row d-flex justify-content-center mt-4 mt-md-0">
-      <div class="col-md-11 linear-bg px-md-5 px-4 pb-5 ">
-        <div class="row px-md-5 px-0 mt-5 mt-md-0 " >
+      <div class="col-md-11 linear-bg px-md-5 px-4 pb-5">
+        <div class="row px-md-5 px-0 mt-5 mt-md-0">
           <div class="col-md-6 d-flex align-items-center">
-            <div class="col-md-12 ">
+            <div class="col-md-12">
               <div class="text-white text-head s-42 font-weight-bold">
                 Financial Services
               </div>
@@ -263,7 +262,7 @@
             <img class="w-100" src="../../../assets/alartfaith-icon/image11.png" alt="" />
           </div>
         </div>
-        <div class="row mb-3 px-md-5 px-0 ">
+        <div class="row mb-3 px-md-5 px-0">
           <div class="col-lg-4 col-md-6">
             <div class="col-md-12 py-3 border-radius-20 section-card-border">
               <div class="d-flex col-md-12 justify-content-between">
@@ -285,10 +284,16 @@
                 <div class="text-head mt-3 text-white s-24 font-weight-bold">
                   Online Donation
                 </div>
-                <img class="mt-3" src="../../../assets/alartfaith-icon/HandHeart.png" alt="" />
+                <img
+                  class="mt-3"
+                  src="../../../assets/alartfaith-icon/HandHeart.png"
+                  alt=""
+                />
               </div>
               <div class="s-13 py-5 text-white col-md-12">
-                Empower your congregation to give back conveniently and securely with our online donation platform. Accept donations seamlessly through various payment methods.
+                Empower your congregation to give back conveniently and securely with our
+                online donation platform. Accept donations seamlessly through various
+                payment methods.
               </div>
             </div>
           </div>
@@ -298,24 +303,32 @@
                 <div class="text-head mt-3 text-white s-24 font-weight-bold">
                   Customized POS
                 </div>
-                <img class="mt-3" src="../../../assets/alartfaith-icon/CashRegister.png" alt="" />
+                <img
+                  class="mt-3"
+                  src="../../../assets/alartfaith-icon/CashRegister.png"
+                  alt=""
+                />
               </div>
               <div class="s-13 py-5 text-white col-md-12">
-                Our Point-of-Sale terminals are designed to serve as alternative means for payment for tithes and offerings, or any other church contribution.
+                Our Point-of-Sale terminals are designed to serve as alternative means for
+                payment for tithes and offerings, or any other church contribution.
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-6 mt-5 ">
+          <div class="col-lg-4 col-md-6 mt-5">
             <div class="col-md-12 py-3 border-radius-20 section-card-border">
               <div class="d-flex col-md-12 justify-content-between">
-                <div class="text-head mt-3 text-white s-24 font-weight-bold">
-                  Loans
-                </div>
-                <img class="mt-3" src="../../../assets/alartfaith-icon/TipJar.png" alt="" />
+                <div class="text-head mt-3 text-white s-24 font-weight-bold">Loans</div>
+                <img
+                  class="mt-3"
+                  src="../../../assets/alartfaith-icon/TipJar.png"
+                  alt=""
+                />
               </div>
               <div class="s-13 py-5 text-white col-md-12">
-                Unlock growth opportunities for your organization with our flexible loan options.
-Our competitive loan products are designed to meet your financial needs.
+                Unlock growth opportunities for your organization with our flexible loan
+                options. Our competitive loan products are designed to meet your financial
+                needs.
               </div>
             </div>
           </div>
@@ -328,39 +341,179 @@ Our competitive loan products are designed to meet your financial needs.
                 <img class="mt-3" src="../../../assets/alartfaith-icon/City.png" alt="" />
               </div>
               <div class="s-13 py-5 text-white col-md-12">
-                Realize your organization's vision for growth and expansion with our facility financing solutions. We offer customizable financing options to support your long-term goals.
+                Realize your organization's vision for growth and expansion with our
+                facility financing solutions. We offer customizable financing options to
+                support your long-term goals.
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-6 mt-5 ">
+          <div class="col-lg-4 col-md-6 mt-5">
             <div class="col-md-12 py-3 border-radius-20 section-card-border">
               <div class="d-flex col-md-12 justify-content-between">
                 <div class="text-head mt-3 text-white s-24 font-weight-bold">
                   USSD Giving
                 </div>
-                <img class="mt-3" src="../../../assets/alartfaith-icon/Vector3.png" alt="" />
+                <img
+                  class="mt-3"
+                  src="../../../assets/alartfaith-icon/Vector3.png"
+                  alt=""
+                />
               </div>
               <div class="s-13 py-5 text-white col-md-12">
-                Enable easy and convenient giving for your congregation with USSD giving. Members can quickly and securely donate using their mobile phones, ensuring consistent support for your ministry.
+                Enable easy and convenient giving for your congregation with USSD giving.
+                Members can quickly and securely donate using their mobile phones,
+                ensuring consistent support for your ministry.
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="row bg-color-2 mt-5">
-      <div class="col-md-6">
-        <div class="col-md-12">
-          <img src="../../../assets/alartfaith-icon/image12.png" alt="">
+    <div class="row bg-color-2 py-5 mt-5 align-items-center" >
+      <div class="col-md-6 d-flex align-items-center">
+        <div class="col-md-11 col-11">
+          <img  class="w-100" src="../../../assets/alartfaith-icon/image12.png" alt="" />
         </div>
       </div>
-      <div class="col-md-6"></div>
+      <div class="col-md-6">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12 text-head font-weight-bold s-30 line-height-50">Omni-channel messaging platform:</div>
+            <div class="col-md-12 s-24" >Church SMS, Email, WhatsApp and Voice Solution</div>
+            <div class="col-md-12 mt-3">
+              <span><img src="../../../assets/alartfaith-icon/check-icon.png" alt=""></span>
+              <span class="ml-2">99.9% Delivery </span>
+            </div>
+            <div class="col-md-12 mt-2">
+              <span><img src="../../../assets/alartfaith-icon/check-icon.png" alt=""></span>
+              <span class="ml-2">Instant Sender ID</span>
+            </div>
+            <div class="col-md-12 mt-2">
+              <span><img src="../../../assets/alartfaith-icon/check-icon.png" alt=""></span>
+              <span class="ml-2">Automated Messages </span>
+            </div>
+            <div class="col-md-12 mt-2">
+              <span><img src="../../../assets/alartfaith-icon/check-icon.png" alt=""></span>
+              <span class="ml-2">Instant Communication </span>
+            </div>
+            <div class="col-md-12 mt-2">
+              <span><img src="../../../assets/alartfaith-icon/check-icon.png" alt=""></span>
+              <span class="ml-2"> SMS Scheduling </span>
+            </div>
+            <div class="col-md-12 mt-2">
+              <span><img src="../../../assets/alartfaith-icon/check-icon.png" alt=""></span>
+              <span class="ml-2">Real-time delivery report analysis</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-center mt-5 mb-4" >
+      <div class="col-md-4">
+        <div class="row">
+          <div class="col-md-12 text-head font-weight-bold s-20">Subscribe to Newsletter</div>
+          <div class="col-md-12 mt-2">
+            <el-input type="text" placeholder="Email address" v-model="emailAddress" class="w-100" ></el-input>
+          </div>
+          <div class="col-md-12 mt-3">
+            <el-button round color="#5D103A"  size="large" class="w-100">
+              Count me in
+            </el-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row footer-bg justify-content-center mt-5">
+      <div class="col-md-10 py-5 ">
+        <div class="row">
+          <div class="col-md-4 mt-2">
+            <div class="col-md-9 d-flex justify-content-end">
+              <img src="../../../assets/alartfaith-icon/logo.png" alt="" />
+            </div>
+            <div class="col-md-9 text-right">
+              Build better relationships with members, improve connections and measure performance at any time.
+            </div>
+          </div>
+          <div class="col-md-4 ">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="col-md-12">
+                  <span class="s-32">.</span>
+                  <span class="ml-2 ">Products</span>
+                </div>
+                <div class="col-md-12">
+                  <span class="s-32">.</span>
+                  <span class="ml-2 " >Company</span>
+                </div>
+                <div class="col-md-12">
+                  <span class="s-32">.</span>
+                  <span class="ml-2 " > Resources</span>
+                </div>
+                <div class="col-md-12">
+                  <span class="s-32">.</span>
+                  <span class="ml-2 ">Legal</span>
+                </div>
+                <div class="col-md-12">
+                  <span class="s-32">.</span>
+                  <span class="ml-2 ">Social links</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="col-md-12">
+                  <span class="s-32">.</span>
+                  <span class="ml-2 ">About</span>
+                </div>
+                <div class="col-md-12">
+                  <span class="s-32">.</span>
+                  <span class="ml-2 ">Pricing</span>
+                </div>
+                <div class="col-md-12">
+                  <span class="s-32">.</span>
+                  <span class="ml-2 ">Support</span>
+                </div>
+                <div class="col-md-12">
+                  <span class="s-32">.</span>
+                  <span class="ml-2 ">Developers</span>
+                </div>
+                <div class="col-md-12">
+                  <span class="s-32">.</span>
+                  <span class="ml-2 ">Help Centre</span>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="col-md-4 mt-3">
+            <div class="col-md-12">
+              <div>
+                <img src="../../../assets/alartfaith-icon/appleplay.png" alt="" />
+              </div>
+              <div class="mt-3">
+                <img src="../../../assets/alartfaith-icon/googleplay.png" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 text-center mt-2 mb-4">
+        Copyright © 2024 ALAT FAITH. All rights reserved.
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+import { ref } from 'vue'
+export default {
+  setup() {
+    const emailAddress = ref('');
+
+    return{
+      emailAddress
+    }
+    
+  },
+}
 </script>
 
 <style scoped>
@@ -373,10 +526,12 @@ export default {};
 .text-head {
   font-family: Raleway;
 }
-.bg-color-2{
-  background-color: #FFCEF8;
+.bg-color-2 {
+  background-color: #ffcef8;
   /* opacity: 0.6; */
-;
+}
+.footer-bg{
+  background: #E1E1E1;
 }
 
 .bg-color-btn {
@@ -393,9 +548,8 @@ export default {};
 .section-card-border {
   border: 1px solid #f33e64;
   background: #5f103a;
-  box-shadow: 6px 4px 9.9px 0px #FF006B40;
+  box-shadow: 6px 4px 9.9px 0px #ff006b40;
   height: 18rem;
-
 }
 .text-dak {
   color: #000000;
@@ -423,6 +577,9 @@ export default {};
 
 .line-height-30 {
   line-height: 30px;
+}
+.line-height-50{
+  line-height: 50px;
 }
 
 .bg-image {
@@ -452,6 +609,9 @@ export default {};
 }
 .s-30 {
   font-size: 30px;
+}
+.s-32 {
+  font-size: 32px;
 }
 .s-24 {
   font-size: 24px;
