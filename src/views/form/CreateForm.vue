@@ -194,7 +194,7 @@
                                         {{ formName }}
                                     </div>
                                     <div class="col-md-9 mb-2 text-center">
-                                        {{ description }} {{cutomFieldData}}
+                                        {{ description }}
                                     </div>
                                 </div>
                             </div>

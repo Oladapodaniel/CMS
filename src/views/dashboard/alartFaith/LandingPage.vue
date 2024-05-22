@@ -348,6 +348,14 @@ Our competitive loan products are designed to meet your financial needs.
         </div>
       </div>
     </div>
+    <div class="row bg-color-2 mt-5">
+      <div class="col-md-6">
+        <div class="col-md-12">
+          <img src="../../../assets/alartfaith-icon/image12.png" alt="">
+        </div>
+      </div>
+      <div class="col-md-6"></div>
+    </div>
   </div>
 </template>
 
@@ -364,6 +372,11 @@ export default {};
 }
 .text-head {
   font-family: Raleway;
+}
+.bg-color-2{
+  background-color: #FFCEF8;
+  /* opacity: 0.6; */
+;
 }
 
 .bg-color-btn {
