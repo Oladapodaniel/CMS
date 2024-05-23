@@ -454,15 +454,10 @@ export default {
                 }
             })
             // description.value = data.description
-
-            console.log(cutomFieldData.value, 'ffjjfj');
         }
         getSingleForm()
 
         const saveChip = (index) => {
-            console.log(index,'llkkjj');
-            console.log(cutomFieldData.value[index].currentInput,'kkkkkk');
-            console.log(cutomFieldData.value[index].parameterValues,'hjjjj');
             cutomFieldData.value[index].currentInput ? cutomFieldData.value[index].parameterValues.push(cutomFieldData.value[index].currentInput) : null
 
             // ((dropdownList.value.indexOf(currentInput.value) === -1)) && dropdownList.value.push(currentInput.value);
@@ -483,7 +478,6 @@ export default {
         const addNewField = () => {
             // centerDialogVisible.value = true
             cutomFieldData.value.push({ parameterValues: [] });
-            console.log(cutomFieldData.value, 'kkkkk');
         }
 
         const getGelocation = async () => {
