@@ -6,10 +6,10 @@
           <div class="onboarding-form-container">
             <div class="title-div">
               <div class="main-title">
-                <h1>Welcome to ALAT FAITH!</h1>
+                <h2 class="text-head font-weight-600">Welcome to ALAT FAITH!</h2>
               </div>
               <div class="sub-title">
-                <p>Tell us about you and your church</p>
+                <p class="text-head">Tell us about you and your Church</p>
               </div>
             </div>
             <el-form
@@ -18,7 +18,7 @@
               :model="userDetails"
               style="width: 100%"
             >
-              <div class="input-div">
+              <div class="input-div mt-5">
                 <el-row :gutter="15">
                   <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
                     <label class="mb-0">WEMA Account number</label>
@@ -52,7 +52,7 @@
               <div class="input-div">
                 <el-row :gutter="15">
                   <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
-                    <label class="mb-0">Email</label>
+                    <label class="mb-0">Email Address</label>
                     <el-form-item prop="maxEmail">
                       <el-input
                         type="text"
@@ -77,7 +77,7 @@
               </div>
 
               <div class="input-div">
-                <label class="mb-0">Password</label>
+                <label class="mb-0">Create Password</label>
                 <el-form-item prop="password">
                   <el-input
                     type="password"
@@ -103,24 +103,59 @@
                   />
                 </el-form-item>
               </div>
+              <div class="input-div">
+                <div class="row justify-content-center">
+                  <div class="col-md-12 input-color2 py-2 ">
+                    <div class="row">
+                        <div class="col-md-12 mt-2">Select Add-ons</div>
+                        <div class="col-md-3">
+                            <el-checkbox v-model="checked1" label="Customized POS" />
+                        </div>
+                        <div class="col-md-3">
+                            <el-checkbox v-model="checked1" label="Online Donation"  />
+                        </div>
+                        <div class="col-md-3">
+                            <el-checkbox v-model="checked1" label="Loans" size="large" />
+                        </div>
+                        <div class="col-md-3">
+                            <el-checkbox v-model="checked1" label="Loans for Members"  />
+                        </div>
+                        <div class="col-md-3">
+                            <el-checkbox v-model="checked1" label="Facilty Financing"  />
+                        </div>
+                        <div class="col-md-3">
+                            <el-checkbox v-model="checked1" label="USSD Giving"  />
+                        </div>
+                        <div class="col-md-3">
+                            <el-checkbox v-model="checked1" label="Website"  />
+                        </div>
+                        <div class="col-md-3">
+                            <el-checkbox v-model="checked1" label="Customized POS" size="large" />
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <div class="input-div">
-                <div class="col-md-12 input-color2 py-2 d-flex justify-content-between">
-                  <div class="font-weight-bold">Total Monthly Payment</div>
-                  <div class="text-right font-weight-bold horizontal-rule">
-                    NGN
-                    {{
-                      Math.round(
-                        mobilePerMonth + smsPerMonth + memberPerMonth
-                      ).toLocaleString()
-                    }}.00
+                <div class="row justify-content-center">
+                  <div class="col-md-6 input-colo py-2 ">
+                    <div class="font-weight-600 text-center">Total Monthly Payment</div>
+                    <div class="font-weight-bold text-center " style="font-size: 22px">
+                      NGN
+                      {{
+                        Math.round(
+                          mobilePerMonth + smsPerMonth + memberPerMonth
+                        ).toLocaleString()
+                      }}.00
+                    </div>
                   </div>
                 </div>
               </div>
 
               <el-button
-                class="w-100"
-                :color="primarycolor"
+                class="w-100 button-bg"
+                color="#5A0F3A;"
                 size="large"
                 :disabled="!disableSubmit"
                 :loading="loadingSave"
@@ -293,14 +328,14 @@ import { ref, reactive, inject } from "vue";
 import finish from "../../services/progressbar/progress";
 import { ElNotification } from "element-plus";
 export default {
-//   beforeRouteLeave() {
-//     const userEmail = localStorage.getItem("email");
-//     if (userEmail) localStorage.removeItem("email");
-//   },
+  //   beforeRouteLeave() {
+  //     const userEmail = localStorage.getItem("email");
+  //     if (userEmail) localStorage.removeItem("email");
+  //   },
 
-//   beforeRouteEnter() {
-//     if (localStorage.getItem("token")) router.push("/next");
-//   },
+  //   beforeRouteEnter() {
+  //     if (localStorage.getItem("token")) router.push("/next");
+  //   },
 
   setup() {
     const primarycolor = inject("primarycolor");
@@ -564,6 +599,15 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@100&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+
+* {
+  font-family: Poppins;
+}
+.text-head {
+  font-family: Raleway;
+}
 .top-most {
   height: 100vh;
 }
@@ -594,11 +638,18 @@ export default {
 .swap-box2 {
   transform: translateX(-127%);
 }
+button.el-button.is-round {
+  background: #5a0f3a !important;
+}
+.el-button.is-disabled:disabled {
+  background: #5a0f3a !important;
+  opacity: 0.4;
+}
 
 .sub-title {
   font-size: 20px;
-  font-weight: lighter;
-  color: #718fa2;
+  font-weight: 400;
+  color: #1e1e1e;
 }
 
 .onboarding-form-container {
@@ -672,8 +723,10 @@ export default {
 }
 
 .input-color2 {
-  background: rgba(245, 167, 223, 0.25);
-  border-radius: 7px;
+  /* background: rgba(245, 167, 223, 0.25); */
+  background: #D9D9D9;
+  /* opacity: 0.5; */
+  border-radius: 10px;
   /* opacity: 1; */
 }
 

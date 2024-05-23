@@ -1717,9 +1717,8 @@ export default {
 
         branchItems.value = data;
         branchList.value = data.branches;
-        branchList.value.unshift(branchObj)
-        
-        if (branchList.value.length === 0) {
+        branchList.value.unshift(branchObj)   
+        if (branchList.value.length === 1) {
           getPeopleClassifications();
           getAgeGroups();
           getCustomFields();
