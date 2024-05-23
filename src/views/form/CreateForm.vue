@@ -153,6 +153,16 @@
                         </div>
                     </template>
                 </draggable>
+                <!-- <div class="row mt-4">
+                    <div class="col-md-3 font-weight text-md-right text-left">
+                        <label for="">Email Recipient</label>
+                    </div>
+                    <div class="col-md-8">
+                        <el-input type="text" v-model="emailRecipient" />
+                    </div>
+                    <div class="">
+                    </div>
+                </div> -->
 
 
                 <div class="row mt-4">
@@ -293,6 +303,7 @@ export default {
         const centerDialogVisible = ref(false)
         const dialogVisible = ref(false)
         const currentInput = ref("")
+        const emailRecipient = ref("")
         const tenantId = ref("")
         const fileImage = ref(false);
         const dropdownList = ref([])
@@ -438,7 +449,7 @@ export default {
                     isRequired: i.isRequired,
                     label: i.label,
                     order: i.order,
-                    parameterValues: i &&  i.parameterValues ?  i.parameterValues.split(',') : '',
+                    parameterValues: i &&  i.parameterValues ?  i.parameterValues.split(',') : [],
                     tenantID: i.tenantID
                 }
             })
@@ -507,6 +518,7 @@ export default {
             const formData2 = new FormData();
             formData.append("name", formName.value);
             formData.append("description", description.value);
+            // formData.append("EmailRecipient", emailRecipient.value);
             formData.append("picture", selectedImage.value ? selectedImage.value : '');
             formData.append("tenantID", tenantId.value);
             formData.append("customAttributesString", JSON.stringify(cutomFieldData.value.map(i => {
@@ -523,6 +535,7 @@ export default {
             formData2.append("name", formName.value);
             formData2.append("description", description.value);
             formData2.append("date", dateUpdated.value);
+            // formData2.append("EmailRecipient", emailRecipient.value);
             // formData2.append("pictureUrl", url.value ? url.value : selectedImage.value);
             formData2.append("picture", selectedImage.value ? selectedImage.value : '');
             formData2.append("tenantID", tenantId.value);
@@ -592,6 +605,7 @@ export default {
             url,
             dateUpdated,
             dialogVisible,
+            emailRecipient,
             reorderCustomField,
             previewForm,
             chooseFile,
