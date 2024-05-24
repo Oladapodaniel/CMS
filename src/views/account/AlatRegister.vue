@@ -105,33 +105,43 @@
               </div>
               <div class="input-div">
                 <div class="row justify-content-center">
-                  <div class="col-md-12 input-color2 py-2 ">
+                  <div class="col-md-12 input-color2 py-4">
                     <div class="row">
-                        <div class="col-md-12 mt-2">Select Add-ons</div>
-                        <div class="col-md-3">
-                            <el-checkbox v-model="checked1" label="Customized POS" />
-                        </div>
-                        <div class="col-md-3">
-                            <el-checkbox v-model="checked1" label="Online Donation"  />
-                        </div>
-                        <div class="col-md-3">
-                            <el-checkbox v-model="checked1" label="Loans" size="large" />
-                        </div>
-                        <div class="col-md-3">
-                            <el-checkbox v-model="checked1" label="Loans for Members"  />
-                        </div>
-                        <div class="col-md-3">
-                            <el-checkbox v-model="checked1" label="Facilty Financing"  />
-                        </div>
-                        <div class="col-md-3">
-                            <el-checkbox v-model="checked1" label="USSD Giving"  />
-                        </div>
-                        <div class="col-md-3">
-                            <el-checkbox v-model="checked1" label="Website"  />
-                        </div>
-                        <div class="col-md-3">
-                            <el-checkbox v-model="checked1" label="Customized POS" size="large" />
-                        </div>
+                      <div class="col-md-12 mt-2">Select Add-ons</div>
+                      <div class="col-md-3 mt-2 d-flex">
+                        <el-checkbox v-model="checked1" />
+                        <label class="small" for="">Customized POS</label>
+                      </div>
+                      <div class="col-md-3 mt-2 d-flex">
+                        <el-checkbox class="col-md-2 px-0" v-model="checked1" />
+                        <label class="small px-0 col-md-10" for=""
+                          >Online Donations</label
+                        >
+                      </div>
+                      <div class="col-md-3 mt-2 d-flex">
+                        <el-checkbox v-model="checked1" />
+                        <label class="small" for="">Loans</label>
+                      </div>
+                      <div class="col-md-3 mt-2 d-flex">
+                        <el-checkbox v-model="checked1" />
+                        <label class="small" for="">Loans for Members</label>
+                      </div>
+                      <div class="col-md-3 mt-2 d-flex">
+                        <el-checkbox v-model="checked1" />
+                        <label class="small" for="">Facilty Financing</label>
+                      </div>
+                      <div class="col-md-3 mt-2 d-flex">
+                        <el-checkbox v-model="checked1" />
+                        <label class="small" for="">USSD Giving</label>
+                      </div>
+                      <div class="col-md-3 mt-2 d-flex">
+                        <el-checkbox v-model="checked1" />
+                        <label class="small" for="">Mobile App</label>
+                      </div>
+                      <div class="col-md-3 mt-2 d-flex">
+                        <el-checkbox v-model="checked1" />
+                        <label class="small" for="">Website</label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -139,9 +149,9 @@
 
               <div class="input-div">
                 <div class="row justify-content-center">
-                  <div class="col-md-6 input-colo py-2 ">
+                  <div class="col-md-6 input-colo py-2">
                     <div class="font-weight-600 text-center">Total Monthly Payment</div>
-                    <div class="font-weight-bold text-center " style="font-size: 22px">
+                    <div class="font-weight-bold text-center" style="font-size: 22px">
                       NGN
                       {{
                         Math.round(
@@ -186,44 +196,38 @@
                 :class="{ hidePlan: !basicPlan, showPlan: basicPlan }"
               >
                 <div
-                  class="col-md-12 text-cente font-weight-bold m-0 h5 py-2"
-                  style="border: 1px solid #900a39; background: white"
+                  class="col-md-12 text-cente font-weight-600 pl-4 plan-border-radius mb-0 h5 py-2"
                 >
                   Basic Plan
                 </div>
-                <div
-                  class="col-md-12"
-                  style="border: 1px solid #900a39; background: white"
-                >
-                  <ul>
-                    <li class="py-2">Church Administration</li>
-                    <li>Database Management</li>
-                    <li class="py-2">Online giving</li>
-                    <li>500 units of SMS</li>
-                  </ul>
+                <div class="col-md-12 px-0 d-flex justify-content-center">
+                  <div class="col-md-11 text-head rounded-bottom" style="background: white">
+                    <ul class="text-head">
+                      <li class="py-2">Church Administration</li>
+                      <li>Database Management</li>
+                      <li class="py-2">Online giving</li>
+                      <li>500 units of SMS</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
               <div
                 class="col-md-9 mt-5"
                 :class="{ hidePlan: !standardPlan, showPlan: standardPlan }"
               >
-                <div
-                  class="col-md-12 text-cente font-weight-bold border-bottom-0 m-0 h5 py-2"
-                  style="border: 1px solid #900a39; background: white"
-                >
+                <div class="col-md-12 ont-weight-600 pl-4 plan-border-radius m-0 h5 py-2">
                   Standard Plan
                 </div>
-                <div
-                  class="col-md-12"
-                  style="border: 1px solid #900a39; background: white"
-                >
-                  <ul>
-                    <li class="py-2">Church Administration</li>
-                    <li>Database Management</li>
-                    <li class="py-2">Free Android and iOS mobile App</li>
-                    <li>Online giving</li>
-                    <li class="py-2">500 units of SMS</li>
-                  </ul>
+                <div class="col-md-12 px-0 d-flex justify-content-center">
+                  <div class="col-md-11 rounded-bottom text-head" style="background: white">
+                    <ul class="text-head">
+                      <li class="py-2">Church Administration</li>
+                      <li>Database Management</li>
+                      <li class="py-2">Free Android and iOS mobile App</li>
+                      <li>Online giving</li>
+                      <li class="py-2">500 units of SMS</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
               <div
@@ -231,22 +235,20 @@
                 :class="{ hidePlan: !premiumPlan, showPlan: premiumPlan }"
               >
                 <div
-                  class="col-md-12 text-cente font-weight-bold border-bottom-0 m-0 h5 py-2"
-                  style="border: 1px solid #900a39; background: white"
+                  class="col-md-12 font-weight-600 pl-4 plan-border-radius m-0 h5 py-2"
                 >
                   Premium Plan
                 </div>
-                <div
-                  class="col-md-12"
-                  style="border: 1px solid #900a39; background: white"
-                >
-                  <ul>
-                    <li class="py-2">Church Administration</li>
-                    <li>Database Management</li>
-                    <li class="py-2">Free Android and iOS mobile App</li>
-                    <li>Online giving</li>
-                    <li class="py-2">1,000 units of SMS</li>
-                  </ul>
+                <div class="col-md-12 px-0 d-flex justify-content-center">
+                  <div class="col-md-11 rounded-bottom text-head" style="background: white">
+                    <ul>
+                      <li class="py-2">Church Administration</li>
+                      <li>Database Management</li>
+                      <li class="py-2">Free Android and iOS mobile App</li>
+                      <li>Online giving</li>
+                      <li class="py-2">1,000 units of SMS</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
               <div
@@ -254,25 +256,23 @@
                 :class="{ hidePlan: !platinumPlan, showPlan: platinumPlan }"
               >
                 <div
-                  class="col-md-12 text-cente font-weight-bold border-bottom-0 m-0 h5 py-2"
-                  style="border: 1px solid #900a39; background: white"
+                  class="col-md-12 font-weight-600 pl-4 plan-border-radius m-0 h5 py-2"
                 >
                   Platinum Plan
                 </div>
-                <div
-                  class="col-md-12"
-                  style="border: 1px solid #900a39; background: white"
-                >
-                  <ul>
-                    <li class="py-2">Church Administration</li>
-                    <li>Database Management</li>
-                    <li class="py-2">Free Android and iOS mobile App</li>
-                    <li>Online giving</li>
-                    <li class="py-2">1,500 units of SMS</li>
-                  </ul>
+                <div class="col-md-12 px-0 d-flex justify-content-center">
+                  <div class="col-md-11 rounded-bottom text-head" style="background: white">
+                    <ul>
+                      <li class="py-2">Church Administration</li>
+                      <li>Database Management</li>
+                      <li class="py-2">Free Android and iOS mobile App</li>
+                      <li>Online giving</li>
+                      <li class="py-2">1,500 units of SMS</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-              <div class="col-md-9 ml-2 mt-2">
+              <div class="col-md-9 text-center  ml-2 mt-4 ">
                 <p>
                   A range of technology and financial solutions for Churches and other
                   faith-based organizations.
@@ -280,39 +280,35 @@
               </div>
             </div>
             <div class="col-md-12 d-flex justify-content-center mt-3 flex-wrap">
-              <div class="font-weight-bold h6 col-md-9 ml-2">
+              <div class="font-weight-600 text-head text-center h6 col-md-9 ml-2">
                 Join 11,200 using ALAT Faith solution
               </div>
-              <!-- <div
-                class="col-md-9 d-flex flex-wrap justify-content-center justify-content-md-start ml-2"
+              <div
+                class="col-md-9 d-flex flex-wrap justify-content-center  ml-2"
                 style="gap: 20px"
               >
                 <span class="logo"
-                  ><img src="../../assets/wema-faith/download-1.png" alt=""
+                  ><img src="../../assets/alartfaith-icon/image4.png" alt=""
                 /></span>
                 <span class="logo"
-                  ><img src="../../assets/wema-faith/winners-logo.png" alt=""
+                  ><img src="../../assets/alartfaith-icon/image7.png" alt=""
                 /></span>
                 <span class="logo"
-                  ><img src="../../assets/wema-faith/assemblies-of-god-logo.png" alt=""
+                  ><img src="../../assets/alartfaith-icon/image5.png" alt=""
                 /></span>
                 <span class="logo"
-                  ><img src="../../assets/wema-faith/cgmi1-min-Mask.png" alt=""
+                  ><img src="../../assets/alartfaith-icon/image6.png" alt=""
                 /></span>
                 <span class="logo"
-                  ><img
-                    src="../../assets/wema-faith/cornerstone-bible-church-logo1-1024x1024-1.png"
-                    alt=""
+                  ><img src="../../assets/alartfaith-icon/image8.png" alt=""
                 /></span>
                 <span class="logo"
-                  ><img
-                    src="../../assets/wema-faith/insight_bible-church_Mask-2.png"
-                    alt=""
+                  ><img src="../../assets/alartfaith-icon/image9.png" alt=""
                 /></span>
                 <span class="logo"
-                  ><img src="../../assets/wema-faith/Lbbwk7FK_400x400.png" alt=""
+                  ><img src="../../assets/alartfaith-icon/image10.png" alt=""
                 /></span>
-              </div> -->
+              </div>
             </div>
           </div>
         </div>
@@ -611,6 +607,11 @@ export default {
 .top-most {
   height: 100vh;
 }
+.plan-border-radius {
+  border-radius: 20px;
+  background: #303030;
+  color: white;
+}
 
 #onboarding {
   display: flex;
@@ -724,7 +725,8 @@ button.el-button.is-round {
 
 .input-color2 {
   /* background: rgba(245, 167, 223, 0.25); */
-  background: #D9D9D9;
+  background: #f8f8f8;
+  /* background: #D9D9D9; */
   /* opacity: 0.5; */
   border-radius: 10px;
   /* opacity: 1; */

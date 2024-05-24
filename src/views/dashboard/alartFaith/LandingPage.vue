@@ -56,8 +56,31 @@
         <div class="col-md-12 col-12 text-center text-head s-30">
           Join 11,200 using ALAT Faith solution
         </div>
-        <div class="col-md-12 col-12 mt-3 d-flex flex-wrap justify-content-between">
-          <img
+        <div class="col-md-12 col-12 mt-2 d-flex flex-wrap justify-content-center "
+                style="gap: 20px">
+          <span class="logo"
+            ><img src="../../../assets/alartfaith-icon/image4.png" alt=""
+          /></span>
+          <span class="logo"
+            ><img src="../../../assets/alartfaith-icon/image7.png" alt=""
+          /></span>
+          <span class="logo"
+            ><img src="../../../assets/alartfaith-icon/image5.png" alt=""
+          /></span>
+          <span class="logo"
+            ><img src="../../../assets/alartfaith-icon/image6.png" alt=""
+          /></span>
+          <span class="logo"
+            ><img src="../../../assets/alartfaith-icon/image8.png" alt=""
+          /></span>
+          <span class="logo"
+            ><img src="../../../assets/alartfaith-icon/image9.png" alt=""
+          /></span>
+          <span class="logo"
+            ><img src="../../../assets/alartfaith-icon/image10.png" alt=""
+          /></span>
+        </div>
+        <!-- <img
             style="width: 5rem"
             src="../../../assets/alartfaith-icon/image4.png"
             alt=""
@@ -91,8 +114,7 @@
             style="width: 4.5rem"
             src="../../../assets/alartfaith-icon/image10.png"
             alt=""
-          />
-        </div>
+          /> -->
       </div>
     </div>
     <div class="container">
@@ -369,54 +391,77 @@
         </div>
       </div>
     </div>
-    <div class="row bg-color-2 py-5 mt-5 align-items-center" >
+    <div class="row bg-color-2 py-5 mt-5 align-items-center">
       <div class="col-md-6 d-flex align-items-center">
         <div class="col-md-11 col-11">
-          <img  class="w-100" src="../../../assets/alartfaith-icon/image12.png" alt="" />
+          <img class="w-100" src="../../../assets/alartfaith-icon/image12.png" alt="" />
         </div>
       </div>
       <div class="col-md-6">
         <div class="col-md-12">
           <div class="row">
-            <div class="col-md-12 text-head font-weight-bold s-30 line-height-50">Omni-channel messaging platform:</div>
-            <div class="col-md-12 s-24" >Church SMS, Email, WhatsApp and Voice Solution</div>
+            <div class="col-md-12 text-head font-weight-bold s-30 line-height-50">
+              Omni-channel messaging platform:
+            </div>
+            <div class="col-md-12 s-24">
+              Church SMS, Email, WhatsApp and Voice Solution
+            </div>
             <div class="col-md-12 mt-3">
-              <span><img src="../../../assets/alartfaith-icon/check-icon.png" alt=""></span>
+              <span
+                ><img src="../../../assets/alartfaith-icon/check-icon.png" alt=""
+              /></span>
               <span class="ml-2">99.9% Delivery </span>
             </div>
             <div class="col-md-12 mt-2">
-              <span><img src="../../../assets/alartfaith-icon/check-icon.png" alt=""></span>
+              <span
+                ><img src="../../../assets/alartfaith-icon/check-icon.png" alt=""
+              /></span>
               <span class="ml-2">Instant Sender ID</span>
             </div>
             <div class="col-md-12 mt-2">
-              <span><img src="../../../assets/alartfaith-icon/check-icon.png" alt=""></span>
+              <span
+                ><img src="../../../assets/alartfaith-icon/check-icon.png" alt=""
+              /></span>
               <span class="ml-2">Automated Messages </span>
             </div>
             <div class="col-md-12 mt-2">
-              <span><img src="../../../assets/alartfaith-icon/check-icon.png" alt=""></span>
+              <span
+                ><img src="../../../assets/alartfaith-icon/check-icon.png" alt=""
+              /></span>
               <span class="ml-2">Instant Communication </span>
             </div>
             <div class="col-md-12 mt-2">
-              <span><img src="../../../assets/alartfaith-icon/check-icon.png" alt=""></span>
+              <span
+                ><img src="../../../assets/alartfaith-icon/check-icon.png" alt=""
+              /></span>
               <span class="ml-2"> SMS Scheduling </span>
             </div>
             <div class="col-md-12 mt-2">
-              <span><img src="../../../assets/alartfaith-icon/check-icon.png" alt=""></span>
+              <span
+                ><img src="../../../assets/alartfaith-icon/check-icon.png" alt=""
+              /></span>
               <span class="ml-2">Real-time delivery report analysis</span>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="row justify-content-center mt-5 mb-4" >
+    <div class="row justify-content-center mt-5 mb-4">
       <div class="col-md-4">
         <div class="row">
-          <div class="col-md-12 text-head font-weight-bold s-20">Subscribe to Newsletter</div>
+          <div class="col-md-12 text-head font-weight-bold s-20">
+            Subscribe to Newsletter
+          </div>
           <div class="col-md-12 mt-2">
-            <el-input type="text" placeholder="Email address" v-model="emailAddress" class="w-100" ></el-input>
+            <el-input
+              type="text"
+              placeholder="Email address"
+              v-model="emailAddress"
+              class="w-100"
+            ></el-input>
           </div>
           <div class="col-md-12 mt-3">
-            <el-button round color="#5D103A"  size="large" class="w-100">
+            <el-button round color="#5D103A" size="large" class="w-100">
               Count me in
             </el-button>
           </div>
@@ -424,63 +469,63 @@
       </div>
     </div>
     <div class="row footer-bg justify-content-center mt-5">
-      <div class="col-md-10 py-5 ">
+      <div class="col-md-10 py-5">
         <div class="row">
           <div class="col-md-4 mt-2">
             <div class="col-md-9 d-flex justify-content-end">
               <img src="../../../assets/alartfaith-icon/logo.png" alt="" />
             </div>
             <div class="col-md-9 text-right">
-              Build better relationships with members, improve connections and measure performance at any time.
+              Build better relationships with members, improve connections and measure
+              performance at any time.
             </div>
           </div>
-          <div class="col-md-4 ">
+          <div class="col-md-4">
             <div class="row">
               <div class="col-md-6">
                 <div class="col-md-12">
                   <span class="s-32">.</span>
-                  <span class="ml-2 ">Products</span>
+                  <span class="ml-2">Products</span>
                 </div>
                 <div class="col-md-12">
                   <span class="s-32">.</span>
-                  <span class="ml-2 " >Company</span>
+                  <span class="ml-2">Company</span>
                 </div>
                 <div class="col-md-12">
                   <span class="s-32">.</span>
-                  <span class="ml-2 " > Resources</span>
+                  <span class="ml-2"> Resources</span>
                 </div>
                 <div class="col-md-12">
                   <span class="s-32">.</span>
-                  <span class="ml-2 ">Legal</span>
+                  <span class="ml-2">Legal</span>
                 </div>
                 <div class="col-md-12">
                   <span class="s-32">.</span>
-                  <span class="ml-2 ">Social links</span>
+                  <span class="ml-2">Social links</span>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="col-md-12">
                   <span class="s-32">.</span>
-                  <span class="ml-2 ">About</span>
+                  <span class="ml-2">About</span>
                 </div>
                 <div class="col-md-12">
                   <span class="s-32">.</span>
-                  <span class="ml-2 ">Pricing</span>
+                  <span class="ml-2">Pricing</span>
                 </div>
                 <div class="col-md-12">
                   <span class="s-32">.</span>
-                  <span class="ml-2 ">Support</span>
+                  <span class="ml-2">Support</span>
                 </div>
                 <div class="col-md-12">
                   <span class="s-32">.</span>
-                  <span class="ml-2 ">Developers</span>
+                  <span class="ml-2">Developers</span>
                 </div>
                 <div class="col-md-12">
                   <span class="s-32">.</span>
-                  <span class="ml-2 ">Help Centre</span>
+                  <span class="ml-2">Help Centre</span>
                 </div>
               </div>
-              
             </div>
           </div>
           <div class="col-md-4 mt-3">
@@ -503,17 +548,16 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref } from "vue";
 export default {
   setup() {
-    const emailAddress = ref('');
+    const emailAddress = ref("");
 
-    return{
-      emailAddress
-    }
-    
+    return {
+      emailAddress,
+    };
   },
-}
+};
 </script>
 
 <style scoped>
@@ -530,8 +574,8 @@ export default {
   background-color: #ffcef8;
   /* opacity: 0.6; */
 }
-.footer-bg{
-  background: #E1E1E1;
+.footer-bg {
+  background: #e1e1e1;
 }
 
 .bg-color-btn {
@@ -562,6 +606,13 @@ export default {
 .border-radius-20 {
   border-radius: 20px;
 }
+.logo {
+  width: 4rem;
+}
+
+.logo img {
+  width: 100%;
+}
 .linear-bg {
   background: linear-gradient(180deg, #b51839 0%, #5d103a 100%);
   border-radius: 50px;
@@ -578,7 +629,7 @@ export default {
 .line-height-30 {
   line-height: 30px;
 }
-.line-height-50{
+.line-height-50 {
   line-height: 50px;
 }
 

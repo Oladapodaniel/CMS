@@ -545,6 +545,7 @@ export default {
       { name: 'Upload a new audio file', id: 2 },
     ])
     const selectedVoiceType = ref(0)
+    const route = useRoute();
 
 
 
@@ -563,6 +564,18 @@ export default {
       console.log("The blob data:", data);
       console.log("Downloadable audio", window.URL.createObjectURL(data));
     };
+
+    const getSingelVoice =  async () => {
+      try {
+        const data = await axios.get(`/api/Messaging/getSentVoicebyId?CommReportId=${route.query.voiceId}`)
+        console.log(data, 'voice');
+        subject.value = data.data.subject
+        // selectedVoiceaudio.value.fileBlobName  = data.data.message
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getSingelVoice()
 
     // function that selects the file
     // const audioSelected = (e) => {
@@ -1084,7 +1097,6 @@ export default {
 
     const userCountry = ref("");
 
-    const route = useRoute();
     if (route.query.phone) {
       phoneNumber.value = route.query.phone;
       phoneNumberSelectionTab.value = true;

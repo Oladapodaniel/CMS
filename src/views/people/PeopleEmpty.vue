@@ -33,6 +33,7 @@ import PeopleList from "@/views/people/PeopleList.vue";
 import ImportPeople from "@/views/people/ImportPeople.vue";
 import { useStore } from 'vuex';
 import store from '../../store/store'
+// import axios from "@/gateway/backendapi";
 
 export default {
   components: { PeopleList, ImportPeople },
@@ -44,6 +45,16 @@ export default {
     const dataStore = useStore();
     const totalItems = ref(dataStore.getters['membership/members'].totalItems)
     const peopleInStore = ref(dataStore.getters['membership/members'].data)
+
+    // const getMemberOnly = async () => {
+    //   try {
+    //     const data = await axios.get('api/People/GetmembersBasicInfo?page=1')
+    //     console.log(data, 'data');
+    //   } catch (error) {
+        
+    //   }
+    // }
+    // getMemberOnly()
 
     const getMembers = async () => {
       loading.value = true
