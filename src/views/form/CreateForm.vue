@@ -425,9 +425,9 @@
             </div>
           </div>
         </div> -->
-        <div class="row">
+        <!-- <div class="row">
           <hr class="w-100" />
-        </div>
+        </div> -->
 
         <!-- Account name -->
         <!-- <div class="row my-1 mt-4">
@@ -986,14 +986,14 @@ export default {
     };
     getCurrentlySignedInUser();
 
-    const paymentForm =  ref({
-        accountName: accountName.value,
-        bankCode: selectedBank.value.code,
-        accountNumber: accountNumber.value,
-      });
+    const paymentForm = ref({
+      accountName: accountName.value,
+      bankCode: selectedBank.value.code,
+      accountNumber: accountNumber.value,
+    });
 
     const saveForm = async () => {
-      console.log(paymentForm.value, 'ghhghhh');
+      console.log(paymentForm.value, "ghhghhh");
       const formData = new FormData();
       const formData2 = new FormData();
       formData.append("name", formName.value);
