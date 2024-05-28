@@ -425,9 +425,9 @@
             </div>
           </div>
         </div> -->
-        <!-- <div class="row">
+        <div class="row">
           <hr class="w-100" />
-        </div> -->
+        </div>
 
         <!-- Account name -->
         <!-- <div class="row my-1 mt-4">
