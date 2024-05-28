@@ -56,8 +56,10 @@
         <div class="col-md-12 col-12 text-center text-head s-30">
           Join 11,200 using ALAT Faith solution
         </div>
-        <div class="col-md-12 col-12 mt-2 d-flex flex-wrap justify-content-center "
-                style="gap: 20px">
+        <div
+          class="col-md-12 col-12 mt-2 d-flex flex-wrap justify-content-center"
+          style="gap: 20px"
+        >
           <span class="logo"
             ><img src="../../../assets/alartfaith-icon/image4.png" alt=""
           /></span>
@@ -484,46 +486,24 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="col-md-12">
-                  <span class="s-32">.</span>
-                  <span class="ml-2">Products</span>
-                </div>
-                <div class="col-md-12">
-                  <span class="s-32">.</span>
-                  <span class="ml-2">Company</span>
-                </div>
-                <div class="col-md-12">
-                  <span class="s-32">.</span>
-                  <span class="ml-2"> Resources</span>
-                </div>
-                <div class="col-md-12">
-                  <span class="s-32">.</span>
-                  <span class="ml-2">Legal</span>
-                </div>
-                <div class="col-md-12">
-                  <span class="s-32">.</span>
-                  <span class="ml-2">Social links</span>
+                  <ul>
+                    <li class="py-2">Products</li>
+                    <li class="py-2">Company</li>
+                    <li class="py-2">Resources</li>
+                    <li class="py-2">Legal</li>
+                    <li class="py-2">Social links</li>
+                  </ul>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="col-md-12">
-                  <span class="s-32">.</span>
-                  <span class="ml-2">About</span>
-                </div>
-                <div class="col-md-12">
-                  <span class="s-32">.</span>
-                  <span class="ml-2">Pricing</span>
-                </div>
-                <div class="col-md-12">
-                  <span class="s-32">.</span>
-                  <span class="ml-2">Support</span>
-                </div>
-                <div class="col-md-12">
-                  <span class="s-32">.</span>
-                  <span class="ml-2">Developers</span>
-                </div>
-                <div class="col-md-12">
-                  <span class="s-32">.</span>
-                  <span class="ml-2">Help Centre</span>
+                  <ul>
+                    <li class="py-2">About</li>
+                    <li class="py-2">Pricing</li>
+                    <li class="py-2">Support</li>
+                    <li class="py-2">Developers</li>
+                    <li class="py-2">Help Centre</li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -571,7 +551,8 @@ export default {
   font-family: Raleway;
 }
 .bg-color-2 {
-  background-color: #ffcef8;
+  background-color: #fff4fe;
+  /* background-color: #ffcef8; */
   /* opacity: 0.6; */
 }
 .footer-bg {
