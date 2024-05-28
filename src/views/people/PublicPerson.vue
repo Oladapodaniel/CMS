@@ -1855,7 +1855,7 @@ export default {
           loading.value = true;
           let response = await axios.post(
             `/PublicMemberRegister?tenantID=${
-              selectedBranch.value
+              selectedBranch.value && selectedBranch.value.id
                 ? selectedBranch.value.id
                 : route.query.tenantId
             }&groupId=${route.query.groupID}`,
@@ -1912,10 +1912,11 @@ export default {
         }
       } else {
         try {
+          console.log(selectedBranch.value, 'jjjsjsj');
           loading.value = true;
           let response = await axios.post(
             `/PublicMemberRegister?tenantID=${
-              selectedBranch.value
+              selectedBranch.value && selectedBranch.value.id
                 ? selectedBranch.value.id
                 : route.query.tenantId
             }`,
