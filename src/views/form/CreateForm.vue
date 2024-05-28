@@ -210,7 +210,7 @@
             </div>
           </div>
         </div>
-        <!-- <div class="row">
+        <div class="row">
           <hr class="w-100" />
         </div>
         <div class="row my-1 mt-4">
@@ -225,9 +225,9 @@
               </div>
             </div>
           </div>
-        </div> -->
+        </div>
         <!-- Contribution -->
-        <!-- <div class="row my-1 mt-4" v-if="checkedYes">
+        <div class="row my-1 mt-4" v-if="checkedYes">
           <div class="col-md-12">
             <div class="row">
               <div class="col-md-3 font-weight text-left text-md-right">
@@ -314,8 +314,8 @@
               </div>
             </div>
           </div>
-        </div> -->
-        <!-- <div class="row mt-4" v-if="checkedYes">
+        </div>
+        <div class="row mt-4" v-if="checkedYes">
           <div class="col-md-12">
             <div class="row">
               <div class="col-md-3 font-weight text-left text-md-right">
@@ -348,10 +348,10 @@
               </div>
             </div>
           </div>
-        </div> -->
+        </div>
 
         <!-- Account number -->
-        <!-- <div class="row my-1 mt-4" v-if="checkedYes">
+        <div class="row my-1 mt-4" v-if="checkedYes">
           <div class="col-md-12">
             <div class="row">
               <div class="col-md-3 font-weight text-left text-md-right">
@@ -382,8 +382,8 @@
               </div>
             </div>
           </div>
-        </div> -->
-        <!-- <div class="row my-1 mt-4" v-if="checkedYes">
+        </div>
+        <div class="row my-1 mt-4" v-if="checkedYes">
           <div class="col-md-12">
             <div class="row">
               <div class="col-md-3 font-weight text-left text-md-right">
@@ -410,9 +410,7 @@
           </div>
           <div class="col-md-12 mt-3" v-if="pledgeCategory == 'specific'">
             <div class="row">
-              <div
-                class="col-md-3 font-weight text-left text-md-right"
-              >
+              <div class="col-md-3 font-weight text-left text-md-right">
                 <label for="" class=""> Amount </label>
               </div>
               <div class="col-md-8">
@@ -424,13 +422,13 @@
               </div>
             </div>
           </div>
-        </div> -->
-        <!-- <div class="row">
+        </div>
+        <div class="row">
           <hr class="w-100" />
-        </div> -->
+        </div>
 
-        <!-- Account name -->
-        <!-- <div class="row my-1 mt-4">
+        <!-- Account name
+        <div class="row my-1 mt-4">
           <div class="col-md-12">
             <div class="row">
               <div class="col-md-3 text-left text-md-right">
@@ -449,14 +447,14 @@
             </div>
           </div>
         </div> -->
-        <!-- <div class="row mt-4">
+        <div class="row mt-4">
           <div class="col-md-3 font-weight text-md-right text-left">
             <label for="">Recipient Email</label>
           </div>
           <div class="col-md-8">
             <el-input type="email" v-model="emailRecipient" />
           </div>
-        </div> -->
+        </div>
         <div class="row mt-4">
           <div class="col-md-3"></div>
           <div class="col-md-8">
@@ -986,26 +984,26 @@ export default {
     };
     getCurrentlySignedInUser();
 
-    const paymentForm = ref({
+    const saveForm = async () => {
+
+    let paymentForm = {
       accountName: accountName.value,
       bankCode: selectedBank.value.code,
       accountNumber: accountNumber.value,
-    });
-
-    const saveForm = async () => {
-      console.log(paymentForm.value, "ghhghhh");
+    }
+      
       const formData = new FormData();
       const formData2 = new FormData();
       formData.append("name", formName.value);
       formData.append("description", description.value);
-      //   formData.append("bankName", selectedBank.value.name);
-      // formData.append("paymentForm", paymentForm.value);
-      // formData.append("isAmountFIxed", checkedYes.value ? checkedYes.value : "");
-      // formData.append("amount", specificAmount.value);
-      // formData.append("financialContributionID", selectedContribution.value.id);
+      formData.append("bankName", selectedBank.value.name);
+      formData.append("paymentForm", JSON.stringify(paymentForm));
+      formData.append("isAmountFIxed", checkedYes.value ? checkedYes.value : "");
+      formData.append("amount", specificAmount.value);
+      formData.append("financialContributionID", selectedContribution.value.id);
       //   formData.append("accountName", accountName.value);
       //   formData.append("accountNumber", accountNumber.value);
-      // formData.append("emailRecipient", emailRecipient.value);
+      formData.append("emailRecipient", emailRecipient.value);
       formData.append("picture", selectedImage.value ? selectedImage.value : "");
       formData.append("tenantID", tenantId.value);
       formData.append(
@@ -1027,15 +1025,15 @@ export default {
       formData2.append("name", formName.value);
       formData2.append("description", description.value);
       formData2.append("date", dateUpdated.value);
-      // formData2.append("paymentForm", paymentForm);
-      // formData2.append("isAmountFIxed", checkedYes ? checkedYes : "");
-      // formData2.append("amount", specificAmount.value);
-      // formData2.append("financialContributionID", selectedContribution.value.id);
+      formData2.append("paymentForm", JSON.stringify(paymentForm));
+      formData2.append("isAmountFIxed", checkedYes ? checkedYes : "");
+      formData2.append("amount", specificAmount.value);
+      formData2.append("financialContributionID", selectedContribution.value.id);
       //   formData.append("bankName", selectedBank.value.name);
       //   formData.append("bankCode", selectedBank.value.code);
       //   formData.append("accountName", accountName.value);
       //   formData.append("accountNumber", accountNumber.value);
-      // formData2.append("emailRecipient", emailRecipient.value);
+      formData2.append("emailRecipient", emailRecipient.value);
       // formData2.append("pictureUrl", url.value ? url.value : selectedImage.value);
       formData2.append("picture", selectedImage.value ? selectedImage.value : "");
       formData2.append("tenantID", tenantId.value);
@@ -1089,7 +1087,6 @@ export default {
 
     return {
       formName,
-      paymentForm,
       dragging,
       primarycolor,
       cutomFieldData,
