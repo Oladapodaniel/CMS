@@ -32,6 +32,7 @@ import { ref, onMounted } from "vue";
 import PeopleList from "@/views/people/PeopleList.vue";
 import ImportPeople from "@/views/people/ImportPeople.vue";
 import { useStore } from 'vuex';
+import axios from "@/gateway/backendapi";
 import store from '../../store/store'
 
 export default {
@@ -53,6 +54,12 @@ export default {
         loading.value = false
       })
     }
+
+    const getMemberItem = async () =>{
+      const data = await axios.get('api/People/GetmembersBasicInfo?page=1')
+      console.log(data, 'members');
+    }
+    getMemberItem()
     
 
     onMounted(() => {

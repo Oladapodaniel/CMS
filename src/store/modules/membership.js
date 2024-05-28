@@ -3,8 +3,9 @@ import lookupService from '../../services/membership/membershipservice'
 
 
 const defaultState = (() => ({
-  members: [],
   membershipSummary: {},
+  allContacts: [],
+  members: [],
   firstTimers: [],
   newConverts: []
 }))

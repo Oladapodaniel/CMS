@@ -3,9 +3,27 @@ import store from '../../store/store'
 import axios from "@/gateway/backendapi";
 
 const membershipService = {
-    getMembers() {
+    getAllContact() {
         return new Promise((resolve, reject) => {
             axios.get("/api/People/GetPeopleBasicInfo?page=1")
+                .then(res => {
+                    resolve(res.data);
+                    // store.dispatch("setMembers", res.data);
+                })
+                .catch(error => {
+                    /*eslint no-undef: "warn"*/
+                    NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
+    },
+    getMembers() {
+        return new Promise((resolve, reject) => {
+            axios.get("api/People/GetmembersBasicInfo?page=1")
                 .then(res => {
                     resolve(res.data);
                     // store.dispatch("setMembers", res.data);
