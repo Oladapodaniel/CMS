@@ -23,8 +23,14 @@
         </div>
       </div>
       <div class="col-md-4 d-flex justify-content-end align-items-center">
-        <el-button round class="border-line-btn"> Login</el-button>
-        <el-button round class="bg-color-btn text-white"> Sign up</el-button>
+        <router-link to="/alatregister" class="text-decoration-none">
+          <el-button round class="border-line-btn"> Login</el-button>
+        </router-link>
+        <router-link to="/alatregister" class="text-decoration-none">
+          <el-button size="large" round class="bg-color-btn text-white ml-2">
+            Sign up
+          </el-button>
+        </router-link>
       </div>
     </div>
     <div class="row bg-image mt-4 px-5">
@@ -35,9 +41,11 @@
             <span class="text-head h2">& other faith based Organizations</span>
           </div>
           <div class="mt-4">
-            <el-button size="large" round class="bg-color-btn text-white">
-              Sign up for FREE</el-button
-            >
+            <router-link to="/alatregister" class="text-decoration-none">
+              <el-button size="large" round class="bg-color-btn text-white">
+                Sign up for FREE
+              </el-button>
+            </router-link>
           </div>
         </div>
       </div>

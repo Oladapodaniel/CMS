@@ -545,7 +545,7 @@ export default {
           this.$store.dispatch("setUserPassword", this.userDetails.password);
           this.$store.dispatch("onboardingDataObject", res.data);
           localStorage.setItem("email", this.email);
-          this.$router.push("/onetimepassword");
+          this.$router.push("/alatotp");
         })
         .catch((err) => {
           /eslint no-undef: "warn"/;

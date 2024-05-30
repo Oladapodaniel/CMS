@@ -653,6 +653,7 @@ export default {
     const { xsOnly, mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
     const primarycolor = inject("primarycolor");
     const pledgeCategory = ref("specific");
+    const paymentType = ref();
 
     const responseType = ref([
       { name: "Text", id: 0 },
@@ -669,12 +670,14 @@ export default {
     };
     const specific = () => {
       pledgeCategory.value = "specific";
+      paymentType.value = true
 
       pledgeType.value = 1;
     };
     const freeWill = () => {
       pledgeCategory.value = "freewill";
       pledgeType.value = 0;
+      paymentType.value = false
     };
 
     const selectContribution = (item) => {
@@ -894,13 +897,13 @@ export default {
       description.value = data.description;
       dateUpdated.value = data.date;
       url.value = data.pictureUrl;
-      specificAmount.value = res.data.returnObject.donorPaymentSpecificAmount;
-      //   getContributionCategory(res.data.returnObject.financialContributionID);
-      accountNumber.value = data.returnObject.paymentForm.accountNumber;
-      accountName.value = data.returnObject.paymentForm.accountName;
-      (bankSearchText.value = nigerianBanks.value.find(
-        (i) => i.code == data.returnObject.paymentForm.bankCode
-      ).name),
+      specificAmount.value = data.amount;
+        getContributionCategory(data.financialContributionID);
+      // accountNumber.value = data && data.paymentForm.accountNumber ? data.paymentForm.accountNumber : '';
+      // accountName.value = data && data.paymentForm.accountName ? data.paymentForm.accountName : '';
+      // (bankSearchText.value = nigerianBanks.value.find(
+      //   (i) => i.code == data.paymentForm.bankCode
+      // ).name),
         (cutomFieldData.value = data.customAttributes.map((i) => {
           return {
             id: i.id,
@@ -914,15 +917,15 @@ export default {
             tenantID: i.tenantID,
           };
         }));
-      if (res.data.returnObject.paymentType === 0) {
-        pledgeCategory.value = "freewill";
-        pledgeType.value = 0;
-      } else if (res.data.returnObject.paymentType === 1) {
-        pledgeCategory.value = "specific";
-        pledgeType.value = 1;
-      } else {
-        res.data.returnObject.paymentType;
-      }
+      // if (res.data.returnObject.paymentType === 0) {
+      //   pledgeCategory.value = "freewill";
+      //   pledgeType.value = 0;
+      // } else if (res.data.returnObject.paymentType === 1) {
+      //   pledgeCategory.value = "specific";
+      //   pledgeType.value = 1;
+      // } else {
+      //   res.data.returnObject.paymentType;
+      // }
       // description.value = data.description
     };
     getSingleForm();
@@ -996,11 +999,11 @@ export default {
       const formData2 = new FormData();
       formData.append("name", formName.value);
       formData.append("description", description.value);
-      formData.append("bankName", selectedBank.value.name);
-      formData.append("paymentForm", JSON.stringify(paymentForm));
-      formData.append("isAmountFIxed", checkedYes.value ? checkedYes.value : "");
-      formData.append("amount", specificAmount.value);
-      formData.append("financialContributionID", selectedContribution.value.id);
+      // formData.append("bankName", selectedBank.value.name);
+      accountName.value && selectedBank.value.code && accountNumber.value  ? formData.append("paymentFormString", JSON.stringify(paymentForm)) : null;
+      formData.append("isAmountFIxed", paymentType.value ? paymentType.value : paymentType.value === false ?  paymentType.value : '' );
+      formData.append("amount", specificAmount.value ? specificAmount.value : '');
+      formData.append("financialContributionID", selectedContribution.value && selectedContribution.value.id ? selectedContribution.value.id : '');
       //   formData.append("accountName", accountName.value);
       //   formData.append("accountNumber", accountNumber.value);
       formData.append("emailRecipient", emailRecipient.value);
@@ -1025,10 +1028,10 @@ export default {
       formData2.append("name", formName.value);
       formData2.append("description", description.value);
       formData2.append("date", dateUpdated.value);
-      formData2.append("paymentForm", JSON.stringify(paymentForm));
-      formData2.append("isAmountFIxed", checkedYes ? checkedYes : "");
-      formData2.append("amount", specificAmount.value);
-      formData2.append("financialContributionID", selectedContribution.value.id);
+      accountName.value && selectedBank.value.code && accountNumber.value  ? formData2.append("paymentFormString", JSON.stringify(paymentForm)) : null;
+      formData2.append("isAmountFIxed", paymentType.value ? paymentType.value : paymentType.value === false ?  paymentType.value : '' );
+      formData2.append("amount", specificAmount.value ? specificAmount.value : '');
+      formData2.append("financialContributionID", selectedContribution.value && selectedContribution.value.id ? selectedContribution.value.id : '');
       //   formData.append("bankName", selectedBank.value.name);
       //   formData.append("bankCode", selectedBank.value.code);
       //   formData.append("accountName", accountName.value);
@@ -1141,6 +1144,7 @@ export default {
       pledgeType,
       freeWill,
       specific,
+      paymentType
     };
   },
 };

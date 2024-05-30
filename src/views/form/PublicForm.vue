@@ -17,12 +17,8 @@
                 alt=""
               />
             </div>
-            <div
-              class="col-md-11 col-lg-11 text-center h5 mt-3 font-weight-600"
-            >
-              {{
-                singleFormData && singleFormData.name ? singleFormData.name : ""
-              }}
+            <div class="col-md-11 col-lg-11 text-center h5 mt-3 font-weight-600">
+              {{ singleFormData && singleFormData.name ? singleFormData.name : "" }}
             </div>
             <div class="col-md-11 col-lg-11 text-center">
               {{
@@ -56,10 +52,7 @@
               :key="index"
             >
               <div class="row mt-3 justify-content-center">
-                <div
-                  class="col-md-10"
-                  style="font-weight: 450; font-size: 14px"
-                >
+                <div class="col-md-10" style="font-weight: 450; font-size: 14px">
                   <div for="">
                     {{ item.label }}
                     <span v-if="item.isRequired" style="color: red"> *</span>
@@ -75,9 +68,7 @@
                     v-model="item.data"
                     v-if="item.controlType === 1"
                     :options="
-                      item.parameterValues
-                        .split(',')
-                        .map((i) => ({ label: i, value: i }))
+                      item.parameterValues.split(',').map((i) => ({ label: i, value: i }))
                     "
                     :placeholder="item.label"
                     class="w-100"
@@ -133,12 +124,44 @@
                 </div>
               </div>
             </div>
+            <div class="col-md-12">
+              <div class="row justify-content-center">
+                <div class="col-md-10">
+                  <div v-if="singleFormData && singleFormData.isAmountFIxed === true ">
+                    <label style="font-weight: 450; font-size: 14px" for="">Amount</label>
+                    <el-input
+                      v-model="amount"
+                      type="text"
+                      :disabled="true"
+                      placeholder="Amount"
+                    />
+                  </div>
+                  <div v-if="singleFormData && singleFormData.isAmountFIxed === false ">
+                    <label style="font-weight: 450; font-size: 14px" for="">Amount</label>
+                    <el-input v-model="amount" type="text" placeholder="Amount" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="row justify-content-center mt-4">
             <!-- <div class="col-md-3"></div> -->
-            <div class="col-md-9" @click="saveForm">
-              <!-- {{filterIsRequired}} -->
-              <!-- :disabled="disabledBtn || (filterIsRequired && filterIsRequired.isRequired && !filterIsRequired.data)" -->
+            <div
+              class="col-md-9"
+              @click="triggerPayment"
+              v-if="singleFormData && singleFormData.fillPaymentFormDTO"
+            >
+              <el-button
+                class="w-100"
+                size="large"
+                :loading="loading"
+                round
+                :color="primarycolor"
+              >
+                Make Payment to Register
+              </el-button>
+            </div>
+            <div class="col-md-9" @click="saveForm" v-else>
               <el-button
                 class="w-100"
                 size="large"
@@ -153,10 +176,7 @@
         </div>
 
         <div class="col-md-9 d-flex justify-content-center text-center mt-4">
-          <a
-            href="https://churchplus.co"
-            class="text-decoration-none"
-            target="_blank"
+          <a href="https://churchplus.co" class="text-decoration-none" target="_blank"
             >ChurchPlus</a
           >
         </div>
@@ -169,15 +189,81 @@
         <div>Opps, Your internet connection was disrupted</div>
       </div>
     </div>
+    <el-dialog
+      v-model="paymentDialog"
+      style="border-radius: 20px"
+      title="Payment methods"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
+      align-top
+    >
+      <div class="row">
+        <div class="col-sm-12 p-2 text-center text-small continue-text">
+          Continue payment with
+        </div>
+      </div>
+      <div
+        class="row row-button c-pointer"
+        v-if="paystackGate"
+        @click="initiatePayment(1)"
+      >
+        <div class="d-flex justify-content-center w-100">
+          <img style="width: 150px" src="../../assets/4PaystackLogo.png" alt="paystack" />
+        </div>
+      </div>
+      <div
+        class="row row-button c-pointer mt-3"
+        v-if="flutterwaveGate"
+        @click="initiatePayment(2)"
+      >
+        <div class="d-flex justify-content-center w-100">
+          <img
+            style="width: 150px"
+            src="../../assets/flutterwave_logo_color@2x.png"
+            alt="flutterwave"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-11">
+          <hr class="w-100" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <span class="notecolour text-small col-md-12 px-0 font-weight-bold">
+            <span class="text-dark font-weight-bold">NB: </span>FlutterWave currently
+            processes only Credit Cards</span
+          >
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog v-model="paymentSuccessfulDialog" style="border-radius: 20px" title=""
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center>
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-center">
+            <img src="../../assets/successful_payment.png" style="width: 250px; margin: auto" />
+          </div>
+          <h3 class="text-center mt-5 font-weight-bold success">Thank you</h3>
+          <div class="text-center mt-2 font-weight-600 s-18">Payment completed successfully</div>
+          <div class="d-flex justify-content-center mb-5">
+            <el-button color="#70c043" class="text-white mt-2" @click="paymentSuccessfulDialog = false" round>Go
+              back</el-button>
+          </div>
+        </div>
+      </div>
+
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { ref, inject, watchEffect } from "vue";
+import { ref, inject, computed, watchEffect } from "vue";
 import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useRoute } from "vue-router";
+import { ElLoading } from "element-plus";
 import swal from "sweetalert";
 import router from "../../router";
 export default {
@@ -189,12 +275,19 @@ export default {
     const loading = ref(false);
     const loadingPage = ref(false);
     const networkError = ref(false);
+    const paymentDialog = ref(false);
     const disabledBtn = ref(false);
+    const publicPaymentForm = ref({});
+    const paymentFormCurrency = ref({});
     const singleFormData = ref([]);
     const formLogo = ref("");
+    const churchName = ref("");
+    const churchLogo = ref("");
     const required = ref(false);
     const centerDialogVisible = ref(false);
+    const paymentSuccessfulDialog = ref(false);
     const currentInput = ref("");
+    const amount = ref("");
     const dropdownList = ref([]);
     const { xsOnly, mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
     const primarycolor = inject("primarycolor");
@@ -232,6 +325,241 @@ export default {
       }
     };
 
+    const triggerPayment = () => {
+      paymentDialog.value = true;
+    };
+
+    const getFlutterwaveModules = () => {
+      let isProduction = true
+      const script = document.createElement("script");
+      script.src = !isProduction
+        ? "https://ravemodal-dev.herokuapp.com/v3.js"
+        : "https://checkout.flutterwave.com/v3.js";
+      document.getElementsByTagName("head")[0].appendChild(script);
+    }
+    getFlutterwaveModules()
+
+    const initiatePayment = async (gatewayType) => {
+      paymentDialog.value = false;
+      const loading = ElLoading.service({
+        lock: true,
+        text: "Please wait...",
+        background: "rgba(255, 255, 255, 0.9)",
+      });
+      let gatewayService =
+        gatewayType === 1 ? "Paystack" : gatewayType == 2 ? "Flutterwave" : null;
+
+      // newContact.value = { ...newContact.value, mobilePhone: userSearchString.value }
+      // let payload = {
+      // person: contactDetail.value && Object.keys(contactDetail.value).length > 0 && contactDetail.value.id ? { id: contactDetail.value.id } : newContact.value,
+      // pledgeItemDTO: donorDetail.value,
+      // pledgeResponseDTO: pledgedData.value && Object.keys(pledgedData.value).length > 0 ? pledgedData.value : { currency: selectedCurrency.value, amount: amountToPledge.value },
+      // pledgePaymentDTO: pledgeActionType.value == 1 ? { currency: selectedCurrency.value, amount: amountToPayNow.value } : null,
+      // pledgePaymentDTO: pledgeActionType.value == 1 ? { currency: selectedCurrency.value, amount: amountToPledge.value } : null,
+      // pledgePaymentDTO: pledgedData.value && Object.keys(pledgedData.value).length > 0 ? pledgedData.value : { currency: selectedCurrency.value, amount: amountToPledge.value },
+      // };
+      // if (gatewayService) payload.gateway = gatewayService
+
+      try {
+        let { data } = await axios.post(
+          `/InitializeFormPayment?formID=${route.params.id}&gateway=${gatewayService}`,
+          singleFormData.value.customAttributes.map((i) => ({
+            customAttributeID: i.id,
+            data: i.data,
+            isRequired: i.isRequired,
+          }))
+        );
+        loading.close();
+        if (data.status) {
+          if (gatewayType == 1) {
+            payWithPaystack(data);
+          } else if (gatewayType == 2) {
+            payWithFlutterwave(data);
+          } else {
+            ElMessage({
+              type: "success",
+              showClose: true,
+              message: "Congrats, Your Form saved successfully",
+              duration: 10000,
+            });
+          }
+          // else if (gatewayType == 2) {
+          //   payWithFlutterwave(data)
+          // }
+
+          // else {
+          //   // Block for users that pledges only
+          //   ElMessage({
+          //     type: 'success',
+          //     showClose: true,
+          //     message: 'Congrats, Your Form saved successfully',
+          //     duration: 10000
+          //   })
+          //   paymentSuccessfulDialog.value = true;
+          //   personToggle.value = false;
+          //   userSearchString.value = "";
+          //   if (route.query.tenantID) {
+          //     selectPledgeItemID.value = null;
+          //   }
+          //   contactDetail.value = new Object();
+          //   newContact.value = new Object();
+          //   maxName.value = "";
+          //   maxEmail.value = ""
+          // }
+        } else {
+          ElMessage({
+            type: "warning",
+            showClose: true,
+            message: data.statusMessage,
+            duration: 8000,
+          });
+        }
+      } catch (error) {
+        console.error(error);
+        // paymentDialog.value = true
+        loading.close();
+        ElMessage({
+          type: "error",
+          showClose: true,
+          message: "Couldn't initialise payment service, please try again",
+          duration: 5000,
+        });
+      }
+    };
+
+    const payWithPaystack = (responseObject) => {
+      console.log(responseObject,'hhjjj');
+      /*eslint no-undef: "warn"*/
+      let handler = PaystackPop.setup({
+        // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+        key: process.env.VUE_APP_PAYSTACK_API_KEY,
+        email: responseObject.giverEmail,
+        amount: amount.value * 100,
+        currency: paymentFormCurrency.value.shortCode,
+        channels: ["card", "bank", "ussd", "qr", "mobile_money", "bank_transfer"],
+        subaccount: publicPaymentForm.value.paymentGateWays.find(
+          (i) => i.paymentGateway.name === "Paystack"
+        ).subAccountID,
+        ref: "FormsPaymentAFCOUTREACH376955673-FormsPayment",
+        onClose: function () {
+          ElMessage({
+            type: "info",
+            showClose: true,
+            message: "You have cancelled the transaction",
+            duration: 5000,
+          });
+        },
+        callback: function (response) {
+          let trans_id = response.trxref;
+          let tx_ref = response.trxref;
+          confirmPayment(tx_ref, trans_id);
+        },
+      });
+      handler.openIframe();
+    };
+
+    const payWithFlutterwave = (responseObject) => {
+      window.FlutterwaveCheckout({
+        // public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+        public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
+        tx_ref: responseObject.transactionReference,
+        amount: amount.value,
+        // amount: amountToPayNow.value,
+        currency: paymentFormCurrency.value.shortCode,
+        // country: country,
+        payment_options: "card,ussd",
+        subaccounts: [
+          {
+            id: publicPaymentForm.value.paymentGateWays.find(
+              (i) => i.paymentGateway.name === "FlutterWave"
+            ).subAccountID,
+          },
+        ],
+        // customer: {
+        //   name:
+        //     contactDetail.value && Object.keys(contactDetail.value).length > 0
+        //       ? `${contactDetail.value.firstName} ${contactDetail.value.lastName}`
+        //       : `${newContact.value.firstName} ${newContact.value.lastName}`,
+        //   phone_number: userSearchString.value,
+        //   email: responseObject.person.email,
+        // },
+        callback: (response) => {
+          let trans_id = response.transaction_id;
+          let tx_ref = response.tx_ref;
+          confirmPayment(trans_id, tx_ref);
+        },
+        onclose: () => console.log("Payment closed"),
+        customizations: {
+          title: churchName.value,
+          description: ` payment to ${churchName.value}`,
+          logo: churchLogo.value,
+        },
+      });
+    };
+
+    const confirmPayment = async (trans_id, tx_ref) => {
+      try {
+        const res = await axios.post(
+          `/ConfirmFormsPayment?id=${trans_id}&txnref=${tx_ref}`
+        );
+        if (res.data.status) {
+          paymentSuccessfulDialog.value = true;
+          // personToggle.value = false;
+          // userSearchString.value = "";
+          // if (route.query.tenantID) {
+          //   selectPledgeItemID.value = null;
+          // }
+          // contactDetail.value = new Object();
+          // newContact.value = new Object();
+          // maxName.value = "";
+          // maxEmail.value = "";
+        } else {
+          swal({
+            title: "Oops",
+            text: res.data.statusMessage,
+            icon: "error",
+            dangerMode: true,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const paystackGate = computed(() => {
+      if (
+        !publicPaymentForm.value ||
+        !publicPaymentForm.value.paymentGateWays ||
+        (paymentFormCurrency.value && paymentFormCurrency.value.shortCode !== "NGN")
+      )
+        return false;
+      return publicPaymentForm.value.paymentGateWays.find(
+        (i) => i.paymentGateway.name === "Paystack"
+      );
+    });
+
+    const flutterwaveGate = computed(() => {
+      if (!publicPaymentForm.value || !publicPaymentForm.value.paymentGateWays)
+        return false;
+      return publicPaymentForm.value.paymentGateWays.find(
+        (i) => i.paymentGateway.name === "FlutterWave"
+      );
+    });
+
+    const GetAllCurrencies = () => {
+      axios
+        .get("/api/LookUp/GetAllCurrencies")
+        .then((res) => {
+          // Get the payment form currency
+          paymentFormCurrency.value = res.data.find(
+            (i) => i.id == singleFormData.value.fillPaymentFormDTO.currencyId
+          );
+
+          console.log(paymentFormCurrency.value);
+        })
+        .catch((err) => console.log(err.response));
+    };
+
     const addNewField = () => {
       // centerDialogVisible.value = true
       cutomFieldData.value.push({ parameterValues: [] });
@@ -249,7 +577,12 @@ export default {
         );
         singleFormData.value = data;
         formLogo.value = data.pictureUrl;
+        publicPaymentForm.value = singleFormData.value.fillPaymentFormDTO;
+        churchLogo.value = singleFormData.value.fillPaymentFormDTO.churchLogo;
+        churchName.value = singleFormData.value.fillPaymentFormDTO.churchName;
+        amount.value = singleFormData.value.amount;
         loadingPage.value = false;
+        GetAllCurrencies();
       } catch (error) {
         // finish()
         if (error.toString().toLowerCase().includes("network error")) {
@@ -273,11 +606,13 @@ export default {
     const requiredField = ref(false);
 
     const saveForm = async () => {
-    //   let isRequiredFalse = singleFormData.value.customAttributes.find(i => i.isRequired === false)
-    //   let isRequiredNull = singleFormData.value.customAttributes.find(i => i.isRequired === null)
-      filterIsRequired.value = singleFormData.value.customAttributes.find(i => i.isRequired === true)
+      //   let isRequiredFalse = singleFormData.value.customAttributes.find(i => i.isRequired === false)
+      //   let isRequiredNull = singleFormData.value.customAttributes.find(i => i.isRequired === null)
+      filterIsRequired.value = singleFormData.value.customAttributes.find(
+        (i) => i.isRequired === true
+      );
       let allRequiredFieldsFilled = true;
-      loading.value = false
+      loading.value = false;
 
       // Iterate over the custom attributes
       for (const attribute of singleFormData.value.customAttributes) {
@@ -285,16 +620,16 @@ export default {
         if (attribute.isRequired && !attribute.data) {
           // If a required field is not filled, set the flag to false and show an alert
           allRequiredFieldsFilled = false;
-          
-        //   alert(`${attribute.label} is required.`);
-        requiredField.value = true;
+
+          //   alert(`${attribute.label} is required.`);
+          requiredField.value = true;
           // Break out of the loop since we only need to show one alert
           break;
         }
       }
 
       if (allRequiredFieldsFilled) {
-        loading.value = true
+        loading.value = true;
         try {
           const { data } = await axios.post(
             `/api/public/saveformdata?formID=${route.params.id}`,
@@ -313,7 +648,7 @@ export default {
             dangerMode: true,
           });
           disabledBtn.value = true;
-          required.value = false
+          required.value = false;
           loading.value = false;
         } catch (error) {
           console.log(error);
@@ -412,6 +747,7 @@ export default {
       route,
       disabledBtn,
       singleFormData,
+      paymentSuccessfulDialog,
       xsOnly,
       mdAndUp,
       lgAndUp,
@@ -423,12 +759,24 @@ export default {
       filterIsRequired,
       requiredField,
       allTrueRequired,
+      paymentDialog,
+      flutterwaveGate,
+      churchLogo,
+      churchName,
+      paystackGate,
+      publicPaymentForm,
+      paymentFormCurrency,
+      payWithPaystack,
+      payWithFlutterwave,
+      amount,
+      initiatePayment,
       addNewField,
       saveForm,
       checkComma,
       saveChip,
       backspaceDelete,
       saveCustomField,
+      triggerPayment,
     };
   },
 };
@@ -464,6 +812,14 @@ export default {
   padding: 4px;
 }
 
+.continue-text {
+  /* font-family: Nunito Sans !important; */
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+}
+
+
 .chip {
   padding: 0.3rem 0.3rem;
   border: 1px solid #02172e0d;
@@ -476,5 +832,25 @@ export default {
     border-radius: 3px;
     display:flex;
     align-items: center; */
+}
+.row-button {
+  padding: 5px;
+  border-radius: 25px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+  background: #fff;
+  margin: 12px 20px;
+  transition: all 0.4s ease-in-out;
+  max-height: 40px;
+}
+
+.row-button:hover {
+  cursor: pointer;
+  transform: scale(1.05, 1.05);
+}
+
+@media (max-width: 500px) {
+  .row-button {
+    margin: 12px 10px;
+  }
 }
 </style>
