@@ -38,104 +38,84 @@
         <!-- </router-link> -->
       </div>
     </div>
-    <div class="row bg-image mt-4 px-5">
-      <div class="col-md-6 d-flex align-items-center">
-        <div class="col-md-10">
-          <div class="font-weight-bold text-head h2">
-            Technology and Financial Solution for Churches
-            <span class="text-head h2">& other faith based Organizations</span>
+    <div class="row">
+      <el-carousel height="700px" class="col-md-12 "  indicator-position="inside">
+        <el-carousel-item  class="col-md-12"  v-for="item in items" :key="item">
+          <div v-if="item.id == 1"  class="row bg-image mt-4 px-5">
+            <div class="col-md-6 d-flex align-items-center">
+              <div class="col-md-10">
+                <div class="font-weight-bold text-head h2">
+                  Technology and Financial Solution for Churches
+                  <span class="text-head h2">& other faith based Organizations</span>
+                </div>
+                <div class="mt-4">
+                  <!-- <router-link to="/alatregister" class="text-decoration-none"> -->
+                  <el-button
+                    @click="registerAlat"
+                    size="large"
+                    round
+                    class="bg-color-btn text-white"
+                  >
+                    Sign up for FREE
+                  </el-button>
+                  <!-- </router-link> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="col-md-9 col-12 px-0">
+                <img
+                  src="../../assets/alartfaith-icon/business-chart1.png"
+                  class="w-100"
+                  alt=""
+                />
+              </div>
+            </div>
           </div>
-          <div class="mt-4">
-            <!-- <router-link to="/alatregister" class="text-decoration-none"> -->
-            <el-button
-              @click="registerAlat"
-              size="large"
-              round
-              class="bg-color-btn text-white"
-            >
-              Sign up for FREE
-            </el-button>
-            <!-- </router-link> -->
+          <div v-if="item.id == 2" class="row bg-imagesecond mt-4 px-5">
+            <div class="col-md-6 d-flex align-items-center">
+              <div class="col-md-10">
+                <div class=" text-white font-weight-bold text-head h2">
+                  {{item.content}}
+                </div>
+                <div class="mt-4">
+                  <!-- <router-link to="/alatregister" class="text-decoration-none"> -->
+                  <el-button
+                    @click="registerAlat"
+                    size="large"
+                    round
+                    class="bg-color-btn text-white"
+                  >
+                    Sign up for FREE
+                  </el-button>
+                  <!-- </router-link> -->
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="col-md-9 col-12 px-0">
-          <img
-            src="../../assets/alartfaith-icon/business-chart1.png"
-            class="w-100"
-            alt=""
-          />
-        </div>
-      </div>
-    </div>
-    <div class="row bg-image2 py-5 mt-3 justify-content-center">
-      <div class="col-md-7 col-12" data-aos="fade-up">
-        <div class="col-md-12 col-12 text-center text-head s-30">
-          Join 11,200 using ALAT Faith solution
-        </div>
-        <div
-          class="col-md-12 col-12 mt-2 d-flex flex-wrap justify-content-center"
-          style="gap: 20px"
-        >
-          <span class="logo"
-            ><img src="../../assets/alartfaith-icon/image4.png" alt=""
-          /></span>
-          <span class="logo"
-            ><img src="../../assets/alartfaith-icon/image7.png" alt=""
-          /></span>
-          <span class="logo"
-            ><img src="../../assets/alartfaith-icon/image5.png" alt=""
-          /></span>
-          <span class="logo"
-            ><img src="../../assets/alartfaith-icon/image6.png" alt=""
-          /></span>
-          <span class="logo"
-            ><img src="../../assets/alartfaith-icon/image8.png" alt=""
-          /></span>
-          <span class="logo"
-            ><img src="../../assets/alartfaith-icon/image9.png" alt=""
-          /></span>
-          <span class="logo"
-            ><img src="../../assets/alartfaith-icon/image10.png" alt=""
-          /></span>
-        </div>
-        <!-- <img
-            style="width: 5rem"
-            src="../../assets/alartfaith-icon/image4.png"
-            alt=""
-          />
-          <img
-            style="width: 5rem"
-            src="../../assets/alartfaith-icon/image7.png"
-            alt=""
-          />
-          <img
-            style="width: 5rem"
-            src="../../assets/alartfaith-icon/image5.png"
-            alt=""
-          />
-          <img
-            style="width: 5rem"
-            src="../../assets/alartfaith-icon/image6.png"
-            alt=""
-          />
-          <img
-            style="width: 5rem"
-            src="../../assets/alartfaith-icon/image8.png"
-            alt=""
-          />
-          <img
-            style="width: 5rem"
-            src="../../assets/alartfaith-icon/image9.png"
-            alt=""
-          />
-          <img
-            style="width: 4.5rem"
-            src="../../assets/alartfaith-icon/image10.png"
-            alt=""
-          /> -->
-      </div>
+          <div v-if="item.id == 3" class="row bg-imagesecond mt-4 px-5">
+            <div class="col-md-6 d-flex align-items-center">
+              <div class="col-md-10">
+                <div class=" text-white font-weight-bold text-head h2">
+                  {{item.content}}
+                </div>
+                <div class="mt-4">
+                  <!-- <router-link to="/alatregister" class="text-decoration-none"> -->
+                  <el-button
+                    @click="registerAlat"
+                    size="large"
+                    round
+                    class="bg-color-btn text-white"
+                  >
+                    Sign up for FREE
+                  </el-button>
+                  <!-- </router-link> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </el-carousel-item>
+      </el-carousel>
     </div>
     <div class="container">
       <div class="row mt-5">
@@ -476,22 +456,6 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div>
-        <!-- <VueSlickCarousel
-          :dots="true"
-          :arrows="true"
-          :autoplay="true"
-          :autoplaySpeed="3000"
-          :prevArrow="prevArrow"
-          :nextArrow="nextArrow"
-        >
-          <div v-for="item in items" :key="item.id">
-            <h3>{{ item.name }}</h3>
-          </div>
-        </VueSlickCarousel> -->
-      </div>
-    </div>
     <div class="row footer-bg justify-content-center mt-5">
       <div class="col-md-10 py-5">
         <div class="row">
@@ -554,13 +518,29 @@ import { ref } from "vue";
 export default {
   setup(props, { emit }) {
     const emailAddress = ref("");
-    // const items = ref([
+    // const items2 = ref([
     //   { id: 1, name: "Slide 1" },
     //   { id: 2, name: "Slide 2" },
     //   { id: 3, name: "Slide 3" },
     // ]);
-    // const prevArrow = '<button type="button" class="slick-prev">Previous</button>';
-    // const nextArrow = '<button type="button" class="slick-next">Next</button>';
+    const items = ref([
+      {
+        id: 1,
+        image: "../../assets/alartfaith-icon/business-chart1.png",
+        content: "Technology and Financial Solution for Churches",
+        content2: "& other faith based Organizations",
+      },
+      {
+        id: 2,
+        image: "../../assets/alartfaith-icon/portrait-1.png",
+        content: "Comfortably, Anywhere, Manage your Church Performance in detail",
+      },
+      {
+        id: 3,
+        image: "../../assets/alartfaith-icon/business-chart1.png",
+        content: "Comfortably, Anywhere, Manage your Church Performance in detail",
+      },
+    ]);
     const loginAlat = () => {
       emit("route", 1);
     };
@@ -570,9 +550,8 @@ export default {
 
     return {
       emailAddress,
-    //   prevArrow,
-    //   nextArrow,
-    //   items,
+
+      items,
       loginAlat,
       registerAlat,
     };
@@ -660,6 +639,13 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
 }
+.bg-imagesecond {
+  background: url(../../assets/alartfaith-icon/portrait-1.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100%;
+}
 .bg-image4 {
   background: url(../../assets/alartfaith-icon/Rectangle4348.png);
   background-size: cover;
@@ -704,6 +690,26 @@ export default {
   font-size: 13px;
   line-height: 18px;
   font-weight: 400;
-  /* color:  #303030; */
+  /* 
+  color:  #303030; */
+}
+
+.el-carousel__item {
+  /* color: #475669;
+  opacity: 0.75;
+  line-height: 150px;
+  margin: 0;
+  text-align: center; */
+  height: 50rem !important;
+}
+
+.el-carousel__item:nth-child(2n) {
+  /* background-color: #99a9bf; */
+  height: 50vh !important;
+}
+
+.el-carousel__item:nth-child(2n + 1) {
+  /* background-color: #d3dce6; */
+  height: 50vh !important;
 }
 </style>
