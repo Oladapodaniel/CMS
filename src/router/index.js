@@ -36,6 +36,15 @@ const routes = [
         }
     },
     {
+        path: '/login',
+        name: 'AlatLogin',
+        component: () =>
+            import( /* webpackChunkName: "login" */ '../views/account/Login.vue'),
+        meta: {
+            title: 'Churchplus - Login',
+        }
+    },
+    {
         path: '/publicresetpassword',
         name: 'PublicResetPassword',
         component: () =>
@@ -122,15 +131,6 @@ const routes = [
         },
         component: () =>
             import( /* webpackChunkName: "resetpassword" */ '../views/account/ResetPassword.vue')
-    },
-    {
-        path: '/alat',
-        name: 'LandingPage',
-        meta: {
-            title: 'Alat Faith - Landing Page',
-        },
-        component: () =>
-            import( /* webpackChunkName: "resetpassword" */ '../views/dashboard/alartFaith/LandingPage.vue')
     },
     {
         path: '/emailsent/:email',
@@ -2218,9 +2218,9 @@ router.beforeEach((to, from, next) => {
         to.name === "LandingPage" ||
         to.name === "PublicForm" ||
         to.name === "AlatRegister" ||
+        to.name === "AlatLogin" ||
         to.name === "AlatOtp" ||
         to.name === "PublicPledgePayment") && !tokenIsValid) return next(true)
-
 
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "AlatRegister" && to.name !== "AlatOtp" && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
     if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/tenant")

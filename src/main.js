@@ -53,6 +53,17 @@ import VueGtag from "vue-gtag-next";
 import VueLazyloadNext from 'vue-lazyload-next'
 import loadimage from './assets/loading.gif';
 import errorimage from './assets/file-not-found.png';
+import getSubdomain from "./services/churchTypeMiddlware";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import VueSlickCarousel from 'vue-slick-carousel'
+import 'vue-slick-carousel/dist/vue-slick-carousel.css';
+import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css';
+
+
+AOS.init({
+  duration: 1000, // You can customize the options here
+});
 
 
 NProgress.configure({ showSpinner: false });
@@ -116,12 +127,15 @@ app.component("SplitButton", SplitButton);
 app.component("Checkbox", Checkbox);
 app.component("Tag", Tag);
 app.component("Editor", Editor);
+app.component('VueSlickCarousel', VueSlickCarousel);
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
 
-app.provide('primarycolor', '#136acd')
+app.provide('primarycolor', getSubdomain() === 'alat' ? '#971931' : '#136acd')
+
+app.config.globalProperties.$aos = AOS;
 
 
 // Sentry.init({

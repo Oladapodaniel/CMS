@@ -431,8 +431,8 @@ export default {
       console.log(responseObject,'hhjjj');
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
-        // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
-        key: process.env.VUE_APP_PAYSTACK_API_KEY,
+        key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+        // key: process.env.VUE_APP_PAYSTACK_API_KEY,
         email: responseObject.giverEmail,
         amount: amount.value * 100,
         currency: paymentFormCurrency.value.shortCode,

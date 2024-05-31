@@ -1,41 +1,57 @@
 <template>
   <div class="container-fluid connectionbar">
-      <div class="row">
-        <div class="col-md-12 px-0">
-          <ConnectionBar />
-        </div>
+    <div class="row">
+      <div class="col-md-12 px-0">
+        <ConnectionBar />
       </div>
     </div>
-  <router-view />
+  </div>
+  <AlatFaith v-if="getChurchType && alartRoute " @route="setRouteValue"  />
+  <router-view v-else />
 </template>
 
 <script>
 import ConnectionBar from "@/components/connectivity/ConnectionStatus.vue";
-import setupService from "./services/setup/setupservice"
-import mixin from "@/mixins/currentUser.mixin.js"
+import setupService from "./services/setup/setupservice";
+import AlatFaith from "./components/churcheslandingpage/AlatFaith.vue";
+import mixin from "@/mixins/currentUser.mixin.js";
+import getSubdomain from "./services/churchTypeMiddlware";
+import router from "./router/index";
 
 export default {
   name: "App",
 
-  components: { ConnectionBar },
+  components: { ConnectionBar, AlatFaith },
   mixins: [mixin],
   data() {
     return {
       transitionName: null,
+      alartRoute: true,
     };
+  },
+  methods: {
+    setRouteValue(payload) {
+      this.alartRoute = false;
+      payload == 1 ? router.push('/login') :  router.push('/alatregister')
+    },
   },
   created() {
     if (localStorage.getItem("token")) {
-      
       const expiryDate = localStorage.getItem("expiryDate");
       if (expiryDate && new Date(expiryDate) < Date.now()) {
-        localStorage.removeItem("token")
-        localStorage.removeItem("expiryDate")
+        localStorage.removeItem("token");
+        localStorage.removeItem("expiryDate");
         setupService.clearStore();
-      }   
+      }
       this.getCurrentUser();
       setupService.setup();
     }
+  },
+  computed: {
+    getChurchType() {
+      if (getSubdomain() === "alat") return true;
+      return false;
+    },
   },
 };
 </script>

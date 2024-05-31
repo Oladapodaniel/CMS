@@ -845,8 +845,8 @@ export default {
                 }
 
                 // alert(i)
-                return i.name.toLowerCase().includes("flutterwave")
-                // return i.name.toLowerCase().includes("paystack") || i.name.toLowerCase().includes("flutterwave")
+                // return i.name.toLowerCase().includes("flutterwave")
+                return i.name.toLowerCase().includes("paystack") || i.name.toLowerCase().includes("flutterwave")
             })
 
             return x;
