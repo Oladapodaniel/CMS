@@ -13,7 +13,7 @@
 
         <router-link to="/tenant/addfamily" class="no-decoration">
           <el-button class="header-btn" :color="primarycolor" round>
-            Add Family
+            Add New Family
           </el-button>
         </router-link>
         

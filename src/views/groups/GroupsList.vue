@@ -2,11 +2,11 @@
   <div :class="{ 'container-slim': lgAndUp || xlAndUp }">
     <div class="container-fluid container-top">
       <div class="row d-flex flex-column flex-sm-row justify-content-sm-between">
-        <div class="head-text">Groups</div>
+        <div class="text-head font-weight-600 h2 py-0 my-0 text-black">Groups</div>
 
         <div class="mt-2 my-1 link" v-if="!groupLeader">
           <el-button class="header-btn" @click="router.push('/tenant/createpeoplegroup')" :color="primarycolor" round>
-            Add New Group
+            Create New Group
           </el-button>
           <!-- <router-link to="/tenant/createpeoplegroup" class="
                     grey-border
@@ -40,8 +40,8 @@
       <div class="row">
         <div class="col-12 px-0 table-container" id="table">
           <div class="top-con" id="ignore2">
-            <div class="table-top p-3 mt-5">
-              <div class="col-md-5">
+            <div class="table-top py-3 mt-5">
+              <div class="col-md-5 px-0">
                 <el-input size="small" v-model="searchText" placeholder="Search..." @keyup.enter.prevent="searchGroupInDB"
                   class="input-with-select">
                   <template #append>
@@ -56,11 +56,11 @@
             </div>
           </div>
           <div class="screensize">
-            <el-table :data="searchGroup" v-loading="loading" stripe class="groupTree" lazy style="width: 100%"
+            <el-table :data="searchGroup" v-loading="loading" stripe class="groupTree grouptext border-0 fw-500 " lazy style="width: 100%"
               row-key="id" :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
-              <el-table-column width="40%" label="Group">
+              <el-table-column width="40%" class="fw-500 s-14" label="Group">
                 <template #default="scope">
-                  <div @click="groupClick(scope.row.id)" class="c-pointer">
+                  <div @click="groupClick(scope.row.id)" class=" c-pointer">
                     {{ scope.row.name }}
                   </div>
                 </template>
@@ -384,6 +384,10 @@ export default {
   background-color: #f1f3f9;
   border-radius: 30px 30px 0 0;
 }
+.groupText .el-table__inner-wrapper .el-table__header-wrapper .el-table__header thead tr th .el-table_1_column_1 .is-leaf .el-table__cell{
+    /* border-bottom: var(--el-table-border); */
+    font-weight: 500 !important;
+}
 
 .grey-rounded-border2 {
   border: 1px solid #dde2e6 !important;
@@ -560,7 +564,7 @@ export default {
   font-weight: 800;
   font-size: 12px;
   background: #fff;
-  border: 1px solid #e0e0e0;
+  /* border: 1px solid #e0e0e0; */
   border-bottom: none;
   display: flex;
   justify-content: flex-end;

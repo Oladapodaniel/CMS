@@ -479,7 +479,6 @@
       :checkMultipleItem="true"
       @checkedrow="handleSelectionChange"
       v-loading="paginatedTableLoading"
-      v-if="searchMember.length > 0"
     >
       <template #pictureUrl="{ item }">
         <el-card
@@ -838,7 +837,7 @@
             </div>
             <div class="col-md-12 mt-3">
               <div class="row justify-content-center">
-                <div class="col-11 form-group">
+                <div class="col-md-11 form-group">
                   <div class="text-black">First name</div>
                   <el-input
                     placeholder="First name"
@@ -855,7 +854,7 @@
                     v-model="filter.phoneNumber"
                   />
                 </div>
-                <div class="col-md-12 d-flex justify-content-center">
+                <div class="col-md-12 d-flex pb-3 justify-content-center">
                   <el-button
                     class="col-md-11"
                     :color="primarycolor"
@@ -1269,6 +1268,7 @@ export default {
           noRecords.value = true;
           filterResult.value = res.data;
           applyLoading.value = false;
+          showFilter.value = false;
         })
         .catch((err) => {
           applyLoading.value = false;
@@ -1755,6 +1755,7 @@ export default {
 
 .table-top {
   position: absolute;
+  z-index: 1;
   top: -40px;
   /* width: 100%; */
   font-weight: 500 !important;

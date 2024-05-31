@@ -65,9 +65,9 @@
                 >
                   Show QR Code
                 </el-dropdown-item>
-                <el-dropdown-item class="text-black" @click="showAnalysis"
+                <!-- <el-dropdown-item class="text-black" @click="showAnalysis"
                   >Analysis</el-dropdown-item
-                >
+                > -->
                 <el-dropdown-item class="text-black" @click="importFirstTimer"
                   >Import</el-dropdown-item
                 >
