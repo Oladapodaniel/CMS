@@ -1,15 +1,14 @@
 <template>
   <div
     :style="{ backgroundColor: theme.bg_900, color: theme.text_900 }"
-    style="display: flex; min-height: 100vh"
+    style=" min-height: 100vh"
   >
-  <!-- style="margin: auto;" -->
     <div class="container-top"  :class="{ 'container-slim': lgAndUp || xlAndUp }">
       <div class="row justify-content-center" >
         <!-- <button class="col-md-12" @click="toggleTheme">Toggle Theme</button> -->
         <div class="col-md-11 px-0 col-sm-12 mt-4">
           <div class="row justify-content-between">
-            <div class="col-md-5 px-0 mt-4 d-flex align-items-center">
+            <div class="col-md-5  px-0 mt-4 d-flex align-items-center">
               <div class="col-md-12 col-lg-11 px-0 d-none d-md-block">
                 <div class="row">
                   <div class="col-md-12 d-flex justify-content-center">
@@ -73,7 +72,7 @@
               </div>
             </div>
             <div
-              class="col-md-5 px-0 mt-4 d-flex justify-content-center align-items-center"
+              class="col-md-5 col-12 px-0 mt-4 d-flex justify-content-center align-items-center"
             >
               <div
                 class="col-md-12 col-sm-10 col-11 p-md-4 p-lg-5"

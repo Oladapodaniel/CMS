@@ -18,26 +18,26 @@
               {{ membershipSummary.totalMember }}
             </div>
           </div>
-          <div class="col-md-3">
+          <!-- <div class="col-md-3">
             <div class="text-head s-18 font-weight-600">Members</div>
             <div class="h2 font-weight-600">
               {{ membershipSummary.totalMember }}
             </div>
-          </div>
-          <div class="col-md-3">
+          </div> -->
+          <!-- <div class="col-md-3">
             <div class="text-head s-18 font-weight-600">First Timer</div>
             <div class="h2 font-weight-600">
               {{ membershipSummary.totalMember }}
             </div>
-          </div>
-          <div class="col-md-3">
+          </div> -->
+          <!-- <div class="col-md-3">
             <div class="text-head s-18 font-weight-600">New Comers</div>
             <div class="h2 font-weight-600">
               {{ membershipSummary.totalMember }}
             </div>
-          </div>
-          <!-- <div class="col-md-4"> -->
-            <!-- <div class="ml-md-4 col-md-12 chart1">
+          </div> -->
+          <div class="col-md-4">
+            <div class="ml-md-4 col-md-12 chart1">
               <ByGenderChart
                 domId="chart"
                 title="By Gender"
@@ -45,8 +45,8 @@
                 :summary="membershipSummary.genders"
               />
             </div>
-          </div> -->
-          <!-- <div class="col-md-4">
+          </div>
+          <div class="col-md-4">
             <div class="chart2 col-md-12">
               <ByMaritalStatusChart
                 domId="second"
@@ -55,7 +55,7 @@
                 :summary="membershipSummary.maritalStatus"
               />
             </div>
-          </div> -->
+          </div>
           <!-- <div class="board">
             <div class="board-top">
               <p class="total-text mb-0">TOTAL MEMBERS</p>

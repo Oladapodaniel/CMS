@@ -29,24 +29,24 @@
 
         <Table :data="searchFamily" :headers="familyHeaders" :checkMultipleItem="false" v-if="searchFamily.length > 0">
           <template v-slot:dateCreated="{ item }">
-            <div @click="editFamily(item)" class="c-pointer">
+            <div @click="editFamily(item)" class="c-pointer s-16 fw-500  ">
               {{ formatDate(item.dateCreated) }}
             </div>
           </template>
           <template v-slot:familyName="{ item }">
-            <div  @click="editFamily(item)" class="c-pointer">
+            <div  @click="editFamily(item)" class="c-pointer s-16 fw-500">
               {{ item.familyName }}
             </div>
           </template>
 
           <template v-slot:email="{ item }">
-            <div @click="editFamily(item)" class="c-pointer">
+            <div @click="editFamily(item)" class="c-pointer  ">
               {{ item.email }}
             </div>
           </template>
 
           <template v-slot:homePhone="{ item }">
-            <div @click="editFamily(item)" class="c-pointer">
+            <div @click="editFamily(item)" class="c-pointer ">
               {{ item.homePhone }}
             </div>
           </template>
@@ -233,7 +233,7 @@ export default {
   font-weight: 800;
   font-size: 12px;
   background: #fff;
-  border: 1px solid #e0e0e0;
+  /* border: 1px solid #e0e0e0; */
   border-bottom: none;
   justify-content: flex-end;
   display: flex;

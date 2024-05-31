@@ -3,8 +3,9 @@
     class="container-top h-100">
     <div>
       <div class="d-flex flex-column flex-md-row justify-content-md-between">
-        <div class="head-text">
-          <div>New Converts</div>
+        <div>
+          <div class="text-head font-weight-600 h2 py-0 my-0 text-black">New Converts</div>
+          <div class="s-18">Showing all Families</div>
         </div>
         <div class="mt-3 mt-md-0 d-flex flex-sm-nowrap flex-wrap">
           <el-button
@@ -58,7 +59,7 @@
       </div>
       <div class="top-con">
         <div class="">
-          <div class="table-top p-3 mt-5">
+          <div class="table-to p-3 mt-5">
             <div
               class="d-flex flex-column flex-sm-row justify-content-sm-between"
             >

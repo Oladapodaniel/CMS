@@ -42,12 +42,12 @@
       const loading = ref(false);
       const errorGettingPeople = ref(false);
       const dataStore = useStore();
-      const totalItems = ref(dataStore.getters['membership/members'].totalItems)
-      const peopleInStore = ref(dataStore.getters['membership/members'].data)
+      const totalItems = ref(dataStore.getters['membership/allcontacts'].totalItems)
+      const peopleInStore = ref(dataStore.getters['membership/allcontacts'].data)
   
       const getMembers = async () => {
         loading.value = true
-        store.dispatch('membership/setMembers').then(res => {
+        store.dispatch('membership/setAllContacts').then(res => {
           peopleInStore.value = res.data
           totalItems.value = res.totalItems
           loading.value = false

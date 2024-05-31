@@ -223,13 +223,13 @@
               Excel/CSV template</span
             >
           </div>
-          <div class="row ml-1 bg-secondary my-3 mx-1 rounded h-100 w-100">
+          <div class="row ml-1 bg-color my-3 mx-1 rounded h-100 w-100">
             <div class="col-12 my-2 col-md-12 col-lg-12">
               <i class="pi pi-info-circle"></i><strong> Reminder:</strong> All Excel/CSV
               file headers are case-sensitive.
               <div class="col-12 col-md-12 col-lg-12 border-bottom my-2"></div>
             </div>
-            <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+            <div class="col-4 col-md-4 col-lg-4 font-weight-600">
               <p>FirstName</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
@@ -244,7 +244,7 @@
                 }}
               </p>
             </div>
-            <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+            <div class="col-4 col-md-4 col-lg-4 font-weight-600">
               <p>LastName</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
@@ -259,7 +259,7 @@
                 }}.
               </p>
             </div>
-            <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+            <div class="col-4 col-md-4 col-lg-4 font-weight-600">
               <p>Email</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
@@ -274,7 +274,7 @@
                 }}
               </p>
             </div>
-            <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+            <div class="col-4 col-md-4 col-lg-4 font-weight-600">
               <p>PhoneNumber</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
@@ -287,7 +287,7 @@
                   : newConvert
               }}.
             </div>
-            <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+            <div class="col-4 col-md-4 col-lg-4 font-weight-600">
               <p>Address</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
@@ -300,7 +300,7 @@
                   : newConvert
               }}.
             </div>
-            <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+            <div class="col-4 col-md-4 col-lg-4 font-weight-600">
               <p>Birthday</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
@@ -315,7 +315,7 @@
                 }}
               </p>
             </div>
-            <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+            <div class="col-4 col-md-4 col-lg-4 font-weight-600">
               <p>BirthMonth</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
@@ -330,7 +330,7 @@
                 }}
               </p>
             </div>
-            <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+            <div class="col-4 col-md-4 col-lg-4 font-weight-600">
               <p>BirthYear</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
@@ -345,7 +345,7 @@
                 }}
               </p>
             </div>
-            <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+            <div class="col-4 col-md-4 col-lg-4 font-weight-600">
               <p>Gender</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
@@ -360,7 +360,7 @@
                 }}
               </p>
             </div>
-            <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+            <div class="col-4 col-md-4 col-lg-4 font-weight-600">
               <p>MaritalStatus</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
@@ -375,7 +375,7 @@
                 }}
               </p>
             </div>
-            <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+            <div class="col-4 col-md-4 col-lg-4 font-weight-600">
               <p>CommunicationMeans</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
@@ -390,7 +390,7 @@
                 }}
               </p>
             </div>
-            <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+            <div class="col-4 col-md-4 col-lg-4 font-weight-600">
               <p>InterestedInJoining</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
@@ -406,7 +406,7 @@
                 is interested in joining
               </p>
             </div>
-            <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+            <div class="col-4 col-md-4 col-lg-4 font-weight-600">
               <p>WantToBeVisited</p>
             </div>
             <div class="col-8 col-md-8 col-lg-8">
@@ -438,10 +438,10 @@
         :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
       >
         <div class="row">
-          <div class="col-3 font-weight-700">Name</div>
-          <div class="col-4 font-weight-700">Email</div>
-          <div class="col-2 font-weight-700">Gender</div>
-          <div class="col-2 font-weight-700">Phone Number</div>
+          <div class="col-3 font-weight-600">Name</div>
+          <div class="col-4 font-weight-600">Email</div>
+          <div class="col-2 font-weight-600">Gender</div>
+          <div class="col-2 font-weight-600">Phone Number</div>
         </div>
         <div class="row" v-for="(item, index) in memberData" :key="index">
           <div class="col-3">
@@ -818,6 +818,11 @@ export default {
   height: 0;
   overflow: hidden;
   transition: all 1s ease-in-out;
+}
+
+.bg-color{
+  background: #EBEDFF;
+  border-radius: 8px;
 }
 
 .border-line {

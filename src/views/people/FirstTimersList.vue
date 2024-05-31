@@ -54,7 +54,7 @@
           </div>
         </div>
       </div>
-      <div class="filter-options" :class="{ 'filter-options-shown': filterFormIsVissible }">
+      <!-- <div class="filter-options" :class="{ 'filter-options-shown': filterFormIsVissible }">
         <div class="container-fluid">
           <div class="row">
             <div class="col-md-9">
@@ -84,7 +84,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <Table :data="searchMember" :headers="firstTimerHeaders" :checkMultipleItem="true"
         @checkedrow="handleSelectionChange" v-loading="paginatedTableLoading" v-if="searchMember.length > 0">
         <template #imageURL="{ item }">
@@ -222,6 +222,64 @@
       </div>
     </template>
   </el-drawer>
+  <el-dialog
+        v-model="showFilter"
+        title=""
+        :width="mdAndUp || lgAndUp || xlAndUp ? `35%` : xsOnly ? `90%` : `70%`"
+        class="QRCodeDialog border-radius-20"
+        align-center
+      >
+        <div class="filter-optio">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-12 text-center text-black h2 fw-500">
+                Filter
+              </div>
+              <div class="col-md-12 text-center text-black s-24">
+                Narrow down your search
+              </div>
+              <div class="col-md-12 mt-3">
+                <div class="row justify-content-center">
+                  <div class="col-11 form-group">
+                    <div class="text-black">First name</div>
+                    <el-input
+                      placeholder="First name"
+                      class="w-100"
+                      v-model="filter.name"
+                      @input="setFilteredValue"
+                    />
+                  </div>
+                  <div class="col-md-11 form-group">
+                    <div class="text-black">Phone number</div>
+                    <el-input
+                      placeholder="Phone number"
+                      class="w-100"
+                      v-model="filter.phoneNumber"
+                    />
+                  </div>
+                  <div class="col-md-12 d-flex justify-content-center">
+                    <el-button
+                      class="col-md-11"
+                      :color="primarycolor"
+                      @click="applyFilter"
+                      :loading="applyLoading"
+                      :disabled="disableBtn"
+                      round
+                      >Apply</el-button
+                    >
+                    <!-- <div class="mt-2 col-md-11">
+                      <el-button @click="clearAll" class="mr-2" text
+                        >Clear all</el-button
+                      > -->
+                      <!-- <el-button @click="hide" class="mx-2" text>Hide</el-button> -->
+                    <!-- </div> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </el-dialog>
 
 
   <!-- <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
@@ -286,11 +344,14 @@ export default {
     const { xsOnly, mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
     const applyLoading = ref(false)
     const searchingMember = ref(true)
+    const showFilter = ref(false)
 
     const route = useRoute();
     const filterFormIsVissible = ref(false);
-    const toggleFilterFormVissibility = () =>
-      (filterFormIsVissible.value = !filterFormIsVissible.value);
+    const toggleFilterFormVissibility = () => {
+        showFilter.value = true;
+        // (filterFormIsVissible.value = !filterFormIsVissible.value);
+      };
 
     const toggleSearch = () => {
       searchIsVisible.value = !searchIsVisible.value;
@@ -783,6 +844,7 @@ export default {
 
     return {
       churchMembers,
+      showFilter,
       handleSelectionChange,
       handleCurrentChange,
       handleSizeChange,

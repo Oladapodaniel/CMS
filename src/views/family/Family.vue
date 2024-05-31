@@ -5,13 +5,18 @@
       <div
         class="row d-flex flex-column flex-sm-row justify-content-sm-between"
       >
-        <div class="head-text">Family</div>
+        <div>
+          <div class="text-head font-weight-600 h2 py-0 my-0 text-black ">Family</div> 
+          <div class="s-18">Showing all Families</div>
+        </div>
+        
 
         <router-link to="/tenant/addfamily" class="no-decoration">
           <el-button class="header-btn" :color="primarycolor" round>
             Add Family
           </el-button>
         </router-link>
+        
       </div>
 
       <el-skeleton class="w-100" animated v-if="loading">

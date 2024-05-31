@@ -15,6 +15,9 @@ export default {
   state: defaultState(),
 
   mutations: {
+    setAllContacts(state, payload) {
+      state.members = payload;
+    },
     setMembers(state, payload) {
       state.members = payload;
     },
@@ -64,6 +67,12 @@ export default {
         return response
       })
     },
+    setAllContacts({ commit }) {
+      return membershipService.getAllContact().then(response => {
+        commit("setAllContacts", response)
+        return response
+      })
+    },
 
     setMembershipSummary({ commit }) {
       return membershipService.getMembershipSummary().then((response) => {
@@ -86,6 +95,9 @@ export default {
     },
     removeFirstTimerFromStore({ commit }, payload) {
         commit("removeFirstTimer", payload)
+    },
+    removeContactFromStore({ commit }, payload) {
+        commit("removeContact", payload)
     },
     removeNewConvertFromStore({ commit }, payload) {
         commit("removeNewConvert", payload)
@@ -123,6 +135,7 @@ export default {
   },
 
   getters: {
+    allcontacts: state => state.allContacts,
     members: state => state.members,
     allFirstTimers: state => state.firstTimers,
     allNewConverts: state => state.newConverts,

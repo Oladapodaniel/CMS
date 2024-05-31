@@ -235,7 +235,7 @@
           </div>
         </div>
         <div class="row mt-4">
-          <div class="col-md-3 col-sm-6" style="height: 141px">
+          <!-- <div class="col-md-3 col-sm-6" style="height: 141px">
             <div class="col-md-12 dashboardCard pb-2 pt-3 px-3 h-100">
               <div class="row h-100">
                 <div
@@ -253,20 +253,12 @@
                 </div>
                 <div class="col-md-12 justify-content-between align-items-end d-flex">
                   <div class="h2 mb-0" style="font-weight: 500">$712,250</div>
-                  <div>
-                    <div
-                      class="xs-text text-right"
-                      style="color: #00b81d; font-weight: 400"
-                    >
-                      +3.2%
-                    </div>
-                    <div class="xs-text text-right">from last week</div>
-                  </div>
+          
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-3 col-sm-6 mt-sm-0 mt-3" style="height: 141px">
+          </div> -->
+          <div class="col-md-4 col-sm-6 mt-sm-0 mt-3" style="height: 141px">
             <div class="col-md-12 dashboardCard pb-2 pt-3 px-3 h-100">
               <div class="row h-100">
                 <div
@@ -286,7 +278,7 @@
                   <div class="h2 mb-0" style="font-weight: 500">
                     {{ tenantInfoBasic.memberCount }}
                   </div>
-                  <div>
+                  <!-- <div>
                     <div
                       class="xs-text text-right"
                       style="color: #00b81d; font-weight: 400"
@@ -294,12 +286,12 @@
                       +3.2%
                     </div>
                     <div class="xs-text text-right">from last week</div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-md-3 col-sm-6 mt-md-0 mt-3" style="height: 141px">
+          <div class="col-md-4 col-sm-6 mt-sm-0  mt-3" style="height: 141px">
             <div class="col-md-12 dashboardCard pb-2 pt-3 px-3 h-100">
               <div class="row h-100">
                 <div
@@ -323,7 +315,7 @@
                         : 0
                     }}
                   </div>
-                  <div>
+                  <!-- <div>
                     <div
                       class="xs-text text-right"
                       style="color: #00b81d; font-weight: 400"
@@ -331,12 +323,12 @@
                       +3.2%
                     </div>
                     <div class="xs-text text-right">from last week</div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-md-3 col-sm-6 mt-md-0 mt-3" style="height: 141px">
+          <div class="col-md-4 col-sm-6 mt-md-0 mt-3" style="height: 141px">
             <div class="col-md-12 dashboardCard pb-2 pt-3 px-3 h-100">
               <div class="row h-100">
                 <div
