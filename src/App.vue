@@ -6,34 +6,24 @@
       </div>
     </div>
   </div>
-  <AlatFaith v-if="getChurchType && alartRoute " @route="setRouteValue"  />
-  <router-view v-else />
+  <router-view  />
 </template>
 
 <script>
 import ConnectionBar from "@/components/connectivity/ConnectionStatus.vue";
 import setupService from "./services/setup/setupservice";
-import AlatFaith from "./components/churcheslandingpage/AlatFaith.vue";
 import mixin from "@/mixins/currentUser.mixin.js";
-import getSubdomain from "./services/churchTypeMiddlware";
-import router from "./router/index";
 
 export default {
   name: "App",
 
-  components: { ConnectionBar, AlatFaith },
+  components: { ConnectionBar,},
   mixins: [mixin],
   data() {
     return {
       transitionName: null,
       alartRoute: true,
     };
-  },
-  methods: {
-    setRouteValue(payload) {
-      this.alartRoute = false;
-      payload == 1 ? router.push('/login') :  router.push('/alatregister')
-    },
   },
   created() {
     if (localStorage.getItem("token")) {
@@ -46,12 +36,6 @@ export default {
       this.getCurrentUser();
       setupService.setup();
     }
-  },
-  computed: {
-    getChurchType() {
-      if (getSubdomain() === "alat") return true;
-      return false;
-    },
   },
 };
 </script>

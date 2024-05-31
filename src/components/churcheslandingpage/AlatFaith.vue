@@ -23,19 +23,18 @@
         </div>
       </div>
       <div class="col-md-4 d-flex justify-content-end align-items-center">
-        <!-- <router-link to="/login" class="text-decoration-none"> -->
-        <el-button @click="loginAlat" round class="border-line-btn"> Login</el-button>
-        <!-- </router-link> -->
-        <!-- <router-link to="/alatregister" class="text-decoration-none"> -->
+        <router-link to="/login" class="text-decoration-none">
+        <el-button  round class="border-line-btn"> Login</el-button>
+        </router-link>
+        <router-link to="/alatregister" class="text-decoration-none">
         <el-button
-          @click="registerAlat"
           size="large"
           round
           class="bg-color-btn text-white ml-2"
         >
           Sign up
         </el-button>
-        <!-- </router-link> -->
+        </router-link>
       </div>
     </div>
     <div class="row">
@@ -49,16 +48,15 @@
                   <span class="text-head h2">& other faith based Organizations</span>
                 </div>
                 <div class="mt-4">
-                  <!-- <router-link to="/alatregister" class="text-decoration-none"> -->
+                  <router-link to="/alatregister" class="text-decoration-none">
                   <el-button
-                    @click="registerAlat"
                     size="large"
                     round
                     class="bg-color-btn text-white"
                   >
                     Sign up for FREE
                   </el-button>
-                  <!-- </router-link> -->
+                  </router-link>
                 </div>
               </div>
             </div>
@@ -79,16 +77,15 @@
                   {{item.content}}
                 </div>
                 <div class="mt-4">
-                  <!-- <router-link to="/alatregister" class="text-decoration-none"> -->
+                  <router-link to="/alatregister" class="text-decoration-none">
                   <el-button
-                    @click="registerAlat"
                     size="large"
                     round
                     class="bg-color-btn text-white"
                   >
                     Sign up for FREE
                   </el-button>
-                  <!-- </router-link> -->
+                  </router-link>
                 </div>
               </div>
             </div>
@@ -116,6 +113,74 @@
           </div>
         </el-carousel-item>
       </el-carousel>
+    </div>
+    <div class="row bg-image2 py-5 mt-3 justify-content-center">
+      <div class="col-md-7 col-12">
+        <div class="col-md-12 col-12 text-center text-head s-30">
+          Join 11,200 using ALAT Faith solution
+        </div>
+        <div
+          class="col-md-12 col-12 mt-2 d-flex flex-wrap justify-content-center"
+          style="gap: 20px"
+        >
+          <span class="logo"
+            ><img src="../../assets/alartfaith-icon/image4.png" alt=""
+          /></span>
+          <span class="logo"
+            ><img src="../../assets/alartfaith-icon/image7.png" alt=""
+          /></span>
+          <span class="logo"
+            ><img src="../../assets/alartfaith-icon/image5.png" alt=""
+          /></span>
+          <span class="logo"
+            ><img src="../../assets/alartfaith-icon/image6.png" alt=""
+          /></span>
+          <span class="logo"
+            ><img src="../../assets/alartfaith-icon/image8.png" alt=""
+          /></span>
+          <span class="logo"
+            ><img src="../../assets/alartfaith-icon/image9.png" alt=""
+          /></span>
+          <span class="logo"
+            ><img src="../../assets/alartfaith-icon/image10.png" alt=""
+          /></span>
+        </div>
+        <!-- <img
+            style="width: 5rem"
+            src="../../../assets/alartfaith-icon/image4.png"
+            alt=""
+          />
+          <img
+            style="width: 5rem"
+            src="../../../assets/alartfaith-icon/image7.png"
+            alt=""
+          />
+          <img
+            style="width: 5rem"
+            src="../../../assets/alartfaith-icon/image5.png"
+            alt=""
+          />
+          <img
+            style="width: 5rem"
+            src="../../../assets/alartfaith-icon/image6.png"
+            alt=""
+          />
+          <img
+            style="width: 5rem"
+            src="../../../assets/alartfaith-icon/image8.png"
+            alt=""
+          />
+          <img
+            style="width: 5rem"
+            src="../../../assets/alartfaith-icon/image9.png"
+            alt=""
+          />
+          <img
+            style="width: 4.5rem"
+            src="../../../assets/alartfaith-icon/image10.png"
+            alt=""
+          /> -->
+      </div>
     </div>
     <div class="container">
       <div class="row mt-5">

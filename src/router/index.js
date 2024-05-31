@@ -2,9 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 
 import Pagination from '@/components/payment/PaymentSuccessful.vue';
+import getSubdomain from "../services/churchTypeMiddlware";
 
 
-
+// const initialPath = getSubdomain() === 'alat' ? '../components/churcheslandingpage/AlatFaith.vue' : '../views/account/Login.vue'
 
 // import TermsOfUse from '../components/temp/PaymentPage';
 
@@ -26,15 +27,31 @@ const routes = [
         }
     },
 
+    // {
+    //     path: '/',
+    //     name: 'Login',
+    //     component: () =>
+    //         import( /* webpackChunkName: "login" */ '../views/account/Login.vue'),
+    //     meta: {
+    //         title: 'Churchplus - Login',
+    //     }
+    // },
     {
         path: '/',
         name: 'Login',
-        component: () =>
-            import( /* webpackChunkName: "login" */ '../views/account/Login.vue'),
+        component: () => {
+          // Your condition to determine which component to load
+          const condition =  getSubdomain() === 'alat'; // or false based on your logic
+    
+          // Dynamically import the component based on the condition
+          return condition
+            ? import(/* webpackChunkName: "alatfaithhomepage" */ '../components/churcheslandingpage/AlatFaith.vue')
+            : import(/* webpackChunkName: "churchpluslogin" */ '../views/account/Login.vue');
+        },
         meta: {
-            title: 'Churchplus - Login',
+          title:  getSubdomain() === 'alat' ? 'AlatFaith - Welcome' : 'Churchplus - Login',
         }
-    },
+      },
     {
         path: '/login',
         name: 'AlatLogin',

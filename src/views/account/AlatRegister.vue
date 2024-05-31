@@ -103,7 +103,7 @@
                   />
                 </el-form-item>
               </div>
-              <div class="input-div">
+              <!-- <div class="input-div">
                 <div class="row justify-content-center">
                   <div class="col-md-12 input-color2 py-4">
                     <div class="row">
@@ -145,7 +145,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
               <div class="input-div">
                 <div class="row justify-content-center">
