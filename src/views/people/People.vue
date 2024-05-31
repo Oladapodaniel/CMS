@@ -23,7 +23,7 @@
           />
         </div>
       </div>
-      <div class="col-md-10 pl-0 py-md-4 mt-3" v-if="route.fullPath == '/tenant/people'">
+      <div class="col-md-10 py-md-4 mt-3" v-if="route.fullPath == '/tenant/people'">
         <div class="font-weight-bold">Share the link to your members to enable them to add their details to your
           church .</div>
         <div class="p-inputgroup form-group mt-2">
@@ -39,6 +39,13 @@
         </div>
     </div>
     </div>
+    <transition name="el-fade-in-linear">
+      <div class="row" v-show="membershipCapacityExceeded">
+        <div class="col-md-12 mb-4  " v-if="route.fullPath == '/tenant/people'" >
+        <MemberCapExceeded />
+        </div>
+      </div>
+    </transition>
     <el-dialog v-model="QRCodeDialog" title="" :width="mdAndUp || lgAndUp || xlAndUp ? `30%` : xsOnly ? `90%` : `70%`"  class="QRCodeDialog" align-center>
         
         <div class="d-flex align-items-center flex-column" >
@@ -63,9 +70,13 @@ import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useStore } from 'vuex'
 // import axios from 'axios';
 import axios from "@/gateway/backendapi";
+import MemberCapExceeded from "@/components/membership/MembershipCapExceeded.vue";
 
 
 export default {
+  components: {
+    MemberCapExceeded
+  },
   setup() {
     const store = useStore();
     const selectedLink = ref(null)
@@ -74,7 +85,8 @@ export default {
     const QRCodeDialog = ref(false)
     const qrCode = ref('')
     const { lgAndUp, xlAndUp, mdAndUp, xsOnly } = deviceBreakpoint()
-    const primarycolor = inject('primarycolor')
+    const primarycolor = inject('primarycolor');
+    const membershipCapacityExceeded = ref(false)
 
     const isFormPage = computed(() => {
       if (route.path.includes("add")) return true;
@@ -90,6 +102,12 @@ export default {
     watchEffect(() => {
       if (getUser.value) {
         tenantID.value = getUser.value.tenantId
+
+        if (getUser.value.churchSize >= getUser.value.subscribedChurchSize) {
+          membershipCapacityExceeded.value = true;
+        } else {
+          membershipCapacityExceeded.value = false;
+        }
       }
     })
 
@@ -142,7 +160,7 @@ export default {
       router.push({ name: 'ImportInstruction', query: { query: 'importpeople' } })
     }
 
-    return { addPersonClicked, tenantID, mdAndUp, route, xsOnly, QRCodeDialog, qrCode, header, getQrCode, isFormPage, importMembers, memberlink, copylink, selectedLink, lgAndUp, xlAndUp, primarycolor };
+    return { addPersonClicked, tenantID, mdAndUp, route, xsOnly, QRCodeDialog, qrCode, header, getQrCode, isFormPage, importMembers, memberlink, copylink, selectedLink, lgAndUp, xlAndUp, primarycolor, membershipCapacityExceeded };
   },
 };
 // transition method

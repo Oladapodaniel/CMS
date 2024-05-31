@@ -197,9 +197,7 @@ export default {
             setTimeout(() => {
               setupService.setup();
             }, 5000);
-            if (data.churchSize >= data.subscribedChurchSize) {
-              router.push("/errorpage/member-capacity-reached");
-            } else {
+            {
               if (data.churchSize > 0) {
                 router.push("/tenant");
               } else {
@@ -214,9 +212,6 @@ export default {
               type: "error",
             });
           } else {
-            if (data.churchSize >= data.subscribedChurchSize) {
-              router.push("/errorpage/member-capacity-reached");
-            } else {
               if (data.roles.indexOf("GroupLeader") !== -1) {
                 router.push({
                   name: "GroupLeaderDashboard",
@@ -236,7 +231,6 @@ export default {
                   router.push("/next");
                 }
               }
-            }
             setTimeout(() => {
               setupService.setup();
             }, 5000);

@@ -66,6 +66,13 @@
         </div>
       </div>
     </div>
+    <transition name="el-fade-in-linear">
+      <div class="row" v-show="membershipCapacityExceeded">
+        <div class="col-md-12 mb-4">
+        <MemberCapExceeded />
+        </div>
+      </div>
+    </transition>
     <div class="row" v-if="showNewConvert">
       <div class="col-md-2  ">
         <div class="font-weight-bold py-md-2 mt-4">QR Code</div>
@@ -198,11 +205,12 @@ import finish from '../../services/progressbar/progress'
 import router from "@/router/index";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import store from '../../store/store';
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus';
+import MemberCapExceeded from "@/components/membership/MembershipCapExceeded.vue";
 
 
 export default {
-  components: { FirstTimersList, NewConvertList },
+  components: { FirstTimersList, NewConvertList, MemberCapExceeded },
   setup() {
     const primarycolor = inject('primarycolor')
     const firstTimersList = ref(store.getters['membership/allFirstTimers'].data)
@@ -223,6 +231,7 @@ export default {
     const networkError = ref(false)
     const qrCode = ref("");
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
+    const membershipCapacityExceeded = ref(false)
 
     const addNewFirsttimer = () => {
       router.push('/tenant/people/addfirsttimer')
@@ -419,6 +428,12 @@ export default {
      watchEffect(() => {
       if (getUser.value) {
         tenantID.value = getUser.value.tenantId
+
+        if (getUser.value.churchSize >= getUser.value.subscribedChurchSize) {
+          membershipCapacityExceeded.value = true;
+        } else {
+          membershipCapacityExceeded.value = false;
+        }
       }
     })
 
@@ -469,7 +484,7 @@ export default {
     //   loading.value = payload
     // }
 
-    return { firstTimersList, showNewConverPage,  showNewConverPage, totalItems, showFirsttimerPage, newConvertLink, copylink2,  importNewConvert, getQrCode2, newConvertList, QRCodeDialog, xsOnly, qrCode, getQrCode, copylink, selectedLink, tenantID, getUser, firstTimerLink,  addNewFirsttimer, addNewConvert,  newConvertDetail, firttimerDetail, showFirsttimer, showNewConvert, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer, networkError, setFirsttimer, mdAndUp, lgAndUp, xlAndUp, primarycolor };
+    return { firstTimersList, showNewConverPage,  showNewConverPage, totalItems, showFirsttimerPage, newConvertLink, copylink2,  importNewConvert, getQrCode2, newConvertList, QRCodeDialog, xsOnly, qrCode, getQrCode, copylink, selectedLink, tenantID, getUser, firstTimerLink,  addNewFirsttimer, addNewConvert,  newConvertDetail, firttimerDetail, showFirsttimer, showNewConvert, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer, networkError, setFirsttimer, mdAndUp, lgAndUp, xlAndUp, primarycolor, membershipCapacityExceeded };
   },
 };
 

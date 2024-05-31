@@ -181,6 +181,27 @@
                     >Online Giving Setup</router-link
                   >
                 </div>
+                <div class="row mb-3">
+                  <div class="col-md-12 my-2">
+                    <span class="small-text dd-list-item"
+                      >Danger Zone
+                    </span>
+                  </div>
+                  <div class="col-md-12 my-2">
+                    <router-link
+                      class="font-weight-bold text-danger dd-list-item"
+                      to="/tenant/settings/deleteterms"
+                      >Delete Account</router-link
+                    >
+                  </div>
+                </div>
+                <div class="col-md-12 my-2" v-if="false">
+                  <router-link
+                    class="font-weight-bold primary--text"
+                    to="/tenant/settings/giving"
+                    >Online Giving Setup</router-link
+                  >
+                </div>
               </div>
             </transition-group>
 

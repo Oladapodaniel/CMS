@@ -1589,13 +1589,13 @@ const routes = [
                 component: () =>
                     import( /* webpackChunkName: "defaultmessage" */ '@/views/settings/FollowUpStatus')
             },
-                // {
-                //     path: 'details',
-                //     name: 'Details',
-                //     component: () =>
-                //         import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/Details')
-                // },
-            ]
+            {
+                path: 'deleteterms',
+                name: 'DeleteTerms',
+                component: () =>
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/DeleteTerms')
+            },
+        ]
         },
         {
             path: 'chartofaccount',
