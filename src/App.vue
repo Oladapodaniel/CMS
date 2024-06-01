@@ -28,6 +28,7 @@ export default {
   data() {
     return {
       transitionName: null,
+      alartRoute: true,
     };
   },
   created() {

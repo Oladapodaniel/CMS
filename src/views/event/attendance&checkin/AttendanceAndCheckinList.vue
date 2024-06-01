@@ -107,8 +107,8 @@
                       },
                     }">Checkin</router-link>
                   </el-dropdown-item>
-                  <!-- <el-dropdown-item>
-                 <router-link
+                  <el-dropdown-item>
+                 <!-- <router-link
                     class="text-decoration-none text-dark"
                     :to="{
                       name: 'AddAttendance',
@@ -117,8 +117,8 @@
                       },
                     }"
                     >Edit</router-link
-                  >
-                </el-dropdown-item> -->
+                  > -->
+                </el-dropdown-item>
                   <el-dropdown-item>
                     <div @click.prevent="showConfirmModal(item.id)" class="text-color">
                       Delete

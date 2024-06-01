@@ -24,8 +24,7 @@
                     size="large"
                   >
                     <span>{{
-                      selectedPledge &&
-                      Object.keys(selectedPledge).length > 0
+                      selectedPledge && Object.keys(selectedPledge).length > 0
                         ? selectedPledge.name
                         : "Select Pledge"
                     }}</span>
@@ -44,9 +43,7 @@
                       @click="PledgesType(itm)"
                       >{{ itm.name }}
                     </el-dropdown-item>
-                    <el-dropdown-item
-                      class="text-center w-100"
-                      divided
+                    <el-dropdown-item class="text-center w-100" divided
                       ><a
                         class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text"
                         style="color: #136acd"
@@ -54,10 +51,10 @@
                         <router-link
                           to="/tenant/pledge/pledgedefinition"
                           class="border-0 font-weight-bold"
-                          >
-                        <el-icon size="large">
-                          <CirclePlus />
-                        </el-icon>
+                        >
+                          <el-icon size="large">
+                            <CirclePlus />
+                          </el-icon>
                           Create New Pledge Item
                         </router-link>
                       </a></el-dropdown-item
@@ -72,7 +69,14 @@
               <label for="">Date</label>
             </div>
             <div class="ofering col-md-8 col-12">
-              <el-date-picker v-model="pledgeDate" type="date" placeholder="To" format="DD/MM/YYYY" size="large" class="w-100" />
+              <el-date-picker
+                v-model="pledgeDate"
+                type="date"
+                placeholder="To"
+                format="DD/MM/YYYY"
+                size="large"
+                class="w-100"
+              />
             </div>
           </div>
           <div class="row mt-3">
@@ -151,7 +155,11 @@
             You can only pledge within the range of
           </div>
           <h3 class="font-weight-700 text-center mt-3 mb-0">
-            NGN
+            {{
+              selectedPledge && selectedPledge.currencySymbol
+                ? selectedPledge.currencySymbol
+                : selectedPledge.currency.symbol
+            }}
             {{
               Math.abs(
                 selectedPledge.donorPaymentRangeFromAmount
@@ -160,7 +168,11 @@
           </h3>
           <div class="text-center">&</div>
           <h3 class="font-weight-700 text-center">
-            NGN
+            {{
+              selectedPledge && selectedPledge.currencySymbol
+                ? selectedPledge.currencySymbol
+                : selectedPledge.currency.symbol
+            }}
             {{
               Math.abs(
                 selectedPledge.donorPaymentRangeToAmount
@@ -181,7 +193,11 @@
             You can only pledge
           </div>
           <h3 class="font-weight-700 text-center mt-3 mb-0">
-            NGN
+            {{
+              selectedPledge && selectedPledge.currencySymbol
+                ? selectedPledge.currencySymbol
+                : selectedPledge.currency.symbol
+            }}
             {{
               Math.abs(
                 selectedPledge.donorPaymentSpecificAmount
@@ -259,7 +275,7 @@ export default {
     ToggleButton,
   },
   setup() {
-    const primarycolor = inject('primarycolor')
+    const primarycolor = inject("primarycolor");
     const route = useRoute();
     const showPerson = ref(false);
     const churchName = ref("");
@@ -287,6 +303,7 @@ export default {
 
     const PledgesType = (item) => {
       selectedPledge.value = item;
+      console.log(item, "hjj");
     };
     const selectPerson = () => {
       selectedContact.value = {};
@@ -308,6 +325,7 @@ export default {
           `/api/Pledge/GetOnePledge?ID=${route.query.id}`
         );
         selectedPledge.value = res.data.returnObject.pledgeType;
+        console.log(selectedPledge.value, "dgd");
         selectedContact.value = res.data.returnObject.contact;
         selectedContact.value = `${
           res.data.returnObject.contact ? res.data.returnObject.contact : ""
@@ -349,7 +367,9 @@ export default {
         amount: donorAmountBase,
         amountBase: rangeBase,
         amountTop: selectedPledge.value.donorPaymentRangeToAmount,
-        date: pledgeDate.value ? new Date(pledgeDate.value).toLocaleDateString("en-US") : ""
+        date: pledgeDate.value
+          ? new Date(pledgeDate.value).toLocaleDateString("en-US")
+          : "",
       };
 
       loading.value = true;
@@ -361,7 +381,9 @@ export default {
           amount: donorAmountBase,
           amountBase: rangeBase,
           amountTop: selectedPledge.value.donorPaymentRangeToAmount,
-          date: pledgeDate.value ? new Date(pledgeDate.value).toLocaleDateString("en-US") : ""
+          date: pledgeDate.value
+            ? new Date(pledgeDate.value).toLocaleDateString("en-US")
+            : "",
         };
         try {
           const response = await axios.put(
@@ -414,16 +436,16 @@ export default {
           loading.value = false;
           if (error.response) {
             ElMessage({
-            type: "warning",
-            message: "Please ensure to fill up the fields",
-            duration: 5000,
-          });
+              type: "warning",
+              message: "Please ensure to fill up the fields",
+              duration: 5000,
+            });
           } else {
             ElMessage({
-            type: "warning",
-            message: "Please ensure you have a strong internet  connection",
-            duration: 5000,
-          });
+              type: "warning",
+              message: "Please ensure you have a strong internet  connection",
+              duration: 5000,
+            });
           }
         }
       }
@@ -453,11 +475,11 @@ export default {
           selectedPledge.value.donorPaymentRangeToAmount
       ) {
         withinRange.value = false;
-         ElMessage({
-            type: "warning",
-            message: "Amount is not within range",
-            duration: 5000,
-          });
+        ElMessage({
+          type: "warning",
+          message: "Amount is not within range",
+          duration: 5000,
+        });
       } else {
         withinRange.value = true;
       }
@@ -495,14 +517,13 @@ export default {
       showPerson,
       validateRangeAmount,
       withinRange,
-      primarycolor
+      primarycolor,
     };
   },
 };
 </script>
 
 <style scoped>
-
 .border-contribution {
   border: 1.6px solid rgb(229, 232, 237);
   border-radius: 4px;
@@ -598,20 +619,18 @@ export default {
   cursor: pointer;
 }
 
-
 .pledge-shadow {
   box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
   border-radius: 10px;
   padding: 15px;
 }
 .input-width {
-  width: 100%
+  width: 100%;
 }
 
 @media (min-width: 992px) {
   .input-width {
-    width: 350px
+    width: 350px;
   }
-
 }
 </style>

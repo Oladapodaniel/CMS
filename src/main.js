@@ -56,6 +56,14 @@ import VueGtag from "vue-gtag-next";
 import VueLazyloadNext from 'vue-lazyload-next'
 import loadimage from './assets/loading.gif';
 import errorimage from './assets/file-not-found.png';
+import getSubdomain from "./services/churchTypeMiddlware";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
+
+AOS.init({
+  duration: 1000, // You can customize the options here
+});
 
 
 NProgress.configure({ showSpinner: false });
@@ -124,7 +132,9 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
 
-app.provide('primarycolor', '#136acd')
+app.provide('primarycolor', getSubdomain() === 'alat' ? '#971931' : '#136acd')
+
+app.config.globalProperties.$aos = AOS;
 
 
 // Sentry.init({

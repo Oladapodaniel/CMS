@@ -10,7 +10,7 @@
       </div>
       <div class="col-md-12">
         <div class="row">
-          <div class="col-md-6 px-0 pr-md-2">
+          <div class="col-md-12 px-0 pr-md-2">
             <label for="name" class="font-weight-600">Name</label>
             <el-input type="text" v-model="name" />
             <div class="row mt-2">
@@ -20,10 +20,10 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6 px-0 pl-md-2">
+          <!-- <div class="col-md-6 px-0 pl-md-2">
             <label for="name" class="font-weight-600">Description</label>
             <el-input type="text" />
-          </div>
+          </div> -->
         </div>
 
         <div class="row mt-4">
@@ -147,7 +147,7 @@
                   }"
                 >
                   <div
-                    class="col-12 animate border scr-height"
+                    class="col-12 animate border scr-height pb-4"
                     style="height: 400px"
                     :class="{
                       'col-md-4': actionSelected,
@@ -552,7 +552,8 @@
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
+import { ref, } from "@vue/reactivity";
+// import {  watchEffect, } from "vue";
 import { inject } from "@vue/runtime-core";
 import GivingAmount from "./triggers/GivingAmount";
 import GroupMembershipDuration from "./triggers/GroupMembershipDuration";
@@ -789,6 +790,9 @@ export default {
     const selectedTriggers = ref([]);
     const selectedActions = ref([]);
     const groupMappedTree = ref([]);
+    // const filePath = ref(localStorage.getItem("filePath"));
+    // const voiceURL = ref("");
+    
 
     const toggleTriggers = () => {
       showTriggers.value = !showTriggers.value;
@@ -889,6 +893,8 @@ export default {
 
     const allSelectedActions = ref([]);
     const updateAction = (data, activeAction, actionType) => {
+      console.log(data, activeAction, actionType,'thehhhh');
+      
       // allSelectedActions.value[activeAction] =
       workflow.value.triggers[selectedTriggerIndex.value].triggerActions[
         activeAction
@@ -1011,6 +1017,7 @@ export default {
           setTimeout(() => {
             router.push("/tenant/workflow/list");
           }, 3200);
+          // localStorage.removeItem("filePath")
         } else {
           ElMessage({
             type: "error",
@@ -1043,17 +1050,18 @@ export default {
         if (status) {
           ElMessage({
             type: "success",
-            message: "Workflow created successfully",
+            message: "Workflow updated successfully",
             duration: 3000,
           });
           setTimeout(() => {
             router.push("/tenant/workflow/list");
           }, 3200);
+          // localStorage.removeItem("filePath")
         } else {
           ElMessage({
             type: "error",
             message: `${
-              response && response.length < 50 ? response : "Workflow could not be update"
+              response && response.length < 50 ? response : "Workflow could not be updated"
             }`,
             duration: 3000,
           });
@@ -1137,6 +1145,7 @@ export default {
                   Action: JSON.stringify({
                     ActionType: i.action.actionType,
                     JSONActionParameters: i.action.jsonActionParameters,
+                    voiceUrl: i.action.voiceUrl,
                   }),
                 };
               }),
@@ -1161,6 +1170,8 @@ export default {
     };
 
     const getAction = (type, index) => {
+      console.log(type, index,  'hghhh');
+      
       const triggerAction = workflow.value.triggers[index].triggerActions.find(
         (i) => i.actionType === type
       );
@@ -1181,6 +1192,13 @@ export default {
       // done.value = false;
       // triggerDescriptions.value = descriptionHelper(workflow.value.triggers, groups.value, contributionItems.value)
     };
+
+    // watchEffect(() => {
+    //   if (filePath.value) {
+    //     voiceURL.value = filePath.value
+    //   }
+    // });
+    
     const previousPage = () => {
       router.push("/tenant/workflow/list");
     };
@@ -1188,6 +1206,7 @@ export default {
     return {
       showTriggers,
       previousPage,
+      // voiceURL,
       // triggersIsVissible,
       toggleTriggers,
       triggers,

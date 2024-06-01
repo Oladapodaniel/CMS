@@ -1,8 +1,5 @@
 <template>
-  <div
-    :class="{ 'container-wide': lgAndUp || xlAndUp }"
-    class="container-top h-100"
-  >
+  <div :class="{ 'container-wide': lgAndUp || xlAndUp }" class="container-top h-100">
     <!-- <div
       class="d-flex flex-column flex-md-row justify-content-md-between botom mb-4"
     >
@@ -24,258 +21,234 @@
         ></div>
       </div>
     </div> -->
-    <div
-        class="d-flex flex-column flex-sm-row justify-content-sm-between"
-      >
-        <div >
-          <div class="text-head font-weight-600 h2 py-0 my-0 text-black">First Timers</div>
-          <div class="s-18">Showing all First Timers</div>
+    <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
+      <div>
+        <div class="text-head font-weight-600 h2 py-0 my-0 text-black">First Timers</div>
+        <div class="s-18">Showing all First Timers</div>
+      </div>
+      <div class="d-flex flex-wrap flex-sm-nowrap mt-3 mt-sm-0">
+        <div class="d-flex mt-1 w-100" @click="watchVideo">
+          <span class="s-18 primary--text">Watch Video </span>
+          <span class="mt-0 ml-1"
+            ><el-icon :size="27" class="primary--text"><VideoPlay /></el-icon
+          ></span>
         </div>
-        <div class="d-flex flex-wrap flex-sm-nowrap mt-3 mt-sm-0">
-          <div class="d-flex mt-1 w-100" @click="watchVideo">
-            <span class="s-18 primary--text">Watch Video </span>
-            <span class="mt-0 ml-1"
-              ><el-icon :size="27" class="primary--text"><VideoPlay /></el-icon
-            ></span>
-          </div>
-          <el-dropdown
-            trigger="click"
-            class="align-items-center justify-content-center d-flex ml-md-3 ml-0 default-btn py-0 m-0 border"
-            style="height: 2.2rem"
-          >
-            <span class="el-dropdown-link w-100 primary--text text-center font-weight-600">
-              Menu
-              <el-icon class="el-icon--right">
-                <arrow-down />
-              </el-icon>
-            </span>
-            <template #dropdown>
-              <el-dropdown-menu >
-                <el-dropdown-item class="text-black" @click="copylink"
-                  >Copy Public Link
-                  <img
-                    class="ml-2"
-                    src="../../assets/copyurl-icon.png"
-                    alt=""
-                  />
-                </el-dropdown-item>
-                <el-dropdown-item
-                  @click="getQrCode"
-                  class="text-black"
-                >
-                  Show QR Code
-                </el-dropdown-item>
-                <!-- <el-dropdown-item class="text-black" @click="showAnalysis"
+        <el-dropdown
+          trigger="click"
+          class="align-items-center justify-content-center d-flex ml-md-3 ml-0 default-btn py-0 m-0 border"
+          style="height: 2.2rem"
+        >
+          <span class="el-dropdown-link w-100 primary--text text-center font-weight-600">
+            Menu
+            <el-icon class="el-icon--right">
+              <arrow-down />
+            </el-icon>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item class="text-black" @click="copylink"
+                >Copy Public Link
+                <img class="ml-2" src="../../assets/copyurl-icon.png" alt="" />
+              </el-dropdown-item>
+              <el-dropdown-item @click="getQrCode" class="text-black">
+                Show QR Code
+              </el-dropdown-item>
+              <!-- <el-dropdown-item class="text-black" @click="showAnalysis"
                   >Analysis</el-dropdown-item
                 > -->
-                <el-dropdown-item class="text-black" @click="importFirstTimer"
-                  >Import</el-dropdown-item
-                >
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
-          <!-- <el-button @click="importMembers" class="header-btn secondary-button" round>Import</el-button> -->
-          <router-link :to="`/tenant/people/addfirsttimer`" class="no-decoration">
-            <el-button
-              :color="primarycolor"
-              class="ml-0 ml-sm-2 mt-sm-0 mt-3 header-btn"
-              round
-              >Add First Timers</el-button
-            >
-          </router-link>
-        </div>
-      </div>
-    <div class="row" v-if="false">
-      <div class="col-md-2">
-        <div class="font-weight-bold py-md-2 mt-4">QR Code</div>
-        <div class="image" @click="getQrCode">
-          <img src="../../assets/group2.svg" alt="First Timer image" />
-        </div>
-      </div>
-      <div class="col-md-10 pl-0">
-        <div class="font-weight-bold py-md-2 mt-4">
-          Share the link to your first timers to enable them to add their
-          details to your church.
-        </div>
-        <div class="p-inputgroup form-group mt-1">
-          <el-input
-            v-model="firstTimerLink"
-            placeholder="Click the copy button when the link appears"
-            ref="selectedLink"
-            class="input-with-select w-100"
-          >
-            <template #append>
-              <el-button @click="copylink">
-                <el-icon>
-                  <CopyDocument />
-                </el-icon>
-              </el-button>
-            </template>
-          </el-input>
-        </div>
-      </div>
-    </div>
-    <div class="d-flex flex-column flex-md-row justify-content-md-center">
-      <el-icon v-if="loading" class="is-loading" :size="30">
-        <Loading />
-      </el-icon>
-    </div>
-    <el-dialog
-      v-model="displayModal"
-      title="First Timers to import from file"
-      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
-      align-center
-    >
-      <div class="container">
-        <div class="row">
-          <div class="col-3 font-weight-700">Name</div>
-          <div class="col-4 font-weight-700">Email</div>
-          <div class="col-2 font-weight-700">Gender</div>
-          <div class="col-2 font-weight-700">Phone Number</div>
-        </div>
-        <div class="row" v-for="(item, index) in firstTimerData" :key="index">
-          <div class="col-3">
-            {{ item.firstName ? item.firstName : "" }}
-            {{ item.lastName ? item.lastName : "" }}
-          </div>
-          <div class="col-4">{{ item.email }}</div>
-          <div class="col-2">{{ item.gender }}</div>
-          <div class="col-2">{{ item.phoneNumber }}</div>
-        </div>
-      </div>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button
-            class="secondary-button"
-            @click="displayModal = false"
-            round
-            >Cancel</el-button
-          >
+              <el-dropdown-item class="text-black" @click="importFirstTimer"
+                >Import</el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+        <!-- <el-button @click="importMembers" class="header-btn secondary-button" round>Import</el-button> -->
+        <router-link :to="`/tenant/people/addfirsttimer`" class="no-decoration">
           <el-button
             :color="primarycolor"
-            :loading="allGroupLoading"
-            @click="addToFirstTimers"
+            class="ml-0 ml-sm-2 mt-sm-0 mt-3 header-btn"
             round
+            >Add First Timers</el-button
           >
-            Save
-          </el-button>
-        </span>
-      </template>
-    </el-dialog>
-    <el-dialog
-      v-if="showFirsttimer"
-      v-model="QRCodeDialog"
-      title=""
-      :width="mdAndUp || lgAndUp || xlAndUp ? `30%` : xsOnly ? `90%` : `70%`"
-      class="QRCodeDialog"
-      align-center
-    >
-      <div class="d-flex align-items-center flex-column">
-        <h4 class="text-capitalize font-weight-bold">
-          First Timers QR Code For Registration
-        </h4>
+        </router-link>
       </div>
-      <div class="d-flex justify-content-center">
-        <div class="img-wrapper">
-          <img v-if="qrCode" :src="qrCode" class="image-wrapper w-100" />
-        </div>
-      </div>
-    </el-dialog>
-    <div
-      v-if="
-        !loading &&
-        !networkError &&
-        showFirsttimer &&
-        firstTimersList &&
-        firstTimersList.length > 0
-      "
-      class="event-list"
-    >
-      <FirstTimersList
-        :firstTimersList="firstTimersList"
-        :totalItems="totalItems"
-      />
     </div>
-    <div
-      v-if="
-        !loading &&
-        !networkError &&
-        firstTimersList &&
-        firstTimersList.length === 0
-      "
-      class="no-person"
-    >
-      <div class="empty-img">
-        <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
-        <p class="tip">You haven't added any First timer yet</p>
+  </div>
+  <transition name="el-fade-in-linear">
+    <div class="row" v-show="membershipCapacityExceeded">
+      <div class="col-md-12 mb-4">
+        <MemberCapExceeded />
+      </div>
+    </div>
+  </transition>
+  <div class="row" v-if="false">
+    <div class="col-md-2">
+      <div class="font-weight-bold py-md-2 mt-4">QR Code</div>
+      <div class="image" @click="getQrCode">
+        <img src="../../assets/group2.svg" alt="First Timer image" />
+      </div>
+    </div>
+    <div class="col-md-10 pl-0">
+      <div class="font-weight-bold py-md-2 mt-4">
+        Share the link to your first timers to enable them to add their details to your
+        church.
+      </div>
+      <div class="p-inputgroup form-group mt-1">
+        <el-input
+          v-model="firstTimerLink"
+          placeholder="Click the copy button when the link appears"
+          ref="selectedLink"
+          class="input-with-select w-100"
+        >
+          <template #append>
+            <el-button @click="copylink">
+              <el-icon>
+                <CopyDocument />
+              </el-icon>
+            </el-button>
+          </template>
+        </el-input>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex flex-column flex-md-row justify-content-md-center">
+    <el-icon v-if="loading" class="is-loading" :size="30">
+      <Loading />
+    </el-icon>
+  </div>
+  <el-dialog
+    v-model="displayModal"
+    title="First Timers to import from file"
+    :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+    align-center
+  >
+    <div class="container">
+      <div class="row">
+        <div class="col-3 font-weight-700">Name</div>
+        <div class="col-4 font-weight-700">Email</div>
+        <div class="col-2 font-weight-700">Gender</div>
+        <div class="col-2 font-weight-700">Phone Number</div>
+      </div>
+      <div class="row" v-for="(item, index) in firstTimerData" :key="index">
+        <div class="col-3">
+          {{ item.firstName ? item.firstName : "" }}
+          {{ item.lastName ? item.lastName : "" }}
+        </div>
+        <div class="col-4">{{ item.email }}</div>
+        <div class="col-2">{{ item.gender }}</div>
+        <div class="col-2">{{ item.phoneNumber }}</div>
+      </div>
+    </div>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button class="secondary-button" @click="displayModal = false" round
+          >Cancel</el-button
+        >
         <el-button
           :color="primarycolor"
-          @click="addNewFirsttimer"
-          class="ml-2 header-btn"
+          :loading="allGroupLoading"
+          @click="addToFirstTimers"
           round
-          >Add First Timers</el-button
         >
+          Save
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
+  <el-dialog
+    v-if="showFirsttimer"
+    v-model="QRCodeDialog"
+    title=""
+    :width="mdAndUp || lgAndUp || xlAndUp ? `30%` : xsOnly ? `90%` : `70%`"
+    class="QRCodeDialog"
+    align-center
+  >
+    <div class="d-flex align-items-center flex-column">
+      <h4 class="text-capitalize font-weight-bold">
+        First Timers QR Code For Registration
+      </h4>
+    </div>
+    <div class="d-flex justify-content-center">
+      <div class="img-wrapper">
+        <img v-if="qrCode" :src="qrCode" class="image-wrapper w-100" />
       </div>
     </div>
-    <div v-else-if="networkError && !loading" class="adjust-network">
-      <img src="../../assets/network-disconnected.png" />
-      <div>Opps, Your internet connection was disrupted</div>
-    </div>
-
-    <el-skeleton
-      class="w-100"
-      animated
-      v-if="loading && firstTimersList && firstTimersList.length === 0"
-    >
-      <template #template>
-        <div
-          style="
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 20px;
-          "
-        >
-          <el-skeleton-item
-            variant="text"
-            style="width: 240px; height: 240px"
-          />
-          <el-skeleton-item
-            variant="text"
-            style="width: 240px; height: 240px"
-          />
-        </div>
-        <!-- <el-skeleton-item variant="text" class="w-100" style="height: 25px" :rows="10"/> -->
-        <el-skeleton
-          class="w-100 mt-5"
-          style="height: 25px"
-          :rows="20"
-          animated
-        />
-      </template>
-    </el-skeleton>
-    <el-dialog
-      style="border-radius: 20px"
-      v-model="showAddMemberVideo"
-      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
-      top
-    >
-      <div class="row justify-content-center" v-loading>
-        <div class="col-md-12">
-          <iframe
-            width="100%"
-            height="315"
-            :src="videoURL"
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen
-          ></iframe>
-        </div>
-      </div>
-    </el-dialog>
+  </el-dialog>
+  <div
+    v-if="
+      !loading &&
+      !networkError &&
+      showFirsttimer &&
+      firstTimersList &&
+      firstTimersList.length > 0
+    "
+    class="event-list"
+  >
+    <FirstTimersList :firstTimersList="firstTimersList" :totalItems="totalItems" />
   </div>
+  <div
+    v-if="!loading && !networkError && firstTimersList && firstTimersList.length === 0"
+    class="no-person"
+  >
+    <div class="empty-img">
+      <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
+      <p class="tip">You haven't added any First timer yet</p>
+      <el-button
+        :color="primarycolor"
+        @click="addNewFirsttimer"
+        class="ml-2 header-btn"
+        round
+        >Add First Timers</el-button
+      >
+    </div>
+  </div>
+  <div v-else-if="networkError && !loading" class="adjust-network">
+    <img src="../../assets/network-disconnected.png" />
+    <div>Opps, Your internet connection was disrupted</div>
+  </div>
+
+  <el-skeleton
+    class="w-100"
+    animated
+    v-if="loading && firstTimersList && firstTimersList.length === 0"
+  >
+    <template #template>
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-top: 20px;
+        "
+      >
+        <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+        <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+      </div>
+      <!-- <el-skeleton-item variant="text" class="w-100" style="height: 25px" :rows="10"/> -->
+      <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
+    </template>
+  </el-skeleton>
+  <el-dialog
+    style="border-radius: 20px"
+    v-model="showAddMemberVideo"
+    :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+    top
+  >
+    <div class="row justify-content-center" v-loading>
+      <div class="col-md-12">
+        <iframe
+          width="100%"
+          height="315"
+          :src="videoURL"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+  </el-dialog>
 </template>
 
 <script>
@@ -288,17 +261,14 @@ import router from "@/router/index";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import store from "../../store/store";
 import { ElMessage, ElMessageBox } from "element-plus";
+import MemberCapExceeded from "@/components/membership/MembershipCapExceeded.vue";
 
 export default {
-  components: { FirstTimersList, NewConvertList },
+  components: { FirstTimersList, NewConvertList, MemberCapExceeded },
   setup() {
     const primarycolor = inject("primarycolor");
-    const firstTimersList = ref(
-      store.getters["membership/allFirstTimers"].data
-    );
-    const totalItems = ref(
-      store.getters["membership/allFirstTimers"].totalItems
-    );
+    const firstTimersList = ref(store.getters["membership/allFirstTimers"].data);
+    const totalItems = ref(store.getters["membership/allFirstTimers"].totalItems);
     const loading = ref(false);
     const tenantID = ref("");
     const selectedLink = ref(null);
@@ -307,16 +277,15 @@ export default {
     // const showNewConvert = ref(false);
     const importFile = ref("");
     const image = ref("");
-    const videoURL = ref(
-      "https://www.youtube.com/embed/OOsP6uUwnIo?si=gA3fxJ1_E1s52q-L" 
-    );
+    const videoURL = ref("https://www.youtube.com/embed/OOsP6uUwnIo?si=gA3fxJ1_E1s52q-L");
     const QRCodeDialog = ref(false);
-    const showAddMemberVideo  = ref(false);
+    const showAddMemberVideo = ref(false);
     const displayModal = ref(false);
     const firstTimerData = ref([]);
     const networkError = ref(false);
     const qrCode = ref("");
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
+    const membershipCapacityExceeded = ref(false);
 
     const addNewFirsttimer = () => {
       router.push("/tenant/people/addfirsttimer");
@@ -374,10 +343,7 @@ export default {
       const formData = new FormData();
       formData.append("file", image.value ? image.value : "");
       try {
-        let { data } = await axios.post(
-          "/api/People/UploadFirstTimerFile",
-          formData
-        );
+        let { data } = await axios.post("/api/People/UploadFirstTimerFile", formData);
         if (!data.response.toString().includes("0")) {
           ElMessage({
             type: "success",
@@ -406,8 +372,7 @@ export default {
         } else if (err.toString().toLowerCase().includes("network error")) {
           ElMessage({
             type: "warning",
-            message:
-              "Network error, please ensure that you have a network connection",
+            message: "Network error, please ensure that you have a network connection",
             duration: 5000,
           });
         } else if (err.toString().toLowerCase().includes("timeout")) {
@@ -449,8 +414,7 @@ export default {
         if (err.toString().toLowerCase().includes("network error")) {
           ElMessage({
             type: "warning",
-            message:
-              "Network error, please ensure that you have a network connection",
+            message: "Network error, please ensure that you have a network connection",
             duration: 8000,
           });
         } else if (err.toString().toLowerCase().includes("timeout")) {
@@ -480,23 +444,23 @@ export default {
     //   });
     // };
     const copylink = () => {
-            const textarea = document.createElement("textarea");
-            textarea.value = firstTimerLink.value;
+      const textarea = document.createElement("textarea");
+      textarea.value = firstTimerLink.value;
 
-            document.body.appendChild(textarea);
+      document.body.appendChild(textarea);
 
-            textarea.select();
-            textarea.setSelectionRange(0, 99999);
+      textarea.select();
+      textarea.setSelectionRange(0, 99999);
 
-            document.execCommand("copy");
-            document.body.removeChild(textarea)
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
 
-            ElMessage({
-                showClose: true,
-                message: "URL Copied Successfully!",
-                type: "success",
-            });
-        };
+      ElMessage({
+        showClose: true,
+        message: "URL Copied Successfully!",
+        type: "success",
+      });
+    };
 
     const importFirstTimer = () => {
       router.push({
@@ -511,8 +475,7 @@ export default {
     const getUser = computed(() => {
       if (
         !store.getters.currentUser ||
-        (store.getters.currentUser &&
-          Object.keys(store.getters.currentUser).length == 0)
+        (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)
       )
         return "";
       return store.getters.currentUser;
@@ -521,6 +484,12 @@ export default {
     watchEffect(() => {
       if (getUser.value) {
         tenantID.value = getUser.value.tenantId;
+
+        if (getUser.value.churchSize >= getUser.value.subscribedChurchSize) {
+          membershipCapacityExceeded.value = true;
+        } else {
+          membershipCapacityExceeded.value = false;
+        }
       }
     });
 
@@ -528,7 +497,6 @@ export default {
       if (!tenantID.value) return "";
       return `${window.location.origin}/createfirsttimer/${tenantID.value}`;
     });
-    
 
     const getQrCode = async () => {
       try {
@@ -563,7 +531,7 @@ export default {
     return {
       firstTimersList,
       showAddMemberVideo,
-       videoURL,
+      videoURL,
       totalItems,
       showFirsttimerPage,
       QRCodeDialog,
@@ -593,12 +561,14 @@ export default {
       importFirstTimer,
       networkError,
       setFirsttimer,
+      xsOnly,
       mdAndUp,
       lgAndUp,
       xlAndUp,
       primarycolor,
       watchVideo,
-      showAnalysis
+      showAnalysis,
+      membershipCapacityExceeded,
     };
   },
 };
@@ -785,4 +755,3 @@ export default {
   opacity: 0;
 }
 </style>
-

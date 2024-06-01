@@ -2,9 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 
 import Pagination from '@/components/payment/PaymentSuccessful.vue';
+import getSubdomain from "../services/churchTypeMiddlware";
 
 
-
+// const initialPath = getSubdomain() === 'alat' ? '../components/churcheslandingpage/AlatFaith.vue' : '../views/account/Login.vue'
 
 // import TermsOfUse from '../components/temp/PaymentPage';
 
@@ -26,9 +27,34 @@ const routes = [
         }
     },
 
+    // {
+    //     path: '/',
+    //     name: 'Login',
+    //     component: () =>
+    //         import( /* webpackChunkName: "login" */ '../views/account/Login.vue'),
+    //     meta: {
+    //         title: 'Churchplus - Login',
+    //     }
+    // },
     {
         path: '/',
         name: 'Login',
+        component: () => {
+          // Your condition to determine which component to load
+          const condition =  getSubdomain() === 'alat'; // or false based on your logic
+    
+          // Dynamically import the component based on the condition
+          return condition
+            ? import(/* webpackChunkName: "alatfaithhomepage" */ '../components/churcheslandingpage/AlatFaith.vue')
+            : import(/* webpackChunkName: "churchpluslogin" */ '../views/account/Login.vue');
+        },
+        meta: {
+          title:  getSubdomain() === 'alat' ? 'AlatFaith - Welcome' : 'Churchplus - Login',
+        }
+      },
+    {
+        path: '/login',
+        name: 'AlatLogin',
         component: () =>
             import( /* webpackChunkName: "login" */ '../views/account/Login.vue'),
         meta: {
@@ -86,6 +112,24 @@ const routes = [
         name: 'StartingDashboard',
         component: () =>
             import( /* webpackChunkName: "startingdashboard" */ '../views/onboarding/StartingDashboard.vue'),
+        meta: {
+            title: 'Churchplus - Starting Board',
+        }
+    },
+    {
+        path: '/alatregister',
+        name: 'AlatRegister',
+        component: () =>
+            import( /* webpackChunkName: "startingdashboard" */ '../views/account/AlatRegister.vue'),
+        meta: {
+            title: 'Churchplus - Starting Board',
+        }
+    },
+    {
+        path: '/alatotp',
+        name: 'AlatOtp',
+        component: () =>
+            import( /* webpackChunkName: "startingdashboard" */ '../views/account/AlatOtp.vue'),
         meta: {
             title: 'Churchplus - Starting Board',
         }
@@ -1640,13 +1684,13 @@ const routes = [
                 component: () =>
                     import( /* webpackChunkName: "defaultmessage" */ '@/views/settings/FollowUpStatus')
             },
-                // {
-                //     path: 'details',
-                //     name: 'Details',
-                //     component: () =>
-                //         import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/Details')
-                // },
-            ]
+            {
+                path: 'deleteterms',
+                name: 'DeleteTerms',
+                component: () =>
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/DeleteTerms')
+            },
+        ]
         },
         {
             path: 'chartofaccount',
@@ -2266,11 +2310,15 @@ router.beforeEach((to, from, next) => {
         to.name === "PublicNewConvert" ||
         to.name === "EventRegistration" ||
         to.name === "PricingPage" ||
+        to.name === "LandingPage" ||
         to.name === "PublicForm" ||
+        to.name === "AlatRegister" ||
+        to.name === "AlatLogin" ||
+        to.name === "OTP" ||
+        to.name === "AlatOtp" ||
         to.name === "PublicPledgePayment") && !tokenIsValid) return next(true)
 
-
-    if ((to.name !== "Login" && to.name !== "Register") && to.name !== "OTP" && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
+    if ((to.name !== "Login" && to.name !== "Register") && to.name !== "OTP" && to.name !== "AlatRegister" && to.name !== "AlatOtp" && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
     if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/tenant")
 
     if ((role && role.length === 1 && role[0] === "FollowUp" && token) && (to.path !== "/tenant/followup" && to.name !== "FirsttimerManagement")) {

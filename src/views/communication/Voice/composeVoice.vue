@@ -20,7 +20,7 @@
             <template #footer>
               <span class="dialog-footer">
                 <el-button class="secondary-button" round @click="() => (display = false)">Cancel</el-button>
-                <el-button round :color="primarycolor" :loading="loadingSchedule"
+                <el-button round :color="primarycolor" :disabled="disableBtn" :loading="loadingSchedule"
                   @click="contructScheduleMessageBody(2, 'dotgovoice')">
                   Schedule
                 </el-button>
@@ -545,6 +545,7 @@ export default {
       { name: 'Upload a new audio file', id: 2 },
     ])
     const selectedVoiceType = ref(0)
+    const route = useRoute();
 
 
 
@@ -563,6 +564,18 @@ export default {
       console.log("The blob data:", data);
       console.log("Downloadable audio", window.URL.createObjectURL(data));
     };
+
+    const getSingelVoice =  async () => {
+      try {
+        const data = await axios.get(`/api/Messaging/getSentVoicebyId?CommReportId=${route.query.voiceId}`)
+        console.log(data, 'voice');
+        subject.value = data.data.subject
+        // selectedVoiceaudio.value.fileBlobName  = data.data.message
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getSingelVoice()
 
     // function that selects the file
     // const audioSelected = (e) => {
@@ -644,7 +657,6 @@ export default {
     }
 
     const chooseVoiceFile = (e) => {
-      console.log(audioPlayer.value)
       const mediaPlayer = audioPlayer.value
       file.value = e.raw;
       const reader = new FileReader();
@@ -956,6 +968,7 @@ export default {
     };
 
     const contructScheduleMessageBody = (sendOrSchedule, gateway) => {
+      disableBtn.value = true
       const data = {
         subject: subject.value,
         // message: editorData.value,
@@ -1044,6 +1057,7 @@ export default {
           message: `Voice message scheduled for ${new Date(data.date).toLocaleTimeString()}`,
           duration: 6000
         })
+        disableBtn.value = false;
         console.log(response, "Schedule response");
       } catch (error) {
         console.log(error);
@@ -1083,7 +1097,6 @@ export default {
 
     const userCountry = ref("");
 
-    const route = useRoute();
     if (route.query.phone) {
       phoneNumber.value = route.query.phone;
       phoneNumberSelectionTab.value = true;
@@ -1218,7 +1231,6 @@ export default {
     const getAllVoiceAudio = async () => {
       try {
         let data = await communicationService.getAllUploadedVoiceAudio();
-        console.log(data)
         voiceAudioList.value = data
       }
       catch (err) {

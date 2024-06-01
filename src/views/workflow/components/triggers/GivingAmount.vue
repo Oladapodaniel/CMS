@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <div class="row mt-4">
+    <div class="row mt-3">
       <div class="col-md-12">
         <label for="" class="font-weight-600">And who gives</label>
       </div>
@@ -68,7 +68,7 @@
       </div>
     </div>
 
-    <div class="row mt-4">
+    <div class="row mt-3">
       <div class="col-md-12">
         <label for="" class="font-weight-600">{{ currency }}</label>
       </div>
@@ -82,7 +82,7 @@
       </div>
     </div>
 
-    <div class="row mt-4">
+    <div class="row mt-3">
       <div class="col-md-12">
         <label for="" class="font-weight-600">To</label>
       </div>
@@ -119,12 +119,12 @@
       </div>
     </div>
 
-    <div class="row mt-4">
+    <div class="row mt-3">
       <div class="col-md-12">
         <label for="" class="font-weight-600">In</label>
       </div>
-      <div class="col-md-12 mb-2">
-        <el-dropdown trigger="click" class="w-100">
+      <div class="col-md-12 mb-2 d-flex gap-2">
+        <el-dropdown trigger="click" :class="{ 'w-75': timeRange, 'w-100': !timeRange }">
           <span class="el-dropdown-link w-100">
             <div
               class="d-flex justify-content-between border-eldropdown w-100"
@@ -149,6 +149,15 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
+        <transition name="el-zoom-in-center">
+          <el-input
+            type="text"
+            v-show="timeRange"
+            @input="handleDays"
+            placeholder="How many days?"
+            v-model="days"
+          />
+        </transition>
       </div>
     </div>
   </div>
@@ -175,6 +184,7 @@ export default {
   setup(props, { emit }) {
     const store = useStore();
     const currentUser = ref(store.getters.currentUser);
+    const timeRange = ref(false);
 
     const data = ref({});
     const selectedGroup = ref([]);
@@ -203,6 +213,12 @@ export default {
       emit("updatetrigger", JSON.stringify(data.value), props.selectedTriggerIndex);
     };
 
+    const days = ref(0);
+    const handleDays = (e) => {
+      data.value.days = days.value;
+      emit("updatetrigger", JSON.stringify(data.value), props.selectedTriggerIndex);
+    };
+
     const parsedData = ref({});
 
     const category = ref({});
@@ -216,6 +232,10 @@ export default {
     const givingTimeSelected = (item) => {
       givingTime.value = item;
       data.value.singleOrLast = item;
+
+      item.toLowerCase() === "the last"
+        ? (timeRange.value = true)
+        : (timeRange.value = false);
       emit("updatetrigger", JSON.stringify(data.value), props.selectedTriggerIndex);
     };
 
@@ -256,6 +276,9 @@ export default {
         amount.value = parsedData.value.amount;
         data.amount = parsedData.value.amount;
 
+        days.value = parsedData.value.days;
+        data.days = parsedData.value.days;
+
         selectedGroup.value =
           props.groups.length > 0
             ? workflow_util.getGroups(parsedData.value.groups, props.groups)
@@ -272,6 +295,9 @@ export default {
 
         givingTime.value = parsedData.value.singleOrLast;
         data.value.singleOrLast = parsedData.value.singleOrLast;
+        data.value.singleOrLast?.toLowerCase() == "the last"
+          ? (timeRange.value = true)
+          : (timeRange.value = false);
       }
     });
 
@@ -291,6 +317,9 @@ export default {
       currency,
       removeTrigger,
       logicalOperatorList,
+      timeRange,
+      days,
+      handleDays,
     };
   },
 };

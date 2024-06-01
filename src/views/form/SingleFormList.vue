@@ -10,12 +10,14 @@
                     <span class="mr-2">Copy link</span>
                     <img src="../../assets/form/copyIcon.png" style="width: 25px" alt="">
                 </el-button>
-                <el-button class="d-flex mt-sm-0 mt-3 " @click="previewForm" size="large" round>
+                <router-link class="  text-decoration-none" target="_blank" :to="`/forms/${formPreID}`">
+                    <el-button class="d-flex mt-sm-0 mt-3 " size="large" round>
                     <el-icon>
                         <View />
                     </el-icon>
                     <span>Preview Form</span>
                 </el-button>
+                </router-link>  
             </div>
 
             <!-- <div class="d-flex flex-column flex-sm-row   link">
@@ -263,6 +265,7 @@ export default {
         const primarycolor = inject("primarycolor");
         const route = useRoute();
         const formlink = ref(`${window.location.origin}/forms/${route.params.id}`)
+        const formPreID = ref(route.params.id)
         const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
 
         const formHeaders = ref([
@@ -409,6 +412,7 @@ export default {
             sortedData,
             labels,
             QRCodeDialog,
+            formPreID,
             qrCode,
             mdAndUp, lgAndUp, xlAndUp, xsOnly,
             formlink,

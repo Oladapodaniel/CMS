@@ -71,14 +71,9 @@
           <img src="../../assets/group2.svg" alt="Member image" />
         </div>
       </div>
-      <div
-        class="col-md-10 pl-0 py-md-4 mt-3"
-        v-if="route.fullPath == '/tenant/people'"
-      >
-        <div class="font-weight-bold">
-          Share the link to your members to enable them to add their details to
-          your church .
-        </div>
+      <div class="col-md-10 py-md-4 mt-3" v-if="route.fullPath == '/tenant/people'">
+        <div class="font-weight-bold">Share the link to your members to enable them to add their details to your
+          church .</div>
         <div class="p-inputgroup form-group mt-2">
           <el-input
             v-model="memberlink"
@@ -97,6 +92,13 @@
         </div>
       </div>
     </div>
+    <transition name="el-fade-in-linear">
+      <div class="row" v-show="membershipCapacityExceeded">
+        <div class="col-md-12 mb-4  " v-if="route.fullPath == '/tenant/people'" >
+        <MemberCapExceeded />
+        </div>
+      </div>
+    </transition>
     <el-dialog
       v-model="QRCodeDialog"
       title=""
@@ -152,8 +154,12 @@ import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useStore } from "vuex";
 // import axios from 'axios';
 import axios from "@/gateway/backendapi";
+import MemberCapExceeded from "@/components/membership/MembershipCapExceeded.vue";
 
 export default {
+  components: {
+    MemberCapExceeded
+  },
   setup() {
     const store = useStore();
     const selectedLink = ref(null);
@@ -167,7 +173,7 @@ export default {
     const qrCode = ref("");
     const { lgAndUp, xlAndUp, mdAndUp, xsOnly } = deviceBreakpoint();
     const primarycolor = inject("primarycolor");
-
+    const membershipCapacityExceeded = ref(false)
     const watchVideo = () => {
       showAddMemberVideo.value = true;
     };
@@ -192,7 +198,13 @@ export default {
 
     watchEffect(() => {
       if (getUser.value) {
-        tenantID.value = getUser.value.tenantId;
+        tenantID.value = getUser.value.tenantId
+
+        if (getUser.value.churchSize >= getUser.value.subscribedChurchSize) {
+          membershipCapacityExceeded.value = true;
+        } else {
+          membershipCapacityExceeded.value = false;
+        }
       }
     });
 
@@ -289,6 +301,7 @@ export default {
       lgAndUp,
       xlAndUp,
       primarycolor,
+      membershipCapacityExceeded
     };
   },
 };

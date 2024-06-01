@@ -11,7 +11,7 @@
       <el-menu default-active="1" :active-text-color="primarycolor"
         class="el-menu-vertical-demo  mt-3" text-color="#02172e" :unique-opened="true">
         <div v-for="(item, index) in menuLink" :key="index">
-          <el-sub-menu :index="`${index + 1}`" v-if="item.submenu.length > 0">
+          <el-sub-menu :index="`${index + 1}`" v-if="item.submenu.length > 0" :disabled="disableNav(item.id)">
             <template #title>
               <el-icon>
                 <img :src="item.logo" class="link-icon" alt="" v-if="item.logo" />
@@ -34,7 +34,7 @@
               </el-menu-item-group>
             </div>
           </el-sub-menu>
-          <el-menu-item :index="`${index + 1}`" class="w-100" @click="routeToPage(item)" v-else>
+          <el-menu-item :index="`${index + 1}`" class="w-100" @click="routeToPage(item)" v-else :disabled="disableNav(item.id)">
             <el-icon v-if="item.id === 5">
               <img style="width: 40px" :src="item.logo" class="link-icon" alt="" />
             </el-icon>
@@ -83,6 +83,29 @@
       </div>
     </el-col>
   </el-row>
+  <el-dialog v-model="subscriptionExpired" title="" class="expiredSubDialog "
+    :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" align-center :show-close="false">
+    <template #header="{ close, titleId, titleClass }">
+      <div class="my-header dialog-header">
+        <div class="d-flex justify-content-center align-items-center">
+          <img src="../../assets/expired_timer.svg" width="50" alt="expired" />
+          <h4 :id="titleId" class="text-white font-weight-bold s-24 ml-2 mt-2">You subscription has expired</h4>
+        </div>
+      </div>
+    </template>
+    <div class="row pb-4">
+      <div class="col-md-6 offset-md-3">
+        <div class="dialog-body-text">Get back on track with your
+          church Management, Don’t miss out!</div>
+      </div>
+      <div class="col-md-6 offset-md-3  mt-3">
+        <el-button :color="primarycolor" :loading="loading" size="large" class="w-100" @click="subscriptionPage(1)"
+          round>Subscribe Now</el-button>
+          <div class="text-center my-2 s-18 text-dark">or</div>
+          <el-button class="secondary-button w-100" size="large" @click="subscriptionPage(2)" round>Use communication module</el-button>
+      </div>
+    </div>
+  </el-dialog>
 </template>
 
 <script>
@@ -92,15 +115,16 @@ import store from "@/store/store";
 import axios from "@/gateway/backendapi";
 import { useRouter } from 'vue-router'
 import setupService from '../../services/setup/setupservice';
+import deviceBreakpoint from "@/mixins/deviceBreakpoint";
 export default {
-  components: {
-  },
   emits: ['tenantname', 'linkclicked'],
   setup(props, { emit }) {
+    const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
     const primarycolor = inject('primarycolor')
     const route = useRoute();
     const router = useRouter()
     const churchLogo = ref("");
+    const subscriptionExpired = ref(false);
     const roleOfCurrentUser = computed(() => {
       if (!localStorage.getItem('roles')) return []
       return JSON.parse(localStorage.getItem('roles'))
@@ -552,6 +576,19 @@ export default {
         emit('linkclicked', true);
       }
     }
+    
+    const disableNav = (id) => {
+      return getUser?.value?.subStatus?.toLowerCase() === 'expired' ? id !== 3 && id !== 1 ? true : false : false
+    }
+
+    const subscriptionPage = (type) => {
+      subscriptionExpired.value = false
+      type == 1 ? router.push("/tenant/subscription") : router.push("/tenant/sms/sent")
+    }
+
+    watchEffect(() => {
+      getUser?.value?.subStatus?.toLowerCase() === 'expired' ? subscriptionExpired.value = true : subscriptionExpired.value = false;
+    })
 
 
     return {
@@ -573,7 +610,13 @@ export default {
       linkClicked,
       tenantInfo,
       getUser,
-      primarycolor
+      primarycolor,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      disableNav,
+      subscriptionExpired,
+      subscriptionPage
     };
   },
 };
@@ -582,7 +625,6 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
-  font-size: 16px
 }
 
 .user {
@@ -647,7 +689,12 @@ export default {
   opacity: 0.5;
 }
 
-
+.dialog-body-text {
+  color: #171717;
+  text-align: center;
+  font-weight: 700;
+  font-size: 20px;
+}
 
 @media screen and (max-width: 1100px) {
   .nav {
@@ -656,8 +703,5 @@ export default {
     z-index: 10;
   }
 
-  /* .nav .link {
-    opacity: 1;
-  } */
 }
 </style>

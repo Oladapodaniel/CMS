@@ -293,7 +293,7 @@ export default {
           : getIdsOfEmailsToDelete(markedMail.value);
 
         const { data } = await axios.delete(
-          `/api/Messaging/DeleteSentEmails?SentEmailIdList=${stringOfEmailIds}`
+          `/api/Messaging/DeleteSentEmails?IdList=${stringOfEmailIds}`
         );
         if (data.deleted) {
           ElMessage({

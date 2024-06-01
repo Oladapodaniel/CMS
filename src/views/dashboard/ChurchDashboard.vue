@@ -103,6 +103,12 @@
               <div class="cursor-pointer" @click="subscribeNow">
                 <el-button round>Subscribe now</el-button>
               </div>
+              <!-- <a href="https://churchplus.co/awoofwebsite/" target="_blank" class="no-decoration">
+                <el-button class="mt-1" round>Get one now</el-button>
+              </a> -->
+              <a href="https://my.churchplus.co/forms/9ab06eed-c8fc-4257-2968-08dc652324f2" target="_blank" class="no-decoration">
+                <el-button class="mt-1" round>Get one now</el-button>
+              </a>
             </div>
             <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 8">
               <div class="">
@@ -972,8 +978,53 @@
               </div>
             </div>
           </div>
-
-          <div class="mt-5" v-loading="dashboardLoading"></div>
+          <div class="row mt-4">
+            <div class="col-12 col-sm-6 col-md-4  more-things">
+              <img src="../../assets/mobileapp2.svg" />
+              <div class="mt-4">
+                <div class="can-do">
+                  <h4>Mobile app</h4>
+                </div>
+              </div>
+              <div class="more-body mt-2">
+                Get a customized mobile app for your church.
+              </div>
+              <router-link :to="{ name: 'WelcomeOnboarding1' }" class="no-decoration">
+                <el-button class="mt-1 bg-warning text-white" round>Set up now</el-button>
+              </router-link>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 mt-5 mt-md-0 more-things">
+              <img src="../../assets/website2.svg" />
+              <div class="mt-4">
+                <div class="can-do">
+                  <h4>Website</h4>
+                </div>
+              </div>
+              <div class="more-body mt-2">
+                Get a user engaging website for your church.
+              </div>
+              <a href="https://my.churchplus.co/forms/9ab06eed-c8fc-4257-2968-08dc652324f2" class="no-decoration" target="_blank">
+                <el-button class="mt-1" round>Get one now</el-button>
+              </a>
+              <!-- <a href="https://churchplus.co/awoofwebsite/" class="no-decoration" target="_blank">
+                <el-button class="mt-1" round>Get one now</el-button>
+              </a> -->
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 mt-5 mt-sm-0 more-things second">
+              <img src="../../assets/onlinegiving2.svg" />
+              <div class="mt-4">
+                <div class="can-do">
+                  <h4>Online giving</h4>
+                </div>
+              </div>
+              <div class="more-body mt-2">
+                Allow members to make online donations to your church.
+              </div>
+              <router-link to="/tenant/payments" class="no-decoration">
+                <el-button class="mt-1" round>Set up now</el-button>
+              </router-link>
+            </div>
+          </div>
         </div>
       </div>
       <el-dialog

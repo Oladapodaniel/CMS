@@ -200,7 +200,7 @@
                     <hr class="mt-4" />
                 </div>
                 <div class="col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right mb-3 mb-md-0">
-                    <div>Select Payment Gateway</div> 
+                    <div>Select Payment Gateway</div>
                     <!-- <div v-if="gatewayNotification" class="text-danger small font-weight-bold">Please select <span class=""> one or two</span>  payment gateway</div> -->
                 </div>
                 <div class=" col-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 align-self-center">
@@ -625,6 +625,7 @@ export default {
             item.isChecked = !item.isChecked
 
             if (item.isChecked && paymentGateWays.value.findIndex(i => i.id === item.id) < 0) {
+                console.log(item.name, 'kjjkkk');
 
                 if (item.name.toLowerCase().includes('flutterwave')) {
                     try {
@@ -844,6 +845,7 @@ export default {
                 }
 
                 // alert(i)
+                // return i.name.toLowerCase().includes("flutterwave")
                 return i.name.toLowerCase().includes("paystack") || i.name.toLowerCase().includes("flutterwave")
             })
 

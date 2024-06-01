@@ -151,7 +151,7 @@
             </div>
             <!-- <div class="col-md-10 mt-4 h-100 bg-white mb-5"> -->
                 <div class="col-md-10 mt-4 h-100 bg-white mb-5"
-                v-if="monthRemaining >= 12 && Plans.membershipSize >= 500 && !paymentDone">
+                v-if="monthRemaining >= 10 && Plans.membershipSize >= 500 && !paymentDone">
                 <div class="row justify-content-center align-items-center">
                     <div class="col-md-10 d-flex justify-content-center">
                         <div class="col-md-6 ">

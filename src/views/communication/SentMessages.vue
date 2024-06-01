@@ -295,7 +295,7 @@ export default {
     const deleteSingleItem = () => {
       let bail = convert(marked.value);
       axios
-        .delete(`/api/Messaging/DeleteSentSMS?SentSMSIdList=${bail}`)
+        .delete(`/api/Messaging/DeleteSentSMS?IdList=${bail}`)
         .then(() => {
           sentSMS.value = sentSMS.value.filter((item) => {
             const y = marked.value.findIndex((i) => i.id === item.id);
