@@ -57,9 +57,16 @@
           </div>
         </div>
       </div>
+      <transition name="el-fade-in-linear">
+      <div class="row" v-show="membershipCapacityExceeded">
+        <div class="col-md-12 mt-3">
+          <MemberCapExceeded />
+        </div>
+      </div>
+    </transition>
       <div class="top-con">
         <div class="">
-          <div class="table-to p-3 mt-5">
+          <div class="table-to p-3 mt-3">
             <div
               class="d-flex flex-column flex-sm-row justify-content-sm-between"
             >
@@ -307,12 +314,14 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import store from "../../store/store";
 import smsComponent from "../groups/component/smsComponent.vue";
 import emailComponent from "../groups/component/emailComponent.vue";
+import MemberCapExceeded from "@/components/membership/MembershipCapExceeded.vue";
 
 export default {
   components: {
     Table,
     smsComponent,
     emailComponent,
+    MemberCapExceeded
   },
   setup(props) {
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
@@ -340,6 +349,7 @@ export default {
       { name: "INTERACTIONS", value: "interactions" },
       { name: "ACTION", value: "action" },
     ]);
+    const membershipCapacityExceeded = ref(false)
 
     const formatDate = (date) => {
       return dateFormatter.monthDayYear(date);
@@ -443,6 +453,12 @@ export default {
     watchEffect(() => {
       if (getUser.value) {
         tenantID.value = getUser.value.tenantId;
+
+        if (getUser.value.churchSize >= getUser.value.subscribedChurchSize) {
+          membershipCapacityExceeded.value = true;
+        } else {
+          membershipCapacityExceeded.value = false;
+        }
       }
     });
 
@@ -525,7 +541,8 @@ export default {
       qrCode,
       getQrCode2,
       newConvertLink,
-      selectedLink
+      selectedLink,
+      membershipCapacityExceeded
     };
   },
 };

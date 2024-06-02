@@ -94,7 +94,7 @@
     </div>
     <transition name="el-fade-in-linear">
       <div class="row" v-show="membershipCapacityExceeded">
-        <div class="col-md-12 mb-4  " v-if="route.fullPath == '/tenant/people'" >
+        <div class="col-md-12 mt-3" v-if="route.fullPath == '/tenant/people'" >
         <MemberCapExceeded />
         </div>
       </div>

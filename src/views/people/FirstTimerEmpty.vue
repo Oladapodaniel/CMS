@@ -73,136 +73,136 @@
         </router-link>
       </div>
     </div>
-  </div>
-  <!-- <transition name="el-fade-in-linear">
-    <div class="row" v-show="membershipCapacityExceeded">
-      <div class="col-md-12 mb-4">
-        <MemberCapExceeded />
-      </div>
-    </div>
-  </transition> -->
-  <div class="row" v-if="false">
-    <div class="col-md-2">
-      <div class="font-weight-bold py-md-2 mt-4">QR Code</div>
-      <div class="image" @click="getQrCode">
-        <img src="../../assets/group2.svg" alt="First Timer image" />
-      </div>
-    </div>
-    <div class="col-md-10 pl-0">
-      <div class="font-weight-bold py-md-2 mt-4">
-        Share the link to your first timers to enable them to add their details to your
-        church.
-      </div>
-      <div class="p-inputgroup form-group mt-1">
-        <el-input
-          v-model="firstTimerLink"
-          placeholder="Click the copy button when the link appears"
-          ref="selectedLink"
-          class="input-with-select w-100"
-        >
-          <template #append>
-            <el-button @click="copylink">
-              <el-icon>
-                <CopyDocument />
-              </el-icon>
-            </el-button>
-          </template>
-        </el-input>
-      </div>
-    </div>
-  </div>
-  <div class="d-flex flex-column flex-md-row justify-content-md-center">
-    <el-icon v-if="loading" class="is-loading" :size="30">
-      <Loading />
-    </el-icon>
-  </div>
-  <el-dialog
-    v-model="displayModal"
-    title="First Timers to import from file"
-    :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
-    align-center
-  >
-    <div class="container">
-      <div class="row">
-        <div class="col-3 font-weight-700">Name</div>
-        <div class="col-4 font-weight-700">Email</div>
-        <div class="col-2 font-weight-700">Gender</div>
-        <div class="col-2 font-weight-700">Phone Number</div>
-      </div>
-      <div class="row" v-for="(item, index) in firstTimerData" :key="index">
-        <div class="col-3">
-          {{ item.firstName ? item.firstName : "" }}
-          {{ item.lastName ? item.lastName : "" }}
+    <transition name="el-fade-in-linear">
+      <div class="row" v-show="membershipCapacityExceeded">
+        <div class="col-md-12 mt-3">
+          <MemberCapExceeded />
         </div>
-        <div class="col-4">{{ item.email }}</div>
-        <div class="col-2">{{ item.gender }}</div>
-        <div class="col-2">{{ item.phoneNumber }}</div>
+      </div>
+    </transition>
+    <div class="row" v-if="false">
+      <div class="col-md-2">
+        <div class="font-weight-bold py-md-2 mt-4">QR Code</div>
+        <div class="image" @click="getQrCode">
+          <img src="../../assets/group2.svg" alt="First Timer image" />
+        </div>
+      </div>
+      <div class="col-md-10 pl-0">
+        <div class="font-weight-bold py-md-2 mt-4">
+          Share the link to your first timers to enable them to add their details to your
+          church.
+        </div>
+        <div class="p-inputgroup form-group mt-1">
+          <el-input
+            v-model="firstTimerLink"
+            placeholder="Click the copy button when the link appears"
+            ref="selectedLink"
+            class="input-with-select w-100"
+          >
+            <template #append>
+              <el-button @click="copylink">
+                <el-icon>
+                  <CopyDocument />
+                </el-icon>
+              </el-button>
+            </template>
+          </el-input>
+        </div>
       </div>
     </div>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button class="secondary-button" @click="displayModal = false" round
-          >Cancel</el-button
-        >
+    <div class="d-flex flex-column flex-md-row justify-content-md-center">
+      <el-icon v-if="loading" class="is-loading" :size="30">
+        <Loading />
+      </el-icon>
+    </div>
+    <el-dialog
+      v-model="displayModal"
+      title="First Timers to import from file"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+      align-center
+    >
+      <div class="container">
+        <div class="row">
+          <div class="col-3 font-weight-700">Name</div>
+          <div class="col-4 font-weight-700">Email</div>
+          <div class="col-2 font-weight-700">Gender</div>
+          <div class="col-2 font-weight-700">Phone Number</div>
+        </div>
+        <div class="row" v-for="(item, index) in firstTimerData" :key="index">
+          <div class="col-3">
+            {{ item.firstName ? item.firstName : "" }}
+            {{ item.lastName ? item.lastName : "" }}
+          </div>
+          <div class="col-4">{{ item.email }}</div>
+          <div class="col-2">{{ item.gender }}</div>
+          <div class="col-2">{{ item.phoneNumber }}</div>
+        </div>
+      </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button class="secondary-button" @click="displayModal = false" round
+            >Cancel</el-button
+          >
+          <el-button
+            :color="primarycolor"
+            :loading="allGroupLoading"
+            @click="addToFirstTimers"
+            round
+          >
+            Save
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
+    <el-dialog
+      v-model="QRCodeDialog"
+      title=""
+      :width="mdAndUp || lgAndUp || xlAndUp ? `30%` : xsOnly ? `90%` : `70%`"
+      class="QRCodeDialog"
+      align-center
+    >
+      <div class="d-flex align-items-center flex-column">
+        <h4 class="text-capitalize font-weight-bold">
+          First Timers QR Code For Registration
+        </h4>
+      </div>
+      <div class="d-flex justify-content-center">
+        <div class="img-wrapper">
+          <img v-if="qrCode" :src="qrCode" class="image-wrapper w-100" />
+        </div>
+      </div>
+    </el-dialog>
+    <div
+      v-if="
+        !loading &&
+        !networkError &&
+        firstTimersList &&
+        firstTimersList.length > 0
+      "
+      class="event-list"
+    >
+      <FirstTimersList :firstTimersList="firstTimersList" :totalItems="totalItems" />
+    </div>
+    <div
+      v-if="!loading && !networkError && firstTimersList && firstTimersList.length === 0"
+      class="no-person"
+    >
+      <div class="empty-img">
+        <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
+        <p class="tip">You haven't added any First timer yet</p>
         <el-button
           :color="primarycolor"
-          :loading="allGroupLoading"
-          @click="addToFirstTimers"
+          @click="addNewFirsttimer"
+          class="ml-2 header-btn"
           round
+          >Add First Timers</el-button
         >
-          Save
-        </el-button>
-      </span>
-    </template>
-  </el-dialog>
-  <el-dialog
-    v-model="QRCodeDialog"
-    title=""
-    :width="mdAndUp || lgAndUp || xlAndUp ? `30%` : xsOnly ? `90%` : `70%`"
-    class="QRCodeDialog"
-    align-center
-  >
-    <div class="d-flex align-items-center flex-column">
-      <h4 class="text-capitalize font-weight-bold">
-        First Timers QR Code For Registration
-      </h4>
-    </div>
-    <div class="d-flex justify-content-center">
-      <div class="img-wrapper">
-        <img v-if="qrCode" :src="qrCode" class="image-wrapper w-100" />
       </div>
     </div>
-  </el-dialog>
-  <div
-    v-if="
-      !loading &&
-      !networkError &&
-      firstTimersList &&
-      firstTimersList.length > 0
-    "
-    class="event-list"
-  >
-    <FirstTimersList :firstTimersList="firstTimersList" :totalItems="totalItems" />
-  </div>
-  <div
-    v-if="!loading && !networkError && firstTimersList && firstTimersList.length === 0"
-    class="no-person"
-  >
-    <div class="empty-img">
-      <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
-      <p class="tip">You haven't added any First timer yet</p>
-      <el-button
-        :color="primarycolor"
-        @click="addNewFirsttimer"
-        class="ml-2 header-btn"
-        round
-        >Add First Timers</el-button
-      >
+    <div v-else-if="networkError && !loading" class="adjust-network">
+      <img src="../../assets/network-disconnected.png" />
+      <div>Opps, Your internet connection was disrupted</div>
     </div>
-  </div>
-  <div v-else-if="networkError && !loading" class="adjust-network">
-    <img src="../../assets/network-disconnected.png" />
-    <div>Opps, Your internet connection was disrupted</div>
   </div>
 
   <el-skeleton

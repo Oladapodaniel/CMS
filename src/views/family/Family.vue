@@ -1,71 +1,51 @@
-
 <template>
   <div :class="{ 'container-slim': lgAndUp || xlAndUp }">
     <div class="container-fluid container-top">
-      <div
-        class="row d-flex flex-column flex-sm-row justify-content-sm-between"
-      >
+      <div class="row d-flex flex-column flex-sm-row justify-content-sm-between">
         <div>
-          <div class="text-head font-weight-600 h2 py-0 my-0 text-black ">Family</div> 
+          <div class="text-head font-weight-600 h2 py-0 my-0 text-black ">Family</div>
           <div class="s-18">Showing all Families</div>
         </div>
-        
-
         <router-link to="/tenant/addfamily" class="no-decoration">
           <el-button class="header-btn" :color="primarycolor" round>
             Add New Family
           </el-button>
         </router-link>
-        
       </div>
+      <transition name="el-fade-in-linear">
+      <div class="row" v-show="membershipCapacityExceeded">
+        <div class="w-100 mt-3">
+          <MemberCapExceeded />
+        </div>
+      </div>
+    </transition>
 
       <el-skeleton class="w-100" animated v-if="loading">
         <template #template>
-          <div
-            style="
+          <div style="
               display: flex;
               align-items: center;
               justify-content: space-between;
               margin-top: 20px;
-            "
-          >
-            <el-skeleton-item
-              variant="text"
-              style="width: 240px; height: 240px"
-            />
-            <el-skeleton-item
-              variant="text"
-              style="width: 240px; height: 240px"
-            />
+            ">
+            <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+            <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
           </div>
 
-          <el-skeleton
-            class="w-100 mt-5"
-            style="height: 25px"
-            :rows="20"
-            animated
-          />
+          <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
         </template>
       </el-skeleton>
 
-      <div
-        class="row"
-        v-if="familyList.length > 0 && !loading && !networkError"
-      >
+      <div class="row" v-if="familyList.length > 0 && !loading && !networkError">
         <FamilyList :familyList="familyList" @list-filtered="resetList" />
       </div>
 
-      <div
-        class="no-person"
-        v-else-if="familyList.length === 0 && !loading && !networkError"
-      >
+      <div class="no-person" v-else-if="familyList.length === 0 && !loading && !networkError">
         <div class="empty-img">
           <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
           <p class="tip">You haven't added any family yet</p>
-          <div
-            class="c-pointer primary-bg col-sm-6 col-md-4 offset-sm-3 offset-md-4 default-btn border-0 text-white"
-            @click="navigateToAddFamily"
-          >
+          <div class="c-pointer primary-bg col-sm-6 col-md-4 offset-sm-3 offset-md-4 default-btn border-0 text-white"
+            @click="navigateToAddFamily">
             Add Family
           </div>
         </div>
@@ -80,7 +60,7 @@
 </template>
 
 <script>
-import { ref, inject, onMounted } from "vue";
+import { ref, inject, onMounted, watchEffect, computed } from "vue";
 import axios from "@/gateway/backendapi";
 import finish from "../../services/progressbar/progress";
 import FamilyList from "./FamilyList.vue";
@@ -88,11 +68,13 @@ import Loader from "../accounting/offering/SkeletonLoader.vue";
 import router from "../../router";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import store from "../../store/store";
+import MemberCapExceeded from "@/components/membership/MembershipCapExceeded.vue";
 
 export default {
   components: {
     FamilyList,
     Loader,
+    MemberCapExceeded
   },
   setup() {
     const primarycolor = inject("primarycolor");
@@ -100,6 +82,7 @@ export default {
     const loading = ref(false);
     const networkError = ref(false);
     const { lgAndUp, xlAndUp } = deviceBreakpoint();
+    const membershipCapacityExceeded = ref(false)
 
     const getAllFamilies = async () => {
       loading.value = true;
@@ -133,6 +116,26 @@ export default {
       router.push("/tenant/addfamily");
     };
 
+    const getUser = computed(() => {
+      if (
+        !store.getters.currentUser ||
+        (store.getters.currentUser &&
+          Object.keys(store.getters.currentUser).length == 0)
+      )
+        return "";
+      return store.getters.currentUser;
+    });
+
+    watchEffect(() => {
+      if (getUser.value) {
+        if (getUser.value.churchSize >= getUser.value.subscribedChurchSize) {
+          membershipCapacityExceeded.value = true;
+        } else {
+          membershipCapacityExceeded.value = false;
+        }
+      }
+    });
+
     return {
       familyList,
       getAllFamilies,
@@ -143,6 +146,8 @@ export default {
       lgAndUp,
       xlAndUp,
       primarycolor,
+      membershipCapacityExceeded,
+      getUser
     };
   },
 };
