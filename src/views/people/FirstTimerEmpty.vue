@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'container-wide': lgAndUp || xlAndUp }" class="container-top h-100">
+  <div :class="{ 'container-wide': lgAndUp || xlAndUp }" class="container-top">
     <!-- <div
       class="d-flex flex-column flex-md-row justify-content-md-between botom mb-4"
     >
@@ -74,13 +74,13 @@
       </div>
     </div>
   </div>
-  <transition name="el-fade-in-linear">
+  <!-- <transition name="el-fade-in-linear">
     <div class="row" v-show="membershipCapacityExceeded">
       <div class="col-md-12 mb-4">
         <MemberCapExceeded />
       </div>
     </div>
-  </transition>
+  </transition> -->
   <div class="row" v-if="false">
     <div class="col-md-2">
       <div class="font-weight-bold py-md-2 mt-4">QR Code</div>
@@ -156,7 +156,6 @@
     </template>
   </el-dialog>
   <el-dialog
-    v-if="showFirsttimer"
     v-model="QRCodeDialog"
     title=""
     :width="mdAndUp || lgAndUp || xlAndUp ? `30%` : xsOnly ? `90%` : `70%`"
@@ -178,7 +177,6 @@
     v-if="
       !loading &&
       !networkError &&
-      showFirsttimer &&
       firstTimersList &&
       firstTimersList.length > 0
     "

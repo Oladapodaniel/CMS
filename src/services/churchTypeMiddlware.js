@@ -2,8 +2,8 @@
 
 
 export function getSubdomain() {
-//   let url = window.location.href
-  let url = 'alat.churchplus.co'
+  let url = window.location.href
+  // let url = 'my.churchplus.co'
     try {
       // Check if the URL has a protocol; if not, add 'http://'
       if (!/^https?:\/\//i.test(url)) {
