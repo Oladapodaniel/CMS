@@ -132,7 +132,7 @@ export default {
   width: 266px;
   min-height: 100vh !important;
   box-shadow: 0px 4px 4px 0px #00000040;
-  /* background: #ebeff4; */
+  background: white;
   height: inherit;
   overflow: auto;
   z-index: 1;
@@ -216,6 +216,7 @@ export default {
   .links-menu {
     z-index: 999;
     position: fixed;
+    background: white;
     left: -266px;
     transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
   }

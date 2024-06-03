@@ -41,7 +41,7 @@
             <el-icon v-else>
               <img :src="item.logo" class="link-icon" alt="" />
             </el-icon>
-            <span>{{ item.name }}</span>
+            <span class="s-16">{{ item.name }}</span>
             <!-- <el-tag type="warning" class="ml-3" effect="dark" size="" v-if="item.id == 5" round>
               <span style="display: flex; font-size: 14px">Beta</span>
             </el-tag> -->

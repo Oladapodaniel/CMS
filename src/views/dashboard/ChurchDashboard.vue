@@ -6,7 +6,7 @@
     <main :class="{ 'container-wide': lgAndUp || xlAndUp }" id="main">
       <div class="second-col container-top">
         <div class="row justify-content-end">
-          <div class="col-lg-8 col-md-12">
+          <div class="col-lg-9 col-md-12">
             <div class="row">
               <div class="col-md-5">
                 <el-input
@@ -17,50 +17,65 @@
                   :prefix-icon="Search"
                 />
               </div>
-              <div
-                class="col-md-4 col-sm-8 col-12 mt-md-0 ml-md-0 ml-sm-3 mt-sm-3 d-flex justify-content-between align-items-center"
-                style="background: #f2f4f7; border-radius: 20px"
-              >
-                <div class="text-capitalize" style="font-size: 14px; font-weight: 500">
-                  {{ planUserIs }}
-                </div>
-                <div>
-                  <router-link :to="{ name: 'Subscription' }" class="mt-1 no-decoration">
-                    <el-button
-                      :color="!buttonTextCheck.color ? primarycolor : ''"
-                      :class="[
-                        buttonTextCheck.color,
-                        {
-                          'bg-warning': calculatedPercentage >= 90,
-                          'border-0  bg-danger': notifiedDays <= 4,
-                        },
-                      ]"
-                      round
+              <div class="col-md-4">
+                <div class="row  d-flex justify-content-center ">
+                  <div
+                    class="col-md-12  col-11  mt-md-0 ml-md-0 ml-sm-3  mt-3 d-flex justify-content-between align-items-center"
+                    style="background: #f2f4f7; border-radius: 20px"
+                  >
+                    <div
+                      class="text-capitalize"
+                      style="font-size: 14px; font-weight: 500"
                     >
-                      <p class="mb-0" :class="[buttonTextCheck.color]">
-                        {{ buttonTextCheck.text }}
-                      </p>
-                    </el-button>
-                  </router-link>
+                      {{ planUserIs }}
+                    </div>
+                    <div>
+                      <router-link
+                        :to="{ name: 'Subscription' }"
+                        class="mt-1 no-decoration"
+                      >
+                        <el-button
+                          :color="!buttonTextCheck.color ? primarycolor : ''"
+                          :class="[
+                            buttonTextCheck.color,
+                            {
+                              'bg-warning': calculatedPercentage >= 90,
+                              'border-0  bg-danger': notifiedDays <= 4,
+                            },
+                          ]"
+                          round
+                        >
+                          <p class="mb-0" :class="[buttonTextCheck.color]">
+                            {{ buttonTextCheck.text }}
+                          </p>
+                        </el-button>
+                      </router-link>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div
                 class="col-md-3 mt-md-0 mt-sm-3 d-flex justify-content-md-end justify-content-start"
               >
-                <div>
-                  <img :src="churchLogo" v-if="churchLogo" class="link-image" alt="" />
+                <div class="col-md-7 col-2">
+                  <img
+                    :src="churchLogo"
+                    v-if="churchLogo"
+                    class="link-image w-100"
+                    alt=""
+                  />
                   <img
                     src="../../assets/dashboardlinks/churchcloud.png"
                     v-else
-                    class="link-image"
+                    class="link-image w-100"
                     alt=""
                   />
                 </div>
-                <div>
+                <div class="d-flex align-items-center">
                   <div style="font-size: 14px; font-weight: 600">
                     {{ tenantDisplayName }}
                   </div>
-                  <div style="font-size: 14px">{{ tenantRole.toString() }}</div>
+                  <!-- <div style="font-size: 14px">{{ tenantRole }}</div> -->
                 </div>
               </div>
             </div>
@@ -106,7 +121,11 @@
               <!-- <a href="https://churchplus.co/awoofwebsite/" target="_blank" class="no-decoration">
                 <el-button class="mt-1" round>Get one now</el-button>
               </a> -->
-              <a href="https://my.churchplus.co/forms/9ab06eed-c8fc-4257-2968-08dc652324f2" target="_blank" class="no-decoration">
+              <a
+                href="https://my.churchplus.co/forms/9ab06eed-c8fc-4257-2968-08dc652324f2"
+                target="_blank"
+                class="no-decoration"
+              >
                 <el-button class="mt-1" round>Get one now</el-button>
               </a>
             </div>
@@ -297,7 +316,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4 col-sm-6 mt-sm-0  mt-3" style="height: 141px">
+          <div class="col-md-4 col-sm-6 mt-sm-0 mt-3" style="height: 141px">
             <div class="col-md-12 dashboardCard pb-2 pt-3 px-3 h-100">
               <div class="row h-100">
                 <div
@@ -979,7 +998,7 @@
             </div>
           </div>
           <div class="row mt-4">
-            <div class="col-12 col-sm-6 col-md-4  more-things">
+            <div class="col-12 col-sm-6 col-md-4 more-things">
               <img src="../../assets/mobileapp2.svg" />
               <div class="mt-4">
                 <div class="can-do">
@@ -1003,7 +1022,11 @@
               <div class="more-body mt-2">
                 Get a user engaging website for your church.
               </div>
-              <a href="https://my.churchplus.co/forms/9ab06eed-c8fc-4257-2968-08dc652324f2" class="no-decoration" target="_blank">
+              <a
+                href="https://my.churchplus.co/forms/9ab06eed-c8fc-4257-2968-08dc652324f2"
+                class="no-decoration"
+                target="_blank"
+              >
                 <el-button class="mt-1" round>Get one now</el-button>
               </a>
               <!-- <a href="https://churchplus.co/awoofwebsite/" class="no-decoration" target="_blank">
@@ -1208,7 +1231,7 @@ export default {
     const roles = ref(localStorage.getItem("roles"));
 
     const tenantRole = computed(() => {
-      if (roles.value) return roles.value.toString();
+      if (roles.value) return roles.value;
     });
 
     const xAxis = ref([]);
@@ -1673,8 +1696,8 @@ export default {
       savingPastorData,
       setImage,
       tenantDisplayName,
-      theme, 
-      toggleTheme 
+      theme,
+      toggleTheme,
     };
   },
 };
@@ -1799,7 +1822,7 @@ export default {
 
 .link-image {
   width: 55px;
-  height: 40px;
+  /* height: 40px; */
   padding-right: 0;
   object-fit: cover;
 }
