@@ -1,7 +1,7 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside width="266px" class="links-menu" :class="{ 'show': menuShouldShow }" >
+      <el-aside width="266px" class="links-menu bg-white" :class="{ 'show': menuShouldShow }" >
         <div >
           <MenuLinks @linkclicked="hideNav" @tenantname="setChurchName"/>
         </div>
