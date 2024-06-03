@@ -147,9 +147,6 @@
                       >
                     </div>
                     <el-form-item>
-                      <!-- <el-button size="large" :color="primarycolor" @click="login" class="w-100" :loading="signInLoading" round>
-                  Sign In
-                </el-button> -->
                       <el-button
                         size="large"
                         :color="primarycolor"
@@ -163,7 +160,7 @@
                         }}
                       </el-button>
 
-                      <div
+                      <!-- <div
                         class="google-btn btn-logo mt-4 sign-in-btn"
                         @click="facebookLogin"
                       >
@@ -174,7 +171,7 @@
                         />
                         <span>Sign in with Google</span>
                         <span></span>
-                      </div>
+                      </div> -->
                       <!-- <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
                       <img src="../../assets/facebook-small.png" class="fb-icon" alt="Facebook Icon" />
                       <span>Sign in with Facebook</span>
