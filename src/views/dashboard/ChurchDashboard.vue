@@ -11,7 +11,7 @@
               <div class="col-md-5">
                 <el-input
                   type="text"
-                  placeholder="Search"
+                  placeholder="Search.."
                   class="w-100"
                   v-model="searchData"
                   :prefix-icon="Search"
@@ -61,17 +61,17 @@
                   <img
                     :src="churchLogo"
                     v-if="churchLogo"
-                    class="link-image w-100"
+                    class="link-image py-0 m-0 w-100"
                     alt=""
                   />
                   <img
                     src="../../assets/dashboardlinks/churchcloud.png"
                     v-else
-                    class="link-image w-100"
+                    class="link-image py-0 w-100"
                     alt=""
                   />
                 </div>
-                <div class="d-flex align-items-center">
+                <div class=" d-flex align-items-center align-items-md-start">
                   <div style="font-size: 14px; font-weight: 600">
                     {{ tenantDisplayName }}
                   </div>

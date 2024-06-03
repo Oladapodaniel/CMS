@@ -515,7 +515,7 @@
         >
           <div class="continer-fluid pb-4 h-100" style="background: #eaecf0">
             <div class="row justify-content-center">
-              <div class="col-md-6 col-lg-5 border bg-white mt-5">
+              <div class="col-md-7 col-lg-6 col-11 border bg-white mt-5">
                 <div class="row justify-content-center">
                   <div class="col-md-12 px-0 image-upload" v-if="url">
                     <img
@@ -537,7 +537,7 @@
             </div>
 
             <div class="row justify-content-center mt-3">
-              <div class="col-md-6 col-lg-5 py-4 rounded bg-white">
+              <div class="col-md-7 col-lg-6 col-11 py-4 rounded bg-white">
                 <div class="row">
                   <div
                     class="col-md-12"
@@ -601,13 +601,6 @@
                     </div>
                   </div>
                 </div>
-                <!-- <div class="row justify-content-center mt-4">
-                                    <div class="col-md-9" @click="saveForm">
-                                        <el-button class="w-100" size="large" :loading="loading" round
-                                            :color="primarycolor"> Publish Form
-                                        </el-button>
-                                    </div>
-                                </div> -->
               </div>
               <div class="col-md-9 text-center mt-4">ChurchPlus Forms</div>
             </div>

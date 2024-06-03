@@ -72,10 +72,10 @@
               </div>
             </div>
             <div
-              class="col-md-5 col-12 px-0 mt-4 d-flex justify-content-center align-items-center"
+              class="col-md-5 col-12 px-md-0 mt-4 d-flex justify-content-center align-items-center"
             >
               <div
-                class="col-md-12 col-sm-10 col-11 p-md-4 p-lg-5"
+                class="col-md-12 col-sm-10 col-10 p-md-4 p-lg-5"
                 :style="{ backgroundColor: theme.light_primary, borderRadius: '10px' }"
               >
                 <div class="logo-con mt-2">
