@@ -18,9 +18,9 @@
                 />
               </div>
               <div class="col-md-4">
-                <div class="row  d-flex justify-content-center ">
+                <div class="row d-flex justify-content-center">
                   <div
-                    class="col-md-12  col-11  mt-md-0 ml-md-0 ml-sm-3  mt-3 d-flex justify-content-between align-items-center"
+                    class="col-md-12 col-11 mt-md-0 ml-md-0 ml-sm-3 mt-3 d-flex justify-content-between align-items-center"
                     style="background: #f2f4f7; border-radius: 20px"
                   >
                     <div
@@ -71,7 +71,7 @@
                     alt=""
                   />
                 </div>
-                <div class=" d-flex align-items-center align-items-md-start">
+                <div class="d-flex align-items-center align-items-md-start">
                   <div style="font-size: 14px; font-weight: 600">
                     {{ tenantDisplayName }}
                   </div>
@@ -623,34 +623,35 @@
                     tenantInfoAttendanceWeekly[0].data[0] > 0)
                 "
               >
-                <div  v-if="tenantInfoAttendanceWeekly && attendanceDataExist">
-                  <div
-                    class="adjust-view2 col-10 col-sm-12 px-0 d-flex justify-content-end mt-5 mt-md-0"
-                  >
-                    <!-- <div class="view-report">View Reports</div> -->
-                    <div class="weekly col-md-5 d-flex">
-                      <div
-                        class="week col-md-6 border py-2 px-4"
-                        :class="{
-                          active: attendanceBoolean,
-                          active2: !attendanceBoolean,
-                        }"
-                        @click="weeklyAttendance"
-                      >
-                        Weekly
-                      </div>
-                      <div
-                        class="month col-md-6 border py-2 px-4"
-                        :class="{
-                          active3: attendanceBooleanMont,
-                          active4: !attendanceBooleanMont,
-                        }"
-                        @click="monthlyAttendance"
-                      >
-                        Monthly
-                      </div>
+                <div v-if="tenantInfoAttendanceWeekly && attendanceDataExist">
+                  <div class="view-report">
+                    <div
+                      class="adjust-view2 col-10 col-sm-12 px-0 d-flex justify-content-end mt-5 mt-md-0"
+                    >
+                      <!-- <div class="view-report">View Reports</div> -->
+                      <div class="weekly col-md-5 d-flex">
+                        <div
+                          class="week col-md-6 border py-2 px-4"
+                          :class="{
+                            active: attendanceBoolean,
+                            active2: !attendanceBoolean,
+                          }"
+                          @click="weeklyAttendance"
+                        >
+                          Weekly
+                        </div>
+                        <div
+                          class="month col-md-6 border py-2 px-4"
+                          :class="{
+                            active3: attendanceBooleanMont,
+                            active4: !attendanceBooleanMont,
+                          }"
+                          @click="monthlyAttendance"
+                        >
+                          Monthly
+                        </div>
 
-                      <!-- <span
+                        <!-- <span
                       @click="weeklyAttendance"
                       :class="{ active: attendanceBoolean }"
                       >Weekly</span>
@@ -659,6 +660,7 @@
                       :class="{ active: !attendanceBoolean }"
                       >Monthly</span
                     > -->
+                      </div>
                     </div>
                   </div>
                   <div v-if="attendanceBoolean" class="mt-4">
@@ -686,30 +688,31 @@
                 </div>
 
                 <div v-if="tenantInfoFirstTimerWeekly && firstTimerDataExist">
-                  <div class="adjust-view  col-10 col-sm-12 d-flex justify-content-end">
-                    <!-- <div class="view-report">View Reports</div> -->
-                    <div class="weekly col-md-5 d-flex">
-                      <div
-                        class="week col-md-6 border py-2 px-4"
-                        :class="{
-                          active: firstTimerBoolean,
-                          active2: !firstTimerBoolean,
-                        }"
-                        @click="weeklyFirstTimer"
-                      >
-                        Weekly
-                      </div>
-                      <div
-                        class="month col-md-6 border py-2 px-4"
-                        :class="{
-                          active3: firstTimerBooleanMont,
-                          active4: !firstTimerBooleanMont,
-                        }"
-                        @click="monthlyFirstTimer"
-                      >
-                        Monthly
-                      </div>
-                      <!-- <span
+                  <div class="view-report">
+                    <div class="adjust-view col-10 col-sm-12 d-flex justify-content-end">
+                      <!-- <div class="view-report">View Reports</div> -->
+                      <div class="weekly col-md-5 d-flex">
+                        <div
+                          class="week col-md-6 border py-2 px-4"
+                          :class="{
+                            active: firstTimerBoolean,
+                            active2: !firstTimerBoolean,
+                          }"
+                          @click="weeklyFirstTimer"
+                        >
+                          Weekly
+                        </div>
+                        <div
+                          class="month col-md-6 border py-2 px-4"
+                          :class="{
+                            active3: firstTimerBooleanMont,
+                            active4: !firstTimerBooleanMont,
+                          }"
+                          @click="monthlyFirstTimer"
+                        >
+                          Monthly
+                        </div>
+                        <!-- <span
                       @click="weeklyFirstTimer"
                       :class="{ active: firstTimerBoolean }"
                       >Weekly</span
@@ -718,6 +721,7 @@
                       :class="{ active: !firstTimerBoolean }"
                       >Monthly</span
                     > -->
+                      </div>
                     </div>
                   </div>
 
@@ -2066,7 +2070,6 @@ tbody tr:nth-child(even) {
   opacity: 1;
 }
 
-
 @media (max-width: 575px) {
   .adjust-view {
     left: 65px;
@@ -2100,8 +2103,6 @@ tbody tr:nth-child(even) {
     display: none;
   }
 }
-
-
 
 .view-report {
   cursor: pointer;
@@ -2203,13 +2204,13 @@ height: 42px; */
     top: 113px;
     right: 10px;
     z-index: 1;
-}
+  }
   .adjust-view2 {
     position: relative;
     top: 126px;
     right: 10px;
     z-index: 1;
-}
+  }
 
   .view-report {
     display: none;
