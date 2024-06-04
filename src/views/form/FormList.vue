@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="d-flex flex-wrap flex-column flex-sm-row mb-3 justify-content-between">
             <div class="">
-                <div class="h2 font-weight-600">Forms</div>
+                <div class="h2 font-weight-bold text-head text-black">Forms</div>
             </div>
             <div class="d-flex flex-column flex-sm-row   link">
                 <router-link class="" to="/tenant/forms/create">
@@ -285,10 +285,8 @@ export default {
 }
 
 .table-top {
-    font-weight: 800;
-    font-size: 12px;
     background: #fff;
-    border: 1px solid #e0e0e0;
+    /* border: 1px solid #e0e0e0; */
     border-bottom: none;
 }
 

@@ -3,7 +3,7 @@
       <div class="main-body main-con">
         <div class="top  mt-3 p-0">
           <div class="header">
-            <div class="head-text">Events</div>
+            <div class="h2 font-weight-bold text-head text-black">Events</div>
           </div>
           <div class="actions">
             <button class="more-btn button" v-if="false">

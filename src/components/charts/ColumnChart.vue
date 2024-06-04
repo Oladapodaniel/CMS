@@ -2,7 +2,7 @@
 <div>
   <div class="d-flex">
     <img src="../../assets/people/members-icon.svg" alt="" style="margin-left: -30px;" />
-    <div class="chart-header-text">
+    <div class="chart-header-text text-head">
               <p>{{ header }}</p>
           </div>
   </div>
@@ -162,8 +162,8 @@ const getRoute = () => {
 .chart-header-text {
     display: flex;
     align-items: center;
-    font-weight: 700;
-    font-size: 20px;
+    font-weight: 600;
+    font-size: 32px;
 }
 
 @media screen and (min-width: 1100px) {

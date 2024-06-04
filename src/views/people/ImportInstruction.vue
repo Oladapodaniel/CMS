@@ -7,7 +7,7 @@
   >
     <div class="row">
       <div class="col-12 col-md-12 col-lg-12" v-if="!isModal">
-        <div class="s-32 text-head font-weight-600">
+        <div class="s-32 text-head text-black font-weight-bold">
           Import
           {{
             route.query.query == "importfirsttimer"

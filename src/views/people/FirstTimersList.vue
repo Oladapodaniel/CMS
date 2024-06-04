@@ -7,7 +7,7 @@
           @totalfirstimer="setTotalFirstTimer"
         />
       </div>
-      <div class="table-to p-3 mt-5">
+      <!-- <div class="table-to p-3 mt-5">
         <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
           <div>
             <el-tooltip
@@ -102,28 +102,6 @@
                 <Message />
               </el-icon>
             </el-tooltip>
-            <!-- <el-tooltip class="box-item" effect="dark" v-if="checkedFirstTimer.length > 0" content="Send Whatsapp message"
-            placement="top-start">
-            <img src="../../assets/whatsappblackwhite.svg" style="width: 20px; margin-top: -13px" class="ml-2 c-pointer"
-              @click="displayWhatsappDrawer(null)" alt="Send Whatsapp message" />
-          </el-tooltip> -->
-            <!-- <el-tooltip class="box-item" effect="dark" v-if="false" content="Delete member(s)" placement="top-start">
-              <el-icon :size="20" class=" c-pointer" v-if="checkedFirstTimer.length > 0" @click="showConfirmModal1">
-                <Delete />
-              </el-icon>
-            </el-tooltip>
-            <el-tooltip class="box-item" effect="dark" v-if="checkedFirstTimer.length > 0" content="Send SMS"
-              placement="top-start">
-              <img src="../../assets/sms.png" style="width: 20px; margin-top: -10px" class="ml-2 c-pointer"
-                @click="sendMarkedMemberSms" alt="Send SMS" />
-            </el-tooltip>
-            <el-tooltip class="box-item" effect="dark" v-if="checkedFirstTimer.length > 0" content="Send Email"
-              placement="top-start">
-              <el-icon :size="20" class="ml-2 c-pointer" v-if="checkedFirstTimer.length > 0"
-                @click="sendMarkedMemberEmail">
-                <Message />
-              </el-icon>
-            </el-tooltip> -->
           </div>
           <div
             class="d-flex flex-column flex-sm-row justify-content-sm-between"
@@ -165,6 +143,320 @@
                 </el-button>
               </template>
             </el-input>
+          </div>
+        </div>
+      </div> -->
+      <div class="tab-options d-block d-md-none mt-5">
+        <div class="s-14 fw-500 col-md-10 px-0 mt-5">
+          <div class="d-flex flex-column flex-sm-row justify-content-md-between">
+            <div>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="Add all members to group"
+                placement="top-start"
+              >
+                <el-icon
+                  :size="28"
+                  class="c-pointer primary--text"
+                  @click="addToGroupDialog = true"
+                >
+                  <CirclePlus />
+                </el-icon>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                v-if="checkedFirstTimer.length > 0"
+                content="Add to group"
+                placement="top-start"
+              >
+                <el-icon
+                  class="ml-2 c-pointer primary--text"
+                  :size="28"
+                  @click="addToGroupSingle = true"
+                >
+                  <User />
+                </el-icon>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                v-if="checkedFirstTimer.length > 0"
+                content="Archive member(s)"
+                placement="top-start"
+              >
+                <el-icon
+                  class="ml-2 c-pointer primary--text"
+                  :size="28"
+                  @click="displayPositionArchive = true"
+                  v-if="checkedFirstTimer.length > 0"
+                >
+                  <DocumentRemove />
+                </el-icon>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                v-if="checkedFirstTimer.length > 0"
+                content="Delete member(s)"
+                placement="top-start"
+              >
+                <el-icon
+                  :size="28"
+                  class="ml-2 c-pointer primary--text"
+                  v-if="checkedFirstTimer.length > 0"
+                  @click="showConfirmModal1"
+                >
+                  <Delete />
+                </el-icon>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                v-if="checkedFirstTimer.length > 0"
+                content="Send SMS"
+                placement="top-start"
+              >
+                <img
+                  src="../../assets/ChatCenteredDots.png"
+                  style="width: 32px; margin-top: -20px"
+                  class="ml-2 c-pointer"
+                  @click="sendMarkedMemberSms"
+                  alt="Send SMS"
+                />
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                v-if="checkedFirstTimer.length > 0"
+                content="Send Email"
+                placement="top-start"
+              >
+                <el-icon
+                  :size="28"
+                  class="ml-2 c-pointer primary--text"
+                  v-if="checkedFirstTimer.length > 0"
+                  @click="sendMarkedMemberEmail"
+                >
+                  <Message />
+                </el-icon>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                v-if="checkedFirstTimer.length > 0"
+                content="Send Whatsapp message"
+                placement="top-start"
+              >
+                <img
+                  src="../../assets/WhatsappLogo.png"
+                  style="width: 32px; margin-top: -20px"
+                  class="ml-2 c-pointer"
+                  @click="displayWhatsappDrawer(null)"
+                  alt="Send Whatsapp message"
+                />
+              </el-tooltip>
+            </div>
+            <div class="d-flex flex-column flex-sm-row justify-content-md-between">
+              <el-input
+                size="small"
+                v-model="searchText"
+                placeholder="Search..."
+                @input="searchingMember = true"
+                @keyup.enter.prevent="searchPeopleInDB($event)"
+                class="search-input"
+              >
+                <template #suffix>
+                  <el-button
+                    style="padding: 5px; height: 22px"
+                    @click.prevent="searchText = ''"
+                  >
+                    <el-icon :size="13">
+                      <Close />
+                    </el-icon>
+                  </el-button>
+                </template>
+                <template #append>
+                  <el-button class="btn-search" @click.prevent="searchPeopleInDB($event)">
+                    <el-icon :size="13">
+                      <Search />
+                    </el-icon>
+                  </el-button>
+                </template>
+              </el-input>
+              <div
+                style="background: #eeeeee"
+                class="ml-2 mt-3 mt-sm-0 d-flex w-50 align-items-center justify-content-center border-radius-8"
+              >
+                <div
+                  @click="toggleFilterFormVissibility"
+                  class="mb-0 px-3 d-flex my-3 my-sm-0 c-pointer"
+                >
+                  <span class="mr-1"> Filter</span>
+                  <el-icon :size="18">
+                    <Filter />
+                  </el-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-options d-none d-md-block mt-5">
+        <div class="table-top col-12 col-md-7 col-lg-7 col-xl-8 px-0 mt-5">
+          <div class="d-flex flex-column flex-md-row justify-content-md-between">
+            <div>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="Add all members to group"
+                placement="top-start"
+              >
+                <el-icon
+                  :size="28"
+                  class="c-pointer primary--text"
+                  @click="addToGroupDialog = true"
+                >
+                  <CirclePlus />
+                </el-icon>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                v-if="checkedFirstTimer.length > 0"
+                content="Add to group"
+                placement="top-start"
+              >
+                <el-icon
+                  class="ml-2 c-pointer primary--text"
+                  :size="28"
+                  @click="addToGroupSingle = true"
+                >
+                  <User />
+                </el-icon>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                v-if="checkedFirstTimer.length > 0"
+                content="Archive member(s)"
+                placement="top-start"
+              >
+                <el-icon
+                  class="ml-2 c-pointer primary--text"
+                  :size="28"
+                  @click="displayPositionArchive = true"
+                  v-if="checkedFirstTimer.length > 0"
+                >
+                  <DocumentRemove />
+                </el-icon>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item d-flex"
+                effect="dark"
+                v-if="checkedFirstTimer.length > 0"
+                content="Delete member(s)"
+                placement="top-start"
+              >
+                <el-icon
+                  :size="28"
+                  class="ml-2 c-pointer primary--text"
+                  v-if="checkedFirstTimer.length > 0"
+                  @click="showConfirmModal1"
+                >
+                  <Delete />
+                </el-icon>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                v-if="checkedFirstTimer.length > 0"
+                content="Send SMS"
+                placement="top-start"
+              >
+                <img
+                  src="../../assets/ChatCenteredDots.png"
+                  style="width: 32px; margin-top: -20px"
+                  class="ml-2 c-pointer primary--text"
+                  @click="sendMarkedMemberSms"
+                  alt="Send SMS"
+                />
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                v-if="checkedFirstTimer.length > 0"
+                content="Send Email"
+                placement="top-start"
+              >
+                <el-icon
+                  :size="28"
+                  class="ml-2 c-pointer primary--text"
+                  v-if="checkedFirstTimer.length > 0"
+                  @click="sendMarkedMemberEmail"
+                >
+                  <Message />
+                </el-icon>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                v-if="checkedFirstTimer.length > 0"
+                content="Send Whatsapp message"
+                placement="top-start"
+              >
+                <img
+                  src="../../assets/WhatsappLogo.png"
+                  style="width: 32px; margin-top: -20px"
+                  class="ml-2 c-pointer primary--text"
+                  @click="displayWhatsappDrawer(null)"
+                  alt="Send Whatsapp message"
+                />
+              </el-tooltip>
+            </div>
+            <div class="d-flex flex-column flex-md-row justify-content-md-between">
+              <el-input
+                size="small"
+                v-model="searchText"
+                placeholder="Search..."
+                @input="searchingMember = true"
+                @keyup.enter.prevent="searchPeopleInDB($event)"
+                class="search-input col-md-12 col-9"
+              >
+                <template #suffix>
+                  <el-button
+                    style="padding: 5px; height: 22px"
+                    @click.prevent="searchText = ''"
+                  >
+                    <el-icon :size="13">
+                      <Close />
+                    </el-icon>
+                  </el-button>
+                </template>
+                <template #append>
+                  <el-button class="btn-search" @click.prevent="searchPeopleInDB($event)">
+                    <el-icon :size="13">
+                      <Search />
+                    </el-icon>
+                  </el-button>
+                </template>
+              </el-input>
+              <div
+                style="background: #eeeeee"
+                class="ml-2 mt-3 py-2 mt-md-0 d-flex align-items-center justify-content-center border-radius-8"
+              >
+                <p
+                  @click="toggleFilterFormVissibility"
+                  class="mb-0 px-3 d-flex my-3 my-sm-0 c-pointer"
+                >
+                  <span class="mr-1"> Filter</span>
+                  <el-icon :size="18">
+                    <Filter />
+                  </el-icon>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -215,8 +507,14 @@
           </div>
         </div>
       </div> -->
-      <Table :data="searchMember" :headers="firstTimerHeaders" :checkMultipleItem="true"
-        @checkedrow="handleSelectionChange" v-loading="paginatedTableLoading" v-if="searchMember.length > 0">
+      <Table
+        :data="searchMember"
+        :headers="firstTimerHeaders"
+        :checkMultipleItem="true"
+        @checkedrow="handleSelectionChange"
+        v-loading="paginatedTableLoading"
+        v-if="searchMember.length > 0"
+      >
         <template #imageURL="{ item }">
           <el-card
             shadow="hover"
@@ -234,12 +532,7 @@
                 :src="item.imageURL"
                 alt=""
                 @click="(selectedImage = item), (imageDialog = true)"
-                style="
-                  border-radius: 50%;
-                  height: 26px;
-                  width: 26px;
-                  object-fit: cover;
-                "
+                style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover"
               />
             </el-tooltip>
           </el-card>
@@ -318,11 +611,7 @@
                 <li>
                   <a class="dropdown-item" href="#">
                     <router-link
-                      :to="
-                        item.email
-                          ? `/tenant/email/compose?phone=${item.email}`
-                          : ''
-                      "
+                      :to="item.email ? `/tenant/email/compose?phone=${item.email}` : ''"
                       :class="{
                         'fade-text': !item.email,
                         'text-color': item.email,
@@ -348,11 +637,7 @@
                 </li>
                 <li>
                   <a class="dropdown-item">
-                    <el-popover
-                      placement="top-start"
-                      :width="200"
-                      trigger="hover"
-                    >
+                    <el-popover placement="top-start" :width="200" trigger="hover">
                       <template #reference>
                         <span class="el-dropdown-link">
                           Convert to member<el-icon class="el-icon--right"
@@ -430,10 +715,7 @@
       />
       <template #footer>
         <span class="dialog-footer">
-          <el-button
-            class="secondary-button"
-            @click="addToGroupDialog = false"
-            round
+          <el-button class="secondary-button" @click="addToGroupDialog = false" round
             >Cancel</el-button
           >
           <el-button
@@ -465,10 +747,7 @@
       />
       <template #footer>
         <span class="dialog-footer">
-          <el-button
-            class="secondary-button"
-            @click="addToGroupSingle = false"
-            round
+          <el-button class="secondary-button" @click="addToGroupSingle = false" round
             >Cancel</el-button
           >
           <el-button
@@ -565,63 +844,59 @@
     </template>
   </el-drawer>
   <el-dialog
-        v-model="showFilter"
-        title=""
-        :width="mdAndUp || lgAndUp || xlAndUp ? `35%` : xsOnly ? `90%` : `70%`"
-        class="QRCodeDialog border-radius-20"
-        align-center
-      >
-        <div class="filter-optio">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-12 text-center text-black h2 fw-500">
-                Filter
+    v-model="showFilter"
+    title=""
+    :width="mdAndUp || lgAndUp || xlAndUp ? `35%` : xsOnly ? `90%` : `70%`"
+    class="QRCodeDialog border-radius-20"
+    align-center
+  >
+    <div class="filter-optio">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12 text-center text-black h2 fw-500">Filter</div>
+          <div class="col-md-12 text-center text-black s-24">Narrow down your search</div>
+          <div class="col-md-12 mt-3">
+            <div class="row justify-content-center">
+              <div class="col-md-11  form-group">
+                <div class="text-black">First name</div>
+                <el-input
+                  placeholder="First name"
+                  class="w-100"
+                  v-model="filter.name"
+                  @input="setFilteredValue"
+                />
               </div>
-              <div class="col-md-12 text-center text-black s-24">
-                Narrow down your search
+              <div class="col-md-11 form-group">
+                <div class="text-black">Phone number</div>
+                <el-input
+                  placeholder="Phone number"
+                  class="w-100"
+                  v-model="filter.phoneNumber"
+                />
               </div>
-              <div class="col-md-12 mt-3">
-                <div class="row justify-content-center">
-                  <div class="col-11 form-group">
-                    <div class="text-black">First name</div>
-                    <el-input
-                      placeholder="First name"
-                      class="w-100"
-                      v-model="filter.name"
-                      @input="setFilteredValue"
-                    />
-                  </div>
-                  <div class="col-md-11 form-group">
-                    <div class="text-black">Phone number</div>
-                    <el-input
-                      placeholder="Phone number"
-                      class="w-100"
-                      v-model="filter.phoneNumber"
-                    />
-                  </div>
-                  <div class="col-md-12 d-flex justify-content-center">
-                    <el-button
-                      class="col-md-11"
-                      :color="primarycolor"
-                      @click="applyFilter"
-                      :loading="applyLoading"
-                      :disabled="disableBtn"
-                      round
-                      >Apply</el-button
-                    >
-                    <!-- <div class="mt-2 col-md-11">
+              <div class="col-md-12 d-flex justify-content-center">
+                <el-button
+                  class="col-md-11"
+                  :color="primarycolor"
+                  @click="applyFilter"
+                  :loading="applyLoading"
+                  :disabled="disableBtn"
+                  round
+                  >Apply</el-button
+                >
+                <!-- <div class="mt-2 col-md-11">
                       <el-button @click="clearAll" class="mr-2" text
                         >Clear all</el-button
                       > -->
-                      <!-- <el-button @click="hide" class="mx-2" text>Hide</el-button> -->
-                    <!-- </div> -->
-                  </div>
-                </div>
+                <!-- <el-button @click="hide" class="mx-2" text>Hide</el-button> -->
+                <!-- </div> -->
               </div>
             </div>
           </div>
         </div>
-      </el-dialog>
+      </div>
+    </div>
+  </el-dialog>
 
   <!-- <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
     <div class="m-wrapper" :class="{ 'm-wrapper': showSMS, 'no-show': !showSMS }">
@@ -696,13 +971,13 @@ export default {
     const { xsOnly, mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
     const applyLoading = ref(false);
     const searchingMember = ref(true);
-    const showFilter = ref(false)
+    const showFilter = ref(false);
     const route = useRoute();
     const filterFormIsVissible = ref(false);
     const toggleFilterFormVissibility = () => {
-        showFilter.value = true;
-        // (filterFormIsVissible.value = !filterFormIsVissible.value);
-      };
+      showFilter.value = true;
+      // (filterFormIsVissible.value = !filterFormIsVissible.value);
+    };
 
     const toggleSearch = () => {
       searchIsVisible.value = !searchIsVisible.value;
@@ -793,9 +1068,7 @@ export default {
             message: "Member deleted successfully",
             duration: 5000,
           });
-          churchMembers.value = churchMembers.value.filter(
-            (item) => item.id !== id
-          );
+          churchMembers.value = churchMembers.value.filter((item) => item.id !== id);
           store.dispatch("membership/removeFirstTimerFromStore", id);
           store.dispatch("dashboard/getDashboard");
         })
@@ -806,8 +1079,7 @@ export default {
             ElMessage({
               type: "success",
               showClose: true,
-              message:
-                "Unable to delete, Ensure this member is not in any group",
+              message: "Unable to delete, Ensure this member is not in any group",
               duration: 5000,
             });
           } else {
@@ -822,15 +1094,11 @@ export default {
     };
 
     const showConfirmModal = (id, index) => {
-      ElMessageBox.confirm(
-        "Are you sure you want to proceed?",
-        "Confirm delete",
-        {
-          confirmButtonText: "OK",
-          cancelButtonText: "Cancel",
-          type: "error",
-        }
-      )
+      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "error",
+      })
         .then(() => {
           deleteMember(id, index);
         })
@@ -850,8 +1118,7 @@ export default {
 
     const applyFilter = () => {
       applyLoading.value = true;
-      filter.value.name =
-        filter.value.name == undefined ? "" : filter.value.name;
+      filter.value.name = filter.value.name == undefined ? "" : filter.value.name;
       filter.value.phoneNumber =
         filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber;
 
@@ -935,8 +1202,7 @@ export default {
     });
 
     const membersCount = computed(() => {
-      if (totalFirstTimer.value > 100)
-        return Math.ceil(totalFirstTimer.value / 100);
+      if (totalFirstTimer.value > 100) return Math.ceil(totalFirstTimer.value / 100);
       return 1;
     });
 
@@ -957,9 +1223,7 @@ export default {
     const checkedFirstTimer = ref([]);
 
     const check1item = (ft) => {
-      const firstTimerIdx = checkedFirstTimer.value.findIndex(
-        (i) => i.id === ft.id
-      );
+      const firstTimerIdx = checkedFirstTimer.value.findIndex((i) => i.id === ft.id);
       if (firstTimerIdx < 0) {
         checkedFirstTimer.value.push(ft);
       } else {
@@ -971,9 +1235,7 @@ export default {
     const markAllFirsttimer = () => {
       if (checkedFirstTimer.value.length < churchMembers.value.length) {
         churchMembers.value.forEach((i) => {
-          const ftInMarked = checkedFirstTimer.value.findIndex(
-            (f) => f.id === i.id
-          );
+          const ftInMarked = checkedFirstTimer.value.findIndex((f) => f.id === i.id);
           if (ftInMarked < 0) {
             checkedFirstTimer.value.push(i);
           }
@@ -1003,9 +1265,7 @@ export default {
               duration: 5000,
             });
             churchMembers.value = churchMembers.value.filter((item) => {
-              const y = checkedFirstTimer.value.findIndex(
-                (i) => i.id === item.id
-              );
+              const y = checkedFirstTimer.value.findIndex((i) => i.id === item.id);
               if (y >= 0) return false;
               return true;
             });
@@ -1098,9 +1358,7 @@ export default {
 
     const getMembershipCategory = async () => {
       try {
-        let { data } = await axios.get(
-          "/api/Settings/GetTenantPeopleClassification"
-        );
+        let { data } = await axios.get("/api/Settings/GetTenantPeopleClassification");
         membershipCategory.value = data;
       } catch (err) {
         console.log(err);
@@ -1158,8 +1416,7 @@ export default {
           ElMessage({
             type: "warning",
             showClose: true,
-            message:
-              "Couldn't move successfully, check your connection and try again",
+            message: "Couldn't move successfully, check your connection and try again",
             duration: 5000,
           });
         }
@@ -1173,8 +1430,7 @@ export default {
     const getUser = computed(() => {
       if (
         !store.getters.currentUser ||
-        (store.getters.currentUser &&
-          Object.keys(store.getters.currentUser).length == 0)
+        (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)
       )
         return "";
       return store.getters.currentUser;
@@ -1199,9 +1455,7 @@ export default {
           });
 
           churchMembers.value = churchMembers.value.filter((item) => {
-            const y = checkedFirstTimer.value.findIndex(
-              (i) => i.id === item.id
-            );
+            const y = checkedFirstTimer.value.findIndex((i) => i.id === item.id);
             if (y >= 0) return false;
             return true;
           });
@@ -1282,7 +1536,6 @@ export default {
       }
     };
     getGroups();
-
 
     const moveMemberToGroup = () => {
       singleGroupLoading.value = true;
@@ -1497,7 +1750,7 @@ export default {
       getAllMembersAndAddToGroup,
       chooseGroupforAllmembers,
       chooseGrouptoMoveto,
-      chooseGroupto
+      chooseGroupto,
     };
   },
 };
@@ -1567,11 +1820,19 @@ a {
 }
 
 .table-top {
-  font-weight: 800;
-  font-size: 12px;
+  position: absolute;
+  z-index: 1;
+  top: -40px;
+  /* width: 100%; */
+  font-weight: 500 !important;
+  font-size: 14px;
   background: #fff;
-  border: 1px solid #e0e0e0;
-  border-bottom: none;
+  color: #000000;
+  /* border: 1px solid #d4dde3; */
+  /* max-width: 83.333333% !important; */
+}
+.tab-options{
+  position: relative;
 }
 
 .m-wrapper {

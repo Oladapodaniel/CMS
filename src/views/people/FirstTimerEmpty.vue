@@ -1,29 +1,8 @@
 <template>
   <div :class="{ 'container-wide': lgAndUp || xlAndUp }" class="container-top">
-    <!-- <div
-      class="d-flex flex-column flex-md-row justify-content-md-between botom mb-4"
-    >
-      <div class="c-pointer" @click="firttimerDetail">
-        <div class="head-text">First Timers</div>
-        <div
-          class=""
-          :class="{ baseline: showFirsttimer, 'hide-base': !showFirsttimer }"
-        ></div>
-      </div>
-      <div class="c-pointer" @click="newConvertDetail">
-        <div class="head-text">New Convert</div>
-        <div
-          class=""
-          :class="{
-            baselinetwo: showNewConvert,
-            'hide-basetwo': !showNewConvert,
-          }"
-        ></div>
-      </div>
-    </div> -->
     <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
       <div>
-        <div class="text-head font-weight-600 h2 py-0 my-0 text-black">First Timers</div>
+        <div class="text-head font-weight-bold h2 py-0 my-0 text-black">First Timers</div>
         <div class="s-18">Showing all First Timers</div>
       </div>
       <div class="d-flex flex-wrap flex-sm-nowrap mt-3 mt-sm-0">
@@ -63,10 +42,10 @@
           </template>
         </el-dropdown>
         <!-- <el-button @click="importMembers" class="header-btn secondary-button" round>Import</el-button> -->
-        <router-link :to="`/tenant/people/addfirsttimer`" class="no-decoration">
+        <router-link :to="`/tenant/people/addfirsttimer`" class="no-decoration w-100">
           <el-button
             :color="primarycolor"
-            class="ml-0 ml-sm-2 mt-sm-0 mt-3 header-btn"
+            class="ml-0 ml-sm-2 mt-sm-0 mt-3 w-100 header-btn"
             round
             >Add First Timers</el-button
           >

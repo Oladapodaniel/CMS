@@ -16,7 +16,7 @@
       </div>
 
       <div class="row">
-        <h3 class="col-12 head-text font-weight-bold">Add First timers</h3>
+        <div class="col-12 text-head h2 text-black font-weight-bold">Add First timers</div>
         <div class="mt-3 col-12">Bio:</div>
       </div>
     </div>

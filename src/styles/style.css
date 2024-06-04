@@ -78,6 +78,9 @@
 .fw-500{
   font-weight: 500 !important;
 }
+.fw-400{
+  font-weight: 400 !important;
+}
 
 rect.highcharts-background[fill] {
   fill: none

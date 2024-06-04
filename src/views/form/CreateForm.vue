@@ -1,7 +1,7 @@
 <template>
   <div class="conatiner-fluid mt-3">
     <div class="row">
-      <div class="col-md-12 h2 font-weight-600 head-text">Create Form</div>
+      <div class="col-md-12 h2 font-weight-bold text-black text-head">Create Form</div>
     </div>
     <div class="row justify-content-center mt-4">
       <div class="col-md-8">
@@ -246,7 +246,7 @@
           <div class="col-md-12">
             <div class="row">
               <div class="col-md-3 font-weight text-left text-md-right">
-                <label for="" class="">Accepts Payment ?</label>
+                <label for="" class="">Accepts Payment ?</label>{{ checkedYes }}
               </div>
 
               <div class="col-md-8">
@@ -668,6 +668,7 @@ export default {
     const pledgeType = ref(0);
     const tenantId = ref("");
     const bankSearchText = ref("");
+    const bankCode = ref("");
     const accountNumber = ref("");
     const contributionItems = ref([]);
     const fileImage = ref(false);
@@ -692,14 +693,14 @@ export default {
     };
     const specific = () => {
       pledgeCategory.value = "specific";
-      paymentType.value = true
+      paymentType.value = true;
 
       pledgeType.value = 1;
     };
     const freeWill = () => {
       pledgeCategory.value = "freewill";
       pledgeType.value = 0;
-      paymentType.value = false
+      paymentType.value = false;
     };
 
     const selectContribution = (item) => {
@@ -841,7 +842,7 @@ export default {
         .get("/api/Financials/GetBanks")
         .then((res) => {
           nigerianBanks.value = res.data;
-          if (route.query.id) getSinglePledgeDefinition();
+          if (route.params.id)  getSingleForm();
         })
         .catch((err) => {
           console.log(err);
@@ -914,43 +915,48 @@ export default {
 
     const dateUpdated = ref("");
     const getSingleForm = async () => {
-      const { data } = await axios.get(`/api/Forms/getsingleform?Id=${route.params.id}`);
-      formName.value = data.name;
-      description.value = data.description;
-      dateUpdated.value = data.date;
-      url.value = data.pictureUrl;
-      specificAmount.value = data.amount;
+      try {
+        const { data } = await axios.get(
+          `/api/Forms/getsingleform?Id=${route.params.id}`
+        );
+        formName.value = data.name;
+        description.value = data.description;
+        dateUpdated.value = data.date;
+        url.value = data.pictureUrl;
+        emailRecipient.value = data.emailRecipient;
+        specificAmount.value = data.amount;
+        bankCode.value = data.paymentForm.bankCode;
         getContributionCategory(data.financialContributionID);
-      // accountNumber.value = data && data.paymentForm.accountNumber ? data.paymentForm.accountNumber : '';
-      // accountName.value = data && data.paymentForm.accountName ? data.paymentForm.accountName : '';
-      // (bankSearchText.value = nigerianBanks.value.find(
-      //   (i) => i.code == data.paymentForm.bankCode
-      // ).name),
-        (cutomFieldData.value = data.customAttributes.map((i) => {
-          return {
-            id: i.id,
-            controlType: i.controlType,
-            entityID: i.entityID,
-            entityType: i.entityType,
-            isRequired: i.isRequired,
-            label: i.label,
-            order: i.order,
-            parameterValues: i && i.parameterValues ? i.parameterValues.split(",") : [],
-            tenantID: i.tenantID,
-          };
-        }));
-      // if (res.data.returnObject.paymentType === 0) {
-      //   pledgeCategory.value = "freewill";
-      //   pledgeType.value = 0;
-      // } else if (res.data.returnObject.paymentType === 1) {
-      //   pledgeCategory.value = "specific";
-      //   pledgeType.value = 1;
-      // } else {
-      //   res.data.returnObject.paymentType;
-      // }
-      // description.value = data.description
+        accountNumber.value =
+          data.paymentForm && data.paymentForm.accountNumber ? data.paymentForm.accountNumber : "";
+        accountName.value =
+          data.paymentForm && data.paymentForm.accountName ? data.paymentForm.accountName : "";
+        (bankSearchText.value = data.paymentForm && data.paymentForm.bankCode ? nigerianBanks.value.find(
+          (i) => i.code ==  data.paymentForm.bankCode 
+        ).name : ''),
+          (cutomFieldData.value = data.customAttributes.map((i) => {
+            return {
+              id: i.id,
+              controlType: i.controlType,
+              entityID: i.entityID,
+              entityType: i.entityType,
+              isRequired: i.isRequired,
+              label: i.label,
+              order: i.order,
+              parameterValues: i && i.parameterValues ? i.parameterValues.split(",") : [],
+              tenantID: i.tenantID,
+            };
+          }));
+        if (data && data.paymentForm) {
+          return (checkedYes.value = true);
+        } else {
+          return (checkedYes.value = false);
+        }
+      } catch (error) {
+        console.log(error, 'error')
+      }
     };
-    getSingleForm();
+   
 
     const saveChip = (index) => {
       cutomFieldData.value[index].currentInput
@@ -1010,24 +1016,37 @@ export default {
     getCurrentlySignedInUser();
 
     const saveForm = async () => {
+      let paymentForm = {
+        accountName: accountName.value,
+        bankCode: selectedBank.value && selectedBank.value.code ? selectedBank.value.code : bankCode.value,
+        accountNumber: accountNumber.value,
+      };
 
-    let paymentForm = {
-      accountName: accountName.value,
-      bankCode: selectedBank.value.code,
-      accountNumber: accountNumber.value,
-    }
-      
+      console.log(paymentForm, 'kkk')
+
       const formData = new FormData();
       const formData2 = new FormData();
       formData.append("name", formName.value);
       formData.append("description", description.value);
       // formData.append("bankName", selectedBank.value.name);
-      accountName.value && selectedBank.value.code && accountNumber.value  ? formData.append("paymentFormString", JSON.stringify(paymentForm)) : null;
-      formData.append("isAmountFIxed", paymentType.value ? paymentType.value : paymentType.value === false ?  paymentType.value : '' );
-      formData.append("amount", specificAmount.value ? specificAmount.value : '');
-      formData.append("financialContributionID", selectedContribution.value && selectedContribution.value.id ? selectedContribution.value.id : '');
-      //   formData.append("accountName", accountName.value);
-      //   formData.append("accountNumber", accountNumber.value);
+      accountName.value && selectedBank.value.code && accountNumber.value
+        ? formData.append("paymentFormString", JSON.stringify(paymentForm))
+        : null;
+      formData.append(
+        "isAmountFIxed",
+        paymentType.value
+          ? paymentType.value
+          : paymentType.value === false
+          ? paymentType.value
+          : ""
+      );
+      formData.append("amount", specificAmount.value ? specificAmount.value : "");
+      formData.append(
+        "financialContributionID",
+        selectedContribution.value && selectedContribution.value.id
+          ? selectedContribution.value.id
+          : ""
+      );
       formData.append("emailRecipient", emailRecipient.value);
       formData.append("picture", selectedImage.value ? selectedImage.value : "");
       formData.append("tenantID", tenantId.value);
@@ -1050,14 +1069,24 @@ export default {
       formData2.append("name", formName.value);
       formData2.append("description", description.value);
       formData2.append("date", dateUpdated.value);
-      accountName.value && selectedBank.value.code && accountNumber.value  ? formData2.append("paymentFormString", JSON.stringify(paymentForm)) : null;
-      formData2.append("isAmountFIxed", paymentType.value ? paymentType.value : paymentType.value === false ?  paymentType.value : '' );
-      formData2.append("amount", specificAmount.value ? specificAmount.value : '');
-      formData2.append("financialContributionID", selectedContribution.value && selectedContribution.value.id ? selectedContribution.value.id : '');
-      //   formData.append("bankName", selectedBank.value.name);
-      //   formData.append("bankCode", selectedBank.value.code);
-      //   formData.append("accountName", accountName.value);
-      //   formData.append("accountNumber", accountNumber.value);
+      accountName.value  && accountNumber.value
+        ? formData2.append("paymentFormString", JSON.stringify(paymentForm))
+        : null;
+      formData2.append(
+        "isAmountFIxed",
+        paymentType.value
+          ? paymentType.value
+          : paymentType.value === false
+          ? paymentType.value
+          : ""
+      );
+      formData2.append("amount", specificAmount.value ? specificAmount.value : "");
+      formData2.append(
+        "financialContributionID",
+        selectedContribution.value && selectedContribution.value.id
+          ? selectedContribution.value.id
+          : ""
+      );
       formData2.append("emailRecipient", emailRecipient.value);
       // formData2.append("pictureUrl", url.value ? url.value : selectedImage.value);
       formData2.append("picture", selectedImage.value ? selectedImage.value : "");
@@ -1166,7 +1195,8 @@ export default {
       pledgeType,
       freeWill,
       specific,
-      paymentType
+      paymentType,
+      bankCode
     };
   },
 };
@@ -1212,7 +1242,6 @@ export default {
   object-fit: cover;
   object-position: center;
 }
-
 
 .font-weight {
   font-weight: 500;

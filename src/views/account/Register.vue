@@ -1,13 +1,14 @@
 <template>
   <div
+    class="d-flex align-items-center 100vh"
     :style="{ backgroundColor: theme.bg_900, color: theme.text_900 }"
     style="display: flex; min-height: 100vh"
   >
     <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
-      <div class="row mt-4 justify-content-center">
-        <div class="col-md-11 px-0 col-sm-12 mt-4">
+      <div class="row justify-content-center">
+        <div class="col-md-11 px-0 col-sm-12">
           <div class="row justify-content-between">
-            <div class="col-md-5 px-0 mt-4 d-flex align-items-center">
+            <div class="col-md-5 px-0 d-flex align-items-center">
               <div class="col-md-12 col-lg-11 px-0 d-none d-md-block">
                 <div class="row">
                   <div class="col-md-12 d-flex justify-content-center">
@@ -15,12 +16,18 @@
                   </div>
                   <div class="col-md-12 d-flex mt-4 justify-content-center h4">
                     <div
-                      class="col-md-11 col-sm-12 text-head text-center font-weight-bold"
+                      class="col-md-11 col-sm-12 text-black text-center text-head font-weight-bold"
                     >
                       {{
                         navigatorLang === "en-US"
-                          ? "Elevating Your Ministry, Empowering Your Leadership!"
+                          ? "Elevating Your Ministry,"
                           : $t("home-content.elevating")
+                      }}
+                      <br />
+                      {{
+                        navigatorLang === "en-US"
+                          ? "Empowering Your Leadership!"
+                          : $t("home-content.empowering")
                       }}
                     </div>
                   </div>
@@ -68,13 +75,11 @@
                 </div>
               </div>
             </div>
-            <div
-              class="col-md-5 mt-4 px-0 d-flex justify-content-center align-items-center"
-            >
+            <div class="col-md-5 px-0 d-flex justify-content-center align-items-center">
               <!-- <div class="main-section "> -->
               <div
-                class="col-md-12 col-11 p-4"
-                style="background: #ebedff; border-radius: 10px"
+                class="col-md-12 col-10 p-5"
+                :style="{ backgroundColor: theme.light_primary, borderRadius: '10px' }"
               >
                 <div class="logo-con">
                   <a class="logo-link"
@@ -409,8 +414,8 @@ export default {
       facebookLogin,
       saveEmail,
       primarycolor,
-      theme, 
-      toggleTheme 
+      theme,
+      toggleTheme,
     };
   },
   // data() {

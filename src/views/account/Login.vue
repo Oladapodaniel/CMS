@@ -1,32 +1,43 @@
 <template>
   <div
+    class="d-flex align-items-center 100vh"
     :style="{ backgroundColor: theme.bg_900, color: theme.text_900 }"
-    style=" min-height: 100vh"
+    style="display: flex; min-height: 100vh"
   >
-    <div class="container-top"  :class="{ 'container-slim': lgAndUp || xlAndUp }">
-      <div class="row justify-content-center" >
+    <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
+      <div class="row justify-content-center">
         <!-- <button class="col-md-12" @click="toggleTheme">Toggle Theme</button> -->
-        <div class="col-md-11 px-0 col-sm-12 mt-4">
+        <div class="col-md-11 px-0 col-sm-12">
           <div class="row justify-content-between">
-            <div class="col-md-5  px-0 mt-4 d-flex align-items-center">
+            <div class="col-md-5  px-0 d-flex align-items-center">
               <div class="col-md-12 col-lg-11 px-0 d-none d-md-block">
                 <div class="row">
                   <div class="col-md-12 d-flex justify-content-center">
-                    <img class="col-md-6" src="../../assets/home-image.png" alt="" />
+                    <img
+                      class="col-md-5 col-5"
+                      src="../../assets/home-image.png"
+                      alt=""
+                    />
                   </div>
                   <div class="col-md-12 d-flex mt-4 justify-content-center h4">
                     <div
-                      class="col-md-11 col-sm-12 text-center text-head font-weight-bold"
+                      class="col-md-11 col-sm-12 text-black text-center text-head font-weight-bold"
                     >
                       {{
                         navigatorLang === "en-US"
-                          ? "Elevating Your Ministry, Empowering Your Leadership!"
+                          ? "Elevating Your Ministry,"
                           : $t("home-content.elevating")
+                      }}
+                      <br />
+                      {{
+                        navigatorLang === "en-US"
+                          ? "Empowering Your Leadership!"
+                          : $t("home-content.empowering")
                       }}
                     </div>
                   </div>
                   <div class="col-md-12 mt-2 d-flex justify-content-center h5">
-                    <div class="col-md-11 col-sm-12 text-center">
+                    <div class="col-md-11 col-sm-12 fw-400 text-dak text-center">
                       {{
                         navigatorLang === "en-US"
                           ? "Welcome to the Future of Church Management!"
@@ -36,9 +47,7 @@
                   </div>
                   <div class="col-md-12 mt-4 d-flex justify-content-center">
                     <div class="col-md-11 d-flex justify-content-center col-sm-12">
-                      <span
-                        ><img src="../../assets/check-icon.png" alt=""
-                      /></span>
+                      <span><img src="../../assets/check-icon.png" alt="" /></span>
                       <span class="mt-2 ml-2">{{
                         navigatorLang === "en-US"
                           ? "Revolutionize Your Ministry"
@@ -72,10 +81,10 @@
               </div>
             </div>
             <div
-              class="col-md-5 col-12 px-md-0 mt-4 d-flex justify-content-center align-items-center"
+              class="col-md-5 col-12 px-md-0 d-flex justify-content-center align-items-center"
             >
               <div
-                class="col-md-12 col-sm-10 col-10 p-md-4 p-lg-5"
+                class="col-md-12  col-10 py-5 px-4 "
                 :style="{ backgroundColor: theme.light_primary, borderRadius: '10px' }"
               >
                 <div class="logo-con mt-2">
@@ -138,7 +147,7 @@
                     <div class="f-password-div">
                       <router-link
                         to="/forgotpassword"
-                        class="forgot-password primary--text"
+                        class="forgot-password text-head primary--text"
                         >{{
                           navigatorLang === "en-US"
                             ? "Forgot password?"
@@ -205,11 +214,11 @@
                         to="/register"
                         class="sign-up"
                         :style="{ color: theme.type == 'light' ? '#343a40' : '#FFFFFF' }"
-                        ><strong>{{
+                        ><span class="text-dak text-head fw-400">{{
                           navigatorLang === "en-US"
                             ? "Create an account"
                             : $t("loginContent.signup-btntext")
-                        }}</strong>
+                        }}</span>
                       </router-link>
                     </div>
 
@@ -402,25 +411,25 @@ export default {
               type: "error",
             });
           } else {
-              if (data.roles.indexOf("GroupLeader") !== -1) {
-                router.push({
-                  name: "GroupLeaderDashboard",
-                });
-              } else if (data.roles.length === 1 && data.roles[0] === "FollowUp") {
-                router.push("/tenant/followup");
-              } else if (data.roles.indexOf("FinancialAccount") !== -1) {
-                router.push("/tenant/offering");
-              } else if (data.roles.indexOf("MobileAdmin") !== -1) {
-                router.push("/tenant/social");
-              } else if (data.roles.indexOf("Reports") !== -1) {
-                router.push("/tenant/reports");
+            if (data.roles.indexOf("GroupLeader") !== -1) {
+              router.push({
+                name: "GroupLeaderDashboard",
+              });
+            } else if (data.roles.length === 1 && data.roles[0] === "FollowUp") {
+              router.push("/tenant/followup");
+            } else if (data.roles.indexOf("FinancialAccount") !== -1) {
+              router.push("/tenant/offering");
+            } else if (data.roles.indexOf("MobileAdmin") !== -1) {
+              router.push("/tenant/social");
+            } else if (data.roles.indexOf("Reports") !== -1) {
+              router.push("/tenant/reports");
+            } else {
+              if (data.churchSize > 0) {
+                router.push("/tenant");
               } else {
-                if (data.churchSize > 0) {
-                  router.push("/tenant");
-                } else {
-                  router.push("/next");
-                }
+                router.push("/next");
               }
+            }
             setTimeout(() => {
               setupService.setup();
             }, 5000);
@@ -535,9 +544,9 @@ export default {
 .forgot-password {
   /* font-family: Averta,sans-serif; */
   font-size: 14px;
-  line-height: 1.4;
+  line-height: 16.8px;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
 }
 
@@ -701,4 +710,5 @@ export default {
     top: -173px;
   }
 }
+
 </style>

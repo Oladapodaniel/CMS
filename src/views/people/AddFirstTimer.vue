@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-head font-weight-600 h2">Add First Timer</div>
+    <div class="text-head font-weight-bold text-black h2">Add First Timer</div>
     <div class="grey-backg py-2 border-radius-8 col-md-4">
       <router-link to="/tenant/firsttimerslist" class="text-decor ation-none s-18 text-dak">
         <span class="linear-gradient">Members > Add First Timer</span>

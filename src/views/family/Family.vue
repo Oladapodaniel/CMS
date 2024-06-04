@@ -3,11 +3,11 @@
     <div class="container-fluid container-top">
       <div class="row d-flex flex-column flex-sm-row justify-content-sm-between">
         <div>
-          <div class="text-head font-weight-600 h2 py-0 my-0 text-black ">Family</div>
+          <div class="text-head font-weight-bold h2 py-0 my-0 text-black ">Family</div>
           <div class="s-18">Showing all Families</div>
         </div>
-        <router-link to="/tenant/addfamily" class="no-decoration">
-          <el-button class="header-btn" :color="primarycolor" round>
+        <router-link to="/tenant/addfamily" class="no-decoration w-100">
+          <el-button class="header-btn w-100" :color="primarycolor" round>
             Add New Family
           </el-button>
         </router-link>

@@ -712,6 +712,7 @@ export default {
     const pledgeLoader = ref(false);
     const groupLoading = ref(false);
     const paymentFormId = ref("");
+    const bankCode = ref("");
     const dateRangeValue = ref(null);
     const { shortcuts } = ref(datePickerShortcut());
     const groupMappedTree = ref([]);
@@ -754,7 +755,8 @@ export default {
         pledgeName.value = res.data.returnObject.name;
         specificAmount.value = res.data.returnObject.donorPaymentSpecificAmount;
         accountName.value = res.data.returnObject.paymentForm.accountName;
-        accountNumber.value = res.data.returnObject.paymentForm.accountNumber;
+        accountName.value = res.data.returnObject.paymentForm.accountName;
+        bankCode.value = res.data.returnObject.paymentForm.bankCode;
         bankSearchText.value =  nigerianBanks.value.find(i => i.code == res.data.returnObject.paymentForm.bankCode).name, 
                                  
         amountFrom.value = res.data.returnObject.donorPaymentRangeFromAmount;
@@ -786,7 +788,7 @@ export default {
           res.data.returnObject.donorPaymentType;
         }
 
-        pledgesBoundToItem.value = res.data.returnObject.pledges;
+        pledgesBoundToItem.value = res.data && res.data.returnObject.pledges ? res.data.returnObject.pledges : [];
         console.log(pledgesBoundToItem.value, "pledgesBoundToItem");
         paymentFormId.value = res.data.returnObject.paymentFormID;
       } catch (error) {
@@ -843,8 +845,8 @@ export default {
         pledgeTypeFrequencyReOccuring: selectedRange.value ? selectedRange.value.name : "",
         currencyID: selectedCurrency.value.id,
         compulsoryCondition: selectedGroupTree.value.join(","),
-        bankName: selectedBank.value.name,
-        bankCode: selectedBank.value.code,
+        bankName: selectedBank.value && selectedBank.value.name ? selectedBank.value.name : bankSearchText.value,
+        bankCode: selectedBank.value && selectedBank.value.code ? selectedBank.value.code : bankCode.value,
         accountName: accountName.value,
         accountNumber: accountNumber.value,
         notifyMembers: notify.value,
@@ -1194,7 +1196,8 @@ export default {
       emailNotify,
       makeMandatory,
       pledgeDefinitionHeaders,
-      primarycolor
+      primarycolor,
+      bankCode
     };
   },
 };

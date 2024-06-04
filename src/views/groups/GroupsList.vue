@@ -5,7 +5,7 @@
         <div class="text-head font-weight-600 h2 py-0 my-0 text-black">Groups</div>
 
         <div class="mt-2 my-1 link" v-if="!groupLeader">
-          <el-button class="header-btn" @click="router.push('/tenant/createpeoplegroup')" :color="primarycolor" round>
+          <el-button class="header-btn w-100" @click="router.push('/tenant/createpeoplegroup')" :color="primarycolor" round>
             Create New Group
           </el-button>
           <!-- <router-link to="/tenant/createpeoplegroup" class="

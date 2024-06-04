@@ -82,7 +82,7 @@
           </div>
         </div>
         <div class="row mt-3">
-          <div class="col-md-12 text-head h2 font-weight-600">Overview</div>
+          <div class="col-md-12 text-head h2 text-black font-weight-bold">Overview</div>
         </div>
         <div class="row mb-4">
           <div class="col-12">
@@ -623,9 +623,9 @@
                     tenantInfoAttendanceWeekly[0].data[0] > 0)
                 "
               >
-                <div v-if="tenantInfoAttendanceWeekly && attendanceDataExist">
+                <div  v-if="tenantInfoAttendanceWeekly && attendanceDataExist">
                   <div
-                    class="adjust-view col-10 col-sm-12 d-flex justify-content-end mt-5 mt-md-0"
+                    class="adjust-view2 col-10 col-sm-12 px-0 d-flex justify-content-end mt-5 mt-md-0"
                   >
                     <!-- <div class="view-report">View Reports</div> -->
                     <div class="weekly col-md-5 d-flex">
@@ -686,7 +686,7 @@
                 </div>
 
                 <div v-if="tenantInfoFirstTimerWeekly && firstTimerDataExist">
-                  <div class="adjust-view col-10 col-sm-12 d-flex justify-content-end">
+                  <div class="adjust-view  col-10 col-sm-12 d-flex justify-content-end">
                     <!-- <div class="view-report">View Reports</div> -->
                     <div class="weekly col-md-5 d-flex">
                       <div
@@ -1944,6 +1944,9 @@ export default {
   .adjust-view {
     display: none;
   }
+  .adjust-view2 {
+    display: none;
+  }
 
   .container-fluid-mobile {
     border: 1px solid !important;
@@ -2038,6 +2041,12 @@ tbody tr:nth-child(even) {
   right: 10px;
   z-index: 1;
 }
+.adjust-view2 {
+  position: relative;
+  top: 100px;
+  right: 10px;
+  z-index: 1;
+}
 
 .more-things {
   text-align: center;
@@ -2057,10 +2066,15 @@ tbody tr:nth-child(even) {
   opacity: 1;
 }
 
+
 @media (max-width: 575px) {
   .adjust-view {
     left: 65px;
-    top: 150px;
+    top: 130px;
+  }
+  .adjust-view2 {
+    left: 65px;
+    top: 130px;
   }
 
   .view-report {
@@ -2073,21 +2087,23 @@ tbody tr:nth-child(even) {
     display: flex;
     flex-direction: column;
   }
+  .adjust-view {
+    left: 65px;
+    top: 130px;
+  }
+  .adjust-view2 {
+    left: 65px;
+    top: 130px;
+  }
+
+  .view-report {
+    display: none;
+  }
 }
 
-@media (max-width: 305px) {
-}
 
-@media (min-width: 509px) and (max-width: 515px) {
-}
-
-@media (min-width: 516px) and (max-width: 576px) {
-}
 
 .view-report {
-  font: normal normal 800 16px/22px Nunito Sans;
-  letter-spacing: 0px;
-  color: #2b6ecd;
   cursor: pointer;
 }
 
@@ -2181,10 +2197,23 @@ height: 42px; */
   }
 }
 
-@media (min-width: 1101px) and (max-width: 1231px) {
+@media (max-width: 767px) {
+  .adjust-view {
+    position: relative;
+    top: 113px;
+    right: 10px;
+    z-index: 1;
+}
+  .adjust-view2 {
+    position: relative;
+    top: 126px;
+    right: 10px;
+    z-index: 1;
 }
 
-@media screen and (min-width: 1300px) {
+  .view-report {
+    display: none;
+  }
 }
 
 @media (max-width: 556px) {

@@ -6,7 +6,7 @@
         v-if="!isFormPage"
       >
         <div>
-          <div class="text-head font-weight-600 h2 py-0 my-0 text-black">
+          <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
             All Contacts
           </div>
           <div class="s-18">Showing all Contacts</div>

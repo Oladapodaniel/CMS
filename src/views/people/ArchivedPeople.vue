@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid container-top">
     <div class="row">
-      <div class="col-12 my-2 head-text">Archived People</div>
+      <div class="col-12 my-2 text-head h2 font-weight-bold text-black">Archived People</div>
     </div>
     <div class="row">
       <div class="col-md-12">

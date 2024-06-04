@@ -1,23 +1,53 @@
 <template>
-  <div :class="{ 'container-wide': lgAndUp || xlAndUp }"
-    class="container-top h-100">
+  <div :class="{ 'container-wide': lgAndUp || xlAndUp }" class="container-top h-100">
     <div>
-      <div class="d-flex flex-column flex-md-row justify-content-md-between">
+      <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
         <div>
-          <div class="text-head font-weight-600 h2 py-0 my-0 text-black">New Converts</div>
-          <div class="s-18">Showing all Families</div>
+          <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
+            New Converts
+          </div>
+          <div class="s-18">Showing all New Converts</div>
         </div>
-        <div class="mt-3 mt-md-0 d-flex flex-sm-nowrap flex-wrap">
-          <el-button
-            class="header-btn secondary-button w-100"
-            @click="importNewConvert"
-            round
-            >Import</el-button
+        <div class="d-flex flex-wrap flex-sm-nowrap mt-3 mt-sm-0">
+          <div class="d-flex mt-1 w-100" @click="watchVideo">
+            <span class="s-18 primary--text">Watch Video </span>
+            <span class="mt-0 ml-1"
+              ><el-icon :size="27" class="primary--text"><VideoPlay /></el-icon
+            ></span>
+          </div>
+          <el-dropdown
+            trigger="click"
+            class="align-items-center justify-content-center d-flex ml-md-3 ml-0 default-btn py-0 m-0 border"
+            style="height: 2.2rem"
           >
-          <router-link
-            :to="{ name: 'AddNewConvert' }"
-            class="text-decoration-none w-100"
-          >
+            <span
+              class="el-dropdown-link w-100 primary--text text-center font-weight-600"
+            >
+              Menu
+              <el-icon class="el-icon--right">
+                <arrow-down />
+              </el-icon>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <!-- <el-dropdown-item class="text-black" @click="copylink"
+                >Copy Public Link
+                <img class="ml-2" src="../../assets/copyurl-icon.png" alt="" />
+              </el-dropdown-item> -->
+                <!-- <el-dropdown-item @click="getQrCode" class="text-black">
+                Show QR Code
+              </el-dropdown-item> -->
+                <!-- <el-dropdown-item class="text-black" @click="showAnalysis"
+                  >Analysis</el-dropdown-item
+                > -->
+                <el-dropdown-item class="text-black" @click="importNewConvert"
+                  >Import</el-dropdown-item
+                >
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+          <!-- <el-button @click="importMembers" class="header-btn secondary-button" round>Import</el-button> -->
+          <router-link :to="{ name: 'AddNewConvert' }" class="text-decoration-none w-100">
             <el-button
               :color="primarycolor"
               class="ml-sm-2 ml-0 mt-2 mt-sm-0 w-100 header-btn"
@@ -36,8 +66,8 @@
         </div>
         <div class="col-md-10 pl-0">
           <div class="font-weight-bold py-md-2 mt-4">
-            Share the link to your new converts to enable them to add their
-            details to your church.
+            Share the link to your new converts to enable them to add their details to
+            your church.
           </div>
           <div class="p-inputgroup form-group mt-1">
             <el-input
@@ -58,18 +88,16 @@
         </div>
       </div>
       <transition name="el-fade-in-linear">
-      <div class="row" v-show="membershipCapacityExceeded">
-        <div class="col-md-12 mt-3">
-          <MemberCapExceeded />
+        <div class="row" v-show="membershipCapacityExceeded">
+          <div class="col-md-12 mt-3">
+            <MemberCapExceeded />
+          </div>
         </div>
-      </div>
-    </transition>
+      </transition>
       <div class="top-con">
         <div class="">
           <div class="table-to p-3 mt-3">
-            <div
-              class="d-flex flex-column flex-sm-row justify-content-sm-between"
-            >
+            <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
               <div>
                 <el-tooltip
                   class="box-item"
@@ -103,9 +131,7 @@
                   </el-icon>
                 </el-tooltip>
               </div>
-              <div
-                class="d-flex flex-column flex-sm-row justify-content-sm-end"
-              >
+              <div class="d-flex flex-column flex-sm-row justify-content-sm-end">
                 <el-input
                   size="small"
                   v-model="searchText"
@@ -198,10 +224,7 @@
         </template>
       </Table>
     </div>
-    <div
-      v-if="allNewConvert.length === 0 && !loading && !networkError"
-      class="no-person"
-    >
+    <div v-if="allNewConvert.length === 0 && !loading && !networkError" class="no-person">
       <div class="empty-img">
         <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
         <p class="tip">You haven't added any first timer yet</p>
@@ -264,21 +287,10 @@
             margin-top: 20px;
           "
         >
-          <el-skeleton-item
-            variant="text"
-            style="width: 240px; height: 240px"
-          />
-          <el-skeleton-item
-            variant="text"
-            style="width: 240px; height: 240px"
-          />
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
         </div>
-        <el-skeleton
-          class="w-100 mt-5"
-          style="height: 25px"
-          :rows="20"
-          animated
-        />
+        <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
       </template>
     </el-skeleton>
     <el-dialog
@@ -289,13 +301,34 @@
       align-center
     >
       <div class="d-flex align-items-center flex-column">
-        <h4 class="text-capitalize font-weight-600 ">
+        <h4 class="text-capitalize font-weight-600">
           New Converts QR Code For Registration
         </h4>
       </div>
       <div class="d-flex justify-content-center">
         <div class="img-wrapper">
           <img v-if="qrCode" :src="qrCode" class="image-wrapper w-100" />
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog
+      style="border-radius: 20px"
+      v-model="showAddMemberVideo"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+      top
+    >
+      <div class="row justify-content-center" v-loading>
+        <div class="col-md-12">
+          <iframe
+            width="100%"
+            height="315"
+            :src="videoURL"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
         </div>
       </div>
     </el-dialog>
@@ -321,7 +354,7 @@ export default {
     Table,
     smsComponent,
     emailComponent,
-    MemberCapExceeded
+    MemberCapExceeded,
   },
   setup(props) {
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
@@ -337,6 +370,8 @@ export default {
     const contacts = ref([]);
     const searchText = ref("");
     // const allNewConvert = ref([]);
+    const videoURL = ref("https://www.youtube.com/embed/zcwna-kshGo?si=08OmWtjLkAbwLXy8");
+    const showAddMemberVideo = ref(false);
     const qrCode = ref("");
     const QRCodeDialog = ref(false);
     const allNewConvert = ref(store.getters["membership/allNewConverts"]);
@@ -349,7 +384,11 @@ export default {
       { name: "INTERACTIONS", value: "interactions" },
       { name: "ACTION", value: "action" },
     ]);
-    const membershipCapacityExceeded = ref(false)
+    const membershipCapacityExceeded = ref(false);
+
+    const watchVideo = () => {
+      showAddMemberVideo.value = true;
+    };
 
     const formatDate = (date) => {
       return dateFormatter.monthDayYear(date);
@@ -443,8 +482,7 @@ export default {
     const getUser = computed(() => {
       if (
         !store.getters.currentUser ||
-        (store.getters.currentUser &&
-          Object.keys(store.getters.currentUser).length == 0)
+        (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)
       )
         return "";
       return store.getters.currentUser;
@@ -463,15 +501,11 @@ export default {
     });
 
     const showConfirmModal = (id) => {
-      ElMessageBox.confirm(
-        "Are you sure you want to proceed?",
-        "Confirm delete",
-        {
-          confirmButtonText: "OK",
-          cancelButtonText: "Cancel",
-          type: "error",
-        }
-      )
+      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "error",
+      })
         .then(() => {
           deleteNewConvert(id);
         })
@@ -503,10 +537,8 @@ export default {
     };
 
     onMounted(() => {
-      if (allNewConvert.value && allNewConvert.value.length == 0)
-        getAllNewConvert();
+      if (allNewConvert.value && allNewConvert.value.length == 0) getAllNewConvert();
     });
-
 
     return {
       mdAndUp,
@@ -542,7 +574,10 @@ export default {
       getQrCode2,
       newConvertLink,
       selectedLink,
-      membershipCapacityExceeded
+      membershipCapacityExceeded,
+      videoURL,
+      showAddMemberVideo,
+      watchVideo,
     };
   },
 };

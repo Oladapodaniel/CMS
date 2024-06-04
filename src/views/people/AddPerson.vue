@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <div class="text-head font-weight-600 h2">Add Member</div>
+      <div class="text-head font-weight-bold text-black h2">Add Member</div>
       <div class="grey-backg py-2 border-radius-8 col-md-4">
         <router-link
           to="/tenant/people"
