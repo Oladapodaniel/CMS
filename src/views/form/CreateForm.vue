@@ -246,7 +246,7 @@
           <div class="col-md-12">
             <div class="row">
               <div class="col-md-3 font-weight text-left text-md-right">
-                <label for="" class="">Accepts Payment ?</label>{{ checkedYes }}
+                <label for="" class="">Accepts Payment ?</label>
               </div>
 
               <div class="col-md-8">

@@ -755,7 +755,7 @@ export default {
         pledgeName.value = res.data.returnObject.name;
         specificAmount.value = res.data.returnObject.donorPaymentSpecificAmount;
         accountName.value = res.data.returnObject.paymentForm.accountName;
-        accountName.value = res.data.returnObject.paymentForm.accountName;
+        accountNumber.value = res.data.returnObject.paymentForm.accountNumber;
         bankCode.value = res.data.returnObject.paymentForm.bankCode;
         bankSearchText.value =  nigerianBanks.value.find(i => i.code == res.data.returnObject.paymentForm.bankCode).name, 
                                  

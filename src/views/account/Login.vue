@@ -4,8 +4,8 @@
     :style="{ backgroundColor: theme.bg_900, color: theme.text_900 }"
     style="display: flex; min-height: 100vh"
   >
-    <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
-      <div class="row justify-content-center">
+  <div class="container-top " :class="{ 'container-slim': lgAndUp || xlAndUp }">
+      <div class="row justify-content-center ">
         <!-- <button class="col-md-12" @click="toggleTheme">Toggle Theme</button> -->
         <div class="col-md-11 px-0 col-sm-12">
           <div class="row justify-content-between">
