@@ -127,7 +127,7 @@
             <div class="col-md-12">
               <div class="row justify-content-center">
                 <div class="col-md-10">
-                  <div v-if="singleFormData && singleFormData.isAmountFIxed === true ">
+                  <div v-if="singleFormData && singleFormData.fillPaymentFormDTO && singleFormData.isAmountFIxed === true ">
                     <label style="font-weight: 450; font-size: 14px" for="">Amount</label>
                     <el-input
                       v-model="amountToPayNow"
@@ -136,7 +136,7 @@
                       placeholder="Amount"
                     />
                   </div>
-                  <div v-if="singleFormData && singleFormData.isAmountFIxed === false ">
+                  <div v-if="singleFormData && singleFormData.fillPaymentFormDTO && singleFormData.isAmountFIxed === false ">
                     <label style="font-weight: 450; font-size: 14px" for="">Amount</label>
                     <el-input v-model="amountToPayNow" type="text" placeholder="Amount" />
                   </div>
