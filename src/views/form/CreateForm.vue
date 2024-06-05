@@ -1037,12 +1037,12 @@ export default {
       accountName.value && selectedBank.value.code && accountNumber.value
         ? formData.append("paymentFormString", JSON.stringify(paymentForm))
         : null;
-      formData.append(
+        paymentType.value  && paymentType.value !== undefined ? formData.append(
         "isAmountFIxed",
         paymentType.value || !paymentType.value
           ? paymentType.value
-          : false
-      );
+          : ''
+      ) : '' ;
       formData.append("amount", specificAmount.value ? specificAmount.value : "");
       formData.append(
         "financialContributionID",

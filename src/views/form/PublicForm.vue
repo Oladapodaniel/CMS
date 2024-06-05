@@ -385,8 +385,8 @@ export default {
           singleFormData.value.customAttributes.map((i) => ({
             customAttributeID: i.id,
             data: i.data,
-            isRequired: i.isRequired,
-          }))
+            isRequired: i.isRequired ? i.isRequired : false,
+          })),
         );
         loading.close();
         if (data.status) {
