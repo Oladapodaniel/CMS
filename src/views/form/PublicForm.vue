@@ -379,15 +379,27 @@ export default {
       let gatewayService =
         gatewayType === 1 ? "Paystack" : gatewayType == 2 ? "Flutterwave" : null;
 
-      try {
-        let { data } = await axios.post(
-          `/InitializeFormPayment?formID=${route.params.id}&gateway=${gatewayService}`,
-          singleFormData.value.customAttributes.map((i) => ({
+        
+        let payload = { 
+          data: singleFormData.value.customAttributes.map((i) => ({
             customAttributeID: i.id,
             data: i.data,
             isRequired: i.isRequired ? i.isRequired : false,
           })),
-        );
+          
+
+        }
+        if(singleFormData.value.isAmountFIxed){
+          payload.isFreeWill = false;
+
+        }else{
+          payload.isFreeWill = true;
+          payload.amount = amountToPayNow.value ? amountToPayNow.value : '';
+        }
+
+      try {
+        let { data } = await axios.post(
+          `/InitializeFormPayment?formID=${route.params.id}&gateway=${gatewayService}`,payload);
         loading.close();
         if (data.status) {
           if (gatewayType == 1) {

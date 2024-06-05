@@ -50,17 +50,17 @@
             <div class="col-md-12">{{ sortedData.length > 1 ? sortedData.length + ' ' + 'responses' : sortedData.length +
                 ' ' + 'response' }}</div>
             <div class="col-md-12 d-flex flex-column flex-sm-row mt-1">
-                <div class="col-md-2 cursor-pointer rounded border py-2 tab-color  text-center"
-                    :class="{ 'showedColor': showSummary }" @click="summary">
-                    Analytics
+                <div class="col-md-2 rounded cursor-pointer border py-2 tab-color text-center"
+                    :class="{ 'showedColor': showList }" @click="formList">
+                    list
                 </div>
                 <div class="col-md-2 rounded cursor-pointer border py-2 tab-color text-center"
                     :class="{ 'showedColor': showIndividual }" @click="individual">
                     Grid
                 </div>
-                <div class="col-md-2 rounded cursor-pointer border py-2 tab-color text-center"
-                    :class="{ 'showedColor': showList }" @click="formList">
-                    list
+                <div class="col-md-2 cursor-pointer rounded border py-2 tab-color  text-center"
+                    :class="{ 'showedColor': showSummary }" @click="summary">
+                    Analytics
                 </div>
             </div>
         </div>
@@ -256,8 +256,8 @@ export default {
     setup() {
         const loading = ref(false)
         const showIndividual = ref(false)
-        const showSummary = ref(true)
-        const showList = ref(false)
+        const showSummary = ref(false)
+        const showList = ref(true)
         const QRCodeDialog = ref(false)
         const searchingForm = ref(true);
         const searchText = ref('')

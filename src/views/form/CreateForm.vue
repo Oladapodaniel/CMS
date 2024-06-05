@@ -250,7 +250,11 @@
               </div>
 
               <div class="col-md-8">
-                <el-checkbox v-model="checkedYes" label="Yes" />
+                <el-checkbox
+                  @change="setChecked(checkedYes)"
+                  v-model="checkedYes"
+                  label="Yes"
+                />
               </div>
             </div>
           </div>
@@ -437,7 +441,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-12 mt-3" v-if="paymentType == true ">
+          <div class="col-md-12 mt-3" v-if="paymentType == true">
             <div class="row">
               <div class="col-md-3 font-weight text-left text-md-right">
                 <label for="" class=""> Amount </label>
@@ -629,7 +633,7 @@
 </template>
 
 <script>
-import { ref, inject, computed, watch } from "vue";
+import { ref, inject, computed, watch, onMounted } from "vue";
 import axios from "@/gateway/backendapi";
 import axio from "axios";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -677,7 +681,7 @@ export default {
     const { xsOnly, mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
     const primarycolor = inject("primarycolor");
     const pledgeCategory = ref("specific");
-    const paymentType = ref();
+    const paymentType = ref(false);
 
     const responseType = ref([
       { name: "Text", id: 0 },
@@ -702,7 +706,12 @@ export default {
       pledgeCategory.value = "freewill";
       // pledgeType.value = 0;
       paymentType.value = false;
-      specificAmount.value = ""
+      specificAmount.value = "";
+    };
+
+    const setChecked = (item) => {
+      console.log(item, "kkk");
+      if (item && !route.params.id) return (paymentType.value = false);
     };
 
     const selectContribution = (item) => {
@@ -844,7 +853,7 @@ export default {
         .get("/api/Financials/GetBanks")
         .then((res) => {
           nigerianBanks.value = res.data;
-          if (route.params.id)  getSingleForm();
+          if (route.params.id) getSingleForm();
         })
         .catch((err) => {
           console.log(err);
@@ -928,16 +937,23 @@ export default {
         emailRecipient.value = data.emailRecipient;
         specificAmount.value = data.amount;
         paymentType.value = data && data.isAmountFIxed ? data.isAmountFIxed : false;
-        bankCode.value = data.paymentForm  && data.paymentForm.bankCode ? data.paymentForm.bankCode : '';
-        paymentFormID.value =  data.paymentForm && data.paymentForm.id ? data.paymentForm.id : '';
+        bankCode.value =
+          data.paymentForm && data.paymentForm.bankCode ? data.paymentForm.bankCode : "";
+        paymentFormID.value =
+          data.paymentForm && data.paymentForm.id ? data.paymentForm.id : "";
         getContributionCategory(data.financialContributionID);
         accountNumber.value =
-          data.paymentForm && data.paymentForm.accountNumber ? data.paymentForm.accountNumber : "";
+          data.paymentForm && data.paymentForm.accountNumber
+            ? data.paymentForm.accountNumber
+            : "";
         accountName.value =
-          data.paymentForm && data.paymentForm.accountName ? data.paymentForm.accountName : "";
-        (bankSearchText.value = data.paymentForm && data.paymentForm.bankCode ? nigerianBanks.value.find(
-          (i) => i.code ==  data.paymentForm.bankCode 
-        ).name : ''),
+          data.paymentForm && data.paymentForm.accountName
+            ? data.paymentForm.accountName
+            : "";
+        (bankSearchText.value =
+          data.paymentForm && data.paymentForm.bankCode
+            ? nigerianBanks.value.find((i) => i.code == data.paymentForm.bankCode).name
+            : ""),
           (cutomFieldData.value = data.customAttributes.map((i) => {
             return {
               id: i.id,
@@ -957,10 +973,9 @@ export default {
           return (checkedYes.value = false);
         }
       } catch (error) {
-        console.log(error, 'error')
+        console.log(error, "error");
       }
     };
-   
 
     const saveChip = (index) => {
       cutomFieldData.value[index].currentInput
@@ -1021,13 +1036,16 @@ export default {
 
     const saveForm = async () => {
       let paymentForm = {
-        paymentForm: paymentFormID.value ? paymentFormID.value : '',
+        paymentForm: paymentFormID.value ? paymentFormID.value : "",
         accountName: accountName.value,
-        bankCode: selectedBank.value && selectedBank.value.code ? selectedBank.value.code : bankCode.value,
+        bankCode:
+          selectedBank.value && selectedBank.value.code
+            ? selectedBank.value.code
+            : bankCode.value,
         accountNumber: accountNumber.value,
       };
 
-      console.log(paymentForm, 'kkk')
+      console.log(paymentForm, "kkk");
 
       const formData = new FormData();
       const formData2 = new FormData();
@@ -1037,12 +1055,10 @@ export default {
       accountName.value && selectedBank.value.code && accountNumber.value
         ? formData.append("paymentFormString", JSON.stringify(paymentForm))
         : null;
-        paymentType.value  && paymentType.value !== undefined ? formData.append(
+        formData.append(
         "isAmountFIxed",
-        paymentType.value || !paymentType.value
-          ? paymentType.value
-          : ''
-      ) : '' ;
+        paymentType.value || !paymentType.value ? paymentType.value : ""
+      );
       formData.append("amount", specificAmount.value ? specificAmount.value : "");
       formData.append(
         "financialContributionID",
@@ -1050,7 +1066,7 @@ export default {
           ? selectedContribution.value.id
           : ""
       );
-      formData.append("emailRecipient", emailRecipient.value);
+      formData.append("emailRecipient", emailRecipient.value ? emailRecipient.value : "");
       formData.append("picture", selectedImage.value ? selectedImage.value : "");
       formData.append("tenantID", tenantId.value);
       formData.append(
@@ -1072,14 +1088,12 @@ export default {
       formData2.append("name", formName.value);
       formData2.append("description", description.value);
       formData2.append("date", dateUpdated.value);
-      accountName.value  && accountNumber.value
+      accountName.value && accountNumber.value
         ? formData2.append("paymentFormString", JSON.stringify(paymentForm))
         : null;
       formData2.append(
         "isAmountFIxed",
-        paymentType.value || !paymentType.value
-          ? paymentType.value
-          : false
+        paymentType.value || !paymentType.value ? paymentType.value : false
       );
       formData2.append("amount", specificAmount.value ? specificAmount.value : "");
       formData2.append(
@@ -1088,7 +1102,10 @@ export default {
           ? selectedContribution.value.id
           : ""
       );
-      formData2.append("emailRecipient", emailRecipient.value);
+      formData2.append(
+        "emailRecipient",
+        emailRecipient.value ? emailRecipient.value : ""
+      );
       // formData2.append("pictureUrl", url.value ? url.value : selectedImage.value);
       formData2.append("picture", selectedImage.value ? selectedImage.value : "");
       formData2.append("tenantID", tenantId.value);
@@ -1198,7 +1215,8 @@ export default {
       specific,
       paymentType,
       bankCode,
-      paymentFormID
+      paymentFormID,
+      setChecked,
     };
   },
 };
