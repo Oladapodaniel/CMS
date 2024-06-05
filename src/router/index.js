@@ -41,7 +41,7 @@ const routes = [
         name: 'Login',
         component: () => {
           // Your condition to determine which component to load
-          const condition =  getSubdomain() === 'alat'; // or false based on your logic
+          const condition =  getSubdomain() === 'alatfaith'; // or false based on your logic
     
           // Dynamically import the component based on the condition
           return condition
@@ -49,7 +49,7 @@ const routes = [
             : import(/* webpackChunkName: "churchpluslogin" */ '../views/account/Login.vue');
         },
         meta: {
-          title:  getSubdomain() === 'alat' ? 'AlatFaith - Welcome' : 'Churchplus - Login',
+          title:  getSubdomain() === 'alatfaith' ? 'AlatFaith - Welcome' : 'Churchplus - Login',
         }
       },
     {

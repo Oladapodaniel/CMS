@@ -132,7 +132,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
 
-app.provide('primarycolor', getSubdomain() === 'alat' ? '#971931' : '#136acd')
+app.provide('primarycolor', getSubdomain() === 'alatfaith' ? '#971931' : '#136acd')
 
 app.config.globalProperties.$aos = AOS;
 
