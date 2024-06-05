@@ -130,7 +130,7 @@
                   <div v-if="singleFormData && singleFormData.isAmountFIxed === true ">
                     <label style="font-weight: 450; font-size: 14px" for="">Amount</label>
                     <el-input
-                      v-model="amount"
+                      v-model="amountToPayNow"
                       type="text"
                       :disabled="true"
                       placeholder="Amount"
@@ -138,7 +138,7 @@
                   </div>
                   <div v-if="singleFormData && singleFormData.isAmountFIxed === false ">
                     <label style="font-weight: 450; font-size: 14px" for="">Amount</label>
-                    <el-input v-model="amount" type="text" placeholder="Amount" />
+                    <el-input v-model="amountToPayNow" type="text" placeholder="Amount" />
                   </div>
                 </div>
               </div>
@@ -184,6 +184,9 @@
       <div class="row justify-content-center mt-4" v-if="disabledBtn">
         <div class="col-md-4 text-center h3">Form Submitted Successfully</div>
       </div>
+      <!-- <div class="row justify-content-center mt-4" v-if="disabledBtn">
+        <div class="col-md-4 text-center h3">Form Submitted Successfully</div>
+      </div> -->
       <div v-if="networkError && !loading" class="adjust-network">
         <img src="../../assets/network-disconnected.png" />
         <div>Opps, Your internet connection was disrupted</div>
@@ -287,7 +290,7 @@ export default {
     const centerDialogVisible = ref(false);
     const paymentSuccessfulDialog = ref(false);
     const currentInput = ref("");
-    const amount = ref("");
+    const amountToPayNow = ref("");
     const dropdownList = ref([]);
     const { xsOnly, mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
     const primarycolor = inject("primarycolor");
@@ -325,6 +328,33 @@ export default {
       }
     };
 
+    const getSingleForm = async () => {
+      loadingPage.value = true;
+      try {
+        const { data } = await axios.get(
+          `/api/public/getsinglepublicform?Id=${route.params.id}`
+        );
+        singleFormData.value = data;
+        formLogo.value = data.pictureUrl;
+        publicPaymentForm.value = singleFormData.value.fillPaymentFormDTO;
+        churchLogo.value = singleFormData.value.fillPaymentFormDTO.churchLogo;
+        churchName.value = singleFormData.value.fillPaymentFormDTO.churchName;
+        amountToPayNow.value =  singleFormData.value.amount;
+        loadingPage.value = false;
+        GetAllCurrencies();
+      } catch (error) {
+        // finish()
+        if (error.toString().toLowerCase().includes("network error")) {
+          networkError.value = true;
+        } else {
+          networkError.value = false;
+        }
+        loadingPage.value = false;
+        console.log(error);
+      }
+    };
+    getSingleForm();
+
     const triggerPayment = () => {
       paymentDialog.value = true;
     };
@@ -348,17 +378,6 @@ export default {
       });
       let gatewayService =
         gatewayType === 1 ? "Paystack" : gatewayType == 2 ? "Flutterwave" : null;
-
-      // newContact.value = { ...newContact.value, mobilePhone: userSearchString.value }
-      // let payload = {
-      // person: contactDetail.value && Object.keys(contactDetail.value).length > 0 && contactDetail.value.id ? { id: contactDetail.value.id } : newContact.value,
-      // pledgeItemDTO: donorDetail.value,
-      // pledgeResponseDTO: pledgedData.value && Object.keys(pledgedData.value).length > 0 ? pledgedData.value : { currency: selectedCurrency.value, amount: amountToPledge.value },
-      // pledgePaymentDTO: pledgeActionType.value == 1 ? { currency: selectedCurrency.value, amount: amountToPayNow.value } : null,
-      // pledgePaymentDTO: pledgeActionType.value == 1 ? { currency: selectedCurrency.value, amount: amountToPledge.value } : null,
-      // pledgePaymentDTO: pledgedData.value && Object.keys(pledgedData.value).length > 0 ? pledgedData.value : { currency: selectedCurrency.value, amount: amountToPledge.value },
-      // };
-      // if (gatewayService) payload.gateway = gatewayService
 
       try {
         let { data } = await axios.post(
@@ -434,13 +453,13 @@ export default {
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
         email: responseObject.giverEmail,
-        amount: amount.value * 100,
+        amount: amountToPayNow.value * 100,
         currency: paymentFormCurrency.value.shortCode,
         channels: ["card", "bank", "ussd", "qr", "mobile_money", "bank_transfer"],
         subaccount: publicPaymentForm.value.paymentGateWays.find(
           (i) => i.paymentGateway.name === "Paystack"
         ).subAccountID,
-        ref: "FormsPaymentAFCOUTREACH376955673-FormsPayment",
+        ref: responseObject.transactionReference,
         onClose: function () {
           ElMessage({
             type: "info",
@@ -463,8 +482,8 @@ export default {
         public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
         // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
         tx_ref: responseObject.transactionReference,
-        amount: amount.value,
-        // amount: amountToPayNow.value,
+        amount: amountToPayNow.value,
+        email: responseObject.giverEmail,
         currency: paymentFormCurrency.value.shortCode,
         // country: country,
         payment_options: "card,ussd",
@@ -475,14 +494,14 @@ export default {
             ).subAccountID,
           },
         ],
-        // customer: {
-        //   name:
-        //     contactDetail.value && Object.keys(contactDetail.value).length > 0
-        //       ? `${contactDetail.value.firstName} ${contactDetail.value.lastName}`
-        //       : `${newContact.value.firstName} ${newContact.value.lastName}`,
-        //   phone_number: userSearchString.value,
-        //   email: responseObject.person.email,
-        // },
+        customer: {
+          // name:
+          //   contactDetail.value && Object.keys(contactDetail.value).length > 0
+          //     ? `${contactDetail.value.firstName} ${contactDetail.value.lastName}`
+          //     : `${newContact.value.firstName} ${newContact.value.lastName}`,
+          // phone_number: userSearchString.value,
+          email: responseObject.giverEmail,
+        },
         callback: (response) => {
           let trans_id = response.transaction_id;
           let tx_ref = response.tx_ref;
@@ -502,7 +521,8 @@ export default {
         const res = await axios.post(
           `/ConfirmFormsPayment?id=${trans_id}&txnref=${tx_ref}`
         );
-        if (res.data.status) {
+        console.log(res.data,'nnn');
+        if (res.data) {
           paymentSuccessfulDialog.value = true;
           // personToggle.value = false;
           // userSearchString.value = "";
@@ -569,32 +589,7 @@ export default {
     };
 
     const allTrueRequired = ref([]);
-    const getSingleForm = async () => {
-      loadingPage.value = true;
-      try {
-        const { data } = await axios.get(
-          `/api/public/getsinglepublicform?Id=${route.params.id}`
-        );
-        singleFormData.value = data;
-        formLogo.value = data.pictureUrl;
-        publicPaymentForm.value = singleFormData.value.fillPaymentFormDTO;
-        churchLogo.value = singleFormData.value.fillPaymentFormDTO.churchLogo;
-        churchName.value = singleFormData.value.fillPaymentFormDTO.churchName;
-        amount.value = singleFormData.value.amount;
-        loadingPage.value = false;
-        GetAllCurrencies();
-      } catch (error) {
-        // finish()
-        if (error.toString().toLowerCase().includes("network error")) {
-          networkError.value = true;
-        } else {
-          networkError.value = false;
-        }
-        loadingPage.value = false;
-        console.log(error);
-      }
-    };
-    getSingleForm();
+
 
     watchEffect(() => {
       if (singleFormData && singleFormData.pictureUrl) {
@@ -768,7 +763,7 @@ export default {
       paymentFormCurrency,
       payWithPaystack,
       payWithFlutterwave,
-      amount,
+      amountToPayNow,
       initiatePayment,
       addNewField,
       saveForm,

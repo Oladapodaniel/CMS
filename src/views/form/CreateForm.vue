@@ -422,14 +422,14 @@
               <div class="col-md-8 d-flex justify-content-between flex-wrap">
                 <div
                   class="col-md-6 border py-2 c-pointer"
-                  :class="{ 'show-specific': pledgeCategory == 'specific' }"
+                  :class="{ 'show-specific': paymentType == true }"
                   @click="specific"
                 >
                   Specific
                 </div>
                 <div
                   class="col-md-6 mt-4 mt-md-0 border py-2 c-pointer free-will"
-                  :class="{ 'show-free-will': pledgeCategory == 'freewill' }"
+                  :class="{ 'show-free-will': paymentType == false }"
                   @click="freeWill"
                 >
                   Free Will
@@ -437,7 +437,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-12 mt-3" v-if="pledgeCategory == 'specific'">
+          <div class="col-md-12 mt-3" v-if="paymentType == true ">
             <div class="row">
               <div class="col-md-3 font-weight text-left text-md-right">
                 <label for="" class=""> Amount </label>
@@ -668,6 +668,7 @@ export default {
     const pledgeType = ref(0);
     const tenantId = ref("");
     const bankSearchText = ref("");
+    const paymentFormID = ref("");
     const bankCode = ref("");
     const accountNumber = ref("");
     const contributionItems = ref([]);
@@ -695,12 +696,13 @@ export default {
       pledgeCategory.value = "specific";
       paymentType.value = true;
 
-      pledgeType.value = 1;
+      // pledgeType.value = 1;
     };
     const freeWill = () => {
       pledgeCategory.value = "freewill";
-      pledgeType.value = 0;
+      // pledgeType.value = 0;
       paymentType.value = false;
+      specificAmount.value = ""
     };
 
     const selectContribution = (item) => {
@@ -925,7 +927,9 @@ export default {
         url.value = data.pictureUrl;
         emailRecipient.value = data.emailRecipient;
         specificAmount.value = data.amount;
-        bankCode.value = data.paymentForm.bankCode;
+        paymentType.value = data && data.isAmountFIxed ? data.isAmountFIxed : false;
+        bankCode.value = data.paymentForm  && data.paymentForm.bankCode ? data.paymentForm.bankCode : '';
+        paymentFormID.value =  data.paymentForm && data.paymentForm.id ? data.paymentForm.id : '';
         getContributionCategory(data.financialContributionID);
         accountNumber.value =
           data.paymentForm && data.paymentForm.accountNumber ? data.paymentForm.accountNumber : "";
@@ -1017,6 +1021,7 @@ export default {
 
     const saveForm = async () => {
       let paymentForm = {
+        paymentForm: paymentFormID.value ? paymentFormID.value : '',
         accountName: accountName.value,
         bankCode: selectedBank.value && selectedBank.value.code ? selectedBank.value.code : bankCode.value,
         accountNumber: accountNumber.value,
@@ -1034,11 +1039,9 @@ export default {
         : null;
       formData.append(
         "isAmountFIxed",
-        paymentType.value
+        paymentType.value || !paymentType.value
           ? paymentType.value
-          : paymentType.value === false
-          ? paymentType.value
-          : ""
+          : false
       );
       formData.append("amount", specificAmount.value ? specificAmount.value : "");
       formData.append(
@@ -1074,11 +1077,9 @@ export default {
         : null;
       formData2.append(
         "isAmountFIxed",
-        paymentType.value
+        paymentType.value || !paymentType.value
           ? paymentType.value
-          : paymentType.value === false
-          ? paymentType.value
-          : ""
+          : false
       );
       formData2.append("amount", specificAmount.value ? specificAmount.value : "");
       formData2.append(
@@ -1196,7 +1197,8 @@ export default {
       freeWill,
       specific,
       paymentType,
-      bankCode
+      bankCode,
+      paymentFormID
     };
   },
 };

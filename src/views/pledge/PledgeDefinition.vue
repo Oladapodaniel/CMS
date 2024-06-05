@@ -832,6 +832,11 @@ export default {
 
     const savePledge = async () => {
       console.log(selectedGroupTree.value)
+      let paymentForm = {
+        accountName: accountName.value,
+        bankCode: selectedBank.value && selectedBank.value.code ? selectedBank.value.code : bankCode.value,
+        accountNumber: accountNumber.value,
+      };
       let pledgeDetails = {
         contributionID: selectedContribution.value.id,
         totalTargetAmount: targetAmount.value,
@@ -845,8 +850,8 @@ export default {
         pledgeTypeFrequencyReOccuring: selectedRange.value ? selectedRange.value.name : "",
         currencyID: selectedCurrency.value.id,
         compulsoryCondition: selectedGroupTree.value.join(","),
-        bankName: selectedBank.value && selectedBank.value.name ? selectedBank.value.name : bankSearchText.value,
-        bankCode: selectedBank.value && selectedBank.value.code ? selectedBank.value.code : bankCode.value,
+        bankName: selectedBank.value.name,
+        bankCode: selectedBank.value.code,
         accountName: accountName.value,
         accountNumber: accountNumber.value,
         notifyMembers: notify.value,
@@ -858,6 +863,7 @@ export default {
       if (route.query.id) {
         pledgeDetails.id = route.query.id;
         pledgeDetails.paymentFormID = paymentFormId.value;
+        pledgeDetails.paymentForm = paymentForm
         try {
            await axios.put(
             "/api/Pledge/UpdatePledgeDefinition",
