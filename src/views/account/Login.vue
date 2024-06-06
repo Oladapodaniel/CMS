@@ -4,12 +4,15 @@
     :style="{ backgroundColor: theme.bg_900, color: theme.text_900 }"
     style="display: flex; min-height: 100vh"
   >
-  <div class="container-top " :class="{ 'container-slim': lgAndUp || xlAndUp }">
-      <div class="row justify-content-center ">
+    <div
+      class="container-top col-12 col-md-10 "
+      :class="{ 'container-slim': lgAndUp || xlAndUp }"
+    >
+      <div class="row justify-content-center">
         <!-- <button class="col-md-12" @click="toggleTheme">Toggle Theme</button> -->
         <div class="col-md-11 px-0 col-sm-12">
           <div class="row justify-content-between">
-            <div class="col-md-5  px-0 d-flex align-items-center">
+            <div class="col-md-5 px-0 d-flex align-items-center">
               <div class="col-md-12 col-lg-11 px-0 d-none d-md-block">
                 <div class="row">
                   <div class="col-md-12 d-flex justify-content-center">
@@ -80,11 +83,10 @@
                 </div>
               </div>
             </div>
-            <div
-              class="col-md-5 col-12 px-md-0 d-flex justify-content-center align-items-center"
+            <div class="col-md-5  px-0 d-flex justify-content-center align-items-center"
             >
               <div
-                class="col-md-12  col-10 py-5 px-4 "
+                class="col-md-12 col-10  py-5 px-4"
                 :style="{ backgroundColor: theme.light_primary, borderRadius: '10px' }"
               >
                 <div class="logo-con mt-2">
@@ -94,10 +96,9 @@
                 </div>
                 <div class="header text-head mt-2">
                   {{ navigatorLang === "en-US" ? "Sign in" : $t("home-header.login") }}
-                  <!-- <h1>Sign in</h1> -->
                 </div>
 
-                <div class="form-container">
+                <div class="form-container ">
                   <div class="error-div" v-if="state.showError && !state.notAUser">
                     <p class="error-message">{{ state.errorMessage }}</p>
                   </div>
@@ -126,6 +127,7 @@
                         placeholder="Email"
                         v-model="state.credentials.userName"
                         :prefix-icon="Message"
+                        class="w-100"
                       />
                     </el-form-item>
                     <el-form-item>
@@ -142,6 +144,7 @@
                         v-model="state.credentials.password"
                         :prefix-icon="Lock"
                         show-password
+                        class="w-100"
                       />
                     </el-form-item>
                     <div class="f-password-div">
@@ -710,5 +713,4 @@ export default {
     top: -173px;
   }
 }
-
 </style>
