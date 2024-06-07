@@ -4,104 +4,192 @@
       <div class="col-md-12 d-flex justify-content-center my-3">
         <div class="col-md-3 mt-4 d-flex align-items-center">
           <div class="pl-2">
-            <img :src="churchLogo2" v-if="churchLogo2" class="link-image" alt="" style="width: 60px" />
-            <img src="../../assets/dashboardlinks/churchcloud.png" v-else class="link-image" alt="" />
+            <img
+              :src="churchLogo2"
+              v-if="churchLogo2"
+              class="link-image"
+              alt=""
+              style="width: 60px"
+            />
+            <img
+              src="../../assets/dashboardlinks/churchcloud.png"
+              v-else
+              class="link-image"
+              alt=""
+            />
           </div>
           <span>
-            <h4 class="font-weight-bold mt-3">
+            <h4 class="text-head font-weight-bold text-black h2 mt-3">
               {{ churchName ? churchName : "Churchplus" }}
             </h4>
           </span>
         </div>
       </div>
-
-      <div class="row">
-        <div class="col-12 text-head h2 text-black font-weight-bold">Add First timers</div>
-        <div class="mt-3 col-12">Bio:</div>
+      <div class="col-md-12">
+        <div class="text-head font-weight-bold text-black h2">Add First Timer</div>
+        <div class="grey-backg py-2 border-radius-8 col-md-4">
+          <span class="linear-gradient s-18 text-dak">Members > Add First Timer</span>
+        </div>
       </div>
+
+
+        <!-- <p class="form-section-header">Bio:</p> -->
+        <div class="col-md-12 d-flex mt-2 justify-content-center">
+          <div class="col-md-8 col-8 fw-500 s-24 mb-4">Biodata</div>
+        </div>
+      
     </div>
     <!-- <div class="my-con container-top" @click="closeManualModalIfOpen"> -->
     <el-container>
       <el-row :gutter="15" class="w-100 m-0">
         <el-col class="d-block d-md-none">
           <div class="grey-bg">
-            <div class="">
+            <div class="bg-photo border-radius-8 py-4"> 
               <!-- <ImageForm @pictureurl="setImageToUrl" /> -->
               <div class="person-img">
-                <img v-if="!url" src="../../assets/people/phone-import.svg" alt="Uploaded Image" />
-                <img v-else :src="url" alt="Uploaded Image" style="
+                <img
+                  v-if="!url"
+                  src="../../assets/people/phone-import.svg"
+                  alt="Uploaded Image"
+                />
+                <img
+                  v-else
+                  :src="url"
+                  alt="Uploaded Image"
+                  style="
                     width: 110px;
                     height: 110px;
                     border-radius: 50%;
                     object-fit: cover;
-                  " />
+                  "
+                />
               </div>
             </div>
             <div>
               <div class="cs-input">
                 <label for="imgUpload" class="choose-file">
                   Choose image
-                  <input type="file" class="input file-input" placeholder="" id="imgUpload" @change="imageSelected" />
+                  <input
+                    type="file"
+                    class="input file-input"
+                    placeholder=""
+                    id="imgUpload"
+                    @change="imageSelected"
+                  />
                 </label>
               </div>
             </div>
           </div>
         </el-col>
         <el-col :sm="16" :md="16" :lg="16" :xl="16" class="p-0">
-          <el-form :model="firstTimersObj" ref="ruleForm" :rules="validateRules" style="width: 100%">
+          <el-form
+            :model="firstTimersObj"
+            ref="ruleForm"
+            :rules="validateRules"
+            style="width: 100%"
+          >
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 font-weight-600">Firstname<span style="color: red"> *</span></label>
-                <el-input type="text" class="input-width" v-model="firstTimersObj.firstName" placeholder="First name" />
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak text-head"
+                  >Firstname<span style="color: red"> *</span></label
+                >
+                <el-input
+                  type="text"
+                  class="input-width"
+                  v-model="firstTimersObj.firstName"
+                  placeholder="First name"
+                />
               </div>
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 font-weight-600">Surname</label>
-                <el-input type="text" class="input-width" v-model="firstTimersObj.lastName" placeholder="Last name" />
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak text-head">Surname</label>
+                <el-input
+                  type="text"
+                  class="input-width"
+                  v-model="firstTimersObj.lastName"
+                  placeholder="Last name"
+                />
               </div>
             </el-form-item>
             <el-form-item prop="phoneNumber" class="validate-phone">
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 font-weight-600">Phone number</label>
-                <el-input type="number" ref="validatePhone" @blur="checkForDuplicatePhone" class="input-width"
-                  v-model="firstTimersObj.phoneNumber" placeholder="Phone number" />
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak text-head">Phone number</label>
+                <el-input
+                  type="number"
+                  ref="validatePhone"
+                  @blur="checkForDuplicatePhone"
+                  class="input-width"
+                  v-model="firstTimersObj.phoneNumber"
+                  placeholder="Phone number"
+                />
               </div>
             </el-form-item>
             <el-form-item prop="email" class="validate-email">
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 font-weight-600">Email</label>
-                <el-input type="text" class="input-width" v-model="firstTimersObj.email" placeholder="Email" />
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak text-head">Email</label>
+                <el-input
+                  type="text"
+                  class="input-width"
+                  v-model="firstTimersObj.email"
+                  placeholder="Email"
+                />
               </div>
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <div class="input-width d-flex">
-                  <el-select-v2 v-model="maritalStatusId" @change="setSelectedMaritalStatus" :options="maritalStatusArr.map((i) => ({
-              label: i.value,
-              value: i.id,
-            }))
-              " placeholder="Marital status" size="large" class="w-100 mr-1" />
-                  <el-select-v2 v-model="genderId" @change="setSelectedGender" :options="genderArr && genderArr.length > 0
-              ? genderArr.map((i) => ({
-                label: i.value,
-                value: i.id,
-              }))
-              : []
-              " placeholder="Gender" size="large" class="w-100 ml-1" />
+                  <el-select-v2
+                    v-model="maritalStatusId"
+                    @change="setSelectedMaritalStatus"
+                    :options="
+                      maritalStatusArr.map((i) => ({
+                        label: i.value,
+                        value: i.id,
+                      }))
+                    "
+                    placeholder="Marital status"
+                    size="large"
+                    class="w-100 mr-1"
+                  />
+                  <el-select-v2
+                    v-model="genderId"
+                    @change="setSelectedGender"
+                    :options="
+                      genderArr && genderArr.length > 0
+                        ? genderArr.map((i) => ({
+                            label: i.value,
+                            value: i.id,
+                          }))
+                        : []
+                    "
+                    placeholder="Gender"
+                    size="large"
+                    class="w-100 ml-1"
+                  />
                 </div>
               </div>
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 font-weight-600">Event or service attended</label>
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak text-head"
+                  >Event or service attended</label
+                >
                 <div class="input-width">
                   <el-dropdown class="w-100" trigger="click">
-                    <el-input class="w-100" placeholder="Search for events" v-model="selectedEventAttended.name" />
+                    <el-input
+                      class="w-100"
+                      placeholder="Search for events"
+                      v-model="selectedEventAttended.name"
+                    />
                     <template #dropdown>
                       <el-dropdown-menu class="menu-height">
-                        <el-dropdown-item v-for="(event, index) in filteredEvents" :key="index"
-                          @click="eventAttendedSelected(event)">{{ event.name }}</el-dropdown-item>
+                        <el-dropdown-item
+                          v-for="(event, index) in filteredEvents"
+                          :key="index"
+                          @click="eventAttendedSelected(event)"
+                          >{{ event.name }}</el-dropdown-item
+                        >
                         <!-- <el-dropdown-item
                           class="d-flex justify-content-center text-primary font-weight-700"
                           data-toggle="modal"
@@ -120,20 +208,40 @@
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 font-weight-600">Address</label>
-                <el-input type="text" class="input-width" v-model="firstTimersObj.address" placeholder="Address" />
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak text-head">Address</label>
+                <el-input
+                  type="text"
+                  class="input-width"
+                  v-model="firstTimersObj.address"
+                  placeholder="Address"
+                />
               </div>
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <div class="mr-3 font-weight-600">Birthday</div>
+                <div class="mr-3 s-18 fw-500 text-dak text-head">Birthday</div>
                 <div class="input-width d-flex">
-                  <el-select-v2 v-model="firstTimersObj.birthday" :options="day.map((i) => ({ label: i, value: i }))"
-                    placeholder="Day" size="large" class="w-100 mr-1" />
-                  <el-select-v2 v-model="birthMonth" :options="month.map((i) => ({ label: i, value: i }))"
-                    placeholder="Month" size="large" class="w-100 ml-1" />
-                  <el-select-v2 v-model="firstTimersObj.birthYear" :options="year.map((i) => ({ label: i, value: i }))"
-                    placeholder="Year" size="large" class="w-100 ml-1" />
+                  <el-select-v2
+                    v-model="firstTimersObj.birthday"
+                    :options="day.map((i) => ({ label: i, value: i }))"
+                    placeholder="Day"
+                    size="large"
+                    class="w-100 mr-1"
+                  />
+                  <el-select-v2
+                    v-model="birthMonth"
+                    :options="month.map((i) => ({ label: i, value: i }))"
+                    placeholder="Month"
+                    size="large"
+                    class="w-100 ml-1"
+                  />
+                  <el-select-v2
+                    v-model="firstTimersObj.birthYear"
+                    :options="year.map((i) => ({ label: i, value: i }))"
+                    placeholder="Year"
+                    size="large"
+                    class="w-100 ml-1"
+                  />
                 </div>
               </div>
             </el-form-item>
@@ -141,7 +249,7 @@
               <div
                 class="d-flex flex-column flex-lg-row justify-content-end w-100"
               >
-                <label for="firstName" class="mr-3 font-weight-600"
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak text-head"
                   >Person to follow-up</label
                 >
                 <div class="input-width">
@@ -154,69 +262,95 @@
             </el-form-item> -->
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 font-weight-600">Which Group[s] Do You Belong To?</label>
-                <div class="input-width ">
-                  <el-tabs type="border-card" class="w-100">
-                    <div class="  add-group bg-white">
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak text-head"
+                  >Which Group[s] Do You Belong To?</label
+                >
+                <div class="input-width d-flex">
+                  <el-tabs type="border-card" class="w-100 border-0">
+                    <div class="add-group bg-white">
                       <div v-for="(item, index) in firstTimerInGroup" :key="index">
                         <div class="d-flex justify-content-between align-items-center">
-                          <div class="pt-1"><span class="text-secondary">{{ index + 1 }}.</span> <span
-                              class="font-weight-700">{{
-              item.name }}</span></div>
-                          <el-icon class="text-danger" @click="showConfirmModal(index, item)">
-                            <CircleClose />
-                          </el-icon>
+                          <div class="pt-1">
+                            <span class="text-secondary">{{ index + 1 }}.</span>
+                            <span class="font-weight-700">{{ item.name }}</span>
+                          </div>
+                          <el-icon
+                            class="text-danger"
+                            @click="showConfirmModal(index, item)"
+                            ><CircleClose
+                          /></el-icon>
                         </div>
                       </div>
                       <div v-if="firstTimerInGroup.length === 0">
-                        No group added yet
+                        <div class="s-18 fw-500 text-head text-dak">Group</div>
+                        <div class="s-18 text-head text-dak">No group added yet</div>
                       </div>
-                      <div class="pt-2 mt-2 font-weight-700 text-primary border-top text-center c-pointer"
-                        data-toggle="modal" data-target="#addToGroup">
+                      <div
+                        class="py-2 mt-2 s-18 fw-500 text-dak text-head border-line primary--text text-center c-pointer"
+                        @click="chooseGroup"
+                      >
                         Choose group
                       </div>
                     </div>
                   </el-tabs>
-                  <!-- <div class="p-2  add-group bg-white">
-                    <div v-for="(item, index) in firstTimerInGroup" :key="index">
-                      <div class="pt-1">{{ index + 1 }}. {{ item.name }}</div>
-                    </div>
-                    <div v-if="firstTimerInGroup.length === 0">
-                      No group added yet
-                    </div>
-                    <div class="font-weight-700 primary--text  border-top text-center c-pointer" data-toggle="modal"
-                      data-target="#addToGroup">
-                      Choose group
-                    </div>
-                  </div> -->
                 </div>
               </div>
             </el-form-item>
             <el-form-item v-for="(item, index) in dynamicCustomFields" :key="index">
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="occupation" class="mr-3 font-weight-600">{{
-              item.label
-            }}</label>
+                <label for="occupation" class="mr-3 s-18 fw-500 text-dak text-head">{{
+                  item.label
+                }}</label>
                 <div class="input-width d-flex" v-if="item.controlType == 1">
-                  <el-select-v2 v-model="item.data" :options="item.parameterValues
-              .split(',')
-              .map((i) => ({ label: i, value: i }))
-              " :placeholder="item.label" size="large" class="w-100 mr-1" />
+                  <el-select-v2
+                    v-model="item.data"
+                    :options="
+                      item.parameterValues.split(',').map((i) => ({ label: i, value: i }))
+                    "
+                    :placeholder="item.label"
+                    size="large"
+                    class="w-100 mr-1"
+                  />
                 </div>
-                <el-input type="text" class="input-width" v-model="item.data" :placeholder="item.label"
-                  v-if="item.controlType == 0" />
-                <el-input type="number" class="input-width" v-model="item.data" :placeholder="item.label"
-                  v-if="item.controlType == 7" />
-                <el-input type="email" class="input-width" v-model="item.data" :placeholder="item.label"
-                  v-if="item.controlType == 4" />
+                <el-input
+                  type="text"
+                  class="input-width"
+                  v-model="item.data"
+                  :placeholder="item.label"
+                  v-if="item.controlType == 0"
+                />
+                <el-input
+                  type="number"
+                  class="input-width"
+                  v-model="item.data"
+                  :placeholder="item.label"
+                  v-if="item.controlType == 7"
+                />
+                <el-input
+                  type="email"
+                  class="input-width"
+                  v-model="item.data"
+                  :placeholder="item.label"
+                  v-if="item.controlType == 4"
+                />
                 <div class="input-width" v-if="item.controlType == 2">
                   <el-checkbox v-model="item.data" size="large" />
                 </div>
-                <el-date-picker v-model="item.data" class="input-width" type="date" :placeholder="item.label"
-                  size="default" v-if="item.controlType == 3" />
+                <el-date-picker
+                  v-model="item.data"
+                  class="input-width"
+                  type="date"
+                  :placeholder="item.label"
+                  size="default"
+                  v-if="item.controlType == 3"
+                />
                 <div class="d-flex align-items-center" v-if="item.controlType == 6">
-                  <input type="file" class="form-control input-width" @change="uploadImage($event, index)"
-                    :placeholder="item.label" />
+                  <input
+                    type="file"
+                    class="form-control input-width"
+                    @change="uploadImage($event, index)"
+                    :placeholder="item.label"
+                  />
                   <el-icon class="is-loading ml-2" v-if="customFileLoading">
                     <Loading />
                   </el-icon>
@@ -224,10 +358,13 @@
               </div>
             </el-form-item>
             <div class="d-flex align-items-center">
-              <div class="font-weight-700">Insights:</div>
+              <div class="font-weight-600 s-18 text-dak">Insights:</div>
               <el-divider> </el-divider>
               <span>
-                <el-icon class="angle-icon tb-icon-span" @click="showAddInfo = !showAddInfo">
+                <el-icon
+                  class="angle-icon tb-icon-span"
+                  @click="showAddInfo = !showAddInfo"
+                >
                   <ArrowDownBold />
                 </el-icon>
               </span>
@@ -237,55 +374,85 @@
                 <el-form-item>
                   <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                     <div class="input-width">
-                      <el-select-v2 v-model="sourceId" @change="setSelectedSource" :options="howDidYouAboutUs.map((i) => ({
-              label: i.name,
-              value: i.id,
-            }))
-              " placeholder="How did you hear about us?" size="large" class="w-100 mr-1" />
+                      <el-select-v2
+                        v-model="sourceId"
+                        @change="setSelectedSource"
+                        :options="
+                          howDidYouAboutUs.map((i) => ({
+                            label: i.name,
+                            value: i.id,
+                          }))
+                        "
+                        placeholder="How did you hear about us?"
+                        size="large"
+                        class="w-100 mr-1"
+                      />
                     </div>
                   </div>
                 </el-form-item>
                 <el-form-item>
                   <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                     <div class="input-width">
-                      <el-select-v2 v-model="selectedCommunicationMeans" :options="comMeansArr.map((i) => ({ label: i, value: i }))
-              " placeholder="Means of communication" size="large" class="w-100 mr-1" />
+                      <el-select-v2
+                        v-model="selectedCommunicationMeans"
+                        :options="comMeansArr.map((i) => ({ label: i, value: i }))"
+                        placeholder="Means of communication"
+                        size="large"
+                        class="w-100 mr-1"
+                      />
                     </div>
                   </div>
                 </el-form-item>
                 <el-form-item>
                   <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                     <div class="input-width">
-                      <el-select-v2 v-model="selectedJoinInterest" :options="joinInterestArr.map((i) => ({ label: i, value: i }))
-              " placeholder="Interested in joining us?" size="large" class="w-100 mr-1" />
+                      <el-select-v2
+                        v-model="selectedJoinInterest"
+                        :options="joinInterestArr.map((i) => ({ label: i, value: i }))"
+                        placeholder="Interested in joining us?"
+                        size="large"
+                        class="w-100 mr-1"
+                      />
                     </div>
                   </div>
                 </el-form-item>
                 <el-form-item>
                   <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                     <div class="input-width">
-                      <el-select-v2 v-model="selectedVisitOption" :options="wantVisitArr.map((i) => ({ label: i, value: i }))
-              " placeholder="Want to be visited?" size="large" class="w-100 mr-1" />
+                      <el-select-v2
+                        v-model="selectedVisitOption"
+                        :options="wantVisitArr.map((i) => ({ label: i, value: i }))"
+                        placeholder="Want to be visited?"
+                        size="large"
+                        class="w-100 mr-1"
+                      />
                     </div>
                   </div>
                 </el-form-item>
               </div>
             </el-collapse-transition>
             <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-              <label for="occupation" class="mr-3 font-weight-600"></label>
-              <div class="input-width small-text  ">
-                By checking the box below, you consent to {{ churchName ? churchName : "Churchplus" }} collecting
-                and processing your personal
-                information for communication and ministry database. You may withdraw this consent at any time. For
-                more information, please review our <a class="text-decoration-none"
-                  href="https://churchplus.co/privacy-policy/" target="_blank"> Privacy Policy.</a>
+              <label for="occupation" class="mr-3 s-18 fw-500 text-dak text-head"></label>
+              <div class="input-width small-text">
+                By checking the box below, you consent to
+                {{ churchName ? churchName : "Churchplus" }} collecting and processing
+                your personal information for communication and ministry database. You may
+                withdraw this consent at any time. For more information, please review our
+                <a
+                  class="text-decoration-none"
+                  href="https://churchplus.co/privacy-policy/"
+                  target="_blank"
+                >
+                  Privacy Policy.</a
+                >
               </div>
             </div>
             <div class="d-flex flex-column flex-lg-row mt-2 justify-content-end w-100">
               <div></div>
-              <div class="d-flex input-width  ">
+              <div class="d-flex input-width">
                 <el-checkbox v-model="checked" size="large" />
-                <div class="mt-2 ml-1 small-text">I consent to the collection and processing of my personal information.
+                <div class="mt-2 ml-1 small-text">
+                  I consent to the collection and processing of my personal information.
                 </div>
               </div>
             </div>
@@ -306,8 +473,15 @@
                       round
                       >Save and add another</el-button
                     > -->
-                    <el-button class="mx-0 mx-sm-2 text-white" :color="primarycolor" :loading="loading"
-                      :disabled="loading || !firstTimersObj.firstName || !checked " @click.prevent="onSubmit" round>Save</el-button>
+                    <el-button
+                      class="mx-0 mx-sm-2 text-white"
+                      :color="primarycolor"
+                      :loading="loading"
+                      :disabled="loading || !firstTimersObj.firstName || !checked"
+                      @click.prevent="onSubmit"
+                      round
+                      >Save</el-button
+                    >
                   </div>
                 </div>
               </div>
@@ -317,23 +491,38 @@
         <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
           <div class="grey-bg d-none d-md-block">
             <div class="grey-bg">
-              <div>
+              <div class="bg-photo border-radius-8 py-4">
                 <div class="person-img">
                   <!-- <ImageForm @pictureurl="setImageToUrl" /> -->
-                  <img v-if="!url" src="../../assets/people/phone-import.svg" alt="Uploaded Image" />
-                  <img v-else :src="url" alt="Uploaded Image" style="
+                  <img
+                    v-if="!url"
+                    src="../../assets/people/phone-import.svg"
+                    alt="Uploaded Image"
+                  />
+                  <img
+                    v-else
+                    :src="url"
+                    alt="Uploaded Image"
+                    style="
                       width: 110px;
                       height: 110px;
                       border-radius: 50%;
                       object-fit: cover;
-                    " />
+                    "
+                  />
                 </div>
               </div>
               <div>
                 <div class="cs-input">
                   <label for="imgUpload" class="choose-file">
                     Choose image
-                    <input type="file" class="input file-input" placeholder="" id="imgUpload" @change="imageSelected" />
+                    <input
+                      type="file"
+                      class="input file-input"
+                      placeholder=""
+                      id="imgUpload"
+                      @change="imageSelected"
+                    />
                   </label>
                 </div>
               </div>
@@ -498,14 +687,19 @@
     </div> -->
 
     <!-- Modal -->
-    <div class="modal fade" id="addToGroup" tabindex="-1" role="dialog" aria-labelledby="addToGroup" aria-hidden="true"
-      @click="hideGroupModal">
+    <div
+      class="modal fade"
+      id="addToGroup"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="addToGroup"
+      aria-hidden="true"
+      @click="hideGroupModal"
+    >
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header" style="background: #ebeff4">
-            <h5 class="modal-title font-weight-bold" id="addToGroup">
-              Group Membership
-            </h5>
+            <h5 class="modal-title font-weight-bold" id="addToGroup">Group Membership</h5>
             <el-button class="close" data-dismiss="modal" aria-label="Close">
               <el-icon class="mt-0">
                 <Close />
@@ -516,27 +710,40 @@
           <div class="modal-body">
             <div class="row my-4">
               <div class="col-md-4 text-md-right">
-                <label for="" class="font-weight-600">Name</label>
+                <label for="" class="s-18 fw-500 text-dak text-head">Name</label>
               </div>
               <div class="col-md-7">
-                <el-tree-select v-model="selectedTree" class="w-100" placeholder="Select group" :data="groupMappedTree"
-                  :render-after-expand="false" :filter-node-method="filterNodeMethod" @change="setGroupValue" filterable
-                  check-strictly />
+                <el-tree-select
+                  v-model="selectedTree"
+                  class="w-100"
+                  placeholder="Select group"
+                  :data="groupMappedTree"
+                  :render-after-expand="false"
+                  :filter-node-method="filterNodeMethod"
+                  @change="setGroupValue"
+                  filterable
+                  check-strictly
+                />
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-4 text-md-right">
-                <label for="" class="font-weight-600">Position</label>
+                <label for="" class="s-18 fw-500 text-dak text-head">Position</label>
               </div>
               <div class="col-md-7">
-                <el-input type="text" v-model="position" class="w-100" placeholder="e.g Member" />
+                <el-input
+                  type="text"
+                  v-model="position"
+                  class="w-100"
+                  placeholder="e.g Member"
+                />
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="font-weight-600"></label>
+                <label for="" class="s-18 fw-500 text-dak text-head"></label>
               </div>
 
               <div class="col-md-7">
@@ -546,9 +753,17 @@
                   </p>
                 </div>
                 <div class="row mt-2 d-md-flex justify-content-end">
-                  <el-button class="secondary-button" data-dismiss="modal" round>Cancel</el-button>
-                  <el-button :color="primarycolor" class="text-white" :data-dismiss="dismissAddToGroupModal"
-                    @click="addMemberToGroup" round>Save</el-button>
+                  <el-button class="secondary-button" data-dismiss="modal" round
+                    >Cancel</el-button
+                  >
+                  <el-button
+                    :color="primarycolor"
+                    class="text-white"
+                    :data-dismiss="dismissAddToGroupModal"
+                    @click="addMemberToGroup"
+                    round
+                    >Save</el-button
+                  >
                 </div>
               </div>
             </div>
@@ -556,422 +771,76 @@
         </div>
       </div>
     </div>
-  </div>
-  <!-- <div class="container container-top">
-    <div class="col-md-12 d-flex justify-content-center my-3">
-      <div class="col-md-3 mt-4 d-flex align-items-center">
-        <div class="pl-2">
-          <img
-            :src="churchLogo2"
-            v-if="churchLogo2"
-            class="link-image"
-            alt=""
-            style="width: 60px"
-          />
-          <img
-            src="../../assets/dashboardlinks/churchcloud.png"
-            v-else
-            class="link-image"
-            alt=""
-          />
+    <el-dialog
+      style="border-radius: 20px"
+      v-model="showChooseGroup"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+      top
+    >
+      <div class="row justify-content-center">
+        <div class="col-md-12">
+          <div class="s-32 fw-500 text-center text-black">Group Membership</div>
         </div>
-        <span
-          ><h4 class="font-weight-bold mt-3">
-            {{ churchName ? churchName : "Churchplus" }}
-          </h4></span
-        >
-      </div>
-    </div>
-
-    <div class="row">
-      <h3 class="col-12 header-text font-weight-bold">Add First timers</h3>
-      <div class="mt-3 col-12">Bio:</div>
-    </div>
-    <div class="row">
-      <div class="col-md-8 mt-3">
-        <div>
-          <div class="d-md-flex justify-content-md-end">
-            <label for="" class="label">Event or Service Attended</label>
-            <Dropdown
-              v-model="selectedEventAttended"
-              :options="eventsAttended"
-              optionLabel="name"
-              placeholder="Select event"
-              class="input dd small-text widen p-0"
-            />
-          </div>
-        </div>
-        <div>
-          <div class="d-md-flex justify-content-md-end mt-3">
-            <label for="" class="label"
-              >Firstname<span style="color: red"> *</span></label
-            >
-            <input
-              type="text"
-              class="input form-control"
-              v-model="firstTimersObj.firstName"
-              name=""
-              id="firstname"
-              required
-            />
-          </div>
-        </div>
-        <div>
-          <div class="d-md-flex justify-content-md-end mt-3">
-            <label for="" class="label">Surname</label>
-            <input
-              type="text"
-              class="input form-control"
-              placeholder=""
-              v-model="firstTimersObj.lastName"
-              name=""
-            />
-          </div>
-        </div>
-        <div>
-          <div class="d-md-flex justify-content-md-end mt-3">
-            <label for="" class="label">Phone number</label>
-            <input
-              class="input form-control"
-              placeholder=""
-              v-model="firstTimersObj.phoneNumber"
-              type="text"
-              :class="{ 'is-invalid': !isPhoneValid }"
-              id="phone number"
-              ref="validatePhone"
-              @blur="checkForDuplicatePhone"
-            />
-          </div>
-        </div>
-        <div>
-          <div class="d-md-flex justify-content-md-end mt-3">
-            <div class="status-n-gender">
-              <div class="status cstm-select">
-                <div class="cs-select">
-                  <Dropdown
-                    v-model="selectedMaritalStatus"
-                    :options="maritalStatusArr"
-                    optionLabel="value"
-                    placeholder="Marital status"
-                    style="width: 100%"
-                  />
-                </div>
+        <div class="col-md-12 d-flex justify-content-center">
+          <div class="col-md-9">
+            <div class="row my-4">
+              <div class="col-md-12">
+                <label for="" class="fw-500 s-18">Group</label>
               </div>
-              <div class="gender cstm-select">
-                <div class="cs-select">
-                  <Dropdown
-                    v-model="selectedGender"
-                    :options="genderArr"
-                    optionLabel="value"
-                    placeholder="Gender"
-                    style="width: 100%"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div class="d-md-flex justify-content-md-end mt-3">
-            <label for="" class="label">Email</label>
-            <input
-              class="input form-control"
-              placeholder=""
-              v-model="firstTimersObj.email"
-              type="email"
-              :class="{ 'is-invalid': !isEmailValid }"
-              id="email"
-              ref="validateEmail"
-              @blur="checkForDuplicateEmail"
-            />
-          </div>
-        </div>
-        <div>
-          <div class="d-md-flex justify-content-md-end mt-3">
-            <label for="" class="label">Address</label>
-            <input
-              type="text"
-              class="input form-control"
-              placeholder=""
-              v-model="firstTimersObj.address"
-            />
-          </div>
-        </div>
-        <div>
-          <div class="d-md-flex justify-content-md-end mt-3 ">
-            <label for="" class="label">Which Group[s] Do You Belong To?</label>
-              <div class="p-2 border   add-group bg-white">
-                <div v-for="(item, index) in firstTimerInGroup" :key="index">
-                  <div class="pt-1">{{ index + 1 }}. {{ item.name }}</div>
-                </div>
-                <div v-if="firstTimerInGroup.length === 0">
-                  No group added yet
-                </div>
-                <div class="
-                  font-weight-700
-                  text-primary
-                  border-top
-                  text-center
-                  c-pointer
-                " data-toggle="modal" data-target="#addToGroup">
-                  Choose group
-                </div>
-              </div>
-          </div>
-        </div>
-        <div v-for="item in dynamicCustomFields" :key="item.id">
-          <div class="d-md-flex flex-wrap justify-content-md-end mt-3">
-            <label for="" class="label">{{ item.label }}</label>
-            <input
-              v-if="item.controlType == 0"
-              class="input form-control"
-              type="text"
-              aria-required=""
-              v-model="item.data"
-            />
-            <Dropdown
-              v-else-if="item.controlType == 1"
-              v-model="item.data"
-              :options="item.parameterValues.split(',')"
-              placeholder="Select option"
-              class="input dd small-text widen p-0"
-            />
-            <div v-else-if="item.controlType == 2" style="width: 330px">
-              <Checkbox
-                v-model="item.data"
-                :binary="true"
-                style="width: 100%"
-              />
-            </div>
-            <Calendar
-              v-if="item.controlType == 3"
-              id="time24"
-              v-model="item.data"
-              :showTime="true"
-              :showSeconds="true"
-              class="input border-0 dd small-text widen p-0"
-            />
-
-            <input
-              v-if="item.controlType == 4"
-              class="input form-control"
-              type="email"
-              aria-required=""
-              v-model="item.data"
-            />
-            <input
-              v-if="item.controlType == 6"
-              class="input"
-              type="file"
-              aria-required=""
-            />
-            <input
-              v-if="item.controlType == 7"
-              class="input form-control"
-              :class="{ 'is-invalid': !isPhoneValid }"
-              type="number"
-              aria-required=""
-              v-model="item.data"
-            />
-          </div>
-        </div>
-        <div>
-          <div class="d-md-flex justify-content-md-end mt-3">
-            <label for="" class="label">Birthday</label>
-            <div class="status-n-gender">
-              <div class="cstm-select">
-                <div class="cs-select" style="width: 87px">
-                  <Dropdown
-                    v-model="firstTimersObj.birthday"
-                    :options="day"
-                    placeholder="Day"
-                    style="width: 100%"
-                  />
-                </div>
-              </div>
-              <div class="cstm-select">
-                <div class="cs-select" style="width: 111px">
-                  <Dropdown
-                    v-model="birthMonth"
-                    :options="month"
-                    placeholder="Month"
-                    style="width: 100%"
-                  />
-                </div>
-              </div>
-
-              <div class="cstm-select mr-0">
-                <div class="cs-select" style="width: 113px">
-                  <Dropdown
-                    v-model="firstTimersObj.birthYear"
-                    :options="year"
-                    placeholder="Year"
-                    style="width: 100%"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 img-parent">
-        <div style="width: 225px; margin: 0 auto">
-          <ImageForm @pictureurl="setImageToUrl" />
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12 mt-3">
-        <div class="mt-2">
-          <div class="d-flex justify-content-center">
-            <button
-              class="
-                primary-bg
-                px-md-4
-                outline-none
-                default-btn
-                text-white
-                border-0
-              "
-              @click.prevent="onSubmit"
-              :disabled="loading || !firstTimersObj.firstName"
-            >
-              <i
-                class="pi pi-spin pi-spinner text-white mr-2"
-                v-if="loading"
-              ></i>
-              Save
-            </button>
-          </div>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-md-6 text-center align-item-center px-md-4 mb-4 mt-5">
-            <a href="/" class="text-decoration-none">
-              <div class="">Powered by</div>
-              <div class="img-fluid col-6 offset-3 col-md-4 offset-md-4 px-0">
-                <img
-                  src="../../assets/logoblue.png"
-                  alt="churchplus Logo"
-                  class="w-50 mx-2"
+              <div class="col-md-12">
+                <el-tree-select
+                  v-model="selectedTree"
+                  class="w-100"
+                  placeholder="Select group"
+                  :data="groupMappedTree"
+                  :render-after-expand="false"
+                  :filter-node-method="filterNodeMethod"
+                  @change="setGroupValue"
+                  filterable
+                  check-strictly
                 />
               </div>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  <div
-      class="modal fade"
-      id="addToGroup"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="addToGroup"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header" style="background: #ebeff4">
-            <h5 class="modal-title font-weight-bold" id="addToGroup">
-              Group Membership
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="row my-4">
-              <div class="col-md-4 text-md-right">
-                <label for="" class="font-weight-600">Name</label>
-              </div>
-              <div class="col-md-7">
-                <div class="dropdown show">
-                  <button
-                    class="btn border w-100 d-flex justify-content-between align-items-center"
-                    type="button"
-                    id="dropdownMenuLink"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    @click="focusInput"
-                  >
-                    <div>
-                      {{
-                        Object.keys(groupToAddTo).length > 0
-                          ? groupToAddTo.name
-                          : "Select a group"
-                      }}
-                    </div>
-                    <i class="pi pi-chevron-down"></i>
-                  </button>
-                  <div
-                    class="dropdown-menu w-100 scroll-card"
-                    aria-labelledby="dropdownMenuLink"
-                  >
-                    <input
-                      type="text"
-                      v-model="searchGroupText"
-                      class="form-control input-width-adjust"
-                      placeholder="Search groups"
-                      ref="searchRef"
-                    />
-                    <a
-                      class="dropdown-item"
-                      v-for="item in searchAllGroups"
-                      :key="item.id"
-                    >
-                      <div class="c-pointer" @click="selectGroup(item)">
-                        {{ item.name }}
-                      </div>
-                    </a>
-                  </div>
-                </div>
-              </div>
             </div>
-
             <div class="row">
-              <div class="col-md-4 text-md-right">
-                <label for="" class="font-weight-600">Position</label>
+              <div class="col-md-12">
+                <label for="" class="fw-500 s-18">Position</label>
               </div>
-              <div class="col-md-7">
-                <input
+              <div class="col-md-12">
+                <el-input
                   type="text"
                   v-model="position"
-                  class="form-control"
+                  class="w-100"
                   placeholder="e.g Member"
                 />
               </div>
             </div>
 
             <div class="row">
-              <div class="col-md-4">
-                <label for="" class="font-weight-600"></label>
-              </div>
-
-              <div class="col-md-7">
-                <div class="col-md-12 mt-3 text-center">
+              <div class="col-md-12">
+                <div class="col-md-12 mt-2 text-center">
                   <p class="my-1 text-danger" v-if="addToGroupError">
                     Please select a group
                   </p>
                 </div>
-                <div class="row mt-2">
-                  <div class="col-md-6 d-md-flex justify-content-end">
-                    <button class="default-btn" data-dismiss="modal">
-                      Cancel
-                    </button>
-                  </div>
-                  <div class="col-md-6">
-                    <button
-                      class="default-btn primary-bg border-0 text-white"
+                <div class="col-md-12 mt-3">
+                  <div>
+                    <el-button
+                      :color="primarycolor"
+                      :loading="addToGroupLoading"
                       :data-dismiss="dismissAddToGroupModal"
                       @click="addMemberToGroup"
+                      size="large"
+                      class="w-100"
+                      round
+                      >Continue</el-button
                     >
-                      Save
-                    </button>
+                  </div>
+                </div>
+                <div class="col-md-12 mt-2">
+                  <div>
+                    <el-button class="w-100 border-0" @click="cancelGroupModal" round
+                      >Cancel</el-button
+                    >
                   </div>
                 </div>
               </div>
@@ -979,73 +848,8 @@
           </div>
         </div>
       </div>
-    </div>
-  </div> -->
-
-  <!-- <div class="row">
-      <span class="celeb-tab col-12 my-3" @click="showCelebTab">
-        <span class="tab-header">More:</span>
-        <span class="w-100"><hr class="hr w-100" /></span>
-        <span>
-          <span class="tb-icon-span"
-            ><i
-              class="pi pi-angle-down tbb-icon"
-              :class="{ 'tb-icon': !hideCelebTab }"
-            ></i
-          ></span>
-        </span>
-      </span>
-
-      <div
-        class="col-12"
-        :class="{ 'hide-tab': hideCelebTab, 'show-tab': !hideCelebTab }"
-      >
-        <div class="col-md-8 mt-3 p-0 p-sm-1">
-          <div>
-            <div class="d-md-flex justify-content-md-end">
-              <Dropdown
-                v-model="selectedAboutUsSource"
-                :options="howDidYouAboutUs"
-                optionLabel="name"
-                placeholder="How did you hear about us?"
-                class="input p-0"
-              />
-            </div>
-          </div>
-          <div>
-            <div class="d-md-flex justify-content-md-end mt-3">
-              <Dropdown
-                v-model="selectedCommunicationMeans"
-                :options="comMeansArr"
-                placeholder="Means of communication"
-                class="input p-0"
-              />
-            </div>
-          </div>
-          <div>
-            <div class="d-md-flex justify-content-md-end mt-3">
-              <Dropdown
-                v-model="selectedJoinInterest"
-                :options="joinInterestArr"
-                placeholder="Interested in joining us?"
-                class="input p-0"
-              />
-            </div>
-          </div>
-          <div>
-            <div class="d-md-flex justify-content-md-end mt-3">
-              <Dropdown
-                v-model="selectedVisitOption"
-                :options="wantVisitArr"
-                placeholder="Want to be visited?"
-                class="input p-0"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="col-4 mt-3"></div>
-      </div>
-    </div> -->
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -1066,7 +870,7 @@ import flatten from "../../services/groupArray/flatTree";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useStore } from "vuex";
 import swal from "sweetalert";
-import { ElMessageBox, ElMessage } from 'element-plus'
+import { ElMessageBox, ElMessage } from "element-plus";
 
 export default {
   components: { Dropdown, Dialog, ImageForm, InputText, Calendar },
@@ -1075,6 +879,7 @@ export default {
     const store = useStore();
     const showError = ref(false);
     const churchLogo2 = ref("");
+    const showChooseGroup  = ref(false);
     const churchName = ref("");
     const newEvents = ref([]);
     const flattenedTree = ref([]);
@@ -1193,8 +998,6 @@ export default {
     };
     getCustomFields();
 
-
-
     const getFirstTimer = async () => {
       try {
         const res = await axios.get(`/TenantInfo?tenantID=${route.params.id}`);
@@ -1219,11 +1022,19 @@ export default {
       });
     };
 
+    const chooseGroup = () => {
+      showChooseGroup.value = true;
+    };
+    const cancelGroupModal = () => {
+      showChooseGroup.value = false;
+    };
+
+
     const setSelectedSource = () => {
-      selectedAboutUsSource.value = howDidYouAboutUs.value.find(i => {
-        return i.id === sourceId.value
-      })
-    }
+      selectedAboutUsSource.value = howDidYouAboutUs.value.find((i) => {
+        return i.id === sourceId.value;
+      });
+    };
 
     const closeManualModalIfOpen = (e) => {
       if (!e.target.classList.contains("dd")) {
@@ -1443,11 +1254,11 @@ export default {
         "groupsString",
         firstTimerInGroup.value.length > 0
           ? JSON.stringify(
-            firstTimerInGroup.value.map((i) => ({
-              groupId: i.groupId,
-              position: i.position,
-            }))
-          )
+              firstTimerInGroup.value.map((i) => ({
+                groupId: i.groupId,
+                position: i.position,
+              }))
+            )
           : []
       );
       formData.append(
@@ -1564,8 +1375,6 @@ export default {
     const savingNewEvent = ref(false);
     const firstTimer = ref({});
 
-
-
     const createNewCat = async (eventParams) => {
       try {
         let data;
@@ -1574,16 +1383,16 @@ export default {
         newEvents.value = data.data;
 
         ElMessage({
-          type: 'success',
+          type: "success",
           message: "Your new event was created successfully",
-          duration: 3000
-        })
+          duration: 3000,
+        });
       } catch (error) {
         ElMessage({
-          type: 'error',
+          type: "error",
           message: error.response.data,
-          duration: 3000
-        })
+          duration: 3000,
+        });
       }
       displayModal.value = false;
       newEventCategoryName.value = "";
@@ -1788,10 +1597,11 @@ export default {
     const setContact = (payload) => {
       if (!payload.email) {
         ElMessage({
-          type: 'warning',
-          message: "This contact does not have any email records, communicate with this person to create him as a user",
-          duration: 3000
-        })
+          type: "warning",
+          message:
+            "This contact does not have any email records, communicate with this person to create him as a user",
+          duration: 3000,
+        });
       }
       firstTimersObj.value.contactOwnerId = payload.id;
     };
@@ -1813,7 +1623,7 @@ export default {
           let group = await grousService.getGroups();
           if (group) {
             allGroups.value = group.response.groupResonseDTO;
-            let data = { children: allGroups.value }
+            let data = { children: allGroups.value };
             const { children } = collector(data);
             groupMappedTree.value = children;
             if (groupMappedTree.value && groupMappedTree.value.length > 0) {
@@ -1834,6 +1644,7 @@ export default {
         return false;
       }
       dismissAddToGroupModal.value = "modal";
+      showChooseGroup.value = false;
       firstTimerInGroup.value.push({
         name: groupToAddTo.value.name,
         groupId: groupToAddTo.value.id,
@@ -1946,6 +1757,9 @@ export default {
       dismissAddToGroupModal,
       addMemberToGroup,
       setSelectedSource,
+      showChooseGroup,
+      cancelGroupModal,
+       chooseGroup,
     };
   },
 };
@@ -1957,8 +1771,17 @@ export default {
   /* color: #02172e; */
 }
 
+.border-line {
+  border-radius: 30px;
+  border: 1px dashed #0745af;
+}
 .contn-btn:disabled {
   opacity: 0.3;
+}
+.linear-gradient {
+  background: linear-gradient(90deg, #777777 48%, #111111 62%);
+  background-clip: text;
+  color: transparent;
 }
 
 .tb-icon-span {

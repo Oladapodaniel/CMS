@@ -11,9 +11,11 @@
           </div>
         </div>
         <div class="col-md-3">
-          <div class="text-head s-18 font-weight-600">Total Contacts</div>
-          <div class="h2 font-weight-600">
-            {{ membershipSummary.totalMember }}
+          <div class="col-md-11 text-center">
+            <div class="text-head s-18 font-weight-600">Total Contacts</div>
+            <div class="h2 font-weight-600">
+              {{ membershipSummary.totalMember }}
+            </div>
           </div>
         </div>
         <!-- <div class="col-md-3">
@@ -878,8 +880,8 @@
 
 <script>
 import { ref, computed, watch, watchEffect, inject } from "vue";
-import ByGenderChart from "@/components/charts/PieChart.vue";
-import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
+import ByGenderChart from "@/components/charts/PeoplePieChartSmall.vue";
+import ByMaritalStatusChart from "@/components/charts/PeoplePieChartSmall.vue";
 import axios from "@/gateway/backendapi";
 import { useRoute } from "vue-router";
 import store from "../../store/store";

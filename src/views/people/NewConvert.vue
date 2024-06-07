@@ -94,69 +94,312 @@
           </div>
         </div>
       </transition>
-      <div class="top-con">
-        <div class="">
-          <div class="table-to p-3 mt-3">
-            <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
-              <div>
-                <el-tooltip
-                  class="box-item"
-                  effect="dark"
-                  v-if="marked.length > 0"
-                  content="Send SMS"
-                  placement="top-start"
+      <div v-if="searchNewConvert.length > 0"  class="tab-options d-block d-md-none mt-5">
+      <div class="s-14 fw-500 col-md-10 px-0 mt-5">
+        <div class="d-flex flex-column flex-sm-row justify-content-md-between">
+          <div>
+            <!-- <el-tooltip
+              class="box-item"
+              effect="dark"
+              content="Add all members to group"
+              placement="top-start"
+            >
+              <el-icon
+                :size="28"
+                class="c-pointer primary--text"
+                @click="addToGroupDialog = true"
+              >
+                <CirclePlus />
+              </el-icon>
+            </el-tooltip> -->
+            <!-- <el-tooltip
+              class="box-item"
+              effect="dark"
+              v-if="marked.length > 0"
+              content="Add to group"
+              placement="top-start"
+            >
+              <el-icon
+                class="ml-2 c-pointer primary--text"
+                :size="28"
+                @click="addToGroupSingle = true"
+              >
+                <User />
+              </el-icon>
+            </el-tooltip> -->
+            <!-- <el-tooltip
+              class="box-item"
+              effect="dark"
+              v-if="marked.length > 0"
+              content="Archive member(s)"
+              placement="top-start"
+            >
+              <el-icon
+                class="ml-2 c-pointer primary--text"
+                :size="28"
+                @click="displayPositionArchive = true"
+                v-if="marked.length > 0"
+              >
+                <DocumentRemove />
+              </el-icon>
+            </el-tooltip> -->
+            <!-- <el-tooltip
+              class="box-item"
+              effect="dark"
+              v-if="marked.length > 0"
+              content="Delete member(s)"
+              placement="top-start"
+            >
+              <el-icon
+                :size="28"
+                class="ml-2 c-pointer primary--text"
+                v-if="marked.length > 0"
+                @click="showConfirmModal1"
+              >
+                <Delete />
+              </el-icon>
+            </el-tooltip> -->
+            <el-tooltip
+              class="box-item"
+              effect="dark"
+              v-if="marked.length > 0"
+              content="Send SMS"
+              placement="top-start"
+            >
+              <img
+                src="../../assets/ChatCenteredDots.png"
+                style="width: 32px; margin-top: -20px"
+                class="ml-2 c-pointer"
+                @click="sendMarkedMemberSms"
+                alt="Send SMS"
+              />
+            </el-tooltip>
+            <el-tooltip
+              class="box-item"
+              effect="dark"
+              v-if="marked.length > 0"
+              content="Send Email"
+              placement="top-start"
+            >
+              <el-icon
+                :size="28"
+                class="ml-2 c-pointer primary--text"
+                v-if="marked.length > 0"
+                @click="sendMarkedMemberEmail"
+              >
+                <Message />
+              </el-icon>
+            </el-tooltip>
+            <!-- <el-tooltip
+              class="box-item"
+              effect="dark"
+              v-if="marked.length > 0"
+              content="Send Whatsapp message"
+              placement="top-start"
+            >
+              <img
+                src="../../assets/WhatsappLogo.png"
+                style="width: 32px; margin-top: -20px"
+                class="ml-2 c-pointer"
+                @click="displayWhatsappDrawer(null)"
+                alt="Send Whatsapp message"
+              />
+            </el-tooltip> -->
+          </div>
+          <div class="d-flex flex-column flex-sm-row justify-content-md-between">
+            <el-input
+              size="small"
+              v-model="searchText"
+              placeholder="Search..."
+              class="search-input"
+            >
+              <template #suffix>
+                <el-button
+                  style="padding: 5px; height: 22px"
+                  @click.prevent="searchText = ''"
                 >
-                  <img
-                    src="../../assets/sms.png"
-                    style="width: 20px; margin-top: -13px"
-                    class="ml-2 c-pointer"
-                    @click="sendMarkedMemberSms"
-                    alt="Send SMS"
-                  />
-                </el-tooltip>
-                <el-tooltip
-                  class="box-item"
-                  effect="dark"
-                  v-if="marked.length > 0"
-                  content="Send Email"
-                  placement="top-start"
-                >
-                  <el-icon
-                    :size="20"
-                    class="ml-2 c-pointer"
-                    v-if="marked.length > 0"
-                    @click="sendMarkedMemberEmail"
-                  >
-                    <Message />
+                  <el-icon :size="13">
+                    <Close />
                   </el-icon>
-                </el-tooltip>
+                </el-button>
+              </template>
+              <template #append>
+                <el-button class="btn-search" >
+                  <el-icon :size="13">
+                    <Search />
+                  </el-icon>
+                </el-button>
+              </template>
+            </el-input>
+            <!-- <div
+              style="background: #eeeeee"
+              class="ml-2 mt-3 mt-sm-0 d-flex w-50 align-items-center justify-content-center border-radius-8"
+            >
+              <div
+                @click="toggleFilterFormVissibility"
+                class="mb-0 px-3 d-flex my-3 my-sm-0 c-pointer"
+              >
+                <span class="mr-1"> Filter</span>
+                <el-icon :size="18">
+                  <Filter />
+                </el-icon>
               </div>
-              <div class="d-flex flex-column flex-sm-row justify-content-sm-end">
-                <el-input
-                  size="small"
-                  v-model="searchText"
-                  placeholder="Search..."
-                  class="input-with-select"
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+      <div  v-if="searchNewConvert.length > 0" class="tab-options d-none d-md-block mt-5">
+        <div class="table-top col-12 col-md-7 col-lg-7 col-xl-8 px-0 mt-5">
+          <div class="d-flex flex-column flex-md-row justify-content-md-between">
+            <div>
+              <!-- <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="Add all members to group"
+                placement="top-start"
+              >
+                <el-icon
+                  :size="28"
+                  class="c-pointer primary--text"
+                  @click="addToGroupDialog = true"
                 >
-                  <template #suffix>
-                    <el-button
-                      style="padding: 5px; height: 22px"
-                      @click.prevent="searchText = ''"
-                    >
-                      <el-icon :size="13">
-                        <Close />
-                      </el-icon>
-                    </el-button>
-                  </template>
-                  <template #append>
-                    <el-button>
-                      <el-icon :size="13">
-                        <Search />
-                      </el-icon>
-                    </el-button>
-                  </template>
-                </el-input>
-              </div>
+                  <CirclePlus />
+                </el-icon>
+              </el-tooltip> -->
+              <!-- <el-tooltip
+                class="box-item"
+                effect="dark"
+                v-if="marked.length > 0"
+                content="Add to group"
+                placement="top-start"
+              >
+                <el-icon
+                  class="ml-2 c-pointer primary--text"
+                  :size="28"
+                  @click="addToGroupSingle = true"
+                >
+                  <User />
+                </el-icon>
+              </el-tooltip> -->
+              <!-- <el-tooltip
+                class="box-item"
+                effect="dark"
+                v-if="marked.length > 0"
+                content="Archive member(s)"
+                placement="top-start"
+              >
+                <el-icon
+                  class="ml-2 c-pointer primary--text"
+                  :size="28"
+                  @click="displayPositionArchive = true"
+                  v-if="marked.length > 0"
+                >
+                  <DocumentRemove />
+                </el-icon>
+              </el-tooltip> -->
+              <!-- <el-tooltip
+                class="box-item d-flex"
+                effect="dark"
+                v-if="marked.length > 0"
+                content="Delete member(s)"
+                placement="top-start"
+              >
+                <el-icon
+                  :size="28"
+                  class="ml-2 c-pointer primary--text"
+                  v-if="marked.length > 0"
+                  @click="showConfirmModal1"
+                >
+                  <Delete />
+                </el-icon>
+              </el-tooltip> -->
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                v-if="marked.length > 0"
+                content="Send SMS"
+                placement="top-start"
+              >
+                <img
+                  src="../../assets/ChatCenteredDots.png"
+                  style="width: 32px; margin-top: -20px"
+                  class="ml-2 c-pointer primary--text"
+                  @click="sendMarkedMemberSms"
+                  alt="Send SMS"
+                />
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                v-if="marked.length > 0"
+                content="Send Email"
+                placement="top-start"
+              >
+                <el-icon
+                  :size="28"
+                  class="ml-2 c-pointer primary--text"
+                  v-if="marked.length > 0"
+                  @click="sendMarkedMemberEmail"
+                >
+                  <Message />
+                </el-icon>
+              </el-tooltip>
+              <!-- <el-tooltip
+              class="box-item"
+              effect="dark"
+              v-if="marked.length > 0"
+              content="Send Whatsapp message"
+              placement="top-start"
+            >
+              <img
+                src="../../assets/WhatsappLogo.png"
+                style="width: 32px; margin-top: -20px"
+                class="ml-2 c-pointer primary--text"
+                @click="displayWhatsappDrawer(null)"
+                alt="Send Whatsapp message"
+              />
+            </el-tooltip> -->
+            </div>
+            <div class="d-flex flex-column flex-md-row justify-content-md-between">
+              <el-input
+                size="small"
+                v-model="searchText"
+                placeholder="Search..."
+                class="search-input col-md-12 col-9"
+              >
+                <template #suffix>
+                  <el-button
+                    style="padding: 5px; height: 22px"
+                    @click.prevent="searchText = ''"
+                  >
+                    <el-icon :size="13">
+                      <Close />
+                    </el-icon>
+                  </el-button>
+                </template>
+                <template #append>
+                  <el-button class="btn-search">
+                    <el-icon :size="13">
+                      <Search />
+                    </el-icon>
+                  </el-button>
+                </template>
+              </el-input>
+              <!-- <div
+                style="background: #eeeeee"
+                class="ml-2 mt-3 py-2 mt-md-0 d-flex align-items-center justify-content-center border-radius-8"
+              >
+                <p
+                  @click="toggleFilterFormVissibility"
+                  class="mb-0 px-3 d-flex my-3 my-sm-0 c-pointer"
+                >
+                  <span class="mr-1"> Filter</span>
+                  <el-icon :size="18">
+                    <Filter />
+                  </el-icon>
+                </p>
+              </div> -->
             </div>
           </div>
         </div>
@@ -585,11 +828,19 @@ export default {
 
 <style scoped>
 .table-top {
-  font-weight: 800;
-  font-size: 12px;
+  position: absolute;
+  z-index: 1;
+  top: -40px;
+  /* width: 100%; */
+  font-weight: 500 !important;
+  font-size: 14px;
   background: #fff;
-  border: 1px solid #e0e0e0;
-  border-bottom: none;
+  color: #000000;
+  /* border: 1px solid #d4dde3; */
+  /* max-width: 83.333333% !important; */
+}
+.tab-options {
+  position: relative;
 }
 
 .empty-img {

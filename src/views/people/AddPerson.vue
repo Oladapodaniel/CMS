@@ -5,7 +5,7 @@
       <div class="grey-backg py-2 border-radius-8 col-md-4">
         <router-link
           to="/tenant/people"
-          class="text-decor ation-none s-18 text-dak"
+          class="text-decoration-none s-18 text-dak"
         >
           <span class="linear-gradient">Members > Add Member</span>
         </router-link>
@@ -1374,6 +1374,7 @@ export default {
     const dismissAddToGroupModal = ref("");
 
     const addMemberToGroup = async () => {
+      showChooseGroup.value = false;
       let groupObj = groupToAddTo.value;
       addToGroupError.value = false;
       if (!groupToAddTo.value || !groupToAddTo.value.id) {

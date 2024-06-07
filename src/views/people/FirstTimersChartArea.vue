@@ -2,28 +2,38 @@
   <div class="container-fluid">
     <div class="row pl-3 border-radius-border-8 align-items-center">
       <div class="col-md-3">
-        <div class="text-head s-18 font-weight-600">Total Guest</div>
-        <div class="h2 font-weight-600">
-          {{ analyticsData.totalGuests }}
+        <div class="col-md-11 px-0 text-center">
+          <div class="text-head s-18 font-weight-600">Total Guest</div>
+          <div class="h2 font-weight-600">
+            {{ analyticsData.totalGuests }}
+          </div>
         </div>
       </div>
       <div class="col-md-3">
-        <div class="text-head s-18 font-weight-600">Retention Rate</div>
-        <div class="h2 font-weight-600">{{ analyticsData.retentionRate }}%</div>
+        <div class="col-md-11 px-0 text-center">
+          <div class="text-head s-18 font-weight-600">Retention Rate</div>
+          <div class="h2 font-weight-600">{{ analyticsData.retentionRate }}%</div>
+        </div>
       </div>
-      <div class="col-md-3">
-        <div class="text-head s-18 font-weight-600">Activity Involved</div>
-        <div class="h2 font-weight-600">
-          {{ analyticsData.averageActivity }}
+      <div class="col-md-3  ">
+        <div class="col-md-11 px-0 text-center">
+          <div class="text-head s-18 font-weight-600">Activity Involved</div>
+          <div class="h2 font-weight-600">
+            {{ analyticsData.averageActivity }}
+          </div>
         </div>
       </div>
       <div class="col-md-3">
-        <div class="p-3">
+        <div class="">
           <PieChartSmall
             domId="piechartww"
             :piedata1="analyticsData.interestedSummary"
-            :data="name1"
           />
+          <!-- <PieChartSmall
+            domId="piechartww"
+            :piedata1="analyticsData.interestedSummary"
+            :data="name1"
+          /> -->
         </div>
         <div @click="ViewFirstTimer" class="s-14 cursor-pointer">
           <span v-if="!showFirstTimer"><u>Show more</u> </span>
@@ -159,7 +169,7 @@ import axios from "@/gateway/backendapi";
 import FunnelChart from "@/components/charts/FunnelChart.vue";
 import PieChart from "@/components/charts/FirstTimerPiechart.vue";
 import ColumnChart from "../../components/charts/FirstTimersColumnchart.vue";
-import PieChartSmall from "../../components/charts/FirstTimerPieChartSmall.vue";
+import PieChartSmall from "../../components/charts/PieChartSmall.vue";
 export default {
   components: {
     FunnelChart,
@@ -263,7 +273,7 @@ export default {
 
     const ViewFirstTimer = () => {
       showFirstTimer.value = !showFirstTimer.value;
-      if(showFirstTimer.value){
+      if (showFirstTimer.value) {
         getAllDatePeriods();
       }
     };

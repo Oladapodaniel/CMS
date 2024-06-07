@@ -274,34 +274,7 @@
                     </div>
                   </el-tabs>
                 </div>
-                <!-- <div class="input-width d-flex">
-                  <el-tabs type="border-card" class="w-100">
-                    <div class="add-group bg-white">
-                      <div v-for="(item, index) in firstTimerInGroup" :key="index">
-                        <div class="d-flex justify-content-between align-items-center">
-                          <div class="pt-1">
-                            <span class="text-secondary">{{ index + 1 }}.</span>
-                            <span class="font-weight-700">{{ item.name }}</span>
-                          </div>
-                          <el-icon
-                            class="text-danger"
-                            @click="showConfirmModal(index, item)"
-                          >
-                            <CircleClose />
-                          </el-icon>
-                        </div>
-                      </div>
-                      <div v-if="firstTimerInGroup.length === 0">No group added yet</div>
-                      <div
-                        class="pt-2 mt-2 font-weight-700 text-primary border-top text-center c-pointer"
-                        data-toggle="modal"
-                        data-target="#addToGroup"
-                      >
-                        Choose group
-                      </div>
-                    </div>
-                  </el-tabs>
-                </div> -->
+
               </div>
             </el-form-item>
             <el-form-item v-for="(item, index) in dynamicCustomFields" :key="index">
@@ -1962,6 +1935,11 @@ export default {
 
 .input-width {
   width: 100%;
+}
+.linear-gradient {
+  background: linear-gradient(90deg, #777777 48%, #111111 62%);
+  background-clip: text;
+  color: transparent;
 }
 
 .input-width {

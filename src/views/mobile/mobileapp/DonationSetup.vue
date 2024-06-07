@@ -11,8 +11,7 @@
             <div class="text-font">Enter bank details to set up online donation</div>
           </div>
           <div class="col-md-5 d-flex justify-content-end">
-            <el-button @click="openPaymentOnBoardModal" round size="large" class="text-white  primary-bg  c-pointer"
-              data-toggle="modal" data-target="#paymentOnBoardingModal">
+            <el-button @click="openPaymentOnBoardModal" round size="large" class="text-white  primary-bg  c-pointer">
               Add
             </el-button>
           </div>
@@ -46,6 +45,11 @@
                         <el-dropdown-item>
                           <div @click.prevent="showConfirmModalBank(bankAccount.id, index)" class="text-color">
                             Delete
+                          </div>
+                        </el-dropdown-item>
+                        <el-dropdown-item>
+                          <div @click.prevent="editBank(bankAccount.id, index)" class="text-color">
+                            Edit
                           </div>
                         </el-dropdown-item>
                       </el-dropdown-menu>
@@ -144,7 +148,7 @@
               </div>
             </div>
             <div class="col-11 col-md-10 pt-1">
-              <Paymentonboarding @formcreated="formCreated" @closemodal="closeModal" />
+              <Paymentonboarding @closemodal="closeModal" :bankID="bankId" />
             </div>
           </div>
         </el-dialog>
@@ -240,6 +244,7 @@ export default {
     const accountNumber = ref("");
     const accountName = ref("");
     const formID = ref("");
+    const bankId = ref("");
     const loading = ref(false);
     const displayPaymentModal = ref(false);
     const displayPaymentOnBoardModal = ref(false);
@@ -269,6 +274,10 @@ export default {
     const editForm = (id) => {
       displayPaymentModal.value = true
       formID.value = id
+    }
+    const editBank = (id) => {
+      displayPaymentOnBoardModal.value = true
+      bankId.value = id
     }
 
     const completeSetUp = () => {
@@ -396,18 +405,19 @@ export default {
 
     const closeModal = (bankDetails) => {
       displayPaymentOnBoardModal.value = false
-      ElMessage({
-        type: "success",
-        message: "Bank Details Successfully Added",
-        duration: 5000,
-      });
-      bankAccounts.value.push({
+      if(bankDetails.id){
+        getAllChurchBank();
+      } else {
+        bankAccounts.value.push({
         id: bankDetails.id,
         accountName: bankDetails.accountName,
         bankName: bankDetails.bankName,
         accountNumber: bankDetails.accountNumber,
         description: bankDetails.description
       });
+      }
+      bankId.value = ''
+      
     };
 
     const getPaymentForm = () => {
@@ -555,6 +565,8 @@ export default {
       setupSpinner,
       closeModal,
       bankAccounts,
+      bankId,
+      editBank,
       selectCodeBank,
       deleteBankUser,
       openPaymentModal,
@@ -563,6 +575,7 @@ export default {
       openPaymentOnBoardModal,
       closeModalButtonForm,
       deleteDonation,
+      
     };
   },
 };
