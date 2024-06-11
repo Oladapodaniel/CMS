@@ -1,9 +1,14 @@
 <template>
     <div class="wrapper">
         <div class="d-flex flex-column flex-md-row justify-content-md-between">
-            <div class="body-text">
-                <div>Maximum Capacity of your plan has been reached</div>
-                <div>You can add more Members when you upgrade your plan</div>
+            <div class="d-flex flex-column flex-sm-row">
+                <div class="icon-bg">
+                    <img src="../../assets/doc_check.svg" class="" />
+                </div>
+                <div class="body-text">
+                    <div>Maximum Capacity of your plan has been reached</div>
+                    <div>You can add more Members when you upgrade your plan</div>
+                </div>
             </div>
             <router-link to="/tenant/subscription">
                 <button class="upgrade-button mt-3 mt-md-0">Upgrade Plan</button>
@@ -47,5 +52,20 @@ export default {
     border: none;
     border-radius: 5px;
     outline-color: black;
+}
+.icon-bg {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px
+}
+
+.icon-bg > img {
+    width: 30px;
+    height: 30px;
 }
 </style>

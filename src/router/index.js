@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import store from "@/store/store.js"
 
 
 import Pagination from '@/components/payment/PaymentSuccessful.vue';
@@ -51,7 +52,7 @@ const routes = [
         meta: {
           title:  getSubdomain() === 'alatfaith' ? 'AlatFaith - Welcome' : 'Churchplus - Login',
         }
-      },
+    },
     {
         path: '/login',
         name: 'AlatLogin',
@@ -102,7 +103,7 @@ const routes = [
         path: '/onetimepassword',
         name: 'OTP',
         component: () =>
-            import ( /* webpackChunkName: "startingdashboard" */ '../views/onboarding/OTP.vue'),
+            import( /* webpackChunkName: "startingdashboard" */ '../views/onboarding/OTP.vue'),
         meta: {
             title: 'Churchplus - Starting Board',
         }
@@ -277,6 +278,7 @@ const routes = [
             children: [
                 {
                     path: '',
+                    name: "PeopleModule",
                     meta: {
                         title: 'Churchplus - Church Members',
                     },
@@ -339,35 +341,35 @@ const routes = [
             },
             component: () =>
                 import( /* webpackChunkName: "addfirsttimer" */ '../views/form/Forms.vue'),
-                children: [
+            children: [
 
-                    {
-                        path: '',
-                        meta: {
-                            title: 'Churchplus - Forms',
-                        },
-                        component: () =>
-                            import( /* webpackChunkName: "peopleempty" */ '../views/form/FormList.vue')
+                {
+                    path: '',
+                    meta: {
+                        title: 'Churchplus - Forms',
                     },
-                    {
-                        path: 'create/:id?',
-                        name: 'CreateForm',
-                        meta: {
-                            title: 'Churchplus - Form',
-                        },
-                        component: () =>
-                            import( /* webpackChunkName: "addfirsttimer" */ '../views/form/CreateForm.vue')
+                    component: () =>
+                        import( /* webpackChunkName: "peopleempty" */ '../views/form/FormList.vue')
+                },
+                {
+                    path: 'create/:id?',
+                    name: 'CreateForm',
+                    meta: {
+                        title: 'Churchplus - Form',
                     },
-                    {
-                        path: 'view/:id?',
-                        name: 'SingleFormList',
-                        meta: {
-                            title: 'Churchplus - Form',
-                        },
-                        component: () =>
-                            import( /* webpackChunkName: "addfirsttimer" */ '../views/form/SingleFormList.vue')
+                    component: () =>
+                        import( /* webpackChunkName: "addfirsttimer" */ '../views/form/CreateForm.vue')
+                },
+                {
+                    path: 'view/:id?',
+                    name: 'SingleFormList',
+                    meta: {
+                        title: 'Churchplus - Form',
                     },
-                ]
+                    component: () =>
+                        import( /* webpackChunkName: "addfirsttimer" */ '../views/form/SingleFormList.vue')
+                },
+            ]
         },
         {
             path: 'firsttimermanagement/:personId?',
@@ -665,7 +667,7 @@ const routes = [
                         title: 'Churchplus - Branch',
                     },
                     component: () =>
-                    import( /* webpackChunkName: "branchattendance" */ '../views/branch/subpages/BranchAttendance.vue')
+                        import( /* webpackChunkName: "branchattendance" */ '../views/branch/subpages/BranchAttendance.vue')
 
                 },
                 {
@@ -676,7 +678,7 @@ const routes = [
                         title: 'Churchplus - Branch',
                     },
                     component: () =>
-                    import( /* webpackChunkName: "branchtransactions" */ '../views/branch/subpages/BranchTransactions.vue')
+                        import( /* webpackChunkName: "branchtransactions" */ '../views/branch/subpages/BranchTransactions.vue')
 
                 },
                 {
@@ -687,7 +689,7 @@ const routes = [
                         title: 'Churchplus - Branch',
                     },
                     component: () =>
-                    import( /* webpackChunkName: "branchreport" */ '../views/branch/report/BranchReport.vue')
+                        import( /* webpackChunkName: "branchreport" */ '../views/branch/report/BranchReport.vue')
 
                 },
                 // {
@@ -1688,9 +1690,9 @@ const routes = [
                 path: 'deleteterms',
                 name: 'DeleteTerms',
                 component: () =>
-                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/DeleteTerms')
+                    import( /* webpackChunkName: "defaultmessage" */ '@/views/settings/DeleteTerms')
             },
-        ]
+            ]
         },
         {
             path: 'chartofaccount',
@@ -2279,56 +2281,97 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
 
-    const checkinToken = localStorage.getItem('checkinToken')
-    //   alert(4)
-    if ((to.name === "CheckinSignUp" || to.name === "CheckinSignin") && checkinToken) {
-        //   alert("hello")
-        return next({ name: 'CheckinDashboard' })
-    }
-    //   else {
-    //       alert(false)
-    //   }
-
     const token = localStorage.getItem("token")
     const role = localStorage.getItem("roles") ? JSON.parse(localStorage.getItem("roles")) : ''
     const tokenIsValid = token && token.length > 30 ? true : false;
     const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
-
-    if ((to.name === "ResetPassword" ||
-        to.name === "EmailSent" ||
-        to.name === "OnboardingForm" ||
-        to.name === "WebCheckin" ||
-        to.name === "OnlineGiving4" ||
-        to.name === "Pay" ||
-        to.name === "iFrame" ||
-        to.name === "SignUpPayment" ||
-        to.name === "SignInPayment" ||
-        to.name === "TransactionPage" ||
-        to.name === "PublicResetPassword" ||
-        to.name === "PublicPerson" ||
-        to.name === "PublicFirstTimer" ||
-        to.name === "PublicNewConvert" ||
-        to.name === "EventRegistration" ||
-        to.name === "PricingPage" ||
-        to.name === "LandingPage" ||
-        to.name === "PublicForm" ||
-        to.name === "AlatRegister" ||
-        to.name === "AlatLogin" ||
-        to.name === "OTP" ||
-        to.name === "AlatOtp" ||
-        to.name === "PublicPledgePayment") && !tokenIsValid) return next(true)
-
-    if ((to.name !== "Login" && to.name !== "Register") && to.name !== "OTP" && to.name !== "AlatRegister" && to.name !== "AlatOtp" && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
-    if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/tenant")
-
-    if ((role && role.length === 1 && role[0] === "FollowUp" && token) && (to.path !== "/tenant/followup" && to.name !== "FirsttimerManagement")) {
-        localStorage.removeItem('token')
-        next("/")
+    
+    if (
+        (
+            to.name === "ResetPassword" ||
+            to.name === "EmailSent" ||
+            to.name === "OnboardingForm" ||
+            to.name === "WebCheckin" ||
+            to.name === "OnlineGiving4" ||
+            to.name === "Pay" ||
+            to.name === "iFrame" ||
+            to.name === "SignUpPayment" ||
+            to.name === "SignInPayment" ||
+            to.name === "TransactionPage" ||
+            to.name === "PublicResetPassword" ||
+            to.name === "PublicPerson" ||
+            to.name === "PublicFirstTimer" ||
+            to.name === "PublicNewConvert" ||
+            to.name === "EventRegistration" ||
+            to.name === "PricingPage" ||
+            to.name === "LandingPage" ||
+            to.name === "PublicForm" ||
+            to.name === "AlatRegister" ||
+            to.name === "AlatLogin" ||
+            to.name === "OTP" ||
+            to.name === "AlatOtp" ||
+            to.name === "PublicPledgePayment"
+        ) && !tokenIsValid
+    ) {
+        return next(true);
+    } else if (
+        (
+            to.name !== "Login" &&
+            to.name !== "Register"
+        ) &&
+        to.name !== "OTP" &&
+        to.name !== "AlatRegister" &&
+        to.name !== "AlatOtp" &&
+        to.name !== "Onboarding" &&
+        to.name !== "StartingPoint" &&
+        to.name !== "ForgotPassword" &&
+        to.name !== "ResetPassword" &&
+        to.name !== "TermsOfUse" &&
+        (!token || token.length < 30)
+    ) {
+        return next("/");
+    } else if (
+        JSON.parse(localStorage.getItem('accountExpired')) && to.path !== '/tenant'
+    ) {
+        // When subscription has expired, prevent authorized pages from being navigated to
+        if (
+            to.name !== 'SentMessages' &&
+            to.name !== 'DraftMessages' &&
+            to.name !== 'ContactList' &&
+            to.name !== 'MessageDetails' &&
+            to.name !== 'Phongroup' &&
+            to.name !== 'EditContactList' &&
+            to.name !== 'DeliveryReport' &&
+            to.name !== 'SendMessage' &&
+            to.name !== 'ScheduledSMS' &&
+            to.name !== 'Sent' &&
+            to.name !== 'SentEmails' &&
+            to.name !== 'EmailDetails' &&
+            to.name !== 'EmailDraft' &&
+            to.name !== 'ComposeEmail' &&
+            to.name !== 'Schedules' &&
+            to.name !== 'VoiceList' &&
+            to.name !== 'ScheduledVoice' &&
+            to.name !== 'composeVoice' &&
+            to.name !== 'VoiceDeliveryReport' &&
+            to.name !== 'Inbox' &&
+            to.name !== 'BuyUnits'
+        ) {
+            // Redirect if the user's account is expired
+            return next("/tenant");
+        } else {
+            next()
+        }
+    } else if ((role && role.length === 1 && role[0] === "FollowUp" && token) && (to.path !== "/tenant/followup" && to.name !== "FirsttimerManagement")) {
+            localStorage.removeItem('token')
+            next("/")
+        } else{
+        next();
     }
-    else {
-        next(true)
-    }
-    next(true)
+
+
+
+
 
 
     // Find the nearest route element with meta tags.

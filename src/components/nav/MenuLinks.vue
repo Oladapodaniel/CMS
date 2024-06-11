@@ -93,18 +93,7 @@
         </div>
       </div>
     </template>
-    <div class="row pb-4">
-      <div class="col-md-6 offset-md-3">
-        <div class="dialog-body-text">Get back on track with your
-          church Management, Don’t miss out!</div>
-      </div>
-      <div class="col-md-6 offset-md-3  mt-3">
-        <el-button :color="primarycolor" :loading="loading" size="large" class="w-100" @click="subscriptionPage(1)"
-          round>Subscribe Now</el-button>
-          <div class="text-center my-2 s-18 text-dark">or</div>
-          <el-button class="secondary-button w-100" size="large" @click="subscriptionPage(2)" round>Use communication module</el-button>
-      </div>
-    </div>
+    <SubExpired />
   </el-dialog>
 </template>
 
@@ -116,8 +105,13 @@ import axios from "@/gateway/backendapi";
 import { useRouter } from 'vue-router'
 import setupService from '../../services/setup/setupservice';
 import deviceBreakpoint from "@/mixins/deviceBreakpoint";
+import SubExpired from "@/components/expiredpages/ExpiredSubDialog.vue";
+
 export default {
   emits: ['tenantname', 'linkclicked'],
+  components: {
+    SubExpired
+  },
   setup(props, { emit }) {
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
     const primarycolor = inject('primarycolor')
@@ -689,12 +683,6 @@ export default {
   opacity: 0.5;
 }
 
-.dialog-body-text {
-  color: #171717;
-  text-align: center;
-  font-weight: 700;
-  font-size: 20px;
-}
 
 @media screen and (max-width: 1100px) {
   .nav {
