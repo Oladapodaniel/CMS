@@ -1,38 +1,65 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container-fluid">
       <!-- Content Box -->
       <main id="main" class="mt-3">
         <div class="container-fluid px-0">
-          <div class="row px-0">
-            <div class="col-md-12 px-0">
-              <div class="row d-md-flex align-items-center mt-3 mb-4">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="text-head font-weight-bold text-black h2">Draft</div>
+              <div class="grey-backg py-2 border-radius-8 col-md-3">
+                <router-link
+                  to="/tenant/sms/sent"
+                  class="text-decoration-none s-18 text-dak"
+                >
+                  <span class="linear-gradient">SMS>Draft</span>
+                </router-link>
+              </div>
+            </div>
+            <div class="col-md-12 mt-5">
+              <!-- <div class="row d-md-flex align-items-center mt-3 mb-4">
                 <div class="col-md-8 col-sm-12">
                   <div class="search-div">
                     <el-icon style="vertical-align: middle" class="search-sms mr-1">
                       <Search />
                     </el-icon>
-                    <input type="text" placeholder="Search here..." v-model="searchDrafts" class="w-100 pl-4" />
+                    <input
+                      type="text"
+                      placeholder="Search here..."
+                      v-model="searchDrafts"
+                      class="w-100 pl-4"
+                    />
                   </div>
                 </div>
                 <div class="col-sm-5 col-md-4 mt-sm-2 units-container">
                   <UnitsArea />
                 </div>
-              </div>
+              </div> -->
 
               <div class="table-options" v-if="markedDraft.length > 0">
                 <el-icon class="text-danger c-pointer" @click="showConfirmModal">
                   <Delete />
                 </el-icon>
               </div>
-              <Table :data="searchDraftMessage" :headers="DraftHeaders" :checkMultipleItem="true"
-                @checkedrow="handleSelectionChange" v-loading="loading">
+              <Table
+                :data="searchDraftMessage"
+                :headers="DraftHeaders"
+                :checkMultipleItem="true"
+                @checkedrow="handleSelectionChange"
+                v-loading="loading"
+              >
                 <template #body="{ item }">
                   <div>
-                    <router-link class="font-weight-600 no-decoration primary--text" :to="{
-                      name: 'SendMessage',
-                      query: { draftId: item.id },
-                    }">{{ item.body.length > 50 ? `${item.body.slice(0, 50)}...` : item.body }}</router-link>
+                    <router-link
+                      class="no-decoration text-dak"
+                      :to="{
+                        name: 'SendMessage',
+                        query: { draftId: item.id },
+                      }"
+                      >{{
+                        item.body.length > 50 ? `${item.body.slice(0, 50)}...` : item.body
+                      }}</router-link
+                    >
                   </div>
                 </template>
                 <template #dateModified="{ item }">
@@ -41,13 +68,23 @@
                   </div>
                 </template>
                 <template v-slot:action="{ item }">
-                  <div>
-                    <span class="small-text">
-                      <el-icon class="text-danger c-pointer" @click="showConfirmModal(item)">
-                        <Delete />
-                      </el-icon>
-                    </span>
-                  </div>
+                  <el-dropdown trigger="click">
+                    <el-icon>
+                      <MoreFilled />
+                    </el-icon>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item>
+                          <div
+                            class="text-decoration-none text-color"
+                            @click="showConfirmModal(item.id)"
+                          >
+                            Delete
+                          </div>
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
                 </template>
               </Table>
             </div>
@@ -65,10 +102,10 @@ import axios from "@/gateway/backendapi";
 import communicationService from "../../services/communication/communicationservice";
 import store from "../../store/store";
 import stopProgressBar from "../../services/progressbar/progress";
-import Loading from "../../components/loading/LoadingComponent"
-import { ElMessage, ElMessageBox } from 'element-plus'
+import Loading from "../../components/loading/LoadingComponent";
+import { ElMessage, ElMessageBox } from "element-plus";
 import dateFormatter from "../../services/dates/dateformatter";
-import Table from "@/components/table/Table"
+import Table from "@/components/table/Table";
 
 export default {
   components: { UnitsArea, Loading, Table },
@@ -78,10 +115,10 @@ export default {
     const searchDrafts = ref("");
     const drafts = ref([]);
     const DraftHeaders = ref([
-      { name: 'MESSAGE', value: 'body' },
-      { name: 'DATE', value: 'dateModified' },
-      { name: 'ACTION', value: 'action' },
-    ])
+      { name: "MESSAGE", value: "body" },
+      { name: "DATE", value: "dateModified" },
+      { name: "ACTION", value: "action" },
+    ]);
 
     const getDrafts = async () => {
       try {
@@ -120,8 +157,10 @@ export default {
       let holder = handler(markedDraft.value);
       let url = "";
 
-      if (!draft || !draft.id) url = `/api/Messaging/DeleteSmsDraft?SMSDraftIdList=${holder}`;
-      if (draft && draft.id) url = `/api/Messaging/DeleteSmsDraft?SMSDraftIdList=${draft.id}`;
+      if (!draft || !draft.id)
+        url = `/api/Messaging/DeleteSmsDraft?SMSDraftIdList=${holder}`;
+      if (draft && draft.id)
+        url = `/api/Messaging/DeleteSmsDraft?SMSDraftIdList=${draft.id}`;
       axios
         .delete(url)
         .then(() => {
@@ -135,53 +174,52 @@ export default {
               store.dispatch("communication/removeSmsDrafts", i.id);
             });
           } else {
-            drafts.value = drafts.value.filter(i => i.id !== draft.id);
+            drafts.value = drafts.value.filter((i) => i.id !== draft.id);
             store.dispatch("communication/removeSmsDrafts", draft.id);
           }
 
           ElMessage({
-            type: 'success',
-            message: 'Draft deleted successfully',
-            duration: 5000
-          })
+            type: "success",
+            message: "Draft deleted successfully",
+            duration: 5000,
+          });
 
           markedDraft.value = [];
-
         })
         .catch((err) => {
           stopProgressBar();
           ElMessage({
-            type: 'error',
-            message: 'Draft delete failed',
-            duration: 5000
-          })
+            type: "error",
+            message: "Draft delete failed",
+            duration: 5000,
+          });
           console.log(err);
         });
     };
 
     const showConfirmModal = (id) => {
       ElMessageBox.confirm(
-        'This delete action cannot be reversed. do you want to continue?',
-        'Confirm delete',
+        "This delete action cannot be reversed. do you want to continue?",
+        "Confirm delete",
         {
-          confirmButtonText: 'OK',
-          cancelButtonText: 'Cancel',
-          type: 'error',
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
         }
       )
         .then(() => {
           if (!id) {
-            deleteDraft()
+            deleteDraft();
           } else {
-            deleteDraft(id)
+            deleteDraft(id);
           }
         })
         .catch(() => {
           ElMessage({
-            type: 'info',
-            message: 'Delete canceled',
-          })
-        })
+            type: "info",
+            message: "Delete canceled",
+          });
+        });
     };
 
     // code to mark single item in draft
@@ -192,8 +230,8 @@ export default {
     };
 
     const handleSelectionChange = (val) => {
-      markedDraft.value = val
-    }
+      markedDraft.value = val;
+    };
 
     return {
       drafts,
@@ -207,7 +245,7 @@ export default {
       loading,
       DraftHeaders,
       formatDate,
-      handleSelectionChange
+      handleSelectionChange,
     };
   },
 };
@@ -233,9 +271,9 @@ export default {
 }
 
 .table-options {
-  border: 1px solid rgb(212, 221, 227);
+  /* border: 1px solid rgb(212, 221, 227); */
   border-bottom: none;
-  padding: 7px 7px 0 7px
+  padding: 7px 7px 0 7px;
 }
 
 .brief-message {

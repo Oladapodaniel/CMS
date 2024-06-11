@@ -1,38 +1,129 @@
 <template>
-  <div>
-    <div class="row d-md-flex align-items-center mt-3 mb-4">
-      <div class="col-md-6 col-sm-12">
-        <div class="search-div d-flex align-items-center">
-          <span class="mr-2"
-            ><el-icon> <Search /> </el-icon
+  <div class="container-fluid">
+    <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
+      <div>
+        <div class="text-head font-weight-bold h2 py-0 my-0 text-black">Voice</div>
+        <div class="s-18">Showing all Voice messages</div>
+      </div>
+      <div class="d-flex flex-wrap flex-sm-nowrap mt-3 mt-sm-0">
+        <div class="d-flex mt-1 w-100" @click="watchVideo">
+          <span class="s-18 primary--text">Watch Video </span>
+          <span class="mt-0 ml-1"
+            ><el-icon :size="27" class="primary--text"><VideoPlay /></el-icon
           ></span>
-          <input
-            type="text"
-            class="w-100"
-            placeholder="Search here..."
-            v-model="searchVoiceText"
-          />
+        </div>
+        <el-dropdown
+          trigger="click"
+          class="align-items-center justify-content-center d-flex ml-md-3 ml-0 default-btn py-0 m-0 border"
+          style="height: 2.2rem"
+        >
+          <span class="el-dropdown-link w-100 primary--text text-center font-weight-600">
+            Menu
+            <el-icon class="el-icon--right">
+              <arrow-down />
+            </el-icon>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item>
+                <router-link
+                  :to="`/tenant/voice/voicelist`"
+                  class="no-decoration fw-400 text-black"
+                >
+                  <img src="../../../assets/sent.png" alt="" />
+                  All Sent
+                </router-link>
+              </el-dropdown-item>
+
+              <el-dropdown-item>
+                <router-link
+                  :to="`/tenant/voice/schedulelist`"
+                  class="no-decoration fw-400 text-black"
+                >
+                  <img src="../../../assets/CalendarCheck.png" alt="" />
+                  Scheduled
+                </router-link>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+        <!-- <el-button @click="importMembers" class="header-btn secondary-button" round>Import</el-button> -->
+        <router-link :to="`/tenant/voice/sendvoicemessage`" class="no-decoration w-100">
+          <el-button
+            :color="primarycolor"
+            class="ml-0 ml-sm-2 mt-sm-0 mt-3 w-100 header-btn"
+            round
+            >Send Voice</el-button
+          >
+        </router-link>
+      </div>
+    </div>
+
+    <div class="tab-options d-block d-md-none mt-5">
+      <div class="s-14 fw-500 col-md-10 px-0 mt-5">
+        <div class="d-flex flex-column flex-sm-row justify-content-md-between">
+          <div>
+            <el-tooltip
+              class="box-item"
+              effect="dark"
+              v-if="markedVoice.length > 0"
+              content="Delete member(s)"
+              placement="top-start"
+            >
+              <el-icon
+                :size="28"
+                class="ml-2 c-pointer primary--text"
+                v-if="markedVoice.length > 0"
+                @click="showConfirmModal"
+              >
+                <Delete />
+              </el-icon>
+            </el-tooltip>
+          </div>
+          <div class="d-flex flex-column flex-md-row justify-content-md-between">
+            <el-input
+              size="small"
+              v-model="searchVoiceText"
+              :suffix-icon="Search"
+              placeholder="Search"
+              class="search-input col-md-12 col-9"
+            />
+          </div>
         </div>
       </div>
     </div>
-    <div class="table-options" v-loading="voiceLoading" v-if="markedVoice.length > 0">
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        v-if="markedVoice.length > 0"
-        content="delete marked"
-        placement="top-start"
-      >
-        <el-icon
-          :size="20"
-          class="color-deleteicon text-danger c-pointer"
-          style="font-size: 15px"
-          v-if="markedVoice.length > 0"
-          @click="showConfirmModal"
-        >
-          <Delete />
-        </el-icon>
-      </el-tooltip>
+    <div class="tab-options d-none d-md-block mt-5">
+      <div class="table-top col-12 col-md-8 col-lg-8 col-xl-9 px-0 mt-5">
+        <div class="d-flex flex-column flex-md-row justify-content-md-between">
+          <div>
+            <el-tooltip
+              class="box-item d-flex"
+              effect="dark"
+              v-if="markedVoice.length > 0"
+              content="Delete member(s)"
+              placement="top-start"
+            >
+              <el-icon
+                :size="28"
+                class="ml-2 c-pointer primary--text"
+                v-if="markedVoice.length > 0"
+                @click="showConfirmModal"
+              >
+                <Delete />
+              </el-icon>
+            </el-tooltip>
+          </div>
+          <div class="d-flex flex-column flex-md-row justify-content-md-between">
+            <el-input
+              size="small"
+              v-model="searchVoiceText"
+              :suffix-icon="Search"
+              placeholder="Search"
+              class="search-input col-md-12 col-9"
+            />
+          </div>
+        </div>
+      </div>
     </div>
 
     <Table
@@ -40,7 +131,6 @@
       :headers="voiceHeaders"
       :checkMultipleItem="true"
       @checkedrow="handleSelectionChange"
-      v-loading="voiceLoading"
     >
       <template #subject="{ item }">
         <div>
@@ -49,19 +139,10 @@
               name: 'composeVoice',
               query: { voiceId: item.id },
             }"
-            class="text-decoration-none"
+            class="text-decoration-none text-dak"
           >
-          <div class="font-weight-600">{{ item.subject }}</div>
+            <div>{{ item.subject }}</div>
           </router-link>
-        </div>
-      </template>
-      <template #message="{ item }">
-        <div>
-          <div class="font-weight-600">
-            <el-button type="success" @click="copyToClipBoard(item)" plain round
-              >Copy URL</el-button
-            >
-          </div>
         </div>
       </template>
       <template #dateSent="{ item }">
@@ -71,9 +152,9 @@
               name: 'composeVoice',
               query: { voiceId: item.id },
             }"
-            class="text-decoration-none"
+            class="text-decoration-none text-dak"
           >
-          <div class="font-weight-600">{{ item.dateSent }}</div>
+            <div>{{ item.dateSent }}</div>
           </router-link>
         </div>
       </template>
@@ -84,38 +165,42 @@
               name: 'composeVoice',
               query: { voiceId: item.id },
             }"
-            class="text-decoration-none"
+            class="text-decoration-none text-dak"
           >
-          <div class="font-weight-600">{{ item.sentByUser }}</div>
+            <div>{{ item.sentByUser }}</div>
           </router-link>
         </div>
       </template>
       <template #smsUnitsUsed="{ item }">
         <div>
-          <div class="font-weight-600">{{ item.smsUnitsUsed }}</div>
+          <div>{{ item.smsUnitsUsed }}</div>
         </div>
       </template>
       <template #report="{ item }">
         <div>
-          <div
-            class="font-weight-600 primary--text c-pointer"
-            @click="$router.push(`/tenant/voice/report/${item.id}`)"
-          >
-            View_report
+          <div class="c-pointer" @click="$router.push(`/tenant/voice/report/${item.id}`)">
+           <u> View report</u>
           </div>
         </div>
       </template>
-      <template #delete="{ item }">
-        <span class="small-text">
-          <el-icon
-            :size="20"
-            class="ml-2 color-deleteicon pt-2 c-pointer"
-            style="font-size: 20px"
-            @click="showConfirmModal(item.id)"
-          >
-            <Delete />
+      <template #action="{ item }">
+        <el-dropdown trigger="click">
+          <el-icon>
+            <MoreFilled />
           </el-icon>
-        </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item>
+                <div
+                  class="text-decoration-none text-color"
+                  @click="showConfirmModal(item.id)"
+                >
+                  Delete
+                </div>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </template>
     </Table>
     <div class="d-flex justify-content-end my-3">
@@ -129,16 +214,39 @@
         @current-change="handleCurrentChange"
       />
     </div>
+    <el-dialog
+      style="border-radius: 20px"
+      v-model="showAddMemberVideo"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+      top
+    >
+      <div class="row justify-content-center" v-loading>
+        <div class="col-md-12">
+          <iframe
+            width="100%"
+            height="315"
+            :src="videoURL"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, inject } from "vue";
 import Table from "@/components/table/Table";
 import store from "../../../store/store";
 import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../../services/progressbar/progress";
 import { ElMessage, ElMessageBox } from "element-plus";
+import { Search } from "@element-plus/icons-vue";
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 export default {
   components: {
     Table,
@@ -147,17 +255,20 @@ export default {
     // const store  = useStore()
     const sentVoiceList = ref([]);
     const searchVoiceText = ref("");
-    const totalSentVoiceList = ref("");
+    const totalSentVoiceList = ref();
     const paginationPage = ref("");
     const paginatedTableLoading = ref(false);
+    const showAddMemberVideo = ref(false);
+    const primarycolor = inject("primarycolor");
+    const videoURL = ref("https://www.youtube.com/embed/xQK4X5iJp-4?si=-_l0o9wvrx2_pnER");
+    const { xsOnly, smAndUp, mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
     const voiceHeaders = ref([
       { name: "Subject", value: "subject" },
-      { name: "Audio URL", value: "message" },
       { name: "Date Sent", value: "dateSent" },
       { name: "Sent By", value: "sentByUser" },
       { name: "Unit used", value: "smsUnitsUsed" },
       { name: "Report", value: "report" },
-      { name: "", value: "delete" },
+      { name: "ACTION", value: "action" },
     ]);
     const voiceLoading = ref(false);
     const getAllSentVoice = async () => {
@@ -176,6 +287,10 @@ export default {
       page: 1,
       rowsPerPage: 50,
     });
+
+    const watchVideo = () => {
+      showAddMemberVideo.value = true;
+    };
 
     const markedVoice = ref([]);
 
@@ -326,6 +441,11 @@ export default {
       serverOptions,
       markedVoice,
       paginatedTableLoading,
+      xsOnly,
+      smAndUp,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
       paginationPage,
       handleSizeChange,
       totalSentVoiceList,
@@ -339,6 +459,11 @@ export default {
       searchVoiceList,
       searchVoiceText,
       showConfirmModal,
+      showAddMemberVideo,
+      primarycolor,
+      videoURL,
+      watchVideo,
+      Search,
     };
   },
 };
@@ -351,9 +476,24 @@ export default {
   border-radius: 200px;
 }
 .table-options {
-  border: 1px solid rgb(212, 221, 227);
+  /* border: 1px solid rgb(212, 221, 227); */
   border-bottom: none;
   padding: 7px 7px 0 7px;
+}
+.table-top {
+  position: absolute;
+  z-index: 1;
+  top: -40px;
+  /* width: 100%; */
+  font-weight: 500 !important;
+  font-size: 14px;
+  background: #fff;
+  color: #000000;
+  /* border: 1px solid #d4dde3; */
+  /* max-width: 83.333333% !important; */
+}
+.tab-options {
+  position: relative;
 }
 
 .search-div input {

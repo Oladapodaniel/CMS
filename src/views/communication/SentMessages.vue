@@ -1,46 +1,190 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container-fluid">
       <!-- Content Box -->
       <main id="main" class="mt-3">
-        <div class="container-fluid px-0">
+        <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
+          <div>
+            <div class="text-head font-weight-bold h2 py-0 my-0 text-black">SMS</div>
+            <div class="s-18">Showing all SMS Data</div>
+          </div>
+          <div class="d-flex flex-wrap flex-sm-nowrap mt-3 mt-sm-0">
+            <div class="d-flex mt-1 w-100" @click="watchVideo">
+              <span class="s-18 primary--text">Watch Video </span>
+              <span class="mt-0 ml-1"
+                ><el-icon :size="27" class="primary--text"><VideoPlay /></el-icon
+              ></span>
+            </div>
+            <el-dropdown
+              trigger="click"
+              class="align-items-center justify-content-center d-flex ml-md-3 ml-0 default-btn py-0 m-0 border"
+              style="height: 2.2rem"
+            >
+              <span
+                class="el-dropdown-link w-100 primary--text text-center font-weight-600"
+              >
+                Menu
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>
+                    <router-link
+                      :to="`/tenant/sms/sent`"
+                      class="no-decoration fw-400 text-black"
+                    >
+                      <img src="../../assets/sent.png" alt="" />
+                      Sent
+                    </router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <router-link
+                      :to="`/tenant/sms/scheduled`"
+                      class="no-decoration fw-400 text-black"
+                    >
+                      <img src="../../assets/CalendarCheck.png" alt="" />
+                      Scheduled
+                    </router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item class="text-black">
+                    <router-link
+                      :to="`/tenant/sms/contacts`"
+                      class="no-decoration text-black"
+                    >
+                      <img src="../../assets/contactlist.png" alt="" />
+                      Contact list
+                    </router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item class="text-black">
+                    <router-link
+                      :to="`/tenant/sms/draft`"
+                      class="no-decoration text-black"
+                    >
+                      <img src="../../assets/FileDashed.png" alt="" />
+                      Draft
+                    </router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item class="text-black">
+                    <router-link :to="`/tenant/sms`" class="no-decoration text-black">
+                      <img src="../../assets/ArrowBendUpLeft.png" alt="" />
+                      <span> Replies</span>
+                    </router-link>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+            <!-- <el-button @click="importMembers" class="header-btn secondary-button" round>Import</el-button> -->
+            <router-link :to="`/tenant/sms/compose`" class="no-decoration w-100">
+              <el-button
+                :color="primarycolor"
+                class="ml-0 ml-sm-2 mt-sm-0 mt-3 w-100 header-btn"
+                round
+                >Send SMS</el-button
+              >
+            </router-link>
+          </div>
+        </div>
+        <div class="container-fluid mt-5">
           <div class="row px-0">
+            <div class="col-md-12 border-radius-border-8">
+              <div class="col-sm-5 col-md-3 px-0 mt-sm-2 units-contain">
+                <UnitsArea />
+              </div>
+            </div>
             <div class="col-md-12 px-0">
-              <div class="row d-md-flex align-items-center justify-content-between mt-3 mb-4">
-                <div class="col-md-8 col-sm-12">
-                  <div class="search-div">
-                    <el-icon style="vertical-align: middle" class="search-sms mr-1">
-                      <Search />
-                    </el-icon>
-                    <input type="text" placeholder="Search here..." v-model="searchText" class="w-100 pl-4" />
+              <div class="tab-options d-block d-md-none mt-5">
+                <div class="s-14 fw-500 col-md-10 px-0 mt-5">
+                  <div class="d-flex flex-column flex-sm-row justify-content-md-between">
+                    <div>
+                      <el-tooltip
+                        class="box-item"
+                        effect="dark"
+                        v-if="marked.length > 0"
+                        content="Delete member(s)"
+                        placement="top-start"
+                      >
+                        <el-icon
+                          :size="28"
+                          class="ml-2 c-pointer primary--text"
+                          v-if="marked.length > 0"
+                          @click="showConfirmModal"
+                        >
+                          <Delete />
+                        </el-icon>
+                      </el-tooltip>
+                    </div>
+                    <div
+                      class="d-flex flex-column flex-md-row justify-content-md-between"
+                    >
+                      <el-input
+                        size="small"
+                        v-model="searchText"
+                        :suffix-icon="Search"
+                        placeholder="Search"
+                        class="search-input col-md-12 col-9"
+                      />
+                    </div>
                   </div>
                 </div>
-                <div class="col-sm-5 col-md-4 mt-sm-2 units-container">
-                  <UnitsArea />
+              </div>
+              <div class="tab-options d-none d-md-block mt-5">
+                <div class="table-top col-12 col-md-8 col-lg-8 col-xl-9 px-0 mt-5">
+                  <div class="d-flex flex-column flex-md-row justify-content-md-between">
+                    <div>
+                      <el-tooltip
+                        class="box-item d-flex"
+                        effect="dark"
+                        v-if="marked.length > 0"
+                        content="Delete member(s)"
+                        placement="top-start"
+                      >
+                        <el-icon
+                          :size="28"
+                          class="ml-2 c-pointer primary--text"
+                          v-if="marked.length > 0"
+                          @click="showConfirmModal"
+                        >
+                          <Delete />
+                        </el-icon>
+                      </el-tooltip>
+                    </div>
+                    <div
+                      class="d-flex flex-column flex-md-row justify-content-md-between"
+                    >
+                      <el-input
+                        size="small"
+                        v-model="searchText"
+                        :suffix-icon="Search"
+                        placeholder="Search"
+                        class="search-input col-md-12 col-9"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="table-options" v-if="marked.length > 0">
-                <el-icon class="text-danger c-pointer" @click="showConfirmModal">
-                  <Delete />
-                </el-icon>
-              </div>
-
-              <Table :data="searchedMessages" :headers="SMSHeaders" :checkMultipleItem="true"
-                @checkedrow="handleSelectionChange" v-loading="loading">
+              <Table
+                :data="searchedMessages"
+                :headers="SMSHeaders"
+                :checkMultipleItem="true"
+                @checkedrow="handleSelectionChange"
+                v-loading="loading"
+              >
                 <template #message="{ item }">
                   <div>
-                    <router-link :to="{
-                      name: 'SendMessage',
-                      query: { messageId: item.id },
-                    }" class="text-decoration-none">
+                    <router-link
+                      :to="{
+                        name: 'SendMessage',
+                        query: { messageId: item.id },
+                      }"
+                      class="text-decoration-none text-dak"
+                    >
                       <!-- <el-tooltip class="box-item" effect="dark" :content="item.message" placement="top-start"> -->
-                      <span class="font-weight-600">{{
+                      <span class="fw-400">{{
                         item.message && item.message.length > 25
-                        ? `${item.message
-                          .split("")
-                          .slice(0, 25)
-                          .join("")}...`
-                        : item.message
+                          ? `${item.message.split("").slice(0, 25).join("")}...`
+                          : item.message
                           ? item.message
                           : ""
                       }}</span>
@@ -50,36 +194,30 @@
                 </template>
                 <template #dateSent="{ item }">
                   <div>
-                    <router-link :to="{
-                      name: 'SendMessage',
-                      query: { messageId: item.id },
-                    }" class="text-decoration-none">
-
-                      <span class="timestamp ml-1">{{
-                        item.dateSent
-                      }}</span>
+                    <router-link
+                      :to="{
+                        name: 'SendMessage',
+                        query: { messageId: item.id },
+                      }"
+                      class="text-decoration-none"
+                    >
+                      <span class="timestamp text-dak ml-1">{{ item.dateSent }}</span>
                     </router-link>
                   </div>
                 </template>
                 <template v-slot:status="{ item }">
                   <div>
-                    <span class="small-text">{{
-                      item.report.filter((i) =>
-                        i.status.includes("sent")
-                      ).length
-                    }}
+                    <span class="small-text text-dak"
+                      >{{ item.report.filter((i) => i.status.includes("sent")).length }}
                       |
                       {{
-                        item.report.filter((i) =>
-                          i.status.includes("processed")
-                        ).length
+                        item.report.filter((i) => i.status.includes("processed")).length
                       }}
                       |
                       {{
-                        item.report.filter((i) =>
-                          i.status.includes("failed")
-                        ).length
-                      }}</span>
+                        item.report.filter((i) => i.status.includes("failed")).length
+                      }}</span
+                    >
                   </div>
                 </template>
                 <template v-slot:smsUnitsUsed="{ item }">
@@ -89,11 +227,15 @@
                 </template>
                 <template v-slot:report="{ item }">
                   <div>
-                    <router-link :to="{
-                      name: 'DeliveryReport',
-                      params: { messageId: item.id },
-                      query: { units: item.smsUnitsUsed },
-                    }" class="small-text no-decoration primary--text">View report</router-link>
+                    <router-link
+                      :to="{
+                        name: 'DeliveryReport',
+                        params: { messageId: item.id },
+                        query: { units: item.smsUnitsUsed },
+                      }"
+                      class="small-text no-decoration primary--text"
+                      >View report</router-link
+                    >
                   </div>
                 </template>
                 <template v-slot:action="{ item }">
@@ -105,18 +247,32 @@
                       <template #dropdown>
                         <el-dropdown-menu>
                           <el-dropdown-item>
-                            <router-link :to="item.phone
-                                ? `/tenant/sms/compose?phone=${item.phone}`
-                                : ''
-                              " :class="{ 'fade-text': !item.phone, 'text-color': item.phone }">Send
-                              SMS</router-link>
+                            <router-link
+                              :to="
+                                item.phone
+                                  ? `/tenant/sms/compose?phone=${item.phone}`
+                                  : ''
+                              "
+                              :class="{
+                                'fade-text': !item.phone,
+                                'text-color': item.phone,
+                              }"
+                              >Send SMS</router-link
+                            >
                           </el-dropdown-item>
                           <el-dropdown-item>
-                            <router-link :to="item.email
-                                ? `/tenant/email/compose?phone=${item.email}`
-                                : ''
-                              " :class="{ 'fade-text': !item.email, 'text-color': item.email }">Send
-                              Email</router-link>
+                            <router-link
+                              :to="
+                                item.email
+                                  ? `/tenant/email/compose?phone=${item.email}`
+                                  : ''
+                              "
+                              :class="{
+                                'fade-text': !item.email,
+                                'text-color': item.email,
+                              }"
+                              >Send Email</router-link
+                            >
                           </el-dropdown-item>
                         </el-dropdown-menu>
                       </template>
@@ -133,65 +289,98 @@
             <div class="col-md-12 mb-3 pagination-container">
               <!-- <PaginationButtons @getcontent="getSMSByPage" :itemsCount="itemsCount" :currentPage="currentPage"
                 :totalItems="sentSMS.totalItems" /> -->
-              <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage"
-                background layout="total, prev, pager, next, jumper" :total="totalItems" @size-change="handleSizeChange"
-                @current-change="handleCurrentChange" />
+              <el-pagination
+                v-model:current-page="serverOptions.page"
+                v-model:page-size="serverOptions.rowsPerPage"
+                background
+                layout="total, prev, pager, next, jumper"
+                :total="totalItems"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+              />
             </div>
           </div>
         </div>
       </main>
     </div>
+    <el-dialog
+      style="border-radius: 20px"
+      v-model="showAddMemberVideo"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+      top
+    >
+      <div class="row justify-content-center" v-loading>
+        <div class="col-md-12">
+          <iframe
+            width="100%"
+            height="315"
+            :src="videoURL"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import axios from "@/gateway/backendapi";
-import { computed, ref, onMounted, watch } from "vue";
+import { computed, ref, onMounted, watch, inject } from "vue";
 import { useStore } from "vuex";
 // import store from "../../store/store";
 import UnitsArea from "../../components/units/UnitsArea";
 import stopProgressBar from "../../services/progressbar/progress";
-import { ElMessage, ElMessageBox } from 'element-plus'
-import Table from "@/components/table/Table"
+import { ElMessage, ElMessageBox } from "element-plus";
+import Table from "@/components/table/Table";
+import { Search } from "@element-plus/icons-vue";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 
 export default {
   components: {
     UnitsArea,
-    Table
+    Table,
   },
   setup() {
     const loading = ref(false);
     const store = useStore();
     const sentSMS = ref(store.getters["communication/getSentSMS"].data);
     const searchText = ref("");
-    const totalItems = ref(store.getters["communication/getSentSMS"].totalItems)
+    const totalItems = ref(store.getters["communication/getSentSMS"].totalItems);
+    const showAddMemberVideo = ref(false);
+    const primarycolor = inject("primarycolor");
+    const videoURL = ref("https://www.youtube.com/embed/woeot9MAId8?si=SVsS8hJcYIzyPohR");
+    const { xsOnly, smAndUp, mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
     const SMSHeaders = ref([
-      { name: ' MESSAGE', value: 'message' },
-      { name: ' DATE', value: 'dateSent' },
-      { name: ' STATUS', value: 'status' },
-      { name: ' UNIT', value: 'smsUnitsUsed' },
-      { name: ' REPORT', value: 'report' },
-    ])
+      { name: " MESSAGE", value: "message" },
+      { name: " DATE", value: "dateSent" },
+      { name: " STATUS", value: "status" },
+      { name: " UNIT", value: "smsUnitsUsed" },
+      { name: " REPORT", value: "report" },
+    ]);
     const serverOptions = ref({
       page: 1,
       rowsPerPage: 50,
     });
 
-    watch(serverOptions.value, () => {
-      getSMSByPage();
-    },
+    watch(
+      serverOptions.value,
+      () => {
+        getSMSByPage();
+      },
       { deep: true }
     );
 
-
-
     const getSentSMS = async () => {
-      loading.value = true
+      loading.value = true;
       try {
         await store.dispatch("communication/getAllSMS").then((res) => {
           loading.value = false;
           sentSMS.value = res.data;
-          totalItems.value = res.totalItems
+          totalItems.value = res.totalItems;
         });
       } catch (error) {
         loading.value = false;
@@ -202,21 +391,23 @@ export default {
     const getSMSByPage = async () => {
       loading.value = true;
       try {
-        const data = await axios.get(`/api/Messaging/getAllSentSms?page=${serverOptions.value.page}`);
+        const data = await axios.get(
+          `/api/Messaging/getAllSentSms?page=${serverOptions.value.page}`
+        );
         loading.value = false;
         if (data) {
           sentSMS.value = data.data.data;
-          totalItems.value = data.data.totalItems
+          totalItems.value = data.data.totalItems;
           isSortedByStatus.value = true;
         }
       } catch (error) {
         console.log(error);
         loading.value = false;
         ElMessage({
-          type: 'error',
+          type: "error",
           message: `Could not generate page ${serverOptions.value.page}, please try again`,
-          duration: 5000
-        })
+          duration: 5000,
+        });
       }
     };
 
@@ -228,15 +419,13 @@ export default {
     const messages = computed(() => {
       if (!sentSMS.value || sentSMS.value.length === 0) return [];
       return sentSMS.value.filter((i) => {
-        if (i && i.message)
-          return !i.message.toLowerCase().startsWith("sms reply");
+        if (i && i.message) return !i.message.toLowerCase().startsWith("sms reply");
         return false;
       });
     });
 
     const searchedMessages = computed(() => {
-      if (searchText.value === "" && messages.value.length > 0)
-        return messages.value;
+      if (searchText.value === "" && messages.value.length > 0) return messages.value;
       return messages.value.filter((i) =>
         i.message.toLowerCase().includes(searchText.value.toLowerCase())
       );
@@ -244,12 +433,12 @@ export default {
 
     const showConfirmModal = () => {
       ElMessageBox.confirm(
-        'This delete action cannot be reversed. do you want to continue?',
-        'Confirm delete',
+        "This delete action cannot be reversed. do you want to continue?",
+        "Confirm delete",
         {
-          confirmButtonText: 'OK',
-          cancelButtonText: 'Cancel',
-          type: 'error',
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
         }
       )
         .then(() => {
@@ -257,10 +446,10 @@ export default {
         })
         .catch(() => {
           ElMessage({
-            type: 'info',
-            message: 'Delete canceled',
-          })
-        })
+            type: "info",
+            message: "Delete canceled",
+          });
+        });
     };
 
     // code to mark single item in draft
@@ -303,10 +492,10 @@ export default {
             return true;
           });
           ElMessage({
-            type: 'success',
-            message: 'SMS deleted successfully',
-            duration: 5000
-          })
+            type: "success",
+            message: "SMS deleted successfully",
+            duration: 5000,
+          });
           marked.value.forEach((i) => {
             store.dispatch("communication/removeSentSMS", i.id);
           });
@@ -315,10 +504,10 @@ export default {
         .catch((err) => {
           stopProgressBar();
           ElMessage({
-            type: 'error',
-            message: 'SMS delete failed, please try again',
-            duration: 5000
-          })
+            type: "error",
+            message: "SMS delete failed, please try again",
+            duration: 5000,
+          });
           console.log(err);
         });
     };
@@ -326,27 +515,33 @@ export default {
     const isSortedByStatus = ref(true);
     const sortByStatus = () => {
       if (isSortedByStatus.value) {
-        sentSMS.value.sort(x => x.deliveryReport.findIndex(i => i.report === "failed") >= 0 ? -1 : 1);
+        sentSMS.value.sort((x) =>
+          x.deliveryReport.findIndex((i) => i.report === "failed") >= 0 ? -1 : 1
+        );
       } else {
-        sentSMS.value.sort(x => x.deliveryReport.findIndex(i => i.report === "failed") >= 0 ? 1 : -1);
+        sentSMS.value.sort((x) =>
+          x.deliveryReport.findIndex((i) => i.report === "failed") >= 0 ? 1 : -1
+        );
       }
       isSortedByStatus.value = !isSortedByStatus.value;
-    }
+    };
 
     const handleSelectionChange = (val) => {
-      marked.value = val
-    }
-
+      marked.value = val;
+    };
 
     const handleSizeChange = (val) => {
-      console.log(`${val} items per page`)
-    }
+      console.log(`${val} items per page`);
+    };
     const handleCurrentChange = (val) => {
-      console.log(`current page: ${val}`)
-    }
+      console.log(`current page: ${val}`);
+    };
+    const watchVideo = () => {
+      showAddMemberVideo.value = true;
+    };
 
     onMounted(() => {
-      if ((!sentSMS.value) || (sentSMS.value && sentSMS.value.length == 0)) {
+      if (!sentSMS.value || (sentSMS.value && sentSMS.value.length == 0)) {
         getSentSMS();
       }
     });
@@ -370,7 +565,17 @@ export default {
       serverOptions,
       handleCurrentChange,
       handleSizeChange,
-      totalItems
+      totalItems,
+      showAddMemberVideo,
+      videoURL,
+      xsOnly,
+      smAndUp,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      primarycolor,
+      Search,
+      watchVideo,
     };
   },
 };
@@ -465,8 +670,8 @@ export default {
 
 .timestamp {
   font-size: 14px;
-  color: #333333;
-  opacity: 0.5;
+  /* color: #333333; */
+  /* opacity: 0.5; */
 }
 
 .view-btn {
@@ -499,9 +704,24 @@ export default {
 }
 
 .table-options {
-  border: 1px solid rgb(212, 221, 227);
+  /* border: 1px solid rgb(212, 221, 227); */
   border-bottom: none;
-  padding: 7px 7px 0 7px
+  padding: 7px 7px 0 7px;
+}
+.table-top {
+  position: absolute;
+  z-index: 1;
+  top: -40px;
+  /* width: 100%; */
+  font-weight: 500 !important;
+  font-size: 14px;
+  background: #fff;
+  color: #000000;
+  /* border: 1px solid #d4dde3; */
+  /* max-width: 83.333333% !important; */
+}
+.tab-options{
+  position: relative;
 }
 
 @media screen and (max-width: 767px) {

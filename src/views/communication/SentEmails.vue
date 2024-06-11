@@ -1,48 +1,149 @@
-!<template>
+!
+<template>
   <div>
-    <div class="container">
+    <div class="container-fluid">
       <!-- Content Box -->
       <main id="main" class="mt-3">
-        <div class="container-fluid px-0">
+        <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
+          <div>
+            <div class="text-head font-weight-bold h2 py-0 my-0 text-black">Email</div>
+            <div class="s-18">Showing all Email</div>
+          </div>
+          <div class="d-flex flex-wrap flex-sm-nowrap mt-3 mt-sm-0">
+            <div class="d-flex mt-1 w-100" @click="watchVideo">
+              <span class="s-18 primary--text">Watch Video </span>
+              <span class="mt-0 ml-1"
+                ><el-icon :size="27" class="primary--text"><VideoPlay /></el-icon
+              ></span>
+            </div>
+            <el-dropdown
+              trigger="click"
+              class="align-items-center justify-content-center d-flex ml-md-3 ml-0 default-btn py-0 m-0 border"
+              style="height: 2.2rem"
+            >
+              <span
+                class="el-dropdown-link w-100 primary--text text-center font-weight-600"
+              >
+                Menu
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>
+                    <router-link
+                      :to="`/tenant/email/sent`"
+                      class="no-decoration fw-400 text-black"
+                    >
+                      <img src="../../assets/sent.png" alt="" />
+                      Sent
+                    </router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item class="text-black">
+                    <router-link
+                      :to="`/tenant/email/draft`"
+                      class="no-decoration text-black"
+                    >
+                      <img src="../../assets/FileDashed.png" alt="" />
+                      Draft
+                    </router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <router-link
+                      :to="`/tenant/email/schedules`"
+                      class="no-decoration fw-400 text-black"
+                    >
+                      <img src="../../assets/CalendarCheck.png" alt="" />
+                      Scheduled
+                    </router-link>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+            <!-- <el-button @click="importMembers" class="header-btn secondary-button" round>Import</el-button> -->
+            <router-link :to="`/tenant/email/compose`" class="no-decoration w-100">
+              <el-button
+                :color="primarycolor"
+                class="ml-0 ml-sm-2 mt-sm-0 mt-3 w-100 header-btn"
+                round
+                >Send Email</el-button
+              >
+            </router-link>
+          </div>
+        </div>
+        <div class="container-fluid mt-5">
           <div class="row px-0">
             <div class="col-md-12 px-0">
-              <div class="row d-md-flex align-items-center mt-3 mb-4">
-                <div class="col-md-6 col-sm-12">
-                  <div class="search-div d-flex align-items-center">
-                    <span class="mr-2"
-                      ><el-icon><Search /></el-icon
-                    ></span>
-                    <input
-                      type="text"
-                      class="w-100"
-                      placeholder="Search here..."
-                      v-model="searchMail"
-                    />
+              <div class="tab-options d-block d-md-none mt-5">
+                <div class="s-14 fw-500 col-md-10 px-0 mt-5">
+                  <div class="d-flex flex-column flex-sm-row justify-content-md-between">
+                    <div>
+                      <el-tooltip
+                        class="box-item"
+                        effect="dark"
+                        v-if="markedMail.length > 0"
+                        content="Delete member(s)"
+                        placement="top-start"
+                      >
+                        <el-icon
+                          :size="28"
+                          class="ml-2 c-pointer primary--text"
+                          v-if="markedMail.length > 0"
+                          @click="showConfirmModal(false)"
+                        >
+                          <Delete />
+                        </el-icon>
+                      </el-tooltip>
+                    </div>
+                    <div
+                      class="d-flex flex-column flex-md-row justify-content-md-between"
+                    >
+                      <el-input
+                        size="small"
+                        v-model="searchMail"
+                        :suffix-icon="Search"
+                        placeholder="Search"
+                        class="search-input col-md-12 col-9"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-              <div
-                class="table-options"
-                v-loading="loading"
-                v-if="markedMail.length > 0"
-              >
-                <el-tooltip
-                  class="box-item"
-                  effect="dark"
-                  v-if="markedMail.length > 0"
-                  content="delete marked"
-                  placement="top-start"
-                >
-                  <el-icon
-                    :size="20"
-                    class="color-deleteicon text-danger c-pointer"
-                    style="font-size: 15px"
-                    v-if="markedMail.length > 0"
-                    @click="showConfirmModal(false)"
-                  >
-                    <Delete />
-                  </el-icon>
-                </el-tooltip>
+              <div class="tab-options d-none d-md-block mt-5">
+                <div class="table-top col-12 col-md-8 col-lg-8 col-xl-9 px-0 mt-5">
+                  <div class="d-flex flex-column flex-md-row justify-content-md-between">
+                    <div>
+                      <el-tooltip
+                        class="box-item d-flex"
+                        effect="dark"
+                        v-if="markedMail.length > 0"
+                        content="Delete member(s)"
+                        placement="top-start"
+                      >
+                        <el-icon
+                          :size="28"
+                          class="ml-2 c-pointer primary--text"
+                          v-if="markedMail.length > 0"
+                          @click="showConfirmModal(false)"
+                        >
+                          <Delete />
+                        </el-icon>
+                      </el-tooltip>
+                    </div>
+                    <div
+                      class="d-flex flex-column flex-md-row justify-content-md-between"
+                    >
+                      <el-input
+                        size="small"
+                        v-model="searchMail"
+                        :suffix-icon="Search"
+                        placeholder="Search"
+                        class="search-input col-md-12 col-9"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
               <Table
                 :data="searchEmails"
@@ -59,15 +160,12 @@
                         name: 'ComposeEmail',
                         query: { messageId: item.id },
                       }"
-                      class="no-decoration primary--text"
+                      class="no-decoration text-dak"
                     >
-                      <div class="font-weight-600">
+                      <div>
                         {{
                           item.message && item.message.length > 25
-                            ? `${item.message
-                                .split("")
-                                .slice(0, 25)
-                                .join("")}...`
+                            ? `${item.message.split("").slice(0, 25).join("")}...`
                             : item.message
                             ? item.message
                             : ""
@@ -86,7 +184,7 @@
                       }"
                       class="text-decoration-none"
                     >
-                      <span class="timestamp ml-1">{{ item.dateSent }}</span>
+                      <span class="timestam text-dak ml-1">{{ item.dateSent }}</span>
                     </router-link>
                   </div>
                 </template>
@@ -108,17 +206,24 @@
                     </router-link>
                   </div>
                 </template>
-                <template #delete="{ item }">
-                  <span class="small-text">
-                    <el-icon
-                      :size="20"
-                      class="ml-2 color-deleteicon pt-2 c-pointer"
-                      style="font-size: 20px"
-                      @click="showConfirmModal(item.id)"
-                    >
-                      <Delete />
+                <template #action="{ item }">
+                  <el-dropdown trigger="click">
+                    <el-icon>
+                      <MoreFilled />
                     </el-icon>
-                  </span>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item>
+                          <div
+                            class="text-decoration-none text-color"
+                            @click="showConfirmModal(item.id)"
+                          >
+                            Delete
+                          </div>
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
                 </template>
               </Table>
               <div class="row" v-if="emails && emails.length === 0 && !loading">
@@ -146,11 +251,32 @@
         </div>
       </main>
     </div>
+    <el-dialog
+      style="border-radius: 20px"
+      v-model="showAddMemberVideo"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+      top
+    >
+      <div class="row justify-content-center" v-loading>
+        <div class="col-md-12">
+          <iframe
+            width="100%"
+            height="315"
+            :src="videoURL"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { computed, ref, onMounted, watch  } from "vue";
+import { computed, ref, onMounted, watch, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import Loading from "../../components/loading/LoadingComponent";
 import stopProgressBar from "../../services/progressbar/progress";
@@ -158,20 +284,25 @@ import store from "../../store/store";
 import { Search } from "@element-plus/icons-vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Table from "@/components/table/Table";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 
 export default {
   components: { Loading, Table },
   setup() {
     const emails = ref(store.getters["communication/getSentEmail"].data);
-    const totalItems = ref( store.getters["communication/getSentEmail"].totalItems);
+    const totalItems = ref(store.getters["communication/getSentEmail"].totalItems);
     const loading = ref(false);
+    const showAddMemberVideo = ref(false);
+    const primarycolor = inject("primarycolor");
+    const videoURL = ref("https://www.youtube.com/embed/KHBK-eZzUp4?si=L6PgJ6N6ZxTVtBMt");
+    const { xsOnly, smAndUp, mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
     const searchMail = ref("");
     const EmailHeaders = ref([
       { name: " MESSAGE", value: "message" },
       { name: " DATE", value: "dateSent" },
       { name: " UNIT", value: "smsUnitsUsed" },
       { name: " SENTBY", value: "sentByUser" },
-      { name: "", value: "delete" },
+      { name: "Action", value: "action" },
     ]);
 
     const getSentEmails = async () => {
@@ -188,15 +319,15 @@ export default {
       }
     };
 
-    
-
     const serverOptions = ref({
       page: 1,
       rowsPerPage: 50,
     });
-    watch(serverOptions.value, () => {
-      getEmailsByPage();
-    },
+    watch(
+      serverOptions.value,
+      () => {
+        getEmailsByPage();
+      },
       { deep: true }
     );
 
@@ -204,13 +335,14 @@ export default {
       markedMail.value = val;
     };
 
+    const watchVideo = () => {
+      showAddMemberVideo.value = true;
+    };
+
     const formatMessage = (message) => {
       const formatted =
         message && message.length > 25
-          ? `${createElementFromHTML(message)
-              .split("")
-              .slice(0, 25)
-              .join("")}...`
+          ? `${createElementFromHTML(message).split("").slice(0, 25).join("")}...`
           : createElementFromHTML(message);
 
       return `${formatted}`;
@@ -218,7 +350,9 @@ export default {
 
     const getEmailsByPage = async () => {
       try {
-        const  { data } = await  axios.get(`/api/Messaging/getAllSentEmails?page=${ serverOptions.value.page}`) 
+        const { data } = await axios.get(
+          `/api/Messaging/getAllSentEmails?page=${serverOptions.value.page}`
+        );
         if (data) {
           emails.value = data.data;
           totalItems.value = data.totalItems;
@@ -239,15 +373,12 @@ export default {
       div.innerHTML = htmlString;
       return div.textContent;
     };
-   
 
     const searchEmails = computed(() => {
-      if (searchMail.value !== "" && emails.value &&  emails.value.length > 0) {
+      if (searchMail.value !== "" && emails.value && emails.value.length > 0) {
         return emails.value.filter((i) => {
           if (i.subject)
-            return i.subject
-              .toLowerCase()
-              .includes(searchText.value.toLowerCase());
+            return i.subject.toLowerCase().includes(searchMail.value.toLowerCase());
         });
       } else {
         return emails.value;
@@ -269,9 +400,7 @@ export default {
     const markAllMails = () => {
       if (markedMail.value.length < emails.value.length) {
         emails.value.forEach((i) => {
-          const emailsInMarked = markedMail.value.findIndex(
-            (e) => e.id === i.id
-          );
+          const emailsInMarked = markedMail.value.findIndex((e) => e.id === i.id);
           if (emailsInMarked < 0) {
             markedMail.value.push(i);
           }
@@ -288,9 +417,7 @@ export default {
 
     const deleteEmails = async (id) => {
       try {
-        let stringOfEmailIds = id
-          ? id
-          : getIdsOfEmailsToDelete(markedMail.value);
+        let stringOfEmailIds = id ? id : getIdsOfEmailsToDelete(markedMail.value);
 
         const { data } = await axios.delete(
           `/api/Messaging/DeleteSentEmails?IdList=${stringOfEmailIds}`
@@ -333,9 +460,7 @@ export default {
 
     const removeDeletedEmailsFromEmailList = (deletedEmailsArr) => {
       return emails.value.filter((i) => {
-        const emailIndexInMarked = deletedEmailsArr.findIndex(
-          (j) => j.id === i.id
-        );
+        const emailIndexInMarked = deletedEmailsArr.findIndex((j) => j.id === i.id);
         if (emailIndexInMarked < 0) return true;
         return false;
       });
@@ -374,12 +499,15 @@ export default {
     const handleCurrentChange = (val) => {
       console.log(`current page: ${val}`);
     };
-    
+
     onMounted(() => {
-      if ((!emails.value) || (emails.value && emails.value.data && emails.value.data.length == 0)){
+      if (
+        !emails.value ||
+        (emails.value && emails.value.data && emails.value.data.length == 0)
+      ) {
         getSentEmails();
       }
-    })
+    });
 
     return {
       handleSizeChange,
@@ -401,6 +529,16 @@ export default {
       markAllMails,
       deleteEmails,
       showConfirmModal,
+      videoURL,
+      primarycolor,
+      showAddMemberVideo,
+      Search,
+      xsOnly,
+      smAndUp,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      watchVideo,
     };
   },
 };
@@ -410,11 +548,7 @@ export default {
 * {
   box-sizing: border-box;
 }
-.table-options {
-  border: 1px solid rgb(212, 221, 227);
-  border-bottom: none;
-  padding: 7px 7px 0 7px;
-}
+
 .search-div {
   /* width: fit-content; */
   padding: 10px;
@@ -427,12 +561,27 @@ export default {
   border: none;
   outline: transparent;
 }
-.table-top {
-  font-weight: 800;
-  font-size: 12px;
-  background: #fff;
-  border: 1px solid #e0e0e0;
+
+.table-options {
+  /* border: 1px solid rgb(212, 221, 227); */
   border-bottom: none;
+  padding: 7px 7px 0 7px;
+}
+
+.table-top {
+  position: absolute;
+  z-index: 1;
+  top: -40px;
+  /* width: 100%; */
+  font-weight: 500 !important;
+  font-size: 14px;
+  background: #fff;
+  color: #000000;
+  /* border: 1px solid #d4dde3; */
+  /* max-width: 83.333333% !important; */
+}
+.tab-options{
+  position: relative;
 }
 
 .brief-message {

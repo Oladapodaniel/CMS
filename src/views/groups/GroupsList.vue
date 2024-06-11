@@ -2,10 +2,18 @@
   <div :class="{ 'container-slim': lgAndUp || xlAndUp }">
     <div class="container-fluid container-top">
       <div class="row d-flex flex-column flex-sm-row justify-content-sm-between">
-        <div class="text-head font-weight-600 h2 py-0 my-0 text-black">Groups</div>
+        <div>
+          <div class="text-head font-weight-bold h2 py-0 my-0 text-black">Groups</div>
+          <div class="s-18">Showing all groups</div>
+        </div>
 
         <div class="mt-2 my-1 link" v-if="!groupLeader">
-          <el-button class="header-btn w-100" @click="router.push('/tenant/createpeoplegroup')" :color="primarycolor" round>
+          <el-button
+            class="header-btn w-100"
+            @click="router.push('/tenant/createpeoplegroup')"
+            :color="primarycolor"
+            round
+          >
             Create New Group
           </el-button>
           <!-- <router-link to="/tenant/createpeoplegroup" class="
@@ -42,8 +50,13 @@
           <div class="top-con" id="ignore2">
             <div class="table-top py-3 mt-5">
               <div class="col-md-5 px-0">
-                <el-input size="small" v-model="searchText" placeholder="Search..." @keyup.enter.prevent="searchGroupInDB"
-                  class="input-with-select">
+                <el-input
+                  size="small"
+                  v-model="searchText"
+                  placeholder="Search..."
+                  @keyup.enter.prevent="searchGroupInDB"
+                  class="input-with-select"
+                >
                   <template #append>
                     <el-button @click.prevent="searchGroupInDB">
                       <el-icon :size="13">
@@ -56,11 +69,19 @@
             </div>
           </div>
           <div class="screensize">
-            <el-table :data="searchGroup" v-loading="loading" stripe class="groupTree grouptext border-0 fw-500 " lazy style="width: 100%"
-              row-key="id" :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
+            <el-table
+              :data="searchGroup"
+              v-loading="loading"
+              stripe
+              class="groupTree grouptext border-0 fw-500"
+              lazy
+              style="width: 100%"
+              row-key="id"
+              :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+            >
               <el-table-column width="40%" class="fw-500 s-14" label="Group">
                 <template #default="scope">
-                  <div @click="groupClick(scope.row.id)" class=" c-pointer">
+                  <div @click="groupClick(scope.row.id)" class="c-pointer">
                     {{ scope.row.name }}
                   </div>
                 </template>
@@ -82,15 +103,26 @@
                       <template #dropdown>
                         <el-dropdown-menu>
                           <el-dropdown-item>
-                            <a class="no-decoration text-dark" @click="sendGroupSms(scope.row)">Send SMS</a>
+                            <a
+                              class="no-decoration text-dark"
+                              @click="sendGroupSms(scope.row)"
+                              >Send SMS</a
+                            >
                           </el-dropdown-item>
                           <el-dropdown-item>
-                            <a class="no-decoration text-dark" @click="sendGroupEmail(scope.row)">
+                            <a
+                              class="no-decoration text-dark"
+                              @click="sendGroupEmail(scope.row)"
+                            >
                               Send Email
                             </a>
                           </el-dropdown-item>
                           <el-dropdown-item>
-                            <a class="no-decoration text-dark" @click="confirmDelete(scope.row.id)">Delete</a>
+                            <a
+                              class="no-decoration text-dark"
+                              @click="confirmDelete(scope.row.id)"
+                              >Delete</a
+                            >
                           </el-dropdown-item>
                         </el-dropdown-menu>
                       </template>
@@ -100,28 +132,47 @@
               </el-table-column>
             </el-table>
             <div class="d-flex justify-content-end my-3">
-              <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage"
-                background layout="total, prev, pager, next, jumper" :total="serverItemsLength"
-                @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+              <el-pagination
+                v-model:current-page="serverOptions.page"
+                v-model:page-size="serverOptions.rowsPerPage"
+                background
+                layout="total, prev, pager, next, jumper"
+                :total="serverItemsLength"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+              />
             </div>
           </div>
-
         </div>
       </div>
     </div>
 
-    <el-drawer v-model="showSMS" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+    <el-drawer
+      v-model="showSMS"
+      :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
+      direction="rtl"
+    >
       <template #default>
         <div>
-          <smsComponent :groupData="groupListDetails" @closesidemodal="() => (showSMS = false)" />
+          <smsComponent
+            :groupData="groupListDetails"
+            @closesidemodal="() => (showSMS = false)"
+          />
         </div>
       </template>
     </el-drawer>
 
-    <el-drawer v-model="showEmail" :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'" direction="rtl">
+    <el-drawer
+      v-model="showEmail"
+      :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
+      direction="rtl"
+    >
       <template #default>
         <div>
-          <emailComponent :groupData="groupListDetails" @closesidemodal="() => (showEmail = false)" />
+          <emailComponent
+            :groupData="groupListDetails"
+            @closesidemodal="() => (showEmail = false)"
+          />
         </div>
       </template>
     </el-drawer>
@@ -145,41 +196,41 @@ export default {
   },
 
   setup() {
-    const primarycolor = inject('primarycolor')
+    const primarycolor = inject("primarycolor");
     const store = useStore();
     const loading = ref(false);
     const displayConfirmModal = ref(false);
     const paginatedTableLoading = ref(false);
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
-    const groups = ref(store.getters['groups/groups']);
+    const groups = ref(store.getters["groups/groups"]);
     const groupListDetails = ref([]);
     const showSMS = ref(false);
     const showEmail = ref(false);
     const router = useRouter();
     const route = useRoute();
     const serverItemsLength = ref(0);
-    const getGroupSummary = ref(0)
+    const getGroupSummary = ref(0);
 
     const handleSizeChange = (val) => {
-      console.log(`${val} items per page`)
-    }
+      console.log(`${val} items per page`);
+    };
     const handleCurrentChange = (val) => {
-      console.log(`current page: ${val}`)
-    }
+      console.log(`current page: ${val}`);
+    };
     const serverOptions = ref({
       page: 1,
       rowsPerPage: 100,
     });
     const getGroupByPage = async () => {
-      loading.value = true
+      loading.value = true;
       try {
         const { data } = await axios.get(
           `/api/GetAllGroupBasicInformation?page=${serverOptions.value.page}`
         );
-        groups.value = data
-        loading.value = false
+        groups.value = data;
+        loading.value = false;
       } catch (error) {
-        loading.value = false
+        loading.value = false;
         console.log(error);
       }
     };
@@ -209,7 +260,7 @@ export default {
     const deleteGroupitem = (id) => {
       try {
         groupsService.deleteGroup(id).then(() => {
-          const index = groups.value.findIndex(i => i.id == id)
+          const index = groups.value.findIndex((i) => i.id == id);
           groups.value.splice(index, 1);
           groupsService.removeGroupFromStore(index);
           ElMessage({
@@ -225,14 +276,14 @@ export default {
         });
         console.log(error);
       }
-    }
+    };
 
     const getgroups = async () => {
       try {
         loading.value = true;
-        store.dispatch('groups/setGroups').then(response => {
-          loading.value = false
-          getGroupSummary.value = response.response.totalItems
+        store.dispatch("groups/setGroups").then((response) => {
+          loading.value = false;
+          getGroupSummary.value = response.response.totalItems;
           groups.value = response.response.groupResonseDTO.map((i) => {
             return {
               dateCreated: i.dateCreated,
@@ -244,7 +295,7 @@ export default {
               children: i.children,
             };
           });
-        })
+        });
       } catch (error) {
         (loading.value = false), console.log(error.response);
       }
@@ -261,9 +312,7 @@ export default {
       if (searchText.value !== "" && groups.value.length > 0) {
         return groups.value.filter((i) => {
           if (i.name)
-            return i.name
-              .toLowerCase()
-              .includes(searchText.value.toLowerCase());
+            return i.name.toLowerCase().includes(searchText.value.toLowerCase());
         });
       } else {
         return groups.value;
@@ -273,9 +322,7 @@ export default {
       if (searchText.value !== "" && groups.value.length > 0) {
         return groups.value.filter((i) => {
           if (i.name)
-            return i.name
-              .toLowerCase()
-              .includes(searchText.value.toLowerCase());
+            return i.name.toLowerCase().includes(searchText.value.toLowerCase());
         });
       } else {
         return groups.value;
@@ -306,11 +353,7 @@ export default {
           id: id,
         };
         sendGroupSms(group);
-      } else if (
-        route &&
-        route.query &&
-        route.query.actionType == "sendemail"
-      ) {
+      } else if (route && route.query && route.query.actionType == "sendemail") {
         let group = {
           id: id,
         };
@@ -327,13 +370,14 @@ export default {
     });
 
     watchEffect(() => {
-      serverItemsLength.value = getGroupSummary.value
-
+      serverItemsLength.value = getGroupSummary.value;
     });
 
-    watch(serverOptions, () => {
-      getGroupByPage();
-    },
+    watch(
+      serverOptions,
+      () => {
+        getGroupByPage();
+      },
       { deep: true }
     );
 
@@ -369,7 +413,7 @@ export default {
       route,
       router,
       primarycolor,
-      deleteGroupitem
+      deleteGroupitem,
     };
   },
 };
@@ -384,9 +428,18 @@ export default {
   background-color: #f1f3f9;
   border-radius: 30px 30px 0 0;
 }
-.groupText .el-table__inner-wrapper .el-table__header-wrapper .el-table__header thead tr th .el-table_1_column_1 .is-leaf .el-table__cell{
-    /* border-bottom: var(--el-table-border); */
-    font-weight: 500 !important;
+.groupText
+  .el-table__inner-wrapper
+  .el-table__header-wrapper
+  .el-table__header
+  thead
+  tr
+  th
+  .el-table_1_column_1
+  .is-leaf
+  .el-table__cell {
+  /* border-bottom: var(--el-table-border); */
+  font-weight: 500 !important;
 }
 
 .grey-rounded-border2 {
@@ -561,7 +614,7 @@ export default {
 }
 
 .table-top {
-  font-weight: 800;
+  font-weight: 600;
   font-size: 12px;
   background: #fff;
   /* border: 1px solid #e0e0e0; */
@@ -651,6 +704,7 @@ export default {
 .fa-ellipsis-v {
   padding: 10px;
 }
+
 
 .board.members-count {
   padding: 24px;

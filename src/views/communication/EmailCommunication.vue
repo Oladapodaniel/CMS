@@ -1,21 +1,16 @@
 <template>
-    <div class="" :class="{ 'container-slim': lgAndUp || xlAndUp }">
-      <div class="row mt-4">
+    <div class="container-top" :class="{ 'container-wide': lgAndUp || xlAndUp }">
+      <router-view></router-view>
+      <!-- <div class="row mt-4">
         <div class="col-md-12 d-flex justify-content-start">
           <h2 class="head-text">Email</h2>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <hr class="hr" />
-        </div>
-      </div>
+      </div> -->
 
       <!-- Content Box -->
-      <main class="mt-md-3" :class="{ 'main' : mdAndUp || lgAndUp || xlAndUp }">
+      <!-- <main class="mt-md-3" :class="{ 'main' : mdAndUp || lgAndUp || xlAndUp }">
         <div class="container-fluid">
           <div class="row">
-            <!-- Side mennu -->
             <div class="col-md-3" :class="{ 'side-menu' : mdAndUp || lgAndUp || xlAndUp }" >
               <div class="row">
                 <div class="col-md-12 px-0 px-md-3 d-flex flex-column mt-4">
@@ -90,13 +85,10 @@
               </div>
             </div>
 
-            <!-- Bigger row -->
-            <div class="col-md-9 px-0 px-md-2">
-                <router-view></router-view>
-            </div>
-          </div>
+      
+          
         </div>
-      </main>
+      </main> -->
     </div>
 </template>
 

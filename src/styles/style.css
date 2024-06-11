@@ -131,8 +131,17 @@ rect.highcharts-background[fill] {
     /* border: 1px solid #C9C9C9 !important; */
   }
 
+  .gray-text{
+    color: #737373 !important;
+  }
+
   .border-none {
     border: none;
+  }
+  .linear-gradient {
+    background: linear-gradient(90deg, #777777 48%, #111111 62%) !important;
+    background-clip: text !important;
+    color: transparent !important;
   }
 
   .cursor-pointer {

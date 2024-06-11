@@ -319,7 +319,7 @@ export default {
       }
 
       const groups = {
-        name: 'Groups / Departments',
+        name: 'Groups & Departments',
         logo: '/',
         route: '/tenant/peoplegroups',
       }

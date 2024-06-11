@@ -1,52 +1,68 @@
 <template>
   <div>
-    <div>
-      <div class="row mainHeada">
-        <div class="col-md-6 col-sm-10 mt-3 mt-lg-5">
-          <h1>Add phone group</h1>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <hr class="hr mb-4 mb-md-3" />
-        </div>
-      </div>
-
+    <div class="container-fluid">
       <!-- Content of the Box -->
       <main class="">
         <div id="main" class="container-fluid">
           <div class="row">
-            <!-- Group Name row -->
             <div class="col-md-12">
-              <div class="row d-md-flex align-items-center mt-2">
+              <div class="text-head font-weight-bold text-black h2">Add phone group</div>
+              <div class="grey-backg py-2 border-radius-8 col-md-3">
+                <router-link
+                  to="/tenant/sms/contacts"
+                  class="text-decoration-none s-18 text-dak"
+                >
+                  <span class="linear-gradient">Contact>Add phone group</span>
+                </router-link>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <!-- Group Name row -->
+            <div class="col-md-12 mt-3">
+              <div class="row align-items-center mt-2">
                 <div class="col-md-12">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <h3 class="ml-n3 mb-n2">Group Name</h3>
-                    </div>
-                  </div>
-
                   <!-- Context Area -->
-                  <div class="row d-flex flex-row justify-content-between mt-lg-1">
-                    <div class="col-md-12 mt-3 form-group px-0">
-                      <el-input type="text" id="groupName" v-model="groupNameValue" required />
+                  <div class="row flex-row mt-lg-1">
+                    <div class="col-md-12 fw-500">Group Name</div>
+                    <div class="col-md-12 mt-2 form-group">
+                      <el-input
+                        type="text"
+                        id="groupName"
+                        v-model="groupNameValue"
+                        required
+                      />
                     </div>
                   </div>
-
-                  <div class="row mt-lg-3 mb-lg-1">
-                    <h3>Phone Numbers</h3>
-                  </div>
-                  <div class="row d-flex flex-row justify-content-between mdiv">
-                    <div class="col-md-12 form-group px-0">
-                      <el-input type="textarea" class="w-100" rows="5" v-model="enteredValue" required />
+                  <div class="row d-flex flex-row justify-content-between mdiv mt-4">
+                    <div class="col-md-12 fw-500">Phone Numbers</div>
+                    <div class="col-md-12 mt-2 form-group">
+                      <el-input
+                        type="textarea"
+                        class="w-100"
+                        rows="5"
+                        v-model="enteredValue"
+                        required
+                      />
                     </div>
                   </div>
 
                   <!-- Button Area -->
                   <div class="row mt-3 mb-4">
                     <div class="col-md-12 d-flex justify-content-end p-0">
-                      <el-button v-on:click="resetInputFields" class="secondary-button" round>Cancel</el-button>
-                      <el-button :color="primarycolor" v-on:click="saveGroupDetails" :loading="loading" round>Save</el-button>
+                      <el-button
+                        v-on:click="resetInputFields"
+                        class="secondary-button"
+                        round
+                        >Cancel</el-button
+                      >
+                      <el-button
+                        :color="primarycolor"
+                        v-on:click="saveGroupDetails"
+                        :loading="loading"
+                        round
+                        >Save</el-button
+                      >
                     </div>
                   </div>
                 </div>
@@ -62,25 +78,24 @@
 <script>
 import axios from "@/gateway/backendapi";
 import router from "../../router/index";
-import finish from "../../services/progressbar/progress"
-import { ElMessage } from 'element-plus'
-
+import finish from "../../services/progressbar/progress";
+import { ElMessage } from "element-plus";
 
 export default {
-  inject: ['primarycolor'],
+  inject: ["primarycolor"],
   data() {
     return {
       phoneNumbers: [],
       enteredValue: "",
       groupNameValue: "",
       groupNameDisabled: true,
-      loading: false
+      loading: false,
     };
   },
   watch: {
     primarycolor: function (val) {
-      console.log(val)
-    }
+      console.log(val);
+    },
   },
 
   methods: {
@@ -90,34 +105,27 @@ export default {
     },
 
     saveGroupDetails() {
-      if (
-        this.enteredValue !== "" &&
-        this.phoneNumbers.indexOf(this.enteredValue) < 0
-      ) {
-
-        if (this.enteredValue.includes(',')) {
-          this.enteredValue.split(',').forEach(i => {
-
+      if (this.enteredValue !== "" && this.phoneNumbers.indexOf(this.enteredValue) < 0) {
+        if (this.enteredValue.includes(",")) {
+          this.enteredValue.split(",").forEach((i) => {
             let match = /\r|\n/.exec(i);
             if (match) {
-              i.split('\n').forEach(j => {
-                this.phoneNumbers.push(j)
-              })
+              i.split("\n").forEach((j) => {
+                this.phoneNumbers.push(j);
+              });
+            } else {
+              this.phoneNumbers.push(i);
             }
-            else {
-              this.phoneNumbers.push(i)
-            }
-          })
+          });
         } else {
           let match = /\r|\n/.exec(this.enteredValue);
           if (match) {
-            this.enteredValue.split('\n').forEach(i => {
-              this.phoneNumbers.push(i)
-            })
+            this.enteredValue.split("\n").forEach((i) => {
+              this.phoneNumbers.push(i);
+            });
           } else {
-            this.phoneNumbers.push(this.enteredValue)
+            this.phoneNumbers.push(this.enteredValue);
           }
-
         }
 
         let details = {
@@ -130,32 +138,29 @@ export default {
         axios
           .post("/api/Messaging/createPhoneGroups", details)
           .then(() => {
-            finish()
+            finish();
             this.loading = false;
             router.push("/tenant/sms/contacts");
           })
           .catch((err) => {
-            finish()
+            finish();
             this.loading = false;
             console.log(err);
           });
       } else {
         ElMessage({
-          type: 'info',
-          message: 'Please add phone number(s) to create this phone group',
-          duration: 5000
-        })
+          type: "info",
+          message: "Please add phone number(s) to create this phone group",
+          duration: 5000,
+        });
       }
-
-
-
     },
 
     resetInputFields() {
       this.enteredValue = "";
       this.groupNameValue = "";
       this.phoneNumbers = "";
-      router.push("/tenant/sms/contacts")
+      router.push("/tenant/sms/contacts");
     },
   },
 };
@@ -185,27 +190,6 @@ export default {
 
 .inputWithDisable:disabled {
   background: transparent;
-}
-
-h1,
-h3,
-h4 {
-  font-family: "Nunito Sans";
-  color: var(--font-color);
-}
-
-h1 {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-h3 {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-h4 {
-  font-size: 16px;
 }
 
 .hr {

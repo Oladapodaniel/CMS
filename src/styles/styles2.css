@@ -140,6 +140,7 @@ button.el-button.el-button--primary.start-option>span {
 button.el-button.is-round {
   padding: 17px;
   min-width: 100px;
+  border-radius: 60px !important;
 }
 
 .quick-btn-link button.el-button.is-round {

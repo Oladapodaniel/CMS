@@ -2,7 +2,7 @@
 <div>
   <div class="d-flex">
     <img src="../../assets/people/members-icon.svg" alt="" style="margin-left: -30px;" />
-    <div class="chart-header-text text-head">
+    <div class="chart-header-text text-head text-black">
               <p>{{ header }}</p>
           </div>
   </div>

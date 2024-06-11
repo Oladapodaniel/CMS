@@ -1,21 +1,10 @@
 <template>
-  <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
-    <div class="create-btn-div">
-      <div>
-        <h2 class="head-text ">Voice</h2>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <hr class="hr" />
-      </div>
-    </div>
-
+  <div class="container-top" :class="{ 'container-wide': lgAndUp || xlAndUp }">
+    <router-view> </router-view>
     <!-- Content Box -->
-    <main :class="{ 'main': mdAndUp || lgAndUp || xlAndUp }" class="mt-3">
+    <!-- <main :class="{ 'main': mdAndUp || lgAndUp || xlAndUp }" class="mt-3">
       <div class="container-fluid">
         <div class="row">
-          <!-- Side menu -->
           <div class="col-md-3" id="side-menu">
             <div class="row">
               <div class="col-md-12 mt-4">
@@ -62,13 +51,9 @@
             </div>
           </div>
 
-          <!-- Bigger row -->
-          <div class="col-md-9 col-xl-8" style="margin: auto">
-            <router-view> </router-view>
-          </div>
         </div>
       </div>
-    </main>
+    </main> -->
   </div>
 </template>
 

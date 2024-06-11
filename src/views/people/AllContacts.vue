@@ -39,7 +39,7 @@
                   </router-link>
                 </el-dropdown-item>
                 <el-dropdown-item >
-                  <router-link :to="`/tenant/people/newconverts`" class="no-decoration text-black">
+                  <router-link :to="`/tenant/newconverts`" class="no-decoration text-black">
                   New Convert
                   </router-link>
                 </el-dropdown-item>

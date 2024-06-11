@@ -25,18 +25,18 @@
                          <el-icon color="red" @click="showConfirmModal(item)"><Delete /></el-icon>
                         </div>
                     </el-dropdown-item>
-                    <el-dropdown-item class="primary--text" data-toggle="modal" data-target="#senderIdModal" divided>
-                        <el-icon>
-                            <CirclePlusFilled />
-                        </el-icon> Request new sender ID
+                    <el-dropdown-item class="primary--text  " data-toggle="modal" data-target="#senderIdModal" divided>
+                        <el-icon :size="20">
+                            <CirclePlus />
+                        </el-icon><span class="mt-0 s-16 fw-500"  > Request new sender ID</span>
                     </el-dropdown-item>
                 </el-dropdown-menu>
             </template>
         </el-dropdown>
-        <div class="c-pointer mt-1 d-flex primary--text small font-weight-bold" data-toggle="modal" data-target="#senderIdModal">
-            <el-icon class=" pt-1">
-                <CirclePlusFilled />
-            </el-icon> <span class="mt-0"  >Request new sender ID</span>
+        <div class="c-pointer mt-1 d-flex primary--text s-16 fw-500 " data-toggle="modal" data-target="#senderIdModal">
+            <el-icon :size="20" class=" pt-1">
+                <CirclePlus/>
+            </el-icon> <span class="mt-0 ml-1"  > Request new sender ID</span>
         </div>
 
         <!-- Create sender id modal -->
