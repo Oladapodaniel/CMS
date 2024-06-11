@@ -403,8 +403,8 @@
                 Quick Things you can do
               </div>
               <div>
-                <router-link to="/tenant/people/add" class="quick-btn-link"
-                  ><el-button size="large" round> Add Member </el-button></router-link
+                <div class="quick-btn-link" @click="routeToAddMember"
+                  ><el-button size="large" round> Add Member </el-button></div
                 >
               </div>
               <div>
@@ -413,23 +413,23 @@
                 >
               </div>
               <div>
-                <router-link to="/tenant/people/addfirsttimer" class="quick-btn-link"
-                  ><el-button size="large" round>
+                <div class="quick-btn-link">
+                  <el-button size="large" @click="routeToFirstTimer" round>
                     Add First Timer
-                  </el-button></router-link
-                >
+                  </el-button>
+                </div>
               </div>
               <div>
-                <router-link to="/tenant/addoffering" class="quick-btn-link"
-                  ><el-button size="large" round>
+                <div class="quick-btn-link">
+                  <el-button size="large" @click="routeToOffering" round>
                     Record Offering
-                  </el-button></router-link
-                >
+                  </el-button>
+                </div >
               </div>
               <div>
-                <router-link to="/tenant/transactionlist" class="quick-btn-link"
-                  ><el-button size="large" round> Record Expense </el-button></router-link
-                >
+                <div class="quick-btn-link">
+                  <el-button size="large" @click="routeToTransaction" round> Record Expense </el-button>
+                </div>
               </div>
             </div>
           </div>
@@ -452,11 +452,11 @@
                 <div class="more-body mt-2">
                   Get a customized mobile app for your church.
                 </div>
-                <router-link :to="{ name: 'WelcomeOnboarding1' }" class="no-decoration">
-                  <el-button class="mt-1 bg-warning text-white" round
+                <div class="no-decoration">
+                  <el-button class="mt-1 bg-warning text-white" @click="routeToWelcomeOnboard" round
                     >Set up now</el-button
                   >
-                </router-link>
+                </div>
               </div>
               <div class="more-things side p-3" v-if="!tenantInfoExtra.hasWebsite">
                 <img src="../../assets/website2.svg" class="w-100" />
@@ -480,9 +480,9 @@
                 <img src="../../assets/onlinegiving2.svg" class="w-100" />
                 <div class="mt-4 can-do text-head h5 font-weight-600">Online Giving</div>
                 <div class="more-body mt-2">Make online donations to your church.</div>
-                <router-link to="/tenant/payments" class="no-decoration">
-                  <el-button class="mt-1" round>Set up now</el-button>
-                </router-link>
+                <div class="no-decoration">
+                  <el-button class="mt-1" @click="routeToPayment" round>Set up now</el-button>
+                </div>
               </div>
             </div>
 
@@ -808,11 +808,11 @@
                 <div class="more-body mt-2">
                   Get a customized mobile app for your church.
                 </div>
-                <router-link :to="{ name: 'WelcomeOnboarding1' }" class="no-decoration">
-                  <el-button class="mt-1 bg-warning text-white" round
+                <div class="no-decoration">
+                  <el-button class="mt-1 bg-warning text-white" @click="routeToWelcomeOnboard" round
                     >Set up now</el-button
                   >
-                </router-link>
+                </div>
               </div>
               <div class="col-12 col-sm-6 col-md-4 mt-5 mt-md-0 more-things">
                 <img src="../../assets/website2.svg" />
@@ -842,9 +842,9 @@
                 <div class="more-body mt-2">
                   Allow members to make online donations to your church.
                 </div>
-                <router-link to="/tenant/payments" class="no-decoration">
-                  <el-button class="mt-1" round>Set up now</el-button>
-                </router-link>
+                <div class="no-decoration">
+                  <el-button class="mt-1" @click="routeToPayment" round>Set up now</el-button>
+                </div>
               </div>
             </div>
           </div>
@@ -1135,6 +1135,18 @@
           </div>
         </div>
       </el-dialog>
+      <el-dialog v-model="subscriptionExpired" title="" class="expiredSubDialog "
+    :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" align-center :show-close="false">
+    <template #header="{ close, titleId, titleClass }">
+      <div class="my-header dialog-header">
+        <div class="d-flex justify-content-center align-items-center">
+          <img src="../../assets/expired_timer.svg" width="50" alt="expired" />
+          <h4 :id="titleId" class="text-white font-weight-bold s-24 ml-2 mt-2">You subscription has expired</h4>
+        </div>
+      </div>
+    </template>
+    <SubExpired />
+  </el-dialog>
     </main>
   </div>
 </template>
@@ -1159,7 +1171,7 @@ import swal from "sweetalert";
 import { ElMessage } from "element-plus";
 import { Search } from "@element-plus/icons-vue";
 import { useTheme } from "../../theme/ThemeProvider";
-// import { useStore } from 'vuex';
+import SubExpired from "@/components/expiredpages/ExpiredSubDialog.vue";
 
 export default {
   mixins: [mixin],
@@ -1169,6 +1181,7 @@ export default {
     ByGenderChart,
     Table,
     ImageForm,
+    SubExpired
   },
   data() {
     return {};
@@ -1195,11 +1208,17 @@ export default {
         ? store.getters["dashboard/getSubPlan"].description
         : "loading plan"
     );
+    const subscriptionExpired = ref(false);
 
     const toggleMoreLinkVissibility = () => {
       moreLinksVissible.value != moreLinksVissible.value;
     };
     const showCelebrationDetail = (item) => {
+      if (getUser?.value?.subStatus?.toLowerCase() === 'expired') {
+        subscriptionExpired.value = true;
+        return;
+      }
+
       router.push(`/tenant/people/add/${item.id}`);
     };
 
@@ -1314,7 +1333,6 @@ export default {
       if (getUser.value) {
         tenantData.value = getUser.value;
         getChurchProfile();
-        // emit('tenantname', tenantData.value)
       }
     });
 
@@ -1621,6 +1639,54 @@ export default {
       }
     };
 
+    const routeToAddMember = () => {
+      if (getUser?.value?.subStatus?.toLowerCase() === 'expired') {
+        subscriptionExpired.value = true;
+        return;
+      }
+      router.push("/tenant/people/add")
+    }
+
+    const routeToFirstTimer = () => {
+      if (getUser?.value?.subStatus?.toLowerCase() === 'expired') {
+        subscriptionExpired.value = true;
+        return;
+      }
+      router.push("/tenant/people/addfirsttimer")
+    }
+    
+    const routeToOffering = () => {
+      if (getUser?.value?.subStatus?.toLowerCase() === 'expired') {
+        subscriptionExpired.value = true;
+        return;
+      }
+      router.push("/tenant/addoffering")
+    }
+
+    const routeToTransaction = () => {
+      if (getUser?.value?.subStatus?.toLowerCase() === 'expired') {
+        subscriptionExpired.value = true;
+        return;
+      }
+      router.push("/tenant/transactionlist")
+    }
+
+    const routeToWelcomeOnboard = () => {
+      if (getUser?.value?.subStatus?.toLowerCase() === 'expired') {
+        subscriptionExpired.value = true;
+        return;
+      }
+      router.push({ name: 'WelcomeOnboarding1' })
+    }
+
+    const routeToPayment= () => {
+      if (getUser?.value?.subStatus?.toLowerCase() === 'expired') {
+        subscriptionExpired.value = true;
+        return;
+      }
+      router.push("/tenant/payments")
+    }
+
     return {
       celebrations,
       attendanceBooleanMont,
@@ -1698,6 +1764,13 @@ export default {
       tenantDisplayName,
       theme,
       toggleTheme,
+      subscriptionExpired,
+      routeToAddMember,
+      routeToFirstTimer,
+      routeToOffering,
+      routeToTransaction,
+      routeToWelcomeOnboard,
+      routeToPayment
     };
   },
 };

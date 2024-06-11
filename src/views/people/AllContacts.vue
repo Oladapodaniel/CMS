@@ -88,6 +88,13 @@
         </div>
       </div>
     </div>
+    <transition name="el-fade-in-linear">
+      <div class="row" v-show="membershipCapacityExceeded">
+        <div class="col-md-12 mt-3" >
+        <MemberCapExceeded />
+        </div>
+      </div>
+    </transition>
     <div class="row" v-if="false">
       <div class="col-md-2 mt-2" v-if="route.fullPath == '/tenant/people'">
         <div class="font-weight-bold py-md-2 mt-4">QR Code</div>
@@ -171,8 +178,12 @@ import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useStore } from "vuex";
 // import axios from 'axios';
 import axios from "@/gateway/backendapi";
+import MemberCapExceeded from "@/components/membership/MembershipCapExceeded.vue";
 
 export default {
+  components: {
+    MemberCapExceeded
+  },
   setup() {
     const store = useStore();
     const selectedLink = ref(null);
@@ -184,6 +195,7 @@ export default {
     const qrCode = ref("");
     const { lgAndUp, xlAndUp, mdAndUp, xsOnly } = deviceBreakpoint();
     const primarycolor = inject("primarycolor");
+    const membershipCapacityExceeded = ref(false)
 
     const watchVideo = () => {
       showAddMemberVideo.value = true;
@@ -210,6 +222,12 @@ export default {
       if (getUser.value) {
         tenantID.value = getUser.value.tenantId;
       }
+
+      if (getUser.value.churchSize >= getUser.value.subscribedChurchSize) {
+          membershipCapacityExceeded.value = true;
+        } else {
+          membershipCapacityExceeded.value = false;
+        }
     });
 
     const memberlink = computed(() => {
@@ -305,6 +323,7 @@ export default {
       lgAndUp,
       xlAndUp,
       primarycolor,
+      membershipCapacityExceeded
     };
   },
 };

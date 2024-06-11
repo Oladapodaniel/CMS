@@ -160,9 +160,9 @@
                         }}
                       </el-button>
 
-                      <!-- <div
+                      <div
                         class="google-btn btn-logo mt-4 sign-in-btn"
-                        @click="facebookLogin"
+                        @click="handleGoogleLogin"
                       >
                         <img
                           src="../../assets/small-google.png"
@@ -171,7 +171,7 @@
                         />
                         <span>Sign in with Google</span>
                         <span></span>
-                      </div> -->
+                      </div>
                       <!-- <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
                       <img src="../../assets/facebook-small.png" class="fb-icon" alt="Facebook Icon" />
                       <span>Sign in with Facebook</span>
@@ -290,7 +290,7 @@ import axios from "@/gateway/backendapi";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import axio from "axios";
 import { ElNotification } from "element-plus";
-import { reactive, ref, inject, watch } from "vue";
+import { reactive, ref, inject, watch, onMounted } from "vue";
 import router from "../../router/index";
 import setupService from "../../services/setup/setupservice";
 import { useGtag } from "vue-gtag-next";
@@ -299,6 +299,8 @@ import { Message, Lock } from "@element-plus/icons-vue";
 import { useI18n } from "vue-i18n";
 import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from "../../i18n";
 import { useTheme } from "../../theme/ThemeProvider";
+import GoogleSignIn from "@/mixins/GoogleSignin";
+
 // import * as Sentry from '@sentry/vue'
 
 export default {
@@ -333,6 +335,8 @@ export default {
       invalidEmailObj,
     } = FBlogin();
 
+    const { handleGoogleLogin } = GoogleSignIn();
+
     const sendError = () => {
       // Dialogg.seen
       // Sentry.captureMessage('Button clicked')
@@ -365,6 +369,7 @@ export default {
         localStorage.setItem("token", data.token);
         localStorage.setItem("expiryDate", data.expiryTime);
         localStorage.setItem("roles", JSON.stringify(data.roles));
+        localStorage.setItem("accountExpired", data?.subStatus?.toLowerCase() === 'expired' ? true : false);
         if (data.roles.length > 0) {
           let roleIndex = data.roles.findIndex((i) => {
             return i.toLowerCase() == "family" || i.toLowerCase() == "mobileuser";
@@ -450,6 +455,35 @@ export default {
       }
     };
 
+   
+
+  // onMounted(() => {
+  //   firebase.auth()
+  // .getRedirectResult()
+  // .then((result) => {
+  //   if (result.credential) {
+  //     /** @type {firebase.auth.OAuthCredential} */
+  //     var credential = result.credential;
+
+  //     // This gives you a Google Access Token. You can use it to
+  //        // access the Google API.
+  //     var token = credential.accessToken;
+      
+  //   }
+  //   // The signed-in user info.
+  //   var user = result.user;
+  //   console.log(result, 'ree')
+  // }).catch((error) => {
+  //   // Handle Errors here.
+  //   var errorCode = error.code;
+  //   var errorMessage = error.message;
+  //   // The email of the user's account used.
+  //   var email = error.email;
+  //   // The firebase.auth.AuthCredential type that was used.
+  //   var credential = error.credential;
+    
+  // });
+  // })
     return {
       signInLoading,
       navigatorLang,
@@ -471,6 +505,7 @@ export default {
       sendError,
       theme,
       toggleTheme,
+      handleGoogleLogin
     };
   },
 };
