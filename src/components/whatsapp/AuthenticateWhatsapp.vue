@@ -104,7 +104,7 @@ export default {
     const connectingExistingSession = ref(false);
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
     const serverBusy = ref(false)
-    const whatsappServerBaseURL = 'https://whatsapp-bailey-churchplus.vercel.app/'
+    const whatsappServerBaseURL = 'https://whatsapp-bailey.azurewebsites.net/'
 
     const socketconnected = computed(() => {
       return state.connected;
