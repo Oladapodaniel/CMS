@@ -2355,7 +2355,10 @@ router.beforeEach((to, from, next) => {
             to.name !== 'composeVoice' &&
             to.name !== 'VoiceDeliveryReport' &&
             to.name !== 'Inbox' &&
-            to.name !== 'BuyUnits'
+            to.name !== 'BuyUnits' &&
+            to.name !== 'ConnectWhatsapp' &&
+            to.name !== 'Compose' &&
+            to.name !== 'ScheduledList'
         ) {
             // Redirect if the user's account is expired
             return next("/tenant");
