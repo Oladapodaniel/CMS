@@ -137,7 +137,7 @@
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0">
           <el-select-v2 v-model="userWhatsappGroupsId"
-            :options="userWhatsappGroups.map(i => ({ value: i.id.user, label: i.name }))"
+            :options="userWhatsappGroups.map(i => ({ value: i.id, label: i.subject }))"
             placeholder="Select whatsapp group" size="large" class="w-100" filterable multiple />
           <el-icon class="is-loading" v-if="whatsappGroupsLoading">
             <Loading />
@@ -218,8 +218,8 @@
                 <CirclePlusFilled />
               </el-icon>&nbsp;Add
             </el-button>
-            <div><code
-                style="color: black;"><small>NB: Make sure you click the add button to include the number to the tray of recipient numbers.</small></code>
+            <div><code style="color: black;"><small>NB: Make sure you click the add button to include the number to the tray
+            of recipient numbers.</small></code>
             </div>
           </div>
         </div>
@@ -239,7 +239,7 @@
       </div>
 
       <div class="row mt-1" v-if="phoneNumberSelectionTab || membershipSelectionTab || groupSelectionTab
-        ">
+      ">
         <div class="col-md-12 pr-0">
           <hr class="hr my-1" />
         </div>
@@ -255,7 +255,8 @@
           <el-input v-model="editorData" :rows="10" class="w-100 my-2" type="textarea"
             placeholder="Type your message ..." />
           <div><span class="font-weight-bold">NB:</span> To personalise your message, type <span
-              class="font-weight-bold">#name#</span> where you want the recipient's name to appear in your message content
+              class="font-weight-bold">#name#</span> where you want the recipient's name to appear in your message
+            content
           </div>
           <div class="d-flex align-items-start mt-3">
             <img src="../../../assets/smiling-face.png" width="20" class="c-pointer emoji-wrapper"
@@ -305,8 +306,8 @@
         </div> -->
         <div class="w-100 mt-3 d-flex justify-content-end">
           <span>
-            <el-dropdown split-button :color="primarycolor" size="large" @click="sendWhatsappMessage" class="split-button"
-              :disabled="memberdataloading" trigger="click">
+            <el-dropdown split-button :color="primarycolor" size="large" @click="sendWhatsappMessage"
+              class="split-button" :disabled="memberdataloading" trigger="click">
               Send Whatsapp message
               <template #dropdown>
                 <el-dropdown-menu>
@@ -359,6 +360,7 @@ import { socket } from "@/socket";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 // import testing from "./testing.vue"
 import dateFormatter from "../../../services/dates/dateformatter";
+import api from "axios";
 
 export default {
   components: {
@@ -409,7 +411,7 @@ export default {
     const audioPlayer = ref(null);
     const videoPlayer = ref(null);
     const selectedFileUrl = ref("");
-    const whatsappAttachment = ref({});
+    const whatsappAttachment = ref(null);
     const contactUpload = ref(false)
     const multipleContact = ref({})
     const base64String = ref("")
@@ -430,14 +432,16 @@ export default {
       if (!store.getters["communication/whatsappSessionId"]) return ""
       return store.getters["communication/whatsappSessionId"]
     })
-    const userWhatsappGroups = computed(() => {
-      if (store.getters["communication/allClientWhatsappChat"] && store.getters["communication/allClientWhatsappChat"].length > 0) {
-        whatsappGroupsLoading.value = false
-        return store.getters["communication/allClientWhatsappChat"].filter(i => i.isGroup)
-      } else {
-        return []
-      }
-    })
+
+    const userWhatsappGroups = ref([])
+    // const userWhatsappGroups = computed(() => {
+    //   if (store.getters["communication/allClientWhatsappChat"] && store.getters["communication/allClientWhatsappChat"].length > 0) {
+    //     whatsappGroupsLoading.value = false
+    //     return store.getters["communication/allClientWhatsappChat"].filter(i => i.isGroup)
+    //   } else {
+    //     return []
+    //   }
+    // })
     // const toggleGroupsVissibility = () => {
     //   groupsAreVissible.value = !groupsAreVissible.value;
     // };
@@ -482,7 +486,27 @@ export default {
 
     const allcountries = ref([])
     const tenantCountry = ref({})
-    const whatsappGroupsLoading = ref(true)
+    const whatsappGroupsLoading = ref(false)
+
+    onMounted(() => {
+      getAllWhatsappGroups();
+    })
+
+    const getAllWhatsappGroups = async () => {
+      whatsappGroupsLoading.value = true;
+      try {
+        let { data } = await api.get(`http://localhost:3001/groups/getAllWhatsappGroups?key=${clientSessionId.value}`);
+        whatsappGroupsLoading.value = false;
+        if (!data.error) {
+          userWhatsappGroups.value = data.instance_data && Object.values(data.instance_data);
+          console.log(userWhatsappGroups.value, '>>>>>>>>>>>>')
+        }
+      }
+      catch (err) {
+        console.log(err);
+        whatsappGroupsLoading.value = false;
+      }
+    }
 
     watchEffect(() => {
       socket.emit('connected', 'Hello From Client')
@@ -729,6 +753,49 @@ export default {
     const memberSelectInput = ref(null);
 
 
+    const sendTextMessage = async (payload) => {
+      console.log(clientSessionId.value, 'session')
+      try {
+        let { data } = await api.post(`http://localhost:3001/send/text?key=${clientSessionId.value}`, payload);
+        console.log(data)
+        if (!data.error) {
+
+        }
+      }
+      catch (error) {
+        console.error(error);
+      }
+    }
+
+    const sendImageMessage = async (payload) => {
+      console.log(clientSessionId.value, 'session')
+      try {
+        let { data } = await api.post(`http://localhost:3001/send/image?key=${clientSessionId.value}`, payload);
+        console.log(data)
+        if (!data.error) {
+
+        }
+      }
+      catch (error) {
+        console.error(error);
+      }
+    }
+
+    const sendVideoMessage = async (payload) => {
+      console.log(clientSessionId.value, 'session')
+      try {
+        let { data } = await api.post(`http://localhost:3001/send/video?key=${clientSessionId.value}`, payload);
+        console.log(data)
+        if (!data.error) {
+
+        }
+      }
+      catch (error) {
+        console.error(error);
+      }
+    }
+
+
     const sendWhatsappMessage = () => {
       chatRecipients.value = new Array();
 
@@ -766,316 +833,71 @@ export default {
       // const uniqueNumbers = new Set(chatRecipients.value.phoneNumber);
       // console.log(Array.from(uniqueNumbers));
 
-      socket.emit('sendwhatsappmessage', {
-        id: clientSessionId.value,
-        phone_number: removeDuplicate,
-        message: editorData.value,
-        whatsappAttachment: whatsappAttachment.value,
-      })
+      console.log(userWhatsappGroupsId.value, 'here');
 
-      // Send to Whatsapp Groups
-      if (userWhatsappGroupsId.value && userWhatsappGroupsId.value.length > 0) {
-        socket.emit('sendtogroups', {
-          id: clientSessionId.value,
-          groups: userWhatsappGroupsId.value,
-          whatsappAttachment: whatsappAttachment.value,
-          message: editorData.value
-        })
-      }
+      // if (userWhatsappGroupsId.value && userWhatsappGroupsId.value.length > 0) {
+      //   const mappedGroup = userWhatsappGroupsId.map(i => ({
+      //     name: "*group",
+      //     phoneNumber: i
+      //   }))
 
-      swal({
-        title: "Success",
-        text: "Your Whatsapp message is being sent!",
-        icon: "success",
-      })
-
-      // Reset data on page
-      phoneNumber.value = "";
-      selectedMembers.value = new Array();
-      editorData.value = "";
-      userWhatsappGroupsId.value = new Array();
-      allSelectedNumbers.value = new Array();
-      chatRecipients.value = new Array();
-      sendToAll.value = false;
-      groupSelectionTab.value = false;
-      membershipSelectionTab.value = false;
-      phoneNumberSelectionTab.value = false;
-      whatsappGroupSelectionTab.value = false;
-      groupMultipleIDs.value = new Array();
-      removeDuplicate = new Array()
-      handleRemove();
-    }
-
-    const getAllCountries = async () => {
-      try {
-        let { data } = await axios.get('/api/getallcountries');
-        console.log(data)
-        allcountries.value = data
-      }
-      catch (error) {
-        console.error(error)
-      }
-    }
-    getAllCountries();
-
-    const getUser = computed(() => {
-      if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
-      return store.getters.currentUser
-    })
-
-    watchEffect(() => {
-      if (allcountries.value.length > 0 && getUser.value && Object.keys(getUser.value).length > 0) {
-        tenantCountry.value = allcountries.value.find(i => {
-          return i.isoCode == getUser.value.isoCode
-        })
-      }
-    })
-
-    const uploadFile = (e) => {
-      multipleContact.value = e.target.files[0]
-    }
-
-    const handleEmojiClick = (data) => {
-      console.log(data)
-      editorData.value += data.unicode
-    }
-
-    const chooseFile = (e) => {
-      // uploadPicture(e.raw)
-      if (e.raw.type.includes('image')) {
-        console.log(e.raw)
-        selectedFileUrl.value = URL.createObjectURL(e.raw);
-
-        const file = e.raw;
-        const reader = new FileReader();
-
-        reader.onload = (f) => {
-          base64String.value = f.target.result;
-          const chunkSize = 1024; // Specify your desired chunk size
-
-          socket.emit('resetmediaobject',
-            {
-              data: "",
-              id: clientSessionId.value
-            });
-
-          sendBase64InChunks(base64String.value, chunkSize);
-          whatsappAttachment.value = {
-            mimeType: e.raw.type,
-            fileName: e.raw.name,
-            fileSize: e.raw.size
-          }
-        };
-
-        reader.readAsDataURL(file);
-
-        fileAudio.value = false
-        fileVideo.value = false
-        fileImage.value = true
-
-      } else if (e.raw.type.includes('audio')) {
-        const reader = new FileReader();
-        reader.addEventListener("load", function (f) {
-          audioPlayer.value.src = reader.result;
-          base64String.value = f.target.result;
-          const chunkSize = 1024; // Specify your desired chunk size
-
-          socket.emit('resetmediaobject',
-            {
-              data: "",
-              id: clientSessionId.value
-            });
-
-          sendBase64InChunks(base64String.value, chunkSize);
-          whatsappAttachment.value = {
-            mimeType: e.raw.type,
-            fileName: e.raw.name,
-            fileSize: e.raw.size
-          }
-          console.log(whatsappAttachment.value, "attachment");
-          fileAudio.value = true
-          fileVideo.value = false
-          fileImage.value = false
-        });
-
-        if (e.raw) {
-          reader.readAsDataURL(e.raw);
-        }
-        // console.log(whatsappAttachment.value, "attachment");
-      } else if (e.raw.type.includes('video')) {
-        const reader = new FileReader();
-        reader.addEventListener("load", function (f) {
-          videoPlayer.value.src = reader.result;
-          base64String.value = f.target.result;
-          const chunkSize = 1024; // Specify your desired chunk size
-
-          socket.emit('resetmediaobject',
-            {
-              data: "",
-              id: clientSessionId.value
-            });
-
-          sendBase64InChunks(base64String.value, chunkSize);
-          whatsappAttachment.value = {
-            // base64: base64String.value,
-            mimeType: e.raw.type,
-            fileName: e.raw.name,
-            fileSize: e.raw.size
-          }
-          console.log(whatsappAttachment.value, "attachment");
-          fileAudio.value = false
-          fileVideo.value = true
-          fileImage.value = false
-        });
-
-        if (e.raw) {
-          reader.readAsDataURL(e.raw);
-        }
-      } else {
-        const reader = new FileReader();
-        reader.addEventListener("load", function (f) {
-          // selectedFileUrl.value.src = reader.result;
-          base64String.value = f.target.result;
-          const chunkSize = 1024; // Specify your desired chunk size
-
-          socket.emit('resetmediaobject',
-            {
-              data: "",
-              id: clientSessionId.value
-            });
-          sendBase64InChunks(base64String.value, chunkSize);
-          whatsappAttachment.value = {
-            mimeType: e.raw.type,
-            fileName: e.raw.name,
-            fileSize: e.raw.size
-          }
-          console.log(whatsappAttachment.value, "attachment");
-          fileAudio.value = false
-          fileVideo.value = false
-          fileImage.value = false
-        });
-
-        if (e.raw) {
-          reader.readAsDataURL(e.raw);
-        }
-      }
-      // console.log(whatsappAttachment.value, "attachmenthere");
-    }
-
-    const handleRemove = () => {
-      fileAudio.value = false;
-      fileVideo.value = false;
-      fileImage.value = false
-      selectedFileUrl.value = ""
-      whatsappAttachment.value = {}
-      fileReady.value = false
-      chunkProgress.value = 0
-      socket.emit('clearfile', {
-        data: "",
-        id: clientSessionId.value
-      })
-    }
-
-
-    const sendBase64InChunks = (base64String, chunkSize) => {
-      const totalChunks = Math.ceil(base64String.length / chunkSize);
-      let uploadedChunks = 0;
-      for (let i = 0; i < totalChunks; i++) {
-        const start = i * chunkSize;
-        const end = start + chunkSize;
-        const chunk = base64String.substring(start, end);
-        uploadedChunks++; // Increment the uploadedChunks count
-        socket.emit('chunk',
-          {
-            chunk,
-            uploadedChunks,
-            totalChunks,
-            id: clientSessionId.value
-          });
-      }
-    }
-
-    const hideEmojiWrapper = (e) => {
-      console.log(e)
-      if (e && e.target && e.target.className && !e.target.className.includes('emoji-wrapper') && (e && e.target && e.target.className && !e.target.className.includes('light') && (e.target.localName.toLowerCase() !== 'emoji-picker'))) {
-        displayEmoji.value = false
-      }
-    }
-
-    const scheduleWhatsappMessage = async () => {
-      scheduleloading.value = true
-      chatRecipients.value = new Array();
-      // if (allSelectedNumbers.value.length > 0 || phoneNumber.value) {
-      //   const recipients = allSelectedNumbers.value.length > 0 ? allSelectedNumbers.value : [phoneNumber.value.replaceAll(" ", "").trim()]
-      //   chatRecipients.value = chatRecipients.value.concat(recipients)
+      //   removeDuplicate = removeDuplicate.concat(mappedGroup)
+          // socket.emit('sendtogroups', {
+          //   id: clientSessionId.value,
+          //   groups: userWhatsappGroupsId.value,
+          //   whatsappAttachment: whatsappAttachment.value,
+          //   message: editorData.value
+          // })
+          // removeDuplicate
       // }
+      // return;
 
-      // if (selectedMembers.value.length > 0) {
-      //   const recipients = selectedMembers.value.map(i => i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null).filter(i => i)
-      //   chatRecipients.value = chatRecipients.value.concat(recipients)
-      // }
+      if (whatsappAttachment.value && whatsappAttachment.value.type?.includes('image')) {
+        console.log('image')
+        let formData = new FormData();
+        formData.append("id", JSON.stringify(removeDuplicate));
+        formData.append("caption", editorData.value);
+        formData.append("file", whatsappAttachment.value);
 
-      // if (groupMembersData.value.length > 0) {
-      //   const recipients = groupMembersData.value.map(i => i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null).filter(i => i)
-      //   chatRecipients.value = chatRecipients.value.concat(recipients)
-      // }
+        sendImageMessage(formData);
+        } else if (whatsappAttachment.value && whatsappAttachment.value.type?.includes('video')) {
+          console.log('video')
+          let formData = new FormData();
+          formData.append("id", JSON.stringify(removeDuplicate));
+          formData.append("caption", editorData.value);
+          formData.append("file", whatsappAttachment.value);
 
-      // Send to selectedGroups || All contacts
-      if (groupMembersData.value && groupMembersData.value.length > 0) {
-        const recipients = groupMembersData.value.map(i => ({
-          phoneNumber: i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null,
-          name: i.name ? i.name : ""
-        })).filter(i => i.phoneNumber)
-        chatRecipients.value = chatRecipients.value.concat(recipients)
-      }
-
-      // Phone Number
-      if (phoneNumber.value) {
-        const recipients = phoneNumber.value ? [{ name: "", phoneNumber: phoneNumber.value.replaceAll(" ", "").trim() }] : []
-        chatRecipients.value = chatRecipients.value.concat(recipients)
-      }
-
-
-      // Selected members recipients
-      if (selectedMembers.value.length > 0) {
-        const recipients = selectedMembers.value.map(i => ({
-          phoneNumber: i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null,
-          name: i.name ? i.name : ""
-        })).filter(i => i.phoneNumber)
-        chatRecipients.value = chatRecipients.value.concat(recipients)
-      }
+          sendVideoMessage(formData);
+        } else {
+          const textPayload = {
+            id: removeDuplicate,
+            message: editorData.value
+          }
+          console.log('text')
+          sendTextMessage(textPayload);
+        }
 
 
+        // socket.emit('sendwhatsappmessage', {
+        //   id: clientSessionId.value,
+        //   phone_number: removeDuplicate,
+        //   message: editorData.value,
+        //   whatsappAttachment: whatsappAttachment.value,
+        // })
 
-      // console.log(chatRecipients.value, );
-      // Remove object with duplicate recipient numbers
-      const ids = chatRecipients.value.map(o => o.phoneNumber)
-      let removeDuplicate = chatRecipients.value.filter(({ phoneNumber }, index) => !ids.includes(phoneNumber, index + 1))
-      console.log(removeDuplicate)
+        // // Send to Whatsapp Groups
+        // if (userWhatsappGroupsId.value && userWhatsappGroupsId.value.length > 0) {
+        //   socket.emit('sendtogroups', {
+        //     id: clientSessionId.value,
+        //     groups: userWhatsappGroupsId.value,
+        //     whatsappAttachment: whatsappAttachment.value,
+        //     message: editorData.value
+        //   })
+        // }
 
-      // console.log(chatRecipients.value);
-      // const uniqueNumbers = new Set(chatRecipients.value);
-      // console.log(Array.from(uniqueNumbers));
-      const payload = {
-        message: editorData.value,
-        whatsappAttachment: whatsappAttachment.value,
-        sessionId: clientSessionId.value,
-        chatRecipients: removeDuplicate,
-        groupRecipients: userWhatsappGroupsId.value ? userWhatsappGroupsId.value : [],
-        base64File: base64String.value,
-        date: scheduledWhatsappDate.value
-      }
-      console.log(payload);
-
-
-      try {
-        let { data } = await axios.post("/api/Messaging/saveWhatsAppSchedule", payload)
-        console.log(data, 'schedule successful');
-        whatsappScheduleDialog.value = false;
-        scheduleloading.value = false
         swal({
           title: "Success",
-          text: `Your Whatsapp message has been scheduled for\n${dateFormatter.monthDayTime(scheduledWhatsappDate.value)}`,
+          text: "Your Whatsapp message is being sent!",
           icon: "success",
         })
 
@@ -1095,113 +917,406 @@ export default {
         removeDuplicate = new Array()
         handleRemove();
       }
-      catch (err) {
-        scheduleloading.value = false
-        console.error(err);
+
+      const getAllCountries = async () => {
+        try {
+          let { data } = await axios.get('/api/getallcountries');
+          console.log(data)
+          allcountries.value = data
+        }
+        catch (error) {
+          console.error(error)
+        }
       }
-    }
+      getAllCountries();
+
+      const getUser = computed(() => {
+        if (!store.getters.currentUser || (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)) return ''
+        return store.getters.currentUser
+      })
+
+      watchEffect(() => {
+        if (allcountries.value.length > 0 && getUser.value && Object.keys(getUser.value).length > 0) {
+          tenantCountry.value = allcountries.value.find(i => {
+            return i.isoCode == getUser.value.isoCode
+          })
+        }
+      })
+
+      const uploadFile = (e) => {
+        multipleContact.value = e.target.files[0]
+      }
+
+      const handleEmojiClick = (data) => {
+        console.log(data)
+        editorData.value += data.unicode
+      }
+
+      const chooseFile = (e) => {
+        // uploadPicture(e.raw)
+        console.log(e.raw)
+        selectedFileUrl.value = URL.createObjectURL(e.raw);
+        whatsappAttachment.value = e.raw
+        return;
+        if (e.raw.type.includes('image')) {
 
 
-    const removeTag = (value) => {
-      console.log(value);
-      selectedGroups.value = selectedGroups.value.filter(i => !i.data.includes(value))
-      getMemberPhoneNumber()
-    }
+          // const file = e.raw;
+          // const reader = new FileReader();
 
-    return {
-      editorData,
-      editorConfig,
-      possibleSMSDestinations,
-      sendToAll,
-      // toggleGroupsVissibility,
-      selectedGroups,
-      selectGroup,
-      removeGroup,
-      showSection,
-      groupSelectionTab,
-      membershipSelectionTab,
-      phoneNumberSelectionTab,
-      categories,
-      allGroups,
-      selectedMembers,
-      removeMember,
-      selectMember,
-      searchText,
-      filteredMembers,
-      charactersCount,
-      pageCount,
-      phoneNumber,
-      searchForPerson,
-      loading,
-      memberSearchResults,
-      // groupListShown,
-      // showGroupList,
-      groupSelectInput,
-      memberSelectInput,
-      invalidDestination,
-      invalidMessage,
-      moment,
-      // isPersonalized,
-      route,
-      contactUpload,
-      uploadFile,
-      multipleContact,
-      // sendSMSToUploadedContacts,
-      session,
-      qrCode,
-      createSessionForWhatsapp,
-      sessionId,
-      getAllChats,
-      getSessionId,
-      getSessionForWhatsapp,
-      connected,
-      connect,
-      disconnect,
-      userWhatsappGroups,
-      primarycolor,
-      whatsappGroupSelectionTab,
-      userWhatsappGroupsId,
-      sendWhatsappMessage,
-      allSelectedNumbers,
-      allcountries,
-      allcountries,
-      getUser,
-      tenantCountry,
-      whatsappGroupsLoading,
-      handleEmojiClick,
-      displayEmoji,
-      chooseFile,
-      fileAudio,
-      fileImage,
-      fileVideo,
-      audioPlayer,
-      videoPlayer,
-      selectedFileUrl,
-      handleRemove,
-      whatsappAttachment,
-      clientSessionId,
-      base64String,
-      fileReady,
-      hideEmojiWrapper,
-      groupMembersData,
-      whatsappScheduleDialog,
-      scheduleWhatsappMessage,
-      scheduledWhatsappDate,
-      chatRecipients,
-      mdAndUp,
-      lgAndUp,
-      xlAndUp,
-      xsOnly,
-      groupMultipleIDs,
-      getMemberPhoneNumber,
-      removeTag,
-      scheduleloading,
-      toOthers,
-      memberdataloading,
-      chunkProgress
-    };
-  },
-};
+          // reader.onload = (f) => {
+          //   base64String.value = f.target.result;
+          //   const chunkSize = 1024; // Specify your desired chunk size
+
+          //   socket.emit('resetmediaobject',
+          //     {
+          //       data: "",
+          //       id: clientSessionId.value
+          //     });
+
+          //   sendBase64InChunks(base64String.value, chunkSize);
+          //   whatsappAttachment.value = {
+          //     mimeType: e.raw.type,
+          //     fileName: e.raw.name,
+          //     fileSize: e.raw.size
+          //   }
+          // };
+
+          // reader.readAsDataURL(file);
+
+          // fileAudio.value = false
+          // fileVideo.value = false
+          // fileImage.value = true
+
+        } else if (e.raw.type.includes('audio')) {
+          const reader = new FileReader();
+          reader.addEventListener("load", function (f) {
+            audioPlayer.value.src = reader.result;
+            base64String.value = f.target.result;
+            const chunkSize = 1024; // Specify your desired chunk size
+
+            socket.emit('resetmediaobject',
+              {
+                data: "",
+                id: clientSessionId.value
+              });
+
+            sendBase64InChunks(base64String.value, chunkSize);
+            whatsappAttachment.value = {
+              mimeType: e.raw.type,
+              fileName: e.raw.name,
+              fileSize: e.raw.size
+            }
+            console.log(whatsappAttachment.value, "attachment");
+            fileAudio.value = true
+            fileVideo.value = false
+            fileImage.value = false
+          });
+
+          if (e.raw) {
+            reader.readAsDataURL(e.raw);
+          }
+          // console.log(whatsappAttachment.value, "attachment");
+        } else if (e.raw.type.includes('video')) {
+          const reader = new FileReader();
+          reader.addEventListener("load", function (f) {
+            videoPlayer.value.src = reader.result;
+            base64String.value = f.target.result;
+            const chunkSize = 1024; // Specify your desired chunk size
+
+            socket.emit('resetmediaobject',
+              {
+                data: "",
+                id: clientSessionId.value
+              });
+
+            sendBase64InChunks(base64String.value, chunkSize);
+            whatsappAttachment.value = {
+              // base64: base64String.value,
+              mimeType: e.raw.type,
+              fileName: e.raw.name,
+              fileSize: e.raw.size
+            }
+            console.log(whatsappAttachment.value, "attachment");
+            fileAudio.value = false
+            fileVideo.value = true
+            fileImage.value = false
+          });
+
+          if (e.raw) {
+            reader.readAsDataURL(e.raw);
+          }
+        } else {
+          const reader = new FileReader();
+          reader.addEventListener("load", function (f) {
+            // selectedFileUrl.value.src = reader.result;
+            base64String.value = f.target.result;
+            const chunkSize = 1024; // Specify your desired chunk size
+
+            socket.emit('resetmediaobject',
+              {
+                data: "",
+                id: clientSessionId.value
+              });
+            sendBase64InChunks(base64String.value, chunkSize);
+            whatsappAttachment.value = {
+              mimeType: e.raw.type,
+              fileName: e.raw.name,
+              fileSize: e.raw.size
+            }
+            console.log(whatsappAttachment.value, "attachment");
+            fileAudio.value = false
+            fileVideo.value = false
+            fileImage.value = false
+          });
+
+          if (e.raw) {
+            reader.readAsDataURL(e.raw);
+          }
+        }
+        // console.log(whatsappAttachment.value, "attachmenthere");
+      }
+
+      const handleRemove = () => {
+        fileAudio.value = false;
+        fileVideo.value = false;
+        fileImage.value = false
+        selectedFileUrl.value = ""
+        whatsappAttachment.value = {}
+        fileReady.value = false
+        chunkProgress.value = 0
+        socket.emit('clearfile', {
+          data: "",
+          id: clientSessionId.value
+        })
+      }
+
+
+      const sendBase64InChunks = (base64String, chunkSize) => {
+        const totalChunks = Math.ceil(base64String.length / chunkSize);
+        let uploadedChunks = 0;
+        for (let i = 0; i < totalChunks; i++) {
+          const start = i * chunkSize;
+          const end = start + chunkSize;
+          const chunk = base64String.substring(start, end);
+          uploadedChunks++; // Increment the uploadedChunks count
+          socket.emit('chunk',
+            {
+              chunk,
+              uploadedChunks,
+              totalChunks,
+              id: clientSessionId.value
+            });
+        }
+      }
+
+      const hideEmojiWrapper = (e) => {
+        console.log(e)
+        if (e && e.target && e.target.className && !e.target.className.includes('emoji-wrapper') && (e && e.target && e.target.className && !e.target.className.includes('light') && (e.target.localName.toLowerCase() !== 'emoji-picker'))) {
+          displayEmoji.value = false
+        }
+      }
+
+      const scheduleWhatsappMessage = async () => {
+        scheduleloading.value = true
+        chatRecipients.value = new Array();
+        // if (allSelectedNumbers.value.length > 0 || phoneNumber.value) {
+        //   const recipients = allSelectedNumbers.value.length > 0 ? allSelectedNumbers.value : [phoneNumber.value.replaceAll(" ", "").trim()]
+        //   chatRecipients.value = chatRecipients.value.concat(recipients)
+        // }
+
+        // if (selectedMembers.value.length > 0) {
+        //   const recipients = selectedMembers.value.map(i => i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null).filter(i => i)
+        //   chatRecipients.value = chatRecipients.value.concat(recipients)
+        // }
+
+        // if (groupMembersData.value.length > 0) {
+        //   const recipients = groupMembersData.value.map(i => i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null).filter(i => i)
+        //   chatRecipients.value = chatRecipients.value.concat(recipients)
+        // }
+
+        // Send to selectedGroups || All contacts
+        if (groupMembersData.value && groupMembersData.value.length > 0) {
+          const recipients = groupMembersData.value.map(i => ({
+            phoneNumber: i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null,
+            name: i.name ? i.name : ""
+          })).filter(i => i.phoneNumber)
+          chatRecipients.value = chatRecipients.value.concat(recipients)
+        }
+
+        // Phone Number
+        if (phoneNumber.value) {
+          const recipients = phoneNumber.value ? [{ name: "", phoneNumber: phoneNumber.value.replaceAll(" ", "").trim() }] : []
+          chatRecipients.value = chatRecipients.value.concat(recipients)
+        }
+
+
+        // Selected members recipients
+        if (selectedMembers.value.length > 0) {
+          const recipients = selectedMembers.value.map(i => ({
+            phoneNumber: i.phone ? i.phone.substring(0, 1) == '0' ? `+${tenantCountry.value.phoneCode}${i.phone.substring(1)}` : `${i.phone}` : null,
+            name: i.name ? i.name : ""
+          })).filter(i => i.phoneNumber)
+          chatRecipients.value = chatRecipients.value.concat(recipients)
+        }
+
+
+
+        // console.log(chatRecipients.value, );
+        // Remove object with duplicate recipient numbers
+        const ids = chatRecipients.value.map(o => o.phoneNumber)
+        let removeDuplicate = chatRecipients.value.filter(({ phoneNumber }, index) => !ids.includes(phoneNumber, index + 1))
+        console.log(removeDuplicate)
+
+        // console.log(chatRecipients.value);
+        // const uniqueNumbers = new Set(chatRecipients.value);
+        // console.log(Array.from(uniqueNumbers));
+        const payload = {
+          message: editorData.value,
+          whatsappAttachment: whatsappAttachment.value,
+          sessionId: clientSessionId.value,
+          chatRecipients: removeDuplicate,
+          groupRecipients: userWhatsappGroupsId.value ? userWhatsappGroupsId.value : [],
+          base64File: base64String.value,
+          date: scheduledWhatsappDate.value
+        }
+        console.log(payload);
+
+
+        try {
+          let { data } = await axios.post("/api/Messaging/saveWhatsAppSchedule", payload)
+          console.log(data, 'schedule successful');
+          whatsappScheduleDialog.value = false;
+          scheduleloading.value = false
+          swal({
+            title: "Success",
+            text: `Your Whatsapp message has been scheduled for\n${dateFormatter.monthDayTime(scheduledWhatsappDate.value)}`,
+            icon: "success",
+          })
+
+          // Reset data on page
+          phoneNumber.value = "";
+          selectedMembers.value = new Array();
+          editorData.value = "";
+          userWhatsappGroupsId.value = new Array();
+          allSelectedNumbers.value = new Array();
+          chatRecipients.value = new Array();
+          sendToAll.value = false;
+          groupSelectionTab.value = false;
+          membershipSelectionTab.value = false;
+          phoneNumberSelectionTab.value = false;
+          whatsappGroupSelectionTab.value = false;
+          groupMultipleIDs.value = new Array();
+          removeDuplicate = new Array()
+          handleRemove();
+        }
+        catch (err) {
+          scheduleloading.value = false
+          console.error(err);
+        }
+      }
+
+
+      const removeTag = (value) => {
+        console.log(value);
+        selectedGroups.value = selectedGroups.value.filter(i => !i.data.includes(value))
+        getMemberPhoneNumber()
+      }
+
+      return {
+        editorData,
+        editorConfig,
+        possibleSMSDestinations,
+        sendToAll,
+        // toggleGroupsVissibility,
+        selectedGroups,
+        selectGroup,
+        removeGroup,
+        showSection,
+        groupSelectionTab,
+        membershipSelectionTab,
+        phoneNumberSelectionTab,
+        categories,
+        allGroups,
+        selectedMembers,
+        removeMember,
+        selectMember,
+        searchText,
+        filteredMembers,
+        charactersCount,
+        pageCount,
+        phoneNumber,
+        searchForPerson,
+        loading,
+        memberSearchResults,
+        // groupListShown,
+        // showGroupList,
+        groupSelectInput,
+        memberSelectInput,
+        invalidDestination,
+        invalidMessage,
+        moment,
+        // isPersonalized,
+        route,
+        contactUpload,
+        uploadFile,
+        multipleContact,
+        // sendSMSToUploadedContacts,
+        session,
+        qrCode,
+        createSessionForWhatsapp,
+        sessionId,
+        getAllChats,
+        getSessionId,
+        getSessionForWhatsapp,
+        connected,
+        connect,
+        disconnect,
+        userWhatsappGroups,
+        primarycolor,
+        whatsappGroupSelectionTab,
+        userWhatsappGroupsId,
+        sendWhatsappMessage,
+        allSelectedNumbers,
+        allcountries,
+        allcountries,
+        getUser,
+        tenantCountry,
+        whatsappGroupsLoading,
+        handleEmojiClick,
+        displayEmoji,
+        chooseFile,
+        fileAudio,
+        fileImage,
+        fileVideo,
+        audioPlayer,
+        videoPlayer,
+        selectedFileUrl,
+        handleRemove,
+        whatsappAttachment,
+        clientSessionId,
+        base64String,
+        fileReady,
+        hideEmojiWrapper,
+        groupMembersData,
+        whatsappScheduleDialog,
+        scheduleWhatsappMessage,
+        scheduledWhatsappDate,
+        chatRecipients,
+        mdAndUp,
+        lgAndUp,
+        xlAndUp,
+        xsOnly,
+        groupMultipleIDs,
+        getMemberPhoneNumber,
+        removeTag,
+        scheduleloading,
+        toOthers,
+        memberdataloading,
+        chunkProgress
+      };
+    },
+  };
 </script>
 
 <style scoped>

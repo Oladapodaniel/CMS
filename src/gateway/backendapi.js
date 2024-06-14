@@ -12,3 +12,13 @@ export default axios.create({
         'Content-Type': 'application/json',
     }
 })
+
+
+export const apii = axios.create({
+    baseURL: 'http://localhost:3333/',
+    // baseURL: 'http://192.168.8.107:3000/',
+    timeout: 500000,
+    headers: {
+        'Content-Type': 'application/json',
+    }
+})
