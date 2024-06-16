@@ -15,7 +15,15 @@
 <script>
 export default {
     setup () {
-        return {}
+
+      const subscriptionPage = (type) => {
+      emit('closedialog', false)
+      type == 1 ? router.push("/tenant/subscription") : router.push("/tenant/sms/sent")
+    }
+
+        return {
+          subscriptionPage
+        }
     }
 }
 </script>
