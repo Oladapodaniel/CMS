@@ -93,7 +93,7 @@
         </div>
       </div>
     </template>
-    <SubExpired />
+    <SubExpired @closedialog="(payload) => subscriptionExpired = payload"/>
   </el-dialog>
 </template>
 
@@ -575,11 +575,6 @@ export default {
       return getUser?.value?.subStatus?.toLowerCase() === 'expired' ? id !== 3 && id !== 1 ? true : false : false
     }
 
-    const subscriptionPage = (type) => {
-      subscriptionExpired.value = false
-      type == 1 ? router.push("/tenant/subscription") : router.push("/tenant/sms/sent")
-    }
-
     watchEffect(() => {
       getUser?.value?.subStatus?.toLowerCase() === 'expired' ? subscriptionExpired.value = true : subscriptionExpired.value = false;
     })
@@ -610,7 +605,6 @@ export default {
       xlAndUp,
       disableNav,
       subscriptionExpired,
-      subscriptionPage
     };
   },
 };
