@@ -604,11 +604,7 @@ export default {
       lgAndUp,
       xlAndUp,
       disableNav,
-<<<<<<< HEAD
-      subscriptionExpired,
-=======
       subscriptionExpired
->>>>>>> 38a3a3f7 (fixed button not working issue)
     };
   },
 };
