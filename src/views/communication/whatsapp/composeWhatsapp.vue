@@ -836,13 +836,13 @@ export default {
 
       console.log(userWhatsappGroupsId.value, 'here');
 
-      // if (userWhatsappGroupsId.value && userWhatsappGroupsId.value.length > 0) {
-      //   const mappedGroup = userWhatsappGroupsId.map(i => ({
-      //     name: "*group",
-      //     phoneNumber: i
-      //   }))
+      if (userWhatsappGroupsId.value && userWhatsappGroupsId.value.length > 0) {
+        const mappedGroup = userWhatsappGroupsId.map(i => ({
+          name: "group",
+          phoneNumber: i
+        }))
 
-      //   removeDuplicate = removeDuplicate.concat(mappedGroup)
+        removeDuplicate = removeDuplicate.concat(mappedGroup)
           // socket.emit('sendtogroups', {
           //   id: clientSessionId.value,
           //   groups: userWhatsappGroupsId.value,
@@ -850,7 +850,7 @@ export default {
           //   message: editorData.value
           // })
           // removeDuplicate
-      // }
+      }
       // return;
 
       if (whatsappAttachment.value && whatsappAttachment.value.type?.includes('image')) {
