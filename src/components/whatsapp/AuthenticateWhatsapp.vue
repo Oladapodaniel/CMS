@@ -104,7 +104,7 @@ export default {
     const connectingExistingSession = ref(false);
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
     const serverBusy = ref(false)
-    const whatsappServerBaseURL = 'https://whatsapp-bailey.azurewebsites.net/'
+    const whatsappServerBaseURL = process.env.NODE_ENV === "production" ? 'https://whatsapp-bailey-routes.azurewebsites.net/' : "http://localhost:3001/";
 
     const socketconnected = computed(() => {
       return state.connected;
