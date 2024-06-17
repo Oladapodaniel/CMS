@@ -994,7 +994,6 @@ export default {
     };
 
     const toggleFilterFormVissibility = () => {
-      console.log("getsomething");
       showFilter.value = true;
       // (filterFormIsVissible.value = !filterFormIsVissible.value);
     };

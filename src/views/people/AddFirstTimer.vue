@@ -1316,7 +1316,7 @@ export default {
             if (err.response && err.response.data) {
               ElMessage({
                 type: "warning",
-                message: `${err.response.data}`,
+                message: `${err.response.data.message}`,
                 duration: 8000,
               });
             } else {
