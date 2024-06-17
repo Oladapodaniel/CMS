@@ -1,12 +1,23 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container-fluid">
       <!-- Content Box -->
       <main id="main" class="mt-3">
         <div class="container-fluid px-0">
           <div class="row px-0">
-            <div class="col-md-12 px-0">
-              <div class="row d-md-flex justify-content-between align-items-center mt-3 mb-4">
+            <div class="col-md-12">
+              <div class="text-head font-weight-bold text-black h2">Replies</div>
+              <div class="grey-backg py-2 border-radius-8 col-md-3">
+                <router-link
+                  to="/tenant/sms/sent"
+                  class="text-decoration-none s-18 text-dak"
+                >
+                  <span class="linear-gradient">SMS> Replies</span>
+                </router-link>
+              </div>
+            </div>
+            <div class="col-md-12 mt-5">
+              <!-- <div class="row d-md-flex justify-content-between align-items-center mt-3 mb-4">
                 <div class="col-md-8 col-sm-12">
                   <div class="search-div">
                     <el-icon style="vertical-align: middle" class="search-sms mr-1">
@@ -18,7 +29,7 @@
                 <div class="col-sm-5 col-md-4 mt-sm-2 units-container">
                   <UnitsArea />
                 </div>
-              </div>
+              </div> -->
               <div class="table-options" v-if="markedInboxMssg.length > 0">
                 <el-icon class="text-danger c-pointer" @click="showConfirmModal">
                   <Delete />
@@ -279,7 +290,7 @@ export default {
 }
 
 .table-options {
-  border: 1px solid rgb(212, 221, 227);
+  /* border: 1px solid rgb(212, 221, 227); */
   border-bottom: none;
   padding: 7px 7px 0 7px
 }

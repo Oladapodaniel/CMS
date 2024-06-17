@@ -1,15 +1,15 @@
 <template>
   <div class="">
-    <div class="d-sm-flex align-items-center flex-column units-div mt-3">
+    <div class="d-sm-flex align-items-center flex-column units-di my-3">
       <div class="col-sm-12">
-        <h4 class="font-weight-bold mb-0 center-flexed">{{ balance.toFixed(2) }}</h4>
-        <p class="font-weight-bold mb-0 center-flexed">
+        <div class="font-weight-600 text-black s-32 text-head mb-0 center-flexed">{{ balance.toFixed(2) }}</div>
+        <p class="font-weight-600 text-head d-flex justify-content-center">
           SMS Units
         </p>
       </div>
-      <div class="col-sm-12 d-flex justify-content-center mt-2">
-        <el-button class="btn buy-btn center-flexed" @click="goToBuyUnit">
-          <span class="btn-text box-btn-text2"> BUY UNITS </span>
+      <div class="col-sm-12 d-flex justify-content-center ">
+        <el-button class="  border border-dark center-flexed" round @click="goToBuyUnit">
+          <span class=" text-black fw-500 "> Buy UNITS </span>
         </el-button>
       </div>
     </div>
@@ -62,25 +62,8 @@ export default {
   background: #f5ebeb1c !important;
 }
 
-.buy-btn {
-  font-weight: 700;
-  /* background: rgb(112, 142, 177, 0.33); */
-  background: rgba(255, 166, 0, 0.241);
-  border-radius: 22px;
-}
 
-.btn-text {
-  opacity: 1;
-  font-size: 11px;
-  font-weight: 700;
-}
 
-.box-btn-text2 {
-  font-weight: 800;
-  /* color: #ffe50f; */
-  /* color: rgb(147, 95, 0) */
-  color: #136acd;
-}
 
 .center-flexed {
   display: flex;

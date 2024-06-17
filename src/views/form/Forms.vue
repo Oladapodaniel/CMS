@@ -1,5 +1,5 @@
 <template>
-    <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
+    <div class="container-top" :class="{ 'container-wide': lgAndUp || xlAndUp }">
     <router-view></router-view>
     </div>
 </template>

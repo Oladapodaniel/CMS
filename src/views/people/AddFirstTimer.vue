@@ -2,7 +2,10 @@
   <div>
     <div class="text-head font-weight-bold text-black h2">Add First Timer</div>
     <div class="grey-backg py-2 border-radius-8 col-md-4">
-      <router-link to="/tenant/firsttimerslist" class="text-decor ation-none s-18 text-dak">
+      <router-link
+        to="/tenant/firsttimerslist"
+        class="text-decoration-none s-18 text-dak"
+      >
         <span class="linear-gradient">Members > Add First Timer</span>
       </router-link>
     </div>
@@ -11,14 +14,14 @@
     <div class="row mt-2">
       <!-- <p class="form-section-header">Bio:</p> -->
       <div class="col-md-12 d-flex justify-content-center">
-        <div class="col-md-8 col-8 fw-500 s-24  mb-4">Biodata</div>
+        <div class="col-md-8 col-8 fw-500 s-24 mb-4">Biodata</div>
       </div>
     </div>
     <el-container>
       <el-row :gutter="15" class="w-100 m-0">
         <el-col class="d-block d-md-none">
           <div class="grey-bg">
-            <div class="bg-photo border-radius-8 py-4"> 
+            <div class="bg-photo border-radius-8 py-4">
               <div class="person-img">
                 <img
                   v-if="!url"
@@ -76,7 +79,9 @@
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 s-18 fw-500 text-dak text-head">Surname</label>
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak text-head"
+                  >Surname</label
+                >
                 <el-input
                   type="text"
                   class="input-width"
@@ -87,7 +92,9 @@
             </el-form-item>
             <el-form-item prop="phoneNumber" class="validate-phone">
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 s-18 fw-500 text-dak text-head">Phone number</label>
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak text-head"
+                  >Phone number</label
+                >
                 <el-input
                   type="number"
                   ref="validatePhone"
@@ -100,7 +107,9 @@
             </el-form-item>
             <el-form-item prop="email" class="validate-email">
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
-                <label for="firstName" class="mr-3 s-18 fw-500 text-dak text-head">Email</label>
+                <label for="firstName" class="mr-3 s-18 fw-500 text-dak text-head"
+                  >Email</label
+                >
                 <el-input
                   type="text"
                   class="input-width"
@@ -274,7 +283,6 @@
                     </div>
                   </el-tabs>
                 </div>
-
               </div>
             </el-form-item>
             <el-form-item v-for="(item, index) in dynamicCustomFields" :key="index">
@@ -818,7 +826,7 @@ export default {
     const primarycolor = inject("primarycolor");
     const store = useStore();
     const showEventList = ref(false);
-    const showChooseGroup  = ref(false);
+    const showChooseGroup = ref(false);
     const addToGroupLoading = ref(false);
     const selectEventAttended = () => {
       showEventList.value = !showEventList.value;
@@ -952,10 +960,9 @@ export default {
     const chooseGroup = () => {
       showChooseGroup.value = true;
     };
-    const cancelGroupModal  = () => {
+    const cancelGroupModal = () => {
       showChooseGroup.value = false;
     };
-
 
     const newEventCategoryName = ref("");
 
@@ -1309,7 +1316,7 @@ export default {
             if (err.response && err.response.data) {
               ElMessage({
                 type: "warning",
-                message: `${err.response.data}`,
+                message: `${err.response.data.message}`,
                 duration: 8000,
               });
             } else {
@@ -1708,7 +1715,6 @@ export default {
       }
     };
     getGroups();
-    
 
     const addMemberToGroup = async () => {
       addToGroupLoading.value = true;
@@ -1896,7 +1902,7 @@ export default {
       ruleForm,
       validateRules,
       maritalStatusId,
-      showChooseGroup,  
+      showChooseGroup,
       addToGroupLoading,
       genderId,
       setSelectedMaritalStatus,
@@ -1935,11 +1941,6 @@ export default {
 
 .input-width {
   width: 100%;
-}
-.linear-gradient {
-  background: linear-gradient(90deg, #777777 48%, #111111 62%);
-  background-clip: text;
-  color: transparent;
 }
 
 .input-width {

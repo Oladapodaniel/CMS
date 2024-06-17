@@ -1,138 +1,6 @@
 <template>
-  <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
-    <div class="row">
-      <div class="col-md-12">
-        <h2 class="head-text">SMS</h2>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <hr class="hr" />
-      </div>
-    </div>
-
-    <!-- Content Box -->
-    <main class="mt-md-3" :class="{ 'main' : mdAndUp || lgAndUp || xlAndUp }">
-      <div class="container-fluid">
-        <div class="row">
-          <!-- Side mennu -->
-          <div class="col-md-3" :class="{ 'side-menu' : mdAndUp || lgAndUp || xlAndUp }">
-            <div class="row">
-              <div class="col-md-12 px-0 px-md-3 d-flex flex-column mt-4">
-                <div class="mt-2" v-show="xsOnly || smAndUp">
-                  <i class="pi pi-bars mb-3" @click="toggleMenu"></i>
-                </div>
-                <router-link to="/tenant/sms/compose" class="no-decoration">
-                  <el-button round class="font-weight-bold w-100 mb-3" size="large" :color="primarycolor" >
-                    Compose SMS
-                  </el-button>
-                </router-link>
-              </div>
-            </div>
-            <div class="row" :class="{ 'show mb-3': menuShouldShow, 'links-menu': !menuShouldShow }">
-              <div class="col-md-12 ">
-                <div class="row menu-item-con py-2" :class="{
-                  'active-link':
-                    route.path.includes('/tenant/sms/sent'),
-                }">
-                  <div class="col-md-12 menu-item-div m-auto">
-                    <a class="btn btn-default font-weight-bold">
-                      <span class="menu-item">
-                        <router-link class="r-link text-decoration-none d-flex align-items-center" to="/tenant/sms/sent">
-                          <el-icon class="mr-3"><Top /></el-icon>
-                          <span class="active">Sent</span>
-                        </router-link>
-                      </span>
-                    </a>
-                  </div>
-                </div>
-
-                <div class="row menu-item-con py-2" :class="{
-                  'active-link':
-                    route.path === '/tenant/sms',
-                }">
-                  <div class="col-md-12 menu-item-div m-auto">
-                    <a class="btn btn-default font-weight-bold">
-                      <span class="menu-item"><router-link class="r-link text-decoration-none d-flex align-items-center" to="/tenant/sms">
-                        <el-icon class="mr-3"><MessageBox /></el-icon>
-                          <span class="active">Replies</span>
-                        </router-link>
-                      </span>
-                    </a>
-                  </div>
-                </div>
-
-                <div class="row menu-item-con py-2" :class="{
-                  'active-link':
-                    route.path === '/tenant/sms/draft',
-                }">
-                  <div class="col-md-12 menu-item-div m-auto">
-                    <a class="btn btn-default font-weight-bold">
-                      <span class="menu-item">
-                        <router-link class="r-link text-decoration-none d-flex align-items-center" to="/tenant/sms/draft">
-                          <el-icon class="mr-3"><Message /></el-icon>
-                          <span class="active">Draft</span>
-                        </router-link>
-                      </span>
-                    </a>
-                  </div>
-                </div>
-
-                <div class="row menu-item-con py-2" :class="{
-                  'active-link':
-                    route.path === '/tenant/sms/contacts',
-                }">
-                  <div class="col-md-12 menu-item-div m-auto">
-                    <a class="btn btn-default font-weight-bold">
-                      <span class="menu-item">
-                        <router-link class="r-link text-decoration-none d-flex align-items-center" to="/tenant/sms/contacts">
-                          <el-icon class="mr-3"><Document /></el-icon>
-                          <span class="active">Contact List</span>
-                        </router-link>
-                      </span>
-                    </a>
-                  </div>
-                </div>
-
-                <div class="row menu-item-con py-2" :class="{
-                  'active-link':
-                    route.path === '/tenant/sms/scheduled',
-                }">
-                  <div class="col-md-12 menu-item-div m-auto">
-                    <a class="btn btn-default font-weight-bold">
-                      <span class="menu-item">
-                        <router-link class="r-link text-decoration-none d-flex align-items-center" to="/tenant/sms/scheduled">
-                          <el-icon class="mr-3"><Clock /></el-icon>
-                          <span class="active">Scheduled</span>
-                        </router-link>
-                      </span>
-                    </a>
-                  </div>
-                </div>
-                <div class="row menu-item-con py-2">
-                  <div class="col-md-12 menu-item-div m-auto">
-                    <a class="btn btn-default font-weight-bold">
-                      <span class="menu-item">
-                        <router-link class="r-link text-decoration-none d-flex align-items-center"
-                          :to="{ name: 'BuyUnits', path: '/tenant/buyunits' }">
-                          <el-icon class="mr-3"><Sell /></el-icon>
-                          <span class="active">Buy Units</span>
-                        </router-link>
-                      </span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Bigger row -->
-          <div class="col-md-9 col-xl-8 px-0 px-md-3" style="margin: auto">
-            <router-view> </router-view>
-          </div>
-        </div>
-      </div>
-    </main>
+  <div class="container-top" :class="{ 'container-wide': lgAndUp || xlAndUp }">
+    <router-view> </router-view>
   </div>
 </template>
 
@@ -145,12 +13,12 @@ export default {
     const route = useRoute();
     const menuShouldShow = ref(false);
     const { xsOnly, smAndUp, mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
-    const primarycolor = inject('primarycolor')
-
+    
 
     const toggleMenu = () => {
-      menuShouldShow.value = !menuShouldShow.value
+      menuShouldShow.value = !menuShouldShow.value;
     };
+   
 
     return {
       route,
@@ -161,18 +29,13 @@ export default {
       mdAndUp,
       xsOnly,
       smAndUp,
-      primarycolor
+     
     };
   },
 };
 </script>
 
 <style scoped>
-
-.main {
-  border: 1px solid #02172e30;
-  border-radius: 30px;
-}
 
 .side-menu {
   border-right: 1px solid #02172e30;
@@ -286,7 +149,6 @@ export default {
 }
 
 @media screen and (max-width: 765px) {
-
   .show {
     overflow: hidden;
     height: 270px;

@@ -435,45 +435,60 @@
           </div>
           <div class="col-md-12 d-block d-md-none mt-3">
             <div
-              class="col-md-12 px-3 py-4 "
+              class="col-md-12 px-3 py-4"
               style="background: #f8f8f8; border-radius: 15px"
             >
               <div class="d-flex">
-                <span><img class="w-100" src="../../assets/quickaction.png" alt=""></span>
-                <span class="text-head text-dak s-20 mt-1 font-weight-600">Quick Things you can do</span>
+                <span
+                  ><img class="w-100" src="../../assets/quickaction.png" alt=""
+                /></span>
+                <span class="text-head text-dak s-20 mt-1 font-weight-600"
+                  >Quick Things you can do</span
+                >
               </div>
               <div class="mt-3">
-                <router-link to="/tenant/people/add" class="font-weight-500 s-18 text-decoration-none  primary--text"
-                  > Add Member</router-link
+                <router-link
+                  to="/tenant/people/add"
+                  class="font-weight-500 s-18 text-decoration-none primary--text"
                 >
-                <hr class="w-100"> 
+                  Add Member</router-link
+                >
+                <hr class="w-100" />
               </div>
               <div class="mt-3">
-                <router-link to="/tenant/sms/compose" class="font-weight-500 s-18 text-decoration-none  primary--text"
-                  > Send SMS</router-link
+                <router-link
+                  to="/tenant/sms/compose"
+                  class="font-weight-500 s-18 text-decoration-none primary--text"
                 >
-                <hr class="w-100"> 
+                  Send SMS</router-link
+                >
+                <hr class="w-100" />
               </div>
               <div class="mt-3">
-                <router-link to="/tenant/people/addfirsttimer" class="font-weight-500 s-18 text-decoration-none  primary--text"
-                  >
-                    Add First Timer
-                  </router-link
+                <router-link
+                  to="/tenant/people/addfirsttimer"
+                  class="font-weight-500 s-18 text-decoration-none primary--text"
                 >
-                <hr class="w-100"> 
+                  Add First Timer
+                </router-link>
+                <hr class="w-100" />
               </div>
               <div class="mt-3">
-                <router-link to="/tenant/addoffering" class="font-weight-500 s-18 text-decoration-none  primary--text"
-                  >
-                    Record Offering
-                  </router-link
+                <router-link
+                  to="/tenant/addoffering"
+                  class="font-weight-500 s-18 text-decoration-none primary--text"
                 >
-                <hr class="w-100"> 
+                  Record Offering
+                </router-link>
+                <hr class="w-100" />
               </div>
               <div class="mt-3">
-                <router-link to="/tenant/transactionlist" class="font-weight-500 s-18 text-decoration-none  primary--text"
-                  > Record Expense </router-link
+                <router-link
+                  to="/tenant/transactionlist"
+                  class="font-weight-500 s-18 text-decoration-none primary--text"
                 >
+                  Record Expense
+                </router-link>
               </div>
             </div>
           </div>
@@ -547,9 +562,7 @@
                   <div class="celeb-icon">
                     <img src="../../assets/celeb-icon.svg" alt="Celebration Icon" />
                   </div>
-                  <div class="celeb-header-text">
-                    <p>Celebrations</p>
-                  </div>
+                  <div class="font-weight-600 text-head text-black s-32">Celebrations</div>
                 </div>
                 <Table
                   :data="tenantInfoCeleb"

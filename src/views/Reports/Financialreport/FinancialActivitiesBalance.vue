@@ -17,14 +17,8 @@
           </div>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item
-                v-for="(bookType, index) in bookTypeList"
-                :key="index"
-              >
-                <a
-                  class="no-decoration text-dark"
-                  @click="downloadFile(bookType)"
-                >
+              <el-dropdown-item v-for="(bookType, index) in bookTypeList" :key="index">
+                <a class="no-decoration text-dark" @click="downloadFile(bookType)">
                   {{ bookType.name }}
                 </a>
               </el-dropdown-item>
@@ -96,106 +90,93 @@
       </div>
     </div>
   </div>
-    <div id="element-to-print">
-      <div
-        class="container-fluid d-flex justify-content-center my-2"
-        v-if="displayTitle"
-      >
-        <div class="head-text">Accounting Activity and Balance Report</div>
-      </div>
-      <section
-        :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-        class="container-fluid"
-      >
-        <div class="row">
-          <div
-            class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness"
-          >
-            <table
-              class="table remove-styles mt-0 table-header-area"
-              id="table"
-            >
-              <thead class="table-header-area-main">
-                <tr
-                  class="font-weight-bold text-capitalize text-nowrap"
-                  style="border-bottom: 0"
-                >
-                  <th scope="col">Date</th>
-                  <th scope="col">Account Name</th>
-                  <th scope="col">Ref Number</th>
-                  <th scope="col">Description</th>
-                  <th scope="col">Debit</th>
-                  <th scope="col">Credit</th>
-                  <th scope="col">Balance</th>
-                </tr>
-              </thead>
-              <tbody class="font-weight-bold text-nowrap small-text">
-                <tr
-                  v-for="(AccountList, index) in accountInChurch"
-                  :key="index"
-                >
-                  <td>{{ formatDate(AccountList.date) }}</td>
-                  <td>{{ AccountList.accountName }}</td>
-                  <td>{{ AccountList.refNumber }}</td>
-                  <td>{{ AccountList.description }}</td>
-                  <td class="text-success">
-                    {{
-                      AccountList && AccountList.currency
-                        ? AccountList.currency.symbol
-                        : ""
-                    }}
-                    {{ Math.abs(AccountList.debit).toLocaleString() }}.00
-                  </td>
-                  <td class="text-danger">
-                    {{
-                      AccountList && AccountList.currency
-                        ? AccountList.currency.symbol
-                        : ""
-                    }}
-                    {{ Math.abs(AccountList.credit).toLocaleString() }}.00
-                  </td>
-                  <td class="text-dark font-weight-bolder">
-                    {{
-                      AccountList && AccountList.currency
-                        ? AccountList.currency.symbol
-                        : ""
-                    }}{{ Math.abs(AccountList.balance).toLocaleString() }}
-                  </td>
-                </tr>
-              </tbody>
-              <tbody
-                class="font-weight-bolder text-nowrap"
-                style="font-size: small"
-              >
-                <tr class="answer-row">
-                  <td class="gross-total">Total Balance</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td class="gross-total">
-                    {{
-                      accountInChurch.length > 0
-                        ? currentUser.currencySymbol +
-                          accountInChurch[
-                            accountInChurch.length - 1
-                          ].balance.toLocaleString()
-                        : 0
-                    }}
-                    <hr class="horizontal-rule" />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <!-- table header -->
-        <!--end table header -->
-      </section>
+  <div id="element-to-print">
+    <div class="container-fluid d-flex justify-content-center my-2" v-if="displayTitle">
+      <div class="head-text">Accounting Activity and Balance Report</div>
     </div>
+    <section
+      :class="{ 'show-report': showReport, 'hide-report': !showReport }"
+      class="container-fluid"
+    >
+      <div class="row">
+        <div
+          class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness"
+        >
+          <table class="table remove-styles mt-0 table-header-area" id="table">
+            <thead class="table-header-area-main">
+              <tr
+                class="font-weight-bold text-capitalize text-nowrap"
+                style="border-bottom: 0"
+              >
+                <th scope="col">Date</th>
+                <th scope="col">Account Name</th>
+                <th scope="col">Ref Number</th>
+                <th scope="col">Description</th>
+                <th scope="col">Debit</th>
+                <th scope="col">Credit</th>
+                <th scope="col">Balance</th>
+              </tr>
+            </thead>
+            <tbody class="font-weight-bold text-nowrap small-text">
+              <tr v-for="(AccountList, index) in accountInChurch" :key="index">
+                <td>{{ formatDate(AccountList.date) }}</td>
+                <td>{{ AccountList.accountName }}</td>
+                <td>{{ AccountList.refNumber }}</td>
+                <td>{{ AccountList.description }}</td>
+                <td class="text-success">
+                  {{
+                    AccountList && AccountList.currency ? AccountList.currency.symbol : ""
+                  }}
+                  {{ Math.abs(AccountList.debit).toLocaleString() }}.00
+                </td>
+                <td class="text-danger">
+                  {{
+                    AccountList && AccountList.currency ? AccountList.currency.symbol : ""
+                  }}
+                  {{ Math.abs(AccountList.credit).toLocaleString() }}.00
+                </td>
+                <td class="text-dark font-weight-bolder">
+                  {{
+                    AccountList && AccountList.currency
+                      ? AccountList.currency.symbol
+                      : ""
+                  }}{{
+                    typeof AccountList.balance === "number"
+                      ? Math.abs(AccountList.balance).toLocaleString()
+                      : "0"
+                  }}
+                </td>
+              </tr>
+            </tbody>
+            <tbody class="font-weight-bolder text-nowrap" style="font-size: small">
+              <tr class="answer-row">
+                <td class="gross-total">Total Balance</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="gross-total">
+                  {{
+                    accountInChurch.length > 0
+                      ? currentUser.currencySymbol +
+                        accountInChurch[
+                          accountInChurch.length - 1
+                        ].balance.toLocaleString()
+                      : 0
+                  }}
+                  <hr class="horizontal-rule" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- table header -->
+      <!--end table header -->
+    </section>
+  </div>
 </template>
-
 
 <script>
 import { computed, ref, inject } from "vue";
@@ -319,9 +300,7 @@ export default {
             i.currency ? `usd${i.currency.shortCode.toLowerCase()}` : "",
             `usd${currentUser.value.currency.toLowerCase()}`
           );
-          converted
-            .then((res) => (i.balance = res))
-            .catch((err) => console.log(err));
+          converted.then((res) => (i.balance = res)).catch((err) => console.log(err));
           return i;
         });
       } catch (err) {
