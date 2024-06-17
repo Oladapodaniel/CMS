@@ -235,17 +235,17 @@ export default {
 
       const event = {
         id: 4,
-        name: 'Events',
+        name: 'Event Management',
         logo: require('../../assets/dashboardlinks/dashboard-icon/CalendarPlus.svg'),
         route: '/',
         submenu: [
           {
-            name: 'Services',
+            name: 'Service Report',
             logo: '/',
             route: '/tenant/events',
           },
           {
-            name: 'Attendance & Checkin',
+            name: 'Registration & Checkin',
             logo: '/',
             route: '/tenant/attendancecheckin',
           }

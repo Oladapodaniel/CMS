@@ -1,562 +1,732 @@
 <template>
   <div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-sm-12 text-center">
         <div class="avg">Overall Average</div>
       </div>
-    </div>
-
-    <div class="row mt-4 mobileResponsive">
-      <div
-        class="col-6 col-sm-1 text-center default-btn cursor-pointer monthRessponsive"
-        :class="{ 'active-btn': monthlyActiveBtn }"
-        @click="toggleMonthlyClass"
-      >
-        <div>Monthly</div>
-      </div>
-      <div
-        class="col-6 col-sm-1 ml-sm-2 text-center default-btn cursor-pointer yearResponsive"
-        :class="{ 'active-btn': yearlyActiveBtn }"
-        @click="toggleYearlyClass"
-      >
-        <div>Yearly</div>
-      </div>
-      <div
-        class="col-6 offset-3 offset-sm-0 col-sm-1 ml-sm-2 mt-3 mt-sm-0 text-center default-btn cursor-pointer"
-        :class="{ 'active-btn': allTimeActiveBtn }"
-        @click="toggleAllTimeClass"
-      >
-        <div>All Time</div>
-      </div>
-    </div>
-
-    <!-- Monthly -->
-    <div class="row avg-table mt-4" v-if="monthlyActiveBtn">
-      <div class="col-6 col-md-3 first-row">
-        <div>Attendance</div>
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          :content="
-            eventSummary &&
-            eventSummary.attendanceAverage &&
-            eventSummary.attendanceAverage.monthly
-              ? eventSummary.attendanceAverage.monthly.toString()
-              : '--'
-          "
-          placement="left-start"
+    </div> -->
+    <div class="container-fluid px-0 avg-table">
+      <div class="row px-4 pt-3">
+        <div
+          class="col md-12 d-flex flex-sm-row flex-column align-items-center justify-content-center justify-content-md-start"
         >
           <div>
-            {{
+            <div
+              class="text-center default-btn d-flex align-items-center justify-content-center fw-400 s-14 cursor-pointer monthRessponsive"
+              :class="{ 'active-btn': monthlyActiveBtn }"
+              @click="toggleMonthlyClass"
+            >
+              <div>Monthly</div>
+            </div>
+          </div>
+          <div class="mt-3 mt-sm-0 ml-sm-2">
+            <div
+              class="text-center d-flex align-items-center justify-content-center fw-400 s-14 default-btn cursor-pointer yearResponsive"
+              :class="{ 'active-btn': yearlyActiveBtn }"
+              @click="toggleYearlyClass"
+            >
+              <div>Yearly</div>
+            </div>
+          </div>
+          <div class="mt-3 mt-sm-0">
+            <div
+              class="ml-sm-2 mt-3 d-flex align-items-center justify-content-center fw-400 all-time s-14 mt-md-0 text-center default-btn cursor-pointer"
+              :class="{ 'active-btn': allTimeActiveBtn }"
+              @click="toggleAllTimeClass"
+            >
+              <div>All Time</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monthly -->
+      <div class="row pl-3 pb-4 mt-4" v-if="monthlyActiveBtn">
+        <div class="col-sm-6 col-md-3 first-row">
+          <div class="font-weight-600 text-center text-head s-18">Avg. Attendance</div>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            :content="
               eventSummary &&
               eventSummary.attendanceAverage &&
               eventSummary.attendanceAverage.monthly
-                ? convert(eventSummary.attendanceAverage.monthly)
-                : "-- --"
-            }}
-          </div>
-        </el-tooltip>
-      </div>
-      <div class="col-6 col-md-3">
-        <div>
-          Offering<span style="font-size: 15px" class="font-weight-700"
-            >({{ userCurrency }})</span
+                ? eventSummary.attendanceAverage.monthly.toString()
+                : '--'
+            "
+            placement="left-start"
           >
+            <div class="font-weight-600 h2 mt-3 text-center">
+              {{
+                eventSummary &&
+                eventSummary.attendanceAverage &&
+                eventSummary.attendanceAverage.monthly
+                  ? convert(eventSummary.attendanceAverage.monthly)
+                  : "-- --"
+              }}
+            </div>
+          </el-tooltip>
         </div>
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          :content="`${
-            eventSummary &&
-            eventSummary.offeringAverage &&
-            eventSummary.offeringAverage.monthly
-              ? eventSummary.offeringAverage.monthly.toString()
-              : '--'
-          }`"
-          placement="left-start"
-        >
-          <div>
-            {{
+        <div class="col-sm-6 col-md-3">
+          <div class="font-weight-600 text-center text-head s-18">
+            Avg. Offering<span>({{ userCurrency }})</span>
+          </div>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            :content="`${
               eventSummary &&
               eventSummary.offeringAverage &&
               eventSummary.offeringAverage.monthly
-                ? convert(eventSummary.offeringAverage.monthly)
-                : "-- --"
-            }}
-          </div>
-        </el-tooltip>
-      </div>
-      <div class="col-6 col-md-3">
-        <div>First Timers</div>
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          :content="
-            eventSummary &&
-            eventSummary.firstTimerAverage &&
-            eventSummary.firstTimerAverage.monthly
-              ? eventSummary.firstTimerAverage.monthly.toString()
-              : '--'
-          "
-          placement="left-start"
-        >
-          <div>
-            {{
+                ? eventSummary.offeringAverage.monthly.toString()
+                : '--'
+            }`"
+            placement="left-start"
+          >
+            <div class="h2 font-weight-600 mt-3 text-center">
+              {{
+                eventSummary &&
+                eventSummary.offeringAverage &&
+                eventSummary.offeringAverage.monthly
+                  ? convert(eventSummary.offeringAverage.monthly)
+                  : "-- --"
+              }}
+            </div>
+          </el-tooltip>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <div class="font-weight-600 text-center text-head s-18">Avg. First Timer</div>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            :content="
               eventSummary &&
               eventSummary.firstTimerAverage &&
               eventSummary.firstTimerAverage.monthly
-                ? convert(eventSummary.firstTimerAverage.monthly)
-                : "-- --"
-            }}
-          </div>
-        </el-tooltip>
-      </div>
-      <div class="col-6 col-md-3">
-        <div>New Converts</div>
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          :content="
-            eventSummary &&
-            eventSummary.newConvertAverage &&
-            eventSummary.newConvertAverage.monthly
-              ? eventSummary.newConvertAverage.monthly.toString()
-              : '--'
-          "
-          placement="left-start"
-        >
-          <div>
-            {{
+                ? eventSummary.firstTimerAverage.monthly.toString()
+                : '--'
+            "
+            placement="left-start"
+          >
+            <div class="h2 font-weight-600 mt-3 text-center">
+              {{
+                eventSummary &&
+                eventSummary.firstTimerAverage &&
+                eventSummary.firstTimerAverage.monthly
+                  ? convert(eventSummary.firstTimerAverage.monthly)
+                  : "-- --"
+              }}
+            </div>
+          </el-tooltip>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <div class="font-weight-600 text-center text-head s-18">Avg. New Convert</div>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            :content="
               eventSummary &&
               eventSummary.newConvertAverage &&
               eventSummary.newConvertAverage.monthly
-                ? convert(eventSummary.newConvertAverage.monthly)
-                : "-- --"
-            }}
-          </div>
-        </el-tooltip>
-      </div>
-    </div>
-
-    <!-- yearly -->
-    <div class="row avg-table mt-4" v-if="yearlyActiveBtn">
-      <div class="col-6 col-md-3 first-row">
-        <div>Attendance</div>
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          :content="eventSummary.attendanceAverage.yearly.toString()"
-          placement="left-start"
-        >
-          <div>{{ convert(eventSummary.attendanceAverage.yearly) }}</div>
-        </el-tooltip>
-      </div>
-      <div class="col-6 col-md-3">
-        <div>
-          Offering<span style="font-size: 15px" class="font-weight-700"
-            >({{ userCurrency }})</span
+                ? eventSummary.newConvertAverage.monthly.toString()
+                : '--'
+            "
+            placement="left-start"
           >
+            <div class="h2 font-weight-600 mt-3 text-center">
+              {{
+                eventSummary &&
+                eventSummary.newConvertAverage &&
+                eventSummary.newConvertAverage.monthly
+                  ? convert(eventSummary.newConvertAverage.monthly)
+                  : "-- --"
+              }}
+            </div>
+          </el-tooltip>
         </div>
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          :content="
-            eventSummary &&
-            eventSummary.offeringAverage &&
-            eventSummary.offeringAverage.yearly
-              ? eventSummary.offeringAverage.yearly.toString()
-              : '-- --'
-          "
-          placement="left-start"
-        >
-          <div>
-            {{
+      </div>
+
+      <!-- yearly -->
+      <div class="row pl-5 pb-4 mt-4" v-if="yearlyActiveBtn">
+        <div class="col-sm-6 col-md-3 first-row">
+          <div class="font-weight-600 text-center text-head s-18">Avg. Attendance</div>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            :content="eventSummary.attendanceAverage.yearly.toString()"
+            placement="left-start"
+          >
+            <div class="h2 font-weight-600 mt-3 text-center">
+              {{ convert(eventSummary.attendanceAverage.yearly) }}
+            </div>
+          </el-tooltip>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <div class="font-weight-600 text-center text-head s-18">
+            Avg. Offering<span>({{ userCurrency }})</span>
+          </div>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            :content="
               eventSummary &&
               eventSummary.offeringAverage &&
               eventSummary.offeringAverage.yearly
-                ? convert(eventSummary.offeringAverage.yearly)
-                : "-- --"
-            }}
-          </div>
-        </el-tooltip>
-      </div>
-      <div class="col-6 col-md-3">
-        <div>First Timers</div>
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          :content="
-            eventSummary.firstTimerAverage
-              ? eventSummary.firstTimerAverage.yearly.toString()
-              : ''
-          "
-          placement="left-start"
-        >
-          <div>{{ convert(eventSummary.firstTimerAverage.yearly) }}</div>
-        </el-tooltip>
-      </div>
-      <div class="col-6 col-md-3">
-        <div>New Converts</div>
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          :content="`${
-            eventSummary.newConvertAverage
-              ? eventSummary.newConvertAverage.yearly.toString()
-              : ''
-          }`"
-          placement="left-start"
-        >
-          <div>{{ convert(eventSummary.newConvertAverage.yearly) }}</div>
-        </el-tooltip>
-      </div>
-    </div>
-
-    <!-- All time -->
-    <div class="row avg-table mt-4" v-if="allTimeActiveBtn">
-      <div class="col-6 col-md-3 first-row">
-        <div>Attendance</div>
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          :content="eventSummary.attendanceAverage.allTime.toString()"
-          placement="top-start"
-        >
-          <div>{{ convert(eventSummary.attendanceAverage.allTime) }}</div>
-        </el-tooltip>
-      </div>
-      <div class="col-6 col-md-3">
-        <div>
-          Offering<span style="font-size: 15px" class="font-weight-700"
-            >({{ userCurrency }})</span
+                ? eventSummary.offeringAverage.yearly.toString()
+                : '-- --'
+            "
+            placement="left-start"
           >
+            <div class="h2 font-weight-600 mt-3 text-center">
+              {{
+                eventSummary &&
+                eventSummary.offeringAverage &&
+                eventSummary.offeringAverage.yearly
+                  ? convert(eventSummary.offeringAverage.yearly)
+                  : "-- --"
+              }}
+            </div>
+          </el-tooltip>
         </div>
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          :content="
-            eventSummary &&
-            eventSummary.offeringAverage &&
-            eventSummary.offeringAverage.allTime
-              ? eventSummary.offeringAverage.allTime.toString()
-              : '-- --'
-          "
-          placement="top-start"
-        >
-          <div>
-            {{
+        <div class="col-sm-6 col-md-3">
+          <div class="font-weight-600 text-center text-head s-18">Avg. First Timer</div>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            :content="
+              eventSummary.firstTimerAverage
+                ? eventSummary.firstTimerAverage.yearly.toString()
+                : ''
+            "
+            placement="left-start"
+          >
+            <div class="h2 mt-3 font-weight-600">
+              {{ convert(eventSummary.firstTimerAverage.yearly) }}
+            </div>
+          </el-tooltip>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <div class="font-weight-600 text-center text-head s-18">Avg. New Convert</div>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            :content="`${
+              eventSummary.newConvertAverage
+                ? eventSummary.newConvertAverage.yearly.toString()
+                : ''
+            }`"
+            placement="left-start"
+          >
+            <div class="h2 font-weight-600 mt-3 text-center">
+              {{ convert(eventSummary.newConvertAverage.yearly) }}
+            </div>
+          </el-tooltip>
+        </div>
+      </div>
+
+      <!-- All time -->
+      <div class="row pl-5 pb-4 mt-4" v-if="allTimeActiveBtn">
+        <div class="col-sm-6 col-md-3 first-row">
+          <div>Attendance</div>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            :content="eventSummary.attendanceAverage.allTime.toString()"
+            placement="top-start"
+          >
+            <div>{{ convert(eventSummary.attendanceAverage.allTime) }}</div>
+          </el-tooltip>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <div class="font-weight-600 text-center text-head s-18">
+            Avg. Offering<span style="font-size: 15px" class="font-weight-700"
+              >({{ userCurrency }})</span
+            >
+          </div>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            :content="
               eventSummary &&
               eventSummary.offeringAverage &&
               eventSummary.offeringAverage.allTime
-                ? convert(eventSummary.offeringAverage.allTime)
-                : "-- --"
-            }}
-          </div>
-        </el-tooltip>
-      </div>
-      <div class="col-6 col-md-3">
-        <div>First Timers</div>
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          :content="
-            eventSummary.firstTimerAverage
-              ? eventSummary.firstTimerAverage.allTime.toString()
-              : ''
-          "
-          placement="top-start"
-        >
-          <div>{{ convert(eventSummary.firstTimerAverage.allTime) }}</div>
-        </el-tooltip>
-      </div>
-      <div class="col-6 col-md-3">
-        <div>New Converts</div>
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          :content="
-            eventSummary.newConvertAverage
-              ? eventSummary.newConvertAverage.allTime.toString()
-              : ''
-          "
-          placement="top-start"
-        >
-          <div>{{ convert(eventSummary.newConvertAverage.allTime) }}</div>
-        </el-tooltip>
+                ? eventSummary.offeringAverage.allTime.toString()
+                : '-- --'
+            "
+            placement="top-start"
+          >
+            <div class="font-weight-600 mt-3 h2 text-center">
+              {{
+                eventSummary &&
+                eventSummary.offeringAverage &&
+                eventSummary.offeringAverage.allTime
+                  ? convert(eventSummary.offeringAverage.allTime)
+                  : "-- --"
+              }}
+            </div>
+          </el-tooltip>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <div class="font-weight-600 text-center text-head s-18">Avg. First Timer</div>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            :content="
+              eventSummary.firstTimerAverage
+                ? eventSummary.firstTimerAverage.allTime.toString()
+                : ''
+            "
+            placement="top-start"
+          >
+            <div class="font-weight-600 mt-3 h2">
+              {{ convert(eventSummary.firstTimerAverage.allTime) }}
+            </div>
+          </el-tooltip>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <div class="font-weight-600 text-center text-head s-18">Avg. New Convert</div>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            :content="
+              eventSummary.newConvertAverage
+                ? eventSummary.newConvertAverage.allTime.toString()
+                : ''
+            "
+            placement="top-start"
+          >
+            <div class="font-weight-600 mt-3 text-center h2">
+              {{ convert(eventSummary.newConvertAverage.allTime) }}
+            </div>
+          </el-tooltip>
+        </div>
       </div>
     </div>
     <!-- </div> -->
-    <hr class="hr" />
     <!-- </div> -->
     <!-- <div class="container"> -->
-    <div class="row">
-      <div class="col-sm-12 p-0 mt-5">
-        <div class="table-top p-3 mt-5">
-          <div class="row d-flex flex-column flex-sm-row justify-content-sm-end">
-            <div class="col-md-2">
-              <p
-                @click="toggleFilterFormVissibility"
-                class="mb-0 mr-3 d-flex my-3 my-sm-0 c-pointer"
-              >
-                <el-icon :size="13">
-                  <Filter />
-                </el-icon>
-                <span class="ml-1"> FILTER</span>
-              </p>
-            </div>
-            <div class="col-md-5">
-              <el-input
-                size="small"
-                v-model="searchText"
-                placeholder="Search..."
-                @input="searchingMember = true"
-                @keyup.enter.prevent="searchPeopleInDB($event)"
-                class="input-with-select"
-              >
-                <template #suffix>
-                  <el-button
-                    style="padding: 5px; height: 22px"
-                    @click.prevent="searchText = ''"
-                  >
-                    <el-icon :size="13">
-                      <Close />
-                    </el-icon>
-                  </el-button>
-                </template>
-                <template #append>
-                  <el-button @click.prevent="searchPeopleInDB($event)">
-                    <el-icon :size="13">
-                      <Search />
-                    </el-icon>
-                  </el-button>
-                </template>
-              </el-input>
-            </div>
-          </div>
-
-          <div
-            class="filter-options mt-3"
-            :class="{ 'filter-options-shown': filterFormIsVissible }"
-          >
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-md-9">
-                  <div class="row">
-                    <div
-                      class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-12 p-0 mt-5">
+          <!-- <div class="table-top p-3 mt-5">
+            <div class="row d-flex flex-column flex-sm-row justify-content-sm-end">
+              <div class="col-md-2">
+                <p
+                  @click="toggleFilterFormVissibility"
+                  class="mb-0 mr-3 d-flex my-3 my-sm-0 c-pointer"
+                >
+                  <el-icon :size="13">
+                    <Filter />
+                  </el-icon>
+                  <span class="ml-1"> FILTER</span>
+                </p>
+              </div>
+              <div class="col-md-5">
+                <el-input
+                  size="small"
+                  v-model="searchText"
+                  placeholder="Search..."
+                  @input="searchingMember = true"
+                  @keyup.enter.prevent="searchPeopleInDB($event)"
+                  class="input-with-select"
+                >
+                  <template #suffix>
+                    <el-button
+                      style="padding: 5px; height: 22px"
+                      @click.prevent="searchText = ''"
                     >
-                      <el-input type="text" class="w-100" placeholder="First Name" />
-                    </div>
-
-                    <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                      <el-date-picker
-                        type="date"
-                        class="w-100"
-                        size="large"
-                        placeholder="Pick a Date"
-                        format="MM/DD/YYYY"
-                      />
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                      <el-input type="text" class="w-100" placeholder="Last Name" />
-                    </div>
-
-                    <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                      <el-input type="text" class="w-100" placeholder="Phone Number" />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-3 d-flex flex-column align-items-center">
-                  <el-button round :color="primarycolor" class="text-white">
-                    Apply
-                  </el-button>
-                  <span class="mt-2">
-                    <a class="clear-link mr-2" @click="clearAll">Clear all</a>
-                    <span class="mx-2"
-                      ><i class="fas fa-circle" style="font-size: 4px"></i></span
-                    ><a class="hide-link ml-2" @click="hide">Hide</a>
-                  </span>
-                </div>
+                      <el-icon :size="13">
+                        <Close />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                  <template #append>
+                    <el-button @click.prevent="searchPeopleInDB($event)">
+                      <el-icon :size="13">
+                        <Search />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                </el-input>
               </div>
             </div>
-          </div>
-        </div>
-        <Table
-          :headers="eventHeaders"
-          :checkMultipleItem="false"
-          :data="filterEvents"
-          v-if="filterEvents.length > 0"
-        >
-          <template v-slot:isSent="{ item }">
-            <div class="c-pointer td-first">
-              <router-link
-                :to="`/tenant/event/${item.activityId}`"
-                class="text-decoration-none text-color"
-              >
-                {{ item.isSent ? "Sent" : "Unsent" }}
-              </router-link>
-            </div>
-          </template>
-          <template v-slot:eventName="{ item }">
-            <router-link
-              :to="`/tenant/event/${item.activityId}`"
-              class="text-decoration-none text-color"
+
+            <div
+              class="filter-options mt-3"
+              :class="{ 'filter-options-shown': filterFormIsVissible }"
             >
-              <div class="c-pointer">{{ item.eventName }}</div>
-            </router-link>
-          </template>
-          <template v-slot:title="{ item }">
-            <div class="c-pointer">
-              <router-link
-                :to="`/tenant/event/${item.activityId}`"
-                class="text-decoration-none text-color"
-              >
-                {{ item.title }}
-              </router-link>
-            </div>
-          </template>
-          <template v-slot:activityDate="{ item }">
-            <div class="c-pointer">
-              <router-link
-                :to="`/tenant/event/${item.activityId}`"
-                class="text-decoration-none text-color"
-              >
-                <span>{{ date(item.activityDate) }}</span>
-              </router-link>
-            </div>
-          </template>
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-9">
+                    <div class="row">
+                      <div
+                        class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
+                      >
+                        <el-input type="text" class="w-100" placeholder="First Name" />
+                      </div>
 
-          <template v-slot:attendances="{ item }">
-            <div class="c-pointer">
-              <router-link
-                :to="`/tenant/event/${item.activityId}`"
-                class="text-decoration-none text-color"
-              >
-                {{ item.attendances }}
-              </router-link>
-            </div>
-          </template>
-          <template v-slot:firstTimers="{ item }">
-            <div class="c-pointer">
-              <router-link
-                :to="`/tenant/event/${item.activityId}`"
-                class="text-decoration-none text-color"
-              >
-                {{ item.firstTimers }}
-              </router-link>
-            </div>
-          </template>
-
-          <template v-slot:newConverts="{ item }">
-            <div class="c-pointer">
-              <router-link
-                :to="`/tenant/event/${item.activityId}`"
-                class="text-decoration-none text-color"
-              >
-                {{ item.newConverts }}
-              </router-link>
-            </div>
-          </template>
-
-          <template v-slot:approve="{ item }">
-            <div class="c-pointer">
-              <div
-                class="spinner-border text-primary"
-                style="font-size: 10px; width: 26px; height: 26px"
-                role="status"
-                v-show="item.approvingServiceReport"
-              >
-                <span class="sr-only">Loading...</span>
-              </div>
-              <div
-                v-if="!item.approved && !item.approvingServiceReport"
-                @click="approveReport(item, 1)"
-              >
-                <el-icon size="27">
-                  <CircleCheck />
-                </el-icon>
-              </div>
-              <video
-                height="30"
-                autoplay
-                @click="approveReport(item, 2)"
-                class="approveservicereport"
-                v-if="item.approved && !item.approvingServiceReport"
-              >
-                <source src="../../assets/check_animated.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-          </template>
-
-          <template v-slot:action="{ item }">
-            <el-dropdown trigger="click">
-              <el-icon>
-                <MoreFilled />
-              </el-icon>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item>
-                    <router-link
-                      :to="`/tenant/report/${item.activityId}`"
-                      class="text-decoration-none text-color"
-                    >
-                      View Report
-                    </router-link>
-                  </el-dropdown-item>
-                  <el-dropdown-item>
-                    <router-link
-                      :to="`/tenant/event/${item.activityId}`"
-                      class="text-decoration-none text-color"
-                    >
-                      Edit
-                    </router-link>
-                  </el-dropdown-item>
-                  <el-dropdown-item>
-                    <div
-                      @click.prevent="showConfirmModal(item.activityId, index)"
-                      class="text-color"
-                    >
-                      Delete
+                      <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                        <el-date-picker
+                          type="date"
+                          class="w-100"
+                          size="large"
+                          placeholder="Pick a Date"
+                          format="MM/DD/YYYY"
+                        />
+                      </div>
                     </div>
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </template>
-        </Table>
-        <!-- {{membersCount}} {{currentPage}} -->
 
-        <!-- <div class="table-footer">
+                    <div class="row">
+                      <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                        <el-input type="text" class="w-100" placeholder="Last Name" />
+                      </div>
+
+                      <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                        <el-input type="text" class="w-100" placeholder="Phone Number" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3 d-flex flex-column align-items-center">
+                    <el-button round :color="primarycolor" class="text-white">
+                      Apply
+                    </el-button>
+                    <span class="mt-2">
+                      <a class="clear-link mr-2" @click="clearAll">Clear all</a>
+                      <span class="mx-2"
+                        ><i class="fas fa-circle" style="font-size: 4px"></i></span
+                      ><a class="hide-link ml-2" @click="hide">Hide</a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+          <div class="tab-options d-block d-md-none mt-5">
+            <div class="s-14 fw-500 col-md-10 px-0 mt-5">
+                <div class="d-flex flex-column flex-md-row justify-content-md-between">
+                   <!-- <div>
+                  <el-tooltip
+                    class="box-item"
+                    effect="dark"
+                    v-if="markedMail.length > 0"
+                    content="Delete member(s)"
+                    placement="top-start"
+                  >
+                    <el-icon
+                      :size="28"
+                      class="ml-2 c-pointer primary--text"
+                      v-if="markedMail.length > 0"
+                      @click="showConfirmModal(false)"
+                    >
+                      <Delete />
+                    </el-icon>
+                  </el-tooltip>
+                </div> -->
+                  <el-input
+                    size="small"
+                    v-model="searchText"
+                    placeholder="Search"
+                    :suffix-icon="Search"
+                    @input="searchingMember = true"
+                    @keyup.enter.prevent="searchPeopleInDB($event)"
+                    class="input-with-select col-md-12 col-9"
+                  />
+                  <div
+                    style="background: #eeeeee"
+                    class="ml-2 mt-3 py-2 mt-md-0 d-flex align-items-center justify-content-center border-radius-8"
+                  >
+                    <p
+                      @click="toggleFilterFormVissibility"
+                      class="mb-0 px-3 d-flex my-3 my-sm-0 c-pointer"
+                    >
+                      <span class="mr-1"> Filter</span>
+                      <el-icon :size="18">
+                        <Filter />
+                      </el-icon>
+                    </p>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="tab-options d-none d-md-block mt-5">
+            <div class="table-top col-12 col-md-8 col-lg-8 col-xl-9 px-0 mt-5">
+              <div class="d-flex flex-column flex-md-row justify-content-md-between">
+                <!-- <div>
+                  <el-tooltip
+                    class="box-item d-flex"
+                    effect="dark"
+                    v-if="markedMail.length > 0"
+                    content="Delete member(s)"
+                    placement="top-start"
+                  >
+                    <el-icon
+                      :size="28"
+                      class="ml-2 c-pointer primary--text"
+                      v-if="markedMail.length > 0"
+                      @click="showConfirmModal(false)"
+                    >
+                      <Delete />
+                    </el-icon>
+                  </el-tooltip>
+                </div> -->
+                <div class="d-flex flex-column flex-md-row justify-content-md-between">
+                  <el-input
+                    size="small"
+                    v-model="searchText"
+                    placeholder="Search"
+                    :suffix-icon="Search"
+                    @input="searchingMember = true"
+                    @keyup.enter.prevent="searchPeopleInDB($event)"
+                    class="input-with-select col-md-12 col-9"
+                  />
+                  <div
+                    style="background: #eeeeee"
+                    class="ml-2 mt-3 py-2 mt-md-0 d-flex align-items-center justify-content-center border-radius-8"
+                  >
+                    <p
+                      @click="toggleFilterFormVissibility"
+                      class="mb-0 px-3 d-flex my-3 my-sm-0 c-pointer"
+                    >
+                      <span class="mr-1"> Filter</span>
+                      <el-icon :size="18">
+                        <Filter />
+                      </el-icon>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <Table
+            :headers="eventHeaders"
+            :checkMultipleItem="false"
+            :data="filterEvents"
+            v-if="filterEvents.length > 0"
+          >
+            <template v-slot:isSent="{ item }">
+              <div v-if="item.isSent" class="c-pointer td-first2">
+                <router-link
+                  :to="`/tenant/event/${item.activityId}`"
+                  class="text-decoration-none text-color"
+                >
+                  Sent
+                </router-link>
+              </div>
+              <div v-else class="c-pointer td-first">
+                <router-link
+                  :to="`/tenant/event/${item.activityId}`"
+                  class="text-decoration-none text-color"
+                >
+                  Unsent
+                </router-link>
+              </div>
+            </template>
+            <template v-slot:eventName="{ item }">
+              <router-link
+                :to="`/tenant/event/${item.activityId}`"
+                class="text-decoration-none text-color"
+              >
+                <div class="c-pointer">{{ item.eventName }}</div>
+              </router-link>
+            </template>
+            <template v-slot:title="{ item }">
+              <div class="c-pointer">
+                <router-link
+                  :to="`/tenant/event/${item.activityId}`"
+                  class="text-decoration-none text-color"
+                >
+                  {{ item.title }}
+                </router-link>
+              </div>
+            </template>
+            <template v-slot:activityDate="{ item }">
+              <div class="c-pointer">
+                <router-link
+                  :to="`/tenant/event/${item.activityId}`"
+                  class="text-decoration-none text-color"
+                >
+                  <span>{{ date(item.activityDate) }}</span>
+                </router-link>
+              </div>
+            </template>
+
+            <template v-slot:attendances="{ item }">
+              <div class="c-pointer">
+                <router-link
+                  :to="`/tenant/event/${item.activityId}`"
+                  class="text-decoration-none text-color"
+                >
+                  {{ item.attendances }}
+                </router-link>
+              </div>
+            </template>
+            <template v-slot:firstTimers="{ item }">
+              <div class="c-pointer">
+                <router-link
+                  :to="`/tenant/event/${item.activityId}`"
+                  class="text-decoration-none text-color"
+                >
+                  {{ item.firstTimers }}
+                </router-link>
+              </div>
+            </template>
+
+            <template v-slot:newConverts="{ item }">
+              <div class="c-pointer">
+                <router-link
+                  :to="`/tenant/event/${item.activityId}`"
+                  class="text-decoration-none text-color"
+                >
+                  {{ item.newConverts }}
+                </router-link>
+              </div>
+            </template>
+
+            <template v-slot:approve="{ item }">
+              <div class="c-pointer">
+                <div
+                  class="spinner-border text-primary"
+                  style="font-size: 10px; width: 26px; height: 26px"
+                  role="status"
+                  v-show="item.approvingServiceReport"
+                >
+                  <span class="sr-only">Loading...</span>
+                </div>
+                <div
+                  v-if="!item.approved && !item.approvingServiceReport"
+                  @click="approveReport(item, 1)"
+                >
+                  <el-icon size="27">
+                    <CircleCheck />
+                  </el-icon>
+                </div>
+                <video
+                  height="30"
+                  autoplay
+                  @click="approveReport(item, 2)"
+                  class="approveservicereport"
+                  v-if="item.approved && !item.approvingServiceReport"
+                >
+                  <source src="../../assets/check_animated.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </template>
+
+            <template v-slot:action="{ item }">
+              <el-dropdown trigger="click">
+                <el-icon>
+                  <MoreFilled />
+                </el-icon>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item>
+                      <router-link
+                        :to="`/tenant/report/${item.activityId}`"
+                        class="text-decoration-none text-color"
+                      >
+                        View Report
+                      </router-link>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                      <router-link
+                        :to="`/tenant/event/${item.activityId}`"
+                        class="text-decoration-none text-color"
+                      >
+                        Edit
+                      </router-link>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                      <div
+                        @click.prevent="showConfirmModal(item.activityId, index)"
+                        class="text-color"
+                      >
+                        Delete
+                      </div>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </template>
+          </Table>
+          <!-- {{membersCount}} {{currentPage}} -->
+
+          <!-- <div class="table-footer">
           <PaginationButtons
             @getcontent="getPeopleByPage"
             :itemsCount="membersCount"
             :currentPage="currentPage"
           />
         </div> -->
-        <div class="d-flex justify-content-end my-3">
-          <el-pagination
-            v-model:current-page="serverOptions.page"
-            v-model:page-size="serverOptions.rowsPerPage"
-            background
-            layout="total, prev, pager, next, jumper"
-            :total="totalItems"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          />
+          <div class="d-flex justify-content-end my-3">
+            <el-pagination
+              v-model:current-page="serverOptions.page"
+              v-model:page-size="serverOptions.rowsPerPage"
+              background
+              layout="total, prev, pager, next, jumper"
+              :total="totalItems"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+            />
+          </div>
         </div>
       </div>
     </div>
+    <el-dialog
+      v-model="showFilter"
+      title=""
+      :width="mdAndUp || lgAndUp || xlAndUp ? `35%` : xsOnly ? `90%` : `70%`"
+      class="QRCodeDialog border-radius-20"
+      align-center
+    >
+      <div class="filter-optio">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12 text-center text-black h2 fw-500">Filter</div>
+            <div class="col-md-12 text-center text-black s-24">
+              Narrow down your search
+            </div>
+            <div class="col-md-12 mt-3">
+              <div class="row justify-content-center">
+                <div class="col-md-11 form-group">
+                  <div class="text-black">First name</div>
+                  <el-input placeholder="First name" class="w-100" type="text" />
+                </div>
+                <div class="col-md-11 form-group">
+                  <div class="text-black">Phone number</div>
+                  <el-input placeholder="Phone number" class="w-100" type="text" />
+                </div>
+                <div class="col-md-12 pb-3 d-flex justify-content-center">
+                  <el-button
+                    class="col-md-11"
+                    :color="primarycolor"
+                    @click="applyFilter"
+                    :loading="applyLoading"
+                    :disabled="disableBtn"
+                    round
+                    >Apply</el-button
+                  >
+                  <!-- <div class="mt-2 col-md-11">
+                      <el-button @click="clearAll" class="mr-2" text
+                        >Clear all</el-button
+                      > -->
+                  <!-- <el-button @click="hide" class="mx-2" text>Hide</el-button> -->
+                  <!-- </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import axios from "@/gateway/backendapi";
 import { ref, computed, inject, watch } from "vue";
+import { Search } from "@element-plus/icons-vue";
 import moment from "moment";
 import { useStore } from "vuex";
 import userService from "../../services/user/userservice";
@@ -564,6 +734,7 @@ import monthDayYear from "../../services/dates/dateformatter";
 import convertNumber from "../../services/numbershortener/numberfomatter";
 import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
 import finish from "../../services/progressbar/progress";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import Table from "@/components/table/Table";
 import { ElMessage, ElMessageBox } from "element-plus";
 import eventsService from "../../services/events/eventsservice";
@@ -579,10 +750,12 @@ export default {
     const searchIsVisible = ref(false);
     const store = useStore();
     const userCurrency = ref(store.getters.currency);
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
     const searchText = ref("");
     const monthlyActiveBtn = ref(true);
     const totalItems = ref(props.totalItems);
     const yearlyActiveBtn = ref(false);
+    const showFilter = ref(false);
     const allTimeActiveBtn = ref(false);
     const searchingMember = ref(true);
     const eventHeaders = ref([
@@ -649,7 +822,8 @@ export default {
         });
     };
     const toggleFilterFormVissibility = () => {
-      filterFormIsVissible.value = !filterFormIsVissible.value;
+      showFilter.value = true;
+      // filterFormIsVissible.value = !filterFormIsVissible.value;
     };
     const toggleSearch = () => {
       searchIsVisible.value = !searchIsVisible.value;
@@ -695,18 +869,22 @@ export default {
         }
       });
     };
+
+    const applyFilter = () => {
+      showFilter.value = false;
+    };
     const toggleMonthlyClass = () => {
-      monthlyActiveBtn.value = !monthlyActiveBtn.value;
+      monthlyActiveBtn.value = true;
       yearlyActiveBtn.value = false;
       allTimeActiveBtn.value = false;
     };
     const toggleYearlyClass = () => {
-      yearlyActiveBtn.value = !yearlyActiveBtn.value;
+      yearlyActiveBtn.value = true;
       allTimeActiveBtn.value = false;
       monthlyActiveBtn.value = false;
     };
     const toggleAllTimeClass = () => {
-      allTimeActiveBtn.value = !allTimeActiveBtn.value;
+      allTimeActiveBtn.value = true;
       yearlyActiveBtn.value = false;
       monthlyActiveBtn.value = false;
     };
@@ -827,6 +1005,13 @@ export default {
       eventHeaders,
       primarycolor,
       approveReport,
+      applyFilter,
+      showFilter,
+      Search,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      xsOnly,
     };
   },
 };
@@ -854,6 +1039,16 @@ export default {
   display: flex;
   /* background: #f1f5f8; */
   /* height: 100vh; */
+}
+
+.yearResponsive {
+  background: #efefef !important;
+}
+.monthRessponsive {
+  background: #efefef !important;
+}
+.all-time {
+  background: #efefef !important;
 }
 
 .main-con {
@@ -1052,11 +1247,20 @@ export default {
 }
 
 .table-top {
-  font-weight: 800;
-  font-size: 12px;
+  position: absolute;
+  z-index: 1;
+  top: -40px;
+  left: 80px;
+  /* width: 100%; */
+  font-weight: 500 !important;
+  font-size: 14px;
   background: #fff;
-  border: 1px solid #d4dde3;
-  border-bottom: none;
+  color: #000000;
+  /* border: 1px solid #d4dde3; */
+  /* max-width: 83.333333% !important; */
+}
+.tab-options {
+  position: relative;
 }
 
 .table-top label:hover,
@@ -1145,7 +1349,7 @@ export default {
 
 /* .average  */
 .avg {
-  font: normal normal bold 24px/32px Nunito Sans;
+  /* font: normal normal bold 24px/32px Nunito Sans; */
   letter-spacing: 0px;
   color: #136acd;
   margin-top: 1em;
@@ -1153,31 +1357,31 @@ export default {
 
 .avg-table {
   margin-top: 1em;
-  border: 1px solid #dde2e6;
+  border: 1px solid #c9c9c9;
   /* box-shadow: 0px 3px 6px #2c28281c; */
-  /* border-radius: 10px; */
-  padding: 10px;
+  border-radius: 8px;
+  /* padding: 10px; */
   /* border-radius: 30px; */
 }
 
 .avg-table > div > div:first-child {
-  font: normal normal 600 16px/13px Nunito Sans;
+  /* font: normal normal 600 16px/13px Nunito Sans; */
   letter-spacing: 0px;
-  color: #002044;
-  padding: 15px;
+  color: #111111;
+  /* padding: 15px; */
 }
 
 .avg-table > div > div:nth-child(2) {
-  font: normal normal normal 32px/13px Nunito Sans;
+  /* font: normal normal normal 32px/13px Nunito Sans; */
   letter-spacing: 0px;
-  color: #002044;
-  padding: 15px;
+  color: #111111;
+  /* padding: 15px; */
 }
 
 .avg-table > div:nth-child(5) {
-  font: normal normal normal 14px/13px Nunito Sans;
+  /* font: normal normal normal 14px/13px Nunito Sans; */
   letter-spacing: 0px;
-  color: #002044;
+  color: #111111;
 }
 
 .thead {
@@ -1187,13 +1391,29 @@ export default {
 }
 
 .td-first {
-  font: normal normal 800 14px/19px Nunito Sans;
+  font-size: 12px;
+  line-height: 18px;
   letter-spacing: 0px;
-  color: #313131;
-  border-top-left-radius: 25px;
-  border-bottom-left-radius: 25px;
-  background: #cecbcb70;
+  color: #2f2f2f;
+  border: 1px solid #a7a7a7;
+  background: #f3ffef;
   padding: 7px;
+  border-radius: 60px;
+  opacity: 0px;
+
+  /* margin-left: 10px; */
+}
+.td-first2 {
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0px;
+  color: #2f2f2f;
+  border: 1px solid #24e94f;
+  background: #f3ffef;
+  padding: 7px;
+  border-radius: 60px;
+  opacity: 0px;
+
   /* margin-left: 10px; */
 }
 
@@ -1203,12 +1423,13 @@ export default {
 
 .default-btn {
   border: none;
-  box-shadow: 0px 3px 6px #2c28281c;
-  border: 1px solid #dde2e6;
+  /* box-shadow: 0px 3px 6px #2c28281c; */
+  /* border: 1px solid #dde2e6; */
 }
 
 .active-btn {
-  background: #0e74c721;
+  background: #ebedff !important;
+  color: #0745af !important;
 }
 
 @media screen and (max-width: 500px) {
@@ -1278,7 +1499,7 @@ export default {
   }
 
   .mobileResponsive {
-    display: block !important;
+    /* display: block !important; */
     margin: auto !important;
   }
 
@@ -1289,7 +1510,10 @@ export default {
 
   .yearResponsive {
     margin: auto !important;
-    margin-top: 15px !important;
+  }
+  .all-time {
+    margin: auto !important;
+    /* width: 100% !important; */
   }
 }
 
