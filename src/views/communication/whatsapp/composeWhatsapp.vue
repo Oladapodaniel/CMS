@@ -267,12 +267,12 @@
             </transition>
 
             <!-- accept="image/*"  -->
-            <el-upload class="upload-demo" multiple :limit="1" :on-change="chooseFile" :on-remove="handleRemove"
+            <!-- <el-upload class="upload-demo" multiple :limit="1" :on-change="chooseFile" :on-remove="handleRemove"
               :auto-upload="false">
               <el-icon class="ml-2" style="font-size: 20px; color: #7d7d7d;">
                 <Paperclip />
               </el-icon>
-            </el-upload>
+            </el-upload> -->
           </div>
 
           <div class="row align-items-center">
@@ -355,12 +355,13 @@ import moment from 'moment'
 import VueQrcode from 'vue-qrcode';
 import swal from 'sweetalert';
 import { VuemojiPicker } from 'vuemoji-picker'
-import { state } from "@/socket";
-import { socket } from "@/socket";
+// import { state } from "@/socket";
+// import { socket } from "@/socket";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 // import testing from "./testing.vue"
 import dateFormatter from "../../../services/dates/dateformatter";
 import api from "axios";
+import { whatsappServerBaseURL } from "../../../gateway/backendapi";
 
 export default {
   components: {
@@ -495,7 +496,7 @@ export default {
     const getAllWhatsappGroups = async () => {
       whatsappGroupsLoading.value = true;
       try {
-        let { data } = await api.get(`http://localhost:3001/groups/getAllWhatsappGroups?key=${clientSessionId.value}`);
+        let { data } = await api.get(`${whatsappServerBaseURL}groups/getAllWhatsappGroups?key=${clientSessionId.value}`);
         whatsappGroupsLoading.value = false;
         if (!data.error) {
           userWhatsappGroups.value = data.instance_data && Object.values(data.instance_data);
@@ -509,38 +510,38 @@ export default {
     }
 
     watchEffect(() => {
-      socket.emit('connected', 'Hello From Client')
-      socket.on('hello', (data) => {
-        console.log('Hello Emittted from the server', data)
-      })
-      socket.on('ping', () => {
-        socket.emit('pong', 'pong')
-      })
-      socket.on('qr', (data) => {
-        console.log('QR RECEIVED', data)
-        const { qr } = data
-        console.log(qr, 'hweww')
-        qrCode.value = qr
-      })
+      // socket.emit('connected', 'Hello From Client')
+      // socket.on('hello', (data) => {
+      //   console.log('Hello Emittted from the server', data)
+      // })
+      // socket.on('ping', () => {
+      //   socket.emit('pong', 'pong')
+      // })
+      // socket.on('qr', (data) => {
+      //   console.log('QR RECEIVED', data)
+      //   const { qr } = data
+      //   console.log(qr, 'hweww')
+      //   qrCode.value = qr
+      // })
 
-      socket.on('ready', (data) => {
-        console.log('READY', data)
-        sessionId.value = data.id
-      })
+      // socket.on('ready', (data) => {
+      //   console.log('READY', data)
+      //   sessionId.value = data.id
+      // })
 
-      socket.on('allchats', (data) => {
-        whatsappGroupsLoading.value = false
-        console.log(data, 'AllChats Here 🥰🎉')
-      })
+      // socket.on('allchats', (data) => {
+      //   whatsappGroupsLoading.value = false
+      //   console.log(data, 'AllChats Here 🥰🎉')
+      // })
 
-      socket.on('chunkprogress', (data) => {
-        console.log(data, 'data')
-        chunkProgress.value = data
-      })
+      // socket.on('chunkprogress', (data) => {
+      //   console.log(data, 'data')
+      //   chunkProgress.value = data
+      // })
 
-      socket.on('fileready', () => {
-        fileReady.value = true
-      })
+      // socket.on('fileready', () => {
+      //   fileReady.value = true
+      // })
 
       // if (!connected.value) {
       //   if (route.fullPath == '/tenant/whatsapp') {
@@ -550,31 +551,31 @@ export default {
       // }
     })
 
-    const connected = computed(() => {
-      return state.connected;
-    })
+    // const connected = computed(() => {
+    //   return state.connected;
+    // })
 
-    const connect = () => {
-      socket.connect();
-    }
+    // const connect = () => {
+    //   socket.connect();
+    // }
 
-    const disconnect = () => {
-      socket.disconnect();
-    }
+    // const disconnect = () => {
+    //   socket.disconnect();
+    // }
 
-    const createSessionForWhatsapp = () => {
-      socket.emit('createsession', { id: session.value })
-    }
+    // const createSessionForWhatsapp = () => {
+    //   socket.emit('createsession', { id: session.value })
+    // }
 
-    const getAllChats = () => {
-      console.log('reaching')
-      socket.emit('getAllChats', sessionId.value)
-    }
+    // const getAllChats = () => {
+    //   console.log('reaching')
+    //   socket.emit('getAllChats', sessionId.value)
+    // }
 
-    const getSessionForWhatsapp = () => {
-      console.log('getting session')
-      socket.emit('getsession', { id: getSessionId.value })
-    }
+    // const getSessionForWhatsapp = () => {
+    //   console.log('getting session')
+    //   socket.emit('getsession', { id: getSessionId.value })
+    // }
 
     const selectGroup = (
       category,
@@ -756,7 +757,7 @@ export default {
     const sendTextMessage = async (payload) => {
       console.log(clientSessionId.value, 'session')
       try {
-        let { data } = await api.post(`http://localhost:3001/send/text?key=${clientSessionId.value}`, payload);
+        let { data } = await api.post(`${whatsappServerBaseURL}send/text?key=${clientSessionId.value}`, payload);
         console.log(data)
         if (!data.error) {
 
@@ -770,7 +771,7 @@ export default {
     const sendImageMessage = async (payload) => {
       console.log(clientSessionId.value, 'session')
       try {
-        let { data } = await api.post(`http://localhost:3001/send/image?key=${clientSessionId.value}`, payload);
+        let { data } = await api.post(`${whatsappServerBaseURL}send/image?key=${clientSessionId.value}`, payload);
         console.log(data)
         if (!data.error) {
 
@@ -784,7 +785,7 @@ export default {
     const sendVideoMessage = async (payload) => {
       console.log(clientSessionId.value, 'session')
       try {
-        let { data } = await api.post(`http://localhost:3001/send/video?key=${clientSessionId.value}`, payload);
+        let { data } = await api.post(`${whatsappServerBaseURL}send/video?key=${clientSessionId.value}`, payload);
         console.log(data)
         if (!data.error) {
 
@@ -1085,10 +1086,10 @@ export default {
         whatsappAttachment.value = {}
         fileReady.value = false
         chunkProgress.value = 0
-        socket.emit('clearfile', {
-          data: "",
-          id: clientSessionId.value
-        })
+        // socket.emit('clearfile', {
+        //   data: "",
+        //   id: clientSessionId.value
+        // })
       }
 
 
@@ -1100,13 +1101,13 @@ export default {
           const end = start + chunkSize;
           const chunk = base64String.substring(start, end);
           uploadedChunks++; // Increment the uploadedChunks count
-          socket.emit('chunk',
-            {
-              chunk,
-              uploadedChunks,
-              totalChunks,
-              id: clientSessionId.value
-            });
+        //   socket.emit('chunk',
+        //     {
+        //       chunk,
+        //       uploadedChunks,
+        //       totalChunks,
+        //       id: clientSessionId.value
+        //     });
         }
       }
 
@@ -1264,14 +1265,14 @@ export default {
         // sendSMSToUploadedContacts,
         session,
         qrCode,
-        createSessionForWhatsapp,
+        // createSessionForWhatsapp,
         sessionId,
-        getAllChats,
+        // getAllChats,
         getSessionId,
-        getSessionForWhatsapp,
-        connected,
-        connect,
-        disconnect,
+        // getSessionForWhatsapp,
+        // connected,
+        // connect,
+        // disconnect,
         userWhatsappGroups,
         primarycolor,
         whatsappGroupSelectionTab,
