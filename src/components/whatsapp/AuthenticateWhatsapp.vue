@@ -84,7 +84,7 @@ import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { ElNotification } from "element-plus";
-import { apii } from "../../gateway/backendapi";
+import { whatsappServerBaseURL } from "../../gateway/backendapi";
 
 export default {
   components: {
@@ -104,7 +104,7 @@ export default {
     const connectingExistingSession = ref(false);
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
     const serverBusy = ref(false)
-    const whatsappServerBaseURL = process.env.NODE_ENV === "production" ? 'https://whatsapp-bailey-routes.azurewebsites.net/' : "http://localhost:3001/";
+    
 
     const socketconnected = computed(() => {
       return state.connected;

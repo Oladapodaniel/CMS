@@ -14,11 +14,4 @@ export default axios.create({
 })
 
 
-export const apii = axios.create({
-    baseURL: 'http://localhost:3333/',
-    // baseURL: 'http://192.168.8.107:3000/',
-    timeout: 500000,
-    headers: {
-        'Content-Type': 'application/json',
-    }
-})
+export const whatsappServerBaseURL = process.env.NODE_ENV === "production" ? 'https://whatsapp-bailey-routes.azurewebsites.net/' : "http://localhost:3001/";
