@@ -830,26 +830,15 @@ export default {
       // Remove object with duplicate recipient numbers
       const ids = chatRecipients.value.map(o => o.phoneNumber)
       let removeDuplicate = chatRecipients.value.filter(({ phoneNumber }, index) => !ids.includes(phoneNumber, index + 1))
-      console.log(removeDuplicate)
-      // const uniqueNumbers = new Set(chatRecipients.value.phoneNumber);
-      // console.log(Array.from(uniqueNumbers));
 
-      console.log(userWhatsappGroupsId.value, 'here');
 
       if (userWhatsappGroupsId.value && userWhatsappGroupsId.value.length > 0) {
-        const mappedGroup = userWhatsappGroupsId.map(i => ({
+        const mappedGroup = userWhatsappGroupsId.value.map(i => ({
           name: "group",
           phoneNumber: i
         }))
 
         removeDuplicate = removeDuplicate.concat(mappedGroup)
-          // socket.emit('sendtogroups', {
-          //   id: clientSessionId.value,
-          //   groups: userWhatsappGroupsId.value,
-          //   whatsappAttachment: whatsappAttachment.value,
-          //   message: editorData.value
-          // })
-          // removeDuplicate
       }
       // return;
 

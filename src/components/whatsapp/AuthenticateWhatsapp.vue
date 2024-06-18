@@ -63,7 +63,7 @@
     <!-- :color="primarycolor" -->
     <div class="d-flex flex-column align-items-center bg-white" v-if="!isClientReady">
       <div class="mb-2 font-medium">When your phone is connected, click Proceed</div>
-      <el-button @click="proceedActionAfterAuth" :loading="savingSession" round class="text-center">
+      <el-button @click="proceedAction" :loading="savingSession" round class="text-center">
         Proceed
       </el-button>
     </div>
@@ -104,7 +104,7 @@ export default {
     const connectingExistingSession = ref(false);
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
     const serverBusy = ref(false)
-    
+
 
     const socketconnected = computed(() => {
       return state.connected;
@@ -209,18 +209,39 @@ export default {
     }
 
     const restoreExistingSession = async () => {
+      // try {
+      //   let { data } = await api.get(`${whatsappServerBaseURL}single/instanceInfo?key=${sessionId.value}`);
+      //   connectingExistingSession.value = false
+      //   if (!data.error) {
+      //     if (data?.instance_data?.user?.id) {
+      //       // Display qrcode
+      //       isClientReady.value = true;
+      //       store.dispatch("communication/isWhatsappClientReady", isClientReady.value);
+      //       QRCodeDialog.value = true;
+      //       // if (route.fullPath == "/tenant/whatsapp/auth") {
+      //       //   router.push("/tenant/whatsapp");
+      //       // }
+      //     } else {
+      //       initialiseWhatsapp()
+      //     }
+      //   } else {
+      //     initialiseWhatsapp()
+      //   }
+      // }
       try {
-        let { data } = await api.get(`${whatsappServerBaseURL}single/instanceInfo?key=${sessionId.value}`);
+        let { data } = await api.get(`${whatsappServerBaseURL}instance/restore`);
         connectingExistingSession.value = false
         if (!data.error) {
-          if (data?.instance_data?.user?.id) {
-            // Display qrcode
-            isClientReady.value = true;
-            store.dispatch("communication/isWhatsappClientReady", isClientReady.value);
-            QRCodeDialog.value = true;
-            // if (route.fullPath == "/tenant/whatsapp/auth") {
-            //   router.push("/tenant/whatsapp");
-            // }
+          if (data.data && data.data.length > 0) {
+            let checkSession = data.data.some(i => i.toLowerCase() === sessionId.value.toLowerCase());
+            if (checkSession) {
+              //  Display qrcode
+              isClientReady.value = true;
+              store.dispatch("communication/isWhatsappClientReady", isClientReady.value);
+              QRCodeDialog.value = true;
+            } else {
+              initialiseWhatsapp()
+            }
           } else {
             initialiseWhatsapp()
           }
@@ -233,6 +254,15 @@ export default {
         connectingExistingSession.value = false
       }
     }
+
+
+
+    // ===============
+    // 1. Restoring the instances without reloading
+    // 2. Refresh QRCode
+    // 3. Proceed after auth should check if instance is established
+    // 4. Logout
+    // 5. Schedule whatsapp message
 
 
     watchEffect(() => {
@@ -347,23 +377,18 @@ export default {
 
     const proceedAction = () => {
       QRCodeDialog.value = false;
-      store.dispatch("communication/whatsappSessionId", sessionId.value);
-        if (route.fullPath == "/tenant/whatsapp/auth") {
-          console.log('reachinggggggggghghgh')
-        router.push("/tenant/whatsapp");
-        }
-
-      // if (sessionStatus.value === 'newSession') {
-      //   saveSessionIdonAuthSuccess();
-      //   console.log('saving')
-      // }
-    };
-
-    const proceedActionAfterAuth = () => {
       isClientReady.value = true;
-      console.log(isClientReady.value)
-      console.log('heree')
-    }
+      store.dispatch("communication/whatsappSessionId", sessionId.value);
+      store.dispatch("communication/isWhatsappClientReady", isClientReady.value);
+      if (route.fullPath == "/tenant/whatsapp/auth") {
+        router.push("/tenant/whatsapp");
+      }
+
+      if (sessionStatus.value === 'newSession') {
+        saveSessionIdonAuthSuccess();
+        console.log('saving')
+      }
+    };
 
     const closeQRDialog = () => {
       console.log(isClientReady.value, 'closing')
@@ -396,7 +421,7 @@ export default {
       saveSessionIdonAuthSuccess,
       closeQRDialog,
       savingSession,
-      proceedActionAfterAuth
+      // proceedActionAfterAuth
     };
   },
 };
