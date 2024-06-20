@@ -260,9 +260,10 @@ export default {
     // ===============
     // 1. Restoring the instances without reloading
     // 2. Refresh QRCode
-    // 3. Proceed after auth should check if instance is established
+    // 3. Proceed after auth should check if instance is established // 
     // 4. Logout
-    // 5. Schedule whatsapp message
+    // 5. Batch sending of whatsapp messages
+    // 6. Schedule whatsapp message
 
 
     watchEffect(() => {
