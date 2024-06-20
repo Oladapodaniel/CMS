@@ -895,9 +895,11 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import router from "../../router/index";
 import Table from "@/components/table/Table";
 import groupsService from "../../services/groups/groupsservice";
-import { socket } from "@/socket";
+// import { socket } from "@/socket";
 import AuthenticateWhatsapp from "../../components/whatsapp/AuthenticateWhatsapp.vue";
 import swal from "sweetalert";
+import { whatsappServerBaseURL } from "../../gateway/backendapi";
+import api from "axios";
 
 export default {
   props: ["list", "totalItems"],
@@ -973,21 +975,6 @@ export default {
       },
       { deep: true }
     );
-
-    watchEffect(() => {
-      socket.on("messagesent", (data) => {
-        console.log(data, "status");
-        // ElMessage({
-        //   type: 'success',
-        //   message: 'Whatsapp message sent successfully 🎉',
-        //   duration: 8000
-        // })
-
-        swal(" Success", "Whatsapp message sent successfully!", "success");
-        showWhatsapp.value = false;
-        sendingwhatsappmessage.value = false;
-      });
-    });
 
     const showMemberRow = (item) => {
       router.push(`/tenant/people/add/${item.id}`);
@@ -1513,21 +1500,32 @@ export default {
       return store.getters["communication/whatsappSessionId"];
     });
 
-    const sendWhatsapp = () => {
-      sendingwhatsappmessage.value = true;
-      if (sendWhatsappToMultiple.value) {
-        socket.emit("sendwhatsappmessage", {
-          id: clientSessionId.value,
-          phone_number: marked.value.map((i) => i.mobilePhone),
-          message: whatsappmessage.value,
-        });
-      } else {
-        socket.emit("sendwhatsappmessage", {
-          id: clientSessionId.value,
-          phone_number: whatsappRecipient.value.mobilePhone,
-          message: whatsappmessage.value,
-        });
+    const sendTextMessage = async (payload) => {
+      try {
+        let { data } = await api.post(`${whatsappServerBaseURL}send/text?key=${clientSessionId.value}`, payload);
+        console.log(data)
+
+        if (!data.error) {
+
+        }
       }
+      catch (error) {
+        console.error(error);
+      }
+    }
+
+    const sendWhatsapp = () => {
+      const recipient = marked.value && marked.value.length ?
+        marked.value.map((i) => ({ name: `${i?.firstName} ${i?.lastName}`, phoneNumber: i.mobilePhone })) :
+        [{ name: `${whatsappRecipient.value?.firstName} ${whatsappRecipient.value?.lastName}`, phoneNumber: whatsappRecipient.value.mobilePhone }];
+        
+      const textPayload = {
+        id: recipient,
+        message: whatsappmessage.value
+      }
+      sendTextMessage(textPayload);
+      showWhatsapp.value = false;
+      swal(" Success", "Whatsapp message sent successfully!", "success");
     };
 
     const displayWhatsappDrawer = (item) => {

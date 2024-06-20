@@ -863,7 +863,6 @@ export default {
             id: removeDuplicate,
             message: editorData.value
           }
-          console.log('text')
           sendTextMessage(textPayload);
         }
 
