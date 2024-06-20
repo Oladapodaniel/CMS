@@ -93,7 +93,7 @@
         </div>
       </div>
     </template>
-    <SubExpired @closedialog="(payload) => subscriptionExpired = payload" />
+    <SubExpired @closedialog="(payload) => subscriptionExpired = payload"/>
   </el-dialog>
 </template>
 
