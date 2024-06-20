@@ -306,18 +306,16 @@
         </div> -->
         <div class="w-100 mt-3 d-flex justify-content-end">
           <span>
-            <el-dropdown split-button :color="primarycolor" size="large" @click="sendWhatsappMessage"
+            <!-- <el-dropdown split-button :color="primarycolor" size="large" @click="sendWhatsappMessage"
               class="split-button" :disabled="memberdataloading" trigger="click">
               Send Whatsapp message
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item @click="whatsappScheduleDialog = true">Schedule</el-dropdown-item>
-                  <!-- <el-dropdown-item >Save as draft</el-dropdown-item> -->
                 </el-dropdown-menu>
               </template>
-            </el-dropdown>
-            <!-- <el-button  round>Send Whatsapp
-              message</el-button> -->
+            </el-dropdown> -->
+            <el-button :color="primarycolor" @click="sendWhatsappMessage" round>Send Whatsapp message</el-button>
           </span>
         </div>
       </div>
@@ -362,6 +360,7 @@ import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 import dateFormatter from "../../../services/dates/dateformatter";
 import api from "axios";
 import { whatsappServerBaseURL } from "../../../gateway/backendapi";
+import { color } from "highcharts";
 
 export default {
   components: {
@@ -824,13 +823,9 @@ export default {
         chatRecipients.value = chatRecipients.value.concat(recipients)
       }
 
-
-
-      console.log(chatRecipients.value,);
       // Remove object with duplicate recipient numbers
       const ids = chatRecipients.value.map(o => o.phoneNumber)
       let removeDuplicate = chatRecipients.value.filter(({ phoneNumber }, index) => !ids.includes(phoneNumber, index + 1))
-
 
       if (userWhatsappGroupsId.value && userWhatsappGroupsId.value.length > 0) {
         const mappedGroup = userWhatsappGroupsId.value.map(i => ({
@@ -840,7 +835,12 @@ export default {
 
         removeDuplicate = removeDuplicate.concat(mappedGroup)
       }
-      // return;
+
+       // If no phone number is entered, stop the function
+       if (!removeDuplicate || removeDuplicate.length === 0) {
+        return;
+      }
+      
 
       if (whatsappAttachment.value && whatsappAttachment.value.type?.includes('image')) {
         console.log('image')

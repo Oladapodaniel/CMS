@@ -40,7 +40,7 @@
                 :class="{ show: menuShouldShow, 'links-menu': !menuShouldShow }"
               >
                 <div class="col-md-12">
-                  <div
+                  <!-- <div
                     class="row menu-item-con py-2"
                     :class="{
                       'active-link': route.path.includes('/tenant/sms/sent'),
@@ -60,9 +60,9 @@
                         </span>
                       </a>
                     </div>
-                  </div>
+                  </div> -->
 
-                  <div
+                  <!-- <div
                     class="row menu-item-con py-2"
                     :class="{
                       'active-link': route.path === '/tenant/sms/scheduled',
@@ -76,14 +76,14 @@
                             class="r-link text-decoration-none"
                             to="/tenant/whatsapp/scheduledmessages"
                           >
-                            <!-- <i class="pi pi-list mr-3 menu-icon"></i> -->
+                            
                             <i class="pi pi-clock mr-3 menu-icon" aria-hidden="true"></i>
                             <span class="active">Scheduled</span>
                           </router-link>
                         </span>
                       </a>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="row menu-item-con py-2" v-if="!whatsappClientState">
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
