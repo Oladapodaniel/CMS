@@ -172,7 +172,7 @@
                         }}
                       </el-button>
 
-                      <div
+                      <!-- <div
                         class="google-btn btn-logo mt-4 sign-in-btn"
                         @click="handleGoogleLogin"
                       >
@@ -183,7 +183,7 @@
                         />
                         <span>Sign in with Google</span>
                         <span></span>
-                      </div>
+                      </div> -->
                       <!-- <div class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
                       <img src="../../assets/facebook-small.png" class="fb-icon" alt="Facebook Icon" />
                       <span>Sign in with Facebook</span>
