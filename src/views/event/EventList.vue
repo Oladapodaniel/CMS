@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="container-top mt-5">
     <!-- <div class="row">
       <div class="col-sm-12 text-center">
         <div class="avg">Overall Average</div>
       </div>
     </div> -->
-    <div class="container-fluid px-0 avg-table">
+    <div class="container-fluid  px-0 avg-table">
       <div class="row px-4 pt-3">
         <div
           class="col md-12 d-flex flex-sm-row flex-column align-items-center justify-content-center justify-content-md-start"

@@ -45,6 +45,9 @@
 .s-8 {
   font-size: 8px !important;
 }
+.s-10 {
+  font-size: 10px !important;
+}
 .s-12 {
   font-size: 12px !important;
 }
@@ -129,6 +132,10 @@ rect.highcharts-background[fill] {
   .border-radius-20{
     border-radius: 20px !important;
     /* border: 1px solid #C9C9C9 !important; */
+  }
+
+  .border-no-radius{
+    border: 1px solid #C9C9C9 !important;
   }
 
   .gray-text{

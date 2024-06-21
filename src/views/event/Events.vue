@@ -65,7 +65,7 @@
 
       <div
         v-if="eventList && eventList.length > 0 && !loading && !networkError"
-        class="container-fluid px-0"
+        class="container-fluid mt-5 px-0"
       >
         <EventList
           :eventList="eventList"

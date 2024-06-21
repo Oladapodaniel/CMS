@@ -64,7 +64,7 @@
                     :placeholder="item.label"
                     v-model="item.data"
                   />
-                  <el-select-v2
+                  <!-- <el-select-v2
                     v-model="item.data"
                     v-if="item.controlType === 1"
                     :options="
@@ -73,7 +73,21 @@
                     :placeholder="item.label"
                     class="w-100"
                     size="large"
-                  />
+                  /> -->
+                  <select
+                    class="form-control text-small input-adjust"
+                    v-model="item.data"
+                    @change="setSelectedItem"
+                    v-if="item.controlType === 1"
+                  >
+                    <option
+                      v-for="(itm, index) in item.parameterValues.split(',')"
+                      :key="index"
+                      :value="itm.id"
+                    >
+                      <p>{{ itm }}</p>
+                    </option>
+                  </select>
                   <el-checkbox
                     v-if="item.controlType === 2"
                     v-model="item.data"
@@ -127,18 +141,30 @@
             <div class="col-md-12">
               <div class="row justify-content-center">
                 <div class="col-md-10">
-                  <div v-if="singleFormData && singleFormData.fillPaymentFormDTO && singleFormData.isAmountFIxed === true ">
+                  <div
+                    v-if="
+                      singleFormData &&
+                      singleFormData.fillPaymentFormDTO &&
+                      singleFormData.isAmountFIxed === true
+                    "
+                  >
                     <label style="font-weight: 450; font-size: 14px" for="">Amount</label>
                     <el-input
                       v-model="amountToPayNow"
-                      type="text"
+                      type="number"
                       :disabled="true"
                       placeholder="Amount"
                     />
                   </div>
-                  <div v-if="singleFormData && singleFormData.fillPaymentFormDTO && singleFormData.isAmountFIxed === false ">
+                  <div
+                    v-if="
+                      singleFormData &&
+                      singleFormData.fillPaymentFormDTO &&
+                      singleFormData.isAmountFIxed === false
+                    "
+                  >
                     <label style="font-weight: 450; font-size: 14px" for="">Amount</label>
-                    <el-input v-model="amountToPayNow" type="text" placeholder="Amount" />
+                    <el-input v-model="amountToPayNow" type="number" placeholder="Amount" />
                   </div>
                 </div>
               </div>
@@ -240,22 +266,36 @@
         </div>
       </div>
     </el-dialog>
-    <el-dialog v-model="paymentSuccessfulDialog" style="border-radius: 20px" title=""
-      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center>
+    <el-dialog
+      v-model="paymentSuccessfulDialog"
+      style="border-radius: 20px"
+      title=""
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
+      align-center
+    >
       <div class="row">
         <div class="col-12">
           <div class="d-flex justify-content-center">
-            <img src="../../assets/successful_payment.png" style="width: 250px; margin: auto" />
+            <img
+              src="../../assets/successful_payment.png"
+              style="width: 250px; margin: auto"
+            />
           </div>
           <h3 class="text-center mt-5 font-weight-bold success">Thank you</h3>
-          <div class="text-center mt-2 font-weight-600 s-18">Payment completed successfully</div>
+          <div class="text-center mt-2 font-weight-600 s-18">
+            Payment completed successfully
+          </div>
           <div class="d-flex justify-content-center mb-5">
-            <el-button color="#70c043" class="text-white mt-2" @click="paymentSuccessfulDialog = false" round>Go
-              back</el-button>
+            <el-button
+              color="#70c043"
+              class="text-white mt-2"
+              @click="paymentSuccessfulDialog = false"
+              round
+              >Go back</el-button
+            >
           </div>
         </div>
       </div>
-
     </el-dialog>
   </div>
 </template>
@@ -291,6 +331,7 @@ export default {
     const paymentSuccessfulDialog = ref(false);
     const currentInput = ref("");
     const amountToPayNow = ref("");
+    const dropdownItem = ref("");
     const dropdownList = ref([]);
     const { xsOnly, mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
     const primarycolor = inject("primarycolor");
@@ -337,9 +378,17 @@ export default {
         singleFormData.value = data;
         formLogo.value = data.pictureUrl;
         publicPaymentForm.value = singleFormData.value.fillPaymentFormDTO;
-        churchLogo.value = singleFormData.value.fillPaymentFormDTO.churchLogo;
-        churchName.value = singleFormData.value.fillPaymentFormDTO.churchName;
-        amountToPayNow.value =  singleFormData.value.amount;
+        churchLogo.value =
+          singleFormData.value.fillPaymentFormDTO &&
+          singleFormData.value.fillPaymentFormDTO.churchLogo
+            ? singleFormData.value.fillPaymentFormDTO.churchLogo
+            : "";
+        churchName.value =
+          singleFormData.value.fillPaymentFormDTO &&
+          singleFormData.value.fillPaymentFormDTO.churchName
+            ? singleFormData.value.fillPaymentFormDTO.churchName
+            : "";
+        amountToPayNow.value = singleFormData.value.amount;
         loadingPage.value = false;
         GetAllCurrencies();
       } catch (error) {
@@ -360,14 +409,14 @@ export default {
     };
 
     const getFlutterwaveModules = () => {
-      let isProduction = true
+      let isProduction = true;
       const script = document.createElement("script");
       script.src = !isProduction
         ? "https://ravemodal-dev.herokuapp.com/v3.js"
         : "https://checkout.flutterwave.com/v3.js";
       document.getElementsByTagName("head")[0].appendChild(script);
-    }
-    getFlutterwaveModules()
+    };
+    getFlutterwaveModules();
 
     const initiatePayment = async (gatewayType) => {
       paymentDialog.value = false;
@@ -379,27 +428,25 @@ export default {
       let gatewayService =
         gatewayType === 1 ? "Paystack" : gatewayType == 2 ? "Flutterwave" : null;
 
-        
-        let payload = { 
-          data: singleFormData.value.customAttributes.map((i) => ({
-            customAttributeID: i.id,
-            data: i.data,
-            isRequired: i.isRequired ? i.isRequired : false,
-          })),
-          
-
-        }
-        if(singleFormData.value.isAmountFIxed){
-          payload.isFreeWill = false;
-
-        }else{
-          payload.isFreeWill = true;
-          payload.amount = amountToPayNow.value ? amountToPayNow.value : '';
-        }
+      let payload = {
+        data: singleFormData.value.customAttributes.map((i) => ({
+          customAttributeID: i.id,
+          data: i.data ? i.data : dropdownItem.value,
+          isRequired: i.isRequired ? i.isRequired : false,
+        })),
+      };
+      if (singleFormData.value.isAmountFIxed) {
+        payload.isFreeWill = false;
+      } else {
+        payload.isFreeWill = true;
+        payload.amount = amountToPayNow.value ? amountToPayNow.value : "";
+      }
 
       try {
         let { data } = await axios.post(
-          `/InitializeFormPayment?formID=${route.params.id}&gateway=${gatewayService}`,payload);
+          `/InitializeFormPayment?formID=${route.params.id}&gateway=${gatewayService}`,
+          payload
+        );
         loading.close();
         if (data.status) {
           if (gatewayType == 1) {
@@ -459,7 +506,7 @@ export default {
     };
 
     const payWithPaystack = (responseObject) => {
-      console.log(responseObject,'hhjjj');
+      console.log(responseObject, "hhjjj");
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
@@ -533,9 +580,10 @@ export default {
         const res = await axios.post(
           `/ConfirmFormsPayment?id=${trans_id}&txnref=${tx_ref}`
         );
-        console.log(res.data,'nnn');
+        console.log(res.data, "nnn");
         if (res.data) {
           paymentSuccessfulDialog.value = true;
+          disabledBtn.value = true;
           // personToggle.value = false;
           // userSearchString.value = "";
           // if (route.query.tenantID) {
@@ -602,7 +650,6 @@ export default {
 
     const allTrueRequired = ref([]);
 
-
     watchEffect(() => {
       if (singleFormData && singleFormData.pictureUrl) {
         formLogo.value = singleFormData.pictureUrl;
@@ -611,6 +658,11 @@ export default {
 
     const filterIsRequired = ref({});
     const requiredField = ref(false);
+
+    const setSelectedItem = (event) => {
+      console.log("Selected item:", event.target.value);
+      dropdownItem.value = event.target.value; // Update item.data with the selected value
+    };
 
     const saveForm = async () => {
       //   let isRequiredFalse = singleFormData.value.customAttributes.find(i => i.isRequired === false)
@@ -642,7 +694,7 @@ export default {
             `/api/public/saveformdata?formID=${route.params.id}`,
             singleFormData.value.customAttributes.map((i) => ({
               customAttributeID: i.id,
-              data: i.data,
+              data: i.data ? i.data : dropdownItem.value,
               isRequired: i.isRequired,
             }))
           );
@@ -773,6 +825,7 @@ export default {
       paystackGate,
       publicPaymentForm,
       paymentFormCurrency,
+      dropdownItem,
       payWithPaystack,
       payWithFlutterwave,
       amountToPayNow,
@@ -784,6 +837,7 @@ export default {
       backspaceDelete,
       saveCustomField,
       triggerPayment,
+      setSelectedItem,
     };
   },
 };
@@ -802,8 +856,8 @@ export default {
 }
 
 .image-upload img {
-    object-fit: cover;
-    object-position: center;
+  object-fit: cover;
+  object-position: center;
 }
 
 .chip-container {
@@ -830,7 +884,6 @@ export default {
   font-weight: 700;
   text-align: center;
 }
-
 
 .chip {
   padding: 0.3rem 0.3rem;

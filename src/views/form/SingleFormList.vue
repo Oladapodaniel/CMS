@@ -91,8 +91,8 @@
         </div>
       </div>
     </div>
-    <div class="row" v-if="showIndividual && searchForm.length > 0">
-      <div class="col-md-12  mt-4">
+    <div class="row" v-if="showIndividual">
+      <div class="col-md-12 mt-4">
         <div class="d-flex col-md-6 px-0 mt-4">
           <el-input
             size="small"
@@ -104,27 +104,46 @@
         </div>
       </div>
     </div>
-    <div class="col-md-12 p-0 scroll-table" v-if="showIndividual && searchForm.length > 0">
+    <div
+      class="col-md-12 p-0 scroll-table"
+      v-if="showIndividual && searchForm.length > 0"
+    >
       <table class="table table-hover table" id="table">
         <thead>
           <tr class="table-row-bg">
             <th>Date</th>
+            <th>Amount</th>
             <th v-for="(label, index) in labels" :key="index">
               {{ label }}
             </th>
-            <!-- <th></th> -->
-            <!-- <th>Action</th> -->
+            <th>Proceed</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(item, index) in searchForm" :key="index">
-            <!-- <td>{{date(item.date)}}</td> -->
-            <td
-              v-for="(value, label) in item"
-              :key="label"
-              :class="{ 'd-none': label == 'id' && label !== 'date' }"
-            >
-              <span>{{ label == "date" ? date(value) : value }} </span>
+            <td>{{ date(item.date) }}</td>
+            <td>{{ item.amount }}</td>
+            <td v-for="(value, label) in item.data" :key="label">
+              <span>{{ value.data }} </span>
+            </td>
+            <td>
+              <div class="c-pointer">
+                <div v-if="!item.isProceed">
+                  <el-icon size="27">
+                    <CircleCheck />
+                  </el-icon>
+                </div>
+                <video
+                  height="30"
+                  autoplay
+                  class="approveservicereport"
+                  v-if="item.isProceed"
+                >
+                  <source src="../../assets/check_animated.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
             </td>
 
             <!-- <td v-for="(value, label) in item" :key="label">
@@ -413,10 +432,12 @@ export default {
 
     const sortData = () => {
       sortedData.value = formItems.value.map((item) => {
-        const sortedItem = { id: item.id, date: item.date };
+        const sortedItem = {
+          date: item.date,
+        };
         item.data.forEach((dataItem) => {
           const { label, data } = dataItem.customAttribute;
-          sortedItem[label] = dataItem && dataItem.data ? dataItem.data : "";
+          sortedItem[label] = dataItem && dataItem.data ? dataItem : "";
         });
 
         return sortedItem;
@@ -479,22 +500,36 @@ export default {
         console.log(error);
       }
     };
+    // const searchForm = computed(() => {
+    //   if (searchText.value !== "" && formItems.value.length > 0) {
+    //     return formItems.value.filter((i) => {
+    //       // Assuming i is an object with properties that you want to search through
+    //       for (let key in i) {
+    //         if (
+    //           typeof i[key] === "string" &&
+    //           i[key].toLowerCase().includes(searchText.value.toLowerCase())
+    //         ) {
+    //           return true;
+    //         }
+    //       }
+    //       return false;
+    //     });
+    //   } else {
+    //     return formItems.value;
+    //   }
+    // });
     const searchForm = computed(() => {
-      if (searchText.value !== "" && sortedData.value.length > 0) {
-        return sortedData.value.filter((i) => {
-          // Assuming i is an object with properties that you want to search through
-          for (let key in i) {
-            if (
-              typeof i[key] === "string" &&
-              i[key].toLowerCase().includes(searchText.value.toLowerCase())
-            ) {
-              return true;
-            }
-          }
-          return false;
+      if (searchText.value !== "" && formItems.value.length > 0) {
+        return formItems.value.filter((item) => {
+          return item.data.some((dataItem) => {
+            return (
+              typeof dataItem.data === "string" &&
+              dataItem.data.toLowerCase().includes(searchText.value.toLowerCase())
+            );
+          });
         });
       } else {
-        return sortedData.value;
+        return formItems.value;
       }
     });
 

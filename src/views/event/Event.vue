@@ -1,9 +1,33 @@
 <template>
   <div class="container-fluid container-top" @click="hideModals">
+    <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
+      <div>
+        <div class="text-head font-weight-bold h2 py-0 my-0 text-black">Add Event</div>
+        <div class="grey-backg py-2 border-radius-8 px-2">
+          <router-link to="/tenant/events" class="text-decoration-none s-18 text-dak">
+            <span class="linear-gradient">Event> Add event</span>
+          </router-link>
+        </div>
+      </div>
+      <el-button
+        class="text-white border-0 ml-3"
+        @click="post"
+        round
+        :color="primarycolor"
+        :loading="loading"
+      >
+        <span class="text-white">Save & Continue</span>
+      </el-button>
+    </div>
+    <div class="row mt-1">
+      <div class="col-md-12">
+        <span class="float-right text-danger font-weight-bold">{{ errorMessage }}</span>
+      </div>
+    </div>
     <div class="col-md-12 px-0">
-      <div class="first-pane">
+      <!-- <div class="first-pane">
         <div class="row">
-          <div class="text-center text-sm-left col-sm-5 head-text">Events</div>
+          <div class="text-head font-weight-bold h2 py-0 my-0 text-black">Add Event</div>
           <div class="text-center text-sm-right col-sm-7">
             <div class="row">
               <div class="col-md-12 d-lg-flex justify-content-end">
@@ -29,7 +53,7 @@
             }}</span>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="form">
         <!-- <div class="container"> -->
@@ -43,10 +67,10 @@
               @click="showCategory = !showCategory"
               v-if="!selectedEventCategoryId && !showEditEventCategory"
             >
-              <span class="ofering">
-                <el-icon>
+              <span class="ofering text-black">
+                <!-- <el-icon>
                   <Calendar />
-                </el-icon>
+                </el-icon> -->
                 &nbsp;&nbsp;&nbsp;Select Category</span
               ><span class="mt-1">
                 <el-icon class="ofering offset-sm-2" :class="{ roll3: showForm3 }">
@@ -86,15 +110,18 @@
                 Create "{{ eventText }}" event
               </div>
             </div>
-            <div class="selected-category" v-if="selectedEventCategoryId">
-              <p>
-                <el-icon class="mr-2">
+            <div
+              class="selected-category border-radius-border-8"
+              v-if="selectedEventCategoryId"
+            >
+              <div class="px-3 pt-3 s-12">
+                <!-- <el-icon class="mr-2">
                   <Calendar />
-                </el-icon>
-                Events
-              </p>
-              <h4>{{ selectedEventCategoryName }}</h4>
-              <div class="event-buttons">
+                </el-icon> -->
+                Event
+              </div>
+              <div class="fw-500 px-3 pb-4">{{ selectedEventCategoryName }}</div>
+              <div class="event-buttons s-10 p-3 border">
                 <a @click="changeSelectedEventCategory('edit')">Edit</a>
                 <a @click="deleteSelectedEventCategory(selectedEventCategoryId, index)"
                   >Delete</a
@@ -122,7 +149,7 @@
           <div class="col-12 text-sm-right col-sm-10 col-md-7 mt-sm-2 mt-md-0">
             <div class="row nested-row">
               <div class="col-12 col-sm-5">
-                <label for="date">Date</label>
+                <label class="fw-500 s-20 text-dak" for="date">Date:</label>
               </div>
               <div class="col-12 col-sm-7">
                 <el-date-picker
@@ -135,14 +162,14 @@
                 />
               </div>
               <div class="col-12 col-sm-5">
-                <label for="topic">Topic</label>
+                <label class="fw-500 s-20 text-dak" for="topic">Topic:</label>
               </div>
               <div class="col-12 col-sm-7">
                 <el-input type="text" v-model="topic" class="w-100 mt-2" />
               </div>
 
               <div class="col-12 col-sm-5">
-                <label for="preacher">Preacher</label>
+                <label class="fw-500 s-20 text-dak" for="preacher">Preacher:</label>
               </div>
               <div class="col-12 col-sm-7">
                 <el-input type="text" v-model="preacher" class="w-100 mt-2" />
@@ -150,18 +177,18 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-12 offset-sm-1 add">Add Attendance</div>
+        <div class="col-sm-12 fw-500 s-24 text-black offset-sm-1 add">Add Attendance</div>
 
-        <div class="attendance-header d-none d-md-block">
+        <div class="attendance-header border-no-radius mt-2 d-none d-md-block">
           <div class="row">
-            <div class="col-sm-3">Attendance Type</div>
-            <div class="col-sm-3 offset-sm-2">Count</div>
-            <div class="col-sm-2" style="margin-left: 74px">Total</div>
+            <div class="col-sm-3 font-weight-600">Attendance Type</div>
+            <div class="col-sm-3 font-weight-600 offset-sm-2">Count</div>
+            <div class="col-sm-2 font-weight-600" style="margin-left: 74px">Total</div>
           </div>
         </div>
         <!-- Attendance Items -->
         <div
-          class="attendance-body"
+          class="attendance-body border-no-radius mt-1"
           id="attendanceBody"
           v-for="(item, indx) in attendanceItem"
           :key="indx"
@@ -226,12 +253,25 @@
           </div>
         </div>
 
-        <div
-          class="col-12 text-center add-attendance ofering"
-          id="addAttendance"
-          @click="addAttendance"
-        >
-          <el-icon class="mr-2"> <CirclePlus /> </el-icon>Add Attendance Item
+        <div class="row justify-content-end">
+          <div class="col-md-8">
+            <div class="row">
+              <div
+                class="col-md-6 text-center add-attendance ofering"
+                id="addAttendance"
+                @click="addAttendance"
+              >
+                <el-icon class="mr-2 m" :size="20"> <CirclePlus /> </el-icon>
+                Add Attendance Item
+              </div>
+              <div class="col-md-6 mt-3 d-flex flex-wrap">
+                <div class="col-12 col-sm-4 fw-500 s-20">TOTAL:</div>
+                <div class="col-12 col-sm-6 mt-1">
+                  <div>{{ addAttendanceTotal }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="display ofering" id="showAttendance" ref="attendanceDrop">
           <input
@@ -259,7 +299,7 @@
             Create "{{ attendanceText }}" attendance item
           </div>
         </div>
-        <div class="col-sm-12 empty">
+        <!-- <div class="col-sm-12 empty">
           <div class="row justify-content-end">
             <div class="col-md-6 d-flex flex-wrap">
               <div class="col-12 col-sm-4">TOTAL</div>
@@ -268,10 +308,17 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <div class="col-12 offset-sm-1 add">Add Offering</div>
-        <div class="attendance-header d-none d-lg-block">
+        <div
+          class="col-12 offset-sm-1 fw-500 s-24 mt-4 text-black add"
+          @click="addOffering"
+        >
+          Add Offering
+        </div>
+        <div
+          class="attendance-header border-no-radius mt-2 font-weight-600 d-none d-lg-block"
+        >
           <div class="row">
             <div class="col-sm-3">Offering Item</div>
             <div class="col-sm-2">Channel</div>
@@ -280,7 +327,7 @@
           </div>
         </div>
         <div
-          class="attendance-body stretch"
+          class="attendance-body border-no-radius mt-1 stretch"
           id="offeringBody"
           v-for="(item, index) in offeringItem"
           :key="index"
@@ -427,12 +474,52 @@
           </div>
         </div>
 
-        <div
+        <!-- <div
           class="col-sm-12 text-center add-attendance ofering"
           id="addOffering"
           @click="addOffering"
         >
           <el-icon class="mr-2"> <CirclePlus /> </el-icon>Add Offering Item
+        </div> -->
+        <div class="row justify-content-end">
+          <div class="col-md-8">
+            <div class="row">
+              <div
+                class="col-md-6 text-center add-attendance ofering"
+                id="addOffering"
+                @click="addOffering"
+              >
+                <el-icon class="mr-2 m" :size="20"> <CirclePlus /> </el-icon>
+                Add Offering Item
+              </div>
+              <div class="col-md-6 d-flex flex-wrap mt-3">
+                <div class="col-12 col-sm-3 col-sm-3 fw-500 s-20 total-">TOTAL</div>
+                <div class="col-4 col-sm-2 ofering">
+                  <CurrencyConverter
+                    :tenantCurrency="tenantCurrency.currency"
+                    :selectedCurrency="selectedCurrencyName"
+                    :currencyList="currencyList"
+                    :currencyAmount="addContributionTotal"
+                    @conversion-result="convertResult"
+                    @currency-rate="setCurrencyRate"
+                  />
+                </div>
+                <div
+                  v-if="convertedAmount2"
+                  class="col-8 col-sm-4 align-self-center text-right text-sm-left converted-amout ml-4"
+                >
+                  <!-- Make this a computed that displays the value whenever the value of these variable changes -->
+                  {{
+                    convertedResult
+                      ? convertedResult.toFixed(2)
+                      : addContributionTotal && addContributionTotal.toString() !== "NaN"
+                      ? addContributionTotal.toFixed(2)
+                      : offeringItemsSum()
+                  }}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="display ofering" id="showList" ref="offeringDrop">
           <input
@@ -469,7 +556,7 @@
         >
           Launch demo modal
         </button>
-
+        <!-- 
         <div class="col-sm-12 empty">
           <div class="row justify-content-end">
             <div class="col-md-6 d-flex flex-wrap">
@@ -488,7 +575,6 @@
                 v-if="convertedAmount2"
                 class="col-8 col-sm-4 align-self-center text-right text-sm-left converted-amout ml-4"
               >
-                <!-- Make this a computed that displays the value whenever the value of these variable changes -->
                 {{
                   convertedResult
                     ? convertedResult.toFixed(2)
@@ -499,7 +585,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <button
           hidden
           type="button"
@@ -519,8 +605,10 @@
   }
 }} -->
 
-        <div class="col-12 offset-sm-1 add">Add Expense</div>
-        <div class="attendance-header d-none d-lg-block">
+        <div class="col-12 offset-sm-1 fw-500 s-24 add">Add Expense</div>
+        <div
+          class="attendance-header mt-2 border-no-radius font-weight-600 d-none d-lg-block"
+        >
           <div class="row">
             <div class="col-sm-3">Expense Item</div>
             <div class="col-sm-2">Cash Account</div>
@@ -529,7 +617,7 @@
           </div>
         </div>
         <div
-          class="attendance-body stretch"
+          class="attendance-body mt-1 border-no-radius stretch"
           id="offeringBody"
           v-for="(item, index) in expenseItem"
           :key="index"
@@ -646,12 +734,59 @@
           </div>
         </div>
 
-        <div
+        <!-- <div
           class="col-sm-12 text-center add-attendance ofering"
           id="addOffering"
           @click="displayExpenseCard"
         >
           <el-icon class="mr-2"> <CirclePlus /> </el-icon>Add Expense Item
+        </div> -->
+        <div class="row justify-content-end">
+          <div class="col-md-8">
+            <div class="row">
+              <div
+                class="col-md-6 text-center add-attendance ofering"
+                id="addOffering"
+                @click="displayExpenseCard"
+              >
+                <el-icon class="mr-2 m" :size="20"> <CirclePlus /> </el-icon>
+                Add Expense Item
+              </div>
+              <div class="col-md-6 d-flex flex-wrap mt-3">
+                <div class="col-12 col-sm-3 col-sm-3 fw-500 s-20 text-black total-">
+                  TOTAL:
+                </div>
+                <div class="col-4 col-sm-2 ofering mt-1">
+                  <!-- {{
+    this.expenseItem.reduce((a, b) => {
+      return a + +b.amount;
+    }, 0)
+  }} -->
+                  {{
+                    this.expenseItem.reduce((a, b) => {
+                      // Ensure b.amount is treated as a string, replace commas, then parse as float
+                      const amount = parseFloat(String(b.amount).replace(/,/g, ""));
+                      return a + (isNaN(amount) ? 0 : amount); // Add to total if it's a valid number, otherwise add 0
+                    }, 0)
+                  }}
+                  <!-- <CurrencyConverter :tenantCurrency="tenantCurrency.currency" :selectedCurrency="selectedCurrencyName"
+                  :currencyList="currencyList" :currencyAmount="addContributionTotal" @conversion-result="convertResult"
+                  @currency-rate="setCurrencyRate" /> -->
+                </div>
+                <!-- <div v-if="convertedAmount2"
+                class=" col-8 col-sm-4  align-self-center text-right text-sm-left converted-amout ml-4">
+                 Make this a computed that displays the value whenever the value of these variable changes 
+                {{
+                  convertedResult
+                  ? convertedResult.toFixed(2)
+                  : addContributionTotal && addContributionTotal.toString() !== "NaN"
+                    ? addContributionTotal.toFixed(2)
+                    : offeringItemsSum()
+                }}
+              </div> -->
+              </div>
+            </div>
+          </div>
         </div>
         <div class="display ofering" ref="expenseCard">
           <input
@@ -684,41 +819,23 @@
           Launch demo modal
         </button>
 
-        <div class="col-sm-12 empty">
+        <!-- <div class="col-sm-12 empty">
           <div class="row justify-content-end">
             <div class="col-md-6 d-flex flex-wrap">
               <div class="col-12 col-sm-3 col-sm-3 total-2">TOTAL</div>
               <div class="col-4 col-sm-2 ofering">
-                <!-- {{
-    this.expenseItem.reduce((a, b) => {
-      return a + +b.amount;
-    }, 0)
-  }} -->
+   
                 {{
                   this.expenseItem.reduce((a, b) => {
-                    // Ensure b.amount is treated as a string, replace commas, then parse as float
+        
                     const amount = parseFloat(String(b.amount).replace(/,/g, ""));
-                    return a + (isNaN(amount) ? 0 : amount); // Add to total if it's a valid number, otherwise add 0
+                    return a + (isNaN(amount) ? 0 : amount); 
                   }, 0)
                 }}
-                <!-- <CurrencyConverter :tenantCurrency="tenantCurrency.currency" :selectedCurrency="selectedCurrencyName"
-                  :currencyList="currencyList" :currencyAmount="addContributionTotal" @conversion-result="convertResult"
-                  @currency-rate="setCurrencyRate" /> -->
               </div>
-              <!-- <div v-if="convertedAmount2"
-                class=" col-8 col-sm-4  align-self-center text-right text-sm-left converted-amout ml-4">
-                 Make this a computed that displays the value whenever the value of these variable changes 
-                {{
-                  convertedResult
-                  ? convertedResult.toFixed(2)
-                  : addContributionTotal && addContributionTotal.toString() !== "NaN"
-                    ? addContributionTotal.toFixed(2)
-                    : offeringItemsSum()
-                }}
-              </div> -->
             </div>
           </div>
-        </div>
+        </div> -->
         <button
           hidden
           type="button"
@@ -732,19 +849,20 @@
 
         <!-- ================== -->
 
-        <!-- <div class="col-sm-12 empty"></div> -->
-        <el-input
-          v-model="note"
-          :rows="5"
-          type="textarea"
-          placeholder="Enter your notes ..."
-        />
+        <div class="col-sm-12  mb-2">
+          <el-input
+            v-model="note"
+            :rows="5"
+            type="textarea"
+            placeholder="Enter your notes ..."
+          />
+        </div>
       </div>
 
       <div class="form col-12 col-sm-12 offset-md-0 col-md-12">
         <div class="row row-form form-header pointer" @click="toggleForm3">
           <div class="col-10">
-            <div>First Timers and New Convert</div>
+            <div class="fw-500 s-24">First Timers and New Convert</div>
           </div>
           <div class="col-2 text-right">
             <el-icon :class="{ roll3: showForm3 }">
@@ -770,7 +888,7 @@
             data-toggle="modal"
             data-target="#exampleModalNewConvert"
           >
-            Add New Converts
+            Add New Comers
           </div>
           <!-- First timer table -->
           <div class="col-sm-12 box-table" v-if="firstTimers.length > 0">
@@ -865,7 +983,7 @@
               class="border-0 ml-3"
               @click="post"
             >
-              <span class="text-white">Save and Continue</span>
+              <span class="text-white">Save & Continue</span>
               <span></span>
             </el-button>
           </div>
@@ -3706,7 +3824,6 @@ export default {
   background: #ffffff 0% 0% no-repeat padding-box;
   border: 1px solid #dde2e6;
   border-radius: 5px;
-  font: normal normal bold 16px Nunito Sans;
   letter-spacing: 0px;
   /* color: #136ACD; */
   width: 100%;
@@ -3731,15 +3848,15 @@ export default {
   text-align: center;
   padding: 30px;
   color: #136acd;
-  font: normal normal bold 16px Nunito Sans;
 }
 
 .form {
   margin-top: 50px;
   background: #ffffff 0% 0% no-repeat padding-box;
-  box-shadow: 0px 3px 15px #797e8159;
-  border: 1px solid #dde2e6;
-  border-radius: 7px;
+  /* box-shadow: 0px 3px 15px #797e8159; */
+  border: 1px solid #c9c9c9;
+  border-radius: 5px;
+  box-shadow: 0px 4px 4px 0px #00000040;
 }
 
 .form .second-form.row.first-row {
@@ -3751,15 +3868,15 @@ export default {
 }
 
 .attendance-header {
-  background-color: #ecf0f3;
+  background: #ebedff;
   padding: 0 50px;
   border: none;
-  border-bottom: 1px solid rgb(204, 204, 204);
+  /* border-bottom: 1px solid rgb(204, 204, 204); */
 }
 
 .attendance-body {
   padding: 0 50px;
-  background-color: #ecf0f3;
+  background: #ebedff;
 }
 
 .attendance-body.stretch {
@@ -3779,35 +3896,27 @@ export default {
   padding: 5px;
 }
 
-.attendance-header div {
-  color: #002044;
-  font-weight: 700;
-}
-
 .empty {
   border: none;
   border-top: 1px solid rgb(231, 231, 231);
   width: 100%;
   padding: 20px;
-  font: normal normal 600 18px/24px Nunito Sans;
 }
 
 .total-2 {
-  font: normal normal 600 20px/27px Nunito Sans;
   letter-spacing: 0px;
   color: #02172eb9;
   align-self: center;
 }
 
 .edit {
-  font: normal normal bold 13px Nunito Sans;
   letter-spacing: 0px;
   color: #136acd;
 }
 
 .add-attendance {
-  color: #136acd;
-  font-weight: 600;
+  color: #0b55d4;
+  font-weight: 500;
   border: none;
   border-top: 1px solid rgb(231, 231, 231);
   padding: 20px;
@@ -3840,15 +3949,8 @@ export default {
 }
 
 .add {
-  font: normal normal bold 16px Nunito Sans;
-  letter-spacing: 0px;
-  color: #136acd;
+  line-height: 36px;
   display: inline;
-  padding: 10px 15px;
-  background: #ecf0f3;
-  border-radius: 10px 10px 0px 0px;
-  position: relative;
-  top: -8px;
 }
 
 .textarea {
@@ -3857,7 +3959,6 @@ export default {
 }
 
 .modal-title {
-  font: normal normal 800 23px/31px Nunito Sans;
   letter-spacing: 0px;
   color: #002044;
 }
@@ -3914,21 +4015,18 @@ export default {
 }
 
 .form-header {
-  font: normal normal bold 18px/24px Nunito Sans;
   letter-spacing: 0px;
-  color: #02172e;
+  color: #111111;
   padding: 15px 30px;
-  background: #ebeff4;
-  border: 1px solid #00204430;
+  background: #ebedff;
+  border: 1px solid #c9c9c9;
 }
 
 .make-public {
-  font: normal normal bold 16px/22px Nunito Sans;
   color: #02172e;
 }
 
 .public {
-  font: normal normal 600 14px/16px Nunito Sans;
   color: #136acd;
 }
 
@@ -3936,32 +4034,19 @@ export default {
   margin-top: 5em;
 }
 
-.event-reg {
-  font: normal normal bold 16px/22px Nunito Sans;
-  /* color: #136ACD; */
-}
-
-.event-reg-dark {
-  font: normal normal bold 16px/22px Nunito Sans;
-  /* color: #02172E; */
-}
-
 .enable-reg {
-  font: normal normal 600 16px/22px Nunito Sans;
   color: #02172e;
   margin-top: 3em;
 }
 
 .paid {
   margin-top: 2em;
-  font: normal normal normal 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #02172e;
 }
 
 .create {
   text-align: center;
-  font: normal normal bold 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #136acd;
 }
@@ -4073,7 +4158,6 @@ div .maintext {
 tr.event-list th {
   color: #8898aa;
   /* font-size: 11px; */
-  font-family: "Nunito Sans" Arial, sans-serif;
   letter-spacing: 1px;
   padding: 10px;
 }
@@ -4099,23 +4183,31 @@ tr.event-list td {
 }
 
 .add-first-timer {
-  background: #ebeff4;
-  padding: 10px;
-  border-radius: 35px;
-  font: normal normal bold 14px/19px Nunito Sans;
+  background: #ebedff;
   letter-spacing: 0px;
-  color: #136acd;
+  color: #0b55d4;
   text-align: center;
+  width: 184px;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 60px;
+  opacity: 0px;
 }
 
 .add-new-convert {
-  background: #ebeff4;
-  padding: 10px;
-  border-radius: 35px;
-  font: normal normal bold 14px/19px Nunito Sans;
+  background: #ebedff;
   letter-spacing: 0px;
-  color: #136acd;
+  color: #0b55d4;
   text-align: center;
+  width: 184px;
+  height: 62px;
+  border-radius: 60px;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  opacity: 0px;
 }
 
 .close-slide1 {
@@ -4198,8 +4290,8 @@ tr.event-list td {
 }
 
 .event-buttons a {
-  color: #136acd;
-  font-weight: 600;
+  color: #0745af;
+  font-weight: 400;
   margin: 0 24px 0 0;
 }
 
@@ -4215,14 +4307,16 @@ tr.event-list td {
   align-items: center;
   justify-content: center;
   border: 1px solid #ebeff4;
-  border-radius: 8px;
-  font-size: 1.2em;
-  font-weight: 600;
-  background-color: #ecf0f3;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 400;
+  /* background-color: #ecf0f3; */
+  background: #ebedff;
 }
 
 .select-elem-con:hover {
-  background: rgba(166, 200, 232, 0.302);
+  /* background: rgba(166, 200, 232, 0.302); */
+  background: #dcdffb;
   transition: all 0.4s ease-in-out;
 }
 
