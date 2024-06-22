@@ -92,7 +92,7 @@
       </div>
     </div>
     <div class="row" v-if="showIndividual">
-      <div class="col-md-12 mt-4">
+      <div class="col-md-6 mt-4">
         <div class="d-flex col-md-6 px-0 mt-4">
           <el-input
             size="small"
@@ -102,6 +102,40 @@
             class="search-input w-100"
           />
         </div>
+      </div>
+      <div class="col-md-6 mt-4">
+        <el-dropdown
+          trigger="click"
+          class="el-dropdown border-0 w-100 py-2 mt-4 d-flex justify-content-end"
+        >
+          <span class="el-dropdown-link">
+            <el-tooltip
+              class="box-item"
+              effect="dark"
+              content="Export data on table to excel"
+              placement="top-start"
+            >
+              <el-button
+                type=""
+                style="background: #eeeeee"
+                class="mr-3 py-3 text-dak fw-excel"
+              >
+                Export to excel<el-icon class="el-icon--right">
+                  <Download />
+                </el-icon>
+              </el-button>
+            </el-tooltip>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item v-for="(bookType, index) in bookTypeList" :key="index">
+                <div @click="downloadFile(bookType)">
+                  {{ bookType.name }}
+                </div>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
     </div>
     <div
@@ -321,13 +355,14 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, watch, inject } from "vue";
+import { ref, computed, onMounted, watch, inject, watchEffect } from "vue";
 import Table from "@/components/table/Table";
 import pieChart from "@/components/charts/FormPieChart.vue";
 import monthDayTime from "../../services/dates/dateformatter";
 import finish from "../../services/progressbar/progress";
 import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from "element-plus";
+import exportService from "../../services/exportFile/exportservice";
 import router from "../../router";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useRoute } from "vue-router";
@@ -344,6 +379,8 @@ export default {
     const showList = ref(false);
     const QRCodeDialog = ref(false);
     const searchingForm = ref(true);
+    const fileHeaderToExport = ref([]);
+    const fileToExport = ref([]);
     const searchText = ref("");
     const qrCode = ref("");
     const primarycolor = inject("primarycolor");
@@ -357,6 +394,12 @@ export default {
       { name: "Age", value: "age" },
       { name: "INCOME RANGE", value: "incomerange" },
       { name: "ACTION", value: "action" },
+    ]);
+    const bookTypeList = ref([
+      { name: "Excel (.xlsx)", value: "xlsx" },
+      { name: "Comma Seperated Value (.csv)", value: "csv" },
+      { name: "Text (.txt)", value: "txt" },
+      // { name: "pdf" },
     ]);
     const formItems = ref([]);
     const sortedData = ref([]);
@@ -384,6 +427,36 @@ export default {
       }
     };
     getFormData();
+
+    watchEffect(() => {
+      if (formItems.value && formItems.value.length > 0) {
+        // foo_data.value = props.data;
+        // dataInView.value = getData(foo_data.value, 10).filter((i) => i !== null);
+
+        setTimeout(() => {
+          fileHeaderToExport.value = labels.value.map((i) => i);
+          fileToExport.value = formItems.value.map((obj) => {
+            // if it has date property, formate the date value
+            obj.date ? (obj.date = monthDayTime.monthDayYear(obj.date)) : null;
+            let newObj = {};
+            obj.data.forEach((prop, index) => {
+              newObj[index] = prop.data;
+            });
+            return newObj;
+          });
+        }, 1000);
+      }
+    });
+
+    const downloadFile = (item) => {
+      exportService.downLoadExcel(
+        item.value,
+        null,
+        "Table_Data",
+        fileHeaderToExport.value,
+        fileToExport.value
+      );
+    };
 
     // const lastLabel = computed(() => {
     //   return labels.value.length > 0 ? labels.value[labels.value.length - 1] : "";
@@ -458,10 +531,6 @@ export default {
     watch(formItems, () => {
       sortData();
     });
-
-    // const filteredSortedData = computed(() => {
-    //   return sortedData.value.map(({ id, ...rest }) => ({ id, ...rest }));
-    // });
 
     const previousPage = () => {
       router.push("/tenant/formlist");
@@ -588,6 +657,7 @@ export default {
       searchingForm,
       searchText,
       searchForm,
+      bookTypeList,
       Search,
       //   filteredSortedData,
       date,
@@ -601,6 +671,9 @@ export default {
       previewForm,
       showConfirmModal,
       deleteFormData,
+      downloadFile,
+      fileToExport,
+      fileHeaderToExport,
       //   lastLabel,
     };
   },
