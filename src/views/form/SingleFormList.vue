@@ -146,7 +146,7 @@
         <thead>
           <tr class="table-row-bg">
             <th>Date</th>
-            <th>Amount</th>
+            <th v-if="searchForm[0].isPaymentForm">Amount</th>
             <th v-for="(label, index) in labels" :key="index">
               {{ label }}
             </th>
@@ -157,12 +157,40 @@
         <tbody>
           <tr v-for="(item, index) in searchForm" :key="index">
             <td>{{ date(item.date) }}</td>
-            <td>{{ item.amount }}</td>
+            <td v-if="item.isPaymentForm">{{ item.amount }}</td>
             <td v-for="(value, label) in item.data" :key="label">
-              <span>{{ value.data }} </span>
+              <span>{{ value.data ? value.data : "" }} </span>
             </td>
             <td>
               <div class="c-pointer">
+                <div
+                  class="spinner-border text-primary"
+                  style="font-size: 10px; width: 26px; height: 26px"
+                  role="status"
+                  v-show="item.approvingServiceReport"
+                >
+                  <span class="sr-only">Loading...</span>
+                </div>
+                <div
+                  v-if="!item.isProceed && !item.approvingServiceReport"
+                  @click="formProcceed(item, 1)"
+                >
+                  <el-icon size="27">
+                    <CircleCheck />
+                  </el-icon>
+                </div>
+                <video
+                  height="30"
+                  autoplay
+                  @click="formProcceed(item, 2)"
+                  class="approveservicereport"
+                  v-if="item.isProceed && !item.approvingServiceReport"
+                >
+                  <source src="../../assets/check_animated.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <!-- <div class="c-pointer">
                 <div v-if="!item.isProceed">
                   <el-icon size="27">
                     <CircleCheck />
@@ -177,7 +205,7 @@
                   <source src="../../assets/check_animated.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
-              </div>
+              </div> -->
             </td>
 
             <!-- <td v-for="(value, label) in item" :key="label">
@@ -366,6 +394,7 @@ import exportService from "../../services/exportFile/exportservice";
 import router from "../../router";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useRoute } from "vue-router";
+import formsService from "../../services/forms/formservice";
 import { Search } from "@element-plus/icons-vue";
 export default {
   components: {
@@ -634,8 +663,39 @@ export default {
       });
     };
 
+    const formProcceed = async (item, type) => {
+      const index = searchForm.value.findIndex((i) => i.id == item.id);
+      searchForm.value[index].approvingServiceReport = true;
+      let payload = {
+          id: item.id,
+          isprocessed: type == 1 ? true : false,
+      };
+      try {
+        // const data = await axios.get(`/api/Forms/IsFormProcessedToggle?id=${item.id}&isprocessed=${type == 1 ? true : false}`)
+        await formsService.formdataProcessed(payload);
+        if (index >= 0) {
+          searchForm.value[index].isProceed = type == 1 ? true : false;
+        }
+        searchForm.value[index].approvingServiceReport = false;
+        ElMessage({
+          type: "success",
+          message: `form data ${type == 1 ? "processed " : "unprocess"}`,
+          duration: 5000,
+        });
+      } catch (err) {
+        searchForm.value[index].approvingServiceReport = false;
+        console.error(err);
+        ElMessage({
+          type: "error",
+          message: `unprocess , please try again`,
+          duration: 5000,
+        });
+      }
+    };
+
     return {
       formHeaders,
+      formProcceed,
       sortedData,
       labels,
       QRCodeDialog,
