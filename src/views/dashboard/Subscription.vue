@@ -1,80 +1,202 @@
 <template>
-  <div class="container-wide container-top">
+  <div class="container-top" :class="{ 'container-wide': lgAndUp || xlAndUp }">
     <div class="row mt-5">
-      <div class="col-12 pl-md-0 header">Subscription</div>
-      <div class="col-12 normal-text mt-3 pl-md-0">
-        Select the subscription that suit your church and the additional tolls
-        you need for your church growth.
+      <div class="col-12 pl-md-0 text-head font-weight-bold h2 py-0 my-0 text-black">
+        Subscription
       </div>
-
-      <div class="col-md-4 col-lg-4 col-12 offset-md-1 sub mt-5 d-block d-md-none card-bg">
-        <div class="row rounded pb-2">
-          <div class="col-12 col-sm-6">
-            <div class="small-header">Current plan</div>
-            <div class="normal-text mt-1">{{ currentPlan }}</div>
-          </div>
-          <div class="col-12 col-sm-6 mt-3 mt-sm-0">
-            <div class="small-header">Expiry Date</div>
-            <div class="normal-text mt-1">{{ expiryDate }}</div>
-          </div>
-        </div>
+      <div class="col-12 normal-text mt-1 s-18 pl-md-0" style="color: #616161;">
+        Select the subscription that suit your church and the additional tools you need
+        for your church growth.
       </div>
-
-      <div class="col-md-6 mt-5">
-        <div class="row bg-white pb-4 sub">
-          <div class="col-md-6 col-lg-6 col-12">
-            <div class="py-2 small-header">
-              Select Subscription Plan <span class="text-danger">*</span>
+      <div class="col-md-12 mt-4">
+        <div class="row justify-content-center">
+          <div class="col-md-6 col-11 ">
+            <div class="row sub py-4">
+              <div class="col-md-12 ">
+                <div class="row bg-white pb-4">
+                  <div class="col-md-6 col-lg-6 col-12">
+                    <div class="py-2 fw-400 text-dak">
+                      Select Subscription Plan <span class="text-danger">*</span>
+                    </div>
+                    <el-select-v2
+                      :options="
+                        UserSubscriptionPlans.map((i) => ({
+                          label: i.description,
+                          value: i.id,
+                        }))
+                      "
+                      v-model="selectedPlanId"
+                      placeholder="Select plan"
+                      @change="setSelectedPlan"
+                      size="large"
+                      class="w-100"
+                    />
+                    <div class="mt-2 fw-400 s-13 text-right   pl-md-0" style="color: #393B3E;">
+                      Membership:
+                      {{
+                        selectedPlan && selectedPlan.membershipSize
+                          ? selectedPlan.membershipSize.toLocaleString()
+                          : ""
+                      }}
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-lg-6 col-12">
+                    <div class="py-2 fw-400 text-dak">Select Duration (month)</div>
+                    <el-select-v2
+                      :options="
+                        selectMonths.map((i) => ({ label: i.name, value: i.name }))
+                      "
+                      v-model="selectMonthId"
+                      placeholder="Select duration"
+                      @change="setSelectedDuration"
+                      size="large"
+                      class="w-100"
+                    />
+                    <div class="ml-1 mt-2 fw-400 s-13 text-right normal-text pl-md-0" style="color: #393B3E;">
+                      {{
+                        selectedPlan &&
+                        Object.keys(selectedPlan).length > 0 &&
+                        selectedPlan.currency
+                          ? selectedPlan.currency.symbol
+                          : ""
+                      }}
+                      {{ subselectedDuratn.toLocaleString() }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 col-lg-12 py-3 " style="background: #eeeeee">
+                <span
+                  class="bg-black text-white border-radius-8 p-2 text-head font-weight-600"
+                  >+ADD-ONS</span
+                >
+              </div>
+              <div class="col-md-12 col-lg-12  mt-2" style="color: #393B3E">
+                <span
+                  class=" s-13  "
+                  >No Add-on added</span
+                >
+              </div>
+              <div class="col-md-12 bg-white px-0 col-12 mt-3">
+                <div class="h-100 col-md-12 px-0">
+                  <div style="background: #eeeeee" class="s-18 py-3 font-weight-600 col-md-12 ">
+                    Payment Summary({{ selectedCurrency.shortCode }})
+                  </div>
+                  <!-- Selected Products -->
+                  <div
+                    class="row mt-3 normal-text"
+                    v-for="item in checkedBoxArr"
+                    :key="item.id"
+                  >
+                    <div class="col-md-6 col-6">{{ item.name }}</div>
+                    <div class="col-md-6 col-6 text-right font-weight-bold">
+                      {{
+                        daysToEndOfSubscription > 0
+                          ? (
+                              item.price * subscriptionDuration +
+                              (item.price / 30) * daysToEndOfSubscription
+                            ).toFixed(2)
+                          : (item.price * subscriptionDuration).toFixed(2)
+                      }}
+                    </div>
+                  </div>
+                  <hr />
+                  <div class="row mt-3 px-3">
+                    <div class="col-md-6 col-6">Total</div>
+                    <div class="col-md-6 col-6 text-right font-weight-bold">
+                      {{ TotalAmount.toLocaleString() }}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <el-select-v2 :options="UserSubscriptionPlans.map((i) => ({
-              label: i.description,
-              value: i.id,
-            }))
-              " v-model="selectedPlanId" placeholder="Select plan" @change="setSelectedPlan" size="large"
-              class="w-100" />
-            <div class="mt-3 normal-text text-right text-md-left italic pl-md-0">
-              Membership:
-              {{
-                selectedPlan && selectedPlan.membershipSize
-                ? selectedPlan.membershipSize.toLocaleString()
-                : ""
-              }}
+            <div class="row mt-4">
+              <div class="col-12" data-toggle="modal" data-target="#PaymentOptionModal">
+                <el-button
+                  :color="primarycolor"
+                  class="w-100"
+                  round
+                  :disabled="!selectedPlanId"
+                >
+                  Pay Now
+                </el-button>
+              </div>
             </div>
           </div>
-          <div class="col-md-6 col-lg-6 col-12">
-            <div class="py-2 small-header">Select Duration (month)</div>
-            <el-select-v2 :options="selectMonths.map((i) => ({ label: i.name, value: i.name }))
-                " v-model="selectMonthId" placeholder="Select duration" @change="setSelectedDuration" size="large"
-              class="w-100" />
-            <div class="ml-1 mt-3 normal-text pl-md-0">
-              {{
-                selectedPlan &&
-                Object.keys(selectedPlan).length > 0 &&
-                selectedPlan.currency
-                ? selectedPlan.currency.symbol
-                : ""
-              }}
-              {{ subselectedDuratn.toLocaleString() }}
+          <div class="col-md-6 col-11">
+            <div class="row">
+              <div class="col-md-4 col-lg-12 col-12 subb mt-4 mt-md-0 px-4 py-3 d-block d-md-none card-bg">
+                <div class="row rounded pb-2">
+                  <div class="col-md-12 s-13" style="color: #878787;">
+                    ACCOUNT STATUS BOARD
+                  </div>
+                  <div class="col-12 mt-1 col-sm-6">
+                    <div class="s-13 fw-400 text-dak">Current plan</div>
+                    <div class="fw-500 s-18 text-dak mt-1">{{ currentPlan }}</div>
+                  </div>
+                  <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                    <div class="s-13 fw-400 text-dak">Expiry Date</div>
+                    <div class="text-dak fw-500 s-18 mt-1">{{ expiryDate }}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-11 offset-md-1 subb px-4 py-3  d-none d-md-block card-bg">
+                <div class="row rounded pb-2">
+                  <div class="col-md-12 s-13" style="color: #878787;">
+                    ACCOUNT STATUS BOARD
+                  </div>
+                  <div class="col-12 mt-1">
+                    <div class="s-13 fw-400 text-dak">Current plan</div>
+                    <div class="fw-500 s-18 text-dak mt-1">{{ currentPlan }}</div>
+                  </div>
+                  <div class="col-12 mt-2">
+                    <div class="s-13 fw-400 text-dak">Expiry Date</div>
+                    <div class="text-dak fw-500 s-18 mt-1">{{ expiryDate }}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-11 col-12 offset-md-1 subb px-4 py-3 mt-4 card-bg">
+                <div class="row  pb-2">
+                  <div class="font-weight-bold text-dak col-md-8">Direct Bank Transfer</div>
+                  <div
+                    class="col-md-12 pb-2"
+                    :class="{
+                      showDropdownMenu: showTransferDetail,
+                      hideDropdownMenu: !showTransferDetail,
+                    }"
+                  >
+                    <!-- <div class="col-md-12 d-flex justify-content-start">
+                      <el-icon :size="18">
+                        <Bottom />
+                      </el-icon>
+                    </div> -->
+                    <div class="row mt-3">
+                      <div class="col-md-12 d-flex justify-content-between">
+                        <div class="text-dak s-18 fw-400 ">Account Name:</div>
+                        <span class="fw-500 text-dak s-18">Complustech Limited</span>
+                      </div>
+                      <div class="col-md-12 d-flex justify-content-between">
+                        <div class="text-dak s-18 fw-400 ">Account Number:</div>
+                        <span class="fw-500 text-dak s-18">0017934252</span>
+                      </div>
+                      <div class="col-md-12 d-flex justify-content-between">
+                        <div class="text-dak s-18 fw-400 ">Bank:</div>
+                        <span class="fw-500 text-dak s-18">Access</span>
+                      </div>
+                      <div class="col-md-12 d-flex justify-content-between">
+                        <div class="text-dak s-18 fw-400 ">Send Prove of Payment to:</div>
+                        <span class="fw-500 text-dak s-18">08023739961</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4 col-lg-4 col-12 offset-md-1 sub mt-5 d-none d-md-block card-bg">
-        <div class="row rounded pb-2">
-          <div class="col-12">
-            <div class="small-header">Current plan</div>
-            <div class="normal-text mt-1">{{ currentPlan }}</div>
-          </div>
-          <div class="col-12 mt-2">
-            <div class="small-header">Expiry Date</div>
-            <div class="normal-text mt-1">{{ expiryDate }}</div>
           </div>
         </div>
       </div>
 
       <!-- Add ons -->
-      <div class="col-md-12 col-lg-12 pt-3 mt-3">ADD-ONS</div>
 
       <div v-if="false" class="col-md-6 col-lg-6 p-4 sub mt-3 bg-white">
         <div class="">
@@ -82,7 +204,12 @@
           <div class="row mt-3 normal-text">
             <div class="col-md-2 col-lg-2 col-4">SMS</div>
             <div class="col-md-6 offset-md-1 col-4 mb-2">
-              <input type="number" v-model.number="smsValue" class="form-control w-50" placeholder="SMS Unit" />
+              <input
+                type="number"
+                v-model.number="smsValue"
+                class="form-control w-50"
+                placeholder="SMS Unit"
+              />
             </div>
             <div class="col-md-2 col-4">
               {{ smsAmount }}
@@ -91,15 +218,22 @@
           <div class="row mt-2 normal-text">
             <div class="col-md-2 col-lg-2 col-4">Email</div>
             <div class="col-md-6 offset-md-1 col-4">
-              <el-select-v2 :options="selectEmailUnit.map((i) => ({ label: i.name, value: i.name }))
-                " v-model="selectEmail" placeholder="Email unit" size="large" class="w-100" />
+              <el-select-v2
+                :options="selectEmailUnit.map((i) => ({ label: i.name, value: i.name }))"
+                v-model="selectEmail"
+                placeholder="Email unit"
+                size="large"
+                class="w-100"
+              />
             </div>
             <div class="col-md-2 col-4">
               {{ selectEmail.constValue ? emailAmount : 0 }}
             </div>
           </div>
           <div class="my-3 small-header">
-            Accounting <br /><small>Product price is multiplied by subscrption duration</small>
+            Accounting <br /><small
+              >Product price is multiplied by subscrption duration</small
+            >
           </div>
           <div class="row normal-text" v-for="item in productsList" :key="item.id">
             <div class="col-12" v-if="item.type === 0">
@@ -116,88 +250,33 @@
       </div>
 
       <!-- payment summary -->
-      <div class="col-md-6 bg-white col-12 sub mt-3">
-        <div class="h-100 rounded">
-          <div class="text-center small-header">
-            Payment Summary({{ selectedCurrency.shortCode }})
-          </div>
-          <!-- Selected Products -->
-          <div class="row mt-3 normal-text" v-for="item in checkedBoxArr" :key="item.id">
-            <div class="col-md-6 col-6">{{ item.name }}</div>
-            <div class="col-md-6 col-6 text-right font-weight-bold">
-              {{
-                daysToEndOfSubscription > 0
-                ? (
-                  item.price * subscriptionDuration +
-                  (item.price / 30) * daysToEndOfSubscription
-                ).toFixed(2)
-                : (item.price * subscriptionDuration).toFixed(2)
-              }}
-            </div>
-          </div>
-          <hr />
-          <div class="row mt-3 normal-text">
-            <div class="col-md-6 col-6">Total</div>
-            <div class="col-md-6 col-6 text-right font-weight-bold">
-              {{ TotalAmount.toLocaleString() }}
-            </div>
-          </div>
-          <div class="row mt-5">
-            <div class="col-12" data-toggle="modal" data-target="#PaymentOptionModal">
-              <el-button :color="primarycolor" class="w-100" round :disabled="!selectedPlanId">
-                Pay Now
-              </el-button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 col-lg-4 col-12 offset-md-1 sub mt-2  card-bg">
-        <div class="row rounded pb-2">
-          <div class="font-weight-bold col-md-8">
-          Direct Bank Transfer
-        </div>
-          <div class="col-md-12   pb-2"
-            :class="{ 'showDropdownMenu': showTransferDetail, 'hideDropdownMenu': !showTransferDetail }">
-            <div class="col-md-12 d-flex justify-content-start"> <el-icon :size="18">
-                <Bottom />
-              </el-icon> </div>
-            <div class="row   ">
-              <div class="col-md-12 d-flex justify-content-between ">
-                <div>Account Name: </div> <span class="font-weight-bold ">Complustech Limited</span>
-              </div>
-              <div class="col-md-12 d-flex justify-content-between">
-                <div>Account Number: </div> <span class="font-weight-bold ">0017934252</span>
-              </div>
-              <div class="col-md-12 d-flex justify-content-between ">
-                <div>Bank: </div> <span class="font-weight-bold ">Access</span>
-              </div>
-              <div class="col-md-12 d-flex justify-content-between ">
-                <div>Send Prove of Payment to: </div> <span class="font-weight-bold ">08023739961</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <el-dialog title="Payment status" v-model="display"
-        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center :modal="true">
+      <el-dialog
+        title="Payment status"
+        v-model="display"
+        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
+        align-center
+        :modal="true"
+      >
         <div class="row">
           <div class="col-md-12" v-if="!paymentFailed">
             <div class="col-12">
               <div class="d-flex justify-content-center">
-                <img src="../../assets/successful_payment.png" style="width: 250px; margin: auto" />
+                <img
+                  src="../../assets/successful_payment.png"
+                  style="width: 250px; margin: auto"
+                />
               </div>
-              <h3 class="text-center mt-5 font-weight-bold success">
-                Congrats
-              </h3>
+              <h3 class="text-center mt-5 font-weight-bold success">Congrats</h3>
               <div class="text-center mt-2 font-weight-600 s-18">
-                Your subscription payment is successful <br />Your account has
-                been upgraded successfully <br />Click the button below to go to
-                the dashboard
+                Your subscription payment is successful <br />Your account has been
+                upgraded successfully <br />Click the button below to go to the dashboard
               </div>
               <div class="d-flex justify-content-center mb-5">
                 <a :href="dashboardURL" class="no-decoration">
-                  <el-button color="#70c043" class="text-white mt-3" round>Go to dashboard</el-button>
+                  <el-button color="#70c043" class="text-white mt-3" round
+                    >Go to dashboard</el-button
+                  >
                 </a>
               </div>
             </div>
@@ -205,8 +284,8 @@
           <div class="col-md-12" v-else>
             <h4 class="text-danger">Oops,</h4>
             <p>
-              Sorry, your subscription upgrade was not successful, please
-              contact support at
+              Sorry, your subscription upgrade was not successful, please contact support
+              at
               <span class="font-weight-bold">info@churchplus.co</span>
             </p>
           </div>
@@ -214,14 +293,18 @@
       </el-dialog>
       <!-- payment summary end -->
       <!-- Modal -->
-      <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div
+        class="modal fade"
+        id="PaymentOptionModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true"
+      >
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header bg-modal">
-              <h5 class="modal-title" id="exampleModalLongTitle">
-                Payment methods
-              </h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Payment methods</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" ref="close">&times;</span>
               </button>
@@ -232,21 +315,42 @@
                   Continue payment with
                 </div>
               </div>
-              <div class="row row-button c-pointer d-flex justify-content-center" @click="initializePayment(0)" v-if="currentUser.currency == 'NGN' || currentUser.currency == 'GHS'
-                ">
+              <div
+                class="row row-button c-pointer d-flex justify-content-center"
+                @click="initializePayment(0)"
+                v-if="currentUser.currency == 'NGN' || currentUser.currency == 'GHS'"
+              >
                 <div>
-                  <img style="width: 150px" src="../../assets/4PaystackLogo.png" alt="paystack" />
+                  <img
+                    style="width: 150px"
+                    src="../../assets/4PaystackLogo.png"
+                    alt="paystack"
+                  />
                 </div>
               </div>
-              <div class="row row-button c-pointer d-flex justify-content-center" @click="initializePayment(1)">
+              <div
+                class="row row-button c-pointer d-flex justify-content-center"
+                @click="initializePayment(1)"
+              >
                 <div>
-                  <img style="width: 150px" src="../../assets/flutterwave_logo_color@2x.png" alt="flutterwave" />
+                  <img
+                    style="width: 150px"
+                    src="../../assets/flutterwave_logo_color@2x.png"
+                    alt="flutterwave"
+                  />
                 </div>
               </div>
               <div class="row row-button c-pointer d-flex justify-content-center">
-                <a href="https://www.paypal.me/GeorgeOnyeama?locale.x=en_GB" target="_blank">
+                <a
+                  href="https://www.paypal.me/GeorgeOnyeama?locale.x=en_GB"
+                  target="_blank"
+                >
                   <div>
-                    <img style="width: 150px; height: 2rem;" src="../../assets/PayPal2.png" alt="paypal" />
+                    <img
+                      style="width: 150px; height: 2rem"
+                      src="../../assets/PayPal2.png"
+                      alt="paypal"
+                    />
                   </div>
                 </a>
               </div>
@@ -266,7 +370,7 @@ import { computed, ref, inject } from "vue";
 import membershipService from "../../services/membership/membershipservice";
 import productPricing from "../../services/user/productPricing";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { ElLoading } from 'element-plus';
+import { ElLoading } from "element-plus";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 
 export default {
@@ -293,8 +397,7 @@ export default {
     const currentUser = computed(() => {
       if (
         !store.getters.currentUser ||
-        (store.getters.currentUser &&
-          Object.keys(store.getters.currentUser).length == 0)
+        (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)
       )
         return "";
       return store.getters.currentUser;
@@ -376,9 +479,7 @@ export default {
           return i.subscriptionPlan;
         });
       selectMonthId.value = 1;
-      selectMonth.value = selectMonths.value.find(
-        (i) => i.name == selectMonthId.value
-      );
+      selectMonth.value = selectMonths.value.find((i) => i.name == selectMonthId.value);
     };
 
     const getTenantSubscription = () => {
@@ -406,8 +507,8 @@ export default {
           return i.id == Plans.value.id;
         })
           ? UserSubscriptionPlans.value.find((i) => {
-            return i.id == Plans.value.id;
-          }).id
+              return i.id == Plans.value.id;
+            }).id
           : null;
 
         // Remove preceeding plans from list
@@ -445,9 +546,7 @@ export default {
         currentAmount.value = res.data.amountInNaira;
         currentPlan.value = existingPlan.value.description;
         productsList.value = res.data.productsList;
-        expiryDate.value = formatDate.monthDayYear(
-          Plans.value.subscriptionExpiration
-        );
+        expiryDate.value = formatDate.monthDayYear(Plans.value.subscriptionExpiration);
         emailPrice.value =
           productsList.value && productsList.value.length > 0
             ? productsList.value.find((i) => i.name === "Email").price
@@ -457,17 +556,14 @@ export default {
             ? productsList.value.find((i) => i.name === "SMS").price
             : [];
 
-        daysToEndOfSubscription.value =
-          calculateRemomainingMonthsOfSubscription(
-            res.data.subscriptionExpiration
-          );
+        daysToEndOfSubscription.value = calculateRemomainingMonthsOfSubscription(
+          res.data.subscriptionExpiration
+        );
       });
     };
 
     const setSelectedDuration = () => {
-      selectMonth.value = selectMonths.value.find(
-        (i) => i.name == selectMonthId.value
-      );
+      selectMonth.value = selectMonths.value.find((i) => i.name == selectMonthId.value);
     };
 
     const setSelectedPlan = () => {
@@ -558,29 +654,25 @@ export default {
         durationInMonths: selectMonthId.value,
         currencyId: selectedCurrency.value.id,
       };
-      axios
-        .post("/api/Payment/InitializeSubscription", payload)
-        .then(({ data }) => {
-          console.log(data);
-          close.value.click();
-          // initializedOrder.value = res.data;
-          loading.close();
-          if (data.status) {
-            if (paymentGateway == 0) {
-              payWithPaystack(data);
-            } else {
-              payWithFlutterwave(data);
-            }
+      axios.post("/api/Payment/InitializeSubscription", payload).then(({ data }) => {
+        console.log(data);
+        close.value.click();
+        // initializedOrder.value = res.data;
+        loading.close();
+        if (data.status) {
+          if (paymentGateway == 0) {
+            payWithPaystack(data);
+          } else {
+            payWithFlutterwave(data);
           }
-        });
+        }
+      });
     };
 
     const subscriptionPayment = async (trans_id, tx_ref) => {
       try {
         await axios
-          .post(
-            `/api/Payment/ConfirmSubscriptionPayment?id=${trans_id}&txnref=${tx_ref}`
-          )
+          .post(`/api/Payment/ConfirmSubscriptionPayment?id=${trans_id}&txnref=${tx_ref}`)
           .then((res) => {
             console.log(res);
             display.value = true;
@@ -607,14 +699,7 @@ export default {
         email: "info@churchplus.co",
         amount: TotalAmount.value * 100,
         currency: selectedCurrency.value.shortCode,
-        channels: [
-          "card",
-          "bank",
-          "ussd",
-          "qr",
-          "mobile_money",
-          "bank_transfer",
-        ],
+        channels: ["card", "bank", "ussd", "qr", "mobile_money", "bank_transfer"],
         ref: responseObject.transactionReference,
         onClose: function () {
           ElMessage({
@@ -696,9 +781,7 @@ export default {
       const startDate = new Date(Date.now());
 
       const differenceInTime = Math.abs(endDate - startDate);
-      const differenceInDays = Math.ceil(
-        differenceInTime / (1000 * 60 * 60 * 24)
-      );
+      const differenceInDays = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24));
 
       return differenceInDays;
     };
@@ -782,32 +865,21 @@ export default {
 </script>
 
 <style scoped>
-.header {
-  font: normal normal 800 34px/46px Nunito Sans;
-}
-
-.normal-text {
-  font: normal normal normal 18px/24px Nunito Sans;
-}
-
-.small-header {
-  font: normal normal bold 16px/22px Nunito Sans;
-}
-
 .sub {
-  background: #ffffff 0% 0% no-repeat padding-box;
-  /* box-shadow: 4px 10px 35px #0000000d; */
-  box-shadow: 0px 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  /* border: 1px solid #0f022021; */
+  box-shadow: 4px 4px 8px 0px #00000045;
+  border: 1px solid #d3d3d3;
 
-  border-radius: 15px;
-  opacity: 1;
-  padding: 20px;
+  border-radius: 8px;
+  /* padding: 20px; */
+}
+.subb {
+  background: #FAFAFA;
+  border: 1px solid #d3d3d3;
+  border-radius: 8px;
 }
 
 .plandropdown {
   text-align: left;
-  font: normal normal normal 18px/24px Nunito Sans;
   letter-spacing: 0px;
   color: #02172e;
   opacity: 1;
@@ -815,7 +887,7 @@ export default {
 
 .communication {
   background: #ffffff 0% 0% no-repeat padding-box;
-  box-shadow: 4px 10px 35px #0000000d;
+  /* box-shadow: 4px 10px 35px #0000000d; */
   border: 1px solid #0f022021;
   border-radius: 15px;
   opacity: 1;
@@ -835,16 +907,15 @@ export default {
 
 .row-button {
   padding: 10px;
-  border-radius: 25px;
-  box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
-  background: #fff;
+  border-radius: 8px;
+  /* box-shadow: 0 4px 12px rgb(0 0 0 / 10%); */
+  background: #fafafa;
   margin: 12px 70px 15px 70px;
   transition: all 0.4s ease-in-out;
   max-height: 45px;
 }
 
 .continue-text {
-  font-family: Nunito Sans !important;
   font-size: 24px;
   font-weight: 700;
   text-align: center;
@@ -863,6 +934,6 @@ export default {
 }
 
 .card-bg {
-  background: #cae2ee49;
+  background: #fafafa;
 }
 </style>

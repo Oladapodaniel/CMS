@@ -1,59 +1,6 @@
 <template>
   <div class="container-top" :class="{ 'container-wide': lgAndUp || xlAndUp }">
     <router-view> </router-view>
-    <!-- Content Box -->
-    <!-- <main :class="{ 'main': mdAndUp || lgAndUp || xlAndUp }" class="mt-3">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-3" id="side-menu">
-            <div class="row">
-              <div class="col-md-12 mt-4">
-                <div class="mt-2" v-show="xsOnly || smAndUp">
-                  <i class="pi pi-bars" @click="toggleMenu"></i>
-                </div>
-                <el-button round class="font-weight-bold w-100" size="large" :color="primarycolor" @click="nextPage">
-                  Compose voice
-                </el-button>
-              </div>
-            </div>
-
-            <div class="row mt-4" :class="{ 'show mb-3': menuShouldShow, 'links-menu': !menuShouldShow }">
-              <div class="col-md-12">
-                <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/voice/voicelist' }">
-                  <div class="col-md-12 menu-item-div m-auto">
-                    <a class="btn btn-default font-weight-bold">
-                      <span class="menu-item">
-                        <router-link class="r-link text-decoration-none d-flex align-items-center "
-                          to="/tenant/voice/voicelist">
-                          <el-icon class="mr-3  menu-icon">
-                            <Tickets />
-                          </el-icon>
-                          <span class="active">All Sent Voice</span>
-                        </router-link>
-                      </span>
-                    </a>
-                  </div>
-                </div>
-                <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/voice/schedulelist' }">
-                  <div class="col-md-12 menu-item-div m-auto">
-                    <a class="btn btn-default font-weight-bold">
-                      <span class="menu-item">
-                        <router-link class="r-link text-decoration-none d-flex align-items-center "
-                          to="/tenant/voice/schedulelist">
-                          <el-icon class="mr-3"><Clock /></el-icon>
-                          <span class="active">Scheduled</span>
-                        </router-link>
-                      </span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </main> -->
   </div>
 </template>
 

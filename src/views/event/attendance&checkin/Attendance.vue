@@ -1,26 +1,6 @@
 <template>
   <div class="container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }">
-          <div class="d-flex flex-column flex-sm-row justify-content-sm-between mb-3">
-            <div class="head-text">
-              <div>Attendance & Check-in</div>
-            </div>
-            <div class="actions">
-              <router-link
-                class="no-decoration"
-                :to="{ name: 'AddCheckin' }"
-                v-if="route.path === '/tenant/attendancecheckin'"
-              >
-                <el-button class="header-btn w-100 text-white" :color="primarycolor" round>
-                  Add New Attendance
-                </el-button>
-              </router-link>
-            </div>
-          </div>
-        <hr class="hr" />
-
-        <div class="container-fluid">
             <router-view></router-view>
-        </div>
   </div>
 </template>
 
@@ -45,15 +25,7 @@ export default {
 </script>
 
 <style scoped>
-* {
-  color: #02172e;
-  /* font: normal normal 600 ¿16px/22px Nunito Sans; */
-  font-family: Nunito Sans !important;
-}
 
-.events {
-  font: normal normal 800 29px Nunito sans;
-}
 
 .whole-con {
   display: flex;
@@ -171,7 +143,6 @@ export default {
 @media (max-width: 399px) {
   .attendanceResponsive {
     color: #02172e;
-    font-family: Nunito Sans !important;
     font-size: 26px;
     padding-top: 20px;
   }

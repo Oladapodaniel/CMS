@@ -34,6 +34,9 @@
   .text-black{
     color: #111111 !important;
   }
+  .bg-black{
+    background: #2E2E2E !important;
+  }
   .text-dak{
     color: #000000 !important;
   }
@@ -51,8 +54,14 @@
 .s-12 {
   font-size: 12px !important;
 }
+.s-13 {
+  font-size: 13px !important;
+}
 .s-14 {
   font-size: 14px !important;
+}
+.s-15 {
+  font-size: 15px !important;
 }
 .s-16 {
   font-size: 16px !important;

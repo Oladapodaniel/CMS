@@ -1,38 +1,125 @@
 <template>
   <!-- tosin working on tables -->
   <div class="row mt-4">
-    <div class="col-md-12 px-0" id="table">
-      <div class="top-con" id="ignore2">
-        <div class="table-top p-3">
-          <div class="d-flex flex-column flex-sm-row justify-content-end">
-            <div>
-              <el-input size="small" v-model="searchText" placeholder="Search..."
-                @keyup.enter.prevent="searchAttendanceInDB" class="input-with-select">
-                <template #append>
-                  <el-button @click.prevent="searchAttendanceInDB">
-                    <el-icon :size="13">
-                      <Search />
-                    </el-icon>
-                  </el-button>
-                </template>
-              </el-input>
-            </div>
+    <div class="col-md-12 px-0">
+      <div class="d-flex flex-column flex-sm-row justify-content-sm-between mb-3">
+        <div>
+          <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
+            Registration & Checkin
           </div>
-          <div class="d-flex flex-column flex-sm-row justify-content-start" v-if="checkedAttendance.length > 0">
-            <div class="">
-              <el-tooltip class="box-item" effect="dark" content="Delete attendance(s)" placement="top-start">
-                <el-icon :size="20" class="c-pointer" v-if="checkedAttendance.length > 0" @click="modal">
+        </div>
+        <div class="actions">
+          <router-link
+            class="no-decoration"
+            :to="{ name: 'AddCheckin' }"
+            v-if="route.path === '/tenant/attendancecheckin'"
+          >
+            <el-button class="header-btn w-100 text-white" :color="primarycolor" round>
+              Register Event
+            </el-button>
+          </router-link>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 px-0" id="table">
+      <div class="tab-options d-block d-md-none mt-5">
+        <div class="s-14 fw-500 col-md-10 px-0 mt-5">
+          <div class="d-flex flex-column flex-sm-row justify-content-md-between">
+            <div>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                v-if="checkedAttendance.length > 0"
+                content="Delete attendance(s)"
+                placement="top-start"
+              >
+                <el-icon
+                  :size="28"
+                  class="ml-2 c-pointer primary--text"
+                  v-if="checkedAttendance.length > 0"
+                  @click="modal"
+                >
                   <Delete />
                 </el-icon>
               </el-tooltip>
             </div>
+            <div class="d-flex flex-column flex-md-row justify-content-md-between">
+              <div>
+                <el-input
+                  size="small"
+                  v-model="searchText"
+                  placeholder="Search..."
+                  @keyup.enter.prevent="searchAttendanceInDB"
+                  class="input-with-select"
+                >
+                  <template #append>
+                    <el-button @click.prevent="searchAttendanceInDB">
+                      <el-icon :size="13">
+                        <Search />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                </el-input>
+              </div>
+            </div>
           </div>
         </div>
-        <Table :data="searchAttendance" :headers="attendanceHeaders" :checkMultipleItem="true" v-loading="loading"
-          @checkedrow="handleSelectionChange">
-          <template v-slot:fullEventName="{ item }">
-            <div class="c-pointer">
-              <router-link class="text-decoration-none font-weight-500 itemroute-color" :to="{
+      </div>
+      <div class="tab-options d-none d-md-block mt-5">
+        <div class="table-top col-12 col-md-8 col-lg-8 col-xl-9 px-0 mt-5">
+          <div class="d-flex flex-column flex-md-row justify-content-md-between">
+            <div>
+              <el-tooltip
+                class="box-item d-flex"
+                effect="dark"
+                v-if="checkedAttendance.length > 0"
+                content="Delete attendance(s)"
+                placement="top-start"
+              >
+                <el-icon
+                  :size="28"
+                  class="ml-2 c-pointer primary--text"
+                  v-if="checkedAttendance.length > 0"
+                  @click="modal"
+                >
+                  <Delete />
+                </el-icon>
+              </el-tooltip>
+            </div>
+            <div class="d-flex flex-column flex-md-row justify-content-md-between">
+              <div>
+                <el-input
+                  size="small"
+                  v-model="searchText"
+                  placeholder="Search..."
+                  @keyup.enter.prevent="searchAttendanceInDB"
+                  class="input-with-select"
+                >
+                  <template #append>
+                    <el-button @click.prevent="searchAttendanceInDB">
+                      <el-icon :size="13">
+                        <Search />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                </el-input>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <Table
+        :data="searchAttendance"
+        :headers="attendanceHeaders"
+        :checkMultipleItem="true"
+        v-loading="loading"
+        @checkedrow="handleSelectionChange"
+      >
+        <template v-slot:fullEventName="{ item }">
+          <div class="c-pointer">
+            <router-link
+              class="text-decoration-none fw-500 s-16 itemroute-color"
+              :to="{
                 name: 'CheckinType',
                 query: {
                   activityID: item.eventID,
@@ -42,14 +129,17 @@
                   id: item.id,
                   code: item.attendanceCode,
                 },
-              }">
-                {{ item.fullEventName }}
-              </router-link>
-            </div>
-          </template>
-          <template v-slot:eventDate="{ item }">
-            <div class="c-pointer">
-              <router-link class="text-decoration-none font-weight-500 itemroute-color" :to="{
+              }"
+            >
+              {{ item.fullEventName }}
+            </router-link>
+          </div>
+        </template>
+        <template v-slot:eventDate="{ item }">
+          <div class="c-pointer">
+            <router-link
+              class="text-decoration-none font-weight-500 itemroute-color"
+              :to="{
                 name: 'CheckinType',
                 query: {
                   activityID: item.eventID,
@@ -59,14 +149,17 @@
                   id: item.id,
                   code: item.attendanceCode,
                 },
-              }">
-                {{ formatDate(item.eventDate) }}
-              </router-link>
-            </div>
-          </template>
-          <template v-slot:fullGroupName="{ item }">
-            <div class="c-pointer">
-              <router-link class="text-decoration-none font-weight-500 itemroute-color" :to="{
+              }"
+            >
+              {{ formatDate(item.eventDate) }}
+            </router-link>
+          </div>
+        </template>
+        <template v-slot:fullGroupName="{ item }">
+          <div class="c-pointer">
+            <router-link
+              class="text-decoration-none font-weight-500 itemroute-color"
+              :to="{
                 name: 'CheckinType',
                 query: {
                   activityID: item.eventID,
@@ -76,26 +169,33 @@
                   id: item.id,
                   code: item.attendanceCode,
                 },
-              }">
-                {{ item.fullGroupName }}
-              </router-link>
-            </div>
-          </template>
-          <template v-slot:action="{ item }">
-            <el-dropdown trigger="click">
-              <el-icon>
-                <MoreFilled />
-              </el-icon>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item>
-                    <router-link class="text-decoration-none text-dark" :to="{
+              }"
+            >
+              {{ item.fullGroupName }}
+            </router-link>
+          </div>
+        </template>
+        <template v-slot:action="{ item }">
+          <el-dropdown trigger="click">
+            <el-icon>
+              <MoreFilled />
+            </el-icon>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>
+                  <router-link
+                    class="text-decoration-none text-dark"
+                    :to="{
                       name: 'AttendanceReport',
                       params: { id: item.id },
-                    }">View Details</router-link>
-                  </el-dropdown-item>
-                  <el-dropdown-item>
-                    <router-link class="text-decoration-none text-dark" :to="{
+                    }"
+                    >View Details</router-link
+                  >
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <router-link
+                    class="text-decoration-none text-dark"
+                    :to="{
                       name: 'CheckinType',
                       query: {
                         activityID: item.eventID,
@@ -105,10 +205,12 @@
                         id: item.id,
                         code: item.attendanceCode,
                       },
-                    }">Checkin</router-link>
-                  </el-dropdown-item>
-                  <el-dropdown-item>
-                 <!-- <router-link
+                    }"
+                    >Checkin</router-link
+                  >
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <!-- <router-link
                     class="text-decoration-none text-dark"
                     :to="{
                       name: 'AddAttendance',
@@ -119,21 +221,27 @@
                     >Edit</router-link
                   > -->
                 </el-dropdown-item>
-                  <el-dropdown-item>
-                    <div @click.prevent="showConfirmModal(item.id)" class="text-color">
-                      Delete
-                    </div>
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </template>
-        </Table>
-      </div>
+                <el-dropdown-item>
+                  <div @click.prevent="showConfirmModal(item.id)" class="text-color">
+                    Delete
+                  </div>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </template>
+      </Table>
+
       <div class="d-flex justify-content-end my-3">
-        <el-pagination v-model:current-page="serverOptions.page" v-model:page-size="serverOptions.rowsPerPage" background
-          layout="total, prev, pager, next, jumper" :total="serverItemsLength" @size-change="handleSizeChange"
-          @current-change="handleCurrentChange" />
+        <el-pagination
+          v-model:current-page="serverOptions.page"
+          v-model:page-size="serverOptions.rowsPerPage"
+          background
+          layout="total, prev, pager, next, jumper"
+          :total="serverItemsLength"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
       </div>
     </div>
     <!-- {{totalItems}} -->
@@ -148,11 +256,12 @@
 </template>
 
 <script>
-import { ref, computed, watch, watchEffect } from "vue";
+import { ref, computed, watch, watchEffect, inject } from "vue";
 import dateFormatter from "../../../services/dates/dateformatter";
 import stopProgressBar from "../../../services/progressbar/progress";
 import axios from "@/gateway/backendapi";
 import store from "../../../store/store";
+import { useRoute } from "vue-router";
 import Table from "@/components/table/Table";
 import { ElMessage, ElMessageBox } from "element-plus";
 
@@ -165,6 +274,9 @@ export default {
     const loading = ref(false);
     const attendanceList = ref([]);
     const checkedAttendance = ref([]);
+    const route = useRoute();
+    const primarycolor = inject("primarycolor");
+
     const attendanceHeaders = ref([
       { name: "EVENT NAME", value: "fullEventName" },
       { name: "DATE", value: "eventDate" },
@@ -398,6 +510,8 @@ export default {
 
     return {
       modal,
+      route,
+      primarycolor,
       attendanceHeaders,
       searchAttendanceInDB,
       handleSelectionChange,
@@ -720,13 +834,19 @@ export default {
 }
 
 .table-top {
-  font-weight: 800;
-  font-size: 12px;
+  position: absolute;
+  z-index: 1;
+  top: -40px;
+  /* width: 100%; */
+  font-weight: 500 !important;
+  font-size: 14px;
   background: #fff;
-  border: 1px solid #e0e0e0;
-  border-bottom: none;
-  /* display: flex;
-  justify-content: flex-end; */
+  color: #000000;
+  /* border: 1px solid #d4dde3; */
+  /* max-width: 83.333333% !important; */
+}
+.tab-options {
+  position: relative;
 }
 
 .table-top label:hover,
@@ -999,4 +1119,5 @@ export default {
   }
 }
 
-/* tosin working */</style>
+/* tosin working */
+</style>
