@@ -57,7 +57,7 @@
     </div>
 
     <div class="row">
-      <div class="col-md">
+      <div class="col-md-12">
         <div
           class="modal"
           tabindex="-1"
@@ -198,11 +198,71 @@
 
     <div class="row">
       <div class="col-md-12">
-        <div class="row my-4">
-          <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right">
-            <label for="" class="font-weight-600">Event</label>
+        <div class="row my-3">
+          <div class="col-sm-3 col-md-3 text-sm-right align-self-center"></div>
+          <div
+            v-if="imageUrl"
+            class="col-sm-6 col-md-8"
+            :class="{ 'img-border ': imageUrl === '' }"
+          >
+            <div class="d-flex col-md-8 justify-content-center">
+              <div class="col-md-10">
+                <img :src="imageUrl" class="w-100 mx-auto mb-2" />
+              </div>
+            </div>
+            <div
+              class="col-12 col-md-8 justify-content-center px-0 mx-0 d-flex text-center cursor-pointer"
+            >
+              <div class="d-flex col-md-8 px-0 mx-0">
+                <input
+                  type="text"
+                  class="form-control border-right-0"
+                  v-model="image.name"
+                />
+                <div
+                  class="upload-button align-self-center text-center cursor-pointer"
+                  @click="altClick"
+                >
+                  Upload
+                  <input type="file" @change="chooseFile" ref="binImage" hidden />
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="col-sm-7 col-md-6 col-lg-5">
+          <div v-if="!imageUrl" class="col-12 col-sm-7 col-md-7 px-0 mx-0 cursor-pointer">
+            <div class="col-md-12 font-weight-bold s-18 text-head">
+              Upload Event Banner
+            </div>
+            <div class="d-flex col-12 col-lg-12">
+              <input type="text" class="form-control" v-model="image.name" />
+              <div class="upload-button text-center cursor-pointer" @click="altClick">
+                Upload
+                <input type="file" @change="chooseFile" ref="binImage" hidden />
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="col-sm-3 col-md-4"></div> -->
+          <!-- <div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center mt-2">
+            <div class="col-sm-7 col-md-4">
+              <small><code>Click to upload your banner.</code></small>
+            </div>
+          </div> -->
+
+          <div
+            v-if="!imageUrl"
+            class="col-12 col-md-12 d-flex justify-content-center mt-2"
+          >
+            <div class="col-sm-7 col-md-3 text-head s-18 fw-400">
+              No file selected yet.
+            </div>
+          </div>
+        </div>
+        <div class="row my-4">
+          <div class="col-sm-3 col-md-3 col-lg-3 text-sm-right">
+            <label for="" class="fw-500 s-18 text-head text-dak">Event</label>
+          </div>
+          <div class="col-sm-7 col-md-7">
             <div class="col-md-12 px-0">
               <!-- Find event -->
               <el-dropdown class="w-100" trigger="click">
@@ -234,89 +294,26 @@
                 </template>
               </el-dropdown>
             </div>
-            <!-- <div class="dropdown">
-              <button
-                class="default-btn w-100 text-left pr-1"
-                type="button"
-                style="
-                  border-radius: 4px;
-                  border: 1px solid #ced4da;
-                  color: #6c757d;
-                "
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                {{
-                  !selectedEvent.name
-                    ? "Select from events and activities"
-                    : selectedEvent.name.length > 27
-                    ? `${selectedEvent.name.slice(0, 27)}...`
-                    : selectedEvent.name
-                }}
-               <el-icon class="el-icon--right float-right
-                  pr-1 ">
-                  <arrow-down />
-                </el-icon>
-              </button>
-              <div
-                class="dropdown-menu w-100"
-                aria-labelledby="dropdownMenuButton"
-                style="max-height: 350px; overflow-y: auto"
-              >
-                <div class="row w-100 mx-auto" v-if="events.length > 5">
-                  <div class="col-md-12">
-                    <el-input
-                      type="text"
-                      class="w-100"
-                      placeholder="Find event"
-                      v-model="eventSearchText"
-                    />
-                  </div>
-                </div>
-
-                <a
-                  class="
-                    dropdown-item
-                    font-weight-700
-                    small-text
-                    py-2
-                    c-pointer
-                  "
-                  v-for="(event, index) in filteredEvents"
-                  :key="index"
-                  @click="selectEvent(event)"
-                  >{{ event.name }}</a
-                >
-                <a
-                  class="
-                    font-weight-bold
-                    small-text
-                    d-flex
-                    justify-content-center
-                    py-2
-                    text-decoration-none
-                    primary-text
-                  "
-                  style="border-top: 1px solid #002044; color: #136acd"
-                  href="#"
-                  data-toggle="modal"
-                  data-target="#newActModal"
-                  ref="openModalBtn"
-                >
-                  <el-icon class="mr-2"><CirclePlus /></el-icon>
-                  Create new event
-                </a>
-              </div>
-            </div> -->
           </div>
         </div>
         <div class="row my-3">
-          <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right">
-            <label for="" class="font-weight-600">Group</label>
+          <div class="col-sm-3 col-md-3 col-lg-3 text-sm-right align-self-center">
+            <label for="" class="fw-500 s-18 text-head text-dak">Event Details</label>
           </div>
-          <div class="col-sm-7 col-md-6 col-lg-5">
+          <div class="col-sm-7 col-md-7">
+            <el-input
+              v-model="eventDetails"
+              placeholder="Details"
+              :rows="3"
+              type="textarea"
+            />
+          </div>
+        </div>
+        <div class="row my-3">
+          <div class="col-sm-3 col-md-3 col-lg-3 text-sm-right">
+            <label for="" class="fw-500 s-18 text-head text-dak">Group</label>
+          </div>
+          <div class="col-sm-7 col-md-7">
             <!-- <el-tree-select
                 v-model="selectedGroups"
                 :data="groupMappedTree"
@@ -345,7 +342,9 @@
                     <span class="eachGroup">{{ item.name }}</span></span
                   >
                 </span>
-                <span v-if="selectedGroups.length === 0">Select group</span>
+                <span class="text-secondary" v-if="selectedGroups.length === 0"
+                  >Select group</span
+                >
               </span>
               <el-icon class="el-icon--right pr-1">
                 <arrow-down />
@@ -378,12 +377,12 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-12">
+          <div class="col-12 py-2">
             <div class="d-flex justify-content-between align-items-center">
-              <h5 class="mt-2">More</h5>
+              <div class="mt-2 fw-500 s-24 col-md-4 text-center">Paid Event details</div>
               <!-- <hr style="width: 80%" /> -->
-              <el-divider></el-divider>
-              <div>
+              <el-divider class="col-md-6"></el-divider>
+              <div class="col-md-12">
                 <el-icon class="angle-icon" @click="toggleTemplate">
                   <ArrowDownBold />
                 </el-icon>
@@ -404,84 +403,10 @@
             <div v-show="templateDisplay">
               <div class="container-fluid">
                 <div class="row my-3">
-                  <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right align-self-center">
-                    <label for="" class="font-weight-600">Event Banner</label>
+                  <div class="col-sm-3 col-md-3 text-sm-right align-self-center">
+                    <label for="" class="fw-500 s-18 text-head text-dak">Slot</label>
                   </div>
-                  <div
-                    v-if="imageUrl"
-                    class="col-sm-6 col-md-5"
-                    :class="{ 'img-border ': imageUrl === '' }"
-                  >
-                    <div class="d-flex">
-                      <img :src="imageUrl" class="w-50 mx-auto mb-2" />
-                    </div>
-                    <div
-                      class="col-12 col-sm-12 col-md-12 px-0 mx-0 d-flex text-center cursor-pointer"
-                    >
-                      <div class="d-flex col-md-12 px-0 mx-0">
-                        <input
-                          type="text"
-                          class="form-control border-right-0"
-                          v-model="image.name"
-                        />
-                        <div
-                          class="upload-button align-self-center text-center cursor-pointer"
-                          @click="altClick"
-                        >
-                          Upload
-                          <input type="file" @change="chooseFile" ref="binImage" hidden />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    v-if="!imageUrl"
-                    class="col-12 col-sm-7 col-md-6 px-0 mx-0 d-flex text-center cursor-pointer"
-                  >
-                    <div class="d-flex col-12 col-lg-10">
-                      <input type="text" class="form-control" v-model="image.name" />
-                      <div
-                        class="upload-button text-center cursor-pointer"
-                        @click="altClick"
-                      >
-                        Upload
-                        <input type="file" @change="chooseFile" ref="binImage" hidden />
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- <div class="col-sm-3 col-md-4"></div> -->
-                  <div
-                    class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center mt-2"
-                  >
-                    <div class="col-sm-7 col-md-4">
-                      <small><code>Click to upload your banner.</code></small>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row my-3">
-                  <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right align-self-center">
-                    <label for="" class="font-weight-600">Event Details</label>
-                  </div>
-                  <div class="col-sm-7 col-md-6 col-lg-5">
-                    <el-input v-model="eventDetails" :rows="2" type="textarea" />
-                    <!-- <textarea
-                      name=""
-                      id=""
-                      cols="30"
-                      rows="4"
-                      class="form-control"
-                      v-model="eventDetails"
-                    ></textarea> -->
-                  </div>
-                </div>
-
-                <div class="row my-3">
-                  <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right align-self-center">
-                    <label for="" class="font-weight-600">Slot</label>
-                  </div>
-                  <div class="col-sm-7 col-md-6 col-lg-5">
+                  <div class="col-sm-7 col-md-7">
                     <el-input
                       type="number"
                       class="w-100"
@@ -492,10 +417,29 @@
                 </div>
 
                 <div class="row mt-4">
-                  <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right"></div>
+                  <div
+                    class="col-sm-3 col-md-3 text-head fw-500 s-18 text-dak text-sm-right"
+                  >
+                    Amount
+                  </div>
+                  <div class="col-sm-7 col-md-7">
+                    <el-input
+                      type="text"
+                      class="w-100"
+                      placeholder="Input Amount"
+                      v-model="amount"
+                    />
+                  </div>
+
+                  <div class="col-sm-3 col-md-3 text-sm-right"></div>
                   <div class="col-sm-7 col-md-6 col-lg-5">
+                    <div class="col-md-12 mt-4 px-0" @click="openPaymentModal">
+                      <u class="primary--text text-head font-weight-600 cursor-pointer"
+                        >Set up Payment Gateway now
+                      </u>
+                    </div>
                     <div class="row">
-                      <div class="col-sm-4 align-self-center">
+                      <!-- <div class="col-sm-4 align-self-center">
                         <span
                           class="font-weight-700 cursor-pointer"
                           @click="showFreeTab"
@@ -508,8 +452,8 @@
                           :class="{ 'active-tab': addPaidClass }"
                           >Paid</span
                         >
-                      </div>
-                      <div
+                      </div> -->
+                      <!-- <div
                         class="col-sm-8 mt-3 mt-sm-0"
                         :class="{
                           'show-amount': addPaidClass,
@@ -522,7 +466,7 @@
                           placeholder="Enter amount"
                           v-model="amount"
                         />
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                   <div class="col-sm-2 col-lg-3"></div>
@@ -714,57 +658,85 @@
                 </div>
 
                 <div class="row mt-3">
-                  <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right align-self-center">
-                    <label for="" class="font-weight-600">SMS</label>
-                  </div>
-                  <div class="col-sm-7 col-md-6 col-lg-5 mt-2">
-                    <el-tabs type="border-card">
-                      <el-tab-pane label="Checkin">
-                        <SenderIdVue @setselectedsenderid="setSelectedSenderIdCheckin" />
-                        <el-input
-                          v-model="checkinSMS"
-                          :rows="4"
-                          type="textarea"
-                          class="mt-2"
-                        />
-                      </el-tab-pane>
-                      <el-tab-pane label="Registration">
-                        <SenderIdVue
-                          @setselectedsenderid="setSelectedSenderIdRegistration"
-                        />
-                        <el-input
-                          v-model="registrationSMS"
-                          :rows="4"
-                          type="textarea"
-                          class="mt-2"
-                        />
-                      </el-tab-pane>
-                    </el-tabs>
-                    <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
-                      <li class="nav-item">
-                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
-                          aria-controls="home" aria-selected="true">Checkin</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
-                          aria-controls="profile" aria-selected="false">Registration</a>
-                      </li>
-                    </ul> -->
-                    <!-- <div class="tab-content" id="myTabContent">
-                      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <SenderIdVue @setselectedsenderid="setSelectedSenderIdCheckin" />
-                        <el-input v-model="checkinSMS" :rows="4" type="textarea" class="mt-2" />
+                  <div class="col-sm-3 col-md-3 text-sm-right align-self-center"></div>
+                  <div class="col-sm-7 col-md-7 d-flex mt-2">
+                    <div class="row">
+                      <div class="col-md-12 my-4 fw-400">
+                        Kindly add default message for checkin & Registration
                       </div>
-                      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                        <SenderIdVue @setselectedsenderid="setSelectedSenderIdRegistration" />
-                        <el-input v-model="registrationSMS" :rows="4" type="textarea" class="mt-2" />
+                      <div class="col-md-6">
+                        <div class="col-md-12 text-head font-weight-600 s-18">SMS</div>
+                        <el-tabs type="border-card">
+                          <el-tab-pane label="Checkin">
+                            <SenderIdVue
+                              @setselectedsenderid="setSelectedSenderIdCheckin"
+                            />
+                            <el-input
+                              v-model="checkinSMS"
+                              :rows="4"
+                              type="textarea"
+                              class="mt-2"
+                            />
+                          </el-tab-pane>
+                          <el-tab-pane label="Registration">
+                            <SenderIdVue
+                              @setselectedsenderid="setSelectedSenderIdRegistration"
+                            />
+                            <el-input
+                              v-model="registrationSMS"
+                              :rows="4"
+                              type="textarea"
+                              class="mt-2"
+                            />
+                          </el-tab-pane>
+                        </el-tabs>
                       </div>
-                    </div> -->
+                      <div class="col-md-6">
+                        <div
+                          class="col-md-12 mt-3 mt-md-0 text-head font-weight-600 s-18"
+                        >
+                          Email
+                        </div>
+                        <el-tabs type="border-card">
+                          <el-tab-pane label="Checkin">
+                            <div class="col-md-12 my-2"></div>
+                            <el-input
+                              v-model="checkinEmailSubject"
+                              type="text "
+                              placeholder="Enter subject"
+                              class="mt-2"
+                            />
+                            <div class="col-md-12 my-4"></div>
+                            <el-input
+                              v-model="checkinEmail"
+                              :rows="4"
+                              type="textarea"
+                              class="mt-2"
+                            />
+                          </el-tab-pane>
+                          <el-tab-pane label="Registration">
+                            <el-input
+                              v-model="registrationEmailSubject"
+                              placeholder="Enter subject"
+                              type="text"
+                              class="mt-2"
+                            />
+                            <div class="col-md-12 my-5"></div>
+                            <el-input
+                              v-model="registrationEmail"
+                              :rows="4"
+                              type="textarea"
+                              class="mt-2"
+                            />
+                          </el-tab-pane>
+                        </el-tabs>
+                      </div>
+                    </div>
                   </div>
 
-                  <div class="col-sm-2 col-lg-3"></div>
+                  <!-- <div class="col-sm-2 col-lg-3"></div> -->
 
-                  <div
+                  <!-- <div
                     class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-3 align-self-center"
                   >
                     <label for="" class="font-weight-600">Email</label>
@@ -800,36 +772,14 @@
                         />
                       </el-tab-pane>
                     </el-tabs>
-                    <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
-                      <li class="nav-item">
-                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#first" role="tab"
-                        aria-controls="home" aria-selected="true">Checkin</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#second" role="tab"
-                        aria-controls="profile" aria-selected="false">Registration</a>
-                      </li>
-                    </ul>
-                    <div class="tab-content" id="myTabContent">
-                      <div class="tab-pane fade show active" id="first" role="tabpanel" aria-labelledby="home-tab">
-                        <el-input v-model="checkinEmailSubject" type="text" placeholder="Enter subject" class="mt-2" />
-                        <el-input v-model="checkinEmail" :rows="4" type="textarea" class="mt-2" />
-                      </div>
-                      <div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="profile-tab">
-                        <el-input v-model="registrationEmailSubject" placeholder="Enter subject" type="text" class="mt-2" />
-                        <el-input v-model="registrationEmail" :rows="4" type="textarea" class="mt-2" />
-                      </div>
-                    </div> -->
-                  </div>
+                  </div> -->
 
-                  <div class="col-sm-2 col-lg-3"></div>
+                  <!-- <div class="col-sm-2 col-lg-3"></div>s -->
 
-                  <div
-                    class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-3 align-self-center"
-                  >
-                    <label for="" class="font-weight-600">Cut-off time</label>
+                  <div class="col-sm-3 col-md-3 text-sm-right mt-3 align-self-center">
+                    <label for="" class="text-head fw-500 s-18 text-dak">Cut-off time</label>
                   </div>
-                  <div class="col-sm-7 col-md-6 col-lg-5 mt-3">
+                  <div class="col-sm-7 col-md-7 mt-4">
                     <el-tabs type="border-card">
                       <el-tab-pane label="Checkin">
                         <input
@@ -846,25 +796,6 @@
                         />
                       </el-tab-pane>
                     </el-tabs>
-                    <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
-                      <li class="nav-item">
-                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#checkintime" role="tab"
-                          aria-controls="home" aria-selected="true">Checkin</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#regTime" role="tab"
-                          aria-controls="profile" aria-selected="false">Registration</a>
-                      </li>
-                    </ul>
-                    <div class="tab-content" id="myTabContent">
-                      <div class="tab-pane fade show active" id="checkintime" role="tabpanel" aria-labelledby="home-tab">
-                        
-                        <input type="datetime-local" class="form-control my-3" v-model="checkinCutOffTime" />
-                      </div>
-                      <div class="tab-pane fade" id="regTime" role="tabpanel" aria-labelledby="profile-tab">
-                        <input type="datetime-local" class="form-control my-3" v-model="regCutOffTimer" />
-                      </div>
-                    </div> -->
                   </div>
 
                   <div class="col-sm-2 col-lg-3"></div>
@@ -910,6 +841,166 @@
 
       <div class="col-lg-3 col-md-1"></div>
     </div>
+    <el-dialog
+      v-model="showPaymentDetail"
+      class="border-radius-20"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+    >
+      <div class="row">
+        <div class="col-md-12 col-12">
+          <div class="row justify-content-center">
+            <div class="col-md-7 fw-500 s-32">Set up Payment Gateway </div>
+            <div class="col-md-7 col-11 mt-4">
+              <label class="fw-500 text-head s-18" for="">Select Bank</label>
+              <div class="dropdown w-100 ">
+                <button
+                  class="default-btn w-100 text-left pr-1"
+                  type="button"
+                  style="border-radius: 4px; border: 1px solid #ced4da; color: #6c757d"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  {{
+                    !selectedBank
+                      ? "Select"
+                      : selectedBank.name.length > 27
+                      ? `${selectedBank.name.slice(0, 27)}...`
+                      : selectedBank.name
+                  }}
+                  <el-icon class="manual-dd-icon float-right pr-1">
+                    <ArrowDown />
+                  </el-icon>
+                </button>
+                <div
+                  class="dropdown-menu p-2"
+                  aria-labelledby="dropdownMenuButton"
+                  style="max-height: 350px; overflow-y: auto"
+                >
+                  <el-input
+                    type="text"
+                    class="w-100"
+                    placeholder="Search bank"
+                    v-model="bankSearchText"
+                  />
+                  <a
+                    class="dropdown-item elipsis-items cursor-pointer"
+                    v-for="item in filteredBanks"
+                    :key="item.id"
+                  >
+                    <div @click="setBank(item)">
+                      {{ item ? item.name : "" }}
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-7 col-11 mt-3 ">
+              <label class="fw-500 text-head s-18" for="">Account Number </label>
+              <el-input
+                type="text"
+                class="w-100  input-height"
+                placeholder="Enter account number"
+                v-model="accountNumber"
+                @blur="resolveCustomerDetail"
+              />
+            </div>
+            <div class="col-md-7 col-11 mt-3">
+              <label class="fw-500 text-head s-18" for=""> Account Name </label>
+              <el-input
+                type="text"
+                class="w-100 input-height"
+                placeholder="account name"
+                v-model="accountName"
+                ref="accNameRef"
+                disabled
+              />
+            </div>
+            <div class="col-sm-2 col-lg-3 align-self-center mt-4" v-if="loading">
+              <div
+                class="spinner-border text-primary"
+                style="width: 3rem; height: 3rem"
+                role="status"
+              >
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+            <div class="col-md-7 col-11 mt-3">
+              <label class="fw-500 text-head s-18" for=""> Income Account </label>
+              <el-dropdown trigger="click" class="w-100">
+                <span class="el-dropdown-link w-100">
+                  <div
+                    class="d-flex justify-content-between border-contribution text-secondary w-100"
+                    size="large"
+                  >
+                    <span>{{
+                      selectedIncomeAccount &&
+                      Object.keys(selectedIncomeAccount).length > 0
+                        ? selectedIncomeAccount.text
+                        : "Select"
+                    }}</span>
+                    <div>
+                      <el-icon class="el-icon--right">
+                        <arrow-down />
+                      </el-icon>
+                    </div>
+                  </div>
+                </span>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item
+                      v-for="(itm, indx) in incomeAccount"
+                      :key="indx"
+                      @click="setIncomeAccount(itm)"
+                      >{{ itm.text }}
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
+            <div class="col-md-7 col-11 mt-3">
+              <label class="fw-500 text-head s-18" for=""> Cash Account </label>
+              <el-dropdown trigger="click" class="w-100">
+                <span class="el-dropdown-link w-100">
+                  <div
+                    class="d-flex justify-content-between border-contribution text-secondary w-100"
+                    size="large"
+                  >
+                    <span>{{
+                      selectedCashAccount && Object.keys(selectedCashAccount).length > 0
+                        ? selectedCashAccount.text
+                        : "Select"
+                    }}</span>
+                    <div>
+                      <el-icon class="el-icon--right">
+                        <arrow-down />
+                      </el-icon>
+                    </div>
+                  </div>
+                </span>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item
+                      v-for="(itm, indx) in cashBankAccount"
+                      :key="indx"
+                      @click="setcashBankAccount(itm)"
+                      >{{ itm.text }}
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
+            <div class="col-md-7 col-11 mt-3">
+              <el-button @click="Contiue" round :color="primarycolor" class="text-white w-100">Continue</el-button>
+            </div>
+            <div class="col-md-7 col-11 mt-3">
+              <el-button @click="cancel" round class=" border-0 w-100">Cancel</el-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -971,6 +1062,7 @@ export default {
     const slot = ref("");
     const hideDiv = ref(true);
     const searchGroupRef = ref(true);
+    const showPaymentDetail = ref(false);
     const searchGroupText = ref("");
     const grouploading = ref(false);
     const checkinCutOffTime = ref("");
@@ -998,6 +1090,16 @@ export default {
     const setcashBankAccount = (item) => {
       selectedCashAccount.value = item;
     };
+
+    const openPaymentModal = () => {
+      showPaymentDetail.value = true
+    }
+    const Contiue = () => {
+      showPaymentDetail.value = false
+    }
+    const cancel = () => {
+      showPaymentDetail.value = false
+    }
 
     const getSingleCheckinAttendance = async () => {
       try {
@@ -1739,6 +1841,10 @@ export default {
       setSelectedSenderIdRegistration,
       registrationEmailSubject,
       checkinEmailSubject,
+      showPaymentDetail,
+      openPaymentModal,
+      Contiue,
+      cancel
     };
   },
 };
@@ -1781,11 +1887,6 @@ export default {
   font-size: 20px;
   font-weight: 700;
 }
-
-.input-height {
-  height: 70%;
-}
-
 /* .img-border {
   border: 1px dotted rgb(206, 212, 218); 
   height: 150px;
