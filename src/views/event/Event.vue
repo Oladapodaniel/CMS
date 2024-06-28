@@ -4193,7 +4193,6 @@ tr.event-list td {
   align-items: center;
   justify-content: center;
   border-radius: 60px;
-  opacity: 0px;
 }
 
 .add-new-convert {
@@ -4207,7 +4206,6 @@ tr.event-list td {
   justify-content: center;
   display: flex;
   align-items: center;
-  opacity: 0px;
 }
 
 .close-slide1 {
