@@ -198,7 +198,43 @@
 
     <div class="row">
       <div class="col-md-12">
-        <div class="row my-3">
+        <div class="row">
+          <div class="col-sm-3 col-md-3 text-sm-right align-self-center"></div>
+          <div class="col-md-8 col-sm-6">
+            <h5 class=" font-weight-bold s-18 text-head ">Upload Event Banner</h5>
+            <div class="col-md-12" @click="altClick" v-if="imageUrl">
+              <div class="row justify-content-center">
+                <div class="col-md-7">
+                  <img :src="imageUrl" class="w-100 mx-auto mb-2" style="height: auto;" />
+                </div>
+                <div class="col-md-12">
+                  <input
+                    type="file"
+                    ref="binImage"
+                    @change="chooseFile"
+                    style="display: none"
+                  />
+                </div>
+              </div>
+            </div>
+            <div v-if="!imageUrl" class="col-md-10  upload-area" @click="altClick">
+              <div class="row ">
+                <div class="col-md-12">
+                  <input
+                    type="file"
+                    ref="binImage"
+                    @change="chooseFile"
+                    style="display: none"
+                  />
+                </div>
+                <div class="col-md-12 px-0  " v-if="!imageUrl">
+                  <el-button round color="#EBEDFF" class=" upload-area-btn py-4 px-5 w-100 " @click="altClick" v-if="!imageUrl">{{ buttonText }}</el-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="row my-3">
           <div class="col-sm-3 col-md-3 text-sm-right align-self-center"></div>
           <div
             v-if="imageUrl"
@@ -241,14 +277,6 @@
               </div>
             </div>
           </div>
-
-          <!-- <div class="col-sm-3 col-md-4"></div> -->
-          <!-- <div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center mt-2">
-            <div class="col-sm-7 col-md-4">
-              <small><code>Click to upload your banner.</code></small>
-            </div>
-          </div> -->
-
           <div
             v-if="!imageUrl"
             class="col-12 col-md-12 d-flex justify-content-center mt-2"
@@ -257,7 +285,7 @@
               No file selected yet.
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="row my-4">
           <div class="col-sm-3 col-md-3 col-lg-3 text-sm-right">
             <label for="" class="fw-500 s-18 text-head text-dak">Event</label>
@@ -777,7 +805,9 @@
                   <!-- <div class="col-sm-2 col-lg-3"></div>s -->
 
                   <div class="col-sm-3 col-md-3 text-sm-right mt-3 align-self-center">
-                    <label for="" class="text-head fw-500 s-18 text-dak">Cut-off time</label>
+                    <label for="" class="text-head fw-500 s-18 text-dak"
+                      >Cut-off time</label
+                    >
                   </div>
                   <div class="col-sm-7 col-md-7 mt-4">
                     <el-tabs type="border-card">
@@ -849,10 +879,10 @@
       <div class="row">
         <div class="col-md-12 col-12">
           <div class="row justify-content-center">
-            <div class="col-md-7 fw-500 s-32">Set up Payment Gateway </div>
+            <div class="col-md-7 fw-500 s-32">Set up Payment Gateway</div>
             <div class="col-md-7 col-11 mt-4">
               <label class="fw-500 text-head s-18" for="">Select Bank</label>
-              <div class="dropdown w-100 ">
+              <div class="dropdown w-100">
                 <button
                   class="default-btn w-100 text-left pr-1"
                   type="button"
@@ -896,11 +926,11 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-7 col-11 mt-3 ">
+            <div class="col-md-7 col-11 mt-3">
               <label class="fw-500 text-head s-18" for="">Account Number </label>
               <el-input
                 type="text"
-                class="w-100  input-height"
+                class="w-100 input-height"
                 placeholder="Enter account number"
                 v-model="accountNumber"
                 @blur="resolveCustomerDetail"
@@ -992,10 +1022,16 @@
               </el-dropdown>
             </div>
             <div class="col-md-7 col-11 mt-3">
-              <el-button @click="Contiue" round :color="primarycolor" class="text-white w-100">Continue</el-button>
+              <el-button
+                @click="Contiue"
+                round
+                :color="primarycolor"
+                class="text-white w-100"
+                >Continue</el-button
+              >
             </div>
             <div class="col-md-7 col-11 mt-3">
-              <el-button @click="cancel" round class=" border-0 w-100">Cancel</el-button>
+              <el-button @click="cancel" round class="border-0 w-100">Cancel</el-button>
             </div>
           </div>
         </div>
@@ -1028,6 +1064,16 @@ export default {
   components: { CreateEventModal, GroupTree, SenderIdVue },
   setup() {
     const primarycolor = inject("primarycolor");
+    const file = ref(null);
+    const buttonText = ref("Upload");
+    const triggerFileInput = () => {
+      fileInputRef.value.click();
+    };
+    const handleFileUpload = (event) => {
+      file.value = event.target.files[0];
+    };
+
+    const fileInputRef = ref(null);
     const store = useStore();
     const route = useRoute();
     const groups = ref([]);
@@ -1092,14 +1138,14 @@ export default {
     };
 
     const openPaymentModal = () => {
-      showPaymentDetail.value = true
-    }
+      showPaymentDetail.value = true;
+    };
     const Contiue = () => {
-      showPaymentDetail.value = false
-    }
+      showPaymentDetail.value = false;
+    };
     const cancel = () => {
-      showPaymentDetail.value = false
-    }
+      showPaymentDetail.value = false;
+    };
 
     const getSingleCheckinAttendance = async () => {
       try {
@@ -1844,7 +1890,12 @@ export default {
       showPaymentDetail,
       openPaymentModal,
       Contiue,
-      cancel
+      cancel,
+      file,
+      buttonText,
+      triggerFileInput,
+      handleFileUpload,
+      fileInputRef,
     };
   },
 };
@@ -1854,6 +1905,34 @@ export default {
 * {
   color: #02172e;
   /* font-family: Nunito Sans !important; */
+}
+
+.upload-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  background-color: #EBEDFF;
+}
+.upload-area-btn {
+  /* display: flex; */
+  /* justify-content: center;
+  align-items: center; */
+  /* height: 150px; */
+  border: 2px dashed #0745AF !important;
+  color: #0745AF !important;
+;
+  /* border-radius: 20px;
+  cursor: pointer;
+  text-align: center; */
+}
+
+.upload-box {
+  color: #007bff;
+  font-weight: bold;
 }
 
 .border-contribution {
