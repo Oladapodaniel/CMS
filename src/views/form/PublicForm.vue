@@ -80,10 +80,11 @@
                     @change="setSelectedItem"
                     v-if="item.controlType === 1"
                   >
+                  <option disabled value="" selected>{{ item.label }}</option>
                     <option
                       v-for="(itm, index) in item.parameterValues.split(',')"
                       :key="index"
-                      :value="itm.id"
+                      :value="itm"
                     >
                       <p>{{ itm }}</p>
                     </option>
@@ -164,7 +165,11 @@
                     "
                   >
                     <label style="font-weight: 450; font-size: 14px" for="">Amount</label>
-                    <el-input v-model="amountToPayNow" type="number" placeholder="Amount" />
+                    <el-input
+                      v-model="amountToPayNow"
+                      type="number"
+                      placeholder="Amount"
+                    />
                   </div>
                 </div>
               </div>

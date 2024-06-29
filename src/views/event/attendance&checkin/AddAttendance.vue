@@ -198,38 +198,42 @@
 
     <div class="row">
       <div class="col-md-12">
-        <div class="row my-3">
+        <div class="row">
           <div class="col-sm-3 col-md-3 text-sm-right align-self-center"></div>
-          <div
-            v-if="imageUrl"
-            class="col-sm-6 col-md-8"
-            :class="{ 'img-border ': imageUrl === '' }"
-          >
-            <div class="d-flex col-md-8 justify-content-center">
-              <div class="col-md-10">
-                <img :src="imageUrl" class="w-100 mx-auto mb-2" />
+          <div class="col-md-8 col-sm-6">
+            <h5 class=" font-weight-bold s-18 text-head ">Upload Event Banner</h5>
+            <div class="col-md-12" @click="altClick" v-if="imageUrl">
+              <div class="row justify-content-center">
+                <div class="col-md-7">
+                  <img :src="imageUrl" class="w-100 mx-auto mb-2" style="height: auto;" />
+                </div>
+                <div class="col-md-12">
+                  <input
+                    type="file"
+                    ref="binImage"
+                    @change="chooseFile"
+                    style="display: none"
+                  />
+                </div>
               </div>
             </div>
-            <div
-              class="col-12 col-md-8 justify-content-center px-0 mx-0 d-flex text-center cursor-pointer"
-            >
-              <div class="d-flex col-md-8 px-0 mx-0">
-                <input
-                  type="text"
-                  class="form-control border-right-0"
-                  v-model="image.name"
-                />
-                <div
-                  class="upload-button align-self-center text-center cursor-pointer"
-                  @click="altClick"
-                >
-                  Upload
-                  <input type="file" @change="chooseFile" ref="binImage" hidden />
+            <div v-if="!imageUrl" class="col-md-10  upload-area" @click="altClick">
+              <div class="row ">
+                <div class="col-md-12">
+                  <input
+                    type="file"
+                    ref="binImage"
+                    @change="chooseFile"
+                    style="display: none"
+                  />
+                </div>
+                <div class="col-md-12 px-0  " v-if="!imageUrl">
+                  <el-button round color="#EBEDFF" class=" upload-area-btn py-4 px-5 w-100 " @click="altClick" v-if="!imageUrl">Upload</el-button>
                 </div>
               </div>
             </div>
           </div>
-          <div v-if="!imageUrl" class="col-12 col-sm-7 col-md-7 px-0 mx-0 cursor-pointer">
+          <!-- <div v-if="!imageUrl" class="col-12 col-sm-7 col-md-7 px-0 mx-0 cursor-pointer">
             <div class="col-md-12 font-weight-bold s-18 text-head">
               Upload Event Banner
             </div>
@@ -240,7 +244,7 @@
                 <input type="file" @change="chooseFile" ref="binImage" hidden />
               </div>
             </div>
-          </div>
+          </div> -->
 
           <!-- <div class="col-sm-3 col-md-4"></div> -->
           <!-- <div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center mt-2">
@@ -1854,6 +1858,34 @@ export default {
 * {
   color: #02172e;
   /* font-family: Nunito Sans !important; */
+}
+
+.upload-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  background-color: #EBEDFF;
+}
+.upload-area-btn {
+  /* display: flex; */
+  /* justify-content: center;
+  align-items: center; */
+  /* height: 150px; */
+  border: 2px dashed #0745AF !important;
+  color: #0745AF !important;
+;
+  /* border-radius: 20px;
+  cursor: pointer;
+  text-align: center; */
+}
+
+.upload-box {
+  color: #007bff;
+  font-weight: bold;
 }
 
 .border-contribution {
