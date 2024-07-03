@@ -132,7 +132,6 @@
                     </div>
                     <div class="col-sm-12 d-flex justify-content-end">
                         <a class="action-btn mx-2 my-1" data-dismiss="modal">Cancel</a>
-                        <a class="action-btn mx-2 my-1" @click="reportPreview">Preview</a>
                         <a class="action-btn mx-2 my-1 save-action-btn mr-sm-5" @click="sendReport">Send</a>
                     </div>
                 <!-- </div> -->

@@ -87,7 +87,6 @@
                   </div>
                 </div>
               </div>
-
               <Table
                 :data="scheduledMails"
                 :headers="ScheduledHeaders"

@@ -1987,10 +1987,19 @@ const routes = [
         path: '/partnership/pay/',
         name: 'PublicPledgePayment',
         meta: {
-            title: 'Churchplus - Church Pledge',
+            title: 'Churchplus - Pledge Payment',
         },
         component: () =>
             import( /* webpackChunkName: "partnershippayment" */ '../views/pledge/PublicPledgePayment.vue')
+    },
+    {
+        path: '/partnership/makepledge/',
+        name: 'PublicMakePledge',
+        meta: {
+            title: 'Churchplus - Make Pledge',
+        },
+        component: () =>
+            import( /* webpackChunkName: "PublicPledgeMaking" */ '../views/pledge/PublicPledgeMaking.vue')
     },
     {
         path: '/pricing',
@@ -2310,6 +2319,7 @@ router.beforeEach((to, from, next) => {
             to.name === "AlatLogin" ||
             to.name === "OTP" ||
             to.name === "AlatOtp" ||
+            to.name === "PublicMakePledge" ||
             to.name === "PublicPledgePayment"
         ) && !tokenIsValid
     ) {

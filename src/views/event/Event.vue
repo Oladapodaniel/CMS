@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid container-top" @click="hideModals">
+  <div class="container-fluid px-4 container-top" @click="hideModals">
     <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
       <div>
         <div class="text-head font-weight-bold h2 py-0 my-0 text-black">Add Event</div>

@@ -18,12 +18,29 @@
     </div>
     <div class="d-flex flex-wrap flex-column flex-sm-row row" v-if="route.fullPath == '/tenant/pledge/pledgeslist'">
       <div class="col-12 py-md-4 mt-3">
-        <div class="font-weight-bold">Copy and Share the link</div>
+        <div class="font-weight-bold">Copy and Share the link to pay</div>
         <div class="p-inputgroup form-group mt-2">
           <el-input v-model="memberlink" placeholder="Click the copy button when the link appears" ref="selectedLink"
             class="input-with-select">
             <template #append>
               <el-button @click="copylink">
+                <el-icon>
+                  <CopyDocument />
+                </el-icon>
+              </el-button>
+            </template>
+          </el-input>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-wrap flex-column flex-sm-row row" v-if="route.fullPath == '/tenant/pledge/pledgeslist'">
+      <div class="col-12 py-md-2 ">
+        <div class="font-weight-bold">Copy and Share the link to pledge</div>
+        <div class="p-inputgroup form-group mt-2">
+          <el-input v-model="makePledgeLink" placeholder="Click the copy button when the link appears" ref="selectedLink2"
+            class="input-with-select">
+            <template #append>
+              <el-button @click="copylink2">
                 <el-icon>
                   <CopyDocument />
                 </el-icon>
@@ -308,6 +325,7 @@ export default {
     const showDraft = ref(false);
     const showInvoice = ref(false);
     const selectedLink = ref(null);
+    const selectedLink2 = ref(null);
     const selectedContact = ref({});
     const selectedContact2 = ref("");
     const pledgeHeaders = ref([
@@ -356,6 +374,21 @@ export default {
         selectedLink.value.input.value.length
       ); /* For mobile devices */
       selectedLink.value.input.select();
+
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+      ElMessage({
+        showClose: true,
+        message: "Copied to clipboard",
+        type: "success",
+      });
+    };
+    const copylink2 = () => {
+      selectedLink2.value.input.setSelectionRange(
+        0,
+        selectedLink.value.input.value.length
+      ); /* For mobile devices */
+      selectedLink2.value.input.select();
 
       /* Copy the text inside the text field */
       document.execCommand("copy");
@@ -468,6 +501,10 @@ export default {
     const memberlink = computed(() => {
       if (!tenantID.value) return "";
       return `${window.location.origin}/partnership/pay?tenantID=${tenantID.value}`;
+    });
+    const makePledgeLink = computed(() => {
+      if (!tenantID.value) return "";
+      return `${window.location.origin}/partnership/makepledge?tenantID=${tenantID.value}`;
     });
 
     const searchPledges = computed(() => {
@@ -613,7 +650,9 @@ export default {
       reSet,
       route,
       selectedLink,
+      selectedLink2,
       copylink,
+      copylink2,
       setSelectedStatus,
       filterLoading,
       setSelectedCategory,
@@ -640,6 +679,7 @@ export default {
       networkError,
       tenantID,
       memberlink,
+      makePledgeLink,
       pledgeClick,
       clearInput,
       searchPledges,

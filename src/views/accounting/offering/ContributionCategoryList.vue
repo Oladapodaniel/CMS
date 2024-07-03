@@ -1,178 +1,165 @@
 <template>
   <div class="row">
     <div class="col-12 px-0">
-      <!-- <div class="top-con" id="ignore2"> -->
-        <!-- <div class="table-top mt-4">
-          <div class="filter col-2">
-            <p @click="toggleFilterFormVissibility" class="mt-2">
-              <i class="fas fa-filter"></i>
-              FILTER
-            </p>
-          </div>
-          <div class="col-2">
-            <p @click="toggleSearch" class="search-text w-100 mt-2">
-              <i class="pi pi-search"></i> SEARCH
-            </p>
-          </div>
-
-          <div class="search d-flex ml-2">
-            <label
-              class="label-search d-flex"
-              :class="{
-                'show-search': searchIsVisible,
-                'hide-search': !searchIsVisible,
-              }"
-            >
-              <input
-                type="text"
-                placeholder="Search by name"
-                v-model="searchText"
-              />
-              <span class="empty-btn">x</span>
-              <span class="search-btn">
-                <i class="pi pi-search"></i>
-              </span>
-            </label>
-          </div>
-        </div> -->
-        <div class="table-top p-3 mt-5">
-          <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
-            <div>
-              <p @click="toggleFilterFormVissibility" class="mb-0 mr-3 d-flex my-3 my-sm-0 c-pointer">
-                <el-icon :size="13">
-                  <Filter />
-                </el-icon>
-                <span class="ml-1"> FILTER</span>
-              </p>
-            </div>
-            <el-input size="small" v-model="searchText" placeholder="Search..."  @keyup.enter.prevent="searchContributionInDB"
-              class="input-with-select">
-              <template #suffix>
-              <el-button style="padding: 5px; height: 22px;" @click.prevent="searchText = ''">
-                <el-icon :size="13">
-                  <Close />
-                </el-icon>
-              </el-button>
-            </template>
-              <template #append>
-                <el-button @click.prevent="searchContributionInDB">
-                  <el-icon :size="13">
-                    <Search />
-                  </el-icon>
-                </el-button>
-              </template>
-            </el-input>
-          </div>
-      </div>
-      <!-- </div> -->
-      <div
-        class="filter-options"
-        :class="{ 'filter-options-shown': filterFormIsVissible }"
-      >
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-9">
-              <div class="row">
-                <div
-                  class="col-12 col-sm-6 col-md-4 offset-sm-3 offset-md-0 form-group inp w-100"
+      <div class="tab-options d-block d-md-none mt-5">
+        <div class="s-14 fw-500 col-md-10 px-0 mt-5">
+          <div class="d-flex flex-column flex-sm-row justify-content-md-between">
+            <!-- <div>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                v-if="marked.length > 0"
+                content="Delete(s)"
+                placement="top-start"
+              >
+                <el-icon
+                  :size="28"
+                  class="ml-2 c-pointer primary--text"
+                  v-if="marked.length > 0"
+                  @click="showConfirmModal(false)"
                 >
-                  <el-input
-                    type="text"
-                    class=" w-100"
-                    placeholder="Name"
-                    v-model="filter.name"
-                  />
-                </div>
-
-                <div class="col-12 col-md-4 form-group d-none d-md-block">
-                  <el-input
-                    type="text"
-                    class=" w-100"
-                    placeholder="Cash Account"
-                    v-model="filter.cashAccount"
-                  />
-                </div>
-
-                <div class="col-12 col-md-4 form-group d-none d-md-block">
-                  <el-input
-                    type="text"
-                    class=" w-100"
-                    placeholder="Income Account"
-                    v-model="filter.incomeAccount"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-3 d-flex flex-column align-items-center">
-              <el-button round :color="primarycolor" class=" text-white" >
-                Apply
-              </el-button>
-              <span class="mt-2">
-                <a class="clear-link mr-2" @click="clearAll">Clear all</a>
-                <span class="mx-2"
-                  ><i class="fas fa-circle" style="font-size: 4px"></i></span
-                ><a class="hide-link ml-2" @click="hide">Hide</a>
-              </span>
+                  <Delete />
+                </el-icon>
+              </el-tooltip>
+            </div> -->
+            <div class="d-flex flex-column flex-md-row justify-content-md-between">
+              <el-input
+                size="small"
+                v-model="searchText"
+                placeholder="Search..."
+                @input="searchContributionInDB"
+                @keyup.enter.prevent="searchContributionInDB"
+                class="input-with-select"
+              >
+                <template #suffix>
+                  <el-button
+                    style="padding: 5px; height: 22px"
+                    @click.prevent="searchText = ''"
+                  >
+                    <el-icon :size="13">
+                      <Close />
+                    </el-icon>
+                  </el-button>
+                </template>
+                <template #append>
+                  <el-button class="btn-search" @click.prevent="searchContributionInDB">
+                    <el-icon :size="13">
+                      <Search />
+                    </el-icon>
+                  </el-button>
+                </template>
+              </el-input>
             </div>
           </div>
         </div>
       </div>
-        <Table
-          :data="searchContribution"
-          :headers="offeringItemsHeader"
-          :checkMultipleItem="true"
-          @checkedrow="handleSelectionChange"
-          v-if="searchContribution.length > 0"
-        >
-          <template v-slot:name="{ item }">
-            <div class="c-pointer" @click="contributionItemClick(item.id)">
-              {{ item.name }}
+      <div class="tab-options d-none d-md-block mt-5">
+        <div class="table-top col-12 col-md-8 col-lg-8 col-xl-9 px-0 mt-5">
+          <div class="d-flex flex-column flex-md-row justify-content-md-between">
+            <div>
+              <!-- <el-tooltip
+                class="box-item d-flex"
+                effect="dark"
+                v-if="marked.length > 0"
+                content="Delete(s)"
+                placement="top-start"
+              >
+                <el-icon
+                  :size="28"
+                  class="ml-2 c-pointer primary--text"
+                  v-if="marked.length > 0"
+                  @click="showConfirmModal(false)"
+                >
+                  <Delete />
+                </el-icon>
+              </el-tooltip> -->
             </div>
-          </template>
-          <template v-slot:cashBankAccount="{ item }">
-            <div class="c-pointer" @click="contributionItemClick(item.id)">
-              {{ item.cashBankAccount }}
+            <div class="d-flex flex-column flex-md-row justify-content-md-between">
+              <el-input
+                size="small"
+                v-model="searchText"
+                placeholder="Search..."
+                @input="searchContributionInDB"
+                @keyup.enter.prevent="searchContributionInDB"
+                class="input-with-select"
+              >
+                <template #suffix>
+                  <el-button
+                    style="padding: 5px; height: 22px"
+                    @click.prevent="searchText = ''"
+                  >
+                    <el-icon :size="13">
+                      <Close />
+                    </el-icon>
+                  </el-button>
+                </template>
+                <template #append>
+                  <el-button class="btn-search" @click.prevent="searchContributionInDB">
+                    <el-icon :size="13">
+                      <Search />
+                    </el-icon>
+                  </el-button>
+                </template>
+              </el-input>
             </div>
-          </template>
-          <template v-slot:incomeAccount="{ item }">
-            <div class="c-pointer" @click="contributionItemClick(item.id)" >
-              {{ item.incomeAccount }}
-            </div>
-          </template>
-          <template v-slot:action="{ item }">
-            <el-dropdown trigger="click">
-              <el-icon>
-                <MoreFilled />
-              </el-icon>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item>
-                    <router-link
-                      class="remove-text-decoration text-decoration-none"
-                      :to="{
-                        name: 'OfferingCategory',
-                        params: { offId: item.id },
-                      }"
-                    >
-                      <div class="text-decoration-none text-color">Edit</div>
-                    </router-link>
-                  </el-dropdown-item>
+          </div>
+        </div>
+      </div>
+      <Table
+        :data="searchContribution"
+        :headers="offeringItemsHeader"
+        :checkMultipleItem="true"
+        @checkedrow="handleSelectionChange"
+        v-if="searchContribution.length > 0"
+      >
+        <template v-slot:name="{ item }">
+          <div class="c-pointer" @click="contributionItemClick(item.id)">
+            {{ item.name }}
+          </div>
+        </template>
+        <template v-slot:cashBankAccount="{ item }">
+          <div class="c-pointer" @click="contributionItemClick(item.id)">
+            {{ item.cashBankAccount }}
+          </div>
+        </template>
+        <template v-slot:incomeAccount="{ item }">
+          <div class="c-pointer" @click="contributionItemClick(item.id)">
+            {{ item.incomeAccount }}
+          </div>
+        </template>
+        <template v-slot:action="{ item }">
+          <el-dropdown trigger="click">
+            <el-icon>
+              <MoreFilled />
+            </el-icon>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>
+                  <router-link
+                    class="remove-text-decoration text-decoration-none"
+                    :to="{
+                      name: 'OfferingCategory',
+                      params: { offId: item.id },
+                    }"
+                  >
+                    <div class="text-decoration-none text-color">Edit</div>
+                  </router-link>
+                </el-dropdown-item>
 
-                  <el-dropdown-item>
-                    <div
-                      class="text-decoration-none text-color"
-                      @click="showConfirmModal(item.id, index)"
-                    >
-                      Delete
-                    </div>
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </template>
-        </Table>
-        <!-- <div
+                <el-dropdown-item>
+                  <div
+                    class="text-decoration-none text-color"
+                    @click="showConfirmModal(item.id, index)"
+                  >
+                    Delete
+                  </div>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </template>
+      </Table>
+      <!-- <div
               class="col-12 parent-desc py-2 px-0 c-pointer tr-border-bottom"
               v-for="(item, index) in searchContribution"
               :key="item.id"
@@ -256,12 +243,12 @@
 <script>
 import { ref, inject, computed } from "vue";
 import axios from "@/gateway/backendapi";
-import store from "../../../store/store"
+import store from "../../../store/store";
 import Pagination from "../../../components/pagination/PaginationButtons";
 import moment from "moment";
 import router from "../../../router";
 import Table from "@/components/table/Table";
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox } from "element-plus";
 import finish from "../../../services/progressbar/progress";
 
 export default {
@@ -273,7 +260,7 @@ export default {
 
   setup(props, { emit }) {
     const searchIsVisible = ref(false);
-    const primarycolor = inject('primarycolor')
+    const primarycolor = inject("primarycolor");
     const marked = ref([]);
     const searchText = ref("");
     const filter = ref({});
@@ -289,9 +276,7 @@ export default {
       if (searchText.value !== "" && props.contributionItems.length > 0) {
         return props.contributionItems.filter((i) => {
           if (i.name)
-            return i.name
-              .toLowerCase()
-              .includes(searchText.value.toLowerCase());
+            return i.name.toLowerCase().includes(searchText.value.toLowerCase());
         });
       } else {
         return props.contributionItems;
@@ -329,45 +314,41 @@ export default {
         .then((res) => {
           if (res.data.status) {
             ElMessage({
-              type: 'success',
+              type: "success",
               showClose: true,
               message: `${res.data.response}`,
-              duration: 5000
-            })
+              duration: 5000,
+            });
             store.dispatch("contributions/removeContributionItemFromStore", id);
             emit("contri-items", index);
           } else {
             ElMessage({
-              type: 'warning',
+              type: "warning",
               showClose: true,
               message: `${res.data.response}`,
-              duration: 5000
-            })
+              duration: 5000,
+            });
           }
         })
         .catch((err) => {
           finish();
           if (err.response) {
             ElMessage({
-              type: 'error',
+              type: "error",
               showClose: true,
               message: `${res.response}`,
-              duration: 5000
-            })
+              duration: 5000,
+            });
           }
         });
     };
 
     const showConfirmModal = (id, index) => {
-      ElMessageBox.confirm(
-        "Are you sure you want to proceed?",
-        "Confirm delete",
-        {
-          confirmButtonText: "OK",
-          cancelButtonText: "Cancel",
-          type: "error",
-        }
-      )
+      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "error",
+      })
         .then(() => {
           deleteOffering(id, index);
         })
@@ -546,8 +527,8 @@ export default {
   overflow: hidden;
   transition: all 0.5s ease-in-out;
   background: #ffffff;
-  border-right: 1px solid #E0E0E0;
-  border-left: 1px solid #E0E0E0;
+  border-right: 1px solid #e0e0e0;
+  border-left: 1px solid #e0e0e0;
 }
 
 .clear-link,
@@ -556,13 +537,17 @@ export default {
 }
 
 .table-top {
-  font-weight: 800;
-  font-size: 12px;
+  position: absolute;
+  z-index: 1;
+  top: -40px;
+  font-weight: 500 !important;
+  font-size: 14px;
   background: #fff;
-  border: 1px solid #e0e0e0;
-  border-bottom: none;
-  justify-content: flex-end;
-  display: flex;
+  color: #000000;
+}
+
+.tab-options {
+  position: relative;
 }
 
 .table-top label:hover,
@@ -827,5 +812,3 @@ export default {
   padding: 0.5rem 0;
 }
 </style>
-
-

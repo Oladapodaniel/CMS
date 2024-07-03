@@ -1,8 +1,8 @@
 <template>
-    <div class="" :class="{ 'container-slim': lgAndUp || xlAndUp }">
+    <div class="" :class="{ 'container-wide': lgAndUp || xlAndUp }">
     <div class="container-fluid container-top " >
       <div class=" row mb-2 d-flex flex-column flex-sm-row justify-content-sm-between ">
-        <div class="head-text">
+        <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
           Offering Items
         </div>
         <router-link to="/tenant/offeringcategory" class="  no-decoration">

@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid px-0 mt-5" @click="closeDropdownIfOpen">
+  <div class="container-fluid mt-5" @click="closeDropdownIfOpen">
     <div class="row mb-4">
       <div class="col-md-12 px-0">
         <div class="d-flex flex-column flex-sm-row justify-content-sm-between mb-3">
@@ -201,11 +201,11 @@
         <div class="row">
           <div class="col-sm-3 col-md-3 text-sm-right align-self-center"></div>
           <div class="col-md-8 col-sm-6">
-            <h5 class=" font-weight-bold s-18 text-head ">Upload Event Banner</h5>
+            <h5 class="font-weight-bold s-18 text-head">Upload Event Banner</h5>
             <div class="col-md-12" @click="altClick" v-if="imageUrl">
               <div class="row justify-content-center">
                 <div class="col-md-7">
-                  <img :src="imageUrl" class="w-100 mx-auto mb-2" style="height: auto;" />
+                  <img :src="imageUrl" class="w-100 mx-auto mb-2" style="height: auto" />
                 </div>
                 <div class="col-md-12">
                   <input
@@ -217,8 +217,8 @@
                 </div>
               </div>
             </div>
-            <div v-if="!imageUrl" class="col-md-10  upload-area" @click="altClick">
-              <div class="row ">
+            <div v-if="!imageUrl" class="col-md-10 upload-area" @click="altClick">
+              <div class="row">
                 <div class="col-md-12">
                   <input
                     type="file"
@@ -227,32 +227,19 @@
                     style="display: none"
                   />
                 </div>
-                <div class="col-md-12 px-0  " v-if="!imageUrl">
-                  <el-button round color="#EBEDFF" class=" upload-area-btn py-4 px-5 w-100 " @click="altClick" v-if="!imageUrl">Upload</el-button>
+                <div class="col-md-12 px-0" v-if="!imageUrl">
+                  <el-button
+                    round
+                    color="#EBEDFF"
+                    class="upload-area-btn py-4 px-5 w-100"
+                    @click="altClick"
+                    v-if="!imageUrl"
+                    >Upload</el-button
+                  >
                 </div>
               </div>
             </div>
           </div>
-          <!-- <div v-if="!imageUrl" class="col-12 col-sm-7 col-md-7 px-0 mx-0 cursor-pointer">
-            <div class="col-md-12 font-weight-bold s-18 text-head">
-              Upload Event Banner
-            </div>
-            <div class="d-flex col-12 col-lg-12">
-              <input type="text" class="form-control" v-model="image.name" />
-              <div class="upload-button text-center cursor-pointer" @click="altClick">
-                Upload
-                <input type="file" @change="chooseFile" ref="binImage" hidden />
-              </div>
-            </div>
-          </div> -->
-
-          <!-- <div class="col-sm-3 col-md-4"></div> -->
-          <!-- <div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center mt-2">
-            <div class="col-sm-7 col-md-4">
-              <small><code>Click to upload your banner.</code></small>
-            </div>
-          </div> -->
-
           <div
             v-if="!imageUrl"
             class="col-12 col-md-12 d-flex justify-content-center mt-2"
@@ -401,36 +388,23 @@
             </div>
           </div>
         </div>
-
-        <div class="row">
-          <el-collapse-transition>
+        <div class="row justify-content-center">
+          <el-collapse-transition class="col-md-12">
             <div v-show="templateDisplay">
               <div class="container-fluid">
-                <div class="row my-3">
-                  <div class="col-sm-3 col-md-3 text-sm-right align-self-center">
-                    <label for="" class="fw-500 s-18 text-head text-dak">Slot</label>
-                  </div>
-                  <div class="col-sm-7 col-md-7">
-                    <el-input
-                      type="number"
-                      class="w-100"
-                      v-model="slot"
-                      placeholder="slot available"
-                    />
-                  </div>
-                </div>
-
-                <div class="row mt-4">
+                
+                <div class="row   mt-4">
+                  <!-- <div class="col-sm-3 col-md-1 text-sm-right"></div> -->
                   <div
                     class="col-sm-3 col-md-3 text-head fw-500 s-18 text-dak text-sm-right"
                   >
                     Amount
                   </div>
-                  <div class="col-sm-7 col-md-7">
+                  <div class="col-sm-7 col-md-7 px-1">
                     <el-input
                       type="text"
                       class="w-100"
-                      placeholder="Input Amount"
+                      placeholder=" Amount"
                       v-model="amount"
                     />
                   </div>
@@ -442,8 +416,9 @@
                         >Set up Payment Gateway now
                       </u>
                     </div>
-                    <div class="row">
-                      <!-- <div class="col-sm-4 align-self-center">
+                    <div class="col-md-12"></div>
+                    <!-- <div class="row">
+                      <div class="col-sm-4 align-self-center">
                         <span
                           class="font-weight-700 cursor-pointer"
                           @click="showFreeTab"
@@ -456,8 +431,8 @@
                           :class="{ 'active-tab': addPaidClass }"
                           >Paid</span
                         >
-                      </div> -->
-                      <!-- <div
+                      </div>
+                      <div
                         class="col-sm-8 mt-3 mt-sm-0"
                         :class="{
                           'show-amount': addPaidClass,
@@ -470,12 +445,12 @@
                           placeholder="Enter amount"
                           v-model="amount"
                         />
-                      </div> -->
-                    </div>
+                      </div>
+                    </div> -->
                   </div>
                   <div class="col-sm-2 col-lg-3"></div>
 
-                  <el-collapse-transition>
+                  <!-- <el-collapse-transition>
                     <div v-show="addPaidClass">
                       <div class="col-12">
                         <div class="row">
@@ -658,89 +633,103 @@
                         </div>
                       </div>
                     </div>
-                  </el-collapse-transition>
+                  </el-collapse-transition> -->
                 </div>
+              </div>
+              <!-- <div class="transition-box">el-collapse-transition</div>
+              <div class="transition-box">el-collapse-transition</div> -->
+            </div>
+          </el-collapse-transition>
+        </div>
+        <!-- <div class="container-fluid"> -->
+        <div class="row my-3">
+          <div class="col-sm-3 col-md-3 text-sm-right align-self-center">
+            <label for="" class="fw-500 s-18 text-head text-dak">Slot</label>
+          </div>
+          <div class="col-sm-7 col-md-7">
+            <el-input
+              type="number"
+              class="w-100"
+              v-model="slot"
+              placeholder="slot available"
+            />
+          </div>
+        </div>
+        <!-- </div> -->
+        <div class="row mt-3">
+          <div class="col-sm-3 col-md-3 text-sm-right align-self-center"></div>
+          <div class="col-sm-7 col-md-7 d-flex mt-2">
+            <div class="row">
+              <div class="col-md-12 my-4 fw-400">
+                Kindly add default message for checkin & Registration
+              </div>
+              <div class="col-md-6">
+                <div class="col-md-12 text-head font-weight-600 s-18">SMS</div>
+                <el-tabs type="border-card">
+                  <el-tab-pane label="Checkin">
+                    <SenderIdVue @setselectedsenderid="setSelectedSenderIdCheckin" />
+                    <el-input
+                      v-model="checkinSMS"
+                      :rows="4"
+                      type="textarea"
+                      class="mt-2"
+                    />
+                  </el-tab-pane>
+                  <el-tab-pane label="Registration">
+                    <SenderIdVue @setselectedsenderid="setSelectedSenderIdRegistration" />
+                    <el-input
+                      v-model="registrationSMS"
+                      :rows="4"
+                      type="textarea"
+                      class="mt-2"
+                    />
+                  </el-tab-pane>
+                </el-tabs>
+              </div>
+              <div class="col-md-6">
+                <div class="col-md-12 mt-3 mt-md-0 text-head font-weight-600 s-18">
+                  Email
+                </div>
+                <el-tabs type="border-card">
+                  <el-tab-pane label="Checkin">
+                    <div class="col-md-12 my-2"></div>
+                    <el-input
+                      v-model="checkinEmailSubject"
+                      type="text "
+                      placeholder="Enter subject"
+                      class="mt-2"
+                    />
+                    <div class="col-md-12 my-4"></div>
+                    <el-input
+                      v-model="checkinEmail"
+                      :rows="4"
+                      type="textarea"
+                      class="mt-2"
+                    />
+                  </el-tab-pane>
+                  <el-tab-pane label="Registration">
+                    <el-input
+                      v-model="registrationEmailSubject"
+                      placeholder="Enter subject"
+                      type="text"
+                      class="mt-2"
+                    />
+                    <div class="col-md-12 my-5"></div>
+                    <el-input
+                      v-model="registrationEmail"
+                      :rows="4"
+                      type="textarea"
+                      class="mt-2"
+                    />
+                  </el-tab-pane>
+                </el-tabs>
+              </div>
+            </div>
+          </div>
 
-                <div class="row mt-3">
-                  <div class="col-sm-3 col-md-3 text-sm-right align-self-center"></div>
-                  <div class="col-sm-7 col-md-7 d-flex mt-2">
-                    <div class="row">
-                      <div class="col-md-12 my-4 fw-400">
-                        Kindly add default message for checkin & Registration
-                      </div>
-                      <div class="col-md-6">
-                        <div class="col-md-12 text-head font-weight-600 s-18">SMS</div>
-                        <el-tabs type="border-card">
-                          <el-tab-pane label="Checkin">
-                            <SenderIdVue
-                              @setselectedsenderid="setSelectedSenderIdCheckin"
-                            />
-                            <el-input
-                              v-model="checkinSMS"
-                              :rows="4"
-                              type="textarea"
-                              class="mt-2"
-                            />
-                          </el-tab-pane>
-                          <el-tab-pane label="Registration">
-                            <SenderIdVue
-                              @setselectedsenderid="setSelectedSenderIdRegistration"
-                            />
-                            <el-input
-                              v-model="registrationSMS"
-                              :rows="4"
-                              type="textarea"
-                              class="mt-2"
-                            />
-                          </el-tab-pane>
-                        </el-tabs>
-                      </div>
-                      <div class="col-md-6">
-                        <div
-                          class="col-md-12 mt-3 mt-md-0 text-head font-weight-600 s-18"
-                        >
-                          Email
-                        </div>
-                        <el-tabs type="border-card">
-                          <el-tab-pane label="Checkin">
-                            <div class="col-md-12 my-2"></div>
-                            <el-input
-                              v-model="checkinEmailSubject"
-                              type="text "
-                              placeholder="Enter subject"
-                              class="mt-2"
-                            />
-                            <div class="col-md-12 my-4"></div>
-                            <el-input
-                              v-model="checkinEmail"
-                              :rows="4"
-                              type="textarea"
-                              class="mt-2"
-                            />
-                          </el-tab-pane>
-                          <el-tab-pane label="Registration">
-                            <el-input
-                              v-model="registrationEmailSubject"
-                              placeholder="Enter subject"
-                              type="text"
-                              class="mt-2"
-                            />
-                            <div class="col-md-12 my-5"></div>
-                            <el-input
-                              v-model="registrationEmail"
-                              :rows="4"
-                              type="textarea"
-                              class="mt-2"
-                            />
-                          </el-tab-pane>
-                        </el-tabs>
-                      </div>
-                    </div>
-                  </div>
+          <!-- <div class="col-sm-2 col-lg-3"></div> -->
 
-                  <!-- <div class="col-sm-2 col-lg-3"></div> -->
-
-                  <!-- <div
+          <!-- <div
                     class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-3 align-self-center"
                   >
                     <label for="" class="font-weight-600">Email</label>
@@ -778,37 +767,31 @@
                     </el-tabs>
                   </div> -->
 
-                  <!-- <div class="col-sm-2 col-lg-3"></div>s -->
+          <!-- <div class="col-sm-2 col-lg-3"></div>s -->
 
-                  <div class="col-sm-3 col-md-3 text-sm-right mt-3 align-self-center">
-                    <label for="" class="text-head fw-500 s-18 text-dak">Cut-off time</label>
-                  </div>
-                  <div class="col-sm-7 col-md-7 mt-4">
-                    <el-tabs type="border-card">
-                      <el-tab-pane label="Checkin">
-                        <input
-                          type="datetime-local"
-                          class="form-control my-3"
-                          v-model="checkinCutOffTime"
-                        />
-                      </el-tab-pane>
-                      <el-tab-pane label="Registration">
-                        <input
-                          type="datetime-local"
-                          class="form-control my-3"
-                          v-model="regCutOffTimer"
-                        />
-                      </el-tab-pane>
-                    </el-tabs>
-                  </div>
+          <div class="col-sm-3 col-md-3 text-sm-right mt-3 align-self-center">
+            <label for="" class="text-head fw-500 s-18 text-dak">Cut-off time</label>
+          </div>
+          <div class="col-sm-7 col-md-7 mt-4">
+            <el-tabs type="border-card">
+              <el-tab-pane label="Checkin">
+                <input
+                  type="datetime-local"
+                  class="form-control my-3"
+                  v-model="checkinCutOffTime"
+                />
+              </el-tab-pane>
+              <el-tab-pane label="Registration">
+                <input
+                  type="datetime-local"
+                  class="form-control my-3"
+                  v-model="regCutOffTimer"
+                />
+              </el-tab-pane>
+            </el-tabs>
+          </div>
 
-                  <div class="col-sm-2 col-lg-3"></div>
-                </div>
-              </div>
-              <!-- <div class="transition-box">el-collapse-transition</div>
-              <div class="transition-box">el-collapse-transition</div> -->
-            </div>
-          </el-collapse-transition>
+          <div class="col-sm-2 col-lg-3"></div>
         </div>
 
         <div class="row my-3">
@@ -853,10 +836,10 @@
       <div class="row">
         <div class="col-md-12 col-12">
           <div class="row justify-content-center">
-            <div class="col-md-7 fw-500 s-32">Set up Payment Gateway </div>
-            <div class="col-md-7 col-11 mt-4">
+            <div class="col-md-8 fw-500 s-32">Set up Payment Gateway</div>
+            <div class="col-md-8 col-11 mt-4">
               <label class="fw-500 text-head s-18" for="">Select Bank</label>
-              <div class="dropdown w-100 ">
+              <div class="dropdown w-100">
                 <button
                   class="default-btn w-100 text-left pr-1"
                   type="button"
@@ -900,17 +883,17 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-7 col-11 mt-3 ">
+            <div class="col-md-8 col-11 mt-3">
               <label class="fw-500 text-head s-18" for="">Account Number </label>
               <el-input
                 type="text"
-                class="w-100  input-height"
+                class="w-100 input-height"
                 placeholder="Enter account number"
                 v-model="accountNumber"
                 @blur="resolveCustomerDetail"
               />
             </div>
-            <div class="col-md-7 col-11 mt-3">
+            <div class="col-md-8 col-11 mt-3">
               <label class="fw-500 text-head s-18" for=""> Account Name </label>
               <el-input
                 type="text"
@@ -930,7 +913,7 @@
                 <span class="sr-only">Loading...</span>
               </div>
             </div>
-            <div class="col-md-7 col-11 mt-3">
+            <div class="col-md-8 col-11 mt-3">
               <label class="fw-500 text-head s-18" for=""> Income Account </label>
               <el-dropdown trigger="click" class="w-100">
                 <span class="el-dropdown-link w-100">
@@ -963,7 +946,7 @@
                 </template>
               </el-dropdown>
             </div>
-            <div class="col-md-7 col-11 mt-3">
+            <div class="col-md-8 col-11 mt-3">
               <label class="fw-500 text-head s-18" for=""> Cash Account </label>
               <el-dropdown trigger="click" class="w-100">
                 <span class="el-dropdown-link w-100">
@@ -995,11 +978,17 @@
                 </template>
               </el-dropdown>
             </div>
-            <div class="col-md-7 col-11 mt-3">
-              <el-button @click="Contiue" round :color="primarycolor" class="text-white w-100">Continue</el-button>
+            <div class="col-md-8 col-11 mt-3">
+              <el-button
+                @click="Contiue"
+                round
+                :color="primarycolor"
+                class="text-white w-100"
+                >Continue</el-button
+              >
             </div>
-            <div class="col-md-7 col-11 mt-3">
-              <el-button @click="cancel" round class=" border-0 w-100">Cancel</el-button>
+            <div class="col-md-8 col-11 mt-3">
+              <el-button @click="cancel" round class="border-0 w-100">Cancel</el-button>
             </div>
           </div>
         </div>
@@ -1096,14 +1085,14 @@ export default {
     };
 
     const openPaymentModal = () => {
-      showPaymentDetail.value = true
-    }
+      showPaymentDetail.value = true;
+    };
     const Contiue = () => {
-      showPaymentDetail.value = false
-    }
+      showPaymentDetail.value = false;
+    };
     const cancel = () => {
-      showPaymentDetail.value = false
-    }
+      showPaymentDetail.value = false;
+    };
 
     const getSingleCheckinAttendance = async () => {
       try {
@@ -1707,7 +1696,6 @@ export default {
     const chooseFile = (e) => {
       image.value = e.target.files[0];
       imageUrl.value = URL.createObjectURL(image.value);
-      // imageUrl.value = URL.createObjectURL(image.value);
     };
 
     const setBank = (item) => {
@@ -1848,7 +1836,7 @@ export default {
       showPaymentDetail,
       openPaymentModal,
       Contiue,
-      cancel
+      cancel,
     };
   },
 };
@@ -1868,16 +1856,15 @@ export default {
   border-radius: 8px;
   cursor: pointer;
   text-align: center;
-  background-color: #EBEDFF;
+  background-color: #ebedff;
 }
 .upload-area-btn {
   /* display: flex; */
   /* justify-content: center;
   align-items: center; */
   /* height: 150px; */
-  border: 2px dashed #0745AF !important;
-  color: #0745AF !important;
-;
+  border: 2px dashed #0745af !important;
+  color: #0745af !important;
   /* border-radius: 20px;
   cursor: pointer;
   text-align: center; */

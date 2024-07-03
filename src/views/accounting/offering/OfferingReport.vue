@@ -1,46 +1,47 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container-fluid">
       <div class="row mt-4">
         <div class="col-md-5">
-          <h2 class="font-weight-bold page-hder">New Offerings and Report</h2>
+          <h2 class="text-head font-weight-bold h2 py-0 my-0 text-black">
+            New Offerings and Report
+          </h2>
+          <div @click="goBack">
+            <span class="s-18 fw-400 cursor-pointer text-black">
+              <img src="../../../assets/goback.png" alt="" /> Go back</span
+            >
+          </div>
         </div>
         <div class="col-md-7 d-sm-flex justify-content-md-end">
           <a class="def-btn mr-3 px-md-4 my-sm-1" v-if="false"
             >More Actions <i class="fad fa-caret-circle-down"></i
           ></a>
-          <router-link
-            :to="{ name: 'AddOffering', path: '/tenant/addoffering' }"
-          >
+          <router-link :to="{ name: 'AddOffering', path: '/tenant/addoffering' }">
             <a class="def-btn px-sm-2 px-lg-4 my-sm-1">Create another report</a>
           </router-link>
         </div>
       </div>
-      <hr class="mb-4" />
+      <hr class="my-5" />
     </div>
 
-    <div class="container" style="width: 80%">
-      <div class="row mx-1 mb-4 mt-3">
+    <div class="container-fluid">
+      <div class="row mx-1 mb-4">
         <div class="col-md-7">
-          <span class="theader">{{
-            contributionReport.activityName ? "Event" : ""
-          }}</span>
-          <div class="my-3">
-            <span class="evt-name">
-              {{
-                contributionReport.activityName
-                  ? contributionReport.activityName
-                  : ""
-              }}
-              <el-icon class="mt-2 ml-1" v-if="contributionReport.activityName" ><InfoFilled /></el-icon>
+          <span class="fw-400">{{ contributionReport.activityName ? "Event" : "" }}</span>
+          <div class="my-2">
+            <span class="fw-500 s-20">
+              {{ contributionReport.activityName ? contributionReport.activityName : "" }}
+              <el-icon class="mt-2 ml-1" v-if="contributionReport.activityName"
+                ><InfoFilled
+              /></el-icon>
             </span>
           </div>
         </div>
 
         <div class="col-md-3">
-          <span class="theader">Date</span>
-          <div class="my-3">
-            <span class="date">{{ format(routeParams) }}</span>
+          <span class="fw-400">Date</span>
+          <div class="my-2">
+            <span class="fw-500 s-20">{{ format(routeParams) }}</span>
           </div>
         </div>
       </div>
@@ -51,30 +52,32 @@
             <div class="col-md-12">
               <div class="row" v-if="!reportApproved">
                 <div class="col-md-12 py-3 info-div">
-                  <span class="px-2"><el-icon><InfoFilled /></el-icon></span>
-                  <span class="font-weight-bold"
-                    >This is a DRAFT report. You can take further actions once
-                    you approve it.</span
+                  <span class="px-2"
+                    ><el-icon><InfoFilled /></el-icon
+                  ></span>
+                  <span class="fw-400 s-15"
+                    >This is a DRAFT report. You can take further actions once you approve
+                    it.</span
                   >
                   <span class="px-2"
-                    ><span style="color: #136acd">Learn more</span>
-                    <el-icon class="border-secondary p-0 ml-1 border"><TopRight /></el-icon>
-                    </span>
+                    ><span> <u>Learn more</u> </span>
+                    <!-- <el-icon class="border-secondary p-0 ml-1 border"
+                      ><TopRight
+                    /></el-icon> -->
+                  </span>
                 </div>
               </div>
               <div class="row my-3">
-                <div class="col-md-1 d-flex align-items-center">
-                  <span class="file-icon"
-                    >
-                    <el-icon  :color="primarycolor"  ><Document /></el-icon>
-                   
+                <!-- <div class="col-md-1 d-flex align-items-center">
+                  <span class="file-icon">
+                    <el-icon :color="primarycolor"><Document /></el-icon>
                   </span>
-                </div>
+                </div> -->
                 <div class="col-md-5">
                   <span class="grey-text">Create </span>
                   <p>
-                    <span class="dark-text">Created: </span>
-                    <span class="grey-text"> just a moment ago</span>
+                    <span class="fw-500 text-dak">Created: </span>
+                    <span class="fw-500 s-15 text-dak"> just a moment ago</span>
                   </p>
                 </div>
                 <div
@@ -92,17 +95,16 @@
           <div class="row unapproved mt-4">
             <div class="col-md-12">
               <div class="row my-3">
-                <div class="col-md-1 d-flex align-items-center">
-                  <span class="file-icon"
-                    >
-                  <el-icon><Bottom /></el-icon>
+                <!-- <div class="col-md-1 d-flex align-items-center">
+                  <span class="file-icon">
+                    <el-icon><Bottom /></el-icon>
                   </span>
-                </div>
+                </div> -->
                 <div class="col-md-5 grey-text">
-                  <span class="grey-text">Send </span>
+                  <span class="fw-400 s-15">Send </span>
                   <p>
-                    <span class="grey-text">Last sent: </span>
-                    <span class="grey-text"> {{ lastSent }}</span>
+                    <span class="fw-500 text-dak s-15">Last sent: </span>
+                    <span class="fw-500 text-dak s-15"> {{ lastSent }}</span>
                   </p>
                 </div>
                 <div class="col-md-6" v-if="reportApproved">
@@ -178,9 +180,7 @@
                   <div class="row">
                     <div class="col-md-6 offset-md-1" style="">
                       <span class="mr-2">or</span>
-                      <a
-                        style="color: #136acd; cursor: pointer"
-                        @click="markAsSent"
+                      <a style="color: #136acd; cursor: pointer" @click="markAsSent"
                         >mark as sent</a
                       >
                     </div>
@@ -214,40 +214,30 @@
         </div>
       </div>
 
-      <div class="container-fluid bottom-section px-0">
+      <div class="container-fluid px-0">
         <div class="row mx-0" ref="topmost">
-          <div class="col-md-8 dark-red-section pl-5">
+          <div class="col-md-7 dark-red-section pl-5">
             <h2 class="evt-report">Offering Report</h2>
           </div>
 
-          <div
-            class="
-              col-md-4
-              d-flex
-              flex-column
-              light-red-section
-              pr-5
-              text-center
-            "
-          >
-            <span>
-              <span>Total Offering: </span> <br />
-              <span class="recieve"
-                >{{ contributionReport.tenantCurrency }}
+          <div class="col-md-5 d-flex flex-column light-red-section pr-5 text-center">
+            <span class="d-flex">
+              <span class="mb-n3 s-20 fw-500">Total Offering: </span> <br />
+              <span class="recieve ml-2">
+                {{ contributionReport.tenantCurrency }}
                 {{
-                  contributionReport &&
-                  Object.keys(contributionReport).length > 0
+                  contributionReport && Object.keys(contributionReport).length > 0
                     ? Math.abs(contributionReport.totalToday).toLocaleString()
                     : 0
-                }}
-              </span>
+                }}</span
+              >
             </span>
           </div>
         </div>
 
         <div class="row pt-5 px-5" ref="middle">
           <div class="col-md-8">
-            <h2 class="font-weight-bold mb-3" style="font-size: 25px">
+            <h2 class="fw-500 mb-3" style="font-size: 25px">
               {{
                 contributionReport.activityName
                   ? contributionReport.activityName
@@ -256,7 +246,7 @@
             </h2>
           </div>
           <div class="col-md-4">
-            <span class="evt-date text-danger">{{ format(routeParams) }}</span>
+            <span class="evt-date text-dak">{{ format(routeParams) }}</span>
           </div>
         </div>
 
@@ -273,20 +263,20 @@
               </div>
             </div>
             <div class="row px-5">
-              <div class="col-md-12">
-                <div class="row">
+              <div class="col-md-12 s-20 fw-500 text-dak">
+                <div class="row ">
                   <div class="col-sm-4">
-                    <span class="bold-700">Offering Item</span>
+                    <span>Offering Item</span>
                   </div>
                   <div class="col-sm-3">
-                    <span class="bold-700">Channel</span>
+                    <span>Channel</span>
                   </div>
                   <div class="col-sm-3">
-                    <span class="bold-700">Amount</span>
+                    <span>Amount</span>
                   </div>
 
                   <div class="col-sm-2">
-                    <span class="bold-700 fs-1 fw-bolder">Total</span>
+                    <span class="fs-1 fw-bolder">Total</span>
                   </div>
                 </div>
               </div>
@@ -306,9 +296,7 @@
                   <div class="col-sm-12">
                     <div class="row">
                       <div class="col-sm-4 py-2">
-                        <span class="font-weight-700">{{
-                          item.contribution
-                        }}</span>
+                        <span class=" text-dak">{{ item.contribution }}</span>
                       </div>
                       <div class="col-sm-3 py-2">
                         <span class="bold-400">{{ item.channel }}</span>
@@ -330,9 +318,7 @@
                 </div>
                 <div
                   class="row"
-                  v-if="
-                    index !== contributionReport.todayContributions.length - 1
-                  "
+                  v-if="index !== contributionReport.todayContributions.length - 1"
                 >
                   <div class="col-sm-12">
                     <hr class="hr" />
@@ -368,12 +354,10 @@
                     <span class="text-style">Total</span>
                   </div>
                   <div class="col-sm-3 total-text">
-                    <span class="text-danger"
+                    <span class="text-dak"
                       >{{ contributionReport.tenantCurrency }}&nbsp;{{
                         contributionReport
-                          ? amountWithCommas(
-                              Math.round(contributionReport.totalToday)
-                            )
+                          ? amountWithCommas(Math.round(contributionReport.totalToday))
                           : ""
                       }}</span
                     >
@@ -419,9 +403,7 @@
                   "
                 >
                   <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
+                    <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
                   </p>
                   <p style="margin-bottom: 0pt; margin-top: 0pt">
                     <span
@@ -436,8 +418,7 @@
                   <p style="margin-bottom: 0pt; margin-top: 0pt">
                     <span style="font-weight: bold; font-size: 16px"
                       >&nbsp; &nbsp; &nbsp; &nbsp;</span
-                    ><span style="font-weight: bold; font-size: 29px"
-                      >&nbsp;</span
+                    ><span style="font-weight: bold; font-size: 29px">&nbsp;</span
                     ><span
                       style="
                         color: rgb(255, 255, 255);
@@ -459,14 +440,10 @@
                   "
                 >
                   <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
+                    <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
                   </p>
                   <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
+                    <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
                   </p>
                   <p style="margin-bottom: 0pt; margin-top: 0pt">
                     <span
@@ -475,8 +452,7 @@
                         font-weight: bold;
                         font-size: 16px;
                       "
-                      >Total&nbsp;Offering:
-                      {{ contributionReport.totalToday }}</span
+                      >Total&nbsp;Offering: {{ contributionReport.totalToday }}</span
                     >
                   </p>
                   <p style="margin-bottom: 0pt; margin-top: 0pt">
@@ -494,16 +470,10 @@
               <tr>
                 <td
                   colspan="3"
-                  style="
-                    width: 337.5pt;
-                    padding: 0pt 5.4pt;
-                    vertical-align: top;
-                  "
+                  style="width: 337.5pt; padding: 0pt 5.4pt; vertical-align: top"
                 >
                   <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
+                    <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
                   </p>
 
                   <p style="margin-bottom: 0pt; margin-top: 0pt">
@@ -515,15 +485,10 @@
                 </td>
                 <td
                   colspan="3"
-                  style="
-                    width: 203.3pt;
-                    padding: 0pt 5.4pt;
-                    vertical-align: top;
-                  "
+                  style="width: 203.3pt; padding: 0pt 5.4pt; vertical-align: top"
                 >
                   <p style="margin-bottom: 0pt; margin-top: 15pt">
-                    <span
-                      style="font-size: 14px; color: red; padding-left: 20px"
+                    <span style="font-size: 14px; color: red; padding-left: 20px"
                       >{{ format(routeParams) }}.</span
                     >
                   </p>
@@ -547,9 +512,7 @@
                       text-align: center;
                     "
                   >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
+                    <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
                   </p>
                 </td>
                 <td
@@ -561,16 +524,8 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
+                    <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
                   </p>
                 </td>
                 <td
@@ -582,16 +537,8 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
+                    <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
                   </p>
                 </td>
               </tr>
@@ -604,13 +551,7 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
                     <span style="font-size: 21px; color: rgb(255, 255, 255)"
                       >Offering</span
                     >
@@ -618,101 +559,41 @@
                 </td>
                 <td
                   colspan="3"
-                  style="
-                    width: 188.2pt;
-                    padding: 0pt 5.4pt;
-                    vertical-align: top;
-                  "
+                  style="width: 188.2pt; padding: 0pt 5.4pt; vertical-align: top"
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
+                    <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
                   </p>
                 </td>
                 <td
                   colspan="2"
-                  style="
-                    width: 200.3pt;
-                    padding: 0pt 5.4pt;
-                    vertical-align: top;
-                  "
+                  style="width: 200.3pt; padding: 0pt 5.4pt; vertical-align: top"
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
+                    <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
                   </p>
                 </td>
               </tr>
               <tr>
-                <td
-                  style="
-                    width: 152.3pt;
-                    padding: 0pt 5.4pt;
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
+                <td style="width: 152.3pt; padding: 0pt 5.4pt; vertical-align: top">
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
                     <span style="font-size: 21px">&nbsp;</span>
                   </p>
                 </td>
                 <td
                   colspan="3"
-                  style="
-                    width: 188.2pt;
-                    padding: 0pt 5.4pt;
-                    vertical-align: top;
-                  "
+                  style="width: 188.2pt; padding: 0pt 5.4pt; vertical-align: top"
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
+                    <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
                   </p>
                 </td>
                 <td
                   colspan="2"
-                  style="
-                    width: 200.3pt;
-                    padding: 0pt 5.4pt;
-                    vertical-align: top;
-                  "
+                  style="width: 200.3pt; padding: 0pt 5.4pt; vertical-align: top"
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
+                    <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
                   </p>
                 </td>
               </tr>
@@ -726,15 +607,8 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span
-                      style="font-weight: bold; font-size: 18px; color: #000"
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
+                    <span style="font-weight: bold; font-size: 18px; color: #000"
                       >Offering&nbsp;Item</span
                     >
                   </p>
@@ -749,15 +623,8 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span
-                      style="font-weight: bold; font-size: 18px; color: #000"
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
+                    <span style="font-weight: bold; font-size: 18px; color: #000"
                       >Channel</span
                     >
                   </p>
@@ -773,15 +640,8 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span
-                      style="font-weight: bold; font-size: 18px; color: #000"
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
+                    <span style="font-weight: bold; font-size: 18px; color: #000"
                       >Amount</span
                     >
                   </p>
@@ -795,15 +655,8 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span
-                      style="font-weight: bold; font-size: 18px; color: #000"
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
+                    <span style="font-weight: bold; font-size: 18px; color: #000"
                       >Total</span
                     >
                   </p>
@@ -811,9 +664,7 @@
               </tr>
               <tr
                 style="font-weight: normal; font-size: 13px"
-                v-for="(
-                  offering, index
-                ) in contributionReport.todayContributions"
+                v-for="(offering, index) in contributionReport.todayContributions"
                 :key="index"
               >
                 <td
@@ -826,13 +677,7 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
                     <span style="font-weight: normal; font-size: 16px">{{
                       offering.name
                     }}</span>
@@ -849,13 +694,7 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
                     <span style="font-weight: normal; font-size: 16px">{{
                       offering.channel
                     }}</span>
@@ -873,13 +712,7 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
                     <span style="font-weight: normal; font-size: 16px">{{
                       offering.amount
                     }}</span>
@@ -895,13 +728,7 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
                     <span style="font-weight: normal; font-size: 16px">{{
                       offering.amount
                     }}</span>
@@ -919,16 +746,8 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
+                    <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
                   </p>
                 </td>
                 <td
@@ -942,16 +761,8 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
+                    <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
                   </p>
                 </td>
                 <td
@@ -966,16 +777,8 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >Total</span
-                    >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
+                    <span style="font-weight: bold; font-size: 16px">Total</span>
                   </p>
                 </td>
                 <td
@@ -988,13 +791,7 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
                     <span style="font-weight: bold; font-size: 16px">{{
                       contributionReport.totalToday
                     }}</span>
@@ -1012,16 +809,8 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
+                    <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
                   </p>
                 </td>
                 <td
@@ -1035,16 +824,8 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
+                    <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
                   </p>
                 </td>
                 <td
@@ -1059,16 +840,8 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
+                    <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
                   </p>
                 </td>
                 <td
@@ -1081,16 +854,8 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
+                    <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
                   </p>
                 </td>
               </tr>
@@ -1105,13 +870,7 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
                     <span style="font-weight: bold; font-size: 16px"></span>
                   </p>
                 </td>
@@ -1126,13 +885,7 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
                     <span style="font-weight: bold; font-size: 16px"></span>
                   </p>
                 </td>
@@ -1148,13 +901,7 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
                     <span style="font-weight: bold; font-size: 16px"></span>
                   </p>
                 </td>
@@ -1168,13 +915,7 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
                     <span style="font-weight: bold; font-size: 16px"
                       ><a
                         :href="url"
@@ -1197,13 +938,7 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
                     <span style="font-weight: bold; font-size: 16px"></span>
                   </p>
                 </td>
@@ -1219,19 +954,8 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span
-                      style="
-                        font-weight: bold;
-                        font-size: 14px;
-                        margin-top: 20px;
-                      "
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
+                    <span style="font-weight: bold; font-size: 14px; margin-top: 20px"
                       >Powered By ChurchPlus</span
                     >
                   </p>
@@ -1247,13 +971,7 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
                     <span style="font-weight: bold; font-size: 16px"></span>
                   </p>
                 </td>
@@ -1267,13 +985,7 @@
                     vertical-align: top;
                   "
                 >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
+                  <p style="margin-bottom: 0pt; margin-top: 0pt; text-align: center">
                     <span style="font-weight: bold; font-size: 16px"
                       ><a :href="url" style="color: blue; font-weight: bold"></a
                     ></span>
@@ -1306,14 +1018,11 @@
                           <p class="ana-item-percentage">
                             {{
                               contributionReport.todayVsLastWeek
-                                ? contributionReport.todayVsLastWeek.toString()
-                                    .length > 4
+                                ? contributionReport.todayVsLastWeek.toString().length > 4
                                   ? `${contributionReport.todayVsLastWeek
                                       .toString()
                                       .slice(0, 4)}..%`
-                                  : contributionReport.todayVsLastWeek.toFixed(
-                                      2
-                                    )
+                                  : contributionReport.todayVsLastWeek.toFixed(2)
                                 : 0
                             }}
                           </p>
@@ -1357,14 +1066,12 @@
                           <p class="ana-item-percentage">
                             {{
                               contributionReport.todayVsLastMonth
-                                ? contributionReport.todayVsLastMonth.toString()
-                                    .length > 4
+                                ? contributionReport.todayVsLastMonth.toString().length >
+                                  4
                                   ? `${contributionReport.todayVsLastMonth
                                       .toString()
                                       .slice(0, 4)}..%`
-                                  : contributionReport.todayVsLastMonth.toFixed(
-                                      2
-                                    )
+                                  : contributionReport.todayVsLastMonth.toFixed(2)
                                 : 0
                             }}
                           </p>
@@ -1408,14 +1115,11 @@
                           <p class="ana-item-percentage">
                             {{
                               contributionReport.todayVsLastYear
-                                ? contributionReport.todayVsLastYear.toString()
-                                    .length > 4
+                                ? contributionReport.todayVsLastYear.toString().length > 4
                                   ? `${contributionReport.todayVsLastYear
                                       .toString()
                                       .slice(0, 4)}..%`
-                                  : contributionReport.todayVsLastYear.toFixed(
-                                      2
-                                    )
+                                  : contributionReport.todayVsLastYear.toFixed(2)
                                 : 0
                             }}
                           </p>
@@ -1479,6 +1183,7 @@ import ReportModal from "@/components/firsttimer/ReportModal.vue";
 import composerObj from "../../../services/communication/composer";
 import stopProgressBar from "../../../services/progressbar/progress";
 import axios from "@/gateway/backendapi";
+import router from "../../../router";
 // // import { useStore } from 'vuex'
 import { useRoute } from "vue-router";
 import formatDate from "../../../services/dates/dateformatter";
@@ -1512,6 +1217,10 @@ export default {
     const toggleReportState = () => {
       reportApproved.value = !reportApproved.value;
       // status.value = "Unsent";
+    };
+
+    const goBack = () => {
+      router.go(-1);
     };
 
     // const getContributionReport = async() => {
@@ -1618,8 +1327,7 @@ export default {
         body.toOthers = messageObj.data.toOthers;
       }
 
-      body.message =
-        messageObj.medium === "sms" ? messageObj.data.message : message;
+      body.message = messageObj.medium === "sms" ? messageObj.data.message : message;
 
       const url =
         messageObj.medium === "sms"
@@ -1633,16 +1341,16 @@ export default {
           console.log(res, "report response");
           if (res.status === false) {
             ElMessage({
-                type: "error",
-                message: res.message,
-                duration: 3000,
-              });
+              type: "error",
+              message: res.message,
+              duration: 3000,
+            });
           } else {
             ElMessage({
-                type: "success",
-                message: "Send Success",
-                duration: 3000,
-              });
+              type: "success",
+              message: "Send Success",
+              duration: 3000,
+            });
           }
         })
         .catch((err) => {
@@ -1651,10 +1359,10 @@ export default {
           stopProgressBar();
 
           ElMessage({
-                type: "error",
-                message: "Sending Failed",
-                duration: 3000,
-              });
+            type: "error",
+            message: "Sending Failed",
+            duration: 3000,
+          });
         });
       btnState.value = "modal";
     };
@@ -1675,8 +1383,7 @@ export default {
       // markedAsSent.value = "marked as sent"
     };
 
-    const amountWithCommas = (amount) =>
-      numbers_formatter.amountWithCommas(amount);
+    const amountWithCommas = (amount) => numbers_formatter.amountWithCommas(amount);
 
     const copyLink = () => {
       try {
@@ -1687,10 +1394,10 @@ export default {
         /* Copy the text inside the text field */
         document.execCommand("copy");
         ElMessage({
-                type: "info",
-                message: "Shareable link copied to your clipboard",
-                duration: 3000,
-              });
+          type: "info",
+          message: "Shareable link copied to your clipboard",
+          duration: 3000,
+        });
       } catch (error) {
         console.log(error);
       }
@@ -1720,6 +1427,7 @@ export default {
       shareableLinkField,
       location,
       willCopyLink,
+      goBack,
     };
   },
 };
@@ -1762,12 +1470,13 @@ a {
 .def-btn {
   height: 40px;
   border-radius: 22px;
+  color: #0745af;
   padding: 8px 10px;
   width: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #dde2e6;
+  border: 1px solid #062f74;
 }
 
 .def-btn:hover {
@@ -1792,16 +1501,13 @@ a {
 
 .unapproved {
   background: #ffffff 0% 0% no-repeat padding-box;
-  box-shadow: 0px 3px 15px #00000029;
-  border: 1px solid #dde2e6;
-  border-radius: 5px;
+  /* box-shadow: 0px 3px 15px #00000029; */
+  border: 1px solid #c9c9c9;
+  /* border-radius: 5px; */
 }
 
 .info-div {
-  background: #f9f8db;
-  border: 1px solid #dde2e6;
-  border-radius: 5px 5px 0px 0px;
-  text-align: center;
+  background: #ffdddf;
 }
 
 .file-icon {
@@ -1830,34 +1536,27 @@ a {
   border: 1px solid #dde2e6;
 }
 
-.bottom-section {
-  box-shadow: 0px 3px 10px #00000029;
-  border: 1px solid #dde2e6;
-  border-radius: 5px;
-}
-
 .dark-red-section {
   /* background: #980404; */
-  background: #ff0000b5;
+  background: #0745af;
   color: #fff;
   height: 133px;
   display: flex;
   align-items: center;
-  border-radius: 5px 0px 0px 0px;
+  /* border-radius: 5px 0px 0px 0px; */
   height: 133px;
   display: flex;
   align-items: center;
-  border-radius: 5px 0px 0px 0px;
+  /* border-radius: 5px 0px 0px 0px; */
 }
 
 .light-red-section {
   /* background: #ff0000b5; */
-  background: #980404;
+  background: #0745af;
   color: #fff;
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: center;
-  border-radius: 0px 5px 0px 0px;
 }
 
 .dark-red-section h2,
@@ -1905,14 +1604,16 @@ a {
 }
 
 .ana-item {
-  width: 200px;
+  width: 215px;
   display: flex;
   justify-content: space-between;
-  box-shadow: 0px 3px 10px #00000029;
-  border: 1px solid #dde2e6;
+  /* box-shadow: 0px 3px 10px #00000029; */
+  border: 1px solid #ADB5C3;
   border-radius: 5px;
-  padding: 10px 4px 10px 10px;
+  padding: 11px 5px 11px 11px;
   margin: 4px 0;
+  background: #F3F8FA;
+
 }
 
 .ana-header {
@@ -1936,7 +1637,7 @@ a {
 
 .ana-item-value,
 .today-text {
-  color: #136acd;
+  /* color: #136acd; */
   font-weight: 700;
 }
 
@@ -1970,14 +1671,6 @@ a {
   background: transparent !important;
   color: #4d6676 !important;
   border: 1px solid #dde2e6 !important;
-}
-
-.text-style {
-  font: normal normal bold 17px/16px Nunito Sans;
-}
-
-.total-text {
-  font: normal normal normal 30px/24px Nunito Sans;
 }
 
 .hr-total {
