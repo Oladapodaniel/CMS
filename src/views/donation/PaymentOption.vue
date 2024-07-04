@@ -1,12 +1,16 @@
 <template>
   <div>
-    <div
-      class="container-top"
-      :class="{ 'container-slim': lgAndUp || xlAndUp }"
-    >
+    <div class="container-top" :class="{ 'container-wide': lgAndUp || xlAndUp }">
       <div class="row">
-        <div class="col-md-12 col-sm-12 col-lg-12 mb-3 pb-3 border-bottom">
-          <div class="head-text">Payment Options</div>
+        <div class="col-md-12 col-sm-12 col-lg-12 mb-3 pb-3 ">
+          <h2 class="text-head font-weight-bold h2 py-0 my-0 text-black">
+            Payment Options
+          </h2>
+          <div @click="goBack">
+            <span class="s-18 fw-400 cursor-pointer text-black">
+              <img src="../../assets/goback.png" alt="" /> Go back</span
+            >
+          </div>
         </div>
         <div class="col-sm-5 offset-1 header-contri mt-3">
           {{ paymentData.name ? paymentData.name : paymentData.title }}
@@ -47,11 +51,9 @@
             </div>
             <div class="col-9 col-sm-10 mt-3">
               <a class="c-pointer text-decoration-none"
-                ><h4 class="header4">Web Payment Link</h4></a
+                ><h5 class="header4 fw-500  ">Web Payment Link</h5></a
               >
-              <p class="para">
-                Make your payment online via this link provided.
-              </p>
+              <p class="para">Make your payment online via this link provided.</p>
             </div>
           </div>
         </div>
@@ -100,10 +102,8 @@
               />
             </div>
             <div class="col-9 col-sm-10 mt-3">
-              <h4 class="header4">iFrame</h4>
-              <p class="para">
-                Make your payment via this iFrame link provided below
-              </p>
+              <h5 class="header4">iFrame</h5>
+              <p class="para">Make your payment via this iFrame link provided below</p>
             </div>
           </div>
         </div>
@@ -129,30 +129,6 @@
               </template>
             </el-input>
           </div>
-          <!-- <span @click="copyIframeLink"> 
-                                    <el-button class="py-4   bg-secondary" @click="copyIframeLink">
-                                        <el-icon >
-                                        <CopyDocument />
-                                        </el-icon>
-                                    </el-button>
-                                </span> -->
-          <!-- <el-input
-                                    v-model="paymentlink"
-                                    placeholder="Click the copy button when the link appears"
-                                    ref="iframeLink"
-                                    class="input-with-select"
-                                >
-                                </el-input> -->
-          <!-- <code class="text-dark text-center">{{iFrameLink}}</code> -->
-          <!-- <p class="para">
-                                    <span class="d-flex align-items-center">
-                                    <code class="w-100">
-                                        <textarea rows="3" ref="iframeLink"  @click="copyIframeLink" :value="`${iFrameLink}`" class="form-control w-100 p-auto">
-                                        </textarea>
-                                    </code>
-                                    <i class="pi pi-copy ml-2 c-pointer" @click="copyIframeLink" style="font-size: 22px"></i>
-                                    </span>
-                                </p> -->
         </div>
       </div>
       <div class="col-md-12 mb-3"></div>
@@ -170,10 +146,8 @@
               />
             </div>
             <div class="col-9 col-sm-10 mt-3">
-              <h4 class="header4">QR Code For Payment</h4>
-              <p class="para">
-                Make your payment via this Qr Code
-              </p>
+              <h5 class="header4">QR Code For Payment</h5>
+              <p class="para">Make your payment via this Qr Code</p>
             </div>
           </div>
         </div>
@@ -240,7 +214,7 @@
               />
             </div>
             <div class="col-9 col-sm-10 mt-3">
-              <h4 class="header4">Wordpress Plugin</h4>
+              <h5 class="header4">Wordpress Plugin</h5>
               <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
             </div>
           </div>
@@ -258,13 +232,15 @@
       align-center
     >
       <div class="d-flex align-items-center flex-column">
-        <h4 class="text-capitalize font-weight">
-          QR Code For Online Payment
-        </h4>
+        <h5 class="text-capitalize font-weight">QR Code For Online Payment</h5>
       </div>
       <div class="d-flex justify-content-center">
         <div class="img-wrapper">
-          <img v-if="qrCodeOnlinePayment" :src="qrCodeOnlinePayment" class="image-wrapper w-100" />
+          <img
+            v-if="qrCodeOnlinePayment"
+            :src="qrCodeOnlinePayment"
+            class="image-wrapper w-100"
+          />
         </div>
       </div>
     </el-dialog>
@@ -283,12 +259,12 @@ export default {
   setup() {
     const route = useRoute();
     const paymentData = ref({});
-    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
 
     const displayLink = ref(false);
     const displayQr = ref(false);
     const displayQrCode = ref(false);
-    const qrCodeOnlinePayment = ref('');
+    const qrCodeOnlinePayment = ref("");
     const displayIFrame = ref(false);
     const iFrameLink = ref(
       `<iframe loading="lazy" src="${window.location.origin}/iframe/${route.params.paymentId}" style="border:0px #f4f4f4 dashed;" name="online-giving" scrolling="no" frameborder="1" marginheight="0px" marginwidth="0px" height="1190px" width="720px" allowfullscreen></iframe>`
@@ -316,15 +292,20 @@ export default {
     };
 
     const toggleQRCode = () => {
-        displayQrCode.value = true
-    }
+      displayQrCode.value = true;
+    };
+
+    const goBack = () => {
+      router.go(-1);
+    };
+
     onMounted(async () => {
       try {
         const res = await axios.get(
           `/api/PaymentForm/GetOne?paymentFormID=${route.params.paymentId}`
         );
         paymentData.value.title = res.data.name;
-        qrCodeOnlinePayment.value = res.data.paymentUrlQRCode
+        qrCodeOnlinePayment.value = res.data.paymentUrlQRCode;
         paymentData.value.contributionItems = res.data.contributionItems.map(
           (i) => i.financialContribution
         );
@@ -385,7 +366,10 @@ export default {
     return {
       displayLink,
       qrCodeOnlinePayment,
-      mdAndUp, lgAndUp, xlAndUp, xsOnly,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      xsOnly,
       xlAndUp,
       lgAndUp,
       route,
@@ -406,6 +390,7 @@ export default {
       title,
       displayQrCode,
       toggleQRCode,
+      goBack
     };
   },
 };
@@ -414,7 +399,6 @@ export default {
 <style scoped>
 .aten {
   text-align: left;
-  font: normal 800 30px Nunito Sans !important;
   letter-spacing: 0px;
   color: #02172e;
   opacity: 1;
@@ -425,7 +409,6 @@ export default {
     var(--unnamed-font-family-nunito-sans);
   letter-spacing: var(--unnamed-character-spacing-0);
   text-align: left;
-  font: normal normal normal 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #02172e;
   opacity: 1;
@@ -435,17 +418,12 @@ export default {
     var(--unnamed-font-family-nunito-sans);
   letter-spacing: var(--unnamed-character-spacing-0);
   text-align: left;
-  font: normal normal 600 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #02172e;
   opacity: 1;
 }
 .header4 {
-  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold)
-    18px/24px var(--unnamed-font-family-nunito-sans);
-  letter-spacing: var(--unnamed-character-spacing-0);
   text-align: left;
-  font: normal normal bold 18px/24px Nunito Sans;
   letter-spacing: 0px;
   color: #02172e;
   opacity: 0.8;
@@ -455,7 +433,6 @@ export default {
     var(--unnamed-font-family-nunito-sans);
   letter-spacing: var(--unnamed-character-spacing-0);
   text-align: left;
-  font: normal normal normal 14px/19px Nunito Sans;
   letter-spacing: 0px;
 }
 
@@ -465,10 +442,6 @@ export default {
 
 .contri-type {
   font-size: 1.7em;
-}
-
-.page-header {
-  font: normal normal 800 29px Nunito sans;
 }
 
 .hide {

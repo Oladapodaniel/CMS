@@ -1,13 +1,15 @@
 <template>
   <div class="container-top"
-      :class="{ 'container-slim': lgAndUp || xlAndUp }">
+      :class="{ 'container-wide': lgAndUp || xlAndUp }">
     <div>
       <div
         class="d-flex flex-column flex-md-row justify-content-md-between my-3"
       >
         <div class="first-timers-text">
-          <h2 class="page-header">Online Donation</h2>
+          <div class="text-head font-weight-bold h2 py-0 my-0 text-black">Online Donation</div>
+          <div class="s-18">Show all Donation</div>
         </div>
+        
 
         <div class="d-flex head-button">
           <router-link to="/tenant/payment" class="mr-0 mr-md-2 w-100">
@@ -29,12 +31,6 @@
     </div>
 
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12 px-0">
-          <hr class="hr" />
-        </div>
-      </div>
-
       <el-skeleton class="w-100" animated v-if="loading">
         <template #template>
           <div

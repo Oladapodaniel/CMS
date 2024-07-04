@@ -26,7 +26,7 @@
           </div>
         </div>
       </div>
-      <di class="col-md-12" v-if="viewAnalytics">
+      <div class="col-md-12" v-if="viewAnalytics">
         <div class="row">
           <div class="col-12 col-md-6">
             <ContributionPieChart
@@ -49,7 +49,7 @@
             />
           </div>
         </div>
-      </di>
+      </div>
     </div>
 
     <div class="row">
