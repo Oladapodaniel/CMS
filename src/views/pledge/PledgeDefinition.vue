@@ -2,17 +2,19 @@
   <div>
     <div class="container-fluid">
       <div class="row">
-        <div class="head-text">Create Pledge Item</div>
-        <div class="col-12 mt-3 px-0">
-          <div class="text-primary c-pointer col-md-2" @click="previousPage"> 
-            <el-icon><DArrowLeft /></el-icon> Back
+        <div class="text-head h2 font-weight-bold py-0 my-0 text-black">Create Pledge Item</div>
+        <div class="col-12 mt-1 px-0">
+          <div @click="previousPage">
+            <span class="s-18 fw-400 cursor-pointer text-black">
+              <img src="../../assets/goback.png" alt="" /> Go back</span
+            >
           </div>
         </div>
       </div>
       <div class="mt-4 d-block d-md-none text-center" v-if="groupLoading">
         <el-icon class="s-20">
-            <Loading />
-          </el-icon>
+          <Loading />
+        </el-icon>
       </div>
       <div class="row">
         <div class="col-md-10 col-lg-9">
@@ -23,7 +25,7 @@
                 <div
                   class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
-                  <label for="" class=""
+                  <label for="" class=" font-weight-600 text-head text-dak s-18"
                     >Contribution <sup class="text-danger">*</sup>
                   </label>
                 </div>
@@ -32,7 +34,7 @@
                   <el-dropdown trigger="click" class="w-100">
                     <span class="el-dropdown-link w-100">
                       <div
-                        class="d-flex justify-content-between border-contribution  w-100"
+                        class="d-flex justify-content-between border-contribution w-100"
                         size="large"
                       >
                         <span class="text-secondary">{{
@@ -86,10 +88,7 @@
               aria-labelledby="exampleModalCenterTitle"
               aria-hidden="true"
             >
-              <div
-                class="modal-dialog modal-lg modal-dialog-centered"
-                role="document"
-              >
+              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-header" style="border: none">
                     <h5 class="modal-title" id="exampleModalLongTitle">
@@ -119,9 +118,7 @@
                 <div
                   class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
-                  <label for="" class=""
-                    >Name <sup class="text-danger">*</sup>
-                  </label>
+                  <label for="" class="font-weight-600 text-head text-dak s-18">Name <sup class="text-danger">*</sup> </label>
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
@@ -132,9 +129,7 @@
                     @blur="checkNameValue"
                     placeholder="Enter pledge name"
                   />
-                  <div class="invalid-feedback">
-                    Please enter your pledge name.
-                  </div>
+                  <div class="invalid-feedback">Please enter your pledge name.</div>
                 </div>
               </div>
             </div>
@@ -143,7 +138,7 @@
                 <div
                   class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
-                  <label for="" class=""
+                  <label for="" class="font-weight-600 text-head text-dak s-18"
                     >Currency <sup class="text-danger">*</sup>
                   </label>
                 </div>
@@ -152,12 +147,11 @@
                   <el-dropdown trigger="click" class="w-100">
                     <span class="el-dropdown-link w-100">
                       <div
-                        class="d-flex justify-content-between border-contribution  w-100"
+                        class="d-flex justify-content-between border-contribution w-100"
                         size="large"
                       >
                         <span class="text-secondary">{{
-                          selectedCurrency &&
-                          Object.keys(selectedCurrency).length > 0
+                          selectedCurrency && Object.keys(selectedCurrency).length > 0
                             ? selectedCurrency.name
                             : "Select Currency"
                         }}</span>
@@ -174,14 +168,9 @@
                           v-for="(itm, indx) in currencyList"
                           :key="indx"
                           @click="setSelectedCurrency(itm)"
-                          >{{ itm.name }}  -  {{itm.country}}
+                          >{{ itm.name }} - {{ itm.country }}
                         </el-dropdown-item>
-                        <el-dropdown-item
-                          class="text-center"
-                          divided
-                          ></el-dropdown-item
-                        >
-                      
+                        <el-dropdown-item class="text-center" divided></el-dropdown-item>
                       </el-dropdown-menu>
                     </template>
                   </el-dropdown>
@@ -216,7 +205,7 @@
                 <div
                   class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
-                  <label for="" class="">Pledge type </label>
+                  <label for="" class="font-weight-600 text-head text-dak s-18">Pledge type </label>
                 </div>
                 <div
                   class="col-12 col-sm-12 col-lg-8 d-flex justify-content-between flex-wrap"
@@ -267,26 +256,14 @@
                       <label for="" class="d-none d-lg-block"> Amount </label>
                     </div>
                     <div class="col-12 col-lg-4">
-                      <label for="" class="d-block d-lg-none">
-                        Amount From
-                      </label>
+                      <label for="" class="d-block d-lg-none"> Amount From </label>
 
-                      <el-input
-                        type="text"
-                        v-model="amountFrom"
-                        placeholder="From"
-                      />
+                      <el-input type="text" v-model="amountFrom" placeholder="From" />
                     </div>
                     <div class="col-12 mt-3 mt-md-0 mt-lg-0 col-lg-4 pl-lg-0">
-                      <label for="" class="d-block d-lg-none">
-                        Amount To
-                      </label>
+                      <label for="" class="d-block d-lg-none"> Amount To </label>
 
-                      <el-input
-                        type="text"
-                        v-model="amountTo"
-                        placeholder="To"
-                      />
+                      <el-input type="text" v-model="amountTo" placeholder="To" />
                     </div>
                   </div>
                 </div>
@@ -300,8 +277,7 @@
               <div class="row">
                 <div
                   class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
-                >
-                </div>
+                ></div>
 
                 <div class="col-12 col-sm-12 col-lg-8 d-flex flex-wrap">
                   <div
@@ -326,7 +302,7 @@
                     <div
                       class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                     >
-                      <label for="" class=""> Start Date </label>
+                      <label for="" class="font-weight-600 text-head text-dak s-18"> Start Date </label>
                     </div>
                     <div class="col-12 col-sm-12 col-lg-8">
                       <el-date-picker
@@ -344,10 +320,7 @@
                     </div>
                   </div>
                 </div>
-                <div
-                  class="col-md-12 mt-3"
-                  v-if="pledgeFrequency == 'reoccuring'"
-                >
+                <div class="col-md-12 mt-3" v-if="pledgeFrequency == 'reoccuring'">
                   <div class="row">
                     <div
                       class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
@@ -377,7 +350,7 @@
                     <div
                       class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                     >
-                      <label for="" class=""> Choose group(s) </label>
+                      <label for="" class="font-weight-600 text-head text-dak s-18"> Choose group(s) </label>
                     </div>
                     <div class="col-12 col-sm-12 col-lg-8">
                       <el-tree-select
@@ -399,7 +372,7 @@
                     <div
                       class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                     >
-                      <label for="" class="">Notify members</label>
+                      <label for="" class="font-weight-600 text-head text-dak s-18">Notify members</label>
                     </div>
                     <div class="col-12 col-sm-12 col-lg-8">
                       <el-checkbox v-model="notify" size="large" />
@@ -412,19 +385,11 @@
                       <div
                         class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                       >
-                        <label for="" class="">Notify via</label>
+                        <label for="" class="font-weight-600 text-head text-dak s-18">Notify via</label>
                       </div>
                       <div class="col-12 col-sm-12 col-lg-8">
-                        <el-checkbox
-                          v-model="SMSnotify"
-                          label="SMS"
-                          size="large"
-                        />
-                        <el-checkbox
-                          v-model="emailNotify"
-                          label="Email"
-                          size="large"
-                        />
+                        <el-checkbox v-model="SMSnotify" label="SMS" size="large" />
+                        <el-checkbox v-model="emailNotify" label="Email" size="large" />
                       </div>
                     </div>
                   </Transition>
@@ -434,7 +399,7 @@
                     <div
                       class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                     >
-                      <label for="" class="">Make mandatory</label>
+                      <label for="" class="font-weight-600 text-head text-dak s-18">Make mandatory</label>
                     </div>
                     <div class="col-12 col-sm-12 col-lg-8">
                       <el-checkbox v-model="makeMandatory" size="large" />
@@ -462,7 +427,7 @@
                 <div
                   class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right align-self-center"
                 >
-                  <label for="" class="">Bank </label>
+                  <label for="" class="font-weight-600 text-head text-dak s-18">Bank </label>
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
@@ -471,7 +436,7 @@
                       <span class="el-dropdown-link w-100">
                         <el-input
                           type="text"
-                          placeholder='Select Bank'
+                          placeholder="Select Bank"
                           v-model="bankSearchText"
                         />
                       </span>
@@ -497,10 +462,8 @@
           <div class="row my-1 mt-4">
             <div class="col-md-10 offset-md-2">
               <div class="row">
-                <div
-                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right"
-                >
-                  <label for="" class="">Account Number </label>
+                <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right">
+                  <label for="" class="font-weight-600 text-head text-dak s-18">Account Number </label>
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
@@ -529,10 +492,8 @@
           <div class="row my-1 mt-4">
             <div class="col-md-10 offset-md-2">
               <div class="row">
-                <div
-                  class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right"
-                >
-                  <label for="" class="">Account Name </label>
+                <div class="col-12 col-sm-12 col-lg-4 text-sm-left text-lg-right">
+                  <label for="" class="font-weight-600 text-head text-dak s-18">Account Name </label>
                 </div>
 
                 <div class="col-12 col-sm-12 col-lg-8">
@@ -540,7 +501,8 @@
                     type="text"
                     v-model="accountName"
                     placeholder="Account name"
-                    class="form-control"
+                    class="form-control "
+                    style="background: #E5FCFF;"
                     disabled
                   />
                 </div>
@@ -554,7 +516,7 @@
                 <div class="col-12 col-sm-12 col-lg-8 offset-lg-4">
                   <el-button
                     :color="primarycolor"
-                    class="w-100"
+                    class="w-100 py-4"
                     round
                     :loading="loading"
                     @click="savePledge"
@@ -566,8 +528,7 @@
           </div>
         </div>
         <div class="col-md-4">
-          <div class="mt-4 d-none d-md-block" v-loading="groupLoading" >
-          </div>
+          <div class="mt-4 d-none d-md-block" v-loading="groupLoading"></div>
         </div>
       </div>
       <div class="mt-3">
@@ -622,8 +583,8 @@
 
       <div class="row d-flex justify-content-center my-4" v-if="pledgeLoader">
         <el-icon class="s-20">
-            <Loading />
-          </el-icon>
+          <Loading />
+        </el-icon>
       </div>
     </div>
   </div>
@@ -654,7 +615,7 @@ export default {
   inheritAttrs: false,
   setup() {
     const route = useRoute();
-    const primarycolor = inject('primarycolor')
+    const primarycolor = inject("primarycolor");
     const startDate = ref("");
     const pledgeItemID = ref(route.query.id);
     const endDate = ref("");
@@ -750,24 +711,32 @@ export default {
         pledgeLoader.value = false;
         getAllCurrencies(res.data.returnObject.currency.id);
         getContributionCategory(res.data.returnObject.financialContributionID);
-        selectedGroupTree.value = res.data.returnObject.compulsoryCondition ? res.data.returnObject.compulsoryCondition.split(",") : [];
+        selectedGroupTree.value = res.data.returnObject.compulsoryCondition
+          ? res.data.returnObject.compulsoryCondition.split(",")
+          : [];
         targetAmount.value = res.data.returnObject.totalTargetAmount;
         pledgeName.value = res.data.returnObject.name;
         specificAmount.value = res.data.returnObject.donorPaymentSpecificAmount;
         accountName.value = res.data.returnObject.paymentForm.accountName;
         accountNumber.value = res.data.returnObject.paymentForm.accountNumber;
         bankCode.value = res.data.returnObject.paymentForm.bankCode;
-        bankSearchText.value =  nigerianBanks.value.find(i => i.code == res.data.returnObject.paymentForm.bankCode).name, 
-                                 
-        amountFrom.value = res.data.returnObject.donorPaymentRangeFromAmount;
+        (bankSearchText.value = nigerianBanks.value.find(
+          (i) => i.code == res.data.returnObject.paymentForm.bankCode
+        ).name),
+          (amountFrom.value = res.data.returnObject.donorPaymentRangeFromAmount);
         amountTo.value = res.data.returnObject.donorPaymentRangeToAmount;
-        dateRangeValue.value = [ res.data.returnObject.pledgeTypeFrequencyOneTimeStartDate, res.data.returnObject.pledgeTypeFrequencyOneTimeEndDate ];
+        dateRangeValue.value = [
+          res.data.returnObject.pledgeTypeFrequencyOneTimeStartDate,
+          res.data.returnObject.pledgeTypeFrequencyOneTimeEndDate,
+        ];
         console.log(res.data.returnObject.name, "kkkkk");
         setDatePicker();
-        
-        setSelectedRange.value = res.data.returnObject.pledgeTypeFrequencyReOccuring
-        selectedRange.value = reOccuringRange.value.find(i => i.id == setSelectedRange.value);
-        if (dateRangeValue.value ) {
+
+        setSelectedRange.value = res.data.returnObject.pledgeTypeFrequencyReOccuring;
+        selectedRange.value = reOccuringRange.value.find(
+          (i) => i.id == setSelectedRange.value
+        );
+        if (dateRangeValue.value) {
           pledgeFrequency.value = "onetime";
         }
 
@@ -788,7 +757,8 @@ export default {
           res.data.returnObject.donorPaymentType;
         }
 
-        pledgesBoundToItem.value = res.data && res.data.returnObject.pledges ? res.data.returnObject.pledges : [];
+        pledgesBoundToItem.value =
+          res.data && res.data.returnObject.pledges ? res.data.returnObject.pledges : [];
         console.log(pledgesBoundToItem.value, "pledgesBoundToItem");
         paymentFormId.value = res.data.returnObject.paymentFormID;
       } catch (error) {
@@ -796,11 +766,10 @@ export default {
         groupLoading.value = false;
       }
     };
-    
 
     const newConItems = (payload) => {
-      contributionItems.value.push(payload)
-      selectedContribution.value = payload
+      contributionItems.value.push(payload);
+      selectedContribution.value = payload;
     };
 
     const selectContribution = (item) => {
@@ -814,9 +783,7 @@ export default {
           contributionItems.value = res.data;
 
           if (id) {
-            selectedContribution.value = contributionItems.value.find(
-              (i) => i.id == id
-            );
+            selectedContribution.value = contributionItems.value.find((i) => i.id == id);
           }
         })
         .catch((err) => {
@@ -831,10 +798,13 @@ export default {
     getContributionCategory();
 
     const savePledge = async () => {
-      console.log(selectedGroupTree.value)
+      console.log(selectedGroupTree.value);
       let paymentForm = {
         accountName: accountName.value,
-        bankCode: selectedBank.value && selectedBank.value.code ? selectedBank.value.code : bankCode.value,
+        bankCode:
+          selectedBank.value && selectedBank.value.code
+            ? selectedBank.value.code
+            : bankCode.value,
         accountNumber: accountNumber.value,
       };
       let pledgeDetails = {
@@ -847,7 +817,9 @@ export default {
         donorPaymentRangeToAmount: amountTo.value,
         pledgeTypeFrequencyOneTimeStartDate: startDate.value,
         pledgeTypeFrequencyOneTimeEndDate: endDate.value,
-        pledgeTypeFrequencyReOccuring: selectedRange.value ? selectedRange.value.name : "",
+        pledgeTypeFrequencyReOccuring: selectedRange.value
+          ? selectedRange.value.name
+          : "",
         currencyID: selectedCurrency.value.id,
         compulsoryCondition: selectedGroupTree.value.join(","),
         bankName: selectedBank.value.name,
@@ -863,12 +835,9 @@ export default {
       if (route.query.id) {
         pledgeDetails.id = route.query.id;
         pledgeDetails.paymentFormID = paymentFormId.value;
-        pledgeDetails.paymentForm = paymentForm
+        pledgeDetails.paymentForm = paymentForm;
         try {
-           await axios.put(
-            "/api/Pledge/UpdatePledgeDefinition",
-            pledgeDetails
-          );
+          await axios.put("/api/Pledge/UpdatePledgeDefinition", pledgeDetails);
           ElMessage({
             type: "success",
             message: "Pledge definition updated successfully",
@@ -991,7 +960,6 @@ export default {
         accountResolving.value = false;
 
         if (data.data.data.responsemessage.toLowerCase().includes("sorry")) {
-
           ElMessage({
             type: "warn",
             message: data.data.data.responsemessage,
@@ -1065,7 +1033,7 @@ export default {
         let data = { children: groups.value };
         const { children } = collector(data);
         groupMappedTree.value = children;
-        
+
         groupLoading.value = false;
       } catch (error) {
         console.log(error);
@@ -1122,9 +1090,9 @@ export default {
       startDate.value = dateRangeValue.value[0];
       endDate.value = dateRangeValue.value[1];
     };
-     const previousPage =() =>{
-      router.push("/tenant/pledge/pledgedefinitionlist")
-    }
+    const previousPage = () => {
+      router.push("/tenant/pledge/pledgedefinitionlist");
+    };
 
     const filterNodeMethod = (value, data) =>
       data.label.toLowerCase().includes(value.toLowerCase());
@@ -1203,7 +1171,7 @@ export default {
       makeMandatory,
       pledgeDefinitionHeaders,
       primarycolor,
-      bankCode
+      bankCode,
     };
   },
 };
@@ -1225,33 +1193,39 @@ export default {
   overflow-x: hidden;
 }
 
-.heading-text {
-  font: normal normal 800 1.5rem Nunito sans;
-}
-
 .show-specific {
-  background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
-  font-weight: bold;
+  /* background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%); */
+  font-weight: 500;
+  background: #B0DFE5;
+  border-radius: 5px;
 }
 
 .show-range {
-  background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
-  font-weight: bold;
+  /* background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%); */
+  background: #B0DFE5;
+  border-radius: 5px;
+  font-weight: 500;
 }
 
 .show-free-will {
-  background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
-  font-weight: bold;
+  /* background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%); */
+  background: #B0DFE5;
+  font-weight: 500;
+  border-radius: 5px;
 }
 
 .show-one-time {
-  background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
-  font-weight: bold;
+  /* background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%); */
+  background: #B0DFE5;
+  border-radius: 5px;
+  font-weight: 500;
 }
 
 .show-reoccuring {
-  background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
-  font-weight: bold;
+  /* background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%); */
+  background: #B0DFE5;
+  border-radius: 5px;
+  font-weight: 500;
 }
 
 .hover:hover {
@@ -1271,10 +1245,8 @@ export default {
 }
 
 .border-contribution {
-  border: 1.6px solid rgb(229, 232, 237);
+  border: 1px solid #787878;
   border-radius: 4px;
   padding: 11px 7px;
 }
-
-
 </style>

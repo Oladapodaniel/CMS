@@ -405,8 +405,6 @@ export default {
 }
 
 .event {
-  font: var(--unnamed-font-style-normal) normal normal 16px/22px
-    var(--unnamed-font-family-nunito-sans);
   letter-spacing: var(--unnamed-character-spacing-0);
   text-align: left;
   letter-spacing: 0px;
@@ -414,8 +412,6 @@ export default {
   opacity: 1;
 }
 .check {
-  font: var(--unnamed-font-style-normal) normal 600 16px/22px
-    var(--unnamed-font-family-nunito-sans);
   letter-spacing: var(--unnamed-character-spacing-0);
   text-align: left;
   letter-spacing: 0px;
@@ -429,8 +425,6 @@ export default {
   opacity: 0.8;
 }
 .para {
-  font: var(--unnamed-font-style-normal) normal normal 14px/19px
-    var(--unnamed-font-family-nunito-sans);
   letter-spacing: var(--unnamed-character-spacing-0);
   text-align: left;
   letter-spacing: 0px;

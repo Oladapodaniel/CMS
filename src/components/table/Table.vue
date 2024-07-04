@@ -322,7 +322,7 @@ export default {
   /* color: #172B4D; */
 }
 
-.table-head h2:first-letter {
+.table-head h2::first-letter {
   text-transform: capitalize;
 }
 

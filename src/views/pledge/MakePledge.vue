@@ -1,10 +1,12 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div class="head-text">Make a Pledge</div>
-      <div class="col-12 mt-3 px-0">
-        <div class="text-primary c-pointer col-md-2" @click="previousPage">
-          <el-icon><DArrowLeft /></el-icon> Back
+      <div class="text-head h2 font-weight-bold py-0 my-0 text-black">Make a Pledge</div>
+      <div class="col-12 mt-1 px-0">
+        <div @click="previousPage">
+          <span class="s-18 fw-400 cursor-pointer text-black">
+            <img src="../../assets/goback.png" alt="" /> Go back</span
+          >
         </div>
       </div>
     </div>
@@ -13,7 +15,7 @@
         <div class="col-md-8 offset-md-1">
           <div class="row dropdown-container">
             <div class="col-md-4 col-12 text-md-right text-left">
-              <label for="">Select Pledge</label>
+              <label class="text-head font-weight-600 text-dak s-18 " for="">Select Pledge</label>
             </div>
 
             <div class="ofering col-md-8 col-12 mb-3">
@@ -63,10 +65,87 @@
                 </template>
               </el-dropdown>
             </div>
+            <div
+              class="col-md-4 col-12 text-md-right text-left"
+              v-if="selectedPledge.donorPaymentType == 2"
+            ></div>
+            <div class="col-md-8 col-12 mb-3" v-if="selectedPledge.donorPaymentType == 2">
+              <div
+                class="col-md-12 mt-3 mt-md-0 pledgeType-bg py-1 mb-3 mb-md-0 order-first order-md-last"
+              >
+                <h4 class="font-weight-600">RANGE</h4>
+                <div class="mt-1 col-md-12 px-0 fw-500">
+                  You can only pledge within the range of
+                </div>
+                <h3
+                  class="font-weight-600 s-15 col-md-6 px-0 d-flex justify-content-between mt-2 mb-0"
+                >
+                  {{
+                    selectedPledge && selectedPledge.currencySymbol
+                      ? selectedPledge.currencySymbol
+                      : selectedPledge.currency.symbol
+                  }}
+                  {{
+                    Math.abs(selectedPledge.donorPaymentRangeFromAmount).toLocaleString()
+                  }}
+                  <div>&</div>
+                  {{
+                    selectedPledge && selectedPledge.currencySymbol
+                      ? selectedPledge.currencySymbol
+                      : selectedPledge.currency.symbol
+                  }}
+                  {{
+                    Math.abs(selectedPledge.donorPaymentRangeToAmount).toLocaleString()
+                  }}
+                </h3>
+                <div class="mt-1 font-weight-600">🙂</div>
+                <h5 class="font-weight-600 font-italic mt-1 mb-0">HAPPY PLEDGING !</h5>
+              </div>
+            </div>
+            <div
+              class="col-md-4 col-12 text-md-right text-left"
+              v-if="selectedPledge.donorPaymentType == 1"
+            ></div>
+            <div class="col-md-8 col-12 mb-3" v-if="selectedPledge.donorPaymentType == 1">
+              <div
+                class="col-md-12 mt-3 mt-md-0 pledgeType-bg py-1 mb-3 mb-md-0 order-first order-md-last"
+              >
+                <h4 class="font-weight-600">SPECIFIC</h4>
+                <div class="mt-1 col-md-12 px-0 fw-500">You can only pledge</div>
+                <h3 class="font-weight-600 mt-3 mb-0">
+                  {{
+                    selectedPledge && selectedPledge.currencySymbol
+                      ? selectedPledge.currencySymbol
+                      : selectedPledge.currency.symbol
+                  }}
+                  {{
+                    Math.abs(selectedPledge.donorPaymentSpecificAmount).toLocaleString()
+                  }}
+                </h3>
+                <div class="mt-1 font-weight-600">🙂</div>
+                <h5 class="font-weight-600 font-italic mt-1 mb-0">HAPPY PLEDGING !</h5>
+              </div>
+            </div>
+            <div
+              class="col-md-4 col-12 text-md-right text-left"
+              v-if="selectedPledge.donorPaymentType == 0"
+            ></div>
+            <div class="col-md-8 col-12 mb-3" v-if="selectedPledge.donorPaymentType == 0">
+              <div
+                class="col-md-12 mt-3 mt-md-0 pledgeType-bg py-1 mb-3 mb-md-0 order-first order-md-last"
+              >
+                <h4 class="font-weight-600">FREE WILL</h4>
+                <div class="mt-1 col-md-12 px-0 fw-500">
+                  You can make a pledge of any amount you wish.
+                </div>
+                <div class="mt-1 font-weight-600">🙂</div>
+                <h5 class="font-weight-600 font-italic mt-1 mb-0">HAPPY PLEDGING !</h5>
+              </div>
+            </div>
           </div>
           <div class="row mt-3">
             <div class="col-sm-12 col-md-4 text-md-right text-left">
-              <label for="">Date</label>
+              <label class="text-head font-weight-600 text-dak s-18" for="">Date</label>
             </div>
             <div class="ofering col-md-8 col-12">
               <el-date-picker
@@ -81,7 +160,7 @@
           </div>
           <div class="row mt-3">
             <div class="col-sm-12 col-md-4 text-md-right text-left">
-              <label for="">Select Person</label>
+              <label class="text-head font-weight-600 text-dak s-18" for="">Select Person</label>
             </div>
             <div class="ofering col-md-8 col-12">
               <MembersSearch
@@ -98,7 +177,7 @@
               <el-input
                 type="text"
                 v-model="selectedPledge.donorPaymentRange"
-                class="input-width"
+                class="input-width w-100"
                 :class="{ 'is-invalid': !withinRange }"
                 @blur="validateRangeAmount"
                 placeholder="Enter pledge amount"
@@ -106,16 +185,10 @@
               <div class="invalid-feedback">
                 Please make sure the amount is within the range of
                 {{
-                  Math.abs(
-                    selectedPledge.donorPaymentRangeFromAmount
-                  ).toLocaleString()
+                  Math.abs(selectedPledge.donorPaymentRangeFromAmount).toLocaleString()
                 }}
                 and
-                {{
-                  Math.abs(
-                    selectedPledge.donorPaymentRangeToAmount
-                  ).toLocaleString()
-                }}.
+                {{ Math.abs(selectedPledge.donorPaymentRangeToAmount).toLocaleString() }}.
               </div>
             </div>
           </div>
@@ -128,7 +201,7 @@
                 type="text"
                 v-model="selectedPledge.donorPaymentSpecificAmount"
                 :disabled="checking"
-                class="input-width"
+                class="input-width w-100"
               />
             </div>
           </div>
@@ -140,93 +213,17 @@
               <el-input
                 type="text"
                 v-model="freewillAmount"
-                class="input-width"
+                class="input-width w-100"
                 placeholder="Enter pledge amount"
               />
             </div>
           </div>
         </div>
         <div
-          class="col-md-3 mt-3 mt-md-0 pledge-shadow mb-3 mb-md-0 order-first order-md-last"
-          v-if="selectedPledge.donorPaymentType == 2"
-        >
-          <h4 class="text-center font-weight-bold">RANGE</h4>
-          <div class="mt-2 text-center font-weight-600">
-            You can only pledge within the range of
-          </div>
-          <h3 class="font-weight-700 text-center mt-3 mb-0">
-            {{
-              selectedPledge && selectedPledge.currencySymbol
-                ? selectedPledge.currencySymbol
-                : selectedPledge.currency.symbol
-            }}
-            {{
-              Math.abs(
-                selectedPledge.donorPaymentRangeFromAmount
-              ).toLocaleString()
-            }}
-          </h3>
-          <div class="text-center">&</div>
-          <h3 class="font-weight-700 text-center">
-            {{
-              selectedPledge && selectedPledge.currencySymbol
-                ? selectedPledge.currencySymbol
-                : selectedPledge.currency.symbol
-            }}
-            {{
-              Math.abs(
-                selectedPledge.donorPaymentRangeToAmount
-              ).toLocaleString()
-            }}
-          </h3>
-          <div class="mt-2 text-center font-weight-600">🙂</div>
-          <h5 class="font-weight-600 font-italic text-center mt-3 mb-0">
-            HAPPY PLEDGING !
-          </h5>
-        </div>
-        <div
-          class="col-md-3 mt-3 mt-md-0 pledge-shadow"
-          v-if="selectedPledge.donorPaymentType == 1"
-        >
-          <h4 class="text-center font-weight-bold">SPECIFIC</h4>
-          <div class="mt-2 text-center font-weight-600">
-            You can only pledge
-          </div>
-          <h3 class="font-weight-700 text-center mt-3 mb-0">
-            {{
-              selectedPledge && selectedPledge.currencySymbol
-                ? selectedPledge.currencySymbol
-                : selectedPledge.currency.symbol
-            }}
-            {{
-              Math.abs(
-                selectedPledge.donorPaymentSpecificAmount
-              ).toLocaleString()
-            }}
-          </h3>
-          <div class="mt-2 text-center font-weight-600">🙂</div>
-          <h5 class="font-weight-600 font-italic text-center mt-3 mb-0">
-            HAPPY PLEDGING !
-          </h5>
-        </div>
-        <div
-          class="col-md-3 mt-3 mt-md-0 pledge-shadow"
-          v-if="selectedPledge.donorPaymentType == 0"
-        >
-          <h4 class="text-center font-weight-bold">FREE WILL</h4>
-          <div class="mt-2 text-center font-weight-600">
-            You can make a pledge of any amount you wish.
-          </div>
-          <div class="mt-2 text-center font-weight-600">🙂</div>
-          <h5 class="font-weight-600 font-italic text-center mt-3 mb-0">
-            HAPPY PLEDGING !
-          </h5>
-        </div>
-        <div
-          class="col-md-3 mt-3 mt-md-0 pledge-shadow"
+          class="col-md-3 mt-3 mt-md-0 py-2 pledgeType-bg"
           v-if="Object.keys(selectedPledge).length == 0"
         >
-          <h4 class="text-center font-weight-bold">Givers Never Lack</h4>
+          <h4 class="text-center font-weight-600">Givers Never Lack</h4>
           <div class="my-2 text-center font-weight-600">
             God blesses a cheerful giver.
           </div>
@@ -236,22 +233,21 @@
           </h5>
         </div>
       </div>
-
       <div class="row mt-3">
-        <div
-          class="col-12 d-flex justify-content-center text-center text-sm-right"
-        >
-          <el-button
-            :loading="loading"
-            :color="primarycolor"
-            class=""
-            round
-            @click="makePledge"
-            :disabled="!withinRange"
-          >
-            <span class="text-white">Save and Continue</span>
-            <span></span>
-          </el-button>
+        <div class="col-md-10 d-flex justify-content-center">
+          <div class="col-12 col-md-3 "></div>
+          <div class="col-12 col-md-6 px-0 ml-4 ">
+            <el-button
+              :loading="loading"
+              :color="primarycolor"
+              class="w-100 py-4 mt-4"
+              round
+              @click="makePledge"
+              :disabled="!withinRange"
+            >
+              <span class="text-white">Save and Continue</span>
+            </el-button>
+          </div>
         </div>
       </div>
     </div>
@@ -321,9 +317,7 @@ export default {
 
     const getSinglePledge = async () => {
       try {
-        const res = await axios.get(
-          `/api/Pledge/GetOnePledge?ID=${route.query.id}`
-        );
+        const res = await axios.get(`/api/Pledge/GetOnePledge?ID=${route.query.id}`);
         selectedPledge.value = res.data.returnObject.pledgeType;
         console.log(selectedPledge.value, "dgd");
         selectedContact.value = res.data.returnObject.contact;
@@ -386,10 +380,7 @@ export default {
             : "",
         };
         try {
-          const response = await axios.put(
-            "/api/Pledge/UpdatePledge",
-            makePledgeDetail
-          );
+          const response = await axios.put("/api/Pledge/UpdatePledge", makePledgeDetail);
           ElMessage({
             type: "success",
             message: "Pledge updated successfully",
@@ -412,10 +403,7 @@ export default {
         }
       } else {
         try {
-          const res = await axios.post(
-            "api/Pledge/SavePledge",
-            makePledgeDetails
-          );
+          const res = await axios.post("api/Pledge/SavePledge", makePledgeDetails);
           finish();
           makePledgeData.value = res.data.returnObject;
           loading.value = false;
@@ -525,8 +513,8 @@ export default {
 
 <style scoped>
 .border-contribution {
-  border: 1.6px solid rgb(229, 232, 237);
-  border-radius: 4px;
+  border: 1px solid #787878;
+  border-radius: 5px;
   padding: 11px 7px;
 }
 .scroll {
@@ -542,6 +530,11 @@ export default {
 
 .attendance-body.stretch {
   height: 85px;
+}
+.pledgeType-bg {
+  border: 1px solid #7befff;
+  background: #e9fafd;
+  border-radius: 5px;
 }
 .attendance-type,
 .count {
