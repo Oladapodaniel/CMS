@@ -45,41 +45,29 @@
             <div class="col-md-12 d-flex justify-content-center align-items-center">
               <div class="col-12 px-0 mx-0 col-md-12 col-lg-10">
                 <div class="row text-center">
-                  <div
-                    class="col-md-12 px-0 mx-0 d-flex justify-content-center otp-field"
-                  >
-                    <input
-                      ref="firstFocus"
-                      v-model="firstInput"
-                      class="m-2 form-control rounded inputtwo bg-secondary"
-                      type="text"
-                      maxlength="1"
-                      @input="handleOTPInputOne"
-                    />
-                    <input
-                      ref="secondFocus"
-                      v-model="secondInput"
-                      class="m-2 form-control rounded inputtwo bg-secondary"
-                      type="text"
-                      maxlength="1"
-                      @input="handleOTPInputTwo"
-                    />
-                    <input
-                      ref="thirdFocus"
-                      v-model="thirdInput"
-                      class="m-2 form-control rounded inputtwo bg-secondary"
-                      type="text"
-                      maxlength="1"
-                      @input="handleOTPInputThree"
-                    />
-                    <input
-                      ref="fourthFocus"
-                      v-model="fourthInput"
-                      class="m-2 form-control rounded inputtwo bg-secondary"
-                      type="text"
-                      maxlength="2"
-                      @input="handleOTPInputFour"
-                    />
+                  <div class="col-md-12">
+                    <div class="row justify-content-center">
+                      <div class="col-md-5 d-flex">
+                        <div
+                          class="col-md-3 justify-content-center rounded d-flex otp-field px-0 mx-0"
+                          v-for="(digit, index) in otp"
+                          :key="index"
+                        >
+                          <input
+                            v-model="otp[index]"
+                            class="inputtwo form-control m-2 bg-secondary"
+                            type="tel"
+                            :id="'otp-' + index"
+                            maxlength="1"
+                            required
+                            @input="handleInput($event, index)"
+                            @keydown="handleKeydown($event, index)"
+                            @paste="handlePaste"
+                            @keypress="validateNumberInput"
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-12 mt-4 d-flex justify-content-center">
@@ -108,7 +96,7 @@
                         ? "Didn't get code? "
                         : $t("onboardingContent.otpContent.didNotGet")
                     }}</span>
-                    <div @click="reSendCode" style="color: #959595" class="ms-3">
+                    <div @click="reSendCode" style="color: #959595" class="ms-3 cursor-pointer">
                       &nbsp;
                       {{
                         navigatorLang === "en-US"
@@ -249,6 +237,7 @@ import { ElLoading, ElMessage } from "element-plus";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useI18n } from "vue-i18n";
 import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from "../../i18n";
+// import { validateNumberInput } from '../../services/otpvalidation/validation'
 import { ElNotification } from "element-plus";
 import { trim } from "lodash";
 export default {
@@ -257,26 +246,13 @@ export default {
     const loading = ref(false);
     const navigatorLang = ref(navigator.language);
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
-    const firstFocus = ref("");
-    const secondFocus = ref("");
     const displayFailed = ref(false);
     const displaySuccess = ref(false);
-    const thirdFocus = ref("");
-    const fourthFocus = ref("");
     const primarycolor = inject("primarycolor");
-    const fifthFocus = ref("");
-    const sixFocus = ref("");
-    // const myonboardingData = ref(store.getters.onboardingObject);
     const onboardingDatas = ref(store.getters.onboardingData);
     const optVerifyData = ref(store.getters.verifyEmailData);
     const userPassword = ref(store.getters.userPassword);
     const countdownTime = ref(12 * 60);
-    const firstInput = ref();
-    const secondInput = ref();
-    const thirdInput = ref();
-    const fourthInput = ref();
-    const fifthInput = ref();
-    const sixthInput = ref();
     const timerInterval = ref();
     const partialEmail = ref(
       onboardingDatas.value && onboardingDatas.value.email
@@ -290,35 +266,16 @@ export default {
         : ""
     );
 
-    const handleOTPInputOne = () => {
-      secondFocus.value.focus();
-      if (!firstInput.value) {
-        firstFocus.value.focus();
-      }
-    };
-    const handleOTPInputTwo = () => {
-      thirdFocus.value.focus();
-      if (!secondInput.value) {
-        firstFocus.value.focus();
-      }
-    };
-    const handleOTPInputThree = () => {
-      fourthFocus.value.focus();
-      if (!thirdInput.value) {
-        secondFocus.value.focus();
-      }
-    };
-    const handleOTPInputFour = () => {
-      if (!fourthInput.value) {
-        thirdFocus.value.focus();
-      }
-      // else {
-      //     verifyOTP();
-      // }
-    };
+    const otp = ref(["", "", "", ""]);
 
     const tryAgain = () => {
       displayFailed.value = false;
+    };
+
+    const validateNumberInput = (event) => {
+      if (!/\d/.test(event.key)) {
+        event.preventDefault();
+      }
     };
 
     const { locale } = useI18n({ useScope: "global" });
@@ -339,6 +296,31 @@ export default {
       if (countdownTime.value <= 0) {
         clearInterval(timerInterval.value);
         formattedTime.value = "Time's up!";
+      }
+    };
+
+    const handlePaste = (event) => {
+      const paste = (event.clipboardData || window.clipboardData).getData("text");
+      if (paste.length === otp.value.length) {
+        otp.value = paste.split("");
+        event.preventDefault();
+        // remove focus from the active input
+        document.activeElement.blur();
+      }
+    };
+
+    const handleKeydown = (event, index) => {
+      if (event.key === "Backspace" && otp.value[index] === "") {
+        if (index > 0) {
+          otp.value[index - 1] = "";
+          document.getElementById(`otp-${index - 1}`).focus();
+        }
+      }
+    };
+
+    const handleInput = (event, index) => {
+      if (event.target.value.length === 1 && index < otp.value.length - 1) {
+        document.getElementById(`otp-${index + 1}`).focus();
       }
     };
 
@@ -390,10 +372,11 @@ export default {
 
     const completeVerification = async () => {
       loading.value = true;
-      let allInputValue = `${firstInput.value}${secondInput.value}${thirdInput.value}${fourthInput.value}`;
+      const code = otp.value.join("");
+      console.log(code, "jjkk");
       try {
         const res = await axios.get(
-          `/mobile/v1/Account/ConfirmOTP?token=${optVerifyData.value.returnObject.token}&otp=${allInputValue}`
+          `/mobile/v1/Account/ConfirmOTP?token=${optVerifyData.value.returnObject.token}&otp=${code}`
         );
         if (res.data.status) {
           displaySuccess.value = true;
@@ -406,8 +389,6 @@ export default {
         console.log(error);
         loading.value = false;
       }
-      // displaySuccess.value = true
-      // displayFailed.value = true
     };
 
     const cancel = () => {
@@ -440,12 +421,6 @@ export default {
         console.log(error);
         loading.value = false;
       }
-
-      firstInput.value = "";
-      secondInput.value = "";
-      thirdInput.value = "";
-      fourthInput.value = "";
-      firstFocus.value.focus();
     };
 
     // const verifyOTP = async () => {
@@ -501,13 +476,6 @@ export default {
     //         console.log(error.response);
     //     }
 
-    //     firstInput.value = "";
-    //     secondInput.value = "";
-    //     thirdInput.value = "";
-    //     fourthInput.value = "";
-    //     fifthInput.value = "";
-    //     sixthInput.value = "";
-    //     firstFocus.value.focus()
     // };
 
     return {
@@ -515,7 +483,6 @@ export default {
       lgAndUp,
       xlAndUp,
       xsOnly,
-      handleOTPInputTwo,
       displayFailed,
       onboardingDatas,
       formattedTime,
@@ -524,35 +491,22 @@ export default {
       tryAgain,
       completeVerification,
       displaySuccess,
-      handleOTPInputFour,
-      // handleOTPInputFive,
-      handleOTPInputThree,
-      // handleOTPInputSix,
-      // verifyOTP,
       whatNext,
       reSendCode,
       optVerifyData,
       navigatorLang,
-      firstFocus,
-      secondFocus,
-      thirdFocus,
-      fourthFocus,
-      fifthFocus,
-      sixFocus,
-      handleOTPInputOne,
       partialEmail,
       partialNumber,
       // myonboardingData,
-      firstInput,
-      secondInput,
-      thirdInput,
-      fourthInput,
-      fifthInput,
-      sixthInput,
       loading,
       userPassword,
       primarycolor,
       cancel,
+      otp,
+      handlePaste,
+      handleKeydown,
+      handleInput,
+      validateNumberInput,
     };
   },
 };

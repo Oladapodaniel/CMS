@@ -89,7 +89,7 @@
 
                 <div class="row">
                   <div class="col-md-12 d-flex ">
-                    <div class="border choice d-flex align-items-center mr-2 mt-2  px-3 py-2 rounded"
+                    <div class="border cursor-pointer choice d-flex align-items-center mr-2 mt-2  px-3 py-2 rounded"
                       v-for="(item, index) in websiteOpt" :key="index" @click="setChoice(item)">
                       {{ item }}
                     </div>
@@ -169,7 +169,6 @@ import router from "../../router/index";
 // import { VueTelInput } from "vue3-tel-input";
 // import "vue3-tel-input/dist/vue3-tel-input.css";
 import { ref, reactive, watch, inject } from "vue";
-import finish from "../../services/progressbar/progress";
 import { ElNotification, ElMessage } from 'element-plus'
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useI18n } from 'vue-i18n';
