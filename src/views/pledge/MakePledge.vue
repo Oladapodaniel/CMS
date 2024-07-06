@@ -576,7 +576,6 @@ export default {
   overflow-y: scroll;
 }
 .add {
-  font: normal normal bold 16px Nunito Sans;
   letter-spacing: 0px;
   color: #136acd;
   display: inline;
