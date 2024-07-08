@@ -346,7 +346,7 @@ export default {
 
     next() {
       if (!this.userDetails.email) return false;
-      this.userDetails.countryId = this.selectedCountry.id;
+      this.userDetails.countryId = this.selectedCountry && this.selectedCountry.id ? this.selectedCountry.id : '';
       this.loading = true;
       // axios
       //   .post("/api/onboarding", this.userDetails)
