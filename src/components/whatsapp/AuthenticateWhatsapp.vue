@@ -103,7 +103,8 @@ export default {
     const savingSession = ref(false);
     const connectingExistingSession = ref(false);
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
-    const serverBusy = ref(false)
+    const serverBusy = ref(false);
+    const sequentialQRCodeCall = ref(null);
 
 
     const socketconnected = computed(() => {
@@ -197,6 +198,12 @@ export default {
             // Display qrcode
             QRCodeDialog.value = true;
             qrCode.value = data.qrcode;
+
+            if (qrCode.value?.length > 0) {
+              sequentialQRCodeCall.value = setTimeout(() => {
+                getQRCode()
+              }, 50000)
+            }
           } else {
             initialiseWhatsapp();
           }
@@ -209,25 +216,6 @@ export default {
     }
 
     const restoreExistingSession = async () => {
-      // try {
-      //   let { data } = await api.get(`${whatsappServerBaseURL}single/instanceInfo?key=${sessionId.value}`);
-      //   connectingExistingSession.value = false
-      //   if (!data.error) {
-      //     if (data?.instance_data?.user?.id) {
-      //       // Display qrcode
-      //       isClientReady.value = true;
-      //       store.dispatch("communication/isWhatsappClientReady", isClientReady.value);
-      //       QRCodeDialog.value = true;
-      //       // if (route.fullPath == "/tenant/whatsapp/auth") {
-      //       //   router.push("/tenant/whatsapp");
-      //       // }
-      //     } else {
-      //       initialiseWhatsapp()
-      //     }
-      //   } else {
-      //     initialiseWhatsapp()
-      //   }
-      // }
       try {
         let { data } = await api.get(`${whatsappServerBaseURL}instance/restore`);
         connectingExistingSession.value = false
@@ -259,9 +247,9 @@ export default {
 
     // ===============
     // 1. Restoring the instances without reloading
-    // 2. Refresh QRCode
+    // 2. Refresh QRCode done
     // 3. Proceed after auth should check if instance is established // 
-    // 4. Logout
+    // 4. Logout done
     // 5. Batch sending of whatsapp messages
     // 6. Schedule whatsapp message
 
@@ -379,6 +367,7 @@ export default {
     const proceedAction = () => {
       QRCodeDialog.value = false;
       isClientReady.value = true;
+      clearTimeout(sequentialQRCodeCall.value)
       store.dispatch("communication/whatsappSessionId", sessionId.value);
       store.dispatch("communication/isWhatsappClientReady", isClientReady.value);
       if (route.fullPath == "/tenant/whatsapp/auth") {
@@ -392,8 +381,7 @@ export default {
     };
 
     const closeQRDialog = () => {
-      console.log(isClientReady.value, 'closing')
-      // isClientReady.value = true
+      clearTimeout(sequentialQRCodeCall.value)
       if (isClientReady.value) {
         if (route.fullPath == "/tenant/whatsapp/auth") {
           router.push("/tenant/whatsapp");
@@ -422,7 +410,7 @@ export default {
       saveSessionIdonAuthSuccess,
       closeQRDialog,
       savingSession,
-      // proceedActionAfterAuth
+      sequentialQRCodeCall
     };
   },
 };
