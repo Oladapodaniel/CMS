@@ -11,7 +11,7 @@
       </div>
 
       <!-- Content Box -->
-      <main id="main" class="mt-3">
+      <main id="main" class="mt-3" v-loading="logoutLoading" element-loading-text="Hang on while we log you out.">
         <div class="container-fluid">
           <div class="row" style="min-height: 75vh">
             <!-- Side mennu -->
@@ -21,24 +21,15 @@
                   <div class="ml-3 mt-2 toggle">
                     <i class="pi pi-bars" @click="toggleMenu"></i>
                   </div>
-                  <router-link
-                    to="/tenant/whatsapp"
-                    v-if="whatsappClientState"
-                    class="btn compose-btn border-0 font-weight-bold default-btn border-none"
-                    >Compose Whatsapp</router-link
-                  >
-                  <router-link
-                    to=""
-                    v-else
-                    class="btn compose-btn border-0 font-weight-bold default-btn border-none"
-                    >Connect Whatsapp</router-link
-                  >
+                  <router-link to="/tenant/whatsapp" v-if="whatsappClientState"
+                    class="btn compose-btn border-0 font-weight-bold default-btn border-none">Compose
+                    Whatsapp</router-link>
+                  <router-link to="" v-else
+                    class="btn compose-btn border-0 font-weight-bold default-btn border-none">Connect
+                    Whatsapp</router-link>
                 </div>
               </div>
-              <div
-                class="row mb-3"
-                :class="{ show: menuShouldShow, 'links-menu': !menuShouldShow }"
-              >
+              <div class="row mb-3" :class="{ show: menuShouldShow, 'links-menu': !menuShouldShow }">
                 <div class="col-md-12">
                   <!-- <div
                     class="row menu-item-con py-2"
@@ -88,11 +79,7 @@
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                          <img
-                            src="../../assets/greyoutlinewhatsapp.svg"
-                            class="mr-3"
-                            width="22"
-                          />
+                          <img src="../../assets/greyoutlinewhatsapp.svg" class="mr-3" width="22" />
                           <span class="active">Not connected</span>
                         </span>
                       </a>
@@ -102,33 +89,25 @@
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                          <img
-                            src="../../assets/utlinewhatsapp.svg"
-                            class="mr-3"
-                            width="22"
-                          />
+                          <img src="../../assets/utlinewhatsapp.svg" class="mr-3" width="22" />
                           <span style="color: #078e2d">Connected</span>
                           <span>
-                            <img
-                              src="../../assets/checkvector.svg"
-                              class="ml-3"
-                              width="20"
-                            />
+                            <img src="../../assets/checkvector.svg" class="ml-3" width="20" />
                           </span>
                         </span>
                       </a>
                     </div>
                   </div>
-                  <!-- <div class="row menu-item-con py-2">
+                  <div class="row menu-item-con py-2" v-if="whatsappClientState">
                     <div class="col-md-12 menu-item-div m-auto">
-                      <a class="btn btn-default font-weight-bold" @click="confirmDelete">
+                      <a class="btn btn-default font-weight-bold" @click="confirmLogout">
                         <span class="menu-item">
-                            <img src="../../assets/logouticon.png" class="mr-3" width="22" />
-                            <span class="active">Logout</span>
+                          <img src="../../assets/logouticon.png" class="mr-3" width="22" />
+                          <span class="active">Logout</span>
                         </span>
                       </a>
                     </div>
-                  </div> -->
+                  </div>
                 </div>
               </div>
             </div>
@@ -148,81 +127,71 @@
 import { ref, computed } from "@vue/reactivity";
 import { useRoute } from "vue-router";
 import store from "../../store/store";
-// import { ElMessage, ElMessageBox } from 'element-plus'
+import swal from 'sweetalert';
+import { whatsappServerBaseURL } from "../../gateway/backendapi";
+import api from "axios";
+import router from "../../router";
+
 export default {
   setup() {
     const route = useRoute();
     const menuShouldShow = ref(false);
     const sessionId = ref("");
+    const logoutLoading = ref(false)
     const toggleMenu = () => {
       menuShouldShow.value = !menuShouldShow.value;
     };
+
+    const clientSessionId = computed(() => {
+      if (!store.getters["communication/whatsappSessionId"]) return ""
+      return store.getters["communication/whatsappSessionId"]
+    })
 
     const whatsappClientState = computed(() => {
       return store.getters["communication/isWhatsappClientReady"];
     });
 
-    //   const confirmDelete = () => {
-    //     ElMessageBox.confirm(
-    //   'proxy will permanently delete the file. Continue?',
-    //   'Warning',
-    //   {
-    //     confirmButtonText: 'OK',
-    //     cancelButtonText: 'Cancel',
-    //     type: 'warning',
-    //   }
-    // )
-    //   .then(() => {
-    //     logoutWhatsappSession()
-    //   })
-    //   .catch(() => {
-    //     ElMessage({
-    //       type: 'info',
-    //       message: 'Delete canceled',
-    //     })
-    //   })
-    //   }
+    const confirmLogout = () => {
+      swal({
+        title: "Are you sure?",
+        text: "You are about to log out your whatsapp session. Continue?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+        .then((willDelete) => {
+          if (willDelete) {
+            logoutWhatsappSession()
+          }
+        });
+    }
 
-    // const logoutWhatsappSession = () => {
-    //   socket.emit('deleteremotesession', {
-    //     session: 'RemoteAuth-session-8538942b-1bce'
-    //     // session: sessionId.value
-    //   })
-    // }
-
-    // const getSessionIdFromBackend = async () => {
-    //         try {
-    //             let { data } = await axios.get("/api/Settings/GetWhatsAppSession");
-    //             console.log(data);
-    //             if (data) {
-    //                 sessionId.value = data
-    //             }
-    //         }
-    //         catch (err) {
-    //             console.error(err)
-    //         }
-    //     }
-    //     if (whatsappClientState.value) getSessionIdFromBackend()
-    // const getSessionId = async () => {
-    //         try {
-    //             let response = await axios.post(`/api/Settings/SaveWhatsAppSession?session=`);
-    //             console.log(response);
-
-    //         }
-    //         catch (err) {
-    //             console.error(err)
-    //         }
-    //     }
-    //     getSessionId()
+    const logoutWhatsappSession = async () => {
+      logoutLoading.value = true;
+      try {
+        let { data } = await api.delete(`${whatsappServerBaseURL}instance/logout?key=${clientSessionId.value}`);
+        console.log(data)
+        logoutLoading.value = false;
+        if (!data.error) {
+          store.dispatch("communication/isWhatsappClientReady", false);
+          router.push("/tenant/whatsapp/auth");
+        }
+      } catch (error) {
+        logoutLoading.value = false;
+        console.error(error);
+      }
+    }
 
     return {
       route,
       toggleMenu,
       menuShouldShow,
       whatsappClientState,
-      // logoutWhatsappSession,
+      logoutWhatsappSession,
       sessionId,
-      // confirmDelete
+      confirmLogout,
+      clientSessionId,
+      logoutLoading
     };
   },
 };

@@ -1,28 +1,50 @@
 <template>
-  <div class=" container-top" :class="{ 'container-wide': lgAndUp || xlAndUp }" @click="hideModals">
+  <div
+    class="container-top"
+    :class="{ 'container-wide': lgAndUp || xlAndUp }"
+    @click="hideModals"
+  >
     <div class="main-co">
-      <div class="top container-fluid px-0 ">
-        <div class="header ">
-          <div class="text-head h2 font-weight-bold py-0 my-0 text-black">Transaction</div>
+      <div class="top container-fluid px-0">
+        <div class="header">
+          <div class="text-head h2 font-weight-bold py-0 my-0 text-black">
+            Transaction
+          </div>
         </div>
         <div class="row mt-2 header-btns justify-content-center">
           <!-- <div class="actions"> -->
-          <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0  mx-auto mx-sm-0 mx-md-0">
-            <el-button class="income-btn header-btn align-items-center justify-content-center d-flex w-100  border-0" round
-              size="large" @click="toggleTransac(1)">
+          <div
+            class="col-12 col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0"
+          >
+            <el-button
+              class="income-btn header-btn align-items-center justify-content-center d-flex w-100 border-0"
+              round
+              size="large"
+              @click="toggleTransac(1)"
+            >
               Add Income
             </el-button>
           </div>
 
-          <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
-            <el-button class="expense-btn header-btn align-items-center justify-content-center d-flex w-100 border-0"
-              size="large" round @click="toggleTransac(2)">
+          <div
+            class="col-12 col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0"
+          >
+            <el-button
+              class="expense-btn header-btn align-items-center justify-content-center d-flex w-100 border-0"
+              size="large"
+              round
+              @click="toggleTransac(2)"
+            >
               Add Expense
             </el-button>
           </div>
-          <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
-            <el-dropdown size="large"
-              class="show more-btn  align-items-center  justify-content-center w-100 d-flex default-btn">
+          <div
+            class="col-12 col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0"
+          >
+            <el-dropdown
+              size="large"
+              class="show more-btn align-items-center justify-content-center w-100 d-flex default-btn"
+            >
               <span class="el-dropdown-link w-100 text-center h font-weight-bold my-1">
                 More
                 <el-icon class="el-icon--right">
@@ -31,8 +53,12 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item @click="toggleTransac(4)">Money Transfer</el-dropdown-item>
-                  <el-dropdown-item @click="toggleTransac(3)">General ledger</el-dropdown-item>
+                  <el-dropdown-item @click="toggleTransac(4)"
+                    >Money Transfer</el-dropdown-item
+                  >
+                  <el-dropdown-item @click="toggleTransac(3)"
+                    >General ledger</el-dropdown-item
+                  >
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -53,7 +79,6 @@
               </div>
             </a> -->
           </div>
-
         </div>
       </div>
 
@@ -61,8 +86,11 @@
         <div class="col-12 col-sm-8 col-lg-6 px-0 mt-5">
           <el-dropdown trigger="click" class="w-100 font-weight-600">
             <span class="el-dropdown-link w-100">
-              <div class="d-flex justify-content-between px-3 font-weight-600 border-contribution  w-100" size="large">
-                <div class=" w-100 d-flex justify-content-between  ">
+              <div
+                class="d-flex justify-content-between px-3 font-weight-600 border-contribution w-100"
+                size="large"
+              >
+                <div class="w-100 d-flex justify-content-between">
                   <span class="">{{ selectedTransaction.type }}</span>
                   <span class="">{{ selectedTransaction.amount }}</span>
                 </div>
@@ -75,12 +103,21 @@
             </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item v-for="(cash, index) in accountsAndBalancesList" :key="index"
-                  @click="selectAnAccount(cash, index)" class="d-flex justify-content-between font-weight-600">
+                <el-dropdown-item
+                  v-for="(cash, index) in accountsAndBalancesList"
+                  :key="index"
+                  @click="selectAnAccount(cash, index)"
+                  class="d-flex justify-content-between font-weight-600"
+                >
                   <div class="close-modal w-100">{{ cash.text }}</div>
                   <div>&nbsp;&nbsp;</div>
-                  <div class="close-modal ">{{ cash.currency && cash.currency.symbol ? cash.currency.symbol :
-                    currentUser.currencySymbol }}{{ cash.balance }}</div>
+                  <div class="close-modal">
+                    {{
+                      cash.currency && cash.currency.symbol
+                        ? cash.currency.symbol
+                        : currentUser.currencySymbol
+                    }}{{ cash.balance }}
+                  </div>
                 </el-dropdown-item>
                 <el-dropdown-item class="text-center" divided>
                   <!-- <a
@@ -89,13 +126,14 @@
                             <el-icon size="large"><Files /></el-icon>
                             Upload Bank Statement
                           </a> -->
-                  <a class="font-weight-600 small-text d-flex justify-content-center p-3 text-decoration-none primary-text"
-                    @click="openModal">
+                  <a
+                    class="font-weight-600 small-text d-flex justify-content-center p-3 text-decoration-none primary-text"
+                    @click="openModal"
+                  >
                     <el-icon size="large">
                       <CirclePlus />
                     </el-icon>
-                    Add a
-                    new account
+                    Add a new account
                   </a>
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -104,7 +142,10 @@
         </div>
 
         <!-- <h5>Modal</h5> -->
-        <el-dialog v-model="displayModal" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+        <el-dialog
+          v-model="displayModal"
+          :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+        >
           <div class="row mt-2">
             <div class="col-sm-3 align-self-center text-right p-0">
               Account Type <span class="text-danger">*</span>
@@ -112,12 +153,15 @@
             <div class="col-md-7">
               <el-dropdown trigger="click" class="w-100 mt-2">
                 <span class="el-dropdown-link w-100">
-                  <div class="d-flex justify-content-between border-contribution w-100" size="large">
+                  <div
+                    class="d-flex justify-content-between border-contribution w-100"
+                    size="large"
+                  >
                     <div>
                       {{
                         !selectedAccountType || !selectedAccountType.name
-                        ? "Select account type"
-                        : selectedAccountType.name
+                          ? "Select account type"
+                          : selectedAccountType.name
                       }}
                     </div>
                     <div>
@@ -129,13 +173,23 @@
                 </span>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item v-for="(accounts, index) in transactionalAccounts" :key="index">
+                    <el-dropdown-item
+                      v-for="(accounts, index) in transactionalAccounts"
+                      :key="index"
+                    >
                       <div class="col-md-12 px-2">
-                        <div v-if="accounts.length > 0" class="py-2 font-weight-700 border-bottom">
+                        <div
+                          v-if="accounts.length > 0"
+                          class="py-2 font-weight-700 border-bottom"
+                        >
                           {{ accountTypes[index] }}
                         </div>
-                        <div v-for="(account, indx) in accounts" :key="indx" @click="selectAccountType(account)"
-                          class="c-pointer py-2">
+                        <div
+                          v-for="(account, indx) in accounts"
+                          :key="indx"
+                          @click="selectAccountType(account)"
+                          class="c-pointer py-2"
+                        >
                           {{ account.name }}
                         </div>
                       </div>
@@ -144,37 +198,6 @@
                 </template>
               </el-dropdown>
             </div>
-            <!-- <div class="col-sm-7">
-              <div class="select-elem-con pointer d-flex justify-content-space-between close-modal"
-                @click="showAccount = !showAccount">
-                <span class="ofering close-modal">Select one</span><span>
-                  <el-icon>
-                    <ArrowDown />
-                  </el-icon></span>
-              </div>
-              <div class="ofering close-modal" :class="{ 'style-account': showAccount }" v-if="showAccount"
-                ref="selectAccount">
-                <div class="px-3 pt-3 close-modal">
-                  <input type="text" placeholder="Search..." class="form-control ofering mb-1 close-modal"
-                    v-model="accountText" />
-                </div>
-                <div class="container-fluid px-0" v-for="(accounts, index) in transactionalAccounts" :key="index">
-                  <div class="desc-head py-1 px-3 close-modal text-capitalize">{{ accountTypes[index] }}</div>
-                  <div class="header-border close-modal">
-                    <div>
-                      <div @click="transactionItem(account)" class="manual-dd-item close-modal"
-                        v-for="(account, indx) in accounts" :key="indx">
-                        <div class="d-flex justify-content-between py-2 px-3 close-modal">
-                          <div class="close-modal offset-sm-1">
-                            {{ account.text }}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
           </div>
           <div class="row mt-2">
             <div class="col-sm-3 align-self-center text-right p-0">
@@ -185,14 +208,21 @@
             </div>
           </div>
           <div class="row mt-2">
-            <div class="col-sm-3 align-self-center text-right p-0">
-              Account Currency
-            </div>
+            <div class="col-sm-3 align-self-center text-right p-0">Account Currency</div>
             <div class="col-md-7" id="currencySelect">
-              <el-select v-model="selectedCurrencyID" placeholder="Select" class="w-100" @change="setSelectedCurrency"
-                filterable>
-                <el-option v-for="item in filterCurrency" :label="`${item.name} - ${item.country}`"
-                  :value="item.currencyId" :key="item.currencyId" />
+              <el-select
+                v-model="selectedCurrencyID"
+                placeholder="Select"
+                class="w-100"
+                @change="setSelectedCurrency"
+                filterable
+              >
+                <el-option
+                  v-for="item in filterCurrency"
+                  :label="`${item.name} - ${item.country}`"
+                  :value="item.currencyId"
+                  :key="item.currencyId"
+                />
               </el-select>
             </div>
           </div>
@@ -205,11 +235,8 @@
             </div>
           </div> -->
           <div class="row mt-2">
-            <div class="col-sm-3 align-self-center text-right p-0">
-              Description
-            </div>
+            <div class="col-sm-3 align-self-center text-right p-0">Description</div>
             <div class="col-sm-7">
-              <!-- <textarea class="form-control" v-model="newAccount.description" rows="4"></textarea> -->
               <el-input v-model="newAccount.description" :rows="4" type="textarea" />
             </div>
           </div>
@@ -222,23 +249,37 @@
             </div>
           </div>
           <template #footer>
-
-            <el-button color="#EBEFF4" round size="large" class=" secondary-btn px-4" @click="closeModal">
+            <el-button
+              color="#EBEFF4"
+              round
+              size="large"
+              class="secondary-btn px-4"
+              @click="closeModal"
+            >
               Close
             </el-button>
-            <el-button round size="large" :color="primarycolor" :loading="loading" class=" px-4 mr-0 text-white"
-              @click="saveNewAccount">
+            <el-button
+              round
+              size="large"
+              :color="primarycolor"
+              :loading="loading"
+              class="px-4 mr-0 text-white"
+              @click="saveNewAccount"
+            >
               Save
             </el-button>
           </template>
         </el-dialog>
         <el-skeleton class="w-100" animated v-if="tableLoading">
           <template #template>
-            <div style="display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    margin-top: 20px
-                  ">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 20px;
+              "
+            >
               <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
               <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
             </div>
@@ -246,10 +287,18 @@
             <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
           </template>
         </el-skeleton>
-        <TransactionTable v-else :showEditTransaction="showEditTransaction" :transactionDetails="transacPropsValue"
-          :selectedTransactionType="selectedTransactionType" :journalEntry="journalEntry" @toggle-edit-form="closeIt"
-          @select-row="selectRow" @tableloading="setTableLoading" @select-journal="selectJournalEntry"
-          @reload-accounts="reloadAccounts" />
+        <TransactionTable
+          v-else
+          :showEditTransaction="showEditTransaction"
+          :transactionDetails="transacPropsValue"
+          :selectedTransactionType="selectedTransactionType"
+          :journalEntry="journalEntry"
+          @toggle-edit-form="closeIt"
+          @select-row="selectRow"
+          @tableloading="setTableLoading"
+          @select-journal="selectJournalEntry"
+          @reload-accounts="reloadAccounts"
+        />
         <!-- <LedgerForm /> -->
       </div>
     </div>
@@ -259,17 +308,16 @@
 import { ref, computed, watchEffect, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import transactionService from "../../../services/financials/transaction_service";
-import TransactionTable from "../../../components/transactions/TransactionsTable"
-import transaction_service from '../../../services/financials/transaction_service';
+import TransactionTable from "../../../components/transactions/TransactionsTable";
+import transaction_service from "../../../services/financials/transaction_service";
 import chart_of_accounts from "../../../services/financials/chart_of_accounts";
-import numbers_formatter from '../../../services/numbers/numbers_formatter';
+import numbers_formatter from "../../../services/numbers/numbers_formatter";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 import { ElMessage } from "element-plus";
 // import LedgerForm from "../transaction/components/LedgerForm";
 import { useStore } from "vuex";
-import userService from '../../../services/user/userservice';
-import currencyConverter from "../../../services/currency-converter/currencyConverter"
-
+import userService from "../../../services/user/userservice";
+import currencyConverter from "../../../services/currency-converter/currencyConverter";
 
 export default {
   components: {
@@ -282,8 +330,8 @@ export default {
     const selectedCurrency = ref({});
     const selectedCurrencyID = ref(null);
     // const childElement = ref('')
-    const loading = ref(false)
-    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
+    const loading = ref(false);
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
     const cashAndBank = ref([
       {
         name: {
@@ -308,11 +356,11 @@ export default {
     const store = useStore();
     const currentUser = ref(store.getters.currentUser);
 
-    const tableLoading = ref(false)
+    const tableLoading = ref(false);
 
     const setTableLoading = (payload) => {
-      tableLoading.value = payload
-    }
+      tableLoading.value = payload;
+    };
 
     const selectAccountType = (account) => {
       selectedAccountType.value = account;
@@ -322,7 +370,7 @@ export default {
       selectedCurrency.value = currencyList.value.find(
         (i) => i.currencyId == selectedCurrencyID.value
       );
-      console.log(selectedCurrency.value, 'kkkk')
+      console.log(selectedCurrency.value, "kkkk");
     };
 
     const getCurrentUser = async () => {
@@ -332,7 +380,7 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     if (!currentUser.value || !currentUser.value.tenantId) getCurrentUser();
 
     const rates = ref({});
@@ -343,7 +391,7 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     getConversionRates();
 
     const creditCard = ref([
@@ -372,7 +420,7 @@ export default {
     const accountText = ref("");
     const showEditTransaction = ref(false);
     const transacPropsValue = ref({});
-    const primarycolor = inject('primarycolor')
+    const primarycolor = inject("primarycolor");
 
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
@@ -384,7 +432,6 @@ export default {
     const toggleAccount = () => {
       accountDisplay.value = !accountDisplay.value;
     };
-
 
     const hideModals = (e) => {
       if (!e.target.classList.contains("close-modal")) {
@@ -451,8 +498,7 @@ export default {
     const filterAccount = computed(() => {
       if (accountText.value !== "" && accountType.value.length > 0) {
         return accountType.value.filter((i) => {
-          if (i)
-            return i.toLowerCase().includes(accountText.value.toLowerCase());
+          if (i) return i.toLowerCase().includes(accountText.value.toLowerCase());
         });
       } else {
         return accountType.value;
@@ -462,8 +508,7 @@ export default {
     const filterLiabilities = computed(() => {
       if (accountText.value !== "" && liabilities.value.length > 0) {
         return liabilities.value.filter((i) => {
-          if (i)
-            return i.toLowerCase().includes(accountText.value.toLowerCase());
+          if (i) return i.toLowerCase().includes(accountText.value.toLowerCase());
         });
       } else {
         return liabilities.value;
@@ -514,11 +559,11 @@ export default {
       loading.value = true;
       try {
         const res = await transaction_service.getAccountHeads();
-        let data = []
+        let data = [];
         for (let group of res) {
           data.push(group.accountHeadsDTO);
         }
-        transactionalAccounts.value = data
+        transactionalAccounts.value = data;
 
         // const response = await transactionService.getTransactionalAccounts();
         // console.log(response, 'iiuiu');
@@ -548,19 +593,21 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     getCashAndBanks();
 
-    const selectedTransactionType = ref(-1)
+    const selectedTransactionType = ref(-1);
     const selectAnAccount = (account, index) => {
       selectedTransaction.value = {
         type: account.text,
-        amount: account.currency ? `${account.currency.symbol}${amountWithCommas(account.balance)}` : `${amountWithCommas(account.balance)}`
-      }
+        amount: account.currency
+          ? `${account.currency.symbol}${amountWithCommas(account.balance)}`
+          : `${amountWithCommas(account.balance)}`,
+      };
       accountDisplay.value = false;
       console.log(index, account);
       selectedTransactionType.value = account.id ? account.id : "";
-    }
+    };
 
     const saveNewAccount = async () => {
       loading.value = true;
@@ -587,58 +634,71 @@ export default {
       //     : "";
       // }
       try {
-        const data  = await chart_of_accounts.saveAccount(newAccount.value)
+        const data = await chart_of_accounts.saveAccount(newAccount.value);
         if (data && data.status) {
           ElMessage({
-          type: "success",
-          message: `${data.response}`,
-          duration: 3000,
-        });
-        getTransactionalAccounts();
-        }else{
+            type: "success",
+            message: `${data.response}`,
+            duration: 3000,
+          });
+          getTransactionalAccounts();
+        } else {
           ElMessage({
-              type: "error",
-              message: "Account Creation Failed",
-              duration: 3000,
-            });
+            type: "error",
+            message: "Account Creation Failed",
+            duration: 3000,
+          });
         }
-        
-        loading.value = false
+
+        loading.value = false;
         displayModal.value = false;
       } catch (error) {
         loading.value = false;
         console.log(error);
       }
-    }
+    };
 
     const selectRow = (rowData) => {
       showEditTransaction.value = true;
       transacPropsValue.value = rowData;
-    }
+    };
 
-    const journalEntry = ref({})
+    const journalEntry = ref({});
     const selectJournalEntry = (rowData) => {
-      console.log(rowData, 'jeetretr');
+      console.log(rowData, "jeetretr");
       journalEntry.value = rowData;
       showEditTransaction.value = true;
       transacPropsValue.value = {
         type: "ledger",
-        account: "Journal"
+        account: "Journal",
       };
-    }
+    };
 
-    const accountsAndBalances = ref([])
+    const accountsAndBalances = ref([]);
     const getAccountBalances = async () => {
       // loading.value = true;
       try {
         const response = await transaction_service.getCashAndBankAccountBalances();
         accountsAndBalances.value = response;
-        accountsAndBalances.value.unshift({ text: "All Accounts", balance: totalAccountBalances.value })
-        let index = response.findIndex(i => i.text === "All Accounts")
+        accountsAndBalances.value.unshift({
+          text: "All Accounts",
+          balance: totalAccountBalances.value,
+        });
+        let index = response.findIndex((i) => i.text === "All Accounts");
 
         if (index >= 0) {
-          selectedTransaction.value.amount = `${currentUser.value && currentUser.value.currencySymbol ? currentUser.value.currencySymbol : ''}${accountsAndBalances.value[index] && accountsAndBalances.value[index].balance ? amountWithCommas(accountsAndBalances.value[index].balance) : 0}`;
-          accountsAndBalances.value[index].currency = { symbol: currentUser.value ? currentUser.value.currencySymbol : '' };
+          selectedTransaction.value.amount = `${
+            currentUser.value && currentUser.value.currencySymbol
+              ? currentUser.value.currencySymbol
+              : ""
+          }${
+            accountsAndBalances.value[index] && accountsAndBalances.value[index].balance
+              ? amountWithCommas(accountsAndBalances.value[index].balance)
+              : 0
+          }`;
+          accountsAndBalances.value[index].currency = {
+            symbol: currentUser.value ? currentUser.value.currencySymbol : "",
+          };
         }
         loading.value = false;
         // if (!currentUser.value || !currentUser.value.tenantId) await getCurrentUser();
@@ -646,16 +706,16 @@ export default {
         console.log(error);
         loading.value = false;
       }
-    }
-    getAccountBalances()
+    };
+    getAccountBalances();
 
     const accountsAndBalancesList = computed(() => {
       if (!accountsAndBalances.value || accountsAndBalances.value.length === 0) return [];
-      return accountsAndBalances.value.map(i => {
+      return accountsAndBalances.value.map((i) => {
         i.balance = amountWithCommas(i.balance);
         return i;
-      })
-    })
+      });
+    });
 
     const totalAccountBalances = computed(() => {
       if (!accountsAndBalances.value || accountsAndBalances.value.length === 0) return 0;
@@ -664,21 +724,38 @@ export default {
         sum += convertAmountToTenantCurrency(account);
       }
       return Number.parseFloat(sum).toFixed(2);
-    })
+    });
 
     const convertAmountToTenantCurrency = (account) => {
       if (!account.currency.shortCode) return 0;
-      if (currentUser.value && currentUser.value.currency && currentUser.value.currency.toLowerCase() === account.currency.shortCode.toLowerCase()) return account.balance;
+      if (
+        currentUser.value &&
+        currentUser.value.currency &&
+        currentUser.value.currency.toLowerCase() ===
+          account.currency.shortCode.toLowerCase()
+      )
+        return account.balance;
 
-      const amountInDollars = account.currency.shortCode !== "USD" ? rates.value[`usd${account.currency.shortCode.toLowerCase()}`] * account.balance : account.balance;
-      const tenantAmount = rates.value[`usd${currentUser.value && currentUser.value.currency ? currentUser.value.currency.toLowerCase() : ''}`] * amountInDollars;
+      const amountInDollars =
+        account.currency.shortCode !== "USD"
+          ? rates.value[`usd${account.currency.shortCode.toLowerCase()}`] *
+            account.balance
+          : account.balance;
+      const tenantAmount =
+        rates.value[
+          `usd${
+            currentUser.value && currentUser.value.currency
+              ? currentUser.value.currency.toLowerCase()
+              : ""
+          }`
+        ] * amountInDollars;
       return tenantAmount;
-    }
+    };
 
-    const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount);
+    const amountWithCommas = (amount) => numbers_formatter.amountWithCommas(amount);
     const reloadAccounts = () => {
-      getAccountBalances()
-    }
+      getAccountBalances();
+    };
 
     // watchEffect(() => {
     //   let childElementValue = childElement.value
@@ -762,16 +839,12 @@ html {
   scroll-behavior: smooth;
 }
 
-
 .whole-con {
   display: flex;
-  /* background: #f1f5f8; */
-  /* height: 100vh; */
 }
 
 .main-con {
   width: 100%;
-  /* height: 70%; */
 }
 
 .main-body {
@@ -781,7 +854,6 @@ html {
 .top {
   display: flex;
   justify-content: space-between;
-  /* align-items: center; */
 }
 
 .button {
@@ -803,17 +875,17 @@ html {
 
 .more-btn {
   /* background: #dde2e6; */
-  border: 1px solid #C3D4E9 !important;
+  border: 1px solid #c3d4e9 !important;
   /* overflow: hidden; */
-  color: #136ACD;
+  color: #136acd;
 }
 .expense-btn {
-  background: #00B6CF;
+  background: #00b6cf;
   color: white;
   /* overflow: hidden; */
 }
 .income-btn {
-  background: #136ACD;
+  background: #136acd;
   color: white;
   /* overflow: hidden; */
 }
@@ -970,11 +1042,6 @@ html {
   overflow-x: hidden;
 }
 
-/* .create-event {
-    border: 1px solid #ced4da;
-    padding: 10px
-} */
-
 .create-event a {
   color: #136acd !important;
   text-decoration: none;
@@ -1044,8 +1111,6 @@ html {
   background: #dde2e6bb;
   margin-left: 15px;
   width: 50%;
-  /* max-height: 518px;
-        overflow-y: auto */
 }
 
 .slide-form {
@@ -1058,9 +1123,7 @@ html {
 
 .hide-form {
   width: 50%;
-  /*overflow: hidden;  */
   position: absolute;
-  /* transition: all 0.6s cubic-bezier(0.445, 0.05, 0.55, 0.95); */
   transform: translateX(-100%);
   opacity: 0;
 }
@@ -1088,16 +1151,8 @@ html {
 @media (max-width: 600px) {
   .actions {
     display: flex;
-    /* flex-direction: column */
   }
 }
-
-/* @media (max-width: 750px) {
-    .table {
-      max-width: 617px;
-      overflow-y: auto
-    }
-  } */
 
 .row {
   margin-right: 0 !important;

@@ -180,7 +180,7 @@
           round
           :color="primarycolor"
           v-on:click.prevent="addContribution"
-          class=" text-white  "
+          class="text-white"
         >
           <el-icon size="large">
             <CirclePlus />
@@ -198,7 +198,7 @@
         <div
           class="mt-3 col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center"
         >
-          <div class="text-head s-18 font-weight-600" >Choose Bank</div>
+          <div class="text-head s-18 font-weight-600">Choose Bank</div>
         </div>
         <div
           class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3"
@@ -226,7 +226,7 @@
         <div
           class="mt-3 col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center"
         >
-          <div class="text-head s-18 font-weight-600" >Enter account number</div>
+          <div class="text-head s-18 font-weight-600">Enter account number</div>
         </div>
         <div
           class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3"
@@ -244,7 +244,7 @@
         <div
           class="mt-3 col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center"
         >
-          <div class="text-head s-18 font-weight-600" >Account Name</div>
+          <div class="text-head s-18 font-weight-600">Account Name</div>
         </div>
         <div
           class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3"
@@ -279,7 +279,7 @@
         <div
           class="col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right mb-3 mb-md-0"
         >
-          <div class="text-head s-18 font-weight-600" >Select Payment Gateway</div>
+          <div class="text-head s-18 font-weight-600">Select Payment Gateway</div>
           <!-- <div v-if="gatewayNotification" class="text-danger small font-weight-bold">Please select <span class=""> one or two</span>  payment gateway</div> -->
         </div>
         <div class="col-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 align-self-center">
@@ -414,7 +414,10 @@
             class="button border-0 py-4 w-100 text-white"
             round
             :loading="loadingSave"
-            :class="{ 'disabled-bg': disabled, 'primary-bg': !disabled }"
+            :class="{
+              'disabled-bg': disabled,
+              'primary-bg': !disabled,
+            }"
             @click.prevent="saveAndContinue"
             style="margin-left: 2px"
           >
@@ -732,6 +735,12 @@ export default {
             message: "Please enter your account number",
             duration: 3000,
           });
+        } else if (!accountName.value || accountName.value === "") {
+          ElMessage({
+            type: "error",
+            message: "Your detail were not found",
+            duration: 3000,
+          });
         } else {
           ElMessage({
             type: "error",
@@ -746,8 +755,10 @@ export default {
     const toggleCheckBox = (item) => {
       if (item.isChecked) {
         gatewayNotification.value = true;
+        disabled.value = true;
       } else {
         gatewayNotification.value = false;
+        disabled.value = false;
       }
 
       item.isChecked = !item.isChecked;
@@ -823,98 +834,104 @@ export default {
     };
 
     const saveAndContinue = async () => {
-      if (
-        gateways.value &&
-        gateways.value[0].isChecked === false &&
-        gateways.value &&
-        gateways.value[1].isChecked === false
-      ) {
-        gatewayNotification.value = true;
-      } else {
-        gatewayNotification.value = false;
-
-        let removeEmptyObj = newContribution.value.payment.filter((i) => {
-          return Object.keys(i.financialContribution).length > 0;
-        });
-
-        loadingSave.value = false;
-
-        let paymentForm = {
-          name: newContribution.value.name,
-          bankCode: selectedBank.value.code,
-          accountName: accountName.value,
-          accountNumber: accountNumber.value,
-          isActive: isActive.value,
-          contributionItems: removeEmptyObj.map((i) => {
-            let id = i.financialContribution.id;
-            return { financialContributionID: id };
-          }),
-          paymentGateWays: paymentGateWays.value.map((i) => {
-            return {
-              paymentGateWayID: i.id,
-              subAccountID: i.subAccountID,
-              updateId: i.updateId,
-            };
-          }),
-        };
-        emit("form-details", paymentForm);
-        console.log(newContribution.value.payments);
-
-        console.log(paymentForm);
-        console.log(route.fullPath);
-        if (route.fullPath === "/donationsetup") {
-          console.log("PaymentCreated");
-          emit("payment-form", true);
-        }
-
-        if (!route.params.editPayment) {
-          loadingSave.value = true;
-
-          try {
-            const res = await axios.post("/api/PaymentForm/newpaymentform", paymentForm);
-            store.dispatch("contributions/paymentData", res.data);
-            loadingSave.value = false;
-
-            if (route.fullPath === "/tenant/payments") {
-              store.dispatch("payment/getPayments").then(() => {
-                router.push({
-                  name: "PaymentOption",
-                  params: { paymentId: res.data.id },
-                });
-              });
-              // router.push({ name: 'PaymentOption', params: { paymentId: res.data.id } })
-            } else if (route.fullPath === "/donationsetup") {
-              store.dispatch("payment/getPayments").then(() => {
-                router.push({ name: "OnboardingSuccessful" });
-              });
-              // router.push({ name: 'OnboardingSuccessful' })
-            }
-            finish();
-          } catch (err) {
-            finish();
-            console.log(err);
-            loadingSave.value = false;
-          }
+      if (accountName.value) {
+        if (
+          gateways.value &&
+          gateways.value[0].isChecked === false &&
+          gateways.value &&
+          gateways.value[1].isChecked === false
+        ) {
+          gatewayNotification.value = true;
+          disabled.value = true;
         } else {
-          (paymentForm.contributionItems = newContribution.value.payment.map((i) => {
-            return { financialContributionID: i.financialContribution.id };
-          })),
-            (paymentForm.id = route.params.editPayment);
-          paymentForm.removeContributionIDs = removeContributionIDs.value;
-          paymentForm.removePaymentGatewayIDs = removePaymentGatewayIDs.value;
-          try {
-            const res = await axios.put(`/api/PaymentForm/update`, paymentForm);
-            console.log(res);
-            loadingSave.value = false;
-            store.dispatch("contributions/paymentData", res.data);
-            router.push({ name: "PaymentOption", params: { paymentId: res.data.id } });
-            finish();
-          } catch (err) {
-            console.log(err);
-            loadingSave.value = false;
-            finish();
+          gatewayNotification.value = false;
+          disabled.value = false;
+
+          let removeEmptyObj = newContribution.value.payment.filter((i) => {
+            return Object.keys(i.financialContribution).length > 0;
+          });
+
+          loadingSave.value = false;
+
+          let paymentForm = {
+            name: newContribution.value.name,
+            bankCode: selectedBank.value.code,
+            accountName: accountName.value,
+            accountNumber: accountNumber.value,
+            isActive: isActive.value,
+            contributionItems: removeEmptyObj.map((i) => {
+              let id = i.financialContribution.id;
+              return { financialContributionID: id };
+            }),
+            paymentGateWays: paymentGateWays.value.map((i) => {
+              return {
+                paymentGateWayID: i.id,
+                subAccountID: i.subAccountID,
+                updateId: i.updateId,
+              };
+            }),
+          };
+          emit("form-details", paymentForm);
+          console.log(newContribution.value.payments);
+          if (route.fullPath === "/donationsetup") {
+            console.log("PaymentCreated");
+            emit("payment-form", true);
+          }
+
+          if (!route.params.editPayment) {
+            loadingSave.value = true;
+
+            try {
+              const res = await axios.post(
+                "/api/PaymentForm/newpaymentform",
+                paymentForm
+              );
+              store.dispatch("contributions/paymentData", res.data);
+              loadingSave.value = false;
+
+              if (route.fullPath === "/tenant/payments") {
+                store.dispatch("payment/getPayments").then(() => {
+                  router.push({
+                    name: "PaymentOption",
+                    params: { paymentId: res.data.id },
+                  });
+                });
+                // router.push({ name: 'PaymentOption', params: { paymentId: res.data.id } })
+              } else if (route.fullPath === "/donationsetup") {
+                store.dispatch("payment/getPayments").then(() => {
+                  router.push({ name: "OnboardingSuccessful" });
+                });
+                // router.push({ name: 'OnboardingSuccessful' })
+              }
+              finish();
+            } catch (err) {
+              finish();
+              console.log(err);
+              loadingSave.value = false;
+            }
+          } else {
+            (paymentForm.contributionItems = newContribution.value.payment.map((i) => {
+              return { financialContributionID: i.financialContribution.id };
+            })),
+              (paymentForm.id = route.params.editPayment);
+            paymentForm.removeContributionIDs = removeContributionIDs.value;
+            paymentForm.removePaymentGatewayIDs = removePaymentGatewayIDs.value;
+            try {
+              const res = await axios.put(`/api/PaymentForm/update`, paymentForm);
+              console.log(res);
+              loadingSave.value = false;
+              store.dispatch("contributions/paymentData", res.data);
+              router.push({ name: "PaymentOption", params: { paymentId: res.data.id } });
+              finish();
+            } catch (err) {
+              console.log(err);
+              loadingSave.value = false;
+              finish();
+            }
           }
         }
+      } else {
+        disabled.value = true;
       }
     };
     const selectContribution = (item, index) => {
@@ -1123,7 +1140,7 @@ export default {
       closeResponsive,
       subAccounts,
       goBack,
-      primarycolor
+      primarycolor,
     };
   },
 };
