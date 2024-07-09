@@ -144,37 +144,6 @@
                 </template>
               </el-dropdown>
             </div>
-            <!-- <div class="col-sm-7">
-              <div class="select-elem-con pointer d-flex justify-content-space-between close-modal"
-                @click="showAccount = !showAccount">
-                <span class="ofering close-modal">Select one</span><span>
-                  <el-icon>
-                    <ArrowDown />
-                  </el-icon></span>
-              </div>
-              <div class="ofering close-modal" :class="{ 'style-account': showAccount }" v-if="showAccount"
-                ref="selectAccount">
-                <div class="px-3 pt-3 close-modal">
-                  <input type="text" placeholder="Search..." class="form-control ofering mb-1 close-modal"
-                    v-model="accountText" />
-                </div>
-                <div class="container-fluid px-0" v-for="(accounts, index) in transactionalAccounts" :key="index">
-                  <div class="desc-head py-1 px-3 close-modal text-capitalize">{{ accountTypes[index] }}</div>
-                  <div class="header-border close-modal">
-                    <div>
-                      <div @click="transactionItem(account)" class="manual-dd-item close-modal"
-                        v-for="(account, indx) in accounts" :key="indx">
-                        <div class="d-flex justify-content-between py-2 px-3 close-modal">
-                          <div class="close-modal offset-sm-1">
-                            {{ account.text }}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
           </div>
           <div class="row mt-2">
             <div class="col-sm-3 align-self-center text-right p-0">
