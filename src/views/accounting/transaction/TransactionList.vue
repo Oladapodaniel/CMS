@@ -178,7 +178,6 @@
               Description
             </div>
             <div class="col-sm-7">
-              <!-- <textarea class="form-control" v-model="newAccount.description" rows="4"></textarea> -->
               <el-input v-model="newAccount.description" :rows="4" type="textarea" />
             </div>
           </div>
@@ -734,13 +733,10 @@ html {
 
 .whole-con {
   display: flex;
-  /* background: #f1f5f8; */
-  /* height: 100vh; */
 }
 
 .main-con {
   width: 100%;
-  /* height: 70%; */
 }
 
 .main-body {
@@ -750,7 +746,6 @@ html {
 .top {
   display: flex;
   justify-content: space-between;
-  /* align-items: center; */
 }
 
 .button {
@@ -939,10 +934,6 @@ html {
   overflow-x: hidden;
 }
 
-/* .create-event {
-    border: 1px solid #ced4da;
-    padding: 10px
-} */
 
 .create-event a {
   color: #136acd !important;
