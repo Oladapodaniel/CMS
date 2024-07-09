@@ -1,8 +1,8 @@
 <template>
   <div class="pb-4">
     <div class="row mt-5">
-      <div class="col-12 p-0 col-md-4">
-        <div class="col-12 p-0 mb-5">
+      <div class="col-12 p-0 col-md-12">
+        <div class="col-12 col-md-5 p-0 mb-5">
           <el-select-v2
             v-model="selectedPeriodId"
             :options="periods.map((i) => ({ label: i.name, value: i.name }))"
@@ -12,156 +12,223 @@
             class="w-100"
           />
         </div>
-        <div class="col-12 w-100">
-          <h2 class="font-weight-bold py-3 mb-3">
-            {{ tenantCurrency ? tenantCurrency.currencySymbol : "" }}
-            {{ chartData ? amountWithCommas(Math.round(chartData.income)) : 0 }}
-          </h2>
+        <div class="col-12 col-md-5 align-items-center d-flex flex-wrap px-0 mt-3">
+          <div class="col-md-6 px-0">
+            <div class="h3 bg-photo col-md-12 p-2 mb-3 grey-rounded-border">
+              {{ tenantCurrency.currencySymbol }}
+              <span class="font-weight-600">{{
+                chartData ? amountWithCommas(Math.round(chartData.income)) : 0
+              }}</span>
+            </div>
+          </div>
+          <div @click="showAnalytics" class="col-md-6 cursor-pointer">
+            <u>Show Analytics</u>
+          </div>
         </div>
       </div>
-      <!-- {{ pieChart }} -->
-      <div class="col-12 col-md-4">
-        <DonationPieChart
-          domId="chart"
-          distance="5"
-          :titleMargin="10"
-          :summary="pieChart"
-        />
-      </div>
-      <div class="col-12 col-md-4">
-        <DonationAreaChart
-          elemId="chart"
-          domId="areaChart3"
-          title="So Far"
-          lineColor="#002044"
-          :subtitle="chartData.name"
-          :series="
-            chartData && chartData.barChart ? chartData.barChart.data : {}
-          "
-          :attendanceSeries="attendanceSeries"
-          :xAxis="LineGraphXAxis"
-        />
+      <div class="col-md-12" v-if="viewAnalytics">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <DonationPieChart
+              domId="chart"
+              distance="5"
+              :titleMargin="10"
+              :summary="pieChart"
+            />
+          </div>
+          <div class="col-12 col-md-6">
+            <DonationAreaChart
+              elemId="chart"
+              domId="areaChart3"
+              title="So Far"
+              lineColor="#002044"
+              :subtitle="chartData.name"
+              :series="chartData && chartData.barChart ? chartData.barChart.data : {}"
+              :attendanceSeries="attendanceSeries"
+              :xAxis="LineGraphXAxis"
+            />
+          </div>
+        </div>
       </div>
     </div>
     <div class="row">
       <div class="col-12 p-0 mt-5">
-        <div class="table-top p-3 mt-5">
-          <div
-            class="row d-flex flex-column flex-sm-row justify-content-sm-end"
-          >
-          
-            <div
-              class="filter col-md-2"
-              @click="
-                printJS({
-                  ignoreElements: ['ignore1', 'ignore2'],
-                  maxWidth: 867,
-                  header: 'DONATION TRANSACTIONS',
-                  printable: printDonation,
-                  properties: ['DATE', 'DONATION', 'AMOUNT', 'DONOR'],
-                  type: 'json',
-                  headerStyle:
-                    'font-family: Nunito Sans, Calibri; text-align: center;',
-                  gridHeaderStyle:
-                    'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
-                  gridStyle:
-                    'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
-                })
-              "
-            >
-              <p class="mb-0 mr-3 d-flex my-3 my-sm-0">
-                <el-icon :size="20"><Printer /></el-icon>
-                <span class="ml-1"> PRINT</span>
-              </p>
-            </div>
-
-            <div class="col-md-2">
-              <p
-                @click="toggleFilterFormVissibility"
-                class="mb-0 mr-3 d-flex my-3 my-sm-0 c-pointer"
-              >
-                <el-icon :size="20">
-                  <Filter />
-                </el-icon>
-                <span class="ml-1"> FILTER</span>
-              </p>
-            </div>
-
-            <div class="col-md-5">
-              <el-input
-                size="small"
-                v-model="searchText"
-                placeholder="Search..."
-                @input="searchDonationInDB"
-                @keyup.enter.prevent="searchDonationInDB"
-                class="input-with-select"
-              >
-                <template #suffix>
-                  <el-button
-                    style="padding: 5px; height: 22px"
-                    @click.prevent="searchText = ''"
+        <div class="tab-options d-block d-md-none mt-5">
+          <div class="s-14 fw-500 col-md-10 px-0 mt-5">
+            <div class="d-flex flex-column flex-sm-row justify-content-md-between">
+              <div>
+                <!-- <el-tooltip
+                  class="box-item"
+                  effect="dark"
+                  v-if="marked.length > 0"
+                  content="Delete offering(s)"
+                  placement="top-start"
+                >
+                  <el-icon
+                    :size="28"
+                    class="ml-2 c-pointer primary--text"
+                    v-if="marked.length > 0"
+                    @click="modal"
                   >
-                    <el-icon :size="13">
-                      <Close />
+                    <Delete />
+                  </el-icon>
+                </el-tooltip> -->
+              </div>
+              <div class="d-flex flex-column flex-sm-row justify-content-md-between">
+                <el-input
+                  size="small"
+                  v-model="searchText"
+                  placeholder="Search..."
+                  @input="searchDonationInDB"
+                  @keyup.enter.prevent="searchDonationInDB"
+                  class="input-with-select"
+                >
+                  <template #suffix>
+                    <el-button
+                      style="padding: 5px; height: 22px"
+                      @click.prevent="searchText = ''"
+                    >
+                      <el-icon :size="13">
+                        <Close />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                  <template #append>
+                    <el-button class="btn-search" @click.prevent="searchDonationInDB">
+                      <el-icon :size="13">
+                        <Search />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                </el-input>
+                <div
+                  style="background: #eeeeee"
+                  class="ml-2 mt-3 mt-sm-0 d-flex w-50 align-items-center justify-content-center border-radius-8"
+                >
+                  <div
+                    @click="toggleFilterFormVissibility"
+                    class="mb-0 px-3 d-flex my-3 my-sm-0 c-pointer"
+                  >
+                    <span class="mr-1"> Filter</span>
+                    <el-icon :size="18">
+                      <Filter />
                     </el-icon>
-                  </el-button>
-                </template>
-                <template #append>
-                  <el-button @click.prevent="searchDonationInDB">
-                    <el-icon :size="13">
-                      <Search />
-                    </el-icon>
-                  </el-button>
-                </template>
-              </el-input>
+                  </div>
+                </div>
+                <div
+                  class="filter col-md-2 mt-2"
+                  @click="
+                    printJS({
+                      ignoreElements: ['ignore1', 'ignore2'],
+                      maxWidth: 867,
+                      header: 'DONATION TRANSACTIONS',
+                      printable: printDonation,
+                      properties: ['DATE', 'DONATION', 'AMOUNT', 'DONOR'],
+                      type: 'json',
+                      headerStyle:
+                        'font-family: Nunito Sans, Calibri; text-align: center;',
+                      gridHeaderStyle:
+                        'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
+                      gridStyle:
+                        'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
+                    })
+                  "
+                >
+                  <p class="mb-0 mr-3 d-flex my-3 my-sm-0">
+                    <el-icon :size="20"><Printer /></el-icon>
+                    <span class="ml-1"> PRINT</span>
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div
-          class="filter-options"
-          :class="{ 'filter-options-shown': filterFormIsVissible }"
-          id="ignore1"
-        >
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-9">
-                <div class="row">
-                  <div
-                   class="col-12 col-sm-6 col-md-4 offset-sm-3 offset-md-0 form-group inp w-100"
+        <div class="tab-options d-none d-md-block mt-5">
+          <div class="table-top col-12 col-md-7 col-lg-7 col-xl-8 px-0 mt-5">
+            <div class="d-flex flex-column flex-md-row justify-content-md-between">
+              <div>
+                <!-- <el-tooltip
+                  class="box-item d-flex"
+                  effect="dark"
+                  v-if="marked.length > 0"
+                  content="Delete offering(s)"
+                  placement="top-start"
+                >
+                  <el-icon
+                    :size="28"
+                    class="ml-2 c-pointer primary--text"
+                    v-if="marked.length > 0"
+                    @click="modal"
                   >
-                    <!-- <div class="input-field"> -->
-
-                    
-                    <el-input
-                        type="text"
-                        class="w-100"
-                        placeholder="Donation"
-                        v-model="filter.contribution"
-                      />
-                  </div>
-
-                  <div class="col-12 col-md-6 form-group d-none d-md-block">
-                    <el-input
-                        type="text"
-                        class=" w-100"
-                        placeholder="donor"
-                        v-model="filter.donor"
-                      />
-                  </div>
-                </div>
+                    <Delete />
+                  </el-icon>
+                </el-tooltip> -->
               </div>
-
-              <div class="col-md-3 d-flex flex-column align-items-center">
-                
-                <el-button round :color="primarycolor" class=" text-white" @click="applyFilter">
-                    Apply
-                  </el-button>
-                <span class="mt-2">
-                  <a class="clear-link mr-2" @click="clearAll">Clear all</a>
-                  <span class="mx-2"
-                    ><i class="fas fa-circle" style="font-size: 4px"></i></span
-                  ><a class="hide-link ml-2" @click="hide">Hide</a>
-                </span>
+              <div class="d-flex flex-column flex-md-row justify-content-md-between">
+                <el-input
+                  size="small"
+                  v-model="searchText"
+                  placeholder="Search..."
+                  @input="searchDonationInDB"
+                  @keyup.enter.prevent="searchDonationInDB"
+                  class="input-with-select"
+                >
+                  <template #suffix>
+                    <el-button
+                      style="padding: 5px; height: 22px"
+                      @click.prevent="searchText = ''"
+                    >
+                      <el-icon :size="13">
+                        <Close />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                  <template #append>
+                    <el-button class="btn-search" @click.prevent="searchDonationInDB">
+                      <el-icon :size="13">
+                        <Search />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                </el-input>
+                <div
+                  style="background: #eeeeee"
+                  class="ml-2 mt-3 py-2 mt-md-0 d-flex align-items-center justify-content-center border-radius-8"
+                >
+                  <p
+                    @click="toggleFilterFormVissibility"
+                    class="mb-0 px-3 d-flex my-3 my-sm-0 c-pointer"
+                  >
+                    <span class="mr-1"> Filter</span>
+                    <el-icon :size="18">
+                      <Filter />
+                    </el-icon>
+                  </p>
+                </div>
+                <div
+                  class="filter col-md-2 mt-2"
+                  @click="
+                    printJS({
+                      ignoreElements: ['ignore1', 'ignore2'],
+                      maxWidth: 867,
+                      header: 'DONATION TRANSACTIONS',
+                      printable: printDonation,
+                      properties: ['DATE', 'DONATION', 'AMOUNT', 'DONOR'],
+                      type: 'json',
+                      headerStyle:
+                        'font-family: Nunito Sans, Calibri; text-align: center;',
+                      gridHeaderStyle:
+                        'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
+                      gridStyle:
+                        'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
+                    })
+                  "
+                >
+                  <p class="mb-0 mr-3 d-flex my-3 my-sm-0">
+                    <el-icon :size="20"><Printer /></el-icon>
+                    <span class="ml-1"> PRINT</span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -186,9 +253,7 @@
               </div>
             </template>
             <template v-slot:amount="{ item }">
-              <div class="c-pointer">
-                {{ item.currencyName }} {{ item.amount }}
-              </div>
+              <div class="c-pointer">{{ item.currencyName }} {{ item.amount }}</div>
             </template>
             <template v-slot:channel="{ item }">
               <div class="c-pointer">
@@ -225,10 +290,7 @@
 
         <div
           class="col-md-12 col py-3"
-          v-if="
-            listOfDonationItems.length === 0 &&
-            !loading
-          "
+          v-if="listOfDonationItems.length === 0 && !loading"
         >
           <p class="text-danger d-flex justify-content-center">
             Record not available in database
@@ -238,27 +300,70 @@
         <div class="col-12">
           <div class="table-footer">
             <div class="d-flex justify-content-end my-3">
-            <el-pagination
-              v-model:current-page="serverOptions.page"
-              v-model:page-size="serverOptions.rowsPerPage"
-              background
-              layout="total, prev, pager, next, jumper"
-              :total="totalDonationCount"
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-            />
-          </div>
+              <el-pagination
+                v-model:current-page="serverOptions.page"
+                v-model:page-size="serverOptions.rowsPerPage"
+                background
+                layout="total, prev, pager, next, jumper"
+                :total="totalDonationCount"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+              />
+            </div>
           </div>
         </div>
-
-     
       </div>
     </div>
+    <el-dialog
+      v-model="showFilter"
+      title=""
+      :width="mdAndUp || lgAndUp || xlAndUp ? `35%` : xsOnly ? `90%` : `70%`"
+      class="QRCodeDialog border-radius-20"
+      align-center
+    >
+      <div class="filter-optio">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12 text-center text-black h2 fw-500">Filter</div>
+            <div class="col-md-12 text-center text-black s-24">
+              Narrow down your search
+            </div>
+            <div class="col-md-12 mt-3">
+              <div class="row justify-content-center">
+                <div class="col-md-11 form-group">
+                  <div class="text-black">Donation</div>
+                  <el-input
+                    placeholder="Offering"
+                    class="w-100"
+                    v-model="filter.contribution"
+                  />
+                </div>
+                <div class="col-md-11 form-group">
+                  <div class="text-black">Donor</div>
+                  <el-input placeholder="Donor" class="w-100" v-model="filter.donor" />
+                </div>
+                <div class="col-md-12 d-flex pb-3 justify-content-center">
+                  <el-button
+                    class="col-md-11 text-white"
+                    :color="primarycolor"
+                    @click="applyFilter"
+                    :loading="applyLoading"
+                    :disabled="disableBtn"
+                    round
+                    >Apply</el-button
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { ref, computed , inject , watch } from "vue";
+import { ref, computed, inject, watch } from "vue";
 import axios from "@/gateway/backendapi";
 import { useRoute } from "vue-router";
 import moment from "moment";
@@ -271,6 +376,7 @@ import numbers_formatter from "../../../../services/numbers/numbers_formatter";
 import store from "../../../../store/store";
 import loadingComponent from "@/components/loading/LoadingComponent";
 import { ElMessage, ElMessageBox } from "element-plus";
+import deviceBreakpoint from "../../../../mixins/deviceBreakpoint";
 import Table from "@/components/table/Table";
 export default {
   props: ["donationTransactions", "totalItem"],
@@ -284,12 +390,16 @@ export default {
   setup(props, { emit }) {
     const filter = ref({});
     const searchIsVisible = ref(false);
+    const applyLoading = ref(false);
     const filterResult = ref([]);
     const selectedPeriodId = ref(null);
     const noRecords = ref(false);
     const searchText = ref("");
     const tenantCurrency = ref({});
     const marked = ref([]);
+    const viewAnalytics = ref(false);
+    const showFilter = ref(false);
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
     const Allsummary = ref([
       { name: "Not Sure", y: 20 },
       { name: "Male", y: 16 },
@@ -314,16 +424,17 @@ export default {
       { name: "DONOR", value: "donor" },
       { name: "ACTION", value: "action" },
     ]);
-    
+
     const selectedPeriod = ref({ name: "This Week" });
     const donationSummary = ref({});
     const series = ref([1, 2, 3, 4, 5, 6, 7, 8, 9]);
     const attendanceSeries = ref("");
     const route = useRoute();
     const filterFormIsVissible = ref(false);
-     const primarycolor = inject('primarycolor')
-    const toggleFilterFormVissibility = () =>
-      (filterFormIsVissible.value = !filterFormIsVissible.value);
+    const primarycolor = inject("primarycolor");
+    const toggleFilterFormVissibility = () => {
+      showFilter.value = true;
+    };
     const toggleSearch = () => {
       searchIsVisible.value = !searchIsVisible.value;
     };
@@ -334,6 +445,15 @@ export default {
     };
     getRoute();
 
+    const disableBtn = computed(() => {
+      if (!filter.value.contribution && !filter.value.donor ) return true;
+      return false;
+    });
+
+    const showAnalytics = () => {
+      viewAnalytics.value = !viewAnalytics.value;
+      getdonationSummary();
+    };
     const printDonation = computed(() => {
       if (props.donationTransactions.length === 0) return [];
       return props.donationTransactions.map((i) => {
@@ -378,23 +498,16 @@ export default {
         });
     };
     const totalDonationCount = computed(() => {
-      if (
-        !props.totalItem
-      )
-        return 0;
+      if (!props.totalItem) return 0;
       return props.totalItem;
     });
-   
+
     const showConfirmModal = (id) => {
-      ElMessageBox.confirm(
-        "Are you sure you want to proceed?",
-        "Confirm delete",
-        {
-          confirmButtonText: "OK",
-          cancelButtonText: "Cancel",
-          type: "error",
-        }
-      )
+      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "error",
+      })
         .then(() => {
           deleteFamily(id);
         })
@@ -407,9 +520,7 @@ export default {
     };
     selectedPeriodId.value = selectedPeriod.value.name;
     const setSelectedPeriod = () => {
-      selectedPeriod.value = periods.value.find(
-        (i) => i.name == selectedPeriodId.value
-      );
+      selectedPeriod.value = periods.value.find((i) => i.name == selectedPeriodId.value);
     };
     const currentPage = ref(0);
     const getPeopleByPage = async () => {
@@ -421,9 +532,7 @@ export default {
           emit("get-pages", data);
           currentPage.value = serverOptions.value.page;
         }
-      } catch (error) {
-      
-      }
+      } catch (error) {}
     };
 
     const serverOptions = ref({
@@ -431,18 +540,15 @@ export default {
       rowsPerPage: 50,
     });
 
-    watch(serverOptions.value, () => {
-      getPeopleByPage();
-    },
+    watch(
+      serverOptions.value,
+      () => {
+        getPeopleByPage();
+      },
       { deep: true }
     );
-    const handleSizeChange = (val) => {
-  
-    }
-    const handleCurrentChange = (val) => {
-     
-    }
-
+    const handleSizeChange = (val) => {};
+    const handleCurrentChange = (val) => {};
 
     const getCurrentlySignedInUser = async () => {
       try {
@@ -453,9 +559,7 @@ export default {
             tenantCurrency.value = res.data;
           })
           .catch((err) => console.log(err));
-      } catch (err) {
-        
-      }
+      } catch (err) {}
     };
 
     const getTenantCurrency = () => {
@@ -470,10 +574,7 @@ export default {
     };
     getTenantCurrency();
     const donationCount = computed(() => {
-      if (
-        !props.donationTransactions ||
-        props.donationTransactions.length === 0
-      )
+      if (!props.donationTransactions || props.donationTransactions.length === 0)
         return 0;
       return props.donationTransactions.length;
     });
@@ -483,12 +584,11 @@ export default {
     };
 
     const applyFilter = () => {
+      applyLoading.value = true;
       filter.value.contribution =
         filter.value.contribution == undefined ? "" : filter.value.contribution;
-      filter.value.event =
-        filter.value.event == undefined ? "" : filter.value.event;
-      filter.value.donor =
-        filter.value.donor == undefined ? "" : filter.value.donor;
+      filter.value.event = filter.value.event == undefined ? "" : filter.value.event;
+      filter.value.donor = filter.value.donor == undefined ? "" : filter.value.donor;
       let url =
         "/api/Financials/Contributions/FilteredTransactions?contribution=" +
         filter.value.contribution +
@@ -501,6 +601,8 @@ export default {
         .get(url)
         .then((res) => {
           filterResult.value = res.data;
+          applyLoading.value = false;
+          showFilter.value = false;
           if (res.data.length === 0) {
             noRecords.value = true;
           } else {
@@ -513,7 +615,7 @@ export default {
     // Tosin
     const loading = ref(false);
     const searchDonationsInDB = ref([]);
-    const searchDonationInDB = ( ) => {
+    const searchDonationInDB = () => {
       loading.value = true;
       let url =
         "/api/Financials/Contributions/FilteredTransactions?contribution=" +
@@ -524,7 +626,6 @@ export default {
         .then((res) => {
           loading.value = false;
           searchDonationsInDB.value = res.data;
-          
         })
         .catch((err) => {
           loading.value = false;
@@ -542,15 +643,11 @@ export default {
     };
 
     const modal = () => {
-      ElMessageBox.confirm(
-        "Are you sure you want to proceed?",
-        "Confirm delete",
-        {
-          confirmButtonText: "OK",
-          cancelButtonText: "Cancel",
-          type: "error",
-        }
-      )
+      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "error",
+      })
         .then(() => {
           deleteMarked();
         })
@@ -582,12 +679,9 @@ export default {
 
     const getdonationSummary = async () => {
       try {
-        let { data } = await axios.get(
-          "/api/financials/donation/transactions/summary"
-        );
+        let { data } = await axios.get("/api/financials/donation/transactions/summary");
         donationSummary.value = data;
-      } catch (err) {
-      }
+      } catch (err) {}
     };
     getdonationSummary();
     const chartData = computed(() => {
@@ -715,15 +809,16 @@ export default {
       return [];
     });
 
-    const amountWithCommas = (amount) =>
-      numbers_formatter.amountWithCommas(amount);
+    const amountWithCommas = (amount) => numbers_formatter.amountWithCommas(amount);
 
     return {
       deleteOffering,
+      viewAnalytics,
       filterFormIsVissible,
       toggleFilterFormVissibility,
       moment,
       applyFilter,
+      applyLoading,
       filter,
       toggleSearch,
       searchIsVisible,
@@ -736,6 +831,7 @@ export default {
       donationCount,
       currentPage,
       getPeopleByPage,
+      disableBtn,
       date,
       printJS,
       printDonation,
@@ -745,6 +841,7 @@ export default {
       periods,
       selectedPeriod,
       donationSummary,
+      showAnalytics,
       series,
       attendanceSeries,
       pieChart,
@@ -765,7 +862,9 @@ export default {
       totalDonationCount,
       serverOptions,
       handleSizeChange,
-      handleCurrentChange
+      handleCurrentChange,
+      showFilter,
+      mdAndUp, lgAndUp, xlAndUp, xsOnly
     };
   },
 };
@@ -776,6 +875,21 @@ export default {
   box-sizing: border-box;
   color: #02172e;
 }
+
+.table-top {
+  position: absolute;
+  z-index: 1;
+  top: -40px;
+  font-weight: 500 !important;
+  font-size: 14px;
+  background: #fff;
+  color: #000000;
+}
+
+.tab-options {
+  position: relative;
+}
+
 .myselectContr {
   height: 2.5rem;
 }
@@ -867,13 +981,7 @@ export default {
 .hide-link {
   color: #136acd;
 }
-.table-top {
-  font-weight: 800;
-  font-size: 12px;
-  background: #fff;
-  border: 1px solid #d4dde3;
-  border-bottom: none;
-}
+
 .table-top label:hover,
 .table-top p:hover {
   cursor: pointer;

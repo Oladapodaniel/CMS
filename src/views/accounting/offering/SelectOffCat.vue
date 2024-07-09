@@ -1,30 +1,36 @@
 <template>
   <!-- <div class="container-wide container-top"> -->
-  <div class="top container-wide mt-3">
+  <div class="container-top container-wide">
     <div class="row">
       <div class="col-sm-12">
-        <div class="page-header">Offering Category</div>
+        <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
+          Offering Category
+        </div>
         <hr class="hr" />
       </div>
     </div>
   </div>
 
-  <el-dialog v-model="displayResponsive" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center>
-      <p>
-        You have no income account to create a offering item, go to Chart of
-        Account and click 'Update Account' to update your accounts.
-      </p>
-      <template #footer>
-        <el-button
-         round
-         :color="primarycolor"
+  <el-dialog
+    v-model="displayResponsive"
+    :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
+    align-center
+  >
+    <p>
+      You have no income account to create a offering item, go to Chart of Account and
+      click 'Update Account' to update your accounts.
+    </p>
+    <template #footer>
+      <el-button
+        round
+        :color="primarycolor"
         label="Go to Chart Of Accounts"
         icon="pi pi-check"
         @click="closeResponsive"
         autofocus
       />
-      </template>
-    </el-dialog>
+    </template>
+  </el-dialog>
 
   <!-- input area -->
   <div class="container-wide">
@@ -33,31 +39,25 @@
         <label for="" class="label">Name</label>
       </div>
       <div class="col-sm-5 mt-sm-3">
-        <el-input
-          type="text"
-          class="w-100"
-          placeholder=""
-          v-model="name"
-          required
-        />
+        <el-input type="text" class="w-100" placeholder="" v-model="name" required />
       </div>
       <div class="col-sm-4 mt-3 mt-sm-3 text-sm-right">
         <label for="" class="label">Income Account</label>
       </div>
       <div class="col-sm-5 mt-sm-3">
         <el-select-v2
-                  v-model="selectedIncomeAccountID"
-                  class="w-100 font-weight-normal"
-                  placeholder="Select"
-                  @change="setSelectedIncomeAccount"
-                  :options="
-                    incomeAccount.map((i) => ({
-                      label: i.text,
-                      value: i.id,
-                    }))
-                  "
-                  size="large"
-                />
+          v-model="selectedIncomeAccountID"
+          class="w-100 font-weight-normal"
+          placeholder="Select"
+          @change="setSelectedIncomeAccount"
+          :options="
+            incomeAccount.map((i) => ({
+              label: i.text,
+              value: i.id,
+            }))
+          "
+          size="large"
+        />
         <!-- <Dropdown
           v-model="selectedIncomeAccount"
           class="w-100 p-0"
@@ -74,18 +74,18 @@
       </div>
       <div class="col-sm-5 mt-sm-3">
         <el-select-v2
-                  v-model="selectedCashAccountID"
-                  class="w-100 font-weight-normal"
-                  placeholder="Select"
-                  @change="setSelectedCashAccount"
-                  :options="
-                    cashBankAccount.map((i) => ({
-                      label: i.text,
-                      value: i.id,
-                    }))
-                  "
-                  size="large"
-                />
+          v-model="selectedCashAccountID"
+          class="w-100 font-weight-normal"
+          placeholder="Select"
+          @change="setSelectedCashAccount"
+          :options="
+            cashBankAccount.map((i) => ({
+              label: i.text,
+              value: i.id,
+            }))
+          "
+          size="large"
+        />
         <!-- <Dropdown
           v-model="selectedCashAccount"
           :options="cashBankAccount"
@@ -98,13 +98,17 @@
         </Dropdown> -->
       </div>
 
-      <div class="col-sm-12 mt-4" @click="toggleRem">
-        <div class="row">
-          <div class="col-sm-12 d-flex">
-            <i class="check-it mr-2">
-              <span class="child" v-if="applyRem"></span>
-            </i>
-            <h6>Apply Split/Remitance</h6>
+      <div class="col-md-12 ">
+        <div class="row justify-content-center">
+          <div class="col-md-6 mt-4" @click="toggleRem">
+            <div class="row">
+              <div class="col-sm-10 cursor-pointer  justify-content-center d-flex">
+                <i class="check-it mr-2">
+                  <span class="child" v-if="applyRem"></span>
+                </i>
+                <h6>Apply Split/Remitance</h6>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -119,45 +123,47 @@
             <div class="col-12 col-sm-6">
               <div class="">Account</div>
               <el-dropdown trigger="click" class="w-100 mt-2">
-                    <span class="el-dropdown-link w-100">
-                      <div
-                        class="d-flex justify-content-between border-contribution  w-100"
-                        size="large"
-                      >
-                       <div>
-                          {{ item && item.account ? item.account.text : "Select account" }}
+                <span class="el-dropdown-link w-100">
+                  <div
+                    class="d-flex justify-content-between border-contribution w-100"
+                    size="large"
+                  >
+                    <div>
+                      {{ item && item.account ? item.account.text : "Select account" }}
+                    </div>
+                    <div>
+                      <el-icon class="el-icon--right">
+                        <arrow-down />
+                      </el-icon>
+                    </div>
+                  </div>
+                </span>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item
+                      v-for="(remitance, indexRemit) in remittanceResult"
+                      :key="indexRemit"
+                    >
+                      <div class="col-md-12 px-2">
+                        <div class="py-2 font-weight-700 border-bottom">
+                          {{ remitance.name }}
                         </div>
-                        <div>
-                          <el-icon class="el-icon--right">
-                            <arrow-down />
-                          </el-icon>
+                        <div
+                          v-for="(value, indexValue) in remitance.value"
+                          :key="indexValue"
+                          class="c-pointer py-2"
+                          @click="setRemittance(value, index)"
+                        >
+                          {{ value.text }}
                         </div>
                       </div>
-                    </span>
-                    <template #dropdown>
-                      <el-dropdown-menu>
-                        <el-dropdown-item v-for="(remitance, indexRemit) in remittanceResult"
-                        :key="indexRemit">
-                          <div class="col-md-12 px-2">
-                            <div class="py-2 font-weight-700 border-bottom">
-                              {{ remitance.name }}
-                            </div>
-                            <div
-                              v-for="(value, indexValue) in remitance.value"
-                              :key="indexValue"
-                              class=" c-pointer py-2"
-                              @click="setRemittance(value, index)"
-                            >
-                              {{ value.text }}
-                            </div>
-                          </div>
-                        </el-dropdown-item>
-                      </el-dropdown-menu>
-                    </template>
-                </el-dropdown>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
             </div>
 
-            <div class="col-12 col-sm-5 ">
+            <div class="col-12 col-sm-5">
               <div class="">Percentage %</div>
 
               <div class="mt-2">
@@ -169,10 +175,7 @@
                 />
               </div>
             </div>
-            <div
-              class="col-1 mt-4 align-self-center"
-              @click="deleteItem(index)"
-            >
+            <div class="col-1 mt-4 align-self-center" @click="deleteItem(index)">
               <i class="pi pi-trash"></i>
             </div>
           </div>
@@ -203,18 +206,15 @@
     </div>
     <div class="row">
       <div class="col-2 mt-3 mb-3 offset-sm-4" v-if="applyRem">
-        <el-button v-on:click="addRemittance" round  class=" text-primary bg-secondary">
+        <el-button v-on:click="addRemittance" round class="text-primary bg-secondary">
           <el-icon><CirclePlus /></el-icon>
           Add
         </el-button>
       </div>
-      <div
-        class="col-5 mt-3 mb-3 offset-4"
-        :class="{ 'col-sm-2 offset-sm-1': applyRem }"
-      >
+      <div class="col-5 mt-3 mb-3 offset-4" :class="{ 'col-sm-2 offset-sm-1': applyRem }">
         <el-button
-        :loading="loading"
-          class=" w-100 text-white"
+          :loading="loading"
+          class="w-100 text-white py-4"
           :color="primarycolor"
           @click="save"
           round
@@ -226,14 +226,6 @@
   </div>
 </template>
 
-
-
-
-
-
-
-
-
 <script>
 import { computed, inject, ref } from "vue";
 import axios from "@/gateway/backendapi";
@@ -243,7 +235,7 @@ import { useRouter } from "vue-router";
 import { useRoute } from "vue-router";
 import groupData from "../../../services/groupArray/groupResponse";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
-import { ElMessage } from 'element-plus'
+import { ElMessage } from "element-plus";
 export default {
   components: {
     Dropdown,
@@ -251,7 +243,7 @@ export default {
   setup() {
     const router = useRouter();
     const route = useRoute();
-    const primarycolor = inject('primarycolor')
+    const primarycolor = inject("primarycolor");
     const applyRem = ref(false);
     const cashBankAccount = ref([]);
     const remitance = ref([{}]);
@@ -264,9 +256,9 @@ export default {
     const displayResponsive = ref(false);
     const remittanceAccounts = ref([]);
     const remittanceResult = ref([]);
-    const { xsOnly, mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
+    const { xsOnly, mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
     const loading = ref(false);
-    const ungroupedRemittanceResult = ref([])
+    const ungroupedRemittanceResult = ref([]);
 
     const toggleRem = () => {
       applyRem.value = !applyRem.value;
@@ -284,36 +276,41 @@ export default {
         });
     };
     getCashBankAccount();
-    const setSelectedIncomeAccount  = () =>{
-      selectedIncomeAccount.value = incomeAccount.value.find(i => i.id == selectedIncomeAccountID.value)
+    const setSelectedIncomeAccount = () => {
+      selectedIncomeAccount.value = incomeAccount.value.find(
+        (i) => i.id == selectedIncomeAccountID.value
+      );
       console.log(selectedIncomeAccount.value, "jkhj");
-    }
-    const setSelectedCashAccount  = () =>{
-      selectedCashAccount.value = cashBankAccount.value.find(i => i.id == selectedCashAccountID.value)
+    };
+    const setSelectedCashAccount = () => {
+      selectedCashAccount.value = cashBankAccount.value.find(
+        (i) => i.id == selectedCashAccountID.value
+      );
       console.log(selectedCashAccount.value, "jkhj");
-    }
+    };
 
     const deleteItem = (index) => {
       if (remitance.value.length > 1) {
         remitance.value.splice(index, 1);
       } else {
         ElMessage({
-              type: 'error',
-              showClose: true,
-              message: 'Cannot Delete, You must have at least one field to apply for remittance',
-              duration: 5000
-            })
+          type: "error",
+          showClose: true,
+          message:
+            "Cannot Delete, You must have at least one field to apply for remittance",
+          duration: 5000,
+        });
       }
     };
 
     const addRemittance = () => {
       if (100 - +sumPercentage.value.percentage <= 0) {
         ElMessage({
-              type: 'error',
-              showClose: true,
-              message: ` You have ${sumPercentage.value.percentage}% remittance percentage, The sum of the percentages should not exceed the 100%`,
-              duration: 5000
-            })
+          type: "error",
+          showClose: true,
+          message: ` You have ${sumPercentage.value.percentage}% remittance percentage, The sum of the percentages should not exceed the 100%`,
+          duration: 5000,
+        });
       } else {
         remitance.value.push({
           percentage: 0,
@@ -343,7 +340,7 @@ export default {
       axios
         .get("/api/Financials/Accounts/GetRemittanceAccounts")
         .then((res) => {
-          ungroupedRemittanceResult.value = res.data
+          ungroupedRemittanceResult.value = res.data;
           let groupedRemittance = groupData.groupData(res.data, "accountType");
           for (const prop in groupedRemittance) {
             remittanceResult.value.push({
@@ -366,24 +363,23 @@ export default {
         .post("/api/financials/contributions/items/save", contributionCategory)
         .then((res) => {
           ElMessage({
-              type: 'success',
-              showClose: true,
-              message: "Contribution Saved",
-              duration: 5000
-            })
+            type: "success",
+            showClose: true,
+            message: "Contribution Saved",
+            duration: 5000,
+          });
           loading.value = false;
-          store.dispatch('contributions/setContributionItem').then(() =>{
+          store.dispatch("contributions/setContributionItem").then(() => {
             router.push({ name: "ContributionCategory" });
-          })
-          
+          });
         })
         .catch((err) => {
           ElMessage({
-              type: 'error',
-              showClose: true,
-              message: "Not Sucessful",
-              duration: 5000
-            })
+            type: "error",
+            showClose: true,
+            message: "Not Sucessful",
+            duration: 5000,
+          });
           console.log(err);
           loading.value = false;
         });
@@ -396,52 +392,53 @@ export default {
         .put(`/api/Financials/Contributions/Items/edit`, contributionCategory)
         .then((res) => {
           ElMessage({
-              type: 'success',
-              showClose: true,
-              message: "Edit Succefully",
-              duration: 5000
-            })
+            type: "success",
+            showClose: true,
+            message: "Edit Succefully",
+            duration: 5000,
+          });
           loading.value = false;
-           store.dispatch('contributions/setContributionItem').then(() =>{
+          store.dispatch("contributions/setContributionItem").then(() => {
             router.push({ name: "ContributionCategory" });
-          })
+          });
         })
         .catch((err) => {
           ElMessage({
-              type: 'error',
-              showClose: true,
-              message: "Not Sucessful",
-              duration: 5000
-            })
+            type: "error",
+            showClose: true,
+            message: "Not Sucessful",
+            duration: 5000,
+          });
           loading.value = false;
           console.log(err);
         });
     };
 
     const save = () => {
-      console.log(remitance.value, 'fjfjj')
+      console.log(remitance.value, "fjfjj");
       let contributionCategory = {
         name: name.value,
         incomeAccountId: selectedIncomeAccount.value
           ? selectedIncomeAccount.value.id
           : "",
-        cashAccountId: selectedCashAccount.value
-          ? selectedCashAccount.value.id
-          : "",
-        incomeRemittance: remitance.value ? remitance.value : ""
+        cashAccountId: selectedCashAccount.value ? selectedCashAccount.value.id : "",
+        incomeRemittance: remitance.value ? remitance.value : "",
       };
 
-      if (remitance.value[0] && remitance.value[0].account || remitance.value[0] && remitance.value[0].percentage) {
+      if (
+        (remitance.value[0] && remitance.value[0].account) ||
+        (remitance.value[0] && remitance.value[0].percentage)
+      ) {
         contributionCategory.incomeRemittance = remitance.value.map((i) => {
           if (!i.account.financialFundID) delete i.account.financialFundID;
           let payload = {};
           if (i.account.accountType.toLowerCase().includes("assets"))
             payload.distinationCashBankAccount = i.account.id;
-            payload.id = i.id;
+          payload.id = i.id;
           if (i.account.accountType.toLowerCase().includes("income"))
             payload.distinationIncomeAccount = i.account.id;
           payload.percentage = i.percentage;
-          payload.id = i.id ;
+          payload.id = i.id;
           return payload;
         });
       } else {
@@ -454,12 +451,12 @@ export default {
           createOfferingItems(contributionCategory);
         }
       } else {
-         ElMessage({
-              type: 'error',
-              showClose: true,
-              message: "Please select an income and cash account",
-              duration: 5000
-            })
+        ElMessage({
+          type: "error",
+          showClose: true,
+          message: "Please select an income and cash account",
+          duration: 5000,
+        });
       }
     };
     const sumPercentage = computed(() => {
@@ -481,8 +478,10 @@ export default {
       selectedCashAccount.value = cashBankAccount.value.find((i) => {
         return i.id === id;
       });
-      console.log(selectedCashAccount.value, 'llklll')
-      selectedCashAccountID.value = selectedCashAccount.value ? selectedCashAccount.value.text : ""
+      console.log(selectedCashAccount.value, "llklll");
+      selectedCashAccountID.value = selectedCashAccount.value
+        ? selectedCashAccount.value.text
+        : "";
     };
 
     const getOffItems = async () => {
@@ -497,27 +496,39 @@ export default {
           });
           x(res.data.cashAccountID);
 
-          selectedIncomeAccountID.value = selectedIncomeAccount.value ? selectedIncomeAccount.value.text : ""
+          selectedIncomeAccountID.value = selectedIncomeAccount.value
+            ? selectedIncomeAccount.value.text
+            : "";
 
-          console.log(res.data, 'jhhbgjhg');
+          console.log(res.data, "jhhbgjhg");
 
-          if (res.data && res.data.incomeRemittance && res.data.incomeRemittance.length > 0) applyRem.value = true
-          remitance.value =  res.data &&   res.data.incomeRemittance ?  res.data.incomeRemittance.map(i => {
-            let data = {};
-            data.percentage = i.percentage;
-            data.id = i.id
-            if (i.distinationCashBankAccount == '00000000-0000-0000-0000-000000000000') {
-              data.account = ungroupedRemittanceResult.value.find(j => {
-                return j.id == i.distinationIncomeAccount
-              })
-            } else {
-              data.account = ungroupedRemittanceResult.value.find(j => {
-                return j.id == i.distinationCashBankAccount
-              })
-            }
-            return data
-          }) : "";
-          console.log(remitance.value, 'jkjjjj');
+          if (
+            res.data &&
+            res.data.incomeRemittance &&
+            res.data.incomeRemittance.length > 0
+          )
+            applyRem.value = true;
+          remitance.value =
+            res.data && res.data.incomeRemittance
+              ? res.data.incomeRemittance.map((i) => {
+                  let data = {};
+                  data.percentage = i.percentage;
+                  data.id = i.id;
+                  if (
+                    i.distinationCashBankAccount == "00000000-0000-0000-0000-000000000000"
+                  ) {
+                    data.account = ungroupedRemittanceResult.value.find((j) => {
+                      return j.id == i.distinationIncomeAccount;
+                    });
+                  } else {
+                    data.account = ungroupedRemittanceResult.value.find((j) => {
+                      return j.id == i.distinationCashBankAccount;
+                    });
+                  }
+                  return data;
+                })
+              : "";
+          console.log(remitance.value, "jkjjjj");
         } catch (err) {
           console.log(err);
         }
@@ -541,9 +552,9 @@ export default {
       addRemittance,
       incomeAccount,
       save,
-      xsOnly, 
-      mdAndUp, 
-      lgAndUp, 
+      xsOnly,
+      mdAndUp,
+      lgAndUp,
       xlAndUp,
       selectedIncomeAccount,
       name,
@@ -648,5 +659,3 @@ export default {
   overflow: scroll;
 }
 </style>
-
-

@@ -1,13 +1,9 @@
 <template>
-    <div class="container-top " :class="{ 'container-slim': lgAndUp || xlAndUp }">
+    <div class="container-top " :class="{ 'container-wide': lgAndUp || xlAndUp }">
       <div class="row">
         <div class="col-12 col-md-6  text-center text-md-left">
           <div>
-            <span class="head-text">Charts of Accounts</span>
-            <span class="help"
-              >
-             <el-icon :size="20"><QuestionFilled /></el-icon>
-            </span>
+            <span class="text-head h2 font-weight-bold py-0 my-0 text-black">Charts of Accounts</span>
           </div>
         </div>
         <div
@@ -24,42 +20,43 @@
         </div>
       </div>
       <div class="container-fluid"> 
-        <div class="row mt-4 row-border">
+        <div class="row mt-5 row-border">
           <div
-            class="col-sm-3 col-md-2 px-0 py-2 pointer"
-            :class="{ active: tab == 'assets' }"
+            class="col-sm-3 col-md-2 px-0 s-20 pointer"
+            
             @click="selectTab('assets')"
           >
-            Assets <span class="count">{{ totalAssets }}</span>
+            <span :class="{ active: tab == 'assets' }">Assets</span> 
+            <span class="count fw-500">{{ totalAssets }}</span>
           </div>
           <div
-            class="col-sm-6 col-md-5 px-0 col-lg-4 col-xl-3 py-2 pointer"
-            :class="{ active: tab == 'liabilities' }"
+            class="col-sm-6 col-md-5 px-0 col-lg-4 col-xl-3 s-20 pointer"
+            
             @click="selectTab('liabilities')"
           >
-            Liabilities & Credit Cards
+            <span :class="{ active: tab == 'liabilities' }">Liabilities & Credit Cards</span>
             <span class="count">{{ totalLiabilities }}</span>
           </div>
           <div
-            class="col-sm-3 col-md-2 px-0 py-2 pointer"
-            :class="{ active: tab == 'income' }"
+            class="col-sm-3 col-md-2 px-0 s-20 pointer"
             @click="selectTab('income')"
           >
-            Income <span class="count">{{ totalIncome }}</span>
+            <span  :class="{ active: tab == 'income' }">Income</span> 
+            <span class="count">{{ totalIncome }}</span>
           </div>
           <div
-            class="col-sm-6 col-md-2 py-2 px-0 pointer"
-            :class="{ active: tab == 'expenses' }"
+            class="col-sm-6 col-md-2 s-20 px-0 pointer"
             @click="selectTab('expenses')"
           >
-            Expenses <span class="count">{{ totalExpenses }}</span>
+            <span :class="{ active: tab == 'expenses' }">Expenses</span> 
+            <span class="count">{{ totalExpenses }}</span>
           </div>
           <div
-            class="col-sm-6 col-md-2 py-2 px-0 pointer"
-            :class="{ active: tab == 'equity' }"
+            class="col-sm-6 col-md-2 s-20 px-0 pointer"
             @click="selectTab('equity')"
           >
-            Fund [Equity] <span class="count">{{ totalEquity }}</span>
+          <span :class="{ active: tab == 'equity' }"> Fund [Equity]</span>
+          <span class="count">{{ totalEquity }}</span>
           </div>
         </div>
       </div>
@@ -387,9 +384,6 @@ export default {
 
 
 <style scoped>
-.chart-head {
-  font: normal normal 800 29px Nunito sans;
-}
 
 .what-new {
   font-weight: 800;
@@ -401,22 +395,26 @@ export default {
 }
 
 .active {
-  font-weight: 800;
+  font-weight: 500;
   border-bottom: 5px solid #007bff;
+  font-size: 20px;
+  line-height: 30px;
+  padding-bottom: 3px;
 }
 
 .count {
-  font: normal normal 800 16px/22px Nunito Sans;
   letter-spacing: 0px;
-  color: #0f0220;
-  opacity: 0.5;
-  background: #136acd52 0% 0% no-repeat padding-box;
+  color: #05388E;
+  background: #d3e9ee;
   padding: 2.5px 8px;
   border-radius: 50%;
+  font-weight: 400;
+  font-size: 11px;
 }
 
 .row-border {
-  border-bottom: 1px solid rgb(225, 225, 225);
+  border-bottom: 1px solid #B0B0B0;
+  padding-bottom: 6px;
 }
 
 .pointer {

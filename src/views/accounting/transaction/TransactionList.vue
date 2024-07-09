@@ -1,28 +1,28 @@
 <template>
-  <div class=" container-top" :class="{ 'container-slim': lgAndUp || xlAndUp }" @click="hideModals">
+  <div class=" container-top" :class="{ 'container-wide': lgAndUp || xlAndUp }" @click="hideModals">
     <div class="main-co">
       <div class="top container-fluid px-0 ">
         <div class="header ">
-          <div class="head-text">Transaction</div>
+          <div class="text-head h2 font-weight-bold py-0 my-0 text-black">Transaction</div>
         </div>
         <div class="row mt-2 header-btns justify-content-center">
           <!-- <div class="actions"> -->
           <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0  mx-auto mx-sm-0 mx-md-0">
-            <el-button class="more-btn header-btn align-items-center justify-content-center d-flex w-100  border-0" round
+            <el-button class="income-btn header-btn align-items-center justify-content-center d-flex w-100  border-0" round
               size="large" @click="toggleTransac(1)">
               Add Income
             </el-button>
           </div>
 
           <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
-            <el-button class="more-btn header-btn align-items-center justify-content-center d-flex w-100 border-0"
+            <el-button class="expense-btn header-btn align-items-center justify-content-center d-flex w-100 border-0"
               size="large" round @click="toggleTransac(2)">
               Add Expense
             </el-button>
           </div>
           <div class="col-12 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
             <el-dropdown size="large"
-              class="show more-btn align-items-center  justify-content-center w-100 d-flex default-btn border-0">
+              class="show more-btn  align-items-center  justify-content-center w-100 d-flex default-btn">
               <span class="el-dropdown-link w-100 text-center h font-weight-bold my-1">
                 More
                 <el-icon class="el-icon--right">
@@ -59,9 +59,9 @@
 
       <div class="container-fluid px-0">
         <div class="col-12 col-sm-8 col-lg-6 px-0 mt-5">
-          <el-dropdown trigger="click" class="w-100 font-weight-700">
+          <el-dropdown trigger="click" class="w-100 font-weight-600">
             <span class="el-dropdown-link w-100">
-              <div class="d-flex justify-content-between px-3 font-weight-700 border-contribution  w-100" size="large">
+              <div class="d-flex justify-content-between px-3 font-weight-600 border-contribution  w-100" size="large">
                 <div class=" w-100 d-flex justify-content-between  ">
                   <span class="">{{ selectedTransaction.type }}</span>
                   <span class="">{{ selectedTransaction.amount }}</span>
@@ -76,7 +76,7 @@
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item v-for="(cash, index) in accountsAndBalancesList" :key="index"
-                  @click="selectAnAccount(cash, index)" class="d-flex justify-content-between font-weight-700">
+                  @click="selectAnAccount(cash, index)" class="d-flex justify-content-between font-weight-600">
                   <div class="close-modal w-100">{{ cash.text }}</div>
                   <div>&nbsp;&nbsp;</div>
                   <div class="close-modal ">{{ cash.currency && cash.currency.symbol ? cash.currency.symbol :
@@ -89,7 +89,7 @@
                             <el-icon size="large"><Files /></el-icon>
                             Upload Bank Statement
                           </a> -->
-                  <a class="font-weight-bold small-text d-flex justify-content-center p-3 text-decoration-none primary-text"
+                  <a class="font-weight-600 small-text d-flex justify-content-center p-3 text-decoration-none primary-text"
                     @click="openModal">
                     <el-icon size="large">
                       <CirclePlus />
@@ -762,9 +762,6 @@ html {
   scroll-behavior: smooth;
 }
 
-.events {
-  font: normal normal 800 29px Nunito sans;
-}
 
 .whole-con {
   display: flex;
@@ -805,12 +802,32 @@ html {
 }
 
 .more-btn {
-  background: #dde2e6;
+  /* background: #dde2e6; */
+  border: 1px solid #C3D4E9 !important;
+  /* overflow: hidden; */
+  color: #136ACD;
+}
+.expense-btn {
+  background: #00B6CF;
+  color: white;
+  /* overflow: hidden; */
+}
+.income-btn {
+  background: #136ACD;
+  color: white;
   /* overflow: hidden; */
 }
 
 .more-btn:first-child,
 .more-btn:nth-child(2) {
+  margin-right: 20px;
+}
+.expense-btn:first-child,
+.expense-btn:nth-child(2) {
+  margin-right: 20px;
+}
+.income-btn:first-child,
+.income-btn:nth-child(2) {
   margin-right: 20px;
 }
 
@@ -829,8 +846,17 @@ html {
 }
 
 .table-top {
-  font-weight: 800;
-  font-size: 12px;
+  position: absolute;
+  z-index: 1;
+  top: -40px;
+  font-weight: 500 !important;
+  font-size: 14px;
+  background: #fff;
+  color: #000000;
+}
+
+.tab-options {
+  position: relative;
 }
 
 .table-top label:hover,
@@ -956,7 +982,6 @@ html {
 
 .create-new-event {
   text-align: center;
-  font: normal normal bold 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #136acd;
   padding: 15px;

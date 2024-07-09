@@ -1,8 +1,8 @@
 <template>
   <div class="pb-4">
     <div class="row mt-5">
-      <div class="col-12 p-0 col-md-4">
-        <div class="col-12 p-0 mb-5">
+      <div class="col-12 p-0 col-md-12">
+        <div class="col-12 col-md-5 p-0">
           <el-select-v2
             v-model="selectedPeriodId"
             :options="periods.map((i) => ({ label: i.name, value: i.name }))"
@@ -12,166 +12,223 @@
             class="w-100"
           />
         </div>
-        <div class="col-12 w-100">
-          <h2 class="font-weight-bold py-3 mb-3">
-            {{ tenantCurrency.currencySymbol }}
-            {{ chartData ? amountWithCommas(Math.round(chartData.income)) : 0 }}
-          </h2>
+        <div class="col-12 col-md-5 align-items-center d-flex flex-wrap px-0 mt-3">
+          <div class="col-md-6 px-0">
+            <div class="h3 bg-photo col-md-12 p-2 mb-3 grey-rounded-border">
+              {{ tenantCurrency.currencySymbol }}
+              <span class="font-weight-600">{{
+                chartData ? amountWithCommas(Math.round(chartData.income)) : 0
+              }}</span>
+            </div>
+          </div>
+          <div @click="showAnalytics" class="col-md-6 cursor-pointer">
+            <u>Show Analytics</u>
+          </div>
         </div>
       </div>
-
-      <div class="col-12 col-md-4">
-        <ContributionPieChart
-          domId="chart"
-          distance="5"
-          :titleMargin="10"
-          :summary="pieChart"
-        />
-      </div>
-      <div class="col-12 col-md-4">
-        <ContributionAreaChart
-          elemId="chart"
-          domId="areaChart3"
-          title="So Far"
-          lineColor="#002044"
-          :subtitle="chartData.name"
-          :series="
-            chartData && chartData.barChart ? chartData.barChart.data : {}
-          "
-          :attendanceSeries="attendanceSeries"
-          :xAxis="LineGraphXAxis"
-        />
+      <div class="col-md-12" v-if="viewAnalytics">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <ContributionPieChart
+              domId="chart"
+              distance="5"
+              :titleMargin="10"
+              :summary="pieChart"
+            />
+          </div>
+          <div class="col-12 col-md-6">
+            <ContributionAreaChart
+              elemId="chart"
+              domId="areaChart3"
+              title="So Far"
+              lineColor="#002044"
+              :subtitle="chartData.name"
+              :series="chartData && chartData.barChart ? chartData.barChart.data : {}"
+              :attendanceSeries="attendanceSeries"
+              :xAxis="LineGraphXAxis"
+            />
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-12 p-0 mt-5">
-        <div class="table-top p-3 mt-5">
-          <div
-            class="row d-flex flex-column flex-sm-row justify-content-sm-end"
-          >
-            <span
-              ><el-icon
-                :size="20"
-                class="c-pointer"
-                v-if="marked.length > 0"
-                @click="modal"
-              >
-                <Delete /> </el-icon
-            ></span>
-            <div
-              class="filter col-md-2"
-              @click="
-                printJS({
-                  ignoreElements: ['ignore1', 'ignore2'],
-                  maxWidth: 867,
-                  header: 'OFFERING TRANSACTIONS',
-                  printable: printContribution,
-                  properties: ['DATE', 'OFFERING', 'AMOUNT', 'DONOR'],
-                  type: 'json',
-                  headerStyle:
-                    'font-family: Nunito Sans, Calibri; text-align: center;',
-                  gridHeaderStyle:
-                    'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
-                  gridStyle:
-                    'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
-                })
-              "
-            >
-              <p class="mb-0 mr-3 d-flex my-3 my-sm-0">
-                <el-icon :size="20"><Printer /></el-icon>
-                <span class="ml-1"> PRINT</span>
-              </p>
-            </div>
-            <div class="col-md-2">
-              <p
-                @click="toggleFilterFormVissibility"
-                class="mb-0 mr-3 d-flex my-3 my-sm-0 c-pointer"
-              >
-                <el-icon :size="20">
-                  <Filter />
-                </el-icon>
-                <span class="ml-1"> FILTER</span>
-              </p>
-            </div>
-            <div class="col-md-5">
-              <el-input
-                size="small"
-                v-model="searchText"
-                placeholder="Search..."
-                @input="searchOfferingInDB"
-                @keyup.enter.prevent="searchOfferingInDB"
-                class="input-with-select"
-              >
-                <template #suffix>
-                  <el-button
-                    style="padding: 5px; height: 22px"
-                    @click.prevent="searchText = ''"
+      <div class="col-md-12 p-0 mt-5">
+        <div class="tab-options d-block d-md-none mt-5">
+          <div class="s-14 fw-500 col-md-10 px-0 mt-5">
+            <div class="d-flex flex-column flex-sm-row justify-content-md-between">
+              <div>
+                <el-tooltip
+                  class="box-item"
+                  effect="dark"
+                  v-if="marked.length > 0"
+                  content="Delete offering(s)"
+                  placement="top-start"
+                >
+                  <el-icon
+                    :size="28"
+                    class="ml-2 c-pointer primary--text"
+                    v-if="marked.length > 0"
+                    @click="modal"
                   >
-                    <el-icon :size="13">
-                      <Close />
-                    </el-icon>
-                  </el-button>
-                </template>
-                <template #append>
-                  <el-button @click.prevent="searchOfferingInDB">
-                    <el-icon :size="13">
-                      <Search />
-                    </el-icon>
-                  </el-button>
-                </template>
-              </el-input>
-            </div>
-          </div>
-          <div
-            class="filter-options mt-3"
-            :class="{ 'filter-options-shown': filterFormIsVissible }"
-            id="ignore1"
-          >
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-md-9">
-                  <div class="row">
-                    <div
-                      class="col-12 col-sm-6 col-md-4 offset-sm-3 offset-md-0 form-group inp w-100"
+                    <Delete />
+                  </el-icon>
+                </el-tooltip>
+              </div>
+              <div class="d-flex flex-column flex-sm-row justify-content-md-between">
+                <el-input
+                  size="small"
+                  v-model="searchText"
+                  placeholder="Search..."
+                  @input="searchOfferingInDB"
+                  @keyup.enter.prevent="searchOfferingInDB"
+                  class="input-with-select"
+                >
+                  <template #suffix>
+                    <el-button
+                      style="padding: 5px; height: 22px"
+                      @click.prevent="searchText = ''"
                     >
-                      <el-input
-                        type="text"
-                        class="w-100"
-                        placeholder="Offering"
-                        v-model="filter.contribution"
-                      />
-                    </div>
-
-                    <div class="col-12 col-md-4 form-group d-none d-md-block">
-                      <el-input
-                        type="text"
-                        class="w-100"
-                        placeholder="donor"
-                        v-model="filter.donor"
-                      />
-                    </div>
+                      <el-icon :size="13">
+                        <Close />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                  <template #append>
+                    <el-button class="btn-search" @click.prevent="searchOfferingInDB">
+                      <el-icon :size="13">
+                        <Search />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                </el-input>
+                <div
+                  style="background: #eeeeee"
+                  class="ml-2 mt-3 mt-sm-0 d-flex w-50 align-items-center justify-content-center border-radius-8"
+                >
+                  <div
+                    @click="toggleFilterFormVissibility"
+                    class="mb-0 px-3 d-flex my-3 my-sm-0 c-pointer"
+                  >
+                    <span class="mr-1"> Filter</span>
+                    <el-icon :size="18">
+                      <Filter />
+                    </el-icon>
                   </div>
                 </div>
-
-                <div class="col-md-3 d-flex flex-column align-items-center">
-                  <el-button
-                    round
-                    :color="primarycolor"
-                    class="text-white"
-                    @click="applyFilter"
+                <div
+                  class="filter"
+                  @click="
+                    printJS({
+                      ignoreElements: ['ignore1', 'ignore2'],
+                      maxWidth: 867,
+                      header: 'OFFERING TRANSACTIONS',
+                      printable: printContribution,
+                      properties: ['DATE', 'OFFERING', 'AMOUNT', 'DONOR'],
+                      type: 'json',
+                      headerStyle:
+                        'font-family: Nunito Sans, Calibri; text-align: center;',
+                      gridHeaderStyle:
+                        'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
+                      gridStyle:
+                        'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
+                    })
+                  "
+                >
+                  <p class="mb-0 mr-3 d-flex my-3 my-sm-0">
+                    <el-icon :size="20"><Printer /></el-icon>
+                    <span class="ml-1"> PRINT</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-options d-none d-md-block mt-5">
+          <div class="table-top col-12 col-md-7 col-lg-7 col-xl-8 px-0 mt-5">
+            <div class="d-flex flex-column flex-md-row justify-content-md-between">
+              <div>
+                <el-tooltip
+                  class="box-item d-flex"
+                  effect="dark"
+                  v-if="marked.length > 0"
+                  content="Delete offering(s)"
+                  placement="top-start"
+                >
+                  <el-icon
+                    :size="28"
+                    class="ml-2 c-pointer primary--text"
+                    v-if="marked.length > 0"
+                    @click="modal"
                   >
-                    Apply
-                  </el-button>
-                  <span class="mt-2">
-                    <a class="clear-link mr-2" @click="clearAll">Clear all</a>
-                    <span class="mx-2"
-                      ><i
-                        class="fas fa-circle"
-                        style="font-size: 4px"
-                      ></i></span
-                    ><a class="hide-link ml-2" @click="hide">Hide</a>
-                  </span>
+                    <Delete />
+                  </el-icon>
+                </el-tooltip>
+              </div>
+              <div class="d-flex flex-column flex-md-row justify-content-md-between">
+                <el-input
+                  size="small"
+                  v-model="searchText"
+                  placeholder="Search..."
+                  @input="searchOfferingInDB"
+                  @keyup.enter.prevent="searchOfferingInDB"
+                  class="input-with-select"
+                >
+                  <template #suffix>
+                    <el-button
+                      style="padding: 5px; height: 22px"
+                      @click.prevent="searchText = ''"
+                    >
+                      <el-icon :size="13">
+                        <Close />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                  <template #append>
+                    <el-button class="btn-search" @click.prevent="searchOfferingInDB">
+                      <el-icon :size="13">
+                        <Search />
+                      </el-icon>
+                    </el-button>
+                  </template>
+                </el-input>
+                <div
+                  style="background: #eeeeee"
+                  class="ml-2 mt-3 py-2 mt-md-0 d-flex align-items-center justify-content-center border-radius-8"
+                >
+                  <p
+                    @click="toggleFilterFormVissibility"
+                    class="mb-0 px-3 d-flex my-3 my-sm-0 c-pointer"
+                  >
+                    <span class="mr-1"> Filter</span>
+                    <el-icon :size="18">
+                      <Filter />
+                    </el-icon>
+                  </p>
+                </div>
+                <div
+                  class="filter mt-2"
+                  @click="
+                    printJS({
+                      ignoreElements: ['ignore1', 'ignore2'],
+                      maxWidth: 867,
+                      header: 'OFFERING TRANSACTIONS',
+                      printable: printContribution,
+                      properties: ['DATE', 'OFFERING', 'AMOUNT', 'DONOR'],
+                      type: 'json',
+                      headerStyle:
+                        'font-family: Nunito Sans, Calibri; text-align: center;',
+                      gridHeaderStyle:
+                        'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
+                      gridStyle:
+                        'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
+                    })
+                  "
+                >
+                  <p class="mb-0 mr-3 d-flex my-3 my-sm-0">
+                    <el-icon :size="20"><Printer /></el-icon>
+                    <span class="ml-1"> PRINT</span>
+                  </p>
                 </div>
               </div>
             </div>
@@ -197,8 +254,7 @@
             </template>
             <template v-slot:amount="{ item }">
               <div class="c-pointer" @click="offeringDetails(item.id)">
-                {{ item.currencyName
-                }}{{ Math.abs(item.amount).toLocaleString() }}.00
+                {{ item.currencyName }}{{ Math.abs(item.amount).toLocaleString() }}.00
               </div>
             </template>
             <template v-slot:channel="{ item }">
@@ -223,8 +279,7 @@
                         class="text-decoration-none"
                         :to="
                           !item.activityId ||
-                          item.activityId ===
-                            '00000000-0000-0000-0000-000000000000'
+                          item.activityId === '00000000-0000-0000-0000-000000000000'
                             ? {
                                 name: 'OfferingReport',
                                 query: {
@@ -254,10 +309,7 @@
                       </router-link>
                     </el-dropdown-item>
                     <el-dropdown-item>
-                      <div
-                        @click="showConfirmModal(item.id, index)"
-                        class="text-color"
-                      >
+                      <div @click="showConfirmModal(item.id, index)" class="text-color">
                         Delete
                       </div>
                     </el-dropdown-item>
@@ -290,6 +342,51 @@
         </div>
       </div>
     </div>
+    <el-dialog
+      v-model="showFilter"
+      title=""
+      :width="mdAndUp || lgAndUp || xlAndUp ? `35%` : xsOnly ? `90%` : `70%`"
+      class="QRCodeDialog border-radius-20"
+      align-center
+    >
+      <div class="filter-optio">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12 text-center text-black h2 fw-500">Filter</div>
+            <div class="col-md-12 text-center text-black s-24">
+              Narrow down your search
+            </div>
+            <div class="col-md-12 mt-3">
+              <div class="row justify-content-center">
+                <div class="col-md-11 form-group">
+                  <div class="text-black">Offering</div>
+                  <el-input
+                    placeholder="Offering"
+                    class="w-100"
+                    v-model="filter.contribution"
+                  />
+                </div>
+                <div class="col-md-11 form-group">
+                  <div class="text-black">Donor</div>
+                  <el-input placeholder="Donor" class="w-100" v-model="filter.donor" />
+                </div>
+                <div class="col-md-12 d-flex pb-3 justify-content-center">
+                  <el-button
+                    class="col-md-11 text-white"
+                    :color="primarycolor"
+                    @click="applyFilter"
+                    :loading="applyLoading"
+                    :disabled="disableBtn"
+                    round
+                    >Apply</el-button
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -311,6 +408,7 @@ import store from "../../../store/store";
 import loadingComponent from "@/components/loading/LoadingComponent";
 import stopProgressBar from "../../../services/progressbar/progress";
 import { ElMessage, ElMessageBox } from "element-plus";
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 export default {
   props: ["contributionTransactions", "totalItem"],
   emits: ["marked"],
@@ -325,8 +423,10 @@ export default {
     const filter = ref({});
     const primarycolor = inject("primarycolor");
     const selectedPeriodId = ref(null);
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
     const filterResult = ref([]);
     const noRecords = ref(false);
+    const applyLoading = ref(false);
     const searchText = ref("");
     const tenantCurrency = ref({});
     const offeringHeaders = ref([
@@ -383,8 +483,11 @@ export default {
     const attendanceSeries = ref("");
     const route = useRoute();
     const filterFormIsVissible = ref(false);
-    const toggleFilterFormVissibility = () =>
-      (filterFormIsVissible.value = !filterFormIsVissible.value);
+    const showFilter = ref(false);
+    const viewAnalytics = ref(false);
+    const toggleFilterFormVissibility = () => {
+      showFilter.value = true;
+    };
     const getRoute = () => {
       if (route.fullPath === "/tenant/offering") {
         chartClass.value = true;
@@ -392,17 +495,25 @@ export default {
     };
     getRoute();
 
+    const disableBtn = computed(() => {
+      if (!filter.value.contribution && !filter.value.donor ) return true;
+      return false;
+    });
+
     const offeringDetails = (id) => {
       router.push(`/tenant/addoffering/${id}`);
     };
     selectedPeriodId.value = selectedPeriod.value.name;
     const setSelectedPeriod = () => {
-      selectedPeriod.value = periods.value.find(
-        (i) => i.name == selectedPeriodId.value
-      );
+      selectedPeriod.value = periods.value.find((i) => i.name == selectedPeriodId.value);
     };
 
     const marked = ref([]);
+
+    const showAnalytics = () => {
+      viewAnalytics.value = !viewAnalytics.value;
+      getContributionSummary();
+    };
 
     const convert = (x) => {
       return x.map((i) => i.id);
@@ -448,15 +559,11 @@ export default {
     };
 
     const modal = () => {
-      ElMessageBox.confirm(
-        "Are you sure you want to proceed?",
-        "Confirm delete",
-        {
-          confirmButtonText: "OK",
-          cancelButtonText: "Cancel",
-          type: "error",
-        }
-      )
+      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "error",
+      })
         .then(() => {
           deleteMarked();
         })
@@ -537,15 +644,11 @@ export default {
         });
     };
     const showConfirmModal = (id, index) => {
-      ElMessageBox.confirm(
-        "Are you sure you want to proceed?",
-        "Confirm delete",
-        {
-          confirmButtonText: "OK",
-          cancelButtonText: "Cancel",
-          type: "error",
-        }
-      )
+      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "error",
+      })
         .then(() => {
           deleteOffering(id, index);
         })
@@ -563,7 +666,7 @@ export default {
         const { data } = await axios.get(
           `/api/Financials/Contributions/Transactions?page=${serverOptions.value.page}`
         );
-        console.log(data, 'bbb');
+        console.log(data, "bbb");
         if (data && data.data.length > 0) {
           emit("get-pages", data);
           currentPage.value = serverOptions.value.page;
@@ -574,10 +677,7 @@ export default {
     };
 
     const offeringCount = computed(() => {
-      if (
-        !props.contributionTransactions ||
-        props.contributionTransactions.length === 0
-      )
+      if (!props.contributionTransactions || props.contributionTransactions.length === 0)
         return 0;
       return props.contributionTransactions.length;
     });
@@ -587,12 +687,11 @@ export default {
     };
 
     const applyFilter = () => {
+      applyLoading.value = true;
       filter.value.contribution =
         filter.value.contribution == undefined ? "" : filter.value.contribution;
-      filter.value.event =
-        filter.value.event == undefined ? "" : filter.value.event;
-      filter.value.donor =
-        filter.value.donor == undefined ? "" : filter.value.donor;
+      filter.value.event = filter.value.event == undefined ? "" : filter.value.event;
+      filter.value.donor = filter.value.donor == undefined ? "" : filter.value.donor;
       let url =
         "/api/Financials/Contributions/FilteredTransactions?contribution=" +
         filter.value.contribution +
@@ -604,6 +703,8 @@ export default {
         .get(url)
         .then((res) => {
           filterResult.value = res.data;
+          applyLoading.value = false;
+          showFilter.value = false;
           if (res.data.length === 0) {
             noRecords.value = true;
           } else {
@@ -825,8 +926,7 @@ export default {
       return [];
     });
 
-    const amountWithCommas = (amount) =>
-      numbers_formatter.amountWithCommas(amount);
+    const amountWithCommas = (amount) => numbers_formatter.amountWithCommas(amount);
 
     return {
       deleteMarked,
@@ -846,6 +946,7 @@ export default {
       deleteOffering,
       filterFormIsVissible,
       toggleFilterFormVissibility,
+      showFilter,
       moment,
       applyFilter,
       filter,
@@ -880,6 +981,14 @@ export default {
       listOfOfferingItems,
       clearAll,
       hide,
+      showAnalytics,
+      viewAnalytics,
+      disableBtn,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      xsOnly,
+      applyLoading
     };
   },
 };
@@ -891,6 +1000,20 @@ export default {
   color: #02172e;
 }
 
+.table-top {
+  position: absolute;
+  z-index: 1;
+  top: -40px;
+  font-weight: 500 !important;
+  font-size: 14px;
+  background: #fff;
+  color: #000000;
+}
+
+.tab-options {
+  position: relative;
+}
+
 .myselectContr {
   height: 2.5rem;
 }
@@ -899,13 +1022,7 @@ export default {
   text-decoration: none;
   width: 241px;
 }
-.table-top {
-  font-weight: 800;
-  font-size: 12px;
-  background: #fff;
-  border: 1px solid #d4dde3;
-  border-bottom: none;
-}
+
 .table-top label:hover,
 .table-top p:hover {
   cursor: pointer;

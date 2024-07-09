@@ -2,9 +2,9 @@
   <div class="container-fluid px-0" v-for="(item, index) in data.accountHeadsDTO" :key="index">
     <div class="col-md-12">
       <div class="row">
-        <div class="col-12 py-2 mt-4 account-head">
-          {{ item.name }} <small class="font-weight-normal"></small
-          ><el-icon :size="20"><QuestionFilled /></el-icon>
+        <div class="col-12 py-2  d-flex mt-4 account-head">
+          {{ item.name }}
+         <el-icon class="mt-2 ml-1" :size="20"><QuestionFilled /></el-icon>
         </div>
       </div>
       <div
@@ -12,9 +12,9 @@
         v-for="(itm, indx) in item.accounts"
         :key="indx"
       >
-        <div class="col-6 col-md-2">{{ itm.code }}</div>
-        <div class="col-6 col-md-3">
-          <div class="desc-head">{{ itm.name }}</div>
+        <div class="col-6 col-md-2 fw-400 text-dak s-14">{{ itm.code }}</div>
+        <div class="col-6 col-md-3 ">
+          <div class="fw-500 text-dak s-14">{{ itm.name }}</div>
         </div>
         <div class="col-6 col-md-5">{{ itm.description }}</div>
         <div class="col-6 col-md-2 text-right">
@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="row row-border align-items-center py-3" v-if="item.accounts.length === 0">
-        <div class="col-10 offset-md-2 text-center text-md-left">
+        <div class="col-10 offset-md-2 text-center s-14 text-md-left">
           You have not added any inventory yet.
         </div>
       </div>
@@ -36,9 +36,8 @@
               data-toggle="modal"
               data-target="#incModal"
               >
-              <el-icon :size="20"><CirclePlus /></el-icon>
-              &nbsp; &nbsp; Add a new
-              Account
+              <el-icon class="mr-1" :size="20"><CirclePlus /></el-icon> 
+              <span class="fw-500 s-14">Add a new Account</span>
               </a
             >
           </div>
@@ -216,14 +215,14 @@ export default {
 
 <style scoped>
 .row-border {
-  border-bottom: 1px solid rgb(225, 225, 225);
+  border-bottom: 1px solid #B0B0B0;
 }
 
 .account-head {
-  background: #e0e7eb;
-  font-weight: 800;
+  background: #eeeeee;
+  font-weight: 500;
+  font-size: 20px;
 }
-
 .help {
   color: rgb(100, 100, 100);
   margin: 5px;
@@ -239,8 +238,8 @@ export default {
 }
 
 .add-account {
-  color: #136acd;
-  font-weight: 800;
+  color: #0745af;
+  font-weight: 600;
 }
 
 .modal-lg {

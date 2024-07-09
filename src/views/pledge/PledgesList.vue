@@ -1,79 +1,87 @@
 <template>
   <div>
     <div class="d-flex flex-wrap flex-column flex-sm-row justify-content-between">
-      <div class="">
-        <div class="head-text">Dues, Pledges and Partnership</div>
+      <div>
+        <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
+          Pledges, Dues & Partnership
+        </div>
+        <div class="s-18">Showing all Pledges, Dues & Partnership</div>
       </div>
       <div class="d-flex flex-column flex-sm-row mt-2 my-1 link">
         <router-link class="mr-1" to="/tenant/pledge/pledgedefinitionlist">
           <el-button class="header-btn mr-3 w-100 secondary-button" round>
-            Dues/Partnership/Pledge items
+            Dues, Partnership & Pledges items
           </el-button>
         </router-link>
         <router-link class="" to="/tenant/pledge/makepledge">
           <el-button :color="primarycolor" class="header-btn w-100 mt-3 mt-sm-0" round>
-            New Partnership/Pledge
-          </el-button></router-link>
+            New Partnership/Pledges
+          </el-button></router-link
+        >
       </div>
     </div>
-    <div class="d-flex flex-wrap flex-column flex-sm-row row" v-if="route.fullPath == '/tenant/pledge/pledgeslist'">
-      <div class="col-12 py-md-4 mt-3">
-        <div class="font-weight-bold">Copy and Share the link</div>
-        <div class="p-inputgroup form-group mt-2">
-          <el-input v-model="memberlink" placeholder="Click the copy button when the link appears" ref="selectedLink"
-            class="input-with-select">
-            <template #append>
-              <el-button @click="copylink">
-                <el-icon>
-                  <CopyDocument />
-                </el-icon>
-              </el-button>
-            </template>
-          </el-input>
+    <div
+      class="d-flex flex-wrap justify-content-end flex-column flex-sm-row row"
+      v-if="route.fullPath == '/tenant/pledge/pledgeslist'"
+    >
+      <div class="col-sm-12 col-md-10 col-lg-8 mt-5 col-12">
+        <div class="row justify-content-between">
+          <div class="col-md-6 mt-4 mt-md-0">
+            <div class="col-md-12 d-flex justify-content-between align-items-center border-radius-10 py-2  px-3 grey-backg">
+              <div class="fw-500 s-14">Copy and Share the <br> link to Pay</div>
+              <el-button color="#32C1D5" round class="text-white" @click="copylink">
+                <img class="ml-2" src="../../assets/copyurl-icon.png" alt="" />Copy
+                Link</el-button
+              >
+            </div>
+          </div>
+          <div class="col-md-6 mt-4 mt-md-0 ">
+            <div class="col-md-12 d-flex align-items-center border-radius-10 py-2 justify-content-between px-3 grey-backg">
+              <div class="fw-500 s-14">Copy and Share the <br> link to Pledge</div>
+              <el-button color="#32C1D5" round class="text-white" @click="copylink2">
+                <img class="ml-2" src="../../assets/copyurl-icon.png" alt="" />Copy
+                Link</el-button
+              >
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="container-fluid" v-if="allPledgeList.length > 0 && !loading && !networkError">
-      <div class="row border   mt-3 rounded">
-        <div class="col-md-12 pt-3 py-2 border-remove px-0 d-flex flex-wrap" v-for="(item, index) in pledgesSummary"
-          :key="index">
+    <div
+      class="container-fluid"
+      v-if="allPledgeList.length > 0 && !loading && !networkError"
+    >
+      <div class="row border mt-3 rounded">
+        <div
+          class="col-md-12 pt-3 py-2 border-remove px-0 d-flex flex-wrap"
+          v-for="(item, index) in pledgesSummary"
+          :key="index"
+        >
           <div class="col-sm-6 col-lg-4">
-            <div class="text-secondary font-weight-bold small">
-              Total pledge
-            </div>
-            <h3 class="font-weight-700 mt-3">
+            <div class="fw-400 text-black">Total pledge</div>
+            <h3 class="font-weight-600 mt-3">
               {{
                 Math.abs(
-                  getAllPledgeAmount.length == 0
-                    ? item.totalPledges
-                    : getAllPledgeAmount
+                  getAllPledgeAmount.length == 0 ? item.totalPledges : getAllPledgeAmount
                 ).toLocaleString()
               }}.00
-              <span class="text-secondary small">{{
-                item.symbol
-              }}</span>
+              <span class="text-secondary small">{{ item.symbol }}</span>
             </h3>
           </div>
           <div class="col-sm-6 col-lg-4 mt-3 mt-sm-0">
-            <div class="font-weight-bold small text-secondary">
-              Total Payments
-            </div>
-            <h3 class="font-weight-700 mt-3 text-success">
+            <div class="fw-400 text-black">Total Payments</div>
+            <h3 class="font-weight-600 mt-3 text-success">
               {{
                 Math.abs(
-                  getAllTotalPayment.length == 0
-                    ? item.totalPayments
-                    : getAllTotalPayment
+                  getAllTotalPayment.length == 0 ? item.totalPayments : getAllTotalPayment
                 ).toLocaleString()
               }}.00
               <span class="small">{{ item.symbol }}</span>
             </h3>
           </div>
           <div class="col-md-12 col-lg-4 mt-3 mt-md-0">
-            <div class="text-secondary font-weight-bold small">
-              Total Balance
-            </div>
-            <h3 class="font-weight-700 mt-3 text-danger">
+            <div class="fw-400 text-black">Total Balance</div>
+            <h3 class="font-weight-600 mt-3 text-danger">
               {{
                 Math.abs(
                   getAllTotalBalance.length == 0
@@ -87,81 +95,88 @@
             </h3>
           </div>
         </div>
-
       </div>
     </div>
-    <div class="row mt-4 mb-4" v-if="allPledgeList.length > 0 && !loading && !networkError">
+    <div
+      class="row mt-4 justify-content-between mb-4"
+      v-if="allPledgeList.length > 0 && !loading && !networkError"
+    >
       <div class="col-12 col-md-6 col-lg-2 pr-lg-1">
-        <div class="mb-1">Select Member</div>
+        <div class="mb-1 fw-400 text-dak s-14">Select Member</div>
         <MembersSearch @memberdetail="chooseContact" :currentMember="selectedContact" />
       </div>
       <div class="col-12 col-md-6 col-lg-2 mt-3 mt-md-0 mt-lg-0 px-lg-1">
-        <div class="mb-1">Select Category</div>
-        <!-- <div>
-          <el-select v-model="selectedCategoryID" multiple collapse-tags placeholder="Select" class="w-100">
-            <el-option @click="selectAllCategory" label="Select All" value="Select All" />
-            <el-option @click="setSelectedCategoryItem" v-for="item in allPledgeDefinitionList" :key="item.id" :label="item.name"
-              :value="item.id" />
-          </el-select>
-        </div> -->
-
+        <div class="mb-1 fw-400 text-dak s-14">Select Category</div>
         <div>
-          <SelectAllDropdown :items="allPledgeDefinitionList" @selected-item="setSelectedCategory" />
+          <SelectAllDropdown
+            :items="allPledgeDefinitionList"
+            @selected-item="setSelectedCategory"
+          />
         </div>
-
-        <!-- <el-select-v2
-          v-model="selectedCategoryID"
-          @change="setSelectedCategory"
-          :options="
-            allPledgeDefinitionList.map((i) => ({ label: i.name, value: i.id }))
-          "
-          placeholder="Select category"
+      </div>
+      <div class="col-12 col-md-6 col-lg-2 mt-3 mt-lg-0 px-lg-1">
+        <div class="mb-1 fw-400 text-dak s-14">Select Status</div>
+        <div>
+          <SelectAllDropdown
+            :items="allPledgeStatus"
+            @selected-item="setSelectedStatus"
+          />
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-2 mt-3 mt-lg-0 px-lg-1">
+        <div class="mb-1 fw-400 text-dak s-14">Start Date</div>
+        <el-date-picker
+          v-model="startDate"
+          type="date"
+          placeholder="From"
+          format="DD/MM/YYYY"
           size="large"
           class="w-100"
-        /> -->
+        />
       </div>
-      <div class="col-12 col-md-6 col-lg-2 mt-3 mt-lg-0 px-lg-1">
-        <div class="mb-1">Select Status</div>
-        <div>
-          <SelectAllDropdown :items="allPledgeStatus" @selected-item="setSelectedStatus" />
-        </div>
-        <!-- <div>
-          <el-select v-model="selectedStatusID" multiple collapse-tags placeholder="Select" class="w-100">
-            <el-option @click="selectAllStatus" label="Select All" value="Select All" />
-            <el-option @click="setSelectedStatusItem" v-for="item in allPledgeStatus" :key="item.id" :label="item.name"
-              :value="item.id" />
-          </el-select>
-        </div> -->
-        <!-- <el-select-v2
-          v-model="selectedStatusID"
-          @change="setSelectedStatus"
-          :options="
-            allPledgeStatus.map((i) => ({ label: i.name, value: i.id }))
-          "
-          placeholder=" Select Status"
+      <div class="col-12 col-md-6 col-lg-2 mt-3 mt-lg-0">
+        <div class="mb-1 fw-400 text-dak s-14">End Date</div>
+        <el-date-picker
+          v-model="endDate"
+          type="date"
+          placeholder="To"
+          format="DD/MM/YYYY"
           size="large"
           class="w-100"
-        /> -->
+        />
       </div>
-      <div class="col-12 col-md-6 col-lg-2 mt-3 mt-lg-0 px-lg-1">
-        <div class="mb-1">Start Date</div>
-        <el-date-picker v-model="startDate" type="date" placeholder="From" format="DD/MM/YYYY" size="large"
-          class="w-100" />
-      </div>
-      <div class="col-12 col-md-6 col-lg-2 mt-3 mt-lg-0 px-lg-1">
-        <div class="mb-1">End Date</div>
-        <el-date-picker v-model="endDate" type="date" placeholder="To" format="DD/MM/YYYY" size="large" class="w-100" />
-      </div>
-      <div class="col-12 col-md-6 d-flex col-lg-2 mt-3 pl-lg-0 text-sm-center mt-lg-0">
-        <div @click="reSet" class="mt-2 c-pointer pr-2 mt-md-4 mt-0 pt-md-2 pt-0 text-primary">Reset</div>
-        <el-button :loading="filterLoading" class=" mt-4" @click="filterPledge" round :color="primarycolor" size="large">
-          Apply
-        </el-button>
+      <div class="col-md-12">
+        <div class="row justify-content-end">
+          <div
+            class="col-12 justify-content-between col-md-6 d-flex col-lg-2 mt-3 pl-lg-0 text-sm-center mt-lg-0"
+          >
+            <div
+              @click="reSet"
+              class="mt-2 c-pointer pr-2 fw-500 mt-md-4 mt-0 pt-md-2 pt-0 text-primary"
+            >
+              <u>Reset</u>
+            </div>
+            <el-button
+              :loading="filterLoading"
+              class="mt-4"
+              @click="filterPledge"
+              round
+              :color="primarycolor"
+              size="large"
+            >
+              Apply
+            </el-button>
+          </div>
+        </div>
       </div>
     </div>
-    <div v-if="searchPledges && searchPledges.length > 0 && !loading && !networkError
-      ">
-      <Table :data="searchPledges" :headers="pledgeHeaders" :checkMultipleItem="false" v-loading="loading">
+    <div v-if="searchPledges && searchPledges.length > 0 && !loading && !networkError">
+      <Table
+        :data="searchPledges"
+        :headers="pledgeHeaders"
+        :checkMultipleItem="false"
+        v-loading="loading"
+      >
         <template v-slot:status="{ item }">
           <div class="c-pointer" @click="pledgeListClick(item.id)">
             {{ item.status }}
@@ -207,14 +222,24 @@
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item>
-                  <router-link :to="`/tenant/pledge/pledgemaking?pledgeTypeID=${item.id}`" class="text-color">Make
-                    Payment</router-link>
+                  <router-link
+                    :to="`/tenant/pledge/pledgemaking?pledgeTypeID=${item.id}`"
+                    class="text-color"
+                    >Make Payment</router-link
+                  >
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  <router-link :to="`/tenant/pledge/makepledge?id=${item.id}`" class="text-color">Edit</router-link>
+                  <router-link
+                    :to="`/tenant/pledge/makepledge?id=${item.id}`"
+                    class="text-color"
+                    >Edit</router-link
+                  >
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">
+                  <div
+                    @click.prevent="showConfirmModal(item.id, index)"
+                    class="text-color"
+                  >
                     Delete
                   </div>
                 </el-dropdown-item>
@@ -226,12 +251,14 @@
     </div>
     <el-skeleton class="w-100" animated v-if="loading">
       <template #template>
-        <div style="
+        <div
+          style="
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-top: 20px;
-          ">
+          "
+        >
           <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
           <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
         </div>
@@ -242,8 +269,10 @@
       <div class="empty-img">
         <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
         <p class="tip">You haven't added any pledge yet</p>
-        <div class="c-pointer primary-bg col-sm-6 col-md-4 offset-sm-3 offset-md-4 default-btn border-0 text-white"
-          @click="navigateToMakePledge">
+        <div
+          class="c-pointer primary-bg col-sm-6 col-md-4 offset-sm-3 offset-md-4 default-btn border-0 text-white"
+          @click="navigateToMakePledge"
+        >
           Add Pledge
         </div>
       </div>
@@ -283,11 +312,11 @@ export default {
     const selectedCategoryID = ref([]);
     const filterLoading = ref(false);
     const allPledgeStatus = ref([
-      { name: "Paid", id: '1' },
-      { name: "Over Due", id: '2' },
-      { name: "No Payment", id: '3' },
-      { name: "Partial", id: '4' },
-      { name: "---", id: '5' },
+      { name: "Paid", id: "1" },
+      { name: "Over Due", id: "2" },
+      { name: "No Payment", id: "3" },
+      { name: "Partial", id: "4" },
+      { name: "---", id: "5" },
     ]);
 
     const allPledgeDefinitionList = ref([]);
@@ -308,6 +337,7 @@ export default {
     const showDraft = ref(false);
     const showInvoice = ref(false);
     const selectedLink = ref(null);
+    const selectedLink2 = ref(null);
     const selectedContact = ref({});
     const selectedContact2 = ref("");
     const pledgeHeaders = ref([
@@ -344,29 +374,44 @@ export default {
     };
 
     const setSelectedCategory = (payload) => {
-      selectedCategory.value = payload
-
-      // selectedCategory.value = allPledgeDefinitionList.value.find((i) => {
-      //   return i.id == selectedCategoryID.value;
-      // });
+      selectedCategory.value = payload;
     };
     const copylink = () => {
-      selectedLink.value.input.setSelectionRange(
-        0,
-        selectedLink.value.input.value.length
-      ); /* For mobile devices */
-      selectedLink.value.input.select();
+      const textarea = document.createElement("textarea");
+      textarea.value = makePledgeLink.value;
 
-      /* Copy the text inside the text field */
+      document.body.appendChild(textarea);
+
+      textarea.select();
+      textarea.setSelectionRange(0, 99999);
+
       document.execCommand("copy");
+      document.body.removeChild(textarea);
+
       ElMessage({
         showClose: true,
-        message: "Copied to clipboard",
+        message: "Pledge URL Copied Successfully!",
         type: "success",
       });
     };
+    const copylink2 = () => {
+      const textarea = document.createElement("textarea");
+      textarea.value = pledgePaymentlink.value;
 
+      document.body.appendChild(textarea);
 
+      textarea.select();
+      textarea.setSelectionRange(0, 99999);
+
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+
+      ElMessage({
+        showClose: true,
+        message: "Pledge Payment URL Copied Successfully!",
+        type: "success",
+      });
+    };
 
     const navigateToMakePledge = () => {
       router.push("/tenant/pledge/makepledge");
@@ -376,9 +421,7 @@ export default {
       router.push(`/tenant/pledge/pledgemaking?pledgeTypeID=${id}`);
     };
     const pledgeBalance = computed(() => {
-      return (
-        pledgesSummary.value.totalPledges - pledgesSummary.value.totalPayments
-      );
+      return pledgesSummary.value.totalPledges - pledgesSummary.value.totalPayments;
     });
 
     const getAllPledgeDefinition = async () => {
@@ -396,16 +439,19 @@ export default {
     const filterPledge = async () => {
       filterLoading.value = true;
       const payload = {
-        personId: selectedContact.value && selectedContact.value.id ? selectedContact.value.id : "",
+        personId:
+          selectedContact.value && selectedContact.value.id
+            ? selectedContact.value.id
+            : "",
         status: selectedStatus.value.map((i) => i.name),
         pledgeItemIDs: selectedCategory.value.map((i) => i.id),
-        startDate: startDate.value ? new Date(startDate.value).toLocaleDateString("en-US") : "",
+        startDate: startDate.value
+          ? new Date(startDate.value).toLocaleDateString("en-US")
+          : "",
         endDate: endDate.value ? new Date(endDate.value).toLocaleDateString("en-US") : "",
-      }
+      };
       try {
-        const res = await axios.post(
-          '/api/Pledge/GetAllPledgesSearch', payload
-        );
+        const res = await axios.post("/api/Pledge/GetAllPledgesSearch", payload);
         // const res = await axios.get(
         //   `/api/Pledge/GetAllPledgesSearch?personId=${selectedContactValue}&status=${selectedStatusValue}&pledgeItemID=${selectedCategoryValue}&startDate=${startDateValue}&endDate=${endDateValue}`
         // );
@@ -465,9 +511,13 @@ export default {
 
     getCurrentlySignedInUser();
 
-    const memberlink = computed(() => {
+    const pledgePaymentlink = computed(() => {
       if (!tenantID.value) return "";
       return `${window.location.origin}/partnership/pay?tenantID=${tenantID.value}`;
+    });
+    const makePledgeLink = computed(() => {
+      if (!tenantID.value) return "";
+      return `${window.location.origin}/partnership/makepledge?tenantID=${tenantID.value}`;
     });
 
     const searchPledges = computed(() => {
@@ -510,7 +560,7 @@ export default {
         await store.dispatch("pledge/getPledgeSummary").then((res) => {
           pledgesSummary.value = res;
         });
-      } catch (error) { }
+      } catch (error) {}
     };
 
     const getAllPledges = async () => {
@@ -551,7 +601,7 @@ export default {
             (pledgelist) => pledgelist.id !== id
           );
           store.dispatch("pledge/removePledgeFromStore", id);
-          getAllPledgesSummary()
+          getAllPledgesSummary();
         })
         .catch((err) => {
           if (err.response.status === 400) {
@@ -577,15 +627,11 @@ export default {
     };
 
     const showConfirmModal = (id, index) => {
-      ElMessageBox.confirm(
-        "Are you sure you want to proceed?",
-        "Confirm delete",
-        {
-          confirmButtonText: "OK",
-          cancelButtonText: "Cancel",
-          type: "error",
-        }
-      )
+      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "error",
+      })
         .then(() => {
           deletePledge(id, index);
         })
@@ -599,8 +645,7 @@ export default {
     };
 
     onMounted(() => {
-      if (allPledgeList.value && allPledgeList.value.length == 0)
-        getAllPledges();
+      if (allPledgeList.value && allPledgeList.value.length == 0) getAllPledges();
       if (pledgesSummary.value && Object.keys(pledgesSummary.value).length == 0)
         getAllPledgesSummary();
     });
@@ -613,7 +658,9 @@ export default {
       reSet,
       route,
       selectedLink,
+      selectedLink2,
       copylink,
+      copylink2,
       setSelectedStatus,
       filterLoading,
       setSelectedCategory,
@@ -639,7 +686,7 @@ export default {
       navigateToMakePledge,
       networkError,
       tenantID,
-      memberlink,
+      makePledgeLink,
       pledgeClick,
       clearInput,
       searchPledges,

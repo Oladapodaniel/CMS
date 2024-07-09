@@ -516,12 +516,6 @@
                 <div class="col-md-12 d-flex pb-3 justify-content-center">
                   <el-button class="col-md-11" :color="primarycolor" @click="applyFilter" :loading="applyLoading"
                     :disabled="disableBtn" round>Apply</el-button>
-                  <!-- <div class="mt-2 col-md-11">
-                    <el-button @click="clearAll" class="mr-2" text
-                      >Clear all</el-button
-                    > -->
-                  <!-- <el-button @click="hide" class="mx-2" text>Hide</el-button> -->
-                  <!-- </div> -->
                 </div>
               </div>
             </div>
@@ -650,7 +644,6 @@ export default {
 
     const toggleFilterFormVissibility = () => {
       showFilter.value = true;
-      // (filterFormIsVissible.value = !filterFormIsVissible.value);
     };
 
     const membershipSummary = ref(
@@ -1420,13 +1413,10 @@ export default {
   position: absolute;
   z-index: 1;
   top: -40px;
-  /* width: 100%; */
   font-weight: 500 !important;
   font-size: 14px;
   background: #fff;
   color: #000000;
-  /* border: 1px solid #d4dde3; */
-  /* max-width: 83.333333% !important; */
 }
 
 .tab-options {

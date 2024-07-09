@@ -1,5 +1,5 @@
 <template>
-  <div class="" :class="{ 'container-wide': lgAndUp || xlAndUp }">
+  <div class="" :class="{ 'container-slim': lgAndUp || xlAndUp }">
     <div class="row">
       <div class="col-md-12">
         <div class="row mt-4 mb-4">
@@ -124,13 +124,6 @@
               <div class="row unapproved mt-4">
                 <div class="col-md-12">
                   <div class="row px-4 my-3">
-                    <!-- <div class="col-md-1 d-flex align-items-center">
-                      <span class="file-icon">
-                        <el-icon>
-                          <Bottom />
-                        </el-icon>
-                      </span>
-                    </div> -->
                     <div class="col-md-5 grey-text">
                       <span class="fw-400 s-15">Send </span>
                       <p>
@@ -243,7 +236,7 @@
             </div>
           </div>
 
-          <div class="container-fluid bottom-section px-0">
+          <div class="container-fluid  px-0">
             <div class="row mx-0  dark-red-section" ref="topmost">
               <div class="col-md-7 dark-red-section pl-5">
                 <h2 class="evt-report">Event and Report</h2>
@@ -3873,7 +3866,7 @@ a {
 
 .ana-item-value,
 .today-text {
-  color: #136acd;
+  /* color: #136acd; */
   font-weight: 700;
 }
 
