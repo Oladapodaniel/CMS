@@ -3,7 +3,9 @@
     <div class="row blue-bg" :class="currentRoute">
       <div class="col-md-12 bg-blue"></div>
     </div>
-    <div class="row px-1">
+
+    <!-- <router-view></router-view> -->
+    <!-- <div class="row px-1">
       <div class="col-md-3">
         <div class="row">
           <div class="col-md-12 my-5">
@@ -13,12 +15,12 @@
 
         <div class="row">
           <div class="col-md-12 all-platforms py-3">
-            <router-link to="/tenant/social/feed" class="row text-white text-decoration-none">
+            <router-link
+              to="/tenant/social/feed"
+              class="row text-white text-decoration-none"
+            >
               <div class="col-md-2">
-                <i
-                  class="pi pi-microsoft text-white"
-                  style="font-size: 1.5rem"
-                ></i>
+                <i class="pi pi-microsoft text-white" style="font-size: 1.5rem"></i>
               </div>
               <div class="col-md-10">
                 <span class="font-weight-700">All Platforms</span>
@@ -29,12 +31,12 @@
 
         <div class="row">
           <div class="col-md-12 facebook py-3">
-            <router-link to="/tenant/social/feed/facebook" class="row text-white text-decoration-none">
+            <router-link
+              to="/tenant/social/feed/facebook"
+              class="row text-white text-decoration-none"
+            >
               <div class="col-md-2">
-                <i
-                  class="pi pi-facebook text-white"
-                  style="font-size: 1.5rem"
-                ></i>
+                <i class="pi pi-facebook text-white" style="font-size: 1.5rem"></i>
               </div>
               <div class="col-md-10">
                 <span class="font-weight-700">Facebook</span>
@@ -45,12 +47,12 @@
 
         <div class="row">
           <div class="col-md-12 twitter py-3">
-            <router-link to="/tenant/social/feed/twitter" class="row text-white text-decoration-none">
+            <router-link
+              to="/tenant/social/feed/twitter"
+              class="row text-white text-decoration-none"
+            >
               <div class="col-md-2">
-                <i
-                  class="pi pi-twitter text-white"
-                  style="font-size: 1.5rem"
-                ></i>
+                <i class="pi pi-twitter text-white" style="font-size: 1.5rem"></i>
               </div>
               <div class="col-md-10">
                 <span class="font-weight-700">Twitter</span>
@@ -61,12 +63,12 @@
 
         <div class="row">
           <div class="col-md-12 instagram py-3">
-            <router-link to="/tenant/social/feed/instagram" class="row text-white text-decoration">
+            <router-link
+              to="/tenant/social/feed/instagram"
+              class="row text-white text-decoration"
+            >
               <div class="col-md-2">
-                <i
-                  class="pi pi-instagram text-white"
-                  style="font-size: 1.5rem"
-                ></i>
+                <i class="pi pi-instagram text-white" style="font-size: 1.5rem"></i>
               </div>
               <div class="col-md-10">
                 <span class="font-weight-700">Instagram</span>
@@ -77,12 +79,12 @@
 
         <div class="row">
           <div class="col-md-12 whatsapp py-3">
-            <router-link to="/tenant/social/feed/whatsapp" class="row text-white text-decoration-none">
+            <router-link
+              to="/tenant/social/feed/whatsapp"
+              class="row text-white text-decoration-none"
+            >
               <div class="col-md-2">
-                <i
-                  class="pi pi-instagram text-white"
-                  style="font-size: 1.5rem"
-                ></i>
+                <i class="pi pi-instagram text-white" style="font-size: 1.5rem"></i>
               </div>
               <div class="col-md-10">
                 <span class="font-weight-700">Whatsapp</span>
@@ -93,12 +95,12 @@
 
         <div class="row">
           <div class="col-md-12 mobile py-3">
-            <router-link to="/tenant/social/feed/mobile" class="row text-white text-decoration/feed">
+            <router-link
+              to="/tenant/social/feed/mobile"
+              class="row text-white text-decoration/feed"
+            >
               <div class="col-md-2">
-                <i
-                  class="pi pi-mobile text-white"
-                  style="font-size: 1.5rem"
-                ></i>
+                <i class="pi pi-mobile text-white" style="font-size: 1.5rem"></i>
               </div>
               <div class="col-md-10">
                 <span class="font-weight-700">Mobile Apps</span>
@@ -106,13 +108,8 @@
             </router-link>
           </div>
         </div>
-      </div>
-
-      <!-- Feed -->
-      <div class="col-md-9 col-lg-8 mx-auto py-4">
-        <router-view></router-view>
-      </div>
-    </div>
+      </div>   
+    </div> -->
   </div>
 </template>
 
@@ -122,7 +119,7 @@ import social_service from "../../../services/social/social_service";
 import membershipService from "../../../services/membership/membershipservice";
 import dateFormatter from "../../../services/dates/dateformatter";
 import { useRoute } from "vue-router";
-import { computed } from '@vue/runtime-core';
+import { computed } from "@vue/runtime-core";
 // import Skeleton from "primevue/skeleton";
 
 export default {
@@ -145,11 +142,11 @@ export default {
     const getFeed = async (tenantId) => {
       try {
         const response = await social_service.getFeed(tenantId);
-        feed.value = response.map(i => {
+        feed.value = response.map((i) => {
           i.showFullMessage = false;
           i.briefMessage = i.content.slice(0, previewLenth);
           return i;
-        })
+        });
         loaded.value = false;
         console.log(feed.value);
       } catch (error) {
@@ -183,12 +180,12 @@ export default {
     };
 
     const currentRoute = computed(() => {
-      if (route.path.includes("facebook")) return 'facebook-bg';
-      if (route.path.includes("twitter")) return 'twitter-bg';
-      if (route.path.includes("instagram")) return 'instagram-bg';
-      if (route.path.includes("whatsapp")) return 'whatsapp-bg';
-      return 'blue-bg';
-    })
+      if (route.path.includes("facebook")) return "facebook-bg";
+      if (route.path.includes("twitter")) return "twitter-bg";
+      if (route.path.includes("instagram")) return "instagram-bg";
+      if (route.path.includes("whatsapp")) return "whatsapp-bg";
+      return "blue-bg";
+    });
 
     return {
       feed,
@@ -284,14 +281,13 @@ export default {
 }
 
 .instagram {
-  background: transparent
-    linear-gradient(81deg, #e90263 0%, #fd0604 49%, #ff5d00 100%) 0% 0%
-    no-repeat padding-box;
+  background: transparent linear-gradient(81deg, #e90263 0%, #fd0604 49%, #ff5d00 100%) 0%
+    0% no-repeat padding-box;
 }
 
 .whatsapp {
-  background: transparent linear-gradient(256deg, #48c658 0%, #2ab540 100%) 0%
-    0% no-repeat padding-box;
+  background: transparent linear-gradient(256deg, #48c658 0%, #2ab540 100%) 0% 0%
+    no-repeat padding-box;
 }
 
 .mobile {

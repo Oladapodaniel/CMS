@@ -30,7 +30,8 @@
                 <p
                   class="
                     mb-0
-                    font-weight-700
+                    font-weight-600
+                    s-18
                     mb-n2
                     d-flex
                     justify-content-between
@@ -85,17 +86,17 @@
             <!-- Post message -->
             <div class="row">
               <div class="col-md-12 pt-3">
-                <h5 class="font-weight-bold mb-0">
+                <h5 class="font-weight-600 mb-0">
                   {{ post.postCategoryName }}
                 </h5>
                 <p class="mb-0 text-justify">
-                  <span
+                  <span class="fw-500 s-18"
                     v-if="
                       post.showFullMessage || post.content.length < previewLenth
                     "
                     >{{ post.content }}</span
                   >
-                  <span v-else>{{ post.briefMessage }}...</span>
+                  <span class="fw-500 s-18" v-else>{{ post.briefMessage }}...</span>
                   <span
                     v-if="post.content.length > previewLenth"
                     class="font-weight-700 primary-text c-pointer ml-3"
@@ -135,24 +136,6 @@
                 </video>
               </div>
             </div>
-
-            <!-- Post Extras -->
-            <!-- <div class="row my-3">
-              <div class="col-md-12">
-                <h6 class="mb-0 font-weight-700">
-                  Bodacious and awesome dragon warrior
-                </h6>
-                <p class="mb-0">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Perspiciatis obcaecati laboriosam adipisci esse autem nisi
-                  natus magnam omnis, ut quibusdam?
-                </p>
-                <a class="text-decoration-none font-weight-700 c-pointer"
-                  >KungFu.Panda</a
-                >
-              </div>
-            </div> -->
-
             <!-- Post Actions -->
             <div class="row my-3">
               <div class="col-md-12">

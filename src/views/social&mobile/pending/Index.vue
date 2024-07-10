@@ -1,39 +1,85 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-12 py-3">
-        <div class="row">
-          <div class="col-md-12 pt-4 pb-3 d-md-flex justify-content-between">
-            <h1 class="font-weight-bold main-title">Pending Posts</h1>
-            <span>
-              <span class="date-range py-2 px-3 medium-border-radius"
-                >6 Sep 20 - 13 Sep 20</span
+      <div class="col-md-12 pb-3">
+        <div class="row justify-content-center">
+          <div class="col-md-9  pb-3">
+            <div>
+              <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
+                Pending Posts
+              </div>
+              <div class="fw-300 s-18">Waiting to go Live</div>
+            </div>
+            <div @click="goBack">
+              <span class="s-18 fw-400 cursor-pointer text-black">
+                <img src="../../../assets/goback.png" alt="" /> Go back</span
               >
-              <span class="date-range py-2 px-3 medium-border-radius ml-3"
-                ><i class="pi pi-filter"></i
-              ></span>
-            </span>
+            </div>
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-md-8">
-            <div class="row bordered my-4" v-for="(post, index) in pendingPosts" :key="index">
-              <div class="col-md-12 py-3">
+        <div class="row justify-content-center">
+          <div class="col-md-9 bordered mt-4">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-11  py-3">
+                  <div class="row">
+                    <div class="col-md-12 fw-500 s-20 d-flex align-items-center">
+                      <span>Total Posts :</span>
+                      <span>{{ pageData.totalPostCount }}</span>
+                    </div>
+                  </div>
+
+                  <!-- <div class="row mt-4">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div class="col-12 text-center">
+                        <span>Approved</span>
+                        <span class="ml-2" style="color: #66bb6a"
+                          ><i class="pi pi-circle-on"></i
+                        ></span>
+                      </div>
+                      <div class="col-12 text-center">
+                        <span>Not Approved</span>
+                        <span class="ml-2"
+                          ><i class="pi pi-circle-on" style="color: #ffc107"></i
+                        ></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <Chart
+                      :approved="pageData.approvedPostCount"
+                      :pending="pageData.pendingPostCount"
+                    />
+                  </div>
+                </div> -->
+                </div>
+              </div>
+            </div>
+            <div
+              class="row  p-5 my-4"
+              v-for="(post, index) in pendingPosts"
+              :key="index"
+            >
+              <div class="col-md-12 bordered1  py-3">
                 <!-- User details -->
                 <div class="row">
                   <div class="col-2 d-md-flex justify-content-center">
                     <div class="img-holder bg-secondary">
-                        <img :src="post.posterDetails.posterImageUrl" alt="User Image" style="height:40px;width:100%">
+                      <img
+                        :src="post.posterDetails.posterImageUrl"
+                        alt="User Image"
+                        style="height: 40px; width: 100%"
+                      />
                     </div>
                   </div>
                   <div class="col-10 pl-md-0">
                     <p
-                      class="mb-0 font-weight-700 mb-n2 d-flex justify-content-between"
+                      class="mb-0 text-head font-weight-bold h2 py-0 my-0 text-black mb-n2 d-flex justify-content-between"
                     >
                       <span>{{ post.posterDetails.posterName }}</span>
-                      <span class="text-warning"
-                        v-if="!post.isApproved"
+                      <span class="text-warning" v-if="!post.isApproved"
                         ><span class="mr-2">Pending Approval</span
                         ><i class="pi pi-info-circle c-pointer"></i
                       ></span>
@@ -57,20 +103,25 @@
                     <span>
                       <img
                         v-if="post.type === 'Picture'"
-                      :src="post.mediaUrl"
-                      alt=""
-                      style="width: auto;max-width:100%;max-height:300px;border-radius: 15px;"
-                    />
+                        :src="post.mediaUrl"
+                        alt=""
+                        style="
+                          width: auto;
+                          max-width: 100%;
+                          max-height: 300px;
+                          border-radius: 15px;
+                        "
+                      />
                     </span>
                     <video
-                        v-if="post.type === 'Video'"
-                        style="width: 100%"
-                        height="240"
-                        controls
-                        >
-                        <source :src="post.mediaUrl" />
-                        <!-- <source src="movie.mp4" type="video/mp4"> -->
-                        Your browser does not support the video tag.
+                      v-if="post.type === 'Video'"
+                      style="width: 100%"
+                      height="240"
+                      controls
+                    >
+                      <source :src="post.mediaUrl" />
+                      <!-- <source src="movie.mp4" type="video/mp4"> -->
+                      Your browser does not support the video tag.
                     </video>
                   </div>
                 </div>
@@ -103,48 +154,15 @@
               </div>
             </div>
 
-            <div class="row" v-if="!loading && pendingPosts.length === 0">
-                <div class="col-md-12 text-center py-5 mt-4 bordered font-weight-700">
-                    No Pending Posts Found
-                </div>
-            </div>
-          </div>
-
-          <div class="col-md-4 my-4" style="height: fit-content;" v-if="!loading">
-              <div class="row">
-                  <div class="col-md-11 mx-auto bordered py-3">
-                      <div class="row"> 
-                        <div class="col-md-12">
-                            <h5 class="font-weight-700">Total posts</h5>
-                            <h2>{{ pageData.totalPostCount }}</h2>
-                        </div>
-                    </div>
-
-                    <div class="row mt-4"> 
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-12 text-center">
-                                    <span>Approved</span>
-                                    <span class="ml-2" style="color:#66BB6A"><i class="pi pi-circle-on"></i></span>
-                                </div>
-                                <div class="col-12 text-center">
-                                    <span>Not Approved</span>
-                                    <span class="ml-2"><i class="pi pi-circle-on" style="color:#ffc107"></i></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <Chart :approved="pageData.approvedPostCount" :pending="pageData.pendingPostCount" />
-                        </div>
-                    </div>
-                  </div>
+            <div class="row p-4 " v-if="!loading && pendingPosts.length === 0">
+              <div class="col-md-12 text-center py-5 mt-4 bordered1 font-weight-600">
+                No Pending Posts Found
               </div>
+            </div>
           </div>
         </div>
 
-        
-
-                <!-- SKELETON LOADER -->
+        <!-- SKELETON LOADER -->
         <div class="row mt-2" v-if="loading">
           <div class="col-md-8">
             <div class="row">
@@ -201,10 +219,7 @@
                 </div>
               </div>
               <div class="col-md-12 my-2">
-                <Skeleton
-                  style="width: 100%; height: 200px"
-                  class="p-mb-2"
-                ></Skeleton>
+                <Skeleton style="width: 100%; height: 200px" class="p-mb-2"></Skeleton>
               </div>
               <div class="col-md-12 d-flex">
                 <Skeleton
@@ -260,9 +275,9 @@
           </div>
           <div class="col-md-4">
             <Skeleton
-                shape="circle"
-                style="width: 100%; height: 200px"
-                class="p-mr-2 small-border-radius"
+              shape="circle"
+              style="width: 100%; height: 200px"
+              class="p-mr-2 small-border-radius"
             ></Skeleton>
           </div>
         </div>
@@ -274,119 +289,135 @@
 </template>
 
 <script>
-import { ref } from '@vue/reactivity';
-import social_service from '../../../services/social/social_service';
+import { ref } from "@vue/reactivity";
+import social_service from "../../../services/social/social_service";
+import router from "../../../router";
 import { useStore } from "vuex";
-import membershipService from '../../../services/membership/membershipservice';
-import dateFormatter from '../../../services/dates/dateformatter';
+import membershipService from "../../../services/membership/membershipservice";
+import dateFormatter from "../../../services/dates/dateformatter";
 import Chart from "./components/DoughnutChart";
 import { useToast } from "primevue/usetoast";
 import { useConfirm } from "primevue/useconfirm";
 
 export default {
-    components: { Chart },
-    setup () {
-        const toast = useToast();
-        const store = useStore();
-        const loading = ref(true);
-        const tenantId = store && store.getters && store.getters.currentUser && store.getters.currentUser.tenantId ? store.getters.currentUser.tenantId : "";
-        const pendingPosts = ref([ ])
-        const pageData = ref({})
-        const confirm = useConfirm();
+  components: { Chart },
+  setup() {
+    const toast = useToast();
+    const store = useStore();
+    const loading = ref(true);
+    const tenantId =
+      store &&
+      store.getters &&
+      store.getters.currentUser &&
+      store.getters.currentUser.tenantId
+        ? store.getters.currentUser.tenantId
+        : "";
+    const pendingPosts = ref([]);
+    const pageData = ref({});
+    const confirm = useConfirm();
 
-        const deletePost = async (post, index) => {
-            try {
-              await social_service.deletePost(post.postId);
-              pendingPosts.value.splice(index, 1)
-              toast.add({
-                  severity: "success",
-                  summary: "Post Deleted",
-                  detail: "The post has been deleted successfully",
-                  life: 5000,
-                });
-            } catch (error) {
-              toast.add({
-                severity: "error",
-                summary: "Delete Error",
-                detail: "Post could not be deleted, please reload and try again",
-                life: 3000,
-              });
-            }
-          };
+    const deletePost = async (post, index) => {
+      try {
+        await social_service.deletePost(post.postId);
+        pendingPosts.value.splice(index, 1);
+        toast.add({
+          severity: "success",
+          summary: "Post Deleted",
+          detail: "The post has been deleted successfully",
+          life: 5000,
+        });
+      } catch (error) {
+        toast.add({
+          severity: "error",
+          summary: "Delete Error",
+          detail: "Post could not be deleted, please reload and try again",
+          life: 3000,
+        });
+      }
+    };
 
-        const showDeleteModal = (post, index) => {
-            console.log(post, "post");
-            confirm.require({
-              message: "Are you sure you want to delete this post?",
-              header: "Confirmation",
-              icon: "pi pi-exclamation-triangle",
-              acceptClass: "confirm-delete",
-              rejectClass: "cancel-delete",
-              accept: () => {
-                deletePost(post, index);
-              },
-              reject: () => {
-                console.log("rejected");
-              },
-            });
-          };
+    const goBack = () => {
+      router.go(-1);
+    };
 
+    const showDeleteModal = (post, index) => {
+      console.log(post, "post");
+      confirm.require({
+        message: "Are you sure you want to delete this post?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deletePost(post, index);
+        },
+        reject: () => {
+          console.log("rejected");
+        },
+      });
+    };
 
-        const getPendingPosts = async (tenantId) => {
-            try {
-                const response = await social_service.getPendingPosts(tenantId);
-                loading.value = false;
-                console.log(response);
-                pageData.value = response;
-                pendingPosts.value = response.pendingPosts.filter(i => !i.isApproved)
-            } catch (error) {
-                loading.value = false;
-                console.log(error);
-            }
-        }
-        
-        if (!tenantId) {
-            membershipService.getSignedInUser()
-                .then(res => {
-                    getPendingPosts(res.tenantId);
-                })
-        } else {
-            getPendingPosts(tenantId);
-        }
+    const getPendingPosts = async (tenantId) => {
+      try {
+        const response = await social_service.getPendingPosts(tenantId);
+        loading.value = false;
+        console.log(response);
+        pageData.value = response;
+        pendingPosts.value = response.pendingPosts.filter((i) => !i.isApproved);
+      } catch (error) {
+        loading.value = false;
+        console.log(error);
+      }
+    };
 
-        const formatDate = (date) => {
-            return dateFormatter.monthDayTime(date);
-        }
-
-        const approvePost = async (postId, index) => {
-            try {
-                const response = await social_service.approvePost(postId);
-                pendingPosts.value.splice(index, 1);
-                toast.add({severity:'success', summary:'Post Approved', detail:'Post has been made public', life: 3000});
-                console.log(response);
-            } catch (error) {
-                toast.add({severity:'error', summary:'Request failed', detail:'Post was not approved, please reload and try again', life: 3000});
-                console.log(error);
-            }
-        }
-
-        return {
-            showDeleteModal,
-            pendingPosts,
-            formatDate,
-            loading,
-            approvePost,
-            pageData,
-        }
+    if (!tenantId) {
+      membershipService.getSignedInUser().then((res) => {
+        getPendingPosts(res.tenantId);
+      });
+    } else {
+      getPendingPosts(tenantId);
     }
+
+    const formatDate = (date) => {
+      return dateFormatter.monthDayTime(date);
+    };
+
+    const approvePost = async (postId, index) => {
+      try {
+        const response = await social_service.approvePost(postId);
+        pendingPosts.value.splice(index, 1);
+        toast.add({
+          severity: "success",
+          summary: "Post Approved",
+          detail: "Post has been made public",
+          life: 3000,
+        });
+        console.log(response);
+      } catch (error) {
+        toast.add({
+          severity: "error",
+          summary: "Request failed",
+          detail: "Post was not approved, please reload and try again",
+          life: 3000,
+        });
+        console.log(error);
+      }
+    };
+
+    return {
+      showDeleteModal,
+      pendingPosts,
+      formatDate,
+      loading,
+      approvePost,
+      pageData,
+      goBack,
+    };
+  },
 };
 </script>
 
 <style scoped>
-.main-title {
-  font-size: 2.2rem;
-}
-
 .img-holder {
   width: 48px;
   height: 48px;
@@ -406,9 +437,9 @@ export default {
 }
 
 .default-btn {
-    display: flex;
-    align-items: center;
-    max-height: 35px !important;
+  display: flex;
+  align-items: center;
+  max-height: 35px !important;
 }
 
 /* .main-post {
@@ -416,9 +447,14 @@ export default {
     } */
 
 .bordered {
-  border: 0.20000000298023224px solid #e9eef0;
-  border-radius: 15px;
-  background: #fff;
+  border: 1px solid #E1E1E1;
+  border-radius: 8px;
+  background: #FCFCFC;
+}
+.bordered1 {
+  box-shadow: 5px 5px 10px 0px #0000001A;
+  border-radius: 8px;
+  background: #FFFFFF;
 }
 
 .post-action-link {
