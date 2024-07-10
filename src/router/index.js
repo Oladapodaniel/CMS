@@ -1420,6 +1420,54 @@ const routes = [
                 },
                 component: () =>
                     import( /* webpackChunkName: "socialdashboard" */ '@/views/social&mobile/dashboard/Index'),
+                    children: [
+                        {
+                            path: 'feed',
+                            name: 'AllPosts',
+                            meta: {
+                                title: 'Churchplus - Socail Media - All Posts',
+                            },
+                            component: () =>
+                                import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/general/Index'),
+                        },
+                        
+                        {
+                            path: 'feed/facebook',
+                            name: 'FacebookPosts',
+                            meta: {
+                                title: 'Churchplus - Socail Media - Facebook Posts',
+                            },
+                            component: () =>
+                                import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/facebook/Index'),
+                        },
+                        {
+                            path: 'feed/twitter',
+                            name: 'TwitterPosts',
+                            meta: {
+                                title: 'Churchplus - Socail Media - Twitter Posts',
+                            },
+                            component: () =>
+                                import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/twitter/Index'),
+                        },
+                        {
+                            path: 'feed/instagram',
+                            name: 'InstagramPosts',
+                            meta: {
+                                title: 'Churchplus - Socail Media - Instagram Posts',
+                            },
+                            component: () =>
+                                import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/instagram/Index'),
+                        },
+                        {
+                            path: 'feed/fwhatsapp',
+                            name: 'WhatsappPosts',
+                            meta: {
+                                title: 'Churchplus - Socail Media - WhatsApp Posts',
+                            },
+                            component: () =>
+                                import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/whatsapp/Index'),
+                        },
+                ]
             },
             {
                 path: 'post',
@@ -1430,58 +1478,58 @@ const routes = [
                 component: () =>
                     import( /* webpackChunkName: "post" */ '@/views/social&mobile/post/Index'),
             },
-            {
-                path: 'feed',
-                name: 'SocialFeed',
-                component: () =>
-                    import( /* webpackChunkName: "feed" */ '@/views/social&mobile/feed/Index'),
-                children: [{
-                    path: '',
-                    name: 'AllPosts',
-                    meta: {
-                        title: 'Churchplus - Socail Media - All Posts',
-                    },
-                    component: () =>
-                        import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/general/Index'),
-                },
-                {
-                    path: 'facebook',
-                    name: 'FacebookPosts',
-                    meta: {
-                        title: 'Churchplus - Socail Media - Facebook Posts',
-                    },
-                    component: () =>
-                        import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/facebook/Index'),
-                },
-                {
-                    path: 'twitter',
-                    name: 'TwitterPosts',
-                    meta: {
-                        title: 'Churchplus - Socail Media - Twitter Posts',
-                    },
-                    component: () =>
-                        import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/twitter/Index'),
-                },
-                {
-                    path: 'instagram',
-                    name: 'InstagramPosts',
-                    meta: {
-                        title: 'Churchplus - Socail Media - Instagram Posts',
-                    },
-                    component: () =>
-                        import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/instagram/Index'),
-                },
-                {
-                    path: 'whatsapp',
-                    name: 'WhatsappPosts',
-                    meta: {
-                        title: 'Churchplus - Socail Media - WhatsApp Posts',
-                    },
-                    component: () =>
-                        import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/whatsapp/Index'),
-                },
-                ]
-            },
+            // {
+            //     path: 'feed',
+            //     name: 'SocialFeed',
+            //     component: () =>
+            //         import( /* webpackChunkName: "feed" */ '@/views/social&mobile/feed/Index'),
+            //     children: [{
+            //         path: '',
+            //         name: 'AllPosts',
+            //         meta: {
+            //             title: 'Churchplus - Socail Media - All Posts',
+            //         },
+            //         component: () =>
+            //             import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/general/Index'),
+            //     },
+            //     {
+            //         path: 'facebook',
+            //         name: 'FacebookPosts',
+            //         meta: {
+            //             title: 'Churchplus - Socail Media - Facebook Posts',
+            //         },
+            //         component: () =>
+            //             import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/facebook/Index'),
+            //     },
+            //     {
+            //         path: 'twitter',
+            //         name: 'TwitterPosts',
+            //         meta: {
+            //             title: 'Churchplus - Socail Media - Twitter Posts',
+            //         },
+            //         component: () =>
+            //             import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/twitter/Index'),
+            //     },
+            //     {
+            //         path: 'instagram',
+            //         name: 'InstagramPosts',
+            //         meta: {
+            //             title: 'Churchplus - Socail Media - Instagram Posts',
+            //         },
+            //         component: () =>
+            //             import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/instagram/Index'),
+            //     },
+            //     {
+            //         path: 'whatsapp',
+            //         name: 'WhatsappPosts',
+            //         meta: {
+            //             title: 'Churchplus - Socail Media - WhatsApp Posts',
+            //         },
+            //         component: () =>
+            //             import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/whatsapp/Index'),
+            //     },
+            //     ]
+            // },
             {
                 path: 'pending',
                 name: 'PendingPosts',

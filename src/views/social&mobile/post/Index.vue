@@ -1,274 +1,293 @@
 <template>
-  <div class="container-fluid" style="max-width: 500px">
-    <div class="row">
-      <div class="col-md-12 py-4 pl-md-0">
-        <h1 class="font-weight-bold main-title">New Post</h1>
-      </div>
-    </div>
-
-    <div class="row my-3">
-      <div class="col-md-12">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-md-9 col-12">
         <div class="row">
-          <div class="col-md-12 pl-md-0">
-            <label for="" class="small-text mb-2 label-color font-weight-700"
-              >Post type <span class="text-danger">*</span></label
-            >
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12 px-0" id="post-icon">
-            <el-select-v2
-              v-model="postCategoryId"
-              @change="setSelectedPostCategory"
-              :options="
-                postCategories.map((i) => ({ label: i.name, value: i.postCategoryId }))
-              "
-              placeholder="Select category"
-              size="large"
-              class="w-100"
-            />
-          </div>
-        </div>
-        <el-collapse-transition>
-          <div class="row" v-show="showDevotionParameters">
-            <div class="col-md-12 px-0" id="post-icon">
-              <el-input
-                type="text"
-                placeholder="Enter the devotion title"
-                v-model="devotionTitle"
-                class="mt-3"
-              />
-              <el-input
-                type="text"
-                placeholder="Enter the scripture text i.e Matthew 5:7"
-                v-model="devotionScripture"
-                class="mt-3"
-              />
-              <el-input
-                type="textarea"
-                :rows="4"
-                placeholder="Enter the memory verse"
-                v-model="devotionMemoryVerse"
-                class="mt-3"
-              />
+          <div class="col-md-12 py-4 pl-md-0">
+            <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
+              Create New Post
+            </div>
+            <div @click="goBack">
+              <span class="s-18 fw-400 cursor-pointer text-black">
+                <img src="../../../assets/goback.png" alt="" /> Go back</span
+              >
             </div>
           </div>
-        </el-collapse-transition>
-        <el-collapse-transition>
-          <div class="row" v-show="showEventParameters">
-            <div class="col-md-12 px-0 mt-3" id="post-icon">
-              <el-dropdown class="w-100" trigger="click">
-                <span class="el-dropdown-link w-100">
-                  <div
-                    class="d-flex justify-content-between border-contribution text-dark w-100"
-                    size="large"
-                  >
-                    <span
-                      >{{
-                        Object.keys(selectedCheckinEvent).length > 0
-                          ? selectedCheckinEvent.fullEventName +
-                            " --- " +
-                            selectedCheckinEvent.fullGroupName
-                          : "Select event"
-                      }}
-                    </span>
-                    <div>
-                      <el-icon class="el-icon--right">
-                        <arrow-down />
-                      </el-icon>
+        </div>
+        <div class="row">
+          <div class="col-md-12 bordered1 px-5 py-4 ">
+            <div class="row my-3">
+              <div class="col-md-12 px-0 font-weight-600 s-24 text-head">New Post</div>
+              <div class="col-md-12 mt-3">
+                <div class="row">
+                  <div class="col-md-12 d-flex justify-content-between pl-md-0">
+                    <label for="" class=" mb-2 text-dak  fw-500"
+                      >Post Category <span class="text-danger">*</span></label
+                    >
+                    <router-link to="/tenant/social/category" class="text-decoration-none">
+                      <div class="text-head fw-500 primary--text">+Add Category</div>
+                    </router-link>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 px-0" id="post-icon">
+                    <el-select-v2
+                      v-model="postCategoryId"
+                      @change="setSelectedPostCategory"
+                      :options="
+                        postCategories.map((i) => ({
+                          label: i.name,
+                          value: i.postCategoryId,
+                        }))
+                      "
+                      placeholder="Select category"
+                      size="large"
+                      class="w-100 input-border"
+                    />
+                  </div>
+                </div>
+                <el-collapse-transition>
+                  <div class="row" v-show="showDevotionParameters">
+                    <div class="col-md-12 px-0" id="post-icon">
+                      <el-input
+                        type="text"
+                        placeholder="Enter the devotion title"
+                        v-model="devotionTitle"
+                        class="mt-3 input-border"
+                      />
+                      <el-input
+                        type="text"
+                        placeholder="Enter the scripture text i.e Matthew 5:7"
+                        v-model="devotionScripture"
+                        class="mt-3 input-border"
+                      />
+                      <el-input
+                        type="textarea"
+                        :rows="4"
+                        placeholder="Enter the memory verse"
+                        v-model="devotionMemoryVerse"
+                        class="mt-3 input-border"
+                      />
                     </div>
                   </div>
-                </span>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item
-                      v-for="(item, index) in checkInAttendanceList"
-                      :key="index"
-                      @click="setSelectedCheckinEvent(item)"
-                      >{{ item.fullEventName }} ---
-                      {{ item.fullGroupName }}</el-dropdown-item
-                    >
-                     <!--  <el-divider class="m-0" />
-                  <el-dropdown-item>
-                      <div class="d-flex justify-content-center w-100 py-1">
-                        <el-icon class="primary--text d-flex align-self-center mr-1">
-                          <CirclePlusFilled />
-                        </el-icon>
-                        <div class="primary--text font-weight-700" @click="(CheckinCreationDialog = true)">Add new event</div>
-                      </div>
-                    </el-dropdown-item> -->
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
+                </el-collapse-transition>
+                <el-collapse-transition>
+                  <div class="row" v-show="showEventParameters">
+                    <div class="col-md-12 px-0 mt-3" id="post-icon">
+                      <el-dropdown class="w-100" trigger="click">
+                        <span class="el-dropdown-link w-100">
+                          <div
+                            class="d-flex justify-content-between border-contribution text-dak w-100"
+                            size="large"
+                          >
+                            <span
+                              >{{
+                                Object.keys(selectedCheckinEvent).length > 0
+                                  ? selectedCheckinEvent.fullEventName +
+                                    " --- " +
+                                    selectedCheckinEvent.fullGroupName
+                                  : "Select event"
+                              }}
+                            </span>
+                            <div>
+                              <el-icon class="el-icon--right">
+                                <arrow-down />
+                              </el-icon>
+                            </div>
+                          </div>
+                        </span>
+                        <template #dropdown>
+                          <el-dropdown-menu>
+                            <el-dropdown-item
+                              v-for="(item, index) in checkInAttendanceList"
+                              :key="index"
+                              @click="setSelectedCheckinEvent(item)"
+                              >{{ item.fullEventName }} ---
+                              {{ item.fullGroupName }}</el-dropdown-item
+                            >
+                          </el-dropdown-menu>
+                        </template>
+                      </el-dropdown>
+                    </div>
+                  </div>
+                </el-collapse-transition>
+              </div>
             </div>
-          </div>
-        </el-collapse-transition>
-      </div>
-    </div>
-    <div class="row bordered">
-      <div class="col-md-12 pt-3 pt-2 main-post">
-        <div class="row">
-          <div class="col-md-12 d-flex align-items-center">
-            <textarea
-              name=""
-              id=""
-              :rows="rowsCount"
-              class="w-100 border-0 textarea"
-              v-model="message"
-              placeholder="What's on your mind?"
-            ></textarea>
-          </div>
+            <div class="row  ">
+              <div class="col-md-12 pt-3 pt-2 main-post">
+                <div class="row">
+                  <div class="col-md-12 px-0 ">
+                    <label class="fw-500" for="">What’s on your Mind?</label>
+                    <el-input type="textarea" v-model="message"  class="w-100  " placeholder="What's on your mind?" :rows="rowsCount"/>
+                  </div>
 
-          <div class="col-md-12 text-center py-2" style="max-height: 300px">
-            <span class="remove-file" @click="removeFile" v-if="file">X</span>
-            <span
-              ><img
-                v-if="file || isUrl"
-                style="border-radius: 15px; max-width: 100%"
-                class="mx-auto h-100"
-                :src="fileUrl"
-                alt=""
-            /></span>
-            <video
-              v-if="file && file.type && file.type.includes('video')"
-              style="width: 100%; border-radius: 10px"
-              height="240"
-              class="border"
-            >
-              <source :src="fileUrl" />
-              <!-- <source src="movie.mp4" type="video/mp4"> -->
-              Your browser does not support the video tag.
-            </video>
-          </div>
-        </div>
-      </div>
+                  <div class="col-md-12 text-center py-2" style="max-height: 300px">
+                    <span class="remove-file" @click="removeFile" v-if="file">X</span>
+                    <span
+                      ><img
+                        v-if="file || isUrl"
+                        style="border-radius: 15px; max-width: 100%"
+                        class="mx-auto h-100"
+                        :src="fileUrl"
+                        alt=""
+                    /></span>
+                    <video
+                      v-if="file && file.type && file.type.includes('video')"
+                      style="width: 100%; border-radius: 10px"
+                      height="240"
+                      class="border"
+                    >
+                      <source :src="fileUrl" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </div>
+              </div>
 
-      <div class="col-md-12">
-        <div class="row"></div>
-      </div>
+              <div class="col-md-12">
+                <div class="row"></div>
+              </div>
 
-      <!-- <div class="col-md-12 post-add-ons py-2" v-if="!route.query.postId"> -->
-      <div class="col-md-12 post-add-ons py-2">
-        <div class="row">
-          <div class="col-md-12">
-            <a class="text-decoration-none px-md-2 c-pointer">
-              <!-- <input name=""  ref="fileInput" @change="fileSelected" type="file" style="width: 0;heiight:0"> -->
-              <span @click="selectFile"><i class="pi pi-video mr-1"></i></span>
-              <span class="text-dark" @click="selectFile">Video</span>
-            </a>
-            <a class="text-decoration-none px-md-2 c-pointer ml-3">
-              <span @click="selectFile"><i class="pi pi-images mr-1"></i></span>
-              <span class="text-dark" @click="selectFile">Photo/Video</span>
-            </a>
-            <a class="text-decoration-none px-md-2 c-pointer" v-if="false">
-              <span><i class="pi pi-video mr-1"></i></span>
-              <span class="text-dark">Feeling/Activity</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
+              <!-- <div class="col-md-12 post-add-ons py-2" v-if="!route.query.postId"> -->
+              <div class="col-md-12 post-add-ons py-2">
+                <div class="row">
+                  <div class="col-md-12">
+                    <a class="text-decoration-none px-md-2 c-pointer">
+                      <span class="text-dak" @click="selectFile"><i class="pi pi-video mr-1"></i></span>
+                      <span class="text-dak" @click="selectFile">Video</span>
+                    </a>
+                    <a class="text-decoration-none px-md-2 c-pointer ml-3">
+                      <span class="text-dak" @click="selectFile"><i class="pi pi-images mr-1"></i></span>
+                      <span class="text-dak" @click="selectFile">Photo/Video</span>
+                    </a>
+                    <a class="text-decoration-none px-md-2 c-pointer" v-if="false">
+                      <span><i class="pi pi-video mr-1"></i></span>
+                      <span class="text-dark">Feeling/Activity</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row my-4">
+              <div class="col-md-12">
+                <a
+                  class="primary-text text-decoration-none font-weight-700 mb-3 d-flex align-items-center"
+                >
+                  <!-- <input type="checkbox" class="c-pointer" name="" id="" /> -->
+                  <Checkbox id="binary" v-model="showOnMainThread" :binary="true" />
+                  <span class="mx-1">Show on main feed</span>
+                </a>
+              </div>
+              <div class="col-md-12">
+                <div class="row input-border">
+                  <div class="col-md-12 mt-2">
+                    <label for="" class="small-text mb-0 label-color font-weight-700"
+                      >Post to
+                    </label>
+                  </div>
+                  <div class="col-md-12 mb-2 d-flex flex-wrap">
+                    <a
+                      class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
+                    >
+                      <span class="c-pointer"
+                        ><img
+                          class="icon-height"
+                          src="../../../assets/social/mobile-icon.svg"
+                          alt="Whatsapp icon"
+                      /></span>
+                      <span class="mx-1">Mobile App</span>
+                      <input type="checkbox" class="c-pointer" checked name="" id="" />
+                    </a>
+                    <a
+                      class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
+                      style="opacity: 0.4"
+                    >
+                      <span class="c-pointer"
+                        ><img
+                          class="icon-height"
+                          src="../../../assets/social/twitter.svg"
+                          alt="Whatsapp icon"
+                      /></span>
+                      <span class="mx-1">Twitter</span>
+                      <input
+                        type="checkbox"
+                        class="c-pointer"
+                        :disabled="true"
+                        name=""
+                        id=""
+                      />
+                    </a>
+                    <a
+                      class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
+                      style="opacity: 0.4"
+                    >
+                      <span class="c-pointer"
+                        ><i class="pi pi-microsoft" style="font-size: 20px"></i
+                      ></span>
+                      <span class="mx-1">All Platforms</span>
+                      <input
+                        type="checkbox"
+                        class="c-pointer"
+                        :disabled="true"
+                        name=""
+                        id=""
+                      />
+                    </a>
+                    <a
+                      class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
+                    >
+                      <span class="c-pointer"
+                        ><img
+                          class="icon-height"
+                          src="../../../assets/social/facebook.svg"
+                          alt="Whatsapp icon"
+                      /></span>
+                      <span class="mx-1">Facebook</span>
+                      <input
+                        type="checkbox"
+                        v-model="toFacebook"
+                        class="c-pointer"
+                        :disabled="false"
+                        name=""
+                        id=""
+                      />
+                    </a>
+                    <a
+                      class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
+                      style="opacity: 0.4"
+                    >
+                      <span class="c-pointer"
+                        ><img
+                          class="icon-height"
+                          src="../../../assets/social/instagram.svg"
+                          alt="Whatsapp icon"
+                      /></span>
+                      <span class="mx-1">Instagram</span>
+                      <input
+                        type="checkbox"
+                        class="c-pointer"
+                        :disabled="true"
+                        name=""
+                        id=""
+                      />
+                    </a>
+                  </div>
+                </div>
+              </div>
 
-    <div class="row my-4">
-      <div class="col-md-12">
-        <a
-          class="primary-text text-decoration-none font-weight-700 mb-3 d-flex align-items-center"
-        >
-          <!-- <input type="checkbox" class="c-pointer" name="" id="" /> -->
-          <Checkbox id="binary" v-model="showOnMainThread" :binary="true" />
-          <span class="mx-1">Show on main feed</span>
-        </a>
-      </div>
-      <div class="col-md-12">
-        <div class="row input-border">
-          <div class="col-md-12 mt-2">
-            <label for="" class="small-text mb-0 label-color font-weight-700"
-              >Post to
-            </label>
-          </div>
-          <div class="col-md-12 mb-2 d-flex flex-wrap">
-            <a
-              class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
-            >
-              <span class="c-pointer"
-                ><img
-                  class="icon-height"
-                  src="../../../assets/social/mobile-icon.svg"
-                  alt="Whatsapp icon"
-              /></span>
-              <span class="mx-1">Mobile App</span>
-              <input type="checkbox" class="c-pointer" checked name="" id="" />
-            </a>
-            <a
-              class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
-              style="opacity: 0.4"
-            >
-              <span class="c-pointer"
-                ><img
-                  class="icon-height"
-                  src="../../../assets/social/twitter.svg"
-                  alt="Whatsapp icon"
-              /></span>
-              <span class="mx-1">Twitter</span>
-              <input type="checkbox" class="c-pointer" :disabled="true" name="" id="" />
-            </a>
-            <a
-              class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
-              style="opacity: 0.4"
-            >
-              <span class="c-pointer"
-                ><i class="pi pi-microsoft" style="font-size: 20px"></i
-              ></span>
-              <span class="mx-1">All Platforms</span>
-              <input type="checkbox" class="c-pointer" :disabled="true" name="" id="" />
-            </a>
-            <a
-              class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
-            >
-              <span class="c-pointer"
-                ><img
-                  class="icon-height"
-                  src="../../../assets/social/facebook.svg"
-                  alt="Whatsapp icon"
-              /></span>
-              <span class="mx-1">Facebook</span>
-              <input
-                type="checkbox"
-                v-model="toFacebook"
-                class="c-pointer"
-                :disabled="false"
-                name=""
-                id=""
-              />
-            </a>
-            <a
-              class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
-              style="opacity: 0.4"
-            >
-              <span class="c-pointer"
-                ><img
-                  class="icon-height"
-                  src="../../../assets/social/instagram.svg"
-                  alt="Whatsapp icon"
-              /></span>
-              <span class="mx-1">Instagram</span>
-              <input type="checkbox" class="c-pointer" :disabled="true" name="" id="" />
-            </a>
-          </div>
-        </div>
-      </div>
+              <div class="col-md-12">
+                <a
+                  class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
+                >
+                  <input type="checkbox" class="c-pointer" name="" id="" />
+                  <span class="mx-1">Send push notification</span>
+                </a>
+              </div>
 
-      <div class="col-md-12">
-        <a
-          class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
-        >
-          <input type="checkbox" class="c-pointer" name="" id="" />
-          <span class="mx-1">Send push notification</span>
-        </a>
-      </div>
-
-      <div class="col-md-12 d-flex align-items-center justify-content-end my-4 px-0">
-        <!-- <button
+              <div
+                class="col-md-12 d-flex align-items-center justify-content-end my-4 px-0"
+              >
+                <!-- <button
           class="
             default-btn
             primary-bg
@@ -283,69 +302,73 @@
         >
           Post
         </button> -->
-        <SplitButton
-          label="Post"
-          class="w-100"
-          :model="sendOptions"
-          :disabled="!message || !postCategory.postCategoryId"
-          @click="makePost"
-        ></SplitButton>
-      </div>
-      <Dialog header="Posting..." v-model:visible="display" :modal="true">
-        <ProgressBar
-          :value="uploadProgress"
-          style="max-width: 600px; width: 100%; min-width: 400px"
-        />
-      </Dialog>
-      <Dialog
-        header="Select Image"
-        v-model:visible="showImagePicker"
-        :style="{ width: '70vw', maxWidth: '600px' }"
-        :modal="true"
-        position="top"
-      >
-        <ImagePicker @uploaded="fileUploaded" />
-        <!-- @uploadimage="imageUpload" -->
-      </Dialog>
-      <Dialog
-        header="Select Date and Time"
-        v-model:visible="displayScheduleModal"
-        :style="{ width: '50vw', maxWidth: '600px' }"
-        :modal="true"
-      >
-        <div class="row">
-          <div class="col-md-12">
-            <input
-              type="datetime-local"
-              id="birthdaytime"
-              class="form-control"
-              name="birthdaytime"
-              v-model="executionDate"
-            />
-          </div>
-        </div>
-        <template #footer>
-          <Button
-            label="Cancel"
-            icon="pi pi-times"
-            @click="() => (displayScheduleModal = false)"
-            class="p-button-raised p-button-text p-button-plain mr-3"
-            style="color: #136acd; background: #fff !important; border-radius: 22px"
-          />
-          <Button
-            label="Schedule"
-            class="p-button-rounded"
-            style="background: #136acd"
-            @click="schedulePost()"
-          />
-        </template>
-      </Dialog>
-      <el-dialog
-        v-model="CheckinCreationDialog"
-        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
-      >
-      <div class="row">
-        <!-- <el-dropdown class="w-100" trigger="click">
+                <SplitButton
+                  label="Post"
+                  class="w-100"
+                  :model="sendOptions"
+                  :disabled="!message || !postCategory.postCategoryId"
+                  @click="makePost"
+                ></SplitButton>
+              </div>
+              <Dialog header="Posting..." v-model:visible="display" :modal="true">
+                <ProgressBar
+                  :value="uploadProgress"
+                  style="max-width: 600px; width: 100%; min-width: 400px"
+                />
+              </Dialog>
+              <Dialog
+                header="Select Image"
+                v-model:visible="showImagePicker"
+                :style="{ width: '70vw', maxWidth: '600px' }"
+                :modal="true"
+                position="top"
+              >
+                <ImagePicker @uploaded="fileUploaded" />
+                <!-- @uploadimage="imageUpload" -->
+              </Dialog>
+              <Dialog
+                header="Select Date and Time"
+                v-model:visible="displayScheduleModal"
+                :style="{ width: '50vw', maxWidth: '600px' }"
+                :modal="true"
+              >
+                <div class="row">
+                  <div class="col-md-12">
+                    <input
+                      type="datetime-local"
+                      id="birthdaytime"
+                      class="form-control"
+                      name="birthdaytime"
+                      v-model="executionDate"
+                    />
+                  </div>
+                </div>
+                <template #footer>
+                  <Button
+                    label="Cancel"
+                    icon="pi pi-times"
+                    @click="() => (displayScheduleModal = false)"
+                    class="p-button-raised p-button-text p-button-plain mr-3"
+                    style="
+                      color: #136acd;
+                      background: #fff !important;
+                      border-radius: 22px;
+                    "
+                  />
+                  <Button
+                    label="Schedule"
+                    class="p-button-rounded"
+                    style="background: #136acd"
+                    @click="schedulePost()"
+                  />
+                </template>
+              </Dialog>
+              <el-dialog
+                v-model="CheckinCreationDialog"
+                :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+              >
+                <div class="row">
+                  <!-- <el-dropdown class="w-100" trigger="click">
                 <span class="el-dropdown-link w-100">
                   <div
                     class="d-flex justify-content-between border-contribution text-dark w-100"
@@ -388,14 +411,20 @@
                   </el-dropdown-menu>
                 </template>
               </el-dropdown> -->
+                </div>
+                <template #footer>
+                  <span class="dialog-footer">
+                    <el-button @click="CheckinCreationDialog = false" size="large" round
+                      >Cancel</el-button
+                    >
+                    <el-button :color="primarycolor" size="large" round>Save</el-button>
+                  </span>
+                </template>
+              </el-dialog>
+            </div>
+          </div>
+        </div>
       </div>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="CheckinCreationDialog = false" size="large" round>Cancel</el-button>
-            <el-button :color="primarycolor" size="large" round >Save</el-button>
-          </span>
-        </template>
-      </el-dialog>
     </div>
   </div>
 </template>
@@ -419,7 +448,7 @@ import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 export default {
   components: { Dropdown, ProgressBar, Dialog, ImagePicker },
   setup() {
-    const primarycolor = inject('primarycolor')
+    const primarycolor = inject("primarycolor");
     const router = useRouter();
     const postCategory = ref({});
     const postDestination = ref("Facebook");
@@ -430,7 +459,7 @@ export default {
     const fbVideoToPost = ref(null);
     const displayScheduleModal = ref(false);
     const CheckinCreationDialog = ref(false);
-    const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
+    const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
 
     // const store = useStore();
     const route = useRoute();
@@ -449,6 +478,10 @@ export default {
     const selectFile = () => {
       // fileInput.value.click();
       showImagePicker.value = true;
+    };
+
+    const goBack = () => {
+      router.go(-1);
     };
 
     const postToEdit = ref({});
@@ -515,7 +548,10 @@ export default {
         formData.append("content", message.value ? message.value : "");
         formData.append("mediaUrl", mediaUrl.value ? mediaUrl.value : "");
         formData.append("postId", route.query.postId);
-        formData.append("title", devotionTitle.value ? devotionTitle.value : "Announcement");
+        formData.append(
+          "title",
+          devotionTitle.value ? devotionTitle.value : "Announcement"
+        );
         formData.append("bibleVerse", devotionScripture.value);
         formData.append("memoryVerse", devotionMemoryVerse.value);
         formData.append(
@@ -613,7 +649,10 @@ export default {
       formData.append("mediaFile", file.value ? file.value : "");
       formData.append("content", message.value ? message.value : "");
       formData.append("mediaUrl", mediaUrl.value ? mediaUrl.value : "");
-      formData.append("title", devotionTitle.value ? devotionTitle.value : "Announcement");
+      formData.append(
+        "title",
+        devotionTitle.value ? devotionTitle.value : "Announcement"
+      );
       formData.append("bibleVerse", devotionScripture.value);
       formData.append("memoryVerse", devotionMemoryVerse.value);
       formData.append(
@@ -785,8 +824,8 @@ export default {
     };
 
     const rowsCount = computed(() => {
-      if (!message.value) return 2;
-      return message.value.split("\n").length + 1;
+      if (!message.value) return 4;
+      return message.value.split("\n").length + 2;
     });
 
     const getPostCategoryById = async (postCategoryId) => {
@@ -866,9 +905,10 @@ export default {
       selectedCheckinEvent,
       CheckinCreationDialog,
       primarycolor,
-      mdAndUp, 
-      lgAndUp, 
-      xlAndUp
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      goBack,
     };
   },
 };
@@ -879,6 +919,11 @@ export default {
   color: #02172e;
 }
 
+.bordered1 {
+  border: 1px solid #E1E1E1;
+  border-radius: 8px;
+  background: #F9F9F9;
+}
 .bordered {
   border: 0.20000000298023224px solid #e9eef0;
   border-radius: 15px;
