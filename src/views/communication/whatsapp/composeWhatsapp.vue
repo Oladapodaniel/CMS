@@ -426,14 +426,9 @@ export default {
     const scheduleloading = ref(false)
     const toOthers = ref([])
     const memberdataloading = ref(false)
-<<<<<<< HEAD
-    const chunkProgress = ref(0)
-    const messageGroupID = ref(null)
-=======
     // const chunkProgress = ref(0)
     const messageGroupID = ref(null)
     const fileUrl = ref(null)
->>>>>>> development
 
 
     const clientSessionId = computed(() => {
@@ -1329,14 +1324,9 @@ export default {
       scheduleloading,
       toOthers,
       memberdataloading,
-<<<<<<< HEAD
-      chunkProgress,
-      messageGroupID
-=======
       // chunkProgress,
       messageGroupID,
       fileUrl
->>>>>>> development
     };
   },
 };
