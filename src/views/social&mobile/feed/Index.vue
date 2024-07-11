@@ -225,10 +225,13 @@ export default {
 }
 
 .img-holder {
-  width: 48px;
-  height: 48px;
   border: 1px solid;
   border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  display: flex;
+  background: white !important;
 }
 
 .textarea {

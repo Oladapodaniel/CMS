@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-12 pb-3">
         <div class="row justify-content-center">
-          <div class="col-md-9  pb-3">
+          <div class="col-md-9 pb-3">
             <div>
               <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
                 Pending Posts
@@ -22,7 +22,7 @@
           <div class="col-md-9 bordered mt-4">
             <div class="col-md-12">
               <div class="row">
-                <div class="col-md-11  py-3">
+                <div class="col-md-11 py-3">
                   <div class="row">
                     <div class="col-md-12 fw-500 s-20 d-flex align-items-center">
                       <span>Total Posts :</span>
@@ -57,12 +57,8 @@
                 </div>
               </div>
             </div>
-            <div
-              class="row  p-5 my-4"
-              v-for="(post, index) in pendingPosts"
-              :key="index"
-            >
-              <div class="col-md-12 bordered1  py-3">
+            <div class="row p-5 my-4" v-for="(post, index) in pendingPosts" :key="index">
+              <div class="col-md-12 bordered1 py-3">
                 <!-- User details -->
                 <div class="row">
                   <div class="col-2 d-md-flex justify-content-center">
@@ -76,7 +72,7 @@
                   </div>
                   <div class="col-10 pl-md-0">
                     <p
-                      class="mb-0 text-head font-weight-bold h2 py-0 my-0 text-black mb-n2 d-flex justify-content-between"
+                      class="mb-0 text-head font-weight-600 s-18 py-0 my-0 text-black mb-n2 d-flex justify-content-between"
                     >
                       <span>{{ post.posterDetails.posterName }}</span>
                       <span class="text-warning" v-if="!post.isApproved"
@@ -154,7 +150,7 @@
               </div>
             </div>
 
-            <div class="row p-4 " v-if="!loading && pendingPosts.length === 0">
+            <div class="row p-4" v-if="!loading && pendingPosts.length === 0">
               <div class="col-md-12 text-center py-5 mt-4 bordered1 font-weight-600">
                 No Pending Posts Found
               </div>
@@ -419,10 +415,13 @@ export default {
 
 <style scoped>
 .img-holder {
-  width: 48px;
-  height: 48px;
   border: 1px solid;
   border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  display: flex;
+  background: white !important;
 }
 
 .textarea {
@@ -447,14 +446,14 @@ export default {
     } */
 
 .bordered {
-  border: 1px solid #E1E1E1;
+  border: 1px solid #e1e1e1;
   border-radius: 8px;
-  background: #FCFCFC;
+  background: #fcfcfc;
 }
 .bordered1 {
-  box-shadow: 5px 5px 10px 0px #0000001A;
+  box-shadow: 5px 5px 10px 0px #0000001a;
   border-radius: 8px;
-  background: #FFFFFF;
+  background: #ffffff;
 }
 
 .post-action-link {

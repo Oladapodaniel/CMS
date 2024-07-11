@@ -18,11 +18,11 @@
             <!-- User details -->
             <div class="row">
               <div class="col-2 d-md-flex justify-content-center">
-                <div class="img-holder bg-secondary">
+                <div class="img-holder  bg-secondary">
                   <img
                     :src="post.posterDetails.posterImageUrl"
                     alt="User Image"
-                    style="height: 40px; width: 100%"
+                    style=" width: 100%"
                   />
                 </div>
               </div>
@@ -84,8 +84,8 @@
             </div>
 
             <!-- Post message -->
-            <div class="row">
-              <div class="col-md-12 pt-3">
+            <div class="row justify-content-center">
+              <div class="col-md-11 px-1  pt-3">
                 <h5 class="font-weight-600 mb-0">
                   {{ post.postCategoryName }}
                 </h5>
@@ -99,7 +99,7 @@
                   <span class="fw-500 s-18" v-else>{{ post.briefMessage }}...</span>
                   <span
                     v-if="post.content.length > previewLenth"
-                    class="font-weight-700 primary-text c-pointer ml-3"
+                    class="font-weight-600 primary-text c-pointer ml-3"
                     @click="
                       () => (post.showFullMessage = !post.showFullMessage)
                     "
@@ -194,13 +194,12 @@
               </div>
               <div>
                 <div
-                  class="py-2 px-3 small-border-radius"
-                  style="background: #ebeef0"
+                  class="pt-3 pb-4 pl-3 pr-5 small-border-radius"
                 >
-                  <h6 class="mb-0 font-weight-600">
+                  <h6 class="mb-0 small font-weight-600">
                     {{ comment.commenterName }}
                   </h6>
-                  <p class="mb-0 small-text">
+                  <p class="mb-0 small">
                     {{ comment.commentMessage.trim() }}
                   </p>
                 </div>
@@ -214,16 +213,13 @@
               </div>
             </div>
 
-            <div class="row my-2">
-              <div class="col-2 d-md-flex justify-content-center">
-                <div class="img-holder bg-secondary"></div>
-              </div>
-              <div class="pl-0 col-10 d-flex align-items-center">
+            <div class="row my-2 justify-content-center">
+              <div class=" col-md-11 mt-3 d-flex align-items-center">
                 <form class="w-100">
-                  <p class="border mb-0 w-100 medium-border-radius">
+                  <p class=" mb-0 w-100 ">
                     <textarea
                       rows="1"
-                      class="border-0 textarea mt-0 px-2 comment-field"
+                      class="textarea mt-0 medium-border-radius px-2 py-2 comment-field"
                       @keyup="postComment($event, post.postId, index)"
                       v-model="comment.message"
                       placeholder="Comment..."
@@ -541,12 +537,14 @@ export default {
 }
 
 .img-holder {
+  border: 1px solid;
   width: 48px;
   height: 48px;
-  border: 1px solid;
   border-radius: 50%;
+  align-items: center;
+  display: flex;
+  background: white !important;
 }
-
 .textarea {
   outline: none;
   margin-top: 10px;
@@ -578,11 +576,14 @@ export default {
 }
 
 .small-border-radius {
-  border-radius: 10px;
+  border-radius: 8px;
+  background: #F1F1F1;
+
 }
 
 .medium-border-radius {
   border-radius: 15px;
+  border: 1px solid #A2A2A2
 }
 
 .comment-field {
