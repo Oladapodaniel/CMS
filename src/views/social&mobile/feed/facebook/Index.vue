@@ -316,6 +316,9 @@
             </div>
           </div>
         </div>
+        <div class="row mt-5 justify-content-center text-center h6">
+          <div class="col-md-6">{{facebookResponse}}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -340,6 +343,7 @@ export default {
   const churchData =ref('');
   const postLike = ref([]);
   const facebookAuth = ref({});
+  const facebookResponse = ref('');
   const comment = ref({});
     const getChurchProfile= async()=>{
       try{
@@ -364,7 +368,7 @@ export default {
     //   })
     //   .catch((err) => console.log(err));
 
-    const loaded = ref(true);
+    const loaded = ref(false);
     // const getFeed = async (pId, accTkn) => {
     //   try {
         
@@ -403,11 +407,14 @@ export default {
     }
     
     const getSocialDetails = async() =>{
+      loaded.value = true
       try{
         let {data} = await axios.get('/api/SocialMedia/getSocialDetails?handle=facebook')
-        facebookAuth.value = data.returnObject;
+        facebookAuth.value = data && data.returnObject ? data.returnObject : {};
+        facebookResponse.value = data.response;
         console.log(data);
         getFeed(facebookAuth.value.pageId, facebookAuth.value.accessToken)
+        loaded.value = false
       }catch(error){
         console.log(error);
       }
@@ -459,7 +466,8 @@ export default {
       churchData,
       facebookAuth,
       postLike,
-      viewLikes
+      viewLikes,
+      facebookResponse
     };
   },
 };

@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <div class="row justify-content-center">
-      <div class="col-md-9 col-12">
+      <div class="col-md-8 col-12">
         <div class="row">
           <div class="col-md-12 py-4 pl-md-0">
             <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
@@ -74,7 +74,7 @@
                 <el-collapse-transition>
                   <div class="row" v-show="showEventParameters">
                     <div class="col-md-12 px-0 mt-3" id="post-icon">
-                      <el-dropdown class="w-100" trigger="click">
+                      <el-dropdown class="w-100 input-border bg-white" trigger="click">
                         <span class="el-dropdown-link w-100">
                           <div
                             class="d-flex justify-content-between border-contribution text-dak w-100"
@@ -169,46 +169,52 @@
               </div>
             </div>
             <div class="row my-4">
-              <div class="col-md-12">
+              <div class="col-md-12 d-flex">
                 <a
-                  class="primary-text text-decoration-none font-weight-700 mb-3 d-flex align-items-center"
+                  class="text-dak text-decoration-none fw-400  d-flex align-items-center"
                 >
                   <!-- <input type="checkbox" class="c-pointer" name="" id="" /> -->
                   <Checkbox id="binary" v-model="showOnMainThread" :binary="true" />
                   <span class="mx-1">Show on main feed</span>
                 </a>
+                <a
+                  class="text-dak text-decoration-none fw-400   px-2 d-flex align-items-center"
+                >
+                  <el-checkbox class="c-pointer mt-2" />
+                  <span class="mx-1">Send push notification</span>
+                </a>
               </div>
               <div class="col-md-12">
-                <div class="row input-border">
+                <hr class="col-md-12 px-0 text-black">
+                <div class="row ">
                   <div class="col-md-12 mt-2">
-                    <label for="" class="small-text mb-0 label-color font-weight-700"
-                      >Post to
+                    <label for="" class=" mb-0 font-weight-bold text-head "
+                      >Share Post to
                     </label>
                   </div>
                   <div class="col-md-12 mb-2 d-flex flex-wrap">
                     <a
-                      class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
+                      class="text-dak  fw-400 text-decoration-none  my-2 px-2 d-flex align-items-center"
                     >
-                      <span class="c-pointer"
+                      <!-- <span class="c-pointer"
                         ><img
                           class="icon-height"
                           src="../../../assets/social/mobile-icon.svg"
                           alt="Whatsapp icon"
-                      /></span>
-                      <span class="mx-1">Mobile App</span>
+                      /></span> -->
                       <input type="checkbox" class="c-pointer" checked name="" id="" />
+                      <span class="mx-1">Mobile App</span>
                     </a>
                     <a
-                      class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
+                      class="text-decoration-none text-dak  fw-400 my-2 px-2 d-flex align-items-center"
                       style="opacity: 0.4"
                     >
-                      <span class="c-pointer"
+                      <!-- <span class="c-pointer"
                         ><img
                           class="icon-height"
                           src="../../../assets/social/twitter.svg"
                           alt="Whatsapp icon"
-                      /></span>
-                      <span class="mx-1">Twitter</span>
+                      /></span> -->
                       <input
                         type="checkbox"
                         class="c-pointer"
@@ -216,15 +222,15 @@
                         name=""
                         id=""
                       />
+                      <span class="mx-1">Twitter</span>
                     </a>
                     <a
-                      class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
+                      class=" text-decoration-none text-dak  fw-400  my-2 px-2 d-flex align-items-center"
                       style="opacity: 0.4"
                     >
-                      <span class="c-pointer"
+                      <!-- <span class="c-pointer"
                         ><i class="pi pi-microsoft" style="font-size: 20px"></i
-                      ></span>
-                      <span class="mx-1">All Platforms</span>
+                      ></span> -->
                       <input
                         type="checkbox"
                         class="c-pointer"
@@ -232,17 +238,17 @@
                         name=""
                         id=""
                       />
+                      <span class="mx-1">All Platforms</span>
                     </a>
                     <a
-                      class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
+                      class="text-decoration-none my-2 text-dak  fw-400  px-2 d-flex align-items-center"
                     >
-                      <span class="c-pointer"
+                      <!-- <span class="c-pointer"
                         ><img
                           class="icon-height"
                           src="../../../assets/social/facebook.svg"
                           alt="Whatsapp icon"
-                      /></span>
-                      <span class="mx-1">Facebook</span>
+                      /></span> -->
                       <input
                         type="checkbox"
                         v-model="toFacebook"
@@ -251,18 +257,18 @@
                         name=""
                         id=""
                       />
+                      <span class="mx-1">Facebook</span>
                     </a>
                     <a
-                      class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
+                      class="text-decoration-none text-dak  fw-400 my-2 px-2 d-flex align-items-center"
                       style="opacity: 0.4"
                     >
-                      <span class="c-pointer"
+                      <!-- <span class="c-pointer"
                         ><img
                           class="icon-height"
                           src="../../../assets/social/instagram.svg"
                           alt="Whatsapp icon"
-                      /></span>
-                      <span class="mx-1">Instagram</span>
+                      /></span> -->
                       <input
                         type="checkbox"
                         class="c-pointer"
@@ -270,18 +276,10 @@
                         name=""
                         id=""
                       />
+                      <span class="mx-1">Instagram</span>
                     </a>
                   </div>
                 </div>
-              </div>
-
-              <div class="col-md-12">
-                <a
-                  class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center"
-                >
-                  <input type="checkbox" class="c-pointer" name="" id="" />
-                  <span class="mx-1">Send push notification</span>
-                </a>
               </div>
 
               <div
@@ -957,10 +955,6 @@ export default {
 
 .main-post {
   background: #fbfbfb;
-}
-
-.label-color {
-  color: #a5a0ab;
 }
 
 .icon-height {
