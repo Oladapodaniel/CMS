@@ -159,7 +159,7 @@
             <td>{{ date(item.date) }}</td>
             <td v-if="item.isPaymentForm">{{ item.amount }}</td>
             <td v-for="(value, label) in item.data" :key="label">
-              <span>{{ value.data ? value.data : "" }} </span>
+              <span>{{ value.data ? value.data : '' }} </span>
             </td>
             <td>
               <div class="c-pointer">

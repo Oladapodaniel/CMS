@@ -404,6 +404,7 @@ export default {
     const membershipSelectionTab = ref(false);
     const phoneNumberSelectionTab = ref(false);
     const whatsappGroupSelectionTab = ref(false);
+    const iSoStringFormat = ref("");
     const selectedGroups = ref([]);
     const displayEmoji = ref(false);
     const fileImage = ref(false);
@@ -1118,6 +1119,12 @@ export default {
       }
     }
 
+    watchEffect(() => {
+      if (scheduledWhatsappDate.value) {
+        iSoStringFormat.value = dateFormatter.getISOStringGMT(scheduledWhatsappDate.value);
+      }
+    });
+
     const scheduleWhatsappMessage = async () => {
       scheduleloading.value = true
       chatRecipients.value = new Array();
@@ -1182,14 +1189,14 @@ export default {
       //   chatRecipients: removeDuplicate,
       //   groupRecipients: userWhatsappGroupsId.value ? userWhatsappGroupsId.value : [],
       //   base64File: base64String.value,
-      //   date: scheduledWhatsappDate.value
+      //   date: iSoStringFormat.value
       // }
       const payload = {
         message: editorData.value,
         fileUrl: "",
         sessionId: clientSessionId.value,
         chatRecipients: removeDuplicate,
-        date: scheduledWhatsappDate.value
+        date: iSoStringFormat.value
       }
       console.log(payload);
 
@@ -1326,7 +1333,8 @@ export default {
       memberdataloading,
       // chunkProgress,
       messageGroupID,
-      fileUrl
+      fileUrl,
+      iSoStringFormat
     };
   },
 };
