@@ -33,7 +33,7 @@
                     Pending Post
                   </router-link>
                 </el-dropdown-item>
-                <el-dropdown-item>
+                <!-- <el-dropdown-item>
                   <router-link
                     :to="`/tenant/social/schedule`"
                     class="no-decoration fw-400 text-black"
@@ -41,7 +41,7 @@
                     <img src="../../../assets/social/Alarm.png" alt="" />
                     Schedule Post
                   </router-link>
-                </el-dropdown-item>
+                </el-dropdown-item> -->
                 <el-dropdown-item>
                   <router-link
                     :to="`/tenant/social/category`"
@@ -351,6 +351,12 @@ const routeToWelcomeOnboard = () => {
 }
 .box1 {
   background: #ffffff;
+  box-shadow: 0px 4px 4px 0px #0000000d;
+  border: 1px solid #cbcbcb;
+  border-radius: 12px;
+}
+.box1:hover {
+  background: #f0f0f0;
   box-shadow: 0px 4px 4px 0px #0000000d;
   border: 1px solid #cbcbcb;
   border-radius: 12px;

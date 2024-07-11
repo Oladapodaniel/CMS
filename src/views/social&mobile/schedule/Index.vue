@@ -43,14 +43,6 @@
         <div class="col-md-3 col-sm-4 my-3">
             <div class="row">
                 <div class="col-md-11 col-sm-10 mx-auto input-border">
-                    <!-- <div class="row">
-                        <div class="col-md-3">
-
-                        </div>
-                        <div class="col-md-9">
-                            <label for="" class="small-text mb-0 label-color font-weight-700">Post type</label>
-                        </div>
-                    </div> -->
                     <div class="row">
                         <div class="col-md-3 bordered">
 
@@ -66,14 +58,6 @@
         <div class="col-md-3 col-sm-4 my-3">
             <div class="row">
                 <div class="col-md-11 col-sm-10 mx-auto input-border">
-                    <!-- <div class="row">
-                        <div class="col-md-3">
-
-                        </div>
-                        <div class="col-md-9">
-                            <label for="" class="small-text mb-0 label-color font-weight-700">Post type</label>
-                        </div>
-                    </div> -->
                     <div class="row">
                         <div class="col-md-3 bordered">
 
@@ -89,14 +73,6 @@
         <div class="col-md-3 col-sm-4 my-3">
             <div class="row">
                 <div class="col-md-11 col-sm-10 mx-auto input-border">
-                    <!-- <div class="row">
-                        <div class="col-md-3">
-
-                        </div>
-                        <div class="col-md-9">
-                            <label for="" class="small-text mb-0 label-color font-weight-700">Post type</label>
-                        </div>
-                    </div> -->
                     <div class="row">
                         <div class="col-md-3 bordered py-1">
 
