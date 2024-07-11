@@ -124,11 +124,10 @@
                           :src="item.photo" />
                       </div>
                       <div class=" col-12 col-md-7 px-0 align-self-center  ">
+                        <div class="text-font font-weight-600">{{ item.title ? item.title : '' }}</div>
                         <div class="text-font font-weight-600">{{ item.name }}</div>
-                        <div class=" ">{{ item.bio }}</div>
+                        <div>{{ item.bio }}</div>
                       </div>
-                      <!-- <div class="row mx-auto   mx-lg-0  justify-content-center"> -->
-                      <!-- </div> -->
                     </div>
                   </div>
                   <div class="col-md-2 d-flex">
@@ -266,6 +265,11 @@
                           <label for="recipient-name" class="col-form-label">Name</label>
                           <el-input type="text" class="w-100" id="recipient-name" placeholder="Enter Pastor's name"
                             v-model="pastorDetails.name" />
+                        </div>
+                        <div class="form-group">
+                          <label for="recipient-name" class="col-form-label">Position</label>
+                          <el-input type="text" class="w-100" id="recipient-name" placeholder="Enter Pastor's Position"
+                            v-model="pastorDetails.title" />
                         </div>
 
                         <div class="form-group">
@@ -589,6 +593,7 @@ export default {
 
       let formData = new FormData()
       formData.append("name", pastorDetails.value.name)
+      formData.append("title", pastorDetails.value.title)
       formData.append("bio", pastorDetails.value.bio)
       formData.append("photo", image.value)
       if (pastorDetails.value.pastorId) {
@@ -597,6 +602,7 @@ export default {
       else {
         pastors.value.push({
           name: pastorDetails.value.name,
+          title: pastorDetails.value.title,
           bio: pastorDetails.value.bio,
           photo: pastorDetails.value.photo,
           socialMedia: pastorSocialMedia.value
@@ -718,6 +724,7 @@ export default {
           pastors.value = response.data.returnObject.pastors.map(i => {
             return {
               name: i.name,
+              title: i.title,
               photo: i.photoUrl,
               pastorId: i.pastorId,
               bio: i.bio,
