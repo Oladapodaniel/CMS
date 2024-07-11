@@ -427,6 +427,7 @@ export default {
     const toOthers = ref([])
     const memberdataloading = ref(false)
     const chunkProgress = ref(0)
+    const messageGroupID = ref(null)
 
 
     const clientSessionId = computed(() => {
@@ -865,21 +866,25 @@ export default {
         groupRecipients: userWhatsappGroupsId.value ? userWhatsappGroupsId.value : [],
       }
 
-      const { result } = await checkBilling(payload);
-      if (!result?.status) {
-        swal({
-          title: "Oops 😬",
-          text: result.message,
-          buttons: ["Close", "Buy unit"],
-          icon: "info"
-        })
-          .then((value) => {
-            if (value) {
-              router.push({ name: 'BuyUnits', path: '/tenant/buyunits' })
-            }
-          })
-        return;
-      }
+       const { status, message, communicationReportID } = await checkBilling(payload);
+       if (!status) {
+         swal({
+           title: "Oops 😬",
+           text: message,
+           buttons: ["Close", "Buy unit"],
+           icon: "info"
+         })
+           .then((value) => {
+             if (value) {
+               router.push({ name: 'BuyUnits', path: '/tenant/buyunits' })
+             }
+           })
+         return;
+       }
+
+       if (status) {
+        messageGroupID.value = communicationReportID;
+       }
 
 
       if (whatsappAttachment.value && whatsappAttachment.value.type?.includes('image')) {
@@ -901,7 +906,8 @@ export default {
       } else {
         const textPayload = {
           id: removeDuplicate,
-          message: editorData.value
+          message: editorData.value,
+          messageGroupID: messageGroupID.value
         }
         sendTextMessage(textPayload);
       }
@@ -1354,7 +1360,8 @@ export default {
       scheduleloading,
       toOthers,
       memberdataloading,
-      chunkProgress
+      chunkProgress,
+      messageGroupID
     };
   },
 };
