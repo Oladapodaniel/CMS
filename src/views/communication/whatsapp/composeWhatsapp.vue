@@ -267,18 +267,18 @@
             </transition>
 
             <!-- accept="image/*"  -->
-            <!-- <el-upload class="upload-demo" multiple :limit="1" :on-change="chooseFile" :on-remove="handleRemove"
+            <el-upload class="upload-demo" multiple :limit="1" :on-change="chooseFile" :on-remove="handleRemove"
               :auto-upload="false">
               <el-icon class="ml-2" style="font-size: 20px; color: #7d7d7d;">
                 <Paperclip />
               </el-icon>
-            </el-upload> -->
+            </el-upload>
           </div>
 
           <div class="row align-items-center">
-            <div class="col-2">
+            <!-- <div class="col-2">
               <el-progress type="circle" :percentage="chunkProgress" :width="60" v-if="chunkProgress > 0" />
-            </div>
+            </div> -->
             <div class="col-10">
               <img :src="selectedFileUrl" v-show="fileImage" class="mt-2" style="width: 50%" />
               <audio ref="audioPlayer" controls class="mt-2" style="width: 100%;" v-show="fileAudio">
@@ -426,8 +426,14 @@ export default {
     const scheduleloading = ref(false)
     const toOthers = ref([])
     const memberdataloading = ref(false)
+<<<<<<< HEAD
     const chunkProgress = ref(0)
     const messageGroupID = ref(null)
+=======
+    // const chunkProgress = ref(0)
+    const messageGroupID = ref(null)
+    const fileUrl = ref(null)
+>>>>>>> development
 
 
     const clientSessionId = computed(() => {
@@ -769,7 +775,6 @@ export default {
     }
 
     const sendImageMessage = async (payload) => {
-      console.log(clientSessionId.value, 'session')
       try {
         let { data } = await api.post(`${whatsappServerBaseURL}send/image?key=${clientSessionId.value}`, payload);
         console.log(data)
@@ -894,15 +899,22 @@ export default {
         formData.append("caption", editorData.value);
         formData.append("file", whatsappAttachment.value);
 
-        sendImageMessage(formData);
+        const imagePayload = {
+          id: removeDuplicate,
+          message: editorData.value,
+          messageGroupID: messageGroupID.value,
+          fileUrl: JSON.stringify({ url: fileUrl.value, fileType: whatsappAttachment.value.type })
+        }
+        sendImageMessage(imagePayload);
       } else if (whatsappAttachment.value && whatsappAttachment.value.type?.includes('video')) {
         console.log('video')
-        let formData = new FormData();
-        formData.append("id", JSON.stringify(removeDuplicate));
-        formData.append("caption", editorData.value);
-        formData.append("file", whatsappAttachment.value);
-
-        sendVideoMessage(formData);
+        const videoPayload = {
+          id: removeDuplicate,
+          message: editorData.value,
+          messageGroupID: messageGroupID.value,
+          fileUrl: JSON.stringify({ url: fileUrl.value, fileType: whatsappAttachment.value.type })
+        }
+        sendVideoMessage(videoPayload);
       } else {
         const textPayload = {
           id: removeDuplicate,
@@ -989,62 +1001,35 @@ export default {
       editorData.value += data.unicode
     }
 
-    const chooseFile = (e) => {
+    const chooseFile = async (e) => {
       // uploadPicture(e.raw)
       console.log(e.raw)
       selectedFileUrl.value = URL.createObjectURL(e.raw);
       whatsappAttachment.value = e.raw
-      return;
+
+      let formData = new FormData();
+      formData.append("MediaFileImage", e.raw);
+      
+      try {
+        let { data } = await axios.post("/api/Media/UploadWhatsAppAttachment", formData);
+        console.log(data);
+        if (data.pictureUrl) {
+          fileUrl.value = data.pictureUrl
+        }
+      } catch (error) {
+        console.error(error);
+      }
+      
       if (e.raw.type.includes('image')) {
+        fileAudio.value = false
+        fileVideo.value = false
+        fileImage.value = true
 
-
-        // const file = e.raw;
-        // const reader = new FileReader();
-
-        // reader.onload = (f) => {
-        //   base64String.value = f.target.result;
-        //   const chunkSize = 1024; // Specify your desired chunk size
-
-        //   socket.emit('resetmediaobject',
-        //     {
-        //       data: "",
-        //       id: clientSessionId.value
-        //     });
-
-        //   sendBase64InChunks(base64String.value, chunkSize);
-        //   whatsappAttachment.value = {
-        //     mimeType: e.raw.type,
-        //     fileName: e.raw.name,
-        //     fileSize: e.raw.size
-        //   }
-        // };
-
-        // reader.readAsDataURL(file);
-
-        // fileAudio.value = false
-        // fileVideo.value = false
-        // fileImage.value = true
-
-      } else if (e.raw.type.includes('audio')) {
+      }
+      else if (e.raw.type.includes('audio')) {
         const reader = new FileReader();
         reader.addEventListener("load", function (f) {
           audioPlayer.value.src = reader.result;
-          base64String.value = f.target.result;
-          const chunkSize = 1024; // Specify your desired chunk size
-
-          socket.emit('resetmediaobject',
-            {
-              data: "",
-              id: clientSessionId.value
-            });
-
-          sendBase64InChunks(base64String.value, chunkSize);
-          whatsappAttachment.value = {
-            mimeType: e.raw.type,
-            fileName: e.raw.name,
-            fileSize: e.raw.size
-          }
-          console.log(whatsappAttachment.value, "attachment");
           fileAudio.value = true
           fileVideo.value = false
           fileImage.value = false
@@ -1053,28 +1038,10 @@ export default {
         if (e.raw) {
           reader.readAsDataURL(e.raw);
         }
-        // console.log(whatsappAttachment.value, "attachment");
       } else if (e.raw.type.includes('video')) {
         const reader = new FileReader();
         reader.addEventListener("load", function (f) {
           videoPlayer.value.src = reader.result;
-          base64String.value = f.target.result;
-          const chunkSize = 1024; // Specify your desired chunk size
-
-          socket.emit('resetmediaobject',
-            {
-              data: "",
-              id: clientSessionId.value
-            });
-
-          sendBase64InChunks(base64String.value, chunkSize);
-          whatsappAttachment.value = {
-            // base64: base64String.value,
-            mimeType: e.raw.type,
-            fileName: e.raw.name,
-            fileSize: e.raw.size
-          }
-          console.log(whatsappAttachment.value, "attachment");
           fileAudio.value = false
           fileVideo.value = true
           fileImage.value = false
@@ -1084,6 +1051,8 @@ export default {
           reader.readAsDataURL(e.raw);
         }
       } else {
+        console.log('other file attached')
+        return ;
         const reader = new FileReader();
         reader.addEventListener("load", function (f) {
           // selectedFileUrl.value.src = reader.result;
@@ -1121,7 +1090,7 @@ export default {
       selectedFileUrl.value = ""
       whatsappAttachment.value = {}
       fileReady.value = false
-      chunkProgress.value = 0
+      // chunkProgress.value = 0
       // socket.emit('clearfile', {
       //   data: "",
       //   id: clientSessionId.value
@@ -1129,23 +1098,23 @@ export default {
     }
 
 
-    const sendBase64InChunks = (base64String, chunkSize) => {
-      const totalChunks = Math.ceil(base64String.length / chunkSize);
-      let uploadedChunks = 0;
-      for (let i = 0; i < totalChunks; i++) {
-        const start = i * chunkSize;
-        const end = start + chunkSize;
-        const chunk = base64String.substring(start, end);
-        uploadedChunks++; // Increment the uploadedChunks count
-        //   socket.emit('chunk',
-        //     {
-        //       chunk,
-        //       uploadedChunks,
-        //       totalChunks,
-        //       id: clientSessionId.value
-        //     });
-      }
-    }
+    // const sendBase64InChunks = (base64String, chunkSize) => {
+    //   const totalChunks = Math.ceil(base64String.length / chunkSize);
+    //   let uploadedChunks = 0;
+    //   for (let i = 0; i < totalChunks; i++) {
+    //     const start = i * chunkSize;
+    //     const end = start + chunkSize;
+    //     const chunk = base64String.substring(start, end);
+    //     uploadedChunks++; // Increment the uploadedChunks count
+    //     //   socket.emit('chunk',
+    //     //     {
+    //     //       chunk,
+    //     //       uploadedChunks,
+    //     //       totalChunks,
+    //     //       id: clientSessionId.value
+    //     //     });
+    //   }
+    // }
 
     const hideEmojiWrapper = (e) => {
       console.log(e)
@@ -1360,8 +1329,14 @@ export default {
       scheduleloading,
       toOthers,
       memberdataloading,
+<<<<<<< HEAD
       chunkProgress,
       messageGroupID
+=======
+      // chunkProgress,
+      messageGroupID,
+      fileUrl
+>>>>>>> development
     };
   },
 };
