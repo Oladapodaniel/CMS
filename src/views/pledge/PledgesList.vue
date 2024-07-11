@@ -28,7 +28,7 @@
         <div class="row justify-content-between">
           <div class="col-md-6 mt-4 mt-md-0">
             <div class="col-md-12 d-flex justify-content-between align-items-center border-radius-10 py-2  px-3 grey-backg">
-              <div class="fw-500 s-14">Copy and Share the <br> link to Pay</div>
+              <div class="fw-500 s-14">Copy and Share the <br> link to Pledge</div>
               <el-button color="#32C1D5" round class="text-white" @click="copylink">
                 <img class="ml-2" src="../../assets/copyurl-icon.png" alt="" />Copy
                 Link</el-button
@@ -37,7 +37,7 @@
           </div>
           <div class="col-md-6 mt-4 mt-md-0 ">
             <div class="col-md-12 d-flex align-items-center border-radius-10 py-2 justify-content-between px-3 grey-backg">
-              <div class="fw-500 s-14">Copy and Share the <br> link to Pledge</div>
+              <div class="fw-500 s-14">Copy and Share the <br> link to Pay</div>
               <el-button color="#32C1D5" round class="text-white" @click="copylink2">
                 <img class="ml-2" src="../../assets/copyurl-icon.png" alt="" />Copy
                 Link</el-button
