@@ -111,6 +111,9 @@ rect.highcharts-background[fill] {
   .grey-backg {
     background: #EBEDFF !important;
   }
+  .report-tab{
+    background: #EDFDFF !important;
+  }
 
   .grey-border {
     border: 1px solid #DDE2E6;
