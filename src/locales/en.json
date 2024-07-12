@@ -47,7 +47,9 @@
   "forgot-passwordContent": {
     "forgotPassword": "Forgot Password?",
     "enterPrimaryEmail": "Enter your primary email and we'll send you instructions on how to reset your password.",
-    "label": "Email",
+    "label": {
+      "email": "Email"
+    },
     "sendReset": "Send Reset Instructions",
     "rememberPassword": "You Remember your Password?",
     "signIn": "Sign in."
@@ -59,24 +61,45 @@
       "ur-name" : "What's your name?",
       "ur-ministry" : "What's the name of your Ministry?",
       "ur-phone" : "What's your Phone Number?",
+      "ur-email" : "Email Address",
       "ur-country" : "Select Country",
       "membership-size" : "What is your Membership size?",
+      "churchWebiste" : "Do you have a Church Website?",
+      "websiteUrl" : "If Yes, Please input the Website Address or URL",
       "step" : "Step 1 of 2"
     },
+    "otpContent": {
+      "chVerification" : "ChurchPlus Verification",
+      "digitCodeText" : "We sent a 4 Digits Code to your",
+      "completeVerify" : "Complete Verification",
+      "didNotGet" : "Didn’t get code? ",
+      "resendCode" : "Resend code",
+      "cancel": "Cancel"
+      
+    },
+    "emailVerification": "We will Verify your Email & Phone Number",
+    "continue": "Continue",
+    "cancel" : "Cancel",
+    "verifySuccess" : "Verification was Successful!",
+    "verifyFailed" : "We couldn’t verify your  information",
+    "whatNext" : "See What’s Next",
+    "tryAgain" : "Try again",
     "next-btntext" : "Next step"
   },
   "startingPointContent": {
     "hey" : "Hey",
-    "what-to-do-in-ch" : "What would you like to do in Churchplus?",
-    "step" : "STEP 2 OF 2",
-    "starting-point" : "Choose a starting point",
+    "what-to-do-in-ch" : "Get started with our amazing  features",
+    "step" : "Stpe 2 oF 2",
+    "starting-point" : "Choose a Starting Point",
     "do-more" : "You can do more later",
-    "claim-unit" : "Claim your 500 unit now",
+    "churchMobile" : "Church Mobile App Setup",
+    "claim-unit" : "Claim Free 500 units now!",
     "terms" : "Terms and Conditions",
-    "units-and-above" : "Buy 1000 units or above and get 500units free",
+    "easySteps" : "Easy Steps to Claiming Free 500 units now!",
+    "stepOne"  : "1. Buy NGN 1,000 Worth of SMS",
     "existing-customers" : "Offer is open to both new and existing customers",
     "one-time-offer": "This is a one time offer for the duration of this campaign",
-    "buy-sms": "Buy SMS now",
+    "buy-sms": "Buy SMS Units now",
     "send-email-sms": "Send Email/SMS",
     "add-ch-members": "Add Church Members",
     "add-fst-timers": "Add First Timers",
@@ -92,13 +115,13 @@
 
   "startDashboard" : {
     "wel" : "Welcome",
-    "want-to-start" : "Where do you want to start ?",
+    "want-to-start" : "How would you like to start?",
     "add-member" : "Add members",
-    "stay-compliant" : "Stay compliant by keeping accurate records of your members.",
+    "stay-compliant" : "Stay connected by keeping accurate records of your members.",
     "send-sms" : "Send SMS",
-    "communicate" : "Communicate with your members by sending sms with our seamless sms.",
-    "add-fst-timers" : "Add first timers",
-    "keep-accurate" : "Keep accurate record and follow up your first timers with our automated system.",
+    "communicate" : "Communicate with your members by sending SMS with our seamless SMS.",
+    "add-fst-timers" : "Add First timers",
+    "keep-accurate" : "Keep accurate record and follow up your first timers with our Automated system.",
     "skip-dashboard" : "Skip To Dashboard"
   },
   "dashboard": {
