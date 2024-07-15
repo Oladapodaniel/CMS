@@ -524,7 +524,7 @@ export default {
           devotionTitle.value = postData.title;
           devotionScripture.value = postData.bibleVerse;
           devotionMemoryVerse.value = postData.memoryVerse;
-          devotionDate.value = postData.devotionDate;
+          devotionDate.value = postData?.devotionDate ? postData?.devotionDate : "";
         } else if (postData?.postCategoryName?.toLowerCase() === "event") {
           showEventParameters.value = true;
           selectedCheckinEvent.value.id = postData.checkInAttendanceID;
