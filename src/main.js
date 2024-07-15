@@ -14,6 +14,10 @@ import axios from "./gateway/backendapi";
 import NProgress from "nprogress";
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import Toaster from '@meforma/vue-toaster';
+import VueCropper from 'vue-cropperjs';
+import 'cropperjs/dist/cropper.css'; // Import cropperjs CSS
+// import { createVuetify } from 'vuetify';
+// import 'vuetify/dist/vuetify.min.css';
 // import VueTelInput from 'vue3-tel-input'
 // import 'vue3-tel-input/dist/vue3-tel-input.css'
 import VueTelInput from 'vue-tel-input';
@@ -59,6 +63,8 @@ import errorimage from './assets/file-not-found.png';
 import getSubdomain from "./services/churchTypeMiddlware";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+
+// const vuetify = createVuetify();
 
 
 AOS.init({
@@ -126,6 +132,7 @@ app.component("ConfirmDialog", ConfirmDialog);
 app.component("SplitButton", SplitButton);
 app.component("Checkbox", Checkbox);
 app.component("Tag", Tag);
+app.component('VueCropper', VueCropper);
 app.component("Editor", Editor);
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
@@ -159,6 +166,7 @@ app.config.globalProperties.$aos = AOS;
 
 app
 .use(store)
+// .use(vuetify)
 .use(router)
 .use(VueHighcharts, { Highcharts })
 .use(CKEditor)

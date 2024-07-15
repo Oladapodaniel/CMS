@@ -6,32 +6,33 @@
         <div class="s-18">Manage all reports</div>
       </div>
     </div>
-    <div class="row mt-3 border-bottom border report-tab">
+    <div class="row mt-3  border-botom ">
       <div
-        class="col-12 px-0 c-pointer"
+        class="col-12 px-0  c-pointer"
         v-if="!financialAccount"
-        :class="{ 'col-sm-6': !canAccessFinancial, 'col-sm-4': canAccessFinancial }"
+        :class="{ 'report-tab'  : showPeople, 'bg-white' : !showPeople, 'col-sm-6': !canAccessFinancial, 'col-sm-4': canAccessFinancial }"
         @click="togglePeople"
       >
-        <div class="p-3 header4">Membership</div>
+        <div class="p-3 header4" :class="{ 'fw-500' : showPeople, 'fw-400' : !showPeople }">Membership</div>
         <div :class="{ baseline: showPeople, 'hide-base': !showPeople }"></div>
       </div>
       <div
         class="col-12 px-0 c-pointer"
         v-if="!financialAccount"
-        :class="{ 'col-sm-6': !canAccessFinancial, 'col-sm-4': canAccessFinancial }"
+        :class="{ 'report-tab' : showPerformance, 'bg-white' : !showPerformance,  'col-sm-6': !canAccessFinancial, 'col-sm-4': canAccessFinancial }"
         @click="togglePerformance"
       >
-        <div class="p-3 header4">Attendance</div>
+        <div class="p-3 header4" :class="{ 'fw-500' : showPerformance, 'fw-400' : !showPerformance}" >Attendance</div>
         <div :class="{ baseline: showPerformance, 'hide-base': !showPerformance }"></div>
       </div>
       <div
         class="col-12 px-0 col-sm-4 c-pointer"
+        :class="{ 'report-tab' : showFinancial, 'bg-white' : !showFinancial, }"
         @click="toggleFinancial"
         v-if="canAccessFinancial || financialAccount"
       >
-        <div class="p-3 header4">Financial</div>
-        <div :class="{ baseline: showFinancial, 'hide-base': !showFinancial }"></div>
+        <div class="p-3 header4" :class="{ 'fw-500' : showFinancial, 'fw-400' : !showFinancial}">Financial</div>
+        <div :class="{  baseline: showFinancial, 'hide-base': !showFinancial }"></div>
       </div>
     </div>
     <div class="row mt-3">
@@ -174,7 +175,12 @@ export default {
 <style scoped>
 .header4 {
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 400;
+  color: #000000;
+}
+.header4:hover {
+  font-size: 20px;
+  font-weight: 400;
   color: #000000;
 }
 .baseline {

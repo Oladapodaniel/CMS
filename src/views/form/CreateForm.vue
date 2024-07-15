@@ -3,6 +3,11 @@
     <div class="row">
       <div class="col-md-12 h2 font-weight-bold text-black text-head">Create Form</div>
     </div>
+    <!-- <div class="row">
+      <div class="col-md-12">
+       <FileUpload />
+      </div>
+    </div> -->
     <div class="row justify-content-center mt-4">
       <div class="col-md-8">
         <div class="row mt-3">
@@ -640,12 +645,14 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import finish from "../../services/progressbar/progress";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import ContributionItems from "@/components/firsttimer/contributionItemModal";
+// import FileUpload from "../../components/image-picker/FileUpload.vue";
 import { useRoute } from "vue-router";
 import router from "../../router";
 import draggable from "vuedraggable";
 export default {
   components: {
     draggable,
+    // FileUpload,
     ContributionItems,
   },
   setup() {
@@ -1055,7 +1062,7 @@ export default {
       accountName.value && selectedBank.value.code && accountNumber.value
         ? formData.append("paymentFormString", JSON.stringify(paymentForm))
         : null;
-        formData.append(
+      formData.append(
         "isAmountFIxed",
         paymentType.value || !paymentType.value ? paymentType.value : ""
       );

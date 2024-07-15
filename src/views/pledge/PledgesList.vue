@@ -27,17 +27,27 @@
       <div class="col-sm-12 col-md-10 col-lg-8 mt-5 col-12">
         <div class="row justify-content-between">
           <div class="col-md-6 mt-4 mt-md-0">
-            <div class="col-md-12 d-flex justify-content-between align-items-center border-radius-10 py-2  px-3 grey-backg">
-              <div class="fw-500 s-14">Copy and Share the <br> link to Pledge</div>
+            <div
+              class="col-md-12 d-flex justify-content-between align-items-center border-radius-10 py-2 px-3 grey-backg"
+            >
+              <div class="fw-500 s-14">
+                Copy and Share the <br />
+                link to Pledge
+              </div>
               <el-button color="#32C1D5" round class="text-white" @click="copylink">
                 <img class="ml-2" src="../../assets/copyurl-icon.png" alt="" />Copy
                 Link</el-button
               >
             </div>
           </div>
-          <div class="col-md-6 mt-4 mt-md-0 ">
-            <div class="col-md-12 d-flex align-items-center border-radius-10 py-2 justify-content-between px-3 grey-backg">
-              <div class="fw-500 s-14">Copy and Share the <br> link to Pay</div>
+          <div class="col-md-6 mt-4 mt-md-0">
+            <div
+              class="col-md-12 d-flex align-items-center border-radius-10 py-2 justify-content-between px-3 grey-backg"
+            >
+              <div class="fw-500 s-14">
+                Copy and Share the <br />
+                link to Pay
+              </div>
               <el-button color="#32C1D5" round class="text-white" @click="copylink2">
                 <img class="ml-2" src="../../assets/copyurl-icon.png" alt="" />Copy
                 Link</el-button
@@ -214,38 +224,48 @@
             {{ date(item.date) }}
           </div>
         </template>
+        <template v-slot:recordpayment="{ item }">
+          <router-link
+            :to="`/tenant/pledge/pledgemaking?pledgeTypeID=${item.id}`"
+            class="text-color px-0 fw-500 primary--text"
+          >
+            Record Payment
+          </router-link>
+        </template>
         <template v-slot:action="{ item }">
-          <el-dropdown trigger="click">
-            <el-icon>
-              <MoreFilled />
-            </el-icon>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item>
-                  <router-link
-                    :to="`/tenant/pledge/pledgemaking?pledgeTypeID=${item.id}`"
-                    class="text-color"
-                    >Make Payment</router-link
-                  >
-                </el-dropdown-item>
-                <el-dropdown-item>
-                  <router-link
-                    :to="`/tenant/pledge/makepledge?id=${item.id}`"
-                    class="text-color"
-                    >Edit</router-link
-                  >
-                </el-dropdown-item>
-                <el-dropdown-item>
-                  <div
-                    @click.prevent="showConfirmModal(item.id, index)"
-                    class="text-color"
-                  >
-                    Delete
-                  </div>
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
+              <el-dropdown trigger="click">
+                <el-icon>
+                  <MoreFilled />
+                </el-icon>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item>
+                      <router-link
+                        :to="`/tenant/pledge/pledgemaking?pledgeTypeID=${item.id}`"
+                        class="text-color"
+                        >Make Payment</router-link
+                      >
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                      <router-link
+                        :to="`/tenant/pledge/makepledge?id=${item.id}`"
+                        class="text-color"
+                        >Edit</router-link
+                      >
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                      <div
+                        @click.prevent="showConfirmModal(item.id, index)"
+                        class="text-color"
+                      >
+                        Delete
+                      </div>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            <!-- </div> -->
+          <!-- </div> -->
         </template>
       </Table>
     </div>
