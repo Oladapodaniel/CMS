@@ -6,9 +6,36 @@
           <div class="col-md-6">
             <h2 class="head-text">Pledge Overview</h2>
           </div>
-          <div class="col-md-6 d-flex justify-content-md-end">
-            <el-button :color="primarycolor" class="header-btn text-white" data-toggle="modal"
-              data-target="#exampleModalLong" round>
+          <div class="col-md-6 d-flex flex-wrap  justify-content-md-end">
+            <el-dropdown
+              trigger="click"
+              class="align-items-center justify-content-center d-flex ml-md-3 ml-0 mb-2  default-btn py-0 mr-2"
+              style="height: 2.2rem"
+            >
+              <span
+                class="el-dropdown-link w-100 primary--text text-center font-weight-600"
+              >
+                Menu
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item class="text-black" @click="copyLink"
+                    >Copy Link to Pay
+                    <img class="ml-2" src="../../assets/copyurl-icon.png" alt="" />
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+            <el-button
+              :color="primarycolor"
+              class="header-btn text-white"
+              data-toggle="modal"
+              data-target="#exampleModalLong"
+              round
+            >
               Record Payment
             </el-button>
           </div>
@@ -59,52 +86,8 @@
             <span class="theader">Balance</span>
             <div class="my-3">
               <span class="evt-name">
-                {{ Math.abs(pledgeBalance).toLocaleString() }}.00</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-12">
-            <hr class="mb-0" />
-            <div class="pg-content">
-              <div class="row mb-3">
-                <div class="col-md-12">
-                  <span class="attendance-header">Payment link</span>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12">
-                  <div class="border p-3">
-                    <div class="row">
-                      <div class="col-md-2 col-sm-2 d-flex justify-content-center image mt-2">
-                        <img src="../../assets/link.svg" class="w-100" style="width: 60px; height: 60px" />
-                      </div>
-                      <div class="col-md-10 col-sm-10 mt-3">
-                        <a class="text-decoration-none">
-                          <h4 class="header4 link-color c-pointer" @click="copyRegLink">
-                            Online Payment Link
-                          </h4>
-                        </a>
-                        <p class="mb-4">
-                          <span class="d-flex align-items-center justify-content-between"><el-input type="text"
-                              ref="selectedLink" v-model="pledgePaymentLink" class="border-0" placeholder="Link">
-                              <template #append>
-                                <el-button @click="copyLink">
-                                  <el-icon>
-                                    <CopyDocument />
-                                  </el-icon>
-                                </el-button>
-                              </template>
-                            </el-input>
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
+                {{ Math.abs(pledgeBalance).toLocaleString() }}.00</span
+              >
             </div>
           </div>
         </div>
@@ -113,17 +96,27 @@
             <h2 class="head-text">Payments</h2>
           </div>
           <div class="col-md-6 d-flex justify-content-md-end">
-            <el-button :color="primarycolor" class="header-btn text-white" data-toggle="modal"
-              data-target="#exampleModalLong" round>
+            <el-button
+              :color="primarycolor"
+              class="header-btn text-white"
+              data-toggle="modal"
+              data-target="#exampleModalLong"
+              round
+            >
               Record Payment
             </el-button>
           </div>
-          <div class="col-12">
+          <div class="col-12 col-md-12">
             <div class="col-md-12 px-0">
               <hr class="my-3" />
             </div>
-            <Table :data="searchPledgePayment" :headers="pledgeHeaders" :checkMultipleItem="false" v-loading="loading"
-              v-if="allPledgePaymentList.length > 0">
+            <Table
+              :data="searchPledgePayment"
+              :headers="pledgeHeaders"
+              :checkMultipleItem="false"
+              v-loading="loading"
+              v-if="allPledgePaymentList.length > 0"
+            >
               <template v-slot:date="{ item }">
                 <div class="c-pointer">{{ date(item.date) }}</div>
               </template>
@@ -144,7 +137,10 @@
                     <el-dropdown-menu>
                       <el-dropdown-item> </el-dropdown-item>
                       <el-dropdown-item>
-                        <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">
+                        <div
+                          @click.prevent="showConfirmModal(item.id, index)"
+                          class="text-color"
+                        >
                           Delete
                         </div>
                       </el-dropdown-item>
@@ -154,18 +150,34 @@
               </template>
             </Table>
           </div>
+          <div class="col-md-12  mt-5 d-flex justify-content-center" v-if="allPledgePaymentList.length <= 0">
+            <div class="col-md-10 text-center s-18">
+              No Payment Record yet
+            </div>
+          </div>
         </div>
       </div>
       <!-- Modal -->
-      <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
-        aria-hidden="true">
+      <div
+        class="modal fade"
+        id="exampleModalLong"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLongTitle"
+        aria-hidden="true"
+      >
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title font-weight-bold">
                 Record a payment for this pledge
               </h5>
-              <div class="btn-close" data-dismiss="modal" aria-label="Close" ref="closeRecordModal">
+              <div
+                class="btn-close"
+                data-dismiss="modal"
+                aria-label="Close"
+                ref="closeRecordModal"
+              >
                 <el-icon>
                   <Close />
                 </el-icon>
@@ -175,19 +187,25 @@
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-md-12">
-                    Record a payment you've already received,such as cash,
-                    cheque, or bank payment
+                    Record a payment you've already received,such as cash, cheque, or bank
+                    payment
                   </div>
                   <div class="col-md-12 mt-4">
                     <div class="row my-1 mt-3">
                       <div class="col-md-10">
                         <div class="row">
                           <div class="col-md-4 text-md-right align-self-center">
-                            <label for="" class="font-weight-bold">Payment date <sup class="text-danger">*</sup>
+                            <label for="" class="font-weight-bold"
+                              >Payment date <sup class="text-danger">*</sup>
                             </label>
                           </div>
                           <div class="col-md-8">
-                            <el-input type="date" v-model="pledgeTime" :disabled="checking" size="large" />
+                            <el-input
+                              type="date"
+                              v-model="pledgeTime"
+                              :disabled="checking"
+                              size="large"
+                            />
                           </div>
                         </div>
                       </div>
@@ -196,11 +214,17 @@
                       <div class="col-md-10">
                         <div class="row">
                           <div class="col-md-4 text-md-right align-self-center">
-                            <label for="" class="font-weight-bold">Donor <sup class="text-danger">*</sup>
+                            <label for="" class="font-weight-bold"
+                              >Donor <sup class="text-danger">*</sup>
                             </label>
                           </div>
                           <div class="col-md-8">
-                            <el-input type="text" v-model="personName" :disabled="checking" size="large" />
+                            <el-input
+                              type="text"
+                              v-model="personName"
+                              :disabled="checking"
+                              size="large"
+                            />
                           </div>
                         </div>
                       </div>
@@ -215,7 +239,11 @@
                           </div>
 
                           <div class="col-md-8">
-                            <el-input type="text" v-model="pledgeName" :disabled="checking" />
+                            <el-input
+                              type="text"
+                              v-model="pledgeName"
+                              :disabled="checking"
+                            />
                           </div>
                         </div>
                       </div>
@@ -224,13 +252,16 @@
                       <div class="col-md-10">
                         <div class="row">
                           <div class="col-md-4 text-md-right align-self-center">
-                            <label for="" class="font-weight-bold">
-                              Pledge Amount
-                            </label>
+                            <label for="" class="font-weight-bold"> Pledge Amount </label>
                           </div>
                           <div class="col-md-8 d-flex">
                             <div class="col-12 col-md-8 col-lg-12 m-0 p-0">
-                              <el-input type="number" v-model="pledgeBalance" :disabled="false" class="w-100" />
+                              <el-input
+                                type="number"
+                                v-model="pledgeBalance"
+                                :disabled="false"
+                                class="w-100"
+                              />
                             </div>
                           </div>
                         </div>
@@ -240,16 +271,25 @@
                       <div class="col-md-10">
                         <div class="row">
                           <div class="col-md-4 text-md-right align-self-center">
-                            <label for="" class="font-weight-bold">Payment method <sup class="text-danger">*</sup>
+                            <label for="" class="font-weight-bold"
+                              >Payment method <sup class="text-danger">*</sup>
                             </label>
                           </div>
 
                           <div class="col-md-8 d-flex flex-wrap">
-                            <el-select-v2 v-model="SelectedChannelId" class="w-100 font-weight-normal" :options="channel.map((i) => ({
-                              label: i.name,
-                              value: i.id,
-                            }))
-                              " placeholder="Select a payment method" @change="selectChannel" size="large" />
+                            <el-select-v2
+                              v-model="SelectedChannelId"
+                              class="w-100 font-weight-normal"
+                              :options="
+                                channel.map((i) => ({
+                                  label: i.name,
+                                  value: i.id,
+                                }))
+                              "
+                              placeholder="Select a payment method"
+                              @change="selectChannel"
+                              size="large"
+                            />
                           </div>
                         </div>
                       </div>
@@ -259,10 +299,18 @@
               </div>
             </div>
             <div class="modal-footer">
-              <el-button class="secondary-button" data-dismiss="modal" round>Cancel</el-button>
-              <el-button :color="primarycolor" class="header-btn text-white" round @click="recordPayment"
-                :loading="savingRecord">
-                Save</el-button>
+              <el-button class="secondary-button" data-dismiss="modal" round
+                >Cancel</el-button
+              >
+              <el-button
+                :color="primarycolor"
+                class="header-btn text-white"
+                round
+                @click="recordPayment"
+                :loading="savingRecord"
+              >
+                Save</el-button
+              >
             </div>
           </div>
         </div>
@@ -294,7 +342,7 @@ export default {
   },
   directives: {},
   setup() {
-    const primarycolor = inject('primarycolor')
+    const primarycolor = inject("primarycolor");
     const selectedLink = ref(null);
     const SelectedChannelId = ref(null);
     const emaildata = ref(null);
@@ -322,9 +370,9 @@ export default {
     const allPledgePaymentList = ref([]);
     const currencyList = ref([]);
     const searchText = ref("");
-    const closeRecordModal = ref(null)
-    const savingRecord = ref(false)
-    const loadingSummary = ref(false)
+    const closeRecordModal = ref(null);
+    const savingRecord = ref(false);
+    const loadingSummary = ref(false);
 
     const pledgeHeaders = ref([
       { name: "DATE", value: "date" },
@@ -363,7 +411,7 @@ export default {
 
     const getSinglePledge = async () => {
       checking.value = false;
-      loadingSummary.value = true
+      loadingSummary.value = true;
       try {
         const res = await axios.get(
           `/api/Pledge/GetOnePledge?ID=${route.query.pledgeTypeID}`
@@ -382,11 +430,11 @@ export default {
         allPledgePaymentList.value = res.data.returnObject.pledgePayments;
 
         checking.value = true;
-        loadingSummary.value = false
+        loadingSummary.value = false;
       } catch (error) {
         NProgress.done();
         console.log(error);
-        loadingSummary.value = false
+        loadingSummary.value = false;
       }
     };
     if (route.query.pledgeTypeID) getSinglePledge();
@@ -437,15 +485,11 @@ export default {
         });
     };
     const showConfirmModal = (id, index) => {
-      ElMessageBox.confirm(
-        "Are you sure you want to proceed?",
-        "Confirm delete",
-        {
-          confirmButtonText: "OK",
-          cancelButtonText: "Cancel",
-          type: "error",
-        }
-      )
+      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "error",
+      })
         .then(() => {
           deletePledgePayment(id, index);
         })
@@ -463,7 +507,7 @@ export default {
     };
 
     const recordPayment = async () => {
-      savingRecord.value = true
+      savingRecord.value = true;
       let paymentData = {
         id: route.query.pledgeTypeID,
         pledgeID: route.query.pledgeTypeID,
@@ -472,12 +516,9 @@ export default {
         currencyID: pledgeCurrencyID.value,
       };
       try {
-        const res = await axios.post(
-          "/api/Pledge/SavePledgePayment",
-          paymentData
-        );
-        savingRecord.value = false
-        closeRecordModal.value.click()
+        const res = await axios.post("/api/Pledge/SavePledgePayment", paymentData);
+        savingRecord.value = false;
+        closeRecordModal.value.click();
 
         ElMessage({
           type: "success",
@@ -491,7 +532,7 @@ export default {
       } catch (error) {
         NProgress.done();
         console.log(error);
-        savingRecord.value = false
+        savingRecord.value = false;
       }
     };
     const channel = ref([
@@ -507,9 +548,7 @@ export default {
     const willCopyLink = ref(false);
 
     const selectChannel = () => {
-      selectedChannel.value = channel.value.find(
-        (i) => i.id == SelectedChannelId.value
-      );
+      selectedChannel.value = channel.value.find((i) => i.id == SelectedChannelId.value);
     };
 
     const copyLink2 = () => {
@@ -542,16 +581,37 @@ export default {
       return `${window.location.origin}/partnership/pay?pledgeID=${route.query.pledgeTypeID}`;
     });
 
-    const copyLink = () => {
-      selectedLink.value.input.setSelectionRange(0, selectedLink.value.input.value.length); /* For mobile devices */
-      selectedLink.value.input.select();
+    // const copyLink = () => {
+    //   selectedLink.value.input.setSelectionRange(
+    //     0,
+    //     selectedLink.value.input.value.length
+    //   ); /* For mobile devices */
+    //   selectedLink.value.input.select();
 
-      /* Copy the text inside the text field */
+    //   /* Copy the text inside the text field */
+    //   document.execCommand("copy");
+    //   ElMessage({
+    //     type: "success",
+    //     message: 'Copied to clipboard"',
+    //     duration: 5000,
+    //   });
+    // };
+    const copyLink = () => {
+      const textarea = document.createElement("textarea");
+      textarea.value = pledgePaymentLink.value;
+
+      document.body.appendChild(textarea);
+
+      textarea.select();
+      textarea.setSelectionRange(0, 99999);
+
       document.execCommand("copy");
+      document.body.removeChild(textarea);
+
       ElMessage({
+        showClose: true,
+        message: "Pledge Payment link Copied Successfully!",
         type: "success",
-        message: 'Copied to clipboard"',
-        duration: 5000,
       });
     };
     const sendReport = (messageObj) => {
@@ -603,8 +663,7 @@ export default {
         body.toOthers = messageObj.data.toOthers;
       }
 
-      body.message =
-        messageObj.medium === "sms" ? messageObj.data.message : message;
+      body.message = messageObj.medium === "sms" ? messageObj.data.message : message;
 
       const url =
         messageObj.medium === "sms"
@@ -724,7 +783,7 @@ export default {
       closeRecordModal,
       savingRecord,
       loadingSummary,
-      primarycolor
+      primarycolor,
     };
   },
 };
@@ -877,7 +936,8 @@ a {
 }
 
 .header4 {
-  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) 18px/24px var(--unnamed-font-family-nunito-sans);
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) 18px/24px
+    var(--unnamed-font-family-nunito-sans);
   letter-spacing: var(--unnamed-character-spacing-0);
   text-align: left;
   font: normal normal bold 18px/24px Nunito Sans;
