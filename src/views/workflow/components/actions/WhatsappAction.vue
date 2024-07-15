@@ -36,20 +36,15 @@
                         <el-tag class="mx-1 mb-1" size="large" closable v-for="(item, index) in allSelectedNumbers"
                             :key="index"
                             @close="(allSelectedNumbers.splice(index, 1)), (toOthers.splice(index, 1)), (getMemberPhoneNumber())">{{
-                            item }}</el-tag>
+                                item }}</el-tag>
                     </div>
-                    <vue-tel-input placeholder="Phone number" style="height: 40px" class="input-width mt-1" v-model="phoneNumber" @change="handleOtherAddresses"
-                        mode="international"></vue-tel-input>
-                    <el-button class="mt-2" type="primary"
-                        @click="handleOtherAddresses"
-                        plain>
+                    <vue-tel-input placeholder="Phone number" style="height: 40px" class="input-width mt-1"
+                        v-model="phoneNumber" @change="handleOtherAddresses" mode="international"></vue-tel-input>
+                    <el-button class="mt-2" type="primary" @click="handleOtherAddresses" plain>
                         <el-icon>
                             <CirclePlusFilled />
                         </el-icon>&nbsp;Add
                     </el-button>
-                    <div><code style="color: black;"><small>NB: Make sure you click the add button to include the number to the tray
-                        of recipient numbers.</small></code>
-                    </div>
                 </div>
                 <!-- <input type="text" class="form-control" v-model="item.otherToContacts" @change="handleOtherAddresses">
                 <span class="small-text">Separate the addresses with comma</span> -->
@@ -66,14 +61,39 @@
                     @input="handleMessage"></textarea>
             </div>
         </div>
+        <div class="row">
+            <div class="d-flex align-items-start mt-2">
+                <img src="../../../../assets/smiling-face.png" width="20" class="c-pointer emoji-wrapper"
+                    @click="displayEmoji = !displayEmoji" />
+                <transition name="el-fade-in-linear">
+                    <VuemojiPicker v-show="displayEmoji" @emojiClick="handleEmojiClick" class="mt-2 emoji-wrapper "
+                        style="position: absolute; z-index: 1000" />
+                </transition>
+
+                <!-- accept="image/*"  -->
+                <el-upload class="upload-demo" multiple :limit="1" :on-change="chooseFile" :on-remove="handleRemove"
+                    :auto-upload="false">
+                    <el-icon class="ml-2" style="font-size: 20px; color: #7d7d7d;">
+                        <Paperclip />
+                    </el-icon>
+                </el-upload>
+                <div class="s-14 ml-2 font-italic" v-if="item.fileUrl">File attached</div>
+                <!-- <img :src="item.fileUrl" width="200" alt="file" v-if="item.fileUrl" /> -->
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
 import { reactive, ref } from '@vue/reactivity';
 import { watchEffect } from '@vue/runtime-core';
+import { VuemojiPicker } from 'vuemoji-picker';
+import axios from "@/gateway/backendapi";
 export default {
     props: ["selectedActionIndex", "parameters", "selectWhatsappList"],
+    components: {
+        VuemojiPicker
+    },
     setup(props, { emit }) {
         // const data = reactive({ ActionType: 3, JSONActionParameters: { } })
         const data = reactive([]);
@@ -82,7 +102,9 @@ export default {
         const person = ref(false);
         const allSelectedNumbers = ref([])
         const phoneNumber = ref("")
-        const groupMembersData = ref({})
+        const groupMembersData = ref({});
+        const displayEmoji = ref(false);
+        const fileUrl = ref("");
 
 
         const handleSendPersonMail = () => {
@@ -180,32 +202,32 @@ export default {
         }
 
         const getMemberPhoneNumber = async () => {
-      memberdataloading.value = true
-      const payload = {
-        subject: "",
-        message: editorData.value,
-        contacts: [],
-        isPersonalized: false,
-        groupedContacts: [],
-        isoCode: "",
-        category: "",
-        emailAddress: "",
-        emailDisplayName: "",
-        gateWayToUse: "",
-        toOthers: toOthers.value.length > 0 ? toOthers.value.join(",") : ""
-      }
+            memberdataloading.value = true
+            const payload = {
+                subject: "",
+                message: editorData.value,
+                contacts: [],
+                isPersonalized: false,
+                groupedContacts: [],
+                isoCode: "",
+                category: "",
+                emailAddress: "",
+                emailDisplayName: "",
+                gateWayToUse: "",
+                toOthers: toOthers.value.length > 0 ? toOthers.value.join(",") : ""
+            }
 
-      try {
-        let { data } = await axios.post("/api/Messaging/getCommunicationAudience", payload)
-        memberdataloading.value = false
-        groupMembersData.value = data.result.contacts
-        console.log(data);
-      }
-      catch (err) {
-        console.log(err);
-        memberdataloading.value = false
-      }
-    }
+            try {
+                let { data } = await axios.post("/api/Messaging/getCommunicationAudience", payload)
+                memberdataloading.value = false
+                groupMembersData.value = data.result.contacts
+                console.log(data);
+            }
+            catch (err) {
+                console.log(err);
+                memberdataloading.value = false
+            }
+        }
 
         const parsedData = ref({})
         watchEffect(() => {
@@ -213,6 +235,7 @@ export default {
                 removeOthers.value = props.selectWhatsappList.filter((i, index) => {
                     return index == props.selectedActionIndex;
                 });
+                console.log(removeOthers.value)
             }
 
             if (
@@ -250,6 +273,10 @@ export default {
                 removeOthers.value[0].message = parsedData.value.message;
                 data[props.selectedActionIndex].JSONActionParameters.message =
                     parsedData.value.message;
+
+                removeOthers.value[0].fileUrl = parsedData.value.fileUrl;
+                data[props.selectedActionIndex].JSONActionParameters.fileUrl =
+                    parsedData.value.fileUrl;
             }
         })
 
@@ -258,6 +285,41 @@ export default {
                 allSelectedNumbers.value = removeOthers.value[0].otherToContacts.split(",")
             }
         })
+
+        const chooseFile = async (e) => {
+            let formData = new FormData();
+            formData.append("MediaFileImage", e.raw);
+
+            try {
+                let { data } = await axios.post("/api/Media/UploadWhatsAppAttachment", formData);
+                console.log(data);
+                if (data.pictureUrl) {
+                    fileUrl.value = data.pictureUrl
+
+                    if (data[props.selectedActionIndex]) {
+                        data[props.selectedActionIndex].JSONActionParameters.fileUrl =
+                            fileUrl.value;
+                    } else {
+                        data[props.selectedActionIndex] = new Object();
+                        data[props.selectedActionIndex].JSONActionParameters = new Object();
+                        data[props.selectedActionIndex].JSONActionParameters.fileUrl =
+                            fileUrl.value;
+                    }
+                    emit('updateaction', data, props.selectedActionIndex, actionType);
+                    console.log('reached')
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        const handleRemove = () => {
+            fileUrl.value = ""
+        }
+
+        const handleEmojiClick = (data) => {
+            editorData.value += data.unicode
+        }
 
         return {
             person,
@@ -275,6 +337,11 @@ export default {
             removeOthers,
             allSelectedNumbers,
             phoneNumber,
+            displayEmoji,
+            chooseFile,
+            fileUrl,
+            handleRemove,
+            handleEmojiClick
         }
     }
 }

@@ -52,6 +52,14 @@
                 <el-collapse-transition>
                   <div class="row" v-show="showDevotionParameters">
                     <div class="col-md-12 px-0" id="post-icon">
+                      <el-date-picker
+                        v-model="devotionDate"
+                        type="datetime"
+                        class="input-border w-100 mt-3"
+                        placeholder="Select date and time"
+                        :default-time="defaultTime"
+                        size="large"
+                      />
                       <el-input
                         type="text"
                         placeholder="Enter the devotion title"
@@ -440,7 +448,7 @@
 
 <script>
 import Dropdown from "primevue/dropdown";
-import { inject } from "vue";
+import { inject, watchEffect } from "vue";
 import Dialog from "primevue/dialog";
 import { ref } from "@vue/reactivity";
 import social_service from "../../../services/social/social_service";
@@ -453,6 +461,7 @@ import ImagePicker from "../../../components/image-picker/ImagePicker";
 import { computed } from "@vue/runtime-core";
 import { useRoute } from "vue-router";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
+import dateFormatter from "../../../services/dates/dateformatter";
 
 export default {
   components: { Dropdown, ProgressBar, Dialog, ImagePicker },
@@ -469,6 +478,9 @@ export default {
     const displayScheduleModal = ref(false);
     const CheckinCreationDialog = ref(false);
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
+    const defaultTime = ref(new Date(2000, 1, 1, 7, 0, 0))
+    const devotionDate = ref("");
+    const iSoStringFormat = ref("");
 
     // const store = useStore();
     const route = useRoute();
@@ -512,6 +524,7 @@ export default {
           devotionTitle.value = postData.title;
           devotionScripture.value = postData.bibleVerse;
           devotionMemoryVerse.value = postData.memoryVerse;
+          devotionDate.value = postData.devotionDate;
         } else if (postData?.postCategoryName?.toLowerCase() === "event") {
           showEventParameters.value = true;
           selectedCheckinEvent.value.id = postData.checkInAttendanceID;
@@ -561,6 +574,7 @@ export default {
           "title",
           devotionTitle.value ? devotionTitle.value : "Announcement"
         );
+        formData.append("devotionalDate", iSoStringFormat.value);
         formData.append("bibleVerse", devotionScripture.value);
         formData.append("memoryVerse", devotionMemoryVerse.value);
         formData.append(
@@ -662,6 +676,7 @@ export default {
         "title",
         devotionTitle.value ? devotionTitle.value : "Announcement"
       );
+      formData.append("devotionalDate", iSoStringFormat.value);
       formData.append("bibleVerse", devotionScripture.value);
       formData.append("memoryVerse", devotionMemoryVerse.value);
       formData.append(
@@ -867,6 +882,13 @@ export default {
       displayScheduleModal.value = false;
     };
 
+    watchEffect(() => {
+      if (devotionDate.value) {
+        iSoStringFormat.value = dateFormatter.getISOStringGMT(devotionDate.value);
+        console.log(iSoStringFormat.value, 'here')
+      }
+    });
+
     return {
       toFacebook,
       showOnMainThread,
@@ -918,6 +940,9 @@ export default {
       lgAndUp,
       xlAndUp,
       goBack,
+      defaultTime,
+      devotionDate,
+      iSoStringFormat
     };
   },
 };
