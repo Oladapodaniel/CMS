@@ -387,6 +387,7 @@ import { ref, computed, onMounted, watch, inject, watchEffect } from "vue";
 import Table from "@/components/table/Table";
 import pieChart from "@/components/charts/FormPieChart.vue";
 import monthDayTime from "../../services/dates/dateformatter";
+import monthDayYear from "../../services/dates/dateformatter";
 import finish from "../../services/progressbar/progress";
 import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -466,7 +467,7 @@ export default {
           fileHeaderToExport.value = labels.value.map((i) => i);
           fileToExport.value = formItems.value.map((obj) => {
             // if it has date property, formate the date value
-            obj.date ? (obj.date = monthDayTime.monthDayYear(obj.date)) : null;
+            obj.date ? monthDayYear.monthDayTime(obj.date) : null;
             let newObj = {};
             obj.data.forEach((prop, index) => {
               newObj[index] = prop.data;
