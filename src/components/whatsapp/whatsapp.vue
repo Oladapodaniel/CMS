@@ -31,19 +31,19 @@
               </div>
               <div class="row mb-3" :class="{ show: menuShouldShow, 'links-menu': !menuShouldShow }">
                 <div class="col-md-12">
-                  <!-- <div
+                  <div
                     class="row menu-item-con py-2"
                     :class="{
-                      'active-link': route.path.includes('/tenant/sms/sent'),
+                      'active-link': route.path.includes('/tenant/whatsapp/sent'),
                     }"
-                    v-if="whatsappClientState"
+                    v-if="!whatsappClientState"
                   >
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
                           <router-link
                             class="r-link text-decoration-none"
-                            to="/tenant/sms/sent"
+                            to="/tenant/whatsapp/sent"
                           >
                             <i class="pi pi-arrow-circle-up mr-3 menu-icon"></i>
                             <span class="active">Sent</span>
@@ -51,14 +51,14 @@
                         </span>
                       </a>
                     </div>
-                  </div> -->
+                  </div>
 
-                  <!-- <div
+                  <div
                     class="row menu-item-con py-2"
                     :class="{
-                      'active-link': route.path === '/tenant/sms/scheduled',
+                      'active-link': route.path === '/tenant/whatsapp/scheduledmessages',
                     }"
-                    v-if="whatsappClientState"
+                    v-if="!whatsappClientState"
                   >
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
@@ -74,7 +74,7 @@
                         </span>
                       </a>
                     </div>
-                  </div> -->
+                  </div>
                   <div class="row menu-item-con py-2" v-if="!whatsappClientState">
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
