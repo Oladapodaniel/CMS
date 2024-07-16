@@ -787,26 +787,26 @@ export default {
         console.log('image')
 
         const imagePayload = {
-          id: removeDuplicate,
+          recipients: removeDuplicate,
           message: editorData.value,
-          messageGroupID: messageGroupID.value,
+          id: messageGroupID.value,
           fileUrl: JSON.stringify({ url: fileUrl.value, fileType: whatsappAttachment.value.type })
         }
         sendImageMessage(imagePayload);
       } else if (whatsappAttachment.value && whatsappAttachment.value.type?.includes('video')) {
         console.log('video')
         const videoPayload = {
-          id: removeDuplicate,
+          recipients: removeDuplicate,
           message: editorData.value,
-          messageGroupID: messageGroupID.value,
+          id: messageGroupID.value,
           fileUrl: JSON.stringify({ url: fileUrl.value, fileType: whatsappAttachment.value.type })
         }
         sendVideoMessage(videoPayload);
       } else {
         const textPayload = {
-          id: removeDuplicate,
+          recipients: removeDuplicate,
           message: editorData.value,
-          messageGroupID: messageGroupID.value
+          id: messageGroupID.value
         }
         sendTextMessage(textPayload);
       }
@@ -1036,7 +1036,7 @@ export default {
       let payload = {
           chatRecipients: removeDuplicate,
           message: editorData.value,
-          messageGroupID: messageGroupID.value,
+          id: messageGroupID.value,
           sessionId: clientSessionId.value,
           date: scheduledWhatsappDate.value,
           fileUrl: fileUrl.value ? JSON.stringify({ url: fileUrl.value, fileType: whatsappAttachment.value.type }) : ""
