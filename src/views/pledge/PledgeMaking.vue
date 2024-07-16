@@ -321,23 +321,15 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import ReportModal from "@/components/firsttimer/ReportModal.vue";
 import { ref, computed, inject } from "vue";
-import Loading from "../../components/loading/LoadingComponent";
 import router from "../../router";
 import { useRoute } from "vue-router";
 import finish from "../../services/progressbar/progress";
-import ToggleButton from "../donation/toggleButton.vue";
-import PledgeTransaction from "./PledgeTransaction.vue";
 import monthDayYear from "../../services/dates/dateformatter";
 import Table from "@/components/table/Table";
 import { ElMessage, ElMessageBox } from "element-plus";
 export default {
   components: {
-    ReportModal,
-    Loading,
-    ToggleButton,
-    PledgeTransaction,
     Table,
   },
   directives: {},
@@ -399,8 +391,8 @@ export default {
     const getAllpaymentList = async () => {
       try {
         const res = await axios.get("/api/Pledge/GetAllPledgePayments");
+        console.log(res)
       } catch (error) {
-        NProgress.done();
         console.log(error);
       }
     };
@@ -432,7 +424,6 @@ export default {
         checking.value = true;
         loadingSummary.value = false;
       } catch (error) {
-        NProgress.done();
         console.log(error);
         loadingSummary.value = false;
       }
@@ -456,6 +447,7 @@ export default {
       axios
         .delete(`/api/Pledge/DeletePledgePaymentPayment?ID=${id}`)
         .then((res) => {
+          console.log(res);
           getSinglePledge();
           ElMessage({
             type: "success",
@@ -517,6 +509,7 @@ export default {
       };
       try {
         const res = await axios.post("/api/Pledge/SavePledgePayment", paymentData);
+        console.log(res);
         savingRecord.value = false;
         closeRecordModal.value.click();
 
@@ -530,7 +523,6 @@ export default {
           `/tenant/pledge/pledgemaking?pledgeTypeID=${route.query.pledgeTypeID}`
         );
       } catch (error) {
-        NProgress.done();
         console.log(error);
         savingRecord.value = false;
       }
@@ -580,22 +572,6 @@ export default {
       if (!route.query.pledgeTypeID) return "";
       return `${window.location.origin}/partnership/pay?pledgeID=${route.query.pledgeTypeID}`;
     });
-
-    // const copyLink = () => {
-    //   selectedLink.value.input.setSelectionRange(
-    //     0,
-    //     selectedLink.value.input.value.length
-    //   ); /* For mobile devices */
-    //   selectedLink.value.input.select();
-
-    //   /* Copy the text inside the text field */
-    //   document.execCommand("copy");
-    //   ElMessage({
-    //     type: "success",
-    //     message: 'Copied to clipboard"',
-    //     duration: 5000,
-    //   });
-    // };
     const copyLink = () => {
       const textarea = document.createElement("textarea");
       textarea.value = pledgePaymentLink.value;
@@ -614,94 +590,6 @@ export default {
         type: "success",
       });
     };
-    const sendReport = (messageObj) => {
-      const emailData = ref(emaildata.value.innerHTML);
-      const message = `
-                <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-                <html xmlns="http://www.w3.org/1999/xhtml" style="box-sizing: border-box; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; margin: 0; padding: 0;">
-                  <head>
-                    <meta name="viewport" content="width=device-width"/>
-                    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-                    <title>#title#</title>
-                    <style>
-                      .topmost {
-                        display: flex;
-                      }
-
-                      .topmost-box1 {
-                        width: 70%;
-                        height:133px;
-                        display:flex;
-                        align-items:center;
-                        padding:10px
-                      }
-
-                      .topmost-box2{
-                        width: 30%;display:flex; flex-direction:column; height:133px; align-items:center; justify-content:center
-                      }
-                    </style>
-                  </head>
-                  <body style="-webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; background: #f6f6f6; box-sizing: border-box; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; height: 100%; line-height: 1.6; margin: 0; padding: 0; width: 100% !important;">
-                  
-                  ${`${messageObj.data.message}`} <br>
-
-                  ${emailData.value}
-                  </body>
-                  `;
-      const body = {
-        ispersonalized: false,
-        contacts: messageObj.data.contacts,
-        subject: messageObj.data.subject,
-        // user: "+2349086767765",
-      };
-      if (messageObj.medium === "sms") {
-        body.gateWayToUse = "hostedsms";
-        body.category = "";
-        body.emailAddress = "";
-        body.emailDisplayName = "";
-        body.isoCode = messageObj.data.isoCode;
-        body.toOthers = messageObj.data.toOthers;
-      }
-
-      body.message = messageObj.medium === "sms" ? messageObj.data.message : message;
-
-      const url =
-        messageObj.medium === "sms"
-          ? "/api/Messaging/sendSms"
-          : "/api/Messaging/sendEmail";
-
-      composerObj
-        .sendMessage(url, body)
-        .then((res) => {
-          btnState.value = "";
-
-          if (res.status === false) {
-            ElMessage({
-              type: "error",
-              message: 'Sending Failed"',
-              duration: 5000,
-            });
-          } else {
-            ElMessage({
-              type: "success",
-              message: "Your report has been sent",
-              duration: 5000,
-            });
-            markAsSent();
-          }
-        })
-        .catch((err) => {
-          btnState.value = "";
-          console.log(err);
-          stopProgressBar();
-          ElMessage({
-            type: "error",
-            message: 'Sending Failed"',
-            duration: 5000,
-          });
-        });
-      btnState.value = "modal";
-    };
     const active = (payload) => {
       isActive.value = payload;
     };
@@ -711,14 +599,6 @@ export default {
         isNameValid.value = false;
       } else {
         isNameValid.value = true;
-      }
-    };
-
-    const checkEmailValue = () => {
-      if (pastorEmail.value.length == 0) {
-        isEmailValid.value = false;
-      } else {
-        isEmailValid.value = true;
       }
     };
 
@@ -750,7 +630,6 @@ export default {
       copyLink2,
       willCopyLink,
       emaildata,
-      sendReport,
       pledgeID,
       personName,
       pledgeName,
@@ -764,8 +643,6 @@ export default {
       amountFrom,
       freewillAmount,
       pledgePaymentLink,
-
-      checkEmailValue,
       churchName,
       selectedContact,
       Address,
@@ -790,9 +667,6 @@ export default {
 </script>
 
 <style scoped>
-.heading-text {
-  font: normal normal 800 1.5rem Nunito sans;
-}
 
 .email-data {
   height: 0 !important;

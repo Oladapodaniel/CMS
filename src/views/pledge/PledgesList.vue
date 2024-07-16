@@ -570,7 +570,9 @@ export default {
         await store.dispatch("pledge/getPledgeSummary").then((res) => {
           pledgesSummary.value = res;
         });
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     const getAllPledges = async () => {
@@ -702,8 +704,6 @@ export default {
       searchPledges,
       pledgesSummary,
       toggleSearch,
-      startDate,
-      endDate,
       chooseContact,
       showConfirmModal,
       deletePledge,
