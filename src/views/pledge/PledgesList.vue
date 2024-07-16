@@ -8,9 +8,37 @@
         <div class="s-18">Showing all Pledges, Dues & Partnership</div>
       </div>
       <div class="d-flex flex-column flex-sm-row mt-2 my-1 link">
+        <div v-if="route.fullPath == '/tenant/pledge/pledgeslist'">
+          <el-dropdown
+            trigger="click"
+            class="align-items-center justify-content-center d-flex ml-md-3 ml-0 default-btn py-0 mr-2 "
+            style="height: 2.2rem"
+          >
+            <span
+              class="el-dropdown-link w-100 primary--text text-center font-weight-600"
+            >
+              Menu
+              <el-icon class="el-icon--right">
+                <arrow-down />
+              </el-icon>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item class="text-black" @click="copylink"
+                  >Copy Link to make pledge
+                  <img class="ml-2" src="../../assets/copyurl-icon.png" alt="" />
+                </el-dropdown-item>
+                <el-dropdown-item class="text-black" @click="copylink2"
+                  >Copy Link to pay
+                  <img class="ml-2" src="../../assets/copyurl-icon.png" alt="" />
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
         <router-link class="mr-1" to="/tenant/pledge/pledgedefinitionlist">
           <el-button class="header-btn mr-3 w-100 secondary-button" round>
-            Dues, Partnership & Pledges items
+            Dues & Pledges
           </el-button>
         </router-link>
         <router-link class="" to="/tenant/pledge/makepledge">
@@ -21,44 +49,7 @@
       </div>
     </div>
     <div
-      class="d-flex flex-wrap justify-content-end flex-column flex-sm-row row"
-      v-if="route.fullPath == '/tenant/pledge/pledgeslist'"
-    >
-      <div class="col-sm-12 col-md-10 col-lg-8 mt-5 col-12">
-        <div class="row justify-content-between">
-          <div class="col-md-6 mt-4 mt-md-0">
-            <div
-              class="col-md-12 d-flex justify-content-between align-items-center border-radius-10 py-2 px-3 grey-backg"
-            >
-              <div class="fw-500 s-14">
-                Copy and Share the <br />
-                link to Pledge
-              </div>
-              <el-button color="#32C1D5" round class="text-white" @click="copylink">
-                <img class="ml-2" src="../../assets/copyurl-icon.png" alt="" />Copy
-                Link</el-button
-              >
-            </div>
-          </div>
-          <div class="col-md-6 mt-4 mt-md-0">
-            <div
-              class="col-md-12 d-flex align-items-center border-radius-10 py-2 justify-content-between px-3 grey-backg"
-            >
-              <div class="fw-500 s-14">
-                Copy and Share the <br />
-                link to Pay
-              </div>
-              <el-button color="#32C1D5" round class="text-white" @click="copylink2">
-                <img class="ml-2" src="../../assets/copyurl-icon.png" alt="" />Copy
-                Link</el-button
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="container-fluid"
+      class="container-fluid mt-5"
       v-if="allPledgeList.length > 0 && !loading && !networkError"
     >
       <div class="row border mt-3 rounded">
@@ -368,6 +359,7 @@ export default {
       { name: "AMOUNT", value: "amount" },
       { name: "REDEEMED", value: "totalPaymentSum" },
       { name: "DATE", value: "date" },
+      { name: "", value: "recordpayment" },
       { name: "ACTION", value: "action" },
     ]);
 
@@ -580,7 +572,9 @@ export default {
         await store.dispatch("pledge/getPledgeSummary").then((res) => {
           pledgesSummary.value = res;
         });
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     const getAllPledges = async () => {
@@ -712,8 +706,6 @@ export default {
       searchPledges,
       pledgesSummary,
       toggleSearch,
-      startDate,
-      endDate,
       chooseContact,
       showConfirmModal,
       deletePledge,

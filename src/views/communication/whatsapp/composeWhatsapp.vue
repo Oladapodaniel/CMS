@@ -202,12 +202,6 @@
               <el-tag class="mx-1" size="large" closable v-for="(item, index) in allSelectedNumbers" :key="index"
                 @close="(allSelectedNumbers.splice(index, 1)), (toOthers.splice(index, 1)), (getMemberPhoneNumber())">{{
                   item }}</el-tag>
-              <!-- <div class="multiple_numbers mr-2 mt-2 flex" v-for="(item, index) in allSelectedNumbers" :key="index">
-                {{ item }}
-                <el-icon class="c-pointer ml-2" @click="(allSelectedNumbers.splice(index, 1)),(toOthers.splice(index, 1)),(getMemberPhoneNumber())">
-                  <CircleClose />
-                </el-icon>
-              </div> -->
             </div>
             <vue-tel-input style="height: 40px" class="input-width mt-3" v-model="phoneNumber"
               mode="international"></vue-tel-input>
@@ -511,74 +505,6 @@ export default {
       }
     }
 
-    watchEffect(() => {
-      // socket.emit('connected', 'Hello From Client')
-      // socket.on('hello', (data) => {
-      //   console.log('Hello Emittted from the server', data)
-      // })
-      // socket.on('ping', () => {
-      //   socket.emit('pong', 'pong')
-      // })
-      // socket.on('qr', (data) => {
-      //   console.log('QR RECEIVED', data)
-      //   const { qr } = data
-      //   console.log(qr, 'hweww')
-      //   qrCode.value = qr
-      // })
-
-      // socket.on('ready', (data) => {
-      //   console.log('READY', data)
-      //   sessionId.value = data.id
-      // })
-
-      // socket.on('allchats', (data) => {
-      //   whatsappGroupsLoading.value = false
-      //   console.log(data, 'AllChats Here 🥰🎉')
-      // })
-
-      // socket.on('chunkprogress', (data) => {
-      //   console.log(data, 'data')
-      //   chunkProgress.value = data
-      // })
-
-      // socket.on('fileready', () => {
-      //   fileReady.value = true
-      // })
-
-      // if (!connected.value) {
-      //   if (route.fullPath == '/tenant/whatsapp') {
-      //         router.push('/tenant/whatsapp/auth')
-      //         console.log('routed back because socket got disconnected');
-      //     }
-      // }
-    })
-
-    // const connected = computed(() => {
-    //   return state.connected;
-    // })
-
-    // const connect = () => {
-    //   socket.connect();
-    // }
-
-    // const disconnect = () => {
-    //   socket.disconnect();
-    // }
-
-    // const createSessionForWhatsapp = () => {
-    //   socket.emit('createsession', { id: session.value })
-    // }
-
-    // const getAllChats = () => {
-    //   console.log('reaching')
-    //   socket.emit('getAllChats', sessionId.value)
-    // }
-
-    // const getSessionForWhatsapp = () => {
-    //   console.log('getting session')
-    //   socket.emit('getsession', { id: getSessionId.value })
-    // }
-
     const selectGroup = (
       category,
       id,
@@ -662,37 +588,6 @@ export default {
     // const isPersonalized = ref(false);
     const invalidMessage = ref(false);
     const invalidDestination = ref(false);
-
-
-
-    // const sendSMSToUploadedContacts = async (gateway) => {
-    //   let formData = new FormData()
-    //   formData.append("file", multipleContact.value)
-    //   formData.append("message", editorData.value)
-    //   formData.append('category', '')
-    //   formData.append('gatewayToUse', gateway)
-    //   formData.append('isoCode', isoCode.value)
-
-    //   try {
-    //     let { data } = await axios.post('/api/messaging/upload', formData)
-    //     console.log(data)
-    //     toast.add({
-    //       severity: "success",
-    //       summary: "Success",
-    //       detail: data.response,
-    //       life: 5000
-    //     });
-    //   }
-    //   catch (err) {
-    //     console.log(err);
-    //     toast.add({
-    //       severity: "error",
-    //       summary: "Not sent",
-    //       detail: "Sending failed, please try again",
-    //       life: 5000
-    //     });
-    //   }
-    // }
 
     const userCountry = ref("");
 
@@ -890,10 +785,6 @@ export default {
 
       if (whatsappAttachment.value && whatsappAttachment.value.type?.includes('image')) {
         console.log('image')
-        let formData = new FormData();
-        formData.append("id", JSON.stringify(removeDuplicate));
-        formData.append("caption", editorData.value);
-        formData.append("file", whatsappAttachment.value);
 
         const imagePayload = {
           id: removeDuplicate,
@@ -919,24 +810,6 @@ export default {
         }
         sendTextMessage(textPayload);
       }
-
-
-      // socket.emit('sendwhatsappmessage', {
-      //   id: clientSessionId.value,
-      //   phone_number: removeDuplicate,
-      //   message: editorData.value,
-      //   whatsappAttachment: whatsappAttachment.value,
-      // })
-
-      // // Send to Whatsapp Groups
-      // if (userWhatsappGroupsId.value && userWhatsappGroupsId.value.length > 0) {
-      //   socket.emit('sendtogroups', {
-      //     id: clientSessionId.value,
-      //     groups: userWhatsappGroupsId.value,
-      //     whatsappAttachment: whatsappAttachment.value,
-      //     message: editorData.value
-      //   })
-      // }
 
       swal({
         position: "top-end",
@@ -1048,35 +921,7 @@ export default {
         }
       } else {
         console.log('other file attached')
-        return ;
-        const reader = new FileReader();
-        reader.addEventListener("load", function (f) {
-          // selectedFileUrl.value.src = reader.result;
-          base64String.value = f.target.result;
-          const chunkSize = 1024; // Specify your desired chunk size
-
-          socket.emit('resetmediaobject',
-            {
-              data: "",
-              id: clientSessionId.value
-            });
-          sendBase64InChunks(base64String.value, chunkSize);
-          whatsappAttachment.value = {
-            mimeType: e.raw.type,
-            fileName: e.raw.name,
-            fileSize: e.raw.size
-          }
-          console.log(whatsappAttachment.value, "attachment");
-          fileAudio.value = false
-          fileVideo.value = false
-          fileImage.value = false
-        });
-
-        if (e.raw) {
-          reader.readAsDataURL(e.raw);
-        }
       }
-      // console.log(whatsappAttachment.value, "attachmenthere");
     }
 
     const handleRemove = () => {
@@ -1084,33 +929,10 @@ export default {
       fileVideo.value = false;
       fileImage.value = false
       selectedFileUrl.value = ""
+      fileUrl.value = ""
       whatsappAttachment.value = {}
       fileReady.value = false
-      // chunkProgress.value = 0
-      // socket.emit('clearfile', {
-      //   data: "",
-      //   id: clientSessionId.value
-      // })
     }
-
-
-    // const sendBase64InChunks = (base64String, chunkSize) => {
-    //   const totalChunks = Math.ceil(base64String.length / chunkSize);
-    //   let uploadedChunks = 0;
-    //   for (let i = 0; i < totalChunks; i++) {
-    //     const start = i * chunkSize;
-    //     const end = start + chunkSize;
-    //     const chunk = base64String.substring(start, end);
-    //     uploadedChunks++; // Increment the uploadedChunks count
-    //     //   socket.emit('chunk',
-    //     //     {
-    //     //       chunk,
-    //     //       uploadedChunks,
-    //     //       totalChunks,
-    //     //       id: clientSessionId.value
-    //     //     });
-    //   }
-    // }
 
     const hideEmojiWrapper = (e) => {
       console.log(e)
@@ -1181,24 +1003,44 @@ export default {
         return;
       }
 
-
-      // const payload = {
-      //   message: editorData.value,
-      //   whatsappAttachment: whatsappAttachment.value,
-      //   sessionId: clientSessionId.value,
-      //   chatRecipients: removeDuplicate,
-      //   groupRecipients: userWhatsappGroupsId.value ? userWhatsappGroupsId.value : [],
-      //   base64File: base64String.value,
-      //   date: iSoStringFormat.value
-      // }
-      const payload = {
+       // Check for billing before sending the messages
+       const bilingPayload = {
         message: editorData.value,
-        fileUrl: "",
         sessionId: clientSessionId.value,
         chatRecipients: removeDuplicate,
-        date: iSoStringFormat.value
+        date: iSoStringFormat.value,
+        groupRecipients: userWhatsappGroupsId.value ? userWhatsappGroupsId.value : [],
       }
-      console.log(payload);
+
+      // Check for Billing;
+      const { status, message, communicationReportID } = await checkBilling(bilingPayload);
+       if (!status) {
+         swal({
+           title: "Oops 😬",
+           text: message,
+           buttons: ["Close", "Buy unit"],
+           icon: "info"
+         })
+           .then((value) => {
+             if (value) {
+               router.push({ name: 'BuyUnits', path: '/tenant/buyunits' })
+             }
+           })
+         return;
+       }
+
+       if (status) {
+        messageGroupID.value = communicationReportID;
+       }
+      
+      let payload = {
+          chatRecipients: removeDuplicate,
+          message: editorData.value,
+          messageGroupID: messageGroupID.value,
+          sessionId: clientSessionId.value,
+          date: scheduledWhatsappDate.value,
+          fileUrl: fileUrl.value ? JSON.stringify({ url: fileUrl.value, fileType: whatsappAttachment.value.type }) : ""
+        }
 
       try {
         let { data } = await axios.post("/api/Messaging/saveWhatsAppSchedule", payload)

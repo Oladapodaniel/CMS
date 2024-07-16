@@ -23,17 +23,8 @@
         @click="togglePerformance"
       >
         <div class="p-3 header4" :class="{ 'fw-500' : showPerformance, 'fw-400' : !showPerformance}" >Attendance</div>
-        <div :class="{ baseline: showPerformance, 'hide-base': !showPerformance }"></div>
       </div>
-      <div
-        class="col-12 px-0 col-sm-4 c-pointer"
-        :class="{ 'report-tab' : showFinancial, 'bg-white' : !showFinancial, }"
-        @click="toggleFinancial"
-        v-if="canAccessFinancial || financialAccount"
-      >
-        <div class="p-3 header4" :class="{ 'fw-500' : showFinancial, 'fw-400' : !showFinancial}">Financial</div>
-        <div :class="{  baseline: showFinancial, 'hide-base': !showFinancial }"></div>
-      </div>
+      <div class="col-12 px-0 col-sm-4 c-pointer"></div>
     </div>
     <div class="row mt-3">
       <div class="col-12" v-if="showPeople">
@@ -198,15 +189,11 @@ export default {
 .basebg{
     background: #edfdff;
 }
-
 .hide-base {
   transition: all 150ms ease-in-out;
   background-color: #136acd;
   /* background-color: #33475b; */
   border-radius: 24px;
-  bottom: -2.5px;
-  height: 4px;
-  left: 0px;
   /* width: 50%; */
   opacity: 0;
 }

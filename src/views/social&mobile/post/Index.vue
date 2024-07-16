@@ -15,16 +15,19 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12 bordered1 px-5 py-4 ">
+          <div class="col-md-12 bordered1 px-5 py-4">
             <div class="row my-3">
               <div class="col-md-12 px-0 font-weight-600 s-24 text-head">New Post</div>
               <div class="col-md-12 mt-3">
                 <div class="row">
                   <div class="col-md-12 d-flex justify-content-between pl-md-0">
-                    <label for="" class=" mb-2 text-dak  fw-500"
+                    <label for="" class="mb-2 text-dak fw-500"
                       >Post Category <span class="text-danger">*</span></label
                     >
-                    <router-link to="/tenant/social/category" class="text-decoration-none">
+                    <router-link
+                      to="/tenant/social/category"
+                      class="text-decoration-none"
+                    >
                       <div class="text-head fw-500 primary--text">+Add Category</div>
                     </router-link>
                   </div>
@@ -49,6 +52,14 @@
                 <el-collapse-transition>
                   <div class="row" v-show="showDevotionParameters">
                     <div class="col-md-12 px-0" id="post-icon">
+                      <el-date-picker
+                        v-model="devotionDate"
+                        type="datetime"
+                        class="input-border w-100 mt-3"
+                        placeholder="Select date and time"
+                        :default-time="defaultTime"
+                        size="large"
+                      />
                       <el-input
                         type="text"
                         placeholder="Enter the devotion title"
@@ -113,12 +124,18 @@
                 </el-collapse-transition>
               </div>
             </div>
-            <div class="row  ">
+            <div class="row">
               <div class="col-md-12 pt-3 pt-2 main-post">
                 <div class="row">
-                  <div class="col-md-12 px-0 ">
+                  <div class="col-md-12 px-0">
                     <label class="fw-500" for="">What’s on your Mind?</label>
-                    <el-input type="textarea" v-model="message"  class="w-100  " placeholder="What's on your mind?" :rows="rowsCount"/>
+                    <el-input
+                      type="textarea"
+                      v-model="message"
+                      class="w-100"
+                      placeholder="What's on your mind?"
+                      :rows="rowsCount"
+                    />
                   </div>
 
                   <div class="col-md-12 text-center py-2" style="max-height: 300px">
@@ -153,11 +170,15 @@
                 <div class="row">
                   <div class="col-md-12">
                     <a class="text-decoration-none px-md-2 c-pointer">
-                      <span class="text-dak" @click="selectFile"><i class="pi pi-video mr-1"></i></span>
+                      <span class="text-dak" @click="selectFile"
+                        ><i class="pi pi-video mr-1"></i
+                      ></span>
                       <span class="text-dak" @click="selectFile">Video</span>
                     </a>
                     <a class="text-decoration-none px-md-2 c-pointer ml-3">
-                      <span class="text-dak" @click="selectFile"><i class="pi pi-images mr-1"></i></span>
+                      <span class="text-dak" @click="selectFile"
+                        ><i class="pi pi-images mr-1"></i
+                      ></span>
                       <span class="text-dak" @click="selectFile">Photo/Video</span>
                     </a>
                     <a class="text-decoration-none px-md-2 c-pointer" v-if="false">
@@ -170,31 +191,29 @@
             </div>
             <div class="row my-4">
               <div class="col-md-12 d-flex">
-                <a
-                  class="text-dak text-decoration-none fw-400  d-flex align-items-center"
-                >
+                <a class="text-dak text-decoration-none fw-400 d-flex align-items-center">
                   <!-- <input type="checkbox" class="c-pointer" name="" id="" /> -->
                   <Checkbox id="binary" v-model="showOnMainThread" :binary="true" />
                   <span class="mx-1">Show on main feed</span>
                 </a>
                 <a
-                  class="text-dak text-decoration-none fw-400   px-2 d-flex align-items-center"
+                  class="text-dak text-decoration-none fw-400 px-2 d-flex align-items-center"
                 >
                   <el-checkbox class="c-pointer mt-2" />
                   <span class="mx-1">Send push notification</span>
                 </a>
               </div>
               <div class="col-md-12">
-                <hr class="col-md-12 px-0 text-black">
-                <div class="row ">
+                <hr class="col-md-12 px-0 text-black" />
+                <div class="row">
                   <div class="col-md-12 mt-2">
-                    <label for="" class=" mb-0 font-weight-bold text-head "
+                    <label for="" class="mb-0 font-weight-bold text-head"
                       >Share Post to
                     </label>
                   </div>
                   <div class="col-md-12 mb-2 d-flex flex-wrap">
                     <a
-                      class="text-dak  fw-400 text-decoration-none  my-2 px-2 d-flex align-items-center"
+                      class="text-dak fw-400 text-decoration-none my-2 px-2 d-flex align-items-center"
                     >
                       <!-- <span class="c-pointer"
                         ><img
@@ -206,7 +225,7 @@
                       <span class="mx-1">Mobile App</span>
                     </a>
                     <a
-                      class="text-decoration-none text-dak  fw-400 my-2 px-2 d-flex align-items-center"
+                      class="text-decoration-none text-dak fw-400 my-2 px-2 d-flex align-items-center"
                       style="opacity: 0.4"
                     >
                       <!-- <span class="c-pointer"
@@ -225,7 +244,7 @@
                       <span class="mx-1">Twitter</span>
                     </a>
                     <a
-                      class=" text-decoration-none text-dak  fw-400  my-2 px-2 d-flex align-items-center"
+                      class="text-decoration-none text-dak fw-400 my-2 px-2 d-flex align-items-center"
                       style="opacity: 0.4"
                     >
                       <!-- <span class="c-pointer"
@@ -241,7 +260,7 @@
                       <span class="mx-1">All Platforms</span>
                     </a>
                     <a
-                      class="text-decoration-none my-2 text-dak  fw-400  px-2 d-flex align-items-center"
+                      class="text-decoration-none my-2 text-dak fw-400 px-2 d-flex align-items-center"
                     >
                       <!-- <span class="c-pointer"
                         ><img
@@ -260,7 +279,7 @@
                       <span class="mx-1">Facebook</span>
                     </a>
                     <a
-                      class="text-decoration-none text-dak  fw-400 my-2 px-2 d-flex align-items-center"
+                      class="text-decoration-none text-dak fw-400 my-2 px-2 d-flex align-items-center"
                       style="opacity: 0.4"
                     >
                       <!-- <span class="c-pointer"
@@ -429,7 +448,7 @@
 
 <script>
 import Dropdown from "primevue/dropdown";
-import { inject } from "vue";
+import { inject, watchEffect } from "vue";
 import Dialog from "primevue/dialog";
 import { ref } from "@vue/reactivity";
 import social_service from "../../../services/social/social_service";
@@ -442,6 +461,7 @@ import ImagePicker from "../../../components/image-picker/ImagePicker";
 import { computed } from "@vue/runtime-core";
 import { useRoute } from "vue-router";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
+import dateFormatter from "../../../services/dates/dateformatter";
 
 export default {
   components: { Dropdown, ProgressBar, Dialog, ImagePicker },
@@ -458,6 +478,9 @@ export default {
     const displayScheduleModal = ref(false);
     const CheckinCreationDialog = ref(false);
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
+    const defaultTime = ref(new Date(2000, 1, 1, 7, 0, 0))
+    const devotionDate = ref("");
+    const iSoStringFormat = ref("");
 
     // const store = useStore();
     const route = useRoute();
@@ -501,6 +524,7 @@ export default {
           devotionTitle.value = postData.title;
           devotionScripture.value = postData.bibleVerse;
           devotionMemoryVerse.value = postData.memoryVerse;
+          devotionDate.value = postData?.devotionDate ? postData?.devotionDate : "";
         } else if (postData?.postCategoryName?.toLowerCase() === "event") {
           showEventParameters.value = true;
           selectedCheckinEvent.value.id = postData.checkInAttendanceID;
@@ -550,6 +574,7 @@ export default {
           "title",
           devotionTitle.value ? devotionTitle.value : "Announcement"
         );
+        formData.append("devotionalDate", iSoStringFormat.value);
         formData.append("bibleVerse", devotionScripture.value);
         formData.append("memoryVerse", devotionMemoryVerse.value);
         formData.append(
@@ -651,6 +676,7 @@ export default {
         "title",
         devotionTitle.value ? devotionTitle.value : "Announcement"
       );
+      formData.append("devotionalDate", iSoStringFormat.value);
       formData.append("bibleVerse", devotionScripture.value);
       formData.append("memoryVerse", devotionMemoryVerse.value);
       formData.append(
@@ -856,6 +882,13 @@ export default {
       displayScheduleModal.value = false;
     };
 
+    watchEffect(() => {
+      if (devotionDate.value) {
+        iSoStringFormat.value = dateFormatter.getISOStringGMT(devotionDate.value);
+        console.log(iSoStringFormat.value, 'here')
+      }
+    });
+
     return {
       toFacebook,
       showOnMainThread,
@@ -907,6 +940,9 @@ export default {
       lgAndUp,
       xlAndUp,
       goBack,
+      defaultTime,
+      devotionDate,
+      iSoStringFormat
     };
   },
 };
@@ -918,9 +954,9 @@ export default {
 }
 
 .bordered1 {
-  border: 1px solid #E1E1E1;
+  border: 1px solid #e1e1e1;
   border-radius: 8px;
-  background: #F9F9F9;
+  background: #f9f9f9;
 }
 .bordered {
   border: 0.20000000298023224px solid #e9eef0;

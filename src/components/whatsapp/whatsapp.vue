@@ -108,6 +108,26 @@
                       </a>
                     </div>
                   </div>
+                  <div class="row menu-item-con py-2" v-if="false">
+                    <div class="col-md-12 menu-item-div m-auto">
+                      <a class="btn btn-default font-weight-bold" @click="checkInstance">
+                        <span class="menu-item">
+                          <img src="../../assets/logouticon.png" class="mr-3" width="22" />
+                          <span class="active">CheckInstance</span>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="row menu-item-con py-2" v-if="false">
+                    <div class="col-md-12 menu-item-div m-auto">
+                      <a class="btn btn-default font-weight-bold" @click="reconnectInstance">
+                        <span class="menu-item">
+                          <img src="../../assets/logouticon.png" class="mr-3" width="22" />
+                          <span class="active">Reconnect</span>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -182,6 +202,28 @@ export default {
       }
     }
 
+    const checkInstance = async () => {
+      try {
+        let { data } = await api.get(`${whatsappServerBaseURL}single/instanceInfo?key=${clientSessionId.value}`);
+        console.log(data)
+        if (!data.error) {
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    const reconnectInstance = async () => {
+      try {
+        let { data } = await api.get(`${whatsappServerBaseURL}instance/restore`);
+        console.log(data)
+        if (!data.error) {
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
     return {
       route,
       toggleMenu,
@@ -191,7 +233,9 @@ export default {
       sessionId,
       confirmLogout,
       clientSessionId,
-      logoutLoading
+      logoutLoading,
+      checkInstance,
+      reconnectInstance
     };
   },
 };
