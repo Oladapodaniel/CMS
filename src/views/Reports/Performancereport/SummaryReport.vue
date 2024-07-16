@@ -1,14 +1,23 @@
 <template>
   <div class="container-fluid">
     <div class="row justify-content-between">
-      <div class="head-text">Church Activities Performance Summary Report</div>
+      <div class="mb-4">
+        <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
+          Church Activities Performance Summary Report
+        </div>
+        <div @click="goBack">
+          <span class="s-18 fw-400 cursor-pointer text-black">
+            <img src="../../../assets/goback.png" alt="" /> Go back</span
+          >
+        </div>
+      </div>
       <div class="my-sm-0 my-2 c-pointer">
         <el-dropdown trigger="click" class="w-100">
           <div
-            class="d-flex justify-content-between default-btn text-dark w-100"
+            class="d-flex justify-content-between default-btn text-dak w-100"
             size="large"
           >
-            <span class="mt-1">Export</span>
+            <span class="mt-1 primary--text">Export</span>
             <div class="mt-1">
               <el-icon class="el-icon--right">
                 <arrow-down />
@@ -17,14 +26,8 @@
           </div>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item
-                v-for="(bookType, index) in bookTypeList"
-                :key="index"
-              >
-                <a
-                  class="no-decoration text-dark"
-                  @click="downloadFile(bookType)"
-                >
+              <el-dropdown-item v-for="(bookType, index) in bookTypeList" :key="index">
+                <a class="no-decoration text-dark" @click="downloadFile(bookType)">
                   {{ bookType.name }}
                 </a>
               </el-dropdown-item>
@@ -33,73 +36,74 @@
         </el-dropdown>
       </div>
     </div>
-    <div style="background: #ebeff4" class="row mt-3 py-5">
-      <div class="col-12 col-md-6 col-lg-3">
-        <div><label for="" class="font-weight-bold">Select Event</label></div>
-        <div>
-          <el-select-v2
-            v-model="selectedEventID"
-            class="w-100 font-weight-normal"
-            :options="
-              allEvents.map((i) => ({
-                label: i.text,
-                value: i.id,
-              }))
-            "
-            placeholder="Select event"
-            @change="setSelectedEvent"
-            size="large"
-          />
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-3">
-        <div class="">
-          <label for="" class="ml-2 font-weight-bold">Start Date</label>
-        </div>
-        <div>
-          <div>
-            <el-date-picker
-              v-model="startDate"
-              type="date"
-              format="DD/MM/YYYY"
-              size="large"
-              class="w-100"
-            />
+    <div class="row justify-content-center py-5 border-radius-8 grey-backg">
+      <div class="col-md-10 col-12">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <div><label for="" class="fw-400 text-dak s-14">Select Event</label></div>
+            <div>
+              <el-select-v2
+                v-model="selectedEventID"
+                class="w-100 font-weight-normal"
+                :options="
+                  allEvents.map((i) => ({
+                    label: i.text,
+                    value: i.id,
+                  }))
+                "
+                placeholder="Select event"
+                @change="setSelectedEvent"
+                size="large"
+              />
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-3">
-        <div><label for="" class="font-weight-bold w-100">End Date</label></div>
-        <div>
-          <el-date-picker
-            v-model="endDate"
-            type="date"
-            format="DD/MM/YYYY"
-            size="large"
-            class="w-100"
-          />
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-3">
-        <label for=""></label>
-        <div class="mt-2">
-          <el-button
-            @click="getAnalysisReport()"
-            round
-            :color="primarycolor"
-            :loading="loading"
-            class=" "
-            >Generate Report</el-button
-          >
+          <div class="col-12 col-md-6">
+            <div class="">
+              <label for="" class="ml-2 fw-400 text-dak s-14">Start Date</label>
+            </div>
+            <div>
+              <div>
+                <el-date-picker
+                  v-model="startDate"
+                  type="date"
+                  format="DD/MM/YYYY"
+                  size="large"
+                  class="w-100"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 mt-2">
+            <div><label for="" class="fw-400 text-dak s-14 w-100">End Date</label></div>
+            <div>
+              <el-date-picker
+                v-model="endDate"
+                type="date"
+                format="DD/MM/YYYY"
+                size="large"
+                class="w-100"
+              />
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <label for=""></label>
+            <div class="mt-2">
+              <el-button
+                @click="getAnalysisReport()"
+                round
+                :color="primarycolor"
+                :loading="loading"
+                class=" w-100 py-4 "
+                >Generate Report</el-button
+              >
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <div id="element-to-print">
-    <div
-      class="container-fluid d-flex justify-content-center my-2"
-      v-if="displayTitle"
-    >
+    <div class="container-fluid d-flex justify-content-center my-2" v-if="displayTitle">
       <div class="head-text">Church Activities Performance Summary Report</div>
     </div>
     <div class="container-fluid">
@@ -182,9 +186,7 @@
               v-show="analysisReport.length > 0"
               :class="{ 'show-report': showReport, 'hide-report': !showReport }"
             >
-              <table
-                class="table remove-styles mt-0 table-hover table-header-area"
-              >
+              <table class="table remove-styles mt-0 table-hover table-header-area">
                 <thead class="table-header-area-main">
                   <tr
                     class="font-weight-bold text-capitalize text-nowrap"
@@ -201,10 +203,7 @@
                   </tr>
                 </thead>
                 <tbody class="font-weight-bold small-text text-nowrap">
-                  <tr
-                    v-for="(analysisTable, index) in analysisReport"
-                    :key="index"
-                  >
+                  <tr v-for="(analysisTable, index) in analysisReport" :key="index">
                     <td>
                       {{
                         selectedSummary.length > 1 ||
@@ -232,12 +231,12 @@
   </div>
 </template>
 
-
 <script>
 import { ref, computed, inject } from "vue";
 import PerformanceColumnChart from "../../../components/charts/ReportColumnChart.vue";
 import exportService from "../../../services/exportFile/exportservice";
 import printJS from "print-js";
+import router from "../../../router";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter.js";
 import { ElMessage } from "element-plus";
@@ -309,11 +308,12 @@ export default {
         })
         .catch((err) => console.log(err));
     };
+    const goBack = () => {
+      router.go(-1);
+    };
     getAllEvents();
     const setSelectedEvent = () => {
-      selectedSummary.value = allEvents.value.find(
-        (i) => i.id === selectedEventID.value
-      );
+      selectedSummary.value = allEvents.value.find((i) => i.id === selectedEventID.value);
     };
     const downloadFile = (item) => {
       if (item.name === "pdf") {
@@ -378,9 +378,7 @@ export default {
     const attendanceChart = computed(() => {
       if (analysisReport.value.length === 0) return [];
       analysisReport.value.forEach((i) => {
-        let attendanceIndex = Object.keys(i).findIndex(
-          (i) => i === "attendance"
-        );
+        let attendanceIndex = Object.keys(i).findIndex((i) => i === "attendance");
         let attendanceValue = Object.values(i)[attendanceIndex];
         attendanceData.value.unshift(attendanceValue);
       });
@@ -398,9 +396,7 @@ export default {
     const firstTimerChart = computed(() => {
       if (analysisReport.value.length === 0) return [];
       analysisReport.value.forEach((i) => {
-        let firstTimersIndex = Object.keys(i).findIndex(
-          (i) => i === "firstTimers"
-        );
+        let firstTimersIndex = Object.keys(i).findIndex((i) => i === "firstTimers");
         let firstTimersValue = Object.values(i)[firstTimersIndex];
         firstTimer1Data.value.unshift(firstTimersValue);
       });
@@ -417,9 +413,7 @@ export default {
     const newConvertsChart = computed(() => {
       if (analysisReport.value.length === 0) return [];
       analysisReport.value.forEach((i) => {
-        let newConvertsIndex = Object.keys(i).findIndex(
-          (i) => i === "newConverts"
-        );
+        let newConvertsIndex = Object.keys(i).findIndex((i) => i === "newConverts");
         let newConvertsValue = Object.values(i)[newConvertsIndex];
         newConvert1Data.value.unshift(newConvertsValue);
       });
@@ -443,21 +437,15 @@ export default {
     const FTNCChart = computed(() => {
       if (analysisReport.value.length === 0) return [];
       analysisReport.value.forEach((i) => {
-        let firstTimersIndex = Object.keys(i).findIndex(
-          (i) => i === "firstTimers"
-        );
+        let firstTimersIndex = Object.keys(i).findIndex((i) => i === "firstTimers");
         let firstTimersValue = Object.values(i)[firstTimersIndex];
         firstTimerData.value.unshift(firstTimersValue);
 
-        let newConvertIndex = Object.keys(i).findIndex(
-          (i) => i === "newConverts"
-        );
+        let newConvertIndex = Object.keys(i).findIndex((i) => i === "newConverts");
         let newConvertValue = Object.values(i)[newConvertIndex];
         newConvertData.value.unshift(newConvertValue);
 
-        let testmoniesIndex = Object.keys(i).findIndex(
-          (i) => i === "testmonies"
-        );
+        let testmoniesIndex = Object.keys(i).findIndex((i) => i === "testmonies");
         let testmoniesValue = Object.values(i)[testmoniesIndex];
         testmoniesData.value.unshift(testmoniesValue);
       });
@@ -524,6 +512,7 @@ export default {
       fileToExport,
       downloadFile,
       showReport,
+      goBack,
     };
   },
 };

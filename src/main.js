@@ -14,16 +14,14 @@ import axios from "./gateway/backendapi";
 import NProgress from "nprogress";
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import Toaster from '@meforma/vue-toaster';
-import VueCropper from 'vue-cropperjs';
-import 'cropperjs/dist/cropper.css'; // Import cropperjs CSS
-// import { createVuetify } from 'vuetify';
-// import 'vuetify/dist/vuetify.min.css';
+import VueImageCropUpload from 'vue-image-crop-upload'
+import { Cropper } from 'vue-advanced-cropper'
 // import VueTelInput from 'vue3-tel-input'
 // import 'vue3-tel-input/dist/vue3-tel-input.css'
 import VueTelInput from 'vue-tel-input';
 import 'vue-tel-input/dist/vue-tel-input.css';
 // import "./styles/index.scss";
-import * as Sentry from "@sentry/vue";
+// import * as Sentry from "@sentry/vue";
 // if you just want to import css
 import 'element-plus/theme-chalk/dark/css-vars.css';
 
@@ -64,7 +62,6 @@ import getSubdomain from "./services/churchTypeMiddlware";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-// const vuetify = createVuetify();
 
 
 AOS.init({
@@ -77,6 +74,7 @@ axios.interceptors.request.use((config) => {
   if (typeof window === 'undefined') return config;
   const token = localStorage.getItem('token');
   const checkinToken = localStorage.getItem('checkinToken');
+  console.log(checkinToken);
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -132,8 +130,9 @@ app.component("ConfirmDialog", ConfirmDialog);
 app.component("SplitButton", SplitButton);
 app.component("Checkbox", Checkbox);
 app.component("Tag", Tag);
-app.component('VueCropper', VueCropper);
 app.component("Editor", Editor);
+app.component('VueImageCropUpload', VueImageCropUpload)
+app.component('Cropper', Cropper)
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
@@ -166,7 +165,6 @@ app.config.globalProperties.$aos = AOS;
 
 app
 .use(store)
-// .use(vuetify)
 .use(router)
 .use(VueHighcharts, { Highcharts })
 .use(CKEditor)

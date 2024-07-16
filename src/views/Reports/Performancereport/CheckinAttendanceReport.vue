@@ -403,8 +403,6 @@ export default {
       selectedEvent,
       getAttendanceReport,
       selectedEventID,
-      startDate,
-      endDate,
       selectedGroups,
       attendanceReport,
       groupReport,

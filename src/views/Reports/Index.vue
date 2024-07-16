@@ -17,14 +17,23 @@
         <div :class="{ baseline: showPeople, 'hide-base': !showPeople }"></div>
       </div>
       <div
-        class="col-12 px-0 c-pointer"
+        class="col-12 px-0 text-dak c-pointer"
         v-if="!financialAccount"
         :class="{ 'report-tab' : showPerformance, 'bg-white' : !showPerformance,  'col-sm-6': !canAccessFinancial, 'col-sm-4': canAccessFinancial }"
         @click="togglePerformance"
       >
         <div class="p-3 header4" :class="{ 'fw-500' : showPerformance, 'fw-400' : !showPerformance}" >Attendance</div>
+        <div :class="{ baseline: showPerformance, 'hide-base': !showPerformance }"></div>
       </div>
-      <div class="col-12 px-0 col-sm-4 c-pointer"></div>
+      <div
+        class="col-12 px-0 text-dak c-pointer"
+        v-if="!financialAccount"
+        :class="{ 'report-tab' : showFinancial, 'bg-white' : !showFinancial,  'col-sm-6': !canAccessFinancial, 'col-sm-4': canAccessFinancial }"
+        @click="toggleFinancial"
+      >
+        <div class="p-3 header4" :class="{ 'fw-500' : showFinancial, 'fw-400' : !showFinancial}" >Financial</div>
+        <div :class="{ baseline: showFinancial, 'hide-base': !showFinancial }"></div>
+      </div>
     </div>
     <div class="row mt-3">
       <div class="col-12" v-if="showPeople">

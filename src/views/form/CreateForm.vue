@@ -5,7 +5,7 @@
     </div>
     <!-- <div class="row">
       <div class="col-md-12">
-       <FileUpload />
+       <FileUpload @isEmit="submitFile($event)" />
       </div>
     </div> -->
     <div class="row justify-content-center mt-4">
@@ -638,10 +638,10 @@
 </template>
 
 <script>
-import { ref, inject, computed, watch, onMounted } from "vue";
+import { ref, inject, computed } from "vue";
 import axios from "@/gateway/backendapi";
 import axio from "axios";
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessage } from "element-plus";
 import finish from "../../services/progressbar/progress";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import ContributionItems from "@/components/firsttimer/contributionItemModal";
@@ -672,6 +672,7 @@ export default {
     const nigerianBanks = ref([]);
     const accountResolving = ref(false);
     const dialogVisible = ref(false);
+    const networkError = ref(false);
     const checkedYes = ref(false);
     const currentInput = ref("");
     const selectedBank = ref("");
@@ -699,6 +700,10 @@ export default {
       { name: "Number", id: 5 },
       { name: "TextArea", id: 6 },
     ]);
+
+    const submitFile = (payload) => {
+      console.log(payload, 'ghh');
+    }
 
     const previewForm = () => {
       dialogVisible.value = true;
@@ -768,6 +773,7 @@ export default {
       });
       try {
         let data = await axios.put("/api/Forms/reOrderform", payload);
+        console.log(data);
         reoderloading.value = false;
         ElMessage({
           type: "success",
@@ -1203,6 +1209,7 @@ export default {
       accountResolving,
       accountName,
       nigerianBanks,
+      networkError,
       newConItems,
       reorderCustomField,
       previewForm,
@@ -1224,6 +1231,7 @@ export default {
       bankCode,
       paymentFormID,
       setChecked,
+      submitFile
     };
   },
 };

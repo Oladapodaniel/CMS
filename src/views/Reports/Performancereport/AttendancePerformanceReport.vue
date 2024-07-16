@@ -1,20 +1,23 @@
 <template>
   <div class="container-fluid">
-    <div class="row flex-row justify-content-between align-items-center">
-      <div class="mb-3">
-        <div class="head-text">Church Activities Attendance Report</div>
-        <div class="pl-1">
-          This reports gives an indepth view of the growth and attendance
-          pattern of the ministry
+    <div class="row flex-row justify-content-between">
+      <div class="mb-4">
+        <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
+          Church Activities Attendance Report
+        </div>
+        <div @click="goBack">
+          <span class="s-18 fw-400 cursor-pointer text-black">
+            <img src="../../../assets/goback.png" alt="" /> Go back</span
+          >
         </div>
       </div>
-      <div class="my-sm-0 my-2 c-pointer">
+      <div class="c-pointer">
         <el-dropdown trigger="click" class="w-100">
           <div
-            class="d-flex justify-content-between default-btn text-dark w-100"
+            class="d-flex justify-content-between default-btn text-dak w-100"
             size="large"
           >
-            <span class="mt-1">Export</span>
+            <span class="mt-1 primary--text">Export</span>
             <div class="mt-1">
               <el-icon class="el-icon--right">
                 <arrow-down />
@@ -23,14 +26,8 @@
           </div>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item
-                v-for="(bookType, index) in bookTypeList"
-                :key="index"
-              >
-                <a
-                  class="no-decoration text-dark"
-                  @click="downloadFile(bookType)"
-                >
+              <el-dropdown-item v-for="(bookType, index) in bookTypeList" :key="index">
+                <a class="no-decoration text-dark" @click="downloadFile(bookType)">
                   {{ bookType.name }}
                 </a>
               </el-dropdown-item>
@@ -39,74 +36,75 @@
         </el-dropdown>
       </div>
     </div>
-    <div style="background: #ebeff4" class="row py-5 mb-2">
-      <div class="col-12 col-md-6 col-lg-3">
-        <div><label for="" class="font-weight-bold">Select Event</label></div>
-        <div>
-          <el-select-v2
-            v-model="selectedEventID"
-            class="w-100 font-weight-normal"
-            :options="
-              allEvents.map((i) => ({
-                label: i.text,
-                value: i.id,
-              }))
-            "
-            placeholder="Select event"
-            @change="setSelectedEvent"
-            size="large"
-          />
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-3">
-        <div class="">
-          <label for="" class="ml-2 font-weight-bold">Start Date</label>
-        </div>
-        <div>
-          <div>
-            <el-date-picker
-              v-model="startDate"
-              type="date"
-              format="DD/MM/YYYY"
-              size="large"
-              class="w-100"
-            />
+    <div class="row justify-content-center py-5 border-radius-8 grey-backg">
+      <div class="col-md-10 col-12">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <div><label for="" class="fw-400 text-dak s-14">Select Event</label></div>
+            <div>
+              <el-select-v2
+                v-model="selectedEventID"
+                class="w-100 font-weight-normal"
+                :options="
+                  allEvents.map((i) => ({
+                    label: i.text,
+                    value: i.id,
+                  }))
+                "
+                placeholder="Select event"
+                @change="setSelectedEvent"
+                size="large"
+              />
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-3">
-        <div><label for="" class="font-weight-bold">End Date</label></div>
-        <div>
-          <el-date-picker
-            v-model="endDate"
-            type="date"
-            format="DD/MM/YYYY"
-            size="large"
-            class="w-100"
-          />
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-3">
-        <label for=""></label>
-        <div class="mt-2">
-          <el-button
-            @click="getActivityReport()"
-            class=""
-            round
-            :color="primarycolor"
-            :loading="loading"
-          >
-            <div class="text-white">Generate Report</div>
-          </el-button>
+          <div class="col-12 col-md-6">
+            <div class="">
+              <label for="" class="ml-2 fw-400 text-dak s-14">Start Date</label>
+            </div>
+            <div>
+              <div>
+                <el-date-picker
+                  v-model="startDate"
+                  type="date"
+                  format="DD/MM/YYYY"
+                  size="large"
+                  class="w-100"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 mt-3">
+            <div><label for="" class="fw-400 text-dak s-14">End Date</label></div>
+            <div>
+              <el-date-picker
+                v-model="endDate"
+                type="date"
+                format="DD/MM/YYYY"
+                size="large"
+                class="w-100"
+              />
+            </div>
+          </div>
+          <div class="col-12 col-md-6 mt-3">
+            <label for=""></label>
+            <div>
+              <el-button
+                @click="getActivityReport()"
+                class="w-100 py-4"
+                round
+                :color="primarycolor"
+                :loading="loading"
+              >
+                <div class="text-white">Generate Report</div>
+              </el-button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <div id="element-to-print" class="">
-    <div
-      class="container-fluid d-flex justify-content-center my-2"
-      v-if="displayTitle"
-    >
+    <div class="container-fluid d-flex justify-content-center my-2" v-if="displayTitle">
       <div class="head-text">Church Activities Attendance Report</div>
     </div>
     <div class="container-fluid">
@@ -172,9 +170,7 @@
             v-show="activityReport.length > 0"
             :class="{ 'show-report': showReport, 'hide-report': !showReport }"
           >
-            <table
-              class="table remove-styles mt-0 table-hover table-header-area"
-            >
+            <table class="table remove-styles mt-0 table-hover table-header-area">
               <thead class="table-header-area-main">
                 <tr
                   class="text-capitalize text-nowrap font-weight-bolder"
@@ -186,10 +182,7 @@
                 </tr>
               </thead>
               <tbody class="font-weight-bolder text-nowrap">
-                <tr
-                  v-for="(item, index) in groupedActivityService"
-                  :key="index"
-                >
+                <tr v-for="(item, index) in groupedActivityService" :key="index">
                   <td>{{ item.name }}</td>
                   <td>{{ item.category }}</td>
                   <td>{{ item.amount }}</td>
@@ -204,13 +197,13 @@
   </div>
 </template>
 
-
 <script>
 import { computed, ref, inject } from "vue";
 import PerformanceColumnChart from "../../../components/charts/ReportColumnChart.vue";
 import groupData from "../../../services/groupArray/groupResponse";
 import ReportAreaChart from "../../../components/charts/AreaChart.vue";
 import axios from "@/gateway/backendapi";
+import router from "../../../router";
 import dateFormatter from "../../../services/dates/dateformatter.js";
 import exportService from "../../../services/exportFile/exportservice";
 import printJS from "print-js";
@@ -274,10 +267,12 @@ export default {
     };
 
     const setSelectedEvent = () => {
-      selectedEvents.value = allEvents.value.find(
-        (i) => i.id === selectedEventID.value
-      );
+      selectedEvents.value = allEvents.value.find((i) => i.id === selectedEventID.value);
       console.log(selectedEvents.value, "Events");
+    };
+
+    const goBack = () => {
+      router.go(-1);
     };
 
     const getAllEvents = () => {
@@ -369,9 +364,7 @@ export default {
     const attendanceChart = computed(() => {
       if (activityReport.value.length === 0) return [];
       activityReport.value.forEach((i) => {
-        let attendanceIndex = Object.keys(i).findIndex(
-          (i) => i === "attendance"
-        );
+        let attendanceIndex = Object.keys(i).findIndex((i) => i === "attendance");
         let attendanceValue = Object.values(i)[attendanceIndex];
         attendanceData.value.unshift(attendanceValue);
       });
@@ -542,6 +535,7 @@ export default {
       showExport,
       printJS,
       downloadFile,
+      goBack,
       bookTypeList,
       selectedFileType,
       fileHeaderToExport,
