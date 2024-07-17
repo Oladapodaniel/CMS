@@ -1,7 +1,7 @@
 <template>
   <!-- <testing /> -->
   <div @click="hideEmojiWrapper">
-    <div class="container">
+    <div class="container " >
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
         <div class="col-md-12 my-3 text-center text-md-left">
@@ -344,7 +344,7 @@ import store from "../../../store/store";
 import axios from "@/gateway/backendapi";
 import communicationService from "../../../services/communication/communicationservice";
 import moment from 'moment'
-import VueQrcode from 'vue-qrcode';
+// import VueQrcode from 'vue-qrcode';
 import swal from 'sweetalert';
 import { VuemojiPicker } from 'vuemoji-picker'
 // import { state } from "@/socket";
@@ -354,11 +354,11 @@ import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 import dateFormatter from "../../../services/dates/dateformatter";
 import api from "axios";
 import { whatsappServerBaseURL } from "../../../gateway/backendapi";
-import { color } from "highcharts";
+// import { color } from "highcharts";
 
 export default {
   components: {
-    VueQrcode,
+    // VueQrcode,
     VuemojiPicker,
     // testing
   },
@@ -509,8 +509,6 @@ export default {
       category,
       id,
       name,
-      indexInCategories,
-      indexInGroup
     ) => {
       const group_index = selectedGroups.value.findIndex(i => i.data == `${category}_${id}`)
       if (group_index < 0) {
@@ -656,9 +654,9 @@ export default {
       try {
         let { data } = await api.post(`${whatsappServerBaseURL}send/text?key=${clientSessionId.value}`, payload);
         console.log(data)
-        if (!data.error) {
+        // if (!data.error) {
 
-        }
+        // }
       }
       catch (error) {
         console.error(error);
@@ -669,9 +667,9 @@ export default {
       try {
         let { data } = await api.post(`${whatsappServerBaseURL}send/image?key=${clientSessionId.value}`, payload);
         console.log(data)
-        if (!data.error) {
+        // if (!data.error) {
 
-        }
+        // }
       }
       catch (error) {
         console.error(error);
@@ -683,9 +681,9 @@ export default {
       try {
         let { data } = await api.post(`${whatsappServerBaseURL}send/video?key=${clientSessionId.value}`, payload);
         console.log(data)
-        if (!data.error) {
+        // if (!data.error) {
 
-        }
+        // }
       }
       catch (error) {
         console.error(error);
@@ -897,7 +895,7 @@ export default {
       }
       else if (e.raw.type.includes('audio')) {
         const reader = new FileReader();
-        reader.addEventListener("load", function (f) {
+        reader.addEventListener("load", function () {
           audioPlayer.value.src = reader.result;
           fileAudio.value = true
           fileVideo.value = false
@@ -909,7 +907,7 @@ export default {
         }
       } else if (e.raw.type.includes('video')) {
         const reader = new FileReader();
-        reader.addEventListener("load", function (f) {
+        reader.addEventListener("load", function () {
           videoPlayer.value.src = reader.result;
           fileAudio.value = false
           fileVideo.value = true
@@ -1138,7 +1136,6 @@ export default {
       userWhatsappGroupsId,
       sendWhatsappMessage,
       allSelectedNumbers,
-      allcountries,
       allcountries,
       getUser,
       tenantCountry,

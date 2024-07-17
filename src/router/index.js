@@ -1302,7 +1302,16 @@ const routes = [
                     },
                     component: () =>
                         import( /* webpackChunkName: "scheduledwhatsapp" */ '@/views/communication/whatsapp/SentWhatsapp')
-                }
+                },
+                {
+                    path: 'report/:messageId',
+                    name: 'WhatsappDeliveryReport',
+                    meta: {
+                        title: 'Churchplus - Communication - Delivery Report',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "deliveryreport" */ '@/views/communication/DeliveryReport')
+                },
             ]
         },
         {

@@ -6,7 +6,7 @@
         <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
           <div>
             <div class="text-head font-weight-bold h2 py-0 my-0 text-black">Whatsapp</div>
-            <div class="s-18">Showing all SMS Data</div>
+            <div class="s-18">Showing all Sent Whatsapp</div>
           </div>
           <!-- <div class="d-flex flex-wrap flex-sm-nowrap mt-3 mt-sm-0">
             <div class="d-flex mt-1 w-100" @click="watchVideo">
@@ -228,7 +228,7 @@
                   <div>
                     <router-link
                       :to="{
-                        name: 'DeliveryReport',
+                        name: 'WhatsappDeliveryReport',
                         params: { messageId: item.id },
                         query: { units: item.smsUnitsUsed },
                       }"
@@ -346,9 +346,9 @@ export default {
   setup() {
     const loading = ref(false);
     const store = useStore();
-    const sentSMS = ref(store.getters["communication/getSentSMS"].data);
+    const sentSMS = ref(store.getters["communication/getSentWhatsapp"].data);
     const searchText = ref("");
-    const totalItems = ref(store.getters["communication/getSentSMS"].totalItems);
+    const totalItems = ref(store.getters["communication/getSentWhatsapp"].totalItems);
     const showAddMemberVideo = ref(false);
     const primarycolor = inject("primarycolor");
     const videoURL = ref("https://www.youtube.com/embed/woeot9MAId8?si=SVsS8hJcYIzyPohR");
@@ -376,7 +376,7 @@ export default {
     const getSentSMS = async () => {
       loading.value = true;
       try {
-        await store.dispatch("communication/getAllSMS").then((res) => {
+        await store.dispatch("communication/getAllSentWhatapp").then((res) => {
           loading.value = false;
           sentSMS.value = res.data;
           totalItems.value = res.totalItems;
@@ -496,7 +496,7 @@ export default {
             duration: 5000,
           });
           marked.value.forEach((i) => {
-            store.dispatch("communication/removeSentSMS", i.id);
+            store.dispatch("communication/removeSentWhatsapp", i.id);
           });
           marked.value = [];
         })
