@@ -3,6 +3,7 @@ import communicationService from "../../services/communication/communicationserv
 
 const defaultState = (() => ({
     allSentSMS: [],
+    sentWhatsapp: {},
     sentSMS: {},
     smsReplies: [],
     smsDrafts: [],
@@ -45,6 +46,9 @@ export default {
         SET_SENTSMS(state, payload) {
             state.sentSMS = payload;
         },
+        SET_SENTWHATSAPP(state, payload) {
+            state.sentWhatsapp = payload;
+        },
 
         setEmailDrafts(state, payload) {
             state.emailDrafts = payload;
@@ -59,6 +63,12 @@ export default {
         },
         removeSentSMS(state, payload) {
             const x = state.sentSMS.data.findIndex(i => i.id === payload);
+            if (x >= 0) {
+                state.sentSMS.data.splice(x, 1);
+            }
+        },
+        removeSentWhatsapp(state, payload) {
+            const x = state.sentWhatsapp.data.findIndex(i => i.id === payload);
             if (x >= 0) {
                 state.sentSMS.data.splice(x, 1);
             }
@@ -177,6 +187,12 @@ export default {
                 return response
             })
         },
+        getAllSentWhatapp({ commit }) {
+            return communicationService.getAllSentWhatsapp().then(response => {
+                commit('SET_SENTWHATSAPP', response)
+                return response
+            })
+        },
         
 
 
@@ -191,6 +207,9 @@ export default {
 
         removeSentSMS({ commit }, payload) {
             commit("removeSentSMS", payload);
+        },
+        removeSentWhatsapp({ commit }, payload) {
+            commit("removeSentWhatsapp", payload);
         },
 
         removeSentReplies({ commit }, payload) {
@@ -239,6 +258,9 @@ export default {
         allSentSMS: state => state.allSentSMS,
         getSentSMS: (state) => {
             return state.sentSMS
+        },
+        getSentWhatsapp: (state) => {
+            return state.sentWhatsapp
         },
         getById: (state) => (id) => state.sentSMS.find(i => i && i.id === id),
         smsReplies: state => state.smsReplies,
