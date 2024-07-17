@@ -1,98 +1,119 @@
 <script setup>
-import { ref } from "vue";
-import { Cropper } from "vue-advanced-cropper";
-import "vue-advanced-cropper/dist/style.css";
+import { ref, defineProps, defineEmits } from 'vue'
+import { Cropper } from 'vue-advanced-cropper'
+import 'vue-advanced-cropper/dist/style.css'
+// import BaseButton from '@/components/form/BaseButton.vue'
+// import BaseModal from '@/components/ui/BaseModal.vue'
+// import SpinnerIcon from '../../components/icons/SpinnerIcon.vue'
+// import { DialogTitle } from '@headlessui/vue'
 
-const emit = (['isEmit']);
+defineProps({
+  isLoading: {
+    type: Boolean,
+    default: false
+  },
+  label: {
+    type: String,
+    required: true
+  }
+})
 
-const image = ref("");
-const img = ref("");
-const show = ref(false);
+const emit = defineEmits(['uploaded'])
 
-const change = ({ canvas }) => {
-  image.value = canvas.toDataURL();
-  show.value = true;
-};
+const imagePreview = ref(null)
+const imageSource = ref(null)
+const showModal = ref(false)
+const originalFilename = ref('')
 
-const onFileChange = (event) => {
-  const files = event.target.files[0];
-  if (files && files.type.startsWith("image/")) {
-    const reader = new FileReader();
+const handleClose = () => {
+  showModal.value = false
+  resetImage()
+}
+
+const cropImage = ({ canvas }) => {
+  imagePreview.value = canvas.toDataURL()
+}
+
+const changeImage = (event) => {
+  const files = event.target.files[0]
+  if (files && files.type.startsWith('image/')) {
+    originalFilename.value = files.name
+    const reader = new FileReader()
     reader.onload = (e) => {
-      image.value = e.target.result;
-    };
-    reader.readAsDataURL(files);
+      imageSource.value = e.target.result
+    }
+    reader.readAsDataURL(files)
   }
-};
-const saveCroppedImage = () => {
-  if (image.value === "") {
-    alert("Please Select Image");
-    return;
-  }
+  showModal.value = true
+  event.target.value = '' // Clear the input
+}
 
-  const arr = image.value.split(",");
-  const mime = arr[0].match(/:(.*?);/)[1];
-  const bstr = atob(arr[1]);
-  let n = bstr.length;
-  const u8arr = new Uint8Array(n);
+const saveCroppedImage = () => {
+  showModal.value = false
+  if (!imagePreview.value) {
+    return
+  }
+  const arr = imagePreview.value.split(',')
+  const mime = arr[0].match(/:(.*?);/)[1]
+  const bstr = atob(arr[1])
+  let n = bstr.length
+  const u8arr = new Uint8Array(n)
 
   while (n--) {
-    u8arr[n] = bstr.charCodeAt(n);
+    u8arr[n] = bstr.charCodeAt(n)
   }
 
-  const file = new File([u8arr], "filename.png", { type: mime });
-  emit("isEmit", file);
+  const file = new File([u8arr], originalFilename.value, { type: mime })
+  emit('uploaded', file)
+  resetImage()
+}
 
-  // Clear the original image after saving the cropped image
-  image.value = "";
-};
+const resetImage = () => {
+  imagePreview.value = null
+  imageSource.value = null
+}
 </script>
+
 <template>
-  <div class="container mx-auto p-4">
-    <h1 class="s-18 font-weight-bold mb-4">Image Cropper</h1>
-    <input ref="file" type="file" @change="onFileChange" class="mb-4" />
-    <div v-if="img">
-      <Cropper
-        :src="img"
-        class="w-100 h-100"
-        :stencil-props="{ aspectRatio: 1 }"
-        @change="change"
-      />
-    </div>
-    <button @click="saveCroppedImage" class="mt-4 px-4 py-2 rounded">
-      Save Cropped Image
-    </button>
-    <div v-if="image" class="mt-4">
-      <img :src="image" alt="Cropped Image" class="border rounded" />
-    </div>
-  </div>
+  <span>
+    <input
+      ref="file"
+      type="file"
+      accept="image/*"
+      :disabled="isLoading"
+      class="hidden"
+      @change="changeImage"
+    />
+    <!-- <slot name="upload-button" :trigger="() => $refs.file.click()" /> -->
+    <el-dialog
+      class="overflow-y-auto sm:max-w-lg"
+      v-model="showModal"
+    >
+      <!-- <DialogTitle as="h3" class="text-3xl font-bold capitalize">Crop Image</DialogTitle> -->
+      <!-- <div v-if="!imagePreview" class="w-full flex justify-center mt-12 items-center">
+        <SpinnerIcon class="w-10 h-full animate-spin" />
+      </div> -->
+      <div class="mt-12 flex flex-col sm:flex-row justify-between items-center">
+        <div v-if="imageSource" class="w-full sm:w-1/2 mb-4">
+          <Cropper
+            :src="imageSource"
+            class="w-full"
+            :stencil-props="{ aspectRatio: 1 }"
+            @change="cropImage"
+          />
+        </div>
+        <div v-if="imagePreview" class="mt-4 sm:mt-0">
+          <img :src="imagePreview" alt="Cropped Image" class="border w-36 h-36 rounded-full" />
+        </div>
+      </div>
+      <div class="mt-8 flex justify-center">
+        <el-button round class="primary-bg" :disabled="!imagePreview" :is-loading="isLoading" @click="saveCroppedImage">
+          save cropped picture
+        </el-button>
+        <el-button round class="primary-bg" :is-loading="isLoading" @click="handleClose">
+          Cancel
+        </el-button>
+      </div>
+    </el-dialog>
+  </span>
 </template>
-<style scoped>
-.user {
-  width: 140px;
-  height: 140px;
-  border-radius: 100%;
-  border: 3px solid #2e7d32;
-  position: relative;
-}
-.profile-img {
-  height: 100%;
-  width: 100%;
-  border-radius: 50%;
-}
-.icon {
-  position: absolute;
-  top: 10px;
-  right: 0;
-  background: #e2e2e2;
-  border-radius: 100%;
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
-  vertical-align: middle;
-  text-align: center;
-  color: #0000ff;
-  font-size: 14px;
-  cursor: pointer;
-}
-</style>
