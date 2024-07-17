@@ -1,6 +1,6 @@
 <template>
-  <div class="container-fluid">
-    <div class="d-flex flex-wrap flex-column flex-sm-row justify-content-between">
+  <div :class="{ 'container-wide': lgAndUp || xlAndUp }">
+    <div class="row">
       <div>
         <div class="text-head font-weight-bold h2 py-0 my-0 text-black">Reports</div>
         <div class="s-18">Manage all reports</div>
@@ -64,6 +64,7 @@ import People from "./Membershipreport/Index.vue";
 import Performance from "./Performancereport/Index.vue";
 import Financial from "./Financialreport/Index.vue";
 import MobileUsage from "./Mobileusagereport/Index.vue";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import FollowUp from "./Followup/Index.vue";
 import Others from "./Others/Index.vue";
 // import { useRoute }  from "vue-router"
@@ -100,6 +101,7 @@ export default {
     const showMobile = ref(false);
     const showFollowup = ref(false);
     const showOthers = ref(false);
+    const { lgAndUp, xlAndUp } = deviceBreakpoint();
 
     // const route = useRoute()
     const togglePeople = () => {
@@ -158,6 +160,8 @@ export default {
       showMobile,
       showFollowup,
       showOthers,
+      lgAndUp, 
+      xlAndUp,
       togglePeople,
       togglePerformance,
       toggleFinancial,

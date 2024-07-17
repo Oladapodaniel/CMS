@@ -2,23 +2,32 @@
   <div class="container-fluid">
     <!-- header area -->
 
-    <div class="row flex-row justify-content-between align-items-center">
-      <div class="centered-items">
-        <h3 class="head-text">Basic Expense Report</h3>
-        <p class="ml-1">
-          This reports provides a detailed list of all the church expenses in a
-          simplied display.
-        </p>
+    <div class="row flex-row justify-content-between ">
+      <div class="mb-4">
+        <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
+          Basic Expense Report
+        </div>
+        <div @click="goBack">
+          <span class="s-18 fw-400 cursor-pointer text-black">
+            <img src="../../../assets/goback.png" alt="" /> Go back</span
+          >
+        </div>
       </div>
     </div>
 
     <!--end of header area -->
     <!-- date area -->
-    <div class="row pl-1 pl-md-5 bg-area mt-sm-3">
-      <div class="col-md-4 col-sm-12 px-md-0">
+    <div class="row">
+      <div class="col-md-12 px-0 s-18 fw-400 text-black">
+          This reports provides a detailed list of all the church expenses in a
+          simplied display.
+      </div>
+    </div>
+    <div class="row justify-content-center  py-5 border-radius-8 grey-backg mt-sm-3">
+      <div class="col-md-5 col-sm-12 px-md-0">
         <div class="p-field p-col-12 pt-md-2 pb-2">
           <div>
-            <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
+            <label for="icon" class="fw-400 mb-0  text-dak s-14">Start Date</label>
           </div>
 
           <el-date-picker
@@ -30,10 +39,10 @@
           />
         </div>
       </div>
-      <div class="col-md-4 col-sm-12 pr-md-0">
+      <div class="col-md-5 col-sm-12 pr-md-0">
         <div class="p-field p-col-12 pt-md-2">
           <div>
-            <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+            <label for="icon" class="fw-400 mb-0  text-dak s-14">End Date</label>
           </div>
 
           <el-date-picker
@@ -45,13 +54,13 @@
           />
         </div>
       </div>
-      <div class="col-md-4 col-sm-12 pr-md-0">
-        <div class="p-field p-col-12 pt-md-2">
+      <div class="col-md-10 d-flex justify-content-center col-sm-12 pr-md-0">
+        <div class="p-field col-md-5 ">
           <el-button
-            class="c-pointer mt-4"
+            class="c-pointer w-100 py-4 mt-3"
             :color="primarycolor"
-            round
             :loading="loading"
+            round
             @click="generateReport"
           >
             Generate Report
@@ -186,6 +195,7 @@ import { ref, computed, inject } from "vue";
 import BasicExpensePieChart from "@/components/charts/ReportPieChart.vue";
 import BasicExpenseColumnChart from "../../../components/charts/ReportColumnChart.vue";
 import axios from "@/gateway/backendapi";
+import router from "../../../router";
 import dateFormatter from "../../../services/dates/dateformatter";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportserviceforbasicexpense.js";
@@ -223,6 +233,11 @@ export default {
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
+
+    const goBack = () => {
+      router.go(-1);
+    };
+
     const generateReport = () => {
       loading.value = true;
       axios
@@ -380,6 +395,7 @@ export default {
       selectedFileType,
       downloadFile,
       total,
+      goBack,
       fundSum,
       mappedExpenses,
       ExpenseDetails,

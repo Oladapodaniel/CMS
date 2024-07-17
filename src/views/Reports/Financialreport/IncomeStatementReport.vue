@@ -1,17 +1,24 @@
 <template>
   <div class="container-fluid">
     <!-- header area -->
-    <div class="row flex-row justify-content-between align-items-center">
-      <div class="centered-items">
-        <h3 class="head-text">Income Statement Report</h3>
+    <div class="row flex-row justify-content-between">
+      <div class="mb-4">
+        <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
+          Income Statement Report
+        </div>
+        <div @click="goBack">
+          <span class="s-18 fw-400 cursor-pointer text-black">
+            <img src="../../../assets/goback.png" alt="" /> Go back</span
+          >
+        </div>
       </div>
-      <div class="c-pointer my-sm-0 my-2">
+      <div class="c-pointer">
         <el-dropdown trigger="click" class="w-100">
           <div
             class="d-flex justify-content-between default-btn text-dark w-100"
             size="large"
           >
-            <span class="mt-1">Export</span>
+            <span class="mt-1 primary--text">Export</span>
             <div class="mt-1">
               <el-icon class="el-icon--right">
                 <arrow-down />
@@ -36,20 +43,18 @@
         </el-dropdown>
       </div>
     </div>
-    <div>
-      <p class="">
+    <div class="row">
+      <div class="col-md-12 px-0 s-18 fw-400 text-black">
         A detailed report of all incomes and expenses of the ministry in a given
         period.
-      </p>
+      </div>
     </div>
-
-    <!--end of header area -->
     <!-- date area -->
-    <div class="row pl-1 pl-md-5 bg-area mt-sm-3">
-      <div class="col-md-4 col-sm-12 px-md-0">
+    <div class="row justify-content-center  py-5 border-radius-8 grey-backg mt-sm-3">
+      <div class="col-md-5 col-sm-12 px-md-0">
         <div class="p-field p-col-12 pt-md-2 pb-2">
           <div>
-            <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
+            <label for="icon" class="fw-400 mb-0  text-dak s-14">Start Date</label>
           </div>
           <el-date-picker
             v-model="startDate"
@@ -60,10 +65,10 @@
           />
         </div>
       </div>
-      <div class="col-md-4 col-sm-12 pr-md-0">
+      <div class="col-md-5 col-sm-12 pr-md-0">
         <div class="p-field p-col-12 pt-md-2">
           <div>
-            <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+            <label for="icon" class="fw-400 mb-0  text-dak s-14">End Date</label>
           </div>
           <el-date-picker
             v-model="endDate"
@@ -74,13 +79,13 @@
           />
         </div>
       </div>
-      <div class="col-md-4 col-sm-12 pr-md-0">
-        <div class="p-field p-col-12 pt-md-2">
+      <div class="col-md-10 d-flex justify-content-center col-sm-12 pr-md-0">
+        <div class="p-field col-md-5 ">
           <el-button
-            class="c-pointer mt-4"
+            class="c-pointer w-100 py-4 mt-3"
             :color="primarycolor"
-            round
             :loading="loading"
+            round
             @click="generateReport"
           >
             Generate Report
@@ -96,7 +101,7 @@
       class="container-fluid d-flex justify-content-center my-2"
       v-if="displayTitle"
     >
-      <div class="head-text">Income Statement Report</div>
+      <div class="text-head font-weight-bold h2">Income Statement Report</div>
     </div>
       <section class="container-fluid  " :class="
             incomeStatement && incomeStatement.length > 0 ? 'graph-area' : ''
@@ -298,6 +303,7 @@ import IncomeStatmentColumnChart from "../../../components/charts/ReportColumnCh
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter";
 import printJS from "print-js";
+import router from "../../../router";
 import exportService from "../../../services/exportFile/exportserviceforincomestatement.js";
 import groupResponse from "../../../services/groupArray/groupResponse.js";
 import incomeExpenseHelper from "./Helper/Incomeexpenses-helper.js";
@@ -374,6 +380,10 @@ export default {
 
       return incomeTotal - expenseTotal;
     });
+
+    const goBack = () => {
+      router.go(-1);
+    };
 
     const sumOfDiffAcctInFunds = (item) => {
       let incomeres = item.incomes.reduce((a, b) => {
@@ -583,6 +593,7 @@ export default {
       fundSum,
       startDate,
       endDate,
+      goBack,
       incomeStatement,
       generateReport,
       formatDate,

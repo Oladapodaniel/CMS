@@ -1,11 +1,18 @@
 <template>
   <div class="container-fluid">
     <div class="row justify-content-between">
-      <div class="head-text">Offering And Contribution Report</div>
+      <div class="mb-4">
+        <div class="text-head font-weight-bold h2 py-0 my-0 text-black ">Offering And Contribution Report</div>
+        <div @click="goBack">
+          <span class="s-18 fw-400 cursor-pointer text-black">
+            <img src="../../../assets/goback.png" alt="" /> Go back</span
+          >
+        </div>
+      </div>
       <div class="c-pointer my-sm-0 my-2">
         <el-dropdown trigger="click" class="w-100">
           <div class="d-flex justify-content-between default-btn text-dark w-100" size="large">
-            <span class="mt-1">Export</span>
+            <span class="mt-1 primary--text">Export</span>
             <div class="mt-1">
               <el-icon class="el-icon--right">
                 <arrow-down />
@@ -25,19 +32,19 @@
       </div>
     </div>
     <div class="row">
-      <div class="pl-1">
+      <div class="col-md-12 px-0">
         This reports provides a detailed list of all the offerings and
         contribution reports, you can also generate report for individual
         contributions
       </div>
     </div>
-    <div class="row py-5" style="background: #ebeff4; border-radius: 0.5rem">
-      <div class="col-sm-9 col-12">
+    <div class="row grey-backg justify-content-center py-5 border-radius-8">
+      <div class="col-md-10 col-12">
         <div class="row">
           <div class="col-md-6 col-sm-12 pr-md-0">
             <div class="p-field p-col-12 pt-md-2 pb-2">
               <div>
-                <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
+                <label for="icon" class="fw-400 mb-0  text-dak s-14">Start Date</label>
               </div>
               <el-date-picker v-model="startDate" type="date" format="DD/MM/YYYY" size="large" class="w-100" />
             </div>
@@ -46,7 +53,7 @@
           <div class="col-md-6 col-sm-12 pr-md-0">
             <div class="p-field p-col-11 pt-md-2">
               <div>
-                <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+                <label for="icon" class="fw-400 mb-0  text-dak s-14">End Date</label>
               </div>
               <el-date-picker v-model="endDate" type="date" format="DD/MM/YYYY" size="large" class="w-100" />
             </div>
@@ -55,7 +62,7 @@
           <div class="col-md-6 col-sm-12 pr-md-0">
             <div class="p-field pt-md-2 p-col-12">
               <div>
-                <label for="icon" class="mb-0 font-weight-bold">Select Categories</label>
+                <label for="icon" class="fw-400 mb-0  text-dak s-14">Select Categories</label>
               </div>
               <div>
                 <SelectAllDropdown :items="Categories" @selected-item="setSelectedAgeGroup" />
@@ -93,22 +100,33 @@
           </div>
           <div class="col-sm-12 col-md-6 pr-md-0 pt-md-2">
             <div>
-              <label for="" class="mb-0 font-weight-bold">Select Member</label>
+              <label for="" class="fw-400 mb-0  text-dak s-14">Select Member</label>
             </div>
             <MembersSearch @memberdetail="chooseContact" :currentMember="selectedContact" />
           </div>
         </div>
       </div>
-      <div class="col-9 col-md-6 col-lg-3 d-flex align-items-center">
-        <el-button class="c-pointer mt-4" :color="primarycolor" round :loading="loading" @click="genarateReport">
-          Generate Report
-        </el-button>
-      </div>
+      <div class="col-md-12">
+          <div class="row justify-content-center align-items-center">
+            <div class="col-md-5 mt-4">
+              <div class="col-md-12" @click="genarateReport">
+                <el-button
+                  round
+                  :color="primarycolor"
+                  :loading="loading"
+                  size="large"
+                  class="text-white py-4  w-100 c-pointer"
+                  >Generate Report
+                </el-button>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
   </div>
   <div id="element-to-print" class="">
     <div class="container-fluid d-flex justify-content-center my-2" v-if="displayTitle">
-      <div class="head-text">Offering And Contribution Report</div>
+      <div class="text-head font-weight-bold h2 ">Offering And Contribution Report</div>
     </div>
     <div class="container-fluid">
       <div class="row" :class="{ 'show-report': showReport, 'hide-report': !showReport }">
@@ -187,10 +205,11 @@ import OfferingPieChart from "../../../components/charts/ReportPieChart.vue";
 import OfferingColumnChart from "../../../components/charts/ReportColumnChart.vue";
 import dateFormatter from "../../../services/dates/dateformatter";
 import printJS from "print-js";
+import router from "../../../router";
 import SelectAllDropdown from "../ReportsDropdown.vue";
 import MembersSearch from "../../../components/membership/MembersSearch.vue";
 import exportService from "../../../services/exportFile/exportservice";
-import groupArray from "../../../services/groupArray/groupResponse";
+// import groupArray from "../../../services/groupArray/groupResponse";
 import { useStore } from "vuex";
 
 export default {
@@ -199,7 +218,7 @@ export default {
     MembersSearch,
     OfferingColumnChart,
     SelectAllDropdown,
-    groupArray,
+    // groupArray,
   },
   setup() {
     const store = useStore();
@@ -240,6 +259,10 @@ export default {
         return { amount: a.amount + b.amount };
       });
     });
+
+    const goBack = () => {
+      router.go(-1);
+    };
 
     const offeringDetail = computed(() => {
       mappedOfferingCol.value = [];
@@ -439,6 +462,7 @@ export default {
       printJS,
       downloadFile,
       genarateReport,
+      goBack,
       showReport,
       selectedofferingCategory,
       offeringColumnChartResult,

@@ -267,16 +267,17 @@ import MembershipPieChart from "../../../components/charts/ReportPieChart.vue";
 import SelectAllDropdown from "../ReportsDropdown.vue";
 import printJS from "print-js";
 import router from "../../../router";
-import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
+// import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
 import exportService from "../../../services/exportFile/exportservice";
 import allCustomFields from "../../../services/customfield/customField";
 export default {
   components: {
     MembershipPieChart,
     SelectAllDropdown,
-    GroupTree,
+    // GroupTree,
   },
   setup(prop) {
+    console.log(prop);
     const selectedMember = ref([]);
     const primarycolor = inject("primarycolor");
     const selectedGender = ref([]);
