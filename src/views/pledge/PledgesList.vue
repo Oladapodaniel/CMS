@@ -38,12 +38,12 @@
         </div>
         <router-link class="mr-1" to="/tenant/pledge/pledgedefinitionlist">
           <el-button class="header-btn mr-3 w-100 secondary-button" round>
-            Dues & Pledges
+            Dues & Pledges item
           </el-button>
         </router-link>
         <router-link class="" to="/tenant/pledge/makepledge">
           <el-button :color="primarycolor" class="header-btn w-100 mt-3 mt-sm-0" round>
-            New Partnership/Pledges
+            New Partnership & Pledges
           </el-button></router-link
         >
       </div>
