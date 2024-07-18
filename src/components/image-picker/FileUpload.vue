@@ -2,10 +2,6 @@
 import { ref, defineProps, defineEmits } from 'vue'
 import { Cropper } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
-// import BaseButton from '@/components/form/BaseButton.vue'
-// import BaseModal from '@/components/ui/BaseModal.vue'
-// import SpinnerIcon from '../../components/icons/SpinnerIcon.vue'
-// import { DialogTitle } from '@headlessui/vue'
 
 defineProps({
   isLoading: {

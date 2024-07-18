@@ -14,7 +14,6 @@ import axios from "./gateway/backendapi";
 import NProgress from "nprogress";
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import Toaster from '@meforma/vue-toaster';
-import VueImageCropUpload from 'vue-image-crop-upload'
 import { Cropper } from 'vue-advanced-cropper'
 // import VueTelInput from 'vue3-tel-input'
 // import 'vue3-tel-input/dist/vue3-tel-input.css'
@@ -131,7 +130,6 @@ app.component("SplitButton", SplitButton);
 app.component("Checkbox", Checkbox);
 app.component("Tag", Tag);
 app.component("Editor", Editor);
-app.component('VueImageCropUpload', VueImageCropUpload)
 app.component('Cropper', Cropper)
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
