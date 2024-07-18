@@ -171,15 +171,7 @@
                 v-loading="loading"
               >
                 <template #message="{ item }">
-                  <div>
-                    <router-link
-                      :to="{
-                        name: 'SendMessage',
-                        query: { messageId: item.id },
-                      }"
-                      class="text-decoration-none text-dak"
-                    >
-                      <!-- <el-tooltip class="box-item" effect="dark" :content="item.message" placement="top-start"> -->
+                  <div class="cursor-pointer" @click="composeWhatsapp(item.id)">
                       <span class="fw-400">{{
                         item.message && item.message.length > 25
                           ? `${item.message.split("").slice(0, 25).join("")}...`
@@ -187,21 +179,11 @@
                           ? item.message
                           : ""
                       }}</span>
-                      <!-- </el-tooltip> -->
-                    </router-link>
                   </div>
                 </template>
                 <template #dateSent="{ item }">
-                  <div>
-                    <router-link
-                      :to="{
-                        name: 'SendMessage',
-                        query: { messageId: item.id },
-                      }"
-                      class="text-decoration-none"
-                    >
+                  <div class="cursor-pointer" @click="composeWhatsapp(item.id)">
                       <span class="timestamp text-dak ml-1">{{ item.dateSent }}</span>
-                    </router-link>
                   </div>
                 </template>
                 <template v-slot:status="{ item }">
@@ -249,7 +231,7 @@
                             <router-link
                               :to="
                                 item.phone
-                                  ? `/tenant/sms/compose?phone=${item.phone}`
+                                  ? `/tenant/whatsapp/compose?phone=${item.phone}`
                                   : ''
                               "
                               :class="{
@@ -335,6 +317,7 @@ import UnitsArea from "../../../components/units/UnitsArea";
 import stopProgressBar from "../../../services/progressbar/progress";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Table from "@/components/table/Table";
+import router from "../../../router";
 import { Search } from "@element-plus/icons-vue";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 
@@ -364,6 +347,21 @@ export default {
       page: 1,
       rowsPerPage: 50,
     });
+    const whatsappClientState = computed(() => {
+      return store.getters["communication/isWhatsappClientReady"];
+    });
+
+    const composeWhatsapp = (id) => {
+      if(whatsappClientState.value){
+        router.push(`/tenant/whatsapp?messageId=${id}`)
+      }else{
+        ElMessage({
+          type: "warning",
+          message: `Can't Access the page, Please Connect your Whatsapp`,
+          duration: 5000,
+        });
+      }
+    }
 
     watch(
       serverOptions.value,
@@ -575,6 +573,8 @@ export default {
       primarycolor,
       Search,
       watchVideo,
+      composeWhatsapp,
+      whatsappClientState
     };
   },
 };

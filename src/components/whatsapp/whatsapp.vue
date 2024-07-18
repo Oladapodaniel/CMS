@@ -24,7 +24,7 @@
                   <router-link to="/tenant/whatsapp" v-if="whatsappClientState"
                     class="btn compose-btn border-0 font-weight-bold default-btn border-none">Compose
                     Whatsapp</router-link>
-                  <router-link to="" v-else
+                  <router-link to="/tenant/whatsapp/auth" v-else
                     class="btn compose-btn border-0 font-weight-bold default-btn border-none">Connect
                     Whatsapp</router-link>
                 </div>
