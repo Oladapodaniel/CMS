@@ -182,7 +182,8 @@ export default {
           // Restore the session here
           sessionId.value = data;
           store.dispatch("communication/whatsappSessionId", sessionId.value);
-          restoreExistingSession();
+          initialiseWhatsapp()
+          // restoreExistingSession();
           // createGetWhatsappSession(data, "getsession");
           // sessionStatus.value = "sessionReady";
         } else {
@@ -208,9 +209,10 @@ export default {
         console.log(data, "inited");
         if (!data.error) {
           // Display qrcode
-          setTimeout(() => {
-            getQRCode();
-          }, 4000);
+          // setTimeout(() => {
+          //   getQRCode();
+          // }, 4000);
+          restoreExistingSession()
         }
       } catch (error) {
         connectingExistingSession.value = false;
@@ -237,7 +239,10 @@ export default {
               }, 30000);
             }
           } else {
-            initialiseWhatsapp();
+            // If the qrCode returned empty string, make the call recursively after 5 secs;
+            setTimeout(() => {
+              getQRCode();
+            }, 5000)
           }
         }
       } catch (error) {
@@ -268,13 +273,13 @@ export default {
           } else {
             sequentialCheckInstanceStatus.value = setTimeout(() => {
               checkInstanceStatus();
-              console.log("inteval");
+              console.log("interval");
             }, 10000);
           }
         } else {
           sequentialCheckInstanceStatus.value = setTimeout(() => {
             checkInstanceStatus();
-            console.log("inteval");
+            console.log("interval");
           }, 10000);
         }
       } catch (error) {
@@ -299,15 +304,19 @@ export default {
               (i) => i.toLowerCase() === sessionId.value.toLowerCase()
             );
             if (checkSession) {
+              // Wait until instance is established
               checkInstanceStatus();
             } else {
-              initialiseWhatsapp();
+              getQRCode();
+              // initialiseWhatsapp();
             }
           } else {
-            initialiseWhatsapp();
+            getQRCode();
+            // initialiseWhatsapp();
           }
         } else {
-          initialiseWhatsapp();
+          getQRCode();
+          // initialiseWhatsapp();
         }
       } catch (error) {
         console.error(error);
