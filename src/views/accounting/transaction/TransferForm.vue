@@ -670,8 +670,9 @@ export default {
 }
 
 .label-text {
-  font-size: 0.8em;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
   margin-bottom: 5px;
 }
 

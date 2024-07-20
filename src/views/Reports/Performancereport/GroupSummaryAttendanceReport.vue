@@ -178,7 +178,7 @@
         <div class="col-md-12 p-0 scroll-table">
           <table class="table table-hover" style="border-radius: 0" id="table">
             <thead>
-              <tr class="table-row-bg font-weight-bold">
+              <tr class="table-row-bg fw-500 s-14 text-dak">
                 <th>Group</th>
                 <th>Leader</th>
                 <th>Leader_Phone</th>
@@ -192,7 +192,7 @@
                 </th>
               </tr>
             </thead>
-            <tbody class="small-text font-weight-bold text-nowrap">
+            <tbody class="small-text fw-400 s-14 text-dak text-nowrap">
               <tr v-for="(item, index) in availabilityReport" :key="index">
                 <td>{{ item.groupName }}</td>
                 <td>{{ item.groupLeaderName }}</td>
@@ -525,9 +525,6 @@ export default {
 </script>
 
 <style scoped>
-.header {
-  font: normal normal 800 29px Nunito sans;
-}
 /* .default-btn {
     font-weight: 600;
     white-space: initial;
@@ -578,6 +575,32 @@ export default {
 }
 
 .table-row-bg {
-  background: #ebeff4;
+  background: #F4F4F4;
+}
+
+.table {
+  width: 100% !important;
+  box-shadow: none !important;
+  border: none !important;
+  text-align: left;
+  margin-bottom: auto !important;
+  padding-bottom: 0.5rem;
+}
+
+.table thead th {
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+.table tbody tr{
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+}
+
+.table-header-area-main {
+  background-color: #F4F4F4;
 }
 </style>

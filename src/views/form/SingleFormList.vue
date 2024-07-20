@@ -384,7 +384,6 @@
 
 <script>
 import { ref, computed, onMounted, watch, inject, watchEffect } from "vue";
-import Table from "@/components/table/Table";
 import pieChart from "@/components/charts/FormPieChart.vue";
 import monthDayTime from "../../services/dates/dateformatter";
 import monthDayYear from "../../services/dates/dateformatter";
@@ -399,7 +398,6 @@ import formsService from "../../services/forms/formservice";
 import { Search } from "@element-plus/icons-vue";
 export default {
   components: {
-    Table,
     pieChart,
   },
   setup() {
@@ -539,7 +537,7 @@ export default {
           date: item.date,
         };
         item.data.forEach((dataItem) => {
-          const { label, data } = dataItem.customAttribute;
+          const { label } = dataItem.customAttribute;
           sortedItem[label] = dataItem && dataItem.data ? dataItem : "";
         });
 
@@ -848,7 +846,6 @@ export default {
 } */
 
 .table-header-area-main {
-  /* background-color: #ebeff4; */
   color: #334d6e !important;
   font-weight: 500 !important;
   font-size: 13px !important;

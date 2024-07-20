@@ -23,7 +23,7 @@
               <span
                 class="el-dropdown-link w-100 primary--text text-center font-weight-600"
               >
-                Menu
+                More
                 <el-icon class="el-icon--right">
                   <arrow-down />
                 </el-icon>
@@ -169,6 +169,7 @@
                 :checkMultipleItem="true"
                 @checkedrow="handleSelectionChange"
                 v-loading="loading"
+                v-if="searchedMessages && searchedMessages.length > 0 && !loading"
               >
                 <template #message="{ item }">
                   <div class="cursor-pointer" @click="composeWhatsapp(item.id)">
@@ -261,6 +262,11 @@
                   </div>
                 </template>
               </Table>
+              <div class="row " style="margin-top: 5rem" v-else>
+                <div class="col-md-12 py-4 text-center mt-3 fw-500 ">
+                  No data Found
+                </div>
+              </div>
             </div>
           </div>
         </div>

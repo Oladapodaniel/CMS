@@ -118,7 +118,7 @@
             </div> -->
             <!-- <div class="col-12 col-sm-12 col-md-6 col-lg-6"> -->
             <div
-              class="row table"
+              class="row  chart "
               :class="birthdays && birthdays.length > 0 ? 'graph-area' : ''"
             >
               <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center">
@@ -469,20 +469,33 @@ export default {
 
 .table {
   width: 100% !important;
-  box-shadow: 0 0.063rem 0.25rem #02172e45;
-  border: 0.063rem solid #dde2e6;
-  border-radius: 30px;
+  box-shadow: none !important;
+  border: none !important;
   text-align: left;
   margin-bottom: auto !important;
   padding-bottom: 0.5rem;
 }
 
+.table thead th {
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+.table tbody tr{
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+}
+
+.table-header-area-main {
+  background-color: #F4F4F4;
+}
+
 .table-header-area {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-}
-.table-header-area-main {
-  background-color: #ebeff4;
 }
 
 .table-main {

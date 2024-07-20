@@ -2,7 +2,7 @@
   <div class="col-md-12 p-0 scroll-table">
     <table class="table table-hover" style="border-radius: 0" id="table">
       <thead>
-        <tr class="table-row-bg font-weight-bold">
+        <tr class="table-row-bg fw-500 s-14 text-dak">
           <th class="">Name</th>
           <th class="">Phone</th>
           <th class="">Email</th>
@@ -45,7 +45,7 @@
           <th class="" :colspan="dynamicCustomFields.length + 1"></th>
         </tr>
       </thead>
-      <tbody class="small-text font-weight-bold text-nowrap">
+      <tbody class=" fw-400 s-14 text-nowrap">
         <tr v-for="(item, index) in groupedReport" :key="index">
           <td>{{ item.value[0].name }}</td>
           <td>{{ item.value[0].phone }}</td>
@@ -306,11 +306,33 @@ export default {
 }
 
 .table-row-bg {
-  background: #ebeff4;
+  background: #F4F4F4;
 }
 
 .scroll-table {
   overflow-x: auto;
+}
+
+.table {
+  width: 100% !important;
+  box-shadow: none !important;
+  border: none !important;
+  text-align: left;
+  margin-bottom: auto !important;
+  padding-bottom: 0.5rem;
+}
+
+.table thead th {
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+.table tbody tr{
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
 }
 
 .table thead th:nth-child(1),

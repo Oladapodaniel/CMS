@@ -436,10 +436,6 @@ export default {
   min-width: 7rem;
 }
 
-.heading-text {
-  font: normal normal 800 1.5rem Nunito sans;
-}
-
 .bg-area {
   background-color: #ebeff4;
   border-radius: 0.5rem;
@@ -448,17 +444,28 @@ export default {
 
 .table {
   width: 100% !important;
-  box-shadow: 0 0.063rem 0.25rem #02172e45;
-  border: 0.063rem solid #dde2e6;
-  border-radius: 30px;
+  box-shadow: none !important;
+  border: none !important;
   text-align: left;
   margin-bottom: auto !important;
   padding-bottom: 0.5rem;
 }
-.round-border {
-  border-radius: 0.5rem;
-  box-shadow: 0 0.063rem 0.25rem #02172e45;
-  border: 0.063rem solid #dde2e6;
+
+.table thead th {
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+.table tbody tr{
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+}
+
+.table-header-area-main {
+  background-color: #F4F4F4;
 }
 
 .table-header-area {

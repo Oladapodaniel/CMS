@@ -5,7 +5,22 @@
     </div>
     <!-- <div class="row">
       <div class="col-md-12">
-       <FileUpload @isEmit="submitFile($event)" />
+      
+        <FileUpload
+          :is-loading="uploading"
+          label="Upload Avatar"
+          @uploaded="handleUploadProfileAvatar"
+        >
+          <template #upload-button="{ trigger }">
+            <div class="w-16 h-16 cursor-pointer" @click="trigger">
+              <div
+                class="w-full h-full flex items-center justify-center bg-gray-100 rounded text-white"
+              >
+                UpLoad picture
+              </div>
+            </div>
+          </template>
+        </FileUpload>
       </div>
     </div> -->
     <div class="row justify-content-center mt-4">
@@ -701,9 +716,13 @@ export default {
       { name: "TextArea", id: 6 },
     ]);
 
-    const submitFile = (payload) => {
-      console.log(payload, 'ghh');
-    }
+    const uploading = ref(false);
+
+    const handleUploadProfileAvatar = async (file) => {
+      uploading.value = true;
+      console.log("file", file);
+      uploading.value = false;
+    };
 
     const previewForm = () => {
       dialogVisible.value = true;
@@ -1230,8 +1249,9 @@ export default {
       paymentType,
       bankCode,
       paymentFormID,
+      uploading,
       setChecked,
-      submitFile
+      handleUploadProfileAvatar,
     };
   },
 };
