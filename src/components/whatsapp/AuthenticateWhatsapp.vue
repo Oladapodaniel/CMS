@@ -272,6 +272,8 @@ export default {
             return;
           } else {
             sequentialCheckInstanceStatus.value = setTimeout(() => {
+              console.log('reaching 11')
+              getQRCode()
               checkInstanceStatus();
               console.log("interval");
             }, 10000);
@@ -296,16 +298,18 @@ export default {
 
     const restoreExistingSession = async () => {
       try {
-        let { data } = await api.get(`${whatsappServerBaseURL}instance/restore`);
+        let { data } = await api.get(`${whatsappServerBaseURL}instance/list`);
         // connectingExistingSession.value = false
         if (!data.error) {
           if (data.data && data.data.length > 0) {
-            let checkSession = data.data.some(
-              (i) => i.toLowerCase() === sessionId.value.toLowerCase()
+            let checkSession = data.data.find(
+              (i) => i.instance_key.toLowerCase() === sessionId.value.toLowerCase()
             );
             if (checkSession) {
-              // Wait until instance is established
-              checkInstanceStatus();
+              setTimeout(() => {
+                // Wait until instance is established
+                checkInstanceStatus();
+              }, 10000);
             } else {
               getQRCode();
               // initialiseWhatsapp();
