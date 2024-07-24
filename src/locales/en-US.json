@@ -60,6 +60,7 @@
     "labels": {
       "ur-name" : "What's your name?",
       "ur-ministry" : "What's the name of your Ministry?",
+      "church-type" : "Chuch Type",
       "ur-phone" : "What's your Phone Number?",
       "ur-email" : "Email Address",
       "ur-country" : "Select Country",

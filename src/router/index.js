@@ -202,6 +202,24 @@ const routes = [
                 import( /* webpackChunkName: "dashboard" */ '../views/dashboard/Subscription.vue')
         },
         {
+            path: 'support',
+            name: 'Support',
+            meta: {
+                title: 'Churchplus - Support',
+            },
+            component: () =>
+                import( /* webpackChunkName: "dashboard" */ '../views/support/Support.vue')
+        },
+        {
+            path: 'tutorials',
+            name: 'Tutorials',
+            meta: {
+                title: 'Churchplus - Support',
+            },
+            component: () =>
+                import( /* webpackChunkName: "dashboard" */ '../views/support/TutorialsPage.vue')
+        },
+        {
             path: 'contacts',
             component: () =>
                 import( /* webpackChunkName: "people" */ '../views/people/AllContacts.vue'),

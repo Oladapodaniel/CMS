@@ -59,6 +59,15 @@
         <div class="w-100 align-self-end">
           <!-- <hr class="hr" /> -->
           <div class="ml-3 font-weight-600">ACCOUNT</div>
+          <div class="d-flex ml-3 mt-4">
+            <!-- <el-icon class="mt-1">
+              <TopLeft />
+            </el-icon> -->
+            <!-- <img style="width: 40px; height: 40px; padding-right: 14px "
+              src="../../assets/dashboardlinks/dashboard-icon/SignOut.svg" alt=""> -->
+            <HeadSetIcon />
+            <div class="ml-3 mt-1 c-pointer" @click="support">Support</div>
+          </div>
           <div class="d-flex ml-3 mt-3">
             <!-- <el-icon class="mt-1">
               <TopLeft />
@@ -104,13 +113,15 @@ import store from "@/store/store";
 import axios from "@/gateway/backendapi";
 import { useRouter } from 'vue-router'
 import setupService from '../../services/setup/setupservice';
+import HeadSetIcon from "../icons/HeadSetIcon.vue";
 import deviceBreakpoint from "@/mixins/deviceBreakpoint";
 import SubExpired from "@/components/expiredpages/ExpiredSubDialog.vue";
 
 export default {
   emits: ['tenantname', 'linkclicked'],
   components: {
-    SubExpired
+    SubExpired,
+    HeadSetIcon
   },
   setup(props, { emit }) {
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint()
@@ -173,6 +184,9 @@ export default {
       router.push('/')
       store.dispatch('clearCurrentUser', {})
       setupService.clearStore();
+    }
+    const support = () => {
+      router.push('/tenant/support')
     }
 
     const menuLink = ref([])
@@ -585,6 +599,7 @@ export default {
       tenantDisplayName,
       churchLogo,
       logout,
+      support,
       roleOfCurrentUser,
       followup,
       admin,
