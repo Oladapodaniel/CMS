@@ -588,6 +588,7 @@ export default {
                 .get(`/api/People/firstTimer/${route.params.personId}`)
                 .then((res) => {
                     personDetails.value = res.data
+                    console.log(personDetails.value, 'klll');
                 })
                 .catch(err => {
                     console.log(err)

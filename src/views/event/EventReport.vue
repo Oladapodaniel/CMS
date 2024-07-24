@@ -135,7 +135,7 @@
                       <div class="row">
                         <div class="col-md-12">
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-12 mb-md-0 mb-3 col-md-6">
                               <a
                                 class="def-btn approve-btn"
                                 data-toggle="modal"
@@ -193,7 +193,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-md-6 col-12">
                               <a class="def-btn edit-btn" @click="copyLink"
                                 >Get share link</a
                               >
@@ -237,16 +237,16 @@
           </div>
 
           <div class="container-fluid  px-0">
-            <div class="row mx-0  dark-red-section" ref="topmost">
-              <div class="col-md-7 dark-red-section pl-5">
+            <div class="row mx-0 py-5 dark-red-section" ref="topmost">
+              <div class="col-md-7 col-12 dark-red-section pl-2 pl-md-5">
                 <h2 class="evt-report">Event and Report</h2>
               </div>
-              <div class="col-md-5 d-flex flex-column light-red-section pr-5 ">
+              <div class="col-md-5 col-12 d-flex flex-column light-red-section pr-1 pr-md-5 ">
                 <span class="d-flex ">
                   <span class="mb-n3 s-20  fw-500">Total Attendance: </span> <br />
-                  <span class="recieve ml-2"> {{ stats.todayAttendance }}</span>
+                  <span class="recieve ml-1 ml-md-2"> {{ stats.todayAttendance }}</span>
                 </span>
-                <span class="d-flex  ">
+                <span class="d-flex my-3 my-md-2  ">
                   <span class="fw-500  s-20">Total Offering: </span> <br />
                   <span class="recieve ml-2"
                     > {{ stats.tenantCurrencyName }}&nbsp;{{ stats.todayOffering }}</span
@@ -255,15 +255,15 @@
               </div>
             </div>
 
-            <div class="row py-5 px-5" ref="middle">
-              <div class="col-md-6">
+            <div class="row mt-1 p-0 p-md-5 " ref="middle">
+              <div class="col-md-6 col-12">
                 <span class="evt-label fw-400 s-20 grey-text">Event Name</span>
                 <h2 class="font-weight-600 s-20 mb-3" style="font-size: 25px">
                   {{ stats.activityToday ? stats.activityToday.name : "" }}
                 </h2>
                 <span class="evt-date text-dak s-20 fw-500">{{ eventDateString }}.</span>
               </div>
-              <div class="col-md-6 s-20 fw-500 text-dak  pl-0">
+              <div class="col-md-6 s-20 fw-500 text-dak  ">
                 <div class="row">
                   <div class="col-md-6 d-md-flex justify-content-end">
                     <span>Preacher: </span>
@@ -285,25 +285,25 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-6 d-md-flex justify-content-end">
+                  <div class="col-md-6 col-12 col-sm-9 d-md-flex justify-content-end">
                     <span >First timers: </span>
                   </div>
-                  <div class="col-md-6 pl-md-0">
+                  <div class="col-md-6 col-sm-3 col-12 pl-md-0">
                     <span>{{ stats.todayFirstTimer ? stats.todayFirstTimer : 0 }}</span>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-6 d-md-flex justify-content-end">
+                  <div class="col-md-6 col-12 col-sm-9 d-md-flex justify-content-end">
                     <span >New converts: </span>
                   </div>
-                  <div class="col-md-6 pl-md-0">
+                  <div class="col-md-6 col-sm-3 col-12 pl-md-0">
                     <span>{{ stats.todayNewConvert ? stats.todayNewConvert : 0 }}</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="row mb-5" ref="bottom">
+            <div class="row mt-3 mb-5" ref="bottom">
               <div class="col-md-12">
                 <div class="row mb-4">
                   <div class="col-md-12">
@@ -3761,13 +3761,8 @@ a {
   /* background: #980404; */
   background: #0745AF;
   color: #fff;
-  height: 133px;
-  display: flex;
   align-items: center;
   /* border-radius: 5px 0px 0px 0px; */
-  height: 133px;
-  display: flex;
-  align-items: center;
   /* border-radius: 5px 0px 0px 0px; */
 }
 

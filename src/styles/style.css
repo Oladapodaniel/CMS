@@ -104,6 +104,9 @@ rect.highcharts-background[fill] {
   .bg-photo{
     background: #F2F4F7;
   }
+  .bg-gray-500{
+    background: #F5F5F5;
+  }
 
   .light-grey-bg {
     background: rgb(235, 239, 244, .3)

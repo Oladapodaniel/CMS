@@ -20,7 +20,7 @@
               <div class="col-md-7">
                 <div class="row d-flex justify-content-center">
                   <div
-                    class="col-md-12 col-11 mt-md-0 ml-md-0 ml-sm-3 mt-3 d-flex justify-content-between align-items-center"
+                    class="col-md-12 col-11 pr-0 mt-md-0 ml-md-0 ml-sm-3 mt-3 d-flex justify-content-between align-items-center"
                     style="background: #f2f4f7; border-radius: 20px"
                   >
                     <div

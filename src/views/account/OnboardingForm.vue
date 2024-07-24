@@ -37,11 +37,23 @@
               </div>
 
               <div class="input-div">
-                <label class="mb-0">{{ navigatorLang === "en-US" ? "What's the name of your ministry?" :
-          $t('onboardingContent.labels.ur-ministry') }}</label>
-                <el-form-item prop="churchName">
-                  <el-input type="text" v-model="userDetails.churchName" placeholder="Name of church" />
-                </el-form-item>
+                <el-row :gutter="15">
+                  <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+                    <label class="mb-0">{{ navigatorLang === "en-US" ? "What's the name of your ministry?" :
+                      $t('onboardingContent.labels.ur-ministry') }}</label>
+                    <div class="w-100">
+                      <el-input type="text"  v-model="userDetails.churchName" placeholder="Name of church" />
+                    </div>
+                  </el-col>
+                  <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+                    <label class="mb-0  mt-md-4 mt-lg-4 mt-xl-0 ">{{ navigatorLang === "en-US" ? "Church Type" :
+          $t('onboardingContent.labels.church-type') }}</label>
+                    <el-form-item prop="churchtype">
+                      <el-select-v2 v-model="userDetails.categorization" :options="categorization"
+                        placeholder="Select church type" size="large" class="w-100  churchtype" />
+                    </el-form-item>
+                  </el-col>
+                </el-row>
               </div>
 
               <div class="input-div">
@@ -50,11 +62,11 @@
                     <label class="mb-0 ">{{ navigatorLang === "en-US" ? "Email Address" :
           $t('onboardingContent.labels.ur-email') }}<span style="color: red"> *</span></label>
                     <el-form-item prop="email">
-                      <el-input type="email" v-model="userDetails.email" placeholder="Email" />
+                      <el-input type="email" disabled v-model="userDetails.email" placeholder="Email" />
                     </el-form-item>
                   </el-col>
                   <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-                    <label class="mb-0">{{ navigatorLang === "en-US" ? "What's your phone number?" :
+                    <label class="mb-0 mt-2 mt-lg-0">{{ navigatorLang === "en-US" ? "What's your phone number?" :
           $t('onboardingContent.labels.ur-phone') }}<span style="color: red"> *</span></label>
                     <vue-tel-input style="height: 40px" @blur="invalidResponse" v-model="userDetails.phoneNumber"
                       @input="onInput" mode="international"></vue-tel-input>
@@ -65,7 +77,7 @@
               <div class="input-div">
                 <el-row :gutter="15">
                   <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-                    <label class="mb-0">{{ navigatorLang === "en-US" ? "Select Country" :
+                    <label class="mb-0 mt-2 mt-lg-0">{{ navigatorLang === "en-US" ? "Select Country" :
           $t('onboardingContent.labels.ur-country') }}<span style="color: red"> *</span></label>
                     <div class="w-100">
                       <el-select-v2 v-model="selectedCountryId"
@@ -74,7 +86,7 @@
                     </div>
                   </el-col>
                   <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-                    <label class="mb-0 mt-3 mt-sm-0">{{ navigatorLang === "en-US" ? "What is your Membership size?" :
+                    <label class="mb-0 mt-3 mt-lg-0">{{ navigatorLang === "en-US" ? "What is your Membership size?" :
           $t('onboardingContent.labels.membership-size') }}</label>
                     <el-form-item prop="churchSize">
                       <el-select-v2 v-model="userDetails.churchSize" :options="membershipSizeList"
@@ -96,14 +108,14 @@
                   </div>
                 </div>
               </div>
-              <div class="input-div" v-if="showWebsite">
+              <div class="input-div " v-if="showWebsite">
                 <label class="mb-0">{{ navigatorLang === "en-US" ? "If Yes, Please input the Website Address or URL" :
           $t('onboardingContent.labels.websiteUrl') }}</label>
                 <el-form-item>
                   <el-input type="text" v-model="userDetails.websiteUrl" placeholder="Website Address/URL" />
                 </el-form-item>
               </div>
-              <el-button class="w-100" :color="primarycolor" size="large" :disabled="!disableNext || !selectedCountryId" :loading="loading"
+              <el-button class="w-100 mt-4" :color="primarycolor" size="large" :disabled="!disableNext || !selectedCountryId" :loading="loading"
                 @click="nextStep(ruleFormRef)" round>{{ navigatorLang === "en-US" ? "Next step" :
           $t('onboardingContent.next-btntext') }}</el-button>
               <!-- <el-button class="w-100" :color="primarycolor" size="large" :disabled="!disableNext" :loading="loading"
@@ -211,6 +223,9 @@ export default {
       churchSize: [
         { required: true, message: 'Please input your church size', trigger: 'change' },
       ],
+      categorization: [
+        { required: true, message: 'Please input your church Type', trigger: 'change' },
+      ],
     })
     const { locale } = useI18n({ useScope: 'global' });
     watch(locale, (val) => {
@@ -270,6 +285,7 @@ export default {
       codeUrl: {},
       disableNext: false,
       membershipSizeList: ['1 - 100', '101 - 200', '201 - 500', '501 - 2000', '2001 - 10,000'].map(i => ({ value: i, label: i })),
+      categorization: [{name: 'Pentecostal', value: 0}, {name: 'Orthodox', value: 1},{name: 'Catholic', value: 2}, {name: 'Others', value: 3}].map(i => ({ value: i.value, label: i.name })),
       usersPhoneCode: '',
       selectedCountryId: null
     };
@@ -495,7 +511,7 @@ export default {
 }
 
 .input-div {
-  margin: 20px 0;
+  margin-top: 8px;
 }
 
 .input {
@@ -531,6 +547,9 @@ export default {
   /* margin-left: auto; */
   float: right;
   position: relative;
+}
+.el-select-v2>div.el-select-v2__wrapper{
+  height: 45px !important;
 }
 
 .onboarding-image-con img {

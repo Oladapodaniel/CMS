@@ -797,17 +797,13 @@
 import { ref, reactive, onMounted, computed, nextTick, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
-import Dropdown from "primevue/dropdown";
 import { useRoute } from "vue-router";
-import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress";
 import setupService from "../../services/setup/setupservice";
-import ImageForm from "../../components/membership/ImageForm.vue";
 import SearchMembers from "../../components/membership/MembersSearch.vue";
 import grousService from "../../services/groups/groupsservice";
 import { useStore } from "vuex";
 import allCustomFields from "../../services/customfield/customField";
-import GroupTree from "../groups/component/GroupTree.vue";
 import collector from "../../services/groupArray/mapTree";
 import flatten from "../../services/groupArray/flatTree";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
@@ -815,11 +811,7 @@ import { ElMessageBox, ElMessage } from "element-plus";
 
 export default {
   components: {
-    Dropdown,
-    Dialog,
-    ImageForm,
     SearchMembers,
-    "group-tree": GroupTree,
   },
 
   setup() {
@@ -933,7 +925,7 @@ export default {
     const showAddInfo = ref(false);
     const customFileLoading = ref(false);
     const loadingtwo = ref(false);
-    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
+    const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
     const createCatLoading = ref(false);
     const contactOwner = ref({});
 
@@ -1014,8 +1006,22 @@ export default {
           : ""
       );
       formData.append(
+        "address",
+        firstTimersObj.value && firstTimersObj.value.address
+          ? firstTimersObj.value.address
+          : ""
+      );
+      formData.append(
         "genderId",
         selectedGender.value && selectedGender.value.id ? selectedGender.value.id : 0
+      );
+      formData.append(
+        "birthday",
+        firstTimersObj.value && firstTimersObj.value.birthday ? firstTimersObj.value.birthday : 0
+      );
+      formData.append(
+        "birthYear",
+        firstTimersObj.value && firstTimersObj.value.birthYear ? firstTimersObj.value.birthYear : 0
       );
       formData.append(
         "maritalStatusId",
@@ -1180,22 +1186,6 @@ export default {
           })
         )
       );
-      // firstTimersObj.value.customAttributeDataString = JSON.stringify(dynamicCustomFields.value.map(
-      //   (i) => {
-      //     if (route.params.personId) {
-      //       return {
-      //         customAttributeID: i.id,
-      //         data: i.data,
-      //         entityID: route.params.personId,
-      //         }
-      //     } else {
-      //       return {
-      //         customAttributeID: i.id,
-      //         data: i.data,
-      //       }
-      //     }
-      //   }
-      // ));
 
       if (!routeToFRM.value) {
         loading.value = true;
