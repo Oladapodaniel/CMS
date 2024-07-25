@@ -1,10 +1,35 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import router from "@/router/index";
-    const videoURL = ref("https://www.youtube.com/embed/0iZXCehN7gk?si=4YBSv8D10qCpGK7N");
-    const moreTutorial = () =>{
-      router.push('/tenant/tutorials')
-    }
+import { ElMessage } from "element-plus";
+const videoURL = ref("https://www.youtube.com/embed/0iZXCehN7gk?si=4YBSv8D10qCpGK7N");
+const moreTutorial = () => {
+  router.push("/tenant/tutorials");
+};
+const phoneNumber = ref("+234 802 373 9961");
+
+const telLink = computed(() => {
+  return `tel:${phoneNumber.value.replace(/\s+/g, "")}`;
+});
+
+const makeCall = () => {
+  window.location.href = telLink.value;
+};
+
+const copyToClipboard = () => {
+  navigator.clipboard
+    .writeText(phoneNumber.value)
+    .then(() => {
+      ElMessage({
+          type: "success",
+          message: "Copied to your clipboard",
+          duration: 5000,
+        });
+    })
+    .catch((err) => {
+      console.error("Failed to copy: ", err);
+    });
+};
 </script>
 
 <template>
@@ -12,8 +37,8 @@ import router from "@/router/index";
     <h2 class="mb-4">Support</h2>
     <div class="row">
       <!-- Tutorials Section -->
-      <div class="col-md-6   mb-4">
-        <div class="col-md-12 border-radius-border-8 bg-gray-500 ">
+      <div class="col-md-6 mb-4">
+        <div class="col-md-12 border-radius-border-8 bg-gray-500">
           <div class="card-body">
             <h4 class="card-title">Tutorials</h4>
             <p>Learn the easy steps to use Churchplus</p>
@@ -35,7 +60,7 @@ import router from "@/router/index";
               <div class="col-md-9 col-11">
                 <el-button round color="#EF0000" @click="moreTutorial" class="w-100 py-4">
                   Watch more Tutorials
-                <img src="../../assets/Video.svg" alt="">
+                  <img src="../../assets/Video.svg" alt="" />
                 </el-button>
               </div>
             </div>
@@ -44,25 +69,62 @@ import router from "@/router/index";
       </div>
 
       <!-- Contact Us Section -->
-      <div class="col-md-6  mb-4">
-        <div class="col-md-12 border-radius-border-8 bg-gray-500 h-100 ">
-            <div class="card-body">
+      <div class="col-md-6 mb-4">
+        <div class="col-md-12 border-radius-border-8 bg-gray-500 h-100">
+          <div class="card-body">
             <h4 class="card-title">How to Contact Us</h4>
             <p>We are committed to assisting you navigate smoothly</p>
             <ul class="list-unstyled">
               <li class="mb-3 p-3 bg-white border-radius-8">
-                <span><img src="../../assets/message.svg" alt="" style="height: 1.5rem " /></span>
-                <a  href="mailto:support@churchplus.co" class="ml-2 text-dak"
+                <span
+                  ><img src="../../assets/message.svg" alt="" style="height: 1.5rem"
+                /></span>
+                <a href="mailto:support@churchplus.co" class="ml-2 text-dak"
                   >support@churchplus.co</a
                 >
               </li>
-              <li class="mb-3 p-2 bg-white border-radius-8">
-                <span><img src="../../assets/phone-icon.png" style="height: 2.5rem " alt=""></span>
-                <span class="ml-2">+234 802 373 9961</span>
+              <li class="mb-3 p-2 bg-white border-radius-8 d-block d-sm-none">
+                <a class="text-decoration-none cursor-pointer text-dak" :href="telLink" @click.prevent="makeCall">
+                  <span>
+                  <img
+                    src="../../assets/phone-icon.png"
+                    style="height: 2.5rem"
+                    alt="Phone Icon"
+                  />
+                </span>
+                <span class="ml-2">
+                  {{ phoneNumber }}
+                </span>
+                </a>
               </li>
-              <li class="bg-white border-radius-8 p-2">
-                <span><img src="../../assets/whatsapp-icon.png" style="height: 2.5rem " alt=""></span>
-                <span class="ml-2">++234 802 373 9961</span>
+              <li class="mb-3 p-2 bg-white border-radius-8 d-none d-sm-block" >
+                <a class="text-decoration-none cursor-pointer text-dak" @click.prevent="copyToClipboard">
+                  <span>
+                  <img
+                    src="../../assets/phone-icon.png"
+                    style="height: 2.5rem"
+                    alt="Phone Icon"
+                  />
+                </span>
+                <span class="ml-2">
+                  {{ phoneNumber }}
+                </span>
+                </a>
+              </li>
+              <li class="bg-white border-radius-8 p-2 cursor-pointer">
+                <a
+                  href="https://wa.me/2348023739961"
+                  target="_blank"
+                  style="text-decoration: none; color: inherit"
+                >
+                  <span
+                    ><img
+                      src="../../assets/whatsapp-icon.png"
+                      style="height: 2.5rem"
+                      alt=""
+                  /></span>
+                  <span class="ml-2">+234 802 373 9961</span>
+                </a>
               </li>
             </ul>
           </div>
@@ -72,15 +134,11 @@ import router from "@/router/index";
   </div>
 </template>
 <style scoped>
-
-
 .card-title {
   font-weight: 500;
 }
 
-
 .embed-responsive-item {
   border-radius: 10px;
 }
-
 </style>
