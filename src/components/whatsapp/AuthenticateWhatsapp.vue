@@ -279,10 +279,11 @@ export default {
             }, 10000);
           }
         } else {
-          sequentialCheckInstanceStatus.value = setTimeout(() => {
-            checkInstanceStatus();
-            console.log("interval");
-          }, 10000);
+          initialiseWhatsapp();
+          // sequentialCheckInstanceStatus.value = setTimeout(() => {
+          //   checkInstanceStatus();
+          //   console.log("interval");
+          // }, 10000);
         }
       } catch (error) {
         console.error(error);
