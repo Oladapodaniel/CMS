@@ -56,7 +56,7 @@
   <el-row>
     <el-col :span="24">
       <div class="nav">
-        <div class="w-100 align-self-end">
+        <div class="w-100 mt-3 align-self-end">
           <!-- <hr class="hr" /> -->
           <div class="ml-3 font-weight-600">ACCOUNT</div>
           <div class="d-flex ml-3 mt-4">
