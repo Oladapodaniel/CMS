@@ -2092,7 +2092,7 @@ const routes = [
             import( /* webpackChunkName: "dashboard" */ '../views/dashboard/PricingPage.vue')
     },
     {
-        path: '/ministry',
+        path: '/ministry/:id',
         name: 'MinistryPage',
         meta: {
             title: 'Churchplus - ministry ',
