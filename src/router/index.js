@@ -2092,6 +2092,18 @@ const routes = [
             import( /* webpackChunkName: "dashboard" */ '../views/dashboard/PricingPage.vue')
     },
     {
+        path: '/ministry',
+        name: 'MinistryPage',
+        meta: {
+            title: 'Churchplus - ministry ',
+        },
+        component: () =>
+            import(/* webpackChunkName: "ministry" */ '../views/ministry/MinistryPage.vue'),
+        beforeEnter() {
+            window.location.href = 'https://play.google.com/store/apps/details?id=com.churchplus.hcc';
+        },
+    },
+    {
         path: '/store',
         name: 'HomePage',
         meta: {
@@ -2424,6 +2436,7 @@ router.beforeEach((to, from, next) => {
             to.name === "EventRegistration" ||
             to.name === "PricingPage" ||
             to.name === "LandingPage" ||
+            to.name === "MinistryPage" ||
             to.name === "PublicForm" ||
             to.name === "AlatRegister" ||
             to.name === "AlatLogin" ||
