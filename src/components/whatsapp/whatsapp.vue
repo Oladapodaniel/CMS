@@ -36,7 +36,6 @@
                     :class="{
                       'active-link': route.path.includes('/tenant/whatsapp/sent'),
                     }"
-                    v-if="!whatsappClientState"
                   >
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
@@ -58,7 +57,6 @@
                     :class="{
                       'active-link': route.path === '/tenant/whatsapp/scheduledmessages',
                     }"
-                    v-if="!whatsappClientState"
                   >
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">

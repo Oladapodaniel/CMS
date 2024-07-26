@@ -102,10 +102,10 @@ rect.highcharts-background[fill] {
     box-shadow: 0px 2px 7.5px rgb(0 0 0 / 6%);
   }
   .bg-photo{
-    background: #F2F4F7;
+    background: #F2F4F7 !important;
   }
   .bg-gray-500{
-    background: #F5F5F5;
+    background: #F5F5F5 !important;
   }
 
   .light-grey-bg {

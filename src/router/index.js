@@ -1,7 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import store from "@/store/store.js"
-
-
 import Pagination from '@/components/payment/PaymentSuccessful.vue';
 import getSubdomain from "../services/churchTypeMiddlware";
 
@@ -2093,6 +2090,35 @@ const routes = [
         },
         component: () =>
             import( /* webpackChunkName: "dashboard" */ '../views/dashboard/PricingPage.vue')
+    },
+    {
+        path: '/store',
+        name: 'HomePage',
+        meta: {
+            title: 'Churchplus - Store ',
+        },
+        component: () =>
+            import( /* webpackChunkName: "Store" */ '../views/ecommerce/public/HomePage.vue'),
+        children: [
+            {
+                path: 'login',
+                name: "PublicLogin",
+                meta: {
+                    title: 'Churchplus - Ecommerce',
+                },
+                component: () =>
+                    import( /* webpackChunkName: "Ecommerce" */ '../views/ecommerce/public/PublicLogin.vue')
+            },
+            {
+                path: 'createaccount',
+                name: "PublicSignUp",
+                meta: {
+                    title: 'Churchplus - Ecommerce',
+                },
+                component: () =>
+                    import( /* webpackChunkName: "Ecommerce" */ '../views/ecommerce/public/PublicSignUp.vue')
+            },
+        ]
     },
     // {
     //     path: '/PublicPledgeMaking/:id',
