@@ -59,7 +59,7 @@
               </div>
             </div>
             <div class="col-md-12 mt-2 px-0">
-              <div class="col-md-12 px-0">
+              <div class="col-md-12 px-0" v-if="!personId">
                 <div class="d-flex flex-column flex-sm-row">
                   <el-input
                     @keyup.enter="checkContact"
@@ -99,13 +99,13 @@
                     Please enter your phone number
                   </p>
                 </div>
-                <div class="col-md-12 px-0" v-if="showLoading">
-                  <div class="loading-div my-1">
-                    <el-icon class="is-loading">
-                      <Loading />
-                    </el-icon>
-                    <p>Fetching your details...</p>
-                  </div>
+              </div>
+              <div class="col-md-12 px-0" v-if="showLoading">
+                <div class="loading-div my-1">
+                  <el-icon class="is-loading">
+                    <Loading />
+                  </el-icon>
+                  <p>Fetching your details...</p>
                 </div>
               </div>
 
@@ -322,7 +322,7 @@
                   round
                 >
                   <!-- {{ pledgeActionType == "1" ? "Pay" : "Pledge" }} -->
-                  Pledge
+                  Make Pledge
                 </el-button>
                 <!-- <el-button class="w-100 secondary-button  ml-0" size="large" @click="cancelPledge" v-if="memberAlreadyPledgedToPledgeItem" round>
                       Cancel
@@ -460,8 +460,15 @@
           </div>
           <div class="row justify-content-center">
             <div class="col-md-9 text-center">
-              <div class="fw-500 s-18">To make payment for this pledge please click on the link below</div>
-              <BaseLink class="text-white s-16 text-decoration-none font-weight-600" :to="`${pledgePaymentlink}`" target="_blank">PledgePaymentlink</BaseLink>
+              <div class="fw-500 s-18">
+                To make payment for this pledge please click on the link below
+              </div>
+              <BaseLink
+                class="text-white s-16 text-decoration-none font-weight-600"
+                :to="`${pledgePaymentlink}`"
+                target="_blank"
+                >PledgePaymentlink</BaseLink
+              >
             </div>
           </div>
         </div>
@@ -476,7 +483,7 @@ import { ref, computed, inject } from "vue";
 import { useToast } from "primevue/usetoast";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
-import BaseLink from '../../components/ui/BaseLink.vue'
+import BaseLink from "../../components/ui/BaseLink.vue";
 import finish from "../../services/progressbar/progress";
 import { ElMessage, ElMessageBox } from "element-plus";
 import mask from "../../services/dates/maskText";
@@ -487,7 +494,7 @@ import swal from "sweetalert";
 import router from "../../router";
 export default {
   components: {
-    BaseLink
+    BaseLink,
   },
   setup() {
     const primarycolor = inject("primarycolor");
@@ -533,6 +540,7 @@ export default {
     const amountToPayNow = ref("");
     const pledgeAmount = ref("");
     const pledgeActionType = ref("1");
+    const personId = ref(route.query.personId);
     const maxName = ref("");
     const maxEmail = ref("");
     const pledgePaymentlink = ref(`/partnership/pay?tenantID=${route.query.tenantID}`);
@@ -566,10 +574,66 @@ export default {
     const showLoading = computed(() => {
       return autosearch.value;
     });
-    const setSelectPledgeItem = () => {
+    const setSelectPledgeItem = async () => {
       selectedPledgeItem.value = contributionDetail.value.pledgeItemDTOs.find((i) => {
         return i.id == selectPledgeItemID.value;
       });
+      if (personId.value) {
+        if (route.query.tenantID) {
+          searchID.value = selectedPledgeItem.value.id;
+        } else if (route.query.pledgeDefinitionID) {
+          searchID.value = route.query.pledgeDefinitionID;
+        } else if (route.query.pledgeID) {
+          searchID.value = route.query.pledgeID;
+        }
+        loading.value = true;
+        autosearch.value = true;
+        try {
+          const { data } = await axios.get(
+            `/SearchContributionByMemberID?personId=${personId.value}&Id=${searchID.value}`
+          );
+
+          personToggle.value = true;
+          contactDetail.value = data.person ? data.person : {};
+          donorDetail.value = data.pledgeItemDTO ? data.pledgeItemDTO : {};
+          amountToPledge.value = donorDetail.value.donorPaymentSpecificAmount;
+          maxEmail.value = contactDetail.value.email
+            ? mask.maskEmail2(contactDetail.value.email)
+            : "";
+          maxName.value = `${
+            contactDetail.value.firstName
+              ? mask.maskText(contactDetail.value.firstName)
+              : ""
+          } ${
+            contactDetail.value.lastName
+              ? mask.maskText(contactDetail.value.lastName)
+              : ""
+          }`;
+          pledgeActionType.value = "1";
+
+          if (data.pledgeResponseDTO && Object.keys(data.pledgeResponseDTO).length > 0) {
+            memberAlreadyPledgedToPledgeItem.value = true;
+            amountToPledge.value = data.pledgeResponseDTO.amount;
+            amountToPayNow.value = data.pledgeResponseDTO.balance;
+            // amountToPayNow.value = data.pledgeResponseDTO.balance
+            pledgedData.value = data.pledgeResponseDTO;
+            selectedCurrency.value = data.pledgeResponseDTO.currency;
+            selectedCurrencyCode.value = data.pledgeResponseDTO.currency.shortCode;
+          } else {
+            memberAlreadyPledgedToPledgeItem.value = false;
+            pledgedData.value = new Object();
+            amountToPayNow.value = "";
+          }
+          loading.value = false;
+          autosearch.value = false;
+
+          if (contactDetail.value) appltoggle.value = true;
+        } catch (error) {
+          console.log(error);
+          loading.value = false;
+          autosearch.value = false;
+        }
+      }
       pledgePaymentForm.value = selectedPledgeItem.value.fillPaymentFormDTO;
       selectedCurrency.value = selectedPledgeItem.value.currency;
       selectedCurrencyCode.value = selectedCurrency.value.shortCode;
@@ -1184,6 +1248,7 @@ export default {
       flutterwaveGate,
       selectedee,
       cancelPledge,
+      personId,
     };
   },
 };

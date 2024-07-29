@@ -233,7 +233,7 @@ import { ref, watch, inject, onMounted } from "vue";
 import router from "../../router";
 import { useStore } from "vuex";
 import axios from "@/gateway/backendapi";
-import { ElLoading, ElMessage } from "element-plus";
+import { ElMessage } from "element-plus";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useI18n } from "vue-i18n";
 import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from "../../i18n";
@@ -252,7 +252,7 @@ export default {
     const onboardingDatas = ref(store.getters.onboardingData);
     const optVerifyData = ref(store.getters.verifyEmailData);
     const userPassword = ref(store.getters.userPassword);
-    const countdownTime = ref(12 * 60);
+    const countdownTime = ref(1 * 60);
     const timerInterval = ref();
     const partialEmail = ref(
       onboardingDatas.value && onboardingDatas.value.email

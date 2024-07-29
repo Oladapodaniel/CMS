@@ -160,7 +160,7 @@
             </div>
             <div class="col-md-12 my-3 d-flex flex-column justify-content-center align-items-center ">
               <div class="col-md-6  ">
-                <el-button @click="verifyEmail" :loading="loading" :color="primarycolor" size="large" class="w-100"
+                <el-button @click="verifyEmail" :loading="loading" :disabled="clickOnce" :color="primarycolor" size="large" class="w-100"
                   round>{{ navigatorLang === "en-US" ? "Continue" : $t('onboardingContent.continue') }}</el-button>
               </div>
               <div class="col-md-6  ">
@@ -271,6 +271,7 @@ export default {
       toggle: false,
       zipCode: "",
       step1Completed: true,
+      clickOnce: false,
       userDetails: {
         subscriptionPlanID: 1,
         countryId: 89,
@@ -303,9 +304,11 @@ export default {
 
     async verifyEmail() {
       this.loading = true;
+      this.clickOnce = true
       try {
         const res = await axios.get(`/mobile/v1/Account/SendOTP?phoneNumber=${this.userDetails.phoneNumber}&email=${this.userDetails.email}&tenantId=176bb861-d22e-4598-b2fe-f877888d819c `)
         console.log(res, 'hh');
+        this.clickOnce = false
         if (res.data.status) {
           this.$store.dispatch("setVerifyEmailData", res.data);
           this.next()
