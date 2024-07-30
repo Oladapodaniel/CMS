@@ -2128,7 +2128,16 @@ const routes = [
                     title: 'Churchplus - Ecommerce',
                 },
                 component: () =>
-                    import( /* webpackChunkName: "Ecommerce" */ '../views/ecommerce/public/PublicSignUp.vue')
+                    import( /* webpackChunkName: "PublicSignUp" */ '../views/ecommerce/public/PublicSignUp.vue')
+            },
+            {
+                path: 'cart',
+                name: "CartItem",
+                meta: {
+                    title: 'Churchplus - Ecommerce',
+                },
+                component: () =>
+                    import( /* webpackChunkName: "CartItem" */ '../views/ecommerce/public/CartItem.vue')
             },
         ]
     },
@@ -2443,7 +2452,11 @@ router.beforeEach((to, from, next) => {
             to.name === "OTP" ||
             to.name === "AlatOtp" ||
             to.name === "PublicMakePledge" ||
-            to.name === "PublicPledgePayment"
+            to.name === "PublicPledgePayment" ||
+            to.name === "HomePage" ||
+            to.name === "PublicSignUp" ||
+            to.name === "PublicLogin" ||
+            to.name === "CartItem" 
         ) && !tokenIsValid
     ) {
         return next(true);

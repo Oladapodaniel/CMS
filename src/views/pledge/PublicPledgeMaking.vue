@@ -331,38 +331,59 @@
               </div>
             </div>
 
-            <div class="row mt-1 d-flex justify-content-center">
-              <div class="col-10 col-sm-8 col-md-7 pl-0">
-                <div class="row justify-content-center">
-                  <!-- <div class="col-3">
-                      <img src="../../assets/VisaDebit.png" class="w-100">
-                    </div> -->
-                  <div class="col-md-10 col-12 text-small mt-3 d-flex">
-                    <div class="col-md-6 text-center">
-                      <img src="../../assets/Full-Flutterwave.png" class="w-100" />
+            <div class="col-md-12">
+              <div class="row mt-1d-flex justify-content-center">
+                <div class="col-12 col-sm-8 col-md-12 pl-0">
+                  <div class="row justify-content-center">
+                    <!-- <div class="col-3">
+                    <img src="../../assets/VisaDebit.png" class="w-100">
+                  </div> -->
+                    <div
+                      class="col-md-5 col-12 text-small justify-content-center mt-3 d-flex align-items-center"
+                    >
+                      <div class="text-center">
+                        <img
+                          src="../../assets/pledgeicon/alatIcon.svg"
+                          style="height: 2rem"
+                          class="w-100 mr-5"
+                        />
+                      </div>
+                      <div class="c text-center">
+                        <img
+                          src="../../assets/pledgeicon/FlutterWaveIcon.svg"
+                          style="height: 2rem"
+                          class="w-100"
+                        />
+                      </div>
+                      <div class="text-center mt-1">
+                        <img
+                          src="../../assets/pledgeicon/PayStackIcon.svg"
+                          style="height: 2rem"
+                          class="w-100 ml-4"
+                        />
+                      </div>
                     </div>
-                    <div class="col-md-6 text-center mt-1">
-                      <img src="../../assets/paystack.png" class="w-100" />
-                    </div>
+                    <!-- <div class="col-3 pl-0 text-right">
+                    <img src="../../assets/paypal.png" class="w-50">
+                  </div> -->
                   </div>
-                  <!-- <div class="col-3 pl-0 text-right">
-                      <img src="../../assets/paypal.png" class="w-50">
-                    </div> -->
                 </div>
               </div>
             </div>
-            <div class="row justify-content-center">
-              <div class="col-10 col-sm-8 col-md-7">
-                <div class="row justify-content-center">
-                  <!-- <div class="col-md-12 d-flex    "> -->
-                  <div class="col-md-12 text-center text-small image-adjust mt-3">
-                    <span class="text-small s-12">Powered by</span>
-                    <img src="../../assets/logoblue.png" alt="churchplus Logo" />
+            <div class="col-md-12">
+              <div class="row justify-content-center">
+                <div class="col-10 col-sm-8 col-md-9">
+                  <div class="row justify-content-center">
+                    <!-- <div class="col-md-12 d-flex    "> -->
+                    <div class="col-md-12 text-center text-small image-adjust mt-3">
+                      <span class="text-small s-12">Powered by</span>
+                      <img src="../../assets/logoblue.png" alt="churchplus Logo" />
+                    </div>
+                    <!-- <div class="image-adjust col-md-5 border  ">
+                      <img src="../../assets/logoblue.png" alt="churchplus Logo" class=" border " />
+                    </div> -->
+                    <!-- </div> -->
                   </div>
-                  <!-- <div class="image-adjust col-md-5 border  ">
-                        <img src="../../assets/logoblue.png" alt="churchplus Logo" class=" border " />
-                      </div> -->
-                  <!-- </div> -->
                 </div>
               </div>
             </div>
