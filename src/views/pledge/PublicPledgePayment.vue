@@ -317,7 +317,7 @@
             <div class="col-md-12 px-0" v-if="personToggle && !showLoading">
               <div class="col-md-12 px-0 text-small font-weight-bold">
                 <label for="">{{
-                  memberAlreadyPledgedToPledgeItem ? "Amount pledged" : "Amount to pay "
+                  memberAlreadyPledgedToPledgeItem ? "Amount to pay" : "Amount to pay "
                 }}</label>
               </div>
               <!-- For range -->
@@ -428,7 +428,7 @@
                   :disabled="!personToggle"
                   @click="triggerPayment"
                   round
-                  >{{ pledgeActionType == "1" ? "Pay" : "Pledge" }}</el-button
+                  >{{ pledgeActionType == "1" ? "Pay" : "Pay" }}</el-button
                 >
                 <!-- <el-button class="w-100 secondary-button  ml-0" size="large" @click="cancelPledge" v-if="memberAlreadyPledgedToPledgeItem" round>
                     Cancel
@@ -703,7 +703,7 @@ export default {
           personToggle.value = true;
           contactDetail.value = data.person ? data.person : {};
           donorDetail.value = data.pledgeItemDTO ? data.pledgeItemDTO : {};
-          amountToPledge.value = donorDetail.value.donorPaymentSpecificAmount;
+          amountToPledge.value = donorDetail.value.balance;
           maxEmail.value = contactDetail.value.email
             ? mask.maskEmail2(contactDetail.value.email)
             : "";

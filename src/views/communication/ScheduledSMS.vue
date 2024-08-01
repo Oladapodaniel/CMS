@@ -100,7 +100,7 @@
 
 <script>
 import { onMounted, ref, computed } from "vue";
-import UnitsArea from "../../components/units/UnitsArea";
+// import UnitsArea from "../../components/units/UnitsArea";
 import communicationService from "../../services/communication/communicationservice";
 import dateFormatter from "../../services/dates/dateformatter";
 import axios from "@/gateway/backendapi";
@@ -109,7 +109,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import Table from "@/components/table/Table";
 
 export default {
-  components: { UnitsArea, Table },
+  components: { Table },
   setup() {
     const schedules = ref([]);
     const loading = ref(false);

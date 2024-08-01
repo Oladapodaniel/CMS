@@ -96,13 +96,21 @@
                         ? "Didn't get code? "
                         : $t("onboardingContent.otpContent.didNotGet")
                     }}</span>
-                    <div @click="reSendCode" style="color: #959595" class="ms-3 cursor-pointer">
+                    <div
+                      @click="reSendCode"
+                      style="color: #959595"
+                      class="ms-3 cursor-pointer"
+                    >
                       &nbsp;
-                      {{
-                        navigatorLang === "en-US"
-                          ? "Resend code "
-                          : $t("onboardingContent.otpContent.resendCode")
-                      }}
+                      <span>
+                        <u>
+                          {{
+                            navigatorLang === "en-US"
+                              ? "Resend code "
+                              : $t("onboardingContent.otpContent.resendCode")
+                          }}
+                        </u>
+                      </span>
                       <span>{{ formattedTime }}</span>
                     </div>
                   </div>

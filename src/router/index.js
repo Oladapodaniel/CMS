@@ -2139,6 +2139,24 @@ const routes = [
                 component: () =>
                     import( /* webpackChunkName: "CartItem" */ '../views/ecommerce/public/CartItem.vue')
             },
+            {
+                path: 'checkout',
+                name: "CheckOut",
+                meta: {
+                    title: 'Churchplus - Ecommerce',
+                },
+                component: () =>
+                    import( /* webpackChunkName: "CheckOut" */ '../views/ecommerce/public/CheckoutPage.vue')
+            },
+            {
+                path: 'bookdetails',
+                name: "BookDetails",
+                meta: {
+                    title: 'Churchplus - Ecommerce',
+                },
+                component: () =>
+                    import( /* webpackChunkName: "BookDetails" */ '../views/ecommerce/public/BookDetails.vue')
+            },
         ]
     },
     // {
@@ -2456,7 +2474,9 @@ router.beforeEach((to, from, next) => {
             to.name === "HomePage" ||
             to.name === "PublicSignUp" ||
             to.name === "PublicLogin" ||
-            to.name === "CartItem" 
+            to.name === "CartItem" ||
+            to.name === "CheckOut" ||
+            to.name === "BookDetails" 
         ) && !tokenIsValid
     ) {
         return next(true);

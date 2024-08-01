@@ -63,7 +63,7 @@
                 </template>
                 <template #executionDate="{ item }">
                   <span class="timestam small-text">{{
-                    item.date
+                    formattedDate(item.executionDate)
                   }}</span>
                 </template>
                 <template v-slot:action="{ item }">

@@ -75,7 +75,7 @@ const createAccount = () => {
           </div>
           <div class="d-flex col-md-3 justify-content-end align-items-center">
             <div class="nav-item">
-              <el-button round class=" bg-black text-white mr-3" @click="createAccount">
+              <el-button round size="large" class=" bg-black text-white mr-3" @click="createAccount">
                 Create account
               </el-button>
             </div>

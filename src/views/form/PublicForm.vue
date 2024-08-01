@@ -123,6 +123,18 @@
                     type="textarea"
                     :placeholder="item.label"
                   />
+                  <el-input
+                    v-model="item.data"
+                    v-if="item.controlType === 7"
+                    type="text"
+                    :placeholder="item.label"
+                  />
+                  <el-input
+                    v-model="item.data"
+                    v-if="item.controlType === 8"
+                    type="text"
+                    :placeholder="item.label"
+                  />
                   <span
                     class="w-100 small text-danger"
                     v-if="
@@ -308,12 +320,11 @@
 <script>
 import { ref, inject, computed, watchEffect } from "vue";
 import axios from "@/gateway/backendapi";
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessage} from "element-plus";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useRoute } from "vue-router";
 import { ElLoading } from "element-plus";
 import swal from "sweetalert";
-import router from "../../router";
 export default {
   setup() {
     const formName = ref("");
@@ -656,8 +667,8 @@ export default {
     const allTrueRequired = ref([]);
 
     watchEffect(() => {
-      if (singleFormData && singleFormData.pictureUrl) {
-        formLogo.value = singleFormData.pictureUrl;
+      if (singleFormData.value && singleFormData.value.pictureUrl) {
+        formLogo.value = singleFormData.value.pictureUrl;
       }
     });
 

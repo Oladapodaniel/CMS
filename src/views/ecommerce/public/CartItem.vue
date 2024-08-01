@@ -126,9 +126,11 @@ const subtotal = computed(() => {
       </div>
       <div class="col-md-12 d-flex justify-content-center">
         <div class="col-md-4 px-0">
-          <el-button round color="#FF5906" class="w-100 py-4 text-white"
+          <router-link to="/store/checkout">
+            <el-button round color="#FF5906" class="w-100 py-4 text-white"
             >Checkout</el-button
           >
+          </router-link>
         </div>
       </div>
     </div>
@@ -149,7 +151,7 @@ const subtotal = computed(() => {
   width: 2.2rem;
 }
 
-.rounded-border.el-input__wrapper{
+.rounded-border div .el-input__wrapper{
   padding: 6px 11px !important;
   background: #FCFCFC !important;
   border-radius: 60px !important;

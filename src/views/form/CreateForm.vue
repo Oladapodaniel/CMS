@@ -714,6 +714,8 @@ export default {
       { name: "Email", id: 4 },
       { name: "Number", id: 5 },
       { name: "TextArea", id: 6 },
+      { name: "Name", id: 7 },
+      { name: "Phone", id: 8 },
     ]);
 
     const uploading = ref(false);

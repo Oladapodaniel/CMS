@@ -5,32 +5,61 @@
         <div id="onboarding-form" :class="{ 'swap-box1': toggle }">
           <div class="onboarding-form-container">
             <div class="title-div">
-              <div class="logo-con  mt-2">
-                <a class="logo-link"><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo" /></a>
+              <div class="logo-con mt-2">
+                <a class="logo-link"
+                  ><img src="../../assets/churchplusblueLogo.png" alt="Churchplus Logo"
+                /></a>
               </div>
               <div class="main-title mt-3">
-                <h1>{{ navigatorLang === "en-US" ? 'Welcome to Churchplus!' : $t('onboardingContent.welcome-chplus') }}
+                <h1>
+                  {{
+                    navigatorLang === "en-US"
+                      ? "Welcome to Churchplus!"
+                      : $t("onboardingContent.welcome-chplus")
+                  }}
                 </h1>
               </div>
               <div class="sub-title">
-                <p> {{ navigatorLang === "en-US" ? 'Let us know more about you' :
-          $t('onboardingContent.about-ch')
-                  }}</p>
+                <p>
+                  {{
+                    navigatorLang === "en-US"
+                      ? "Let us know more about you"
+                      : $t("onboardingContent.about-ch")
+                  }}
+                </p>
               </div>
             </div>
-            <el-form ref="ruleFormRef" :rules="rules" :model="userDetails" style="width: 100%">
-              <div class="input-div ">
-                <label class="mb-0">{{ navigatorLang === "en-US" ? "What's your name?" :
-          $t('onboardingContent.labels.ur-name') }}<span style="color: red"> *</span></label>
+            <el-form
+              ref="ruleFormRef"
+              :rules="rules"
+              :model="userDetails"
+              style="width: 100%"
+            >
+              <div class="input-div">
+                <label class="mb-0"
+                  >{{
+                    navigatorLang === "en-US"
+                      ? "What's your name?"
+                      : $t("onboardingContent.labels.ur-name")
+                  }}<span style="color: red"> *</span></label
+                >
                 <el-row :gutter="15">
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item prop="firstName">
-                      <el-input type="text" v-model="userDetails.firstName" placeholder="First name" />
+                      <el-input
+                        type="text"
+                        v-model="userDetails.firstName"
+                        placeholder="First name"
+                      />
                     </el-form-item>
                   </el-col>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item prop="lastName">
-                      <el-input type="text" v-model="userDetails.lastName" placeholder="Last name" />
+                      <el-input
+                        type="text"
+                        v-model="userDetails.lastName"
+                        placeholder="Last name"
+                      />
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -39,18 +68,33 @@
               <div class="input-div">
                 <el-row :gutter="15">
                   <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-                    <label class="mb-0">{{ navigatorLang === "en-US" ? "What's the name of your ministry?" :
-                      $t('onboardingContent.labels.ur-ministry') }}</label>
+                    <label class="mb-0">{{
+                      navigatorLang === "en-US"
+                        ? "What's the name of your ministry?"
+                        : $t("onboardingContent.labels.ur-ministry")
+                    }}</label>
                     <div class="w-100">
-                      <el-input type="text"  v-model="userDetails.churchName" placeholder="Name of church" />
+                      <el-input
+                        type="text"
+                        v-model="userDetails.churchName"
+                        placeholder="Name of church"
+                      />
                     </div>
                   </el-col>
                   <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-                    <label class="mb-0  mt-md-4 mt-lg-4 mt-xl-0 ">{{ navigatorLang === "en-US" ? "Church Type" :
-          $t('onboardingContent.labels.church-type') }}</label>
+                    <label class="mb-0 mt-md-4 mt-lg-4 mt-xl-0">{{
+                      navigatorLang === "en-US"
+                        ? "Church Type"
+                        : $t("onboardingContent.labels.church-type")
+                    }}</label>
                     <el-form-item prop="churchtype">
-                      <el-select-v2 v-model="userDetails.categorization" :options="categorization"
-                        placeholder="Select church type" size="large" class="w-100  churchtype" />
+                      <el-select-v2
+                        v-model="userDetails.categorization"
+                        :options="categorization"
+                        placeholder="Select church type"
+                        size="large"
+                        class="w-100 churchtype"
+                      />
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -59,17 +103,39 @@
               <div class="input-div">
                 <el-row :gutter="15">
                   <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-                    <label class="mb-0 ">{{ navigatorLang === "en-US" ? "Email Address" :
-          $t('onboardingContent.labels.ur-email') }}<span style="color: red"> *</span></label>
+                    <label class="mb-0"
+                      >{{
+                        navigatorLang === "en-US"
+                          ? "Email Address"
+                          : $t("onboardingContent.labels.ur-email")
+                      }}<span style="color: red"> *</span></label
+                    >
                     <el-form-item prop="email">
-                      <el-input type="email" disabled v-model="userDetails.email" placeholder="Email" />
+                      <el-input
+                        type="email"
+                        disabled
+                        v-model="userDetails.email"
+                        placeholder="Email"
+                      />
                     </el-form-item>
                   </el-col>
                   <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-                    <label class="mb-0 mt-2 mt-lg-0">{{ navigatorLang === "en-US" ? "What's your phone number?" :
-          $t('onboardingContent.labels.ur-phone') }}<span style="color: red"> *</span></label>
-                    <vue-tel-input style="height: 40px" @blur="invalidResponse" v-model="userDetails.phoneNumber"
-                      @input="onInput" mode="international"></vue-tel-input>
+                    <label class="mb-0 mt-2 mt-lg-0"
+                      >{{
+                        navigatorLang === "en-US"
+                          ? "What's your phone number?"
+                          : $t("onboardingContent.labels.ur-phone")
+                      }}<span style="color: red"> *</span></label
+                    >
+                    <el-form-item prop="phoneNumber">
+                      <vue-tel-input
+                        style="height: 40px"
+                        @blur="invalidResponse"
+                        v-model="userDetails.phoneNumber"
+                        @input="onInput"
+                        mode="international"
+                      ></vue-tel-input>
+                    </el-form-item>
                   </el-col>
                 </el-row>
               </div>
@@ -77,56 +143,111 @@
               <div class="input-div">
                 <el-row :gutter="15">
                   <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-                    <label class="mb-0 mt-2 mt-lg-0">{{ navigatorLang === "en-US" ? "Select Country" :
-          $t('onboardingContent.labels.ur-country') }}<span style="color: red"> *</span></label>
+                    <label class="mb-0 mt-2 mt-lg-0"
+                      >{{
+                        navigatorLang === "en-US"
+                          ? "Select Country"
+                          : $t("onboardingContent.labels.ur-country")
+                      }}<span style="color: red"> *</span></label
+                    >
                     <div class="w-100">
-                      <el-select-v2 v-model="selectedCountryId"
-                        :options="countries.map(i => ({ label: i.name, value: i.id }))" @change="setSelectedCountry"
-                        filterable placeholder="Select country" size="large" class="w-100" />
+                      <el-select-v2
+                        v-model="selectedCountryId"
+                        :options="countries.map((i) => ({ label: i.name, value: i.id }))"
+                        @change="setSelectedCountry"
+                        filterable
+                        placeholder="Select country"
+                        size="large"
+                        class="w-100"
+                      />
                     </div>
                   </el-col>
                   <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-                    <label class="mb-0 mt-3 mt-lg-0">{{ navigatorLang === "en-US" ? "What is your Membership size?" :
-          $t('onboardingContent.labels.membership-size') }}</label>
+                    <label class="mb-0 mt-3 mt-lg-0">{{
+                      navigatorLang === "en-US"
+                        ? "What is your Membership size?"
+                        : $t("onboardingContent.labels.membership-size")
+                    }}</label>
                     <el-form-item prop="churchSize">
-                      <el-select-v2 v-model="userDetails.churchSize" :options="membershipSizeList"
-                        placeholder="Select size range" size="large" class="w-100" />
+                      <el-select-v2
+                        v-model="userDetails.churchSize"
+                        :options="membershipSizeList"
+                        placeholder="Select size range"
+                        size="large"
+                        class="w-100"
+                      />
                     </el-form-item>
                   </el-col>
                 </el-row>
               </div>
               <div class="input-div">
-                <label class="mb-0">{{ navigatorLang === "en-US" ? "Do you have a Church Website?" :
-          $t('onboardingContent.labels.churchWebsite') }}</label>
+                <label class="mb-0">{{
+                  navigatorLang === "en-US"
+                    ? "Do you have a Church Website?"
+                    : $t("onboardingContent.labels.churchWebsite")
+                }}</label>
 
                 <div class="row">
-                  <div class="col-md-12 d-flex ">
-                    <div class="border cursor-pointer choice d-flex align-items-center mr-2 mt-2  px-3 py-2 rounded"
-                      v-for="(item, index) in websiteOpt" :key="index" @click="setChoice(item)">
+                  <div class="col-md-12 d-flex">
+                    <div
+                      class="border cursor-pointer choice d-flex align-items-center mr-2 mt-2 px-3 py-2 rounded"
+                      v-for="(item, index) in websiteOpt"
+                      :key="index"
+                      @click="setChoice(item)"
+                    >
                       {{ item }}
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="input-div " v-if="showWebsite">
-                <label class="mb-0">{{ navigatorLang === "en-US" ? "If Yes, Please input the Website Address or URL" :
-          $t('onboardingContent.labels.websiteUrl') }}</label>
+              <div class="input-div" v-if="showWebsite">
+                <label class="mb-0">{{
+                  navigatorLang === "en-US"
+                    ? "If Yes, Please input the Website Address or URL"
+                    : $t("onboardingContent.labels.websiteUrl")
+                }}</label>
                 <el-form-item>
-                  <el-input type="text" v-model="userDetails.websiteUrl" placeholder="Website Address/URL" />
+                  <el-input
+                    type="text"
+                    v-model="userDetails.websiteUrl"
+                    placeholder="Website Address/URL"
+                  />
                 </el-form-item>
               </div>
-              <el-button class="w-100 mt-4" :color="primarycolor" size="large" :disabled="!disableNext || !selectedCountryId" :loading="loading"
-                @click="nextStep(ruleFormRef)" round>{{ navigatorLang === "en-US" ? "Next step" :
-          $t('onboardingContent.next-btntext') }}</el-button>
+              <el-button
+                class="w-100 mt-4"
+                :color="primarycolor"
+                size="large"
+                :disabled="!disableNext || !selectedCountryId"
+                :loading="loading"
+                @click="nextStep(ruleFormRef)"
+                round
+                >{{
+                  navigatorLang === "en-US"
+                    ? "Next step"
+                    : $t("onboardingContent.next-btntext")
+                }}</el-button
+              >
               <!-- <el-button class="w-100" :color="primarycolor" size="large" :disabled="!disableNext" :loading="loading"
                 @click="submitForm(ruleFormRef)" round>{{ navigatorLang === "en-US" ? "Next step" :
           $t('onboardingContent.next-btntext') }}</el-button> -->
             </el-form>
           </div>
         </div>
-        <div class="col-xs-12 col-md-6" id="onboarding-visuals" :class="{ 'swap-box2': toggle }" ref="box2">
+        <div
+          class="col-xs-12 col-md-6"
+          id="onboarding-visuals"
+          :class="{ 'swap-box2': toggle }"
+          ref="box2"
+        >
           <div class="step text-head">
-            <h4>{{ navigatorLang === "en-US" ? "Step 1 of 2" : $t('onboardingContent.labels.step') }}</h4>
+            <h4>
+              {{
+                navigatorLang === "en-US"
+                  ? "Step 1 of 2"
+                  : $t("onboardingContent.labels.step")
+              }}
+            </h4>
           </div>
 
           <div>
@@ -140,32 +261,58 @@
         </div>
       </div>
     </div>
-    <el-dialog class="" style="border-radius: 25px;" v-model="displayVerifyModal" title=""
-      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
-      <div class="row justify-content-center ">
-        <div class="col-md-10 col-11  mt-4 h-100 bg-white mb-5">
+    <el-dialog
+      class=""
+      style="border-radius: 25px"
+      v-model="displayVerifyModal"
+      title=""
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+    >
+      <div class="row justify-content-center">
+        <div class="col-md-10 col-11 mt-4 h-100 bg-white mb-5">
           <div class="row justify-content-center align-items-center">
             <div class="col-md-10 d-flex justify-content-center">
-              <div class="col-md-3 col-5 col-sm-3 ">
-                <img class="w-100 " src="../../assets/verifyIcon.png" alt="">
+              <div class="col-md-3 col-5 col-sm-3">
+                <img class="w-100" src="../../assets/verifyIcon.png" alt="" />
               </div>
             </div>
-            <div class="col-md-12  mt-2 d-flex justify-content-center">
+            <div class="col-md-12 mt-2 d-flex justify-content-center">
               <div class="col-md-7 col-12 col-sm-8">
-                <div class="text-font font-weight-600 col-md-12 col-12 px-0 h4 text-center" style="color: #111111;">
-                  {{ navigatorLang === "en-US" ? "We will Verify your Email & Phone Number" :
-          $t('onboardingContent.emailVerification') }}
+                <div
+                  class="text-font font-weight-600 col-md-12 col-12 px-0 h4 text-center"
+                  style="color: #111111"
+                >
+                  {{
+                    navigatorLang === "en-US"
+                      ? "We will Verify your Email & Phone Number"
+                      : $t("onboardingContent.emailVerification")
+                  }}
                 </div>
               </div>
             </div>
-            <div class="col-md-12 my-3 d-flex flex-column justify-content-center align-items-center ">
-              <div class="col-md-6  ">
-                <el-button @click="verifyEmail" :loading="loading" :disabled="clickOnce" :color="primarycolor" size="large" class="w-100"
-                  round>{{ navigatorLang === "en-US" ? "Continue" : $t('onboardingContent.continue') }}</el-button>
+            <div
+              class="col-md-12 my-3 d-flex flex-column justify-content-center align-items-center"
+            >
+              <div class="col-md-6">
+                <el-button
+                  @click="verifyEmail"
+                  :loading="loading"
+                  :disabled="clickOnce"
+                  :color="primarycolor"
+                  size="large"
+                  class="w-100"
+                  round
+                  >{{
+                    navigatorLang === "en-US"
+                      ? "Continue"
+                      : $t("onboardingContent.continue")
+                  }}</el-button
+                >
               </div>
-              <div class="col-md-6  ">
-                <el-button size="large" class="w-100 mt-3" round>{{ navigatorLang === "en-US" ? "Cancel" :
-                  $t('onboardingContent.cancel') }}</el-button>
+              <div class="col-md-6">
+                <el-button size="large" class="w-100 mt-3" round>{{
+                  navigatorLang === "en-US" ? "Cancel" : $t("onboardingContent.cancel")
+                }}</el-button>
               </div>
             </div>
           </div>
@@ -181,10 +328,10 @@ import router from "../../router/index";
 // import { VueTelInput } from "vue3-tel-input";
 // import "vue3-tel-input/dist/vue3-tel-input.css";
 import { ref, reactive, watch, inject } from "vue";
-import { ElNotification, ElMessage } from 'element-plus'
+import { ElNotification, ElMessage } from "element-plus";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
-import { useI18n } from 'vue-i18n';
-import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from '../../i18n';
+import { useI18n } from "vue-i18n";
+import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from "../../i18n";
 export default {
   components: {
     // VueTelInput,
@@ -199,55 +346,55 @@ export default {
   },
 
   setup() {
-    const primarycolor = inject('primarycolor')
-    const ruleFormRef = ref()
-    const displayVerifyModal = ref(false)
-    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
-    const checkboxGroup = ref([])
-    const checkboxGroup1 = ref([])
-    const websiteOpt = ref(['No', 'Yes'])
+    const primarycolor = inject("primarycolor");
+    const ruleFormRef = ref();
+    const displayVerifyModal = ref(false);
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
+    const checkboxGroup = ref([]);
+    const checkboxGroup1 = ref([]);
+    const websiteOpt = ref(["No", "Yes"]);
     const navigatorLang = ref(navigator.language);
     const rules = reactive({
       firstName: [
-        { required: true, message: 'Please input your first name', trigger: 'blur' },
+        { required: true, message: "Please input your first name", trigger: "blur" },
       ],
       lastName: [
-        { required: true, message: 'Please input your last name', trigger: 'blur' },
+        { required: true, message: "Please input your last name", trigger: "blur" },
       ],
       churchName: [
-        { required: true, message: 'Please input your church name', trigger: 'blur' },
+        { required: true, message: "Please input your church name", trigger: "blur" },
       ],
-      email: [
-        { required: true, message: 'Please input your email', trigger: 'blur' },
+      phoneNumber: [
+        { required: true, message: "Please input your phone number", trigger: "blur" },
       ],
+      email: [{ required: true, message: "Please input your email", trigger: "blur" }],
       churchSize: [
-        { required: true, message: 'Please input your church size', trigger: 'change' },
+        { required: true, message: "Please input your church size", trigger: "change" },
       ],
       categorization: [
-        { required: true, message: 'Please input your church Type', trigger: 'change' },
+        { required: true, message: "Please input your church Type", trigger: "change" },
       ],
-    })
-    const { locale } = useI18n({ useScope: 'global' });
+    });
+    const { locale } = useI18n({ useScope: "global" });
     watch(locale, (val) => {
       setI18nLanguage(val);
-
     });
 
     const nextStep = async (formEl) => {
-      if (!formEl) return
+      if (!formEl) return;
       await formEl.validate((valid, fields) => {
         if (valid) {
-          displayVerifyModal.value = true
+          displayVerifyModal.value = true;
         } else {
-          console.log('error submit!', fields)
+          console.log("error submit!", fields);
           ElNotification({
-            title: 'Some fields empty',
-            message: 'Fill all fields and submit again',
-            type: 'warning',
-          })
+            title: "Some fields empty",
+            message: "Fill all fields and submit again",
+            type: "warning",
+          });
         }
-      })
-    }
+      });
+    };
 
     return {
       ruleFormRef,
@@ -258,12 +405,15 @@ export default {
       checkboxGroup,
       checkboxGroup1,
       displayVerifyModal,
-      mdAndUp, lgAndUp, xlAndUp, xsOnly,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      xsOnly,
       nextStep,
       // verifyEmail
       // showWebsite,
       // setChoice,
-    }
+    };
   },
 
   data() {
@@ -285,15 +435,26 @@ export default {
       showWebsite: false,
       codeUrl: {},
       disableNext: false,
-      membershipSizeList: ['1 - 100', '101 - 200', '201 - 500', '501 - 2000', '2001 - 10,000'].map(i => ({ value: i, label: i })),
-      categorization: [{name: 'Pentecostal', value: 0}, {name: 'Orthodox', value: 1},{name: 'Catholic', value: 2}, {name: 'Others', value: 3}].map(i => ({ value: i.value, label: i.name })),
-      usersPhoneCode: '',
-      selectedCountryId: null
+      membershipSizeList: [
+        "1 - 100",
+        "101 - 200",
+        "201 - 500",
+        "501 - 2000",
+        "2001 - 10,000",
+      ].map((i) => ({ value: i, label: i })),
+      categorization: [
+        { name: "Pentecostal", value: 0 },
+        { name: "Orthodox", value: 1 },
+        { name: "Catholic", value: 2 },
+        { name: "Others", value: 3 },
+      ].map((i) => ({ value: i.value, label: i.name })),
+      usersPhoneCode: "",
+      selectedCountryId: null,
     };
   },
   methods: {
     onInput(phone, phoneObject, input) {
-      this.usersPhoneCode = phoneObject ? phoneObject.country.dialCode : ''
+      this.usersPhoneCode = phoneObject ? phoneObject.country.dialCode : "";
       if (phoneObject?.formatted) {
         this.userDetails.phoneNumber = phoneObject.formatted;
         this.selectedCountry = this.countries.find(
@@ -304,31 +465,27 @@ export default {
 
     async verifyEmail() {
       this.loading = true;
-      this.clickOnce = true
+      this.clickOnce = true;
       try {
-        const res = await axios.get(`/mobile/v1/Account/SendOTP?phoneNumber=${this.userDetails.phoneNumber}&email=${this.userDetails.email}&tenantId=176bb861-d22e-4598-b2fe-f877888d819c `)
-        console.log(res, 'hh');
-        this.clickOnce = false
+        const res = await axios.get(
+          `/mobile/v1/Account/SendOTP?phoneNumber=${this.userDetails.phoneNumber}&email=${this.userDetails.email}&tenantId=176bb861-d22e-4598-b2fe-f877888d819c `
+        );
+        console.log(res, "hh");
+        this.clickOnce = false;
         if (res.data.status) {
           this.$store.dispatch("setVerifyEmailData", res.data);
-          this.next()
-          this.$router.push('/onetimepassword');
+          this.next();
+          this.$router.push("/onetimepassword");
           this.loading = false;
-        }
-        else {
+        } else {
           ElMessage({
             type: "error",
             message: "Request Failed",
             duration: 5000,
           });
         }
-
-
-
-
-      }
-      catch (error) {
-        console.log(error)
+      } catch (error) {
+        console.log(error);
         this.loading = false;
       }
 
@@ -337,12 +494,12 @@ export default {
     },
     setChoice(item) {
       if (item === "Yes") {
-        this.showWebsite = true
-        // this.checkboxGroup 
-      } else {
-        this.showWebsite = false
+        this.showWebsite = true;
         // this.checkboxGroup
-        this.userDetails.websiteUrl = ""
+      } else {
+        this.showWebsite = false;
+        // this.checkboxGroup
+        this.userDetails.websiteUrl = "";
       }
       // this.checkboxGroup = []
     },
@@ -365,7 +522,8 @@ export default {
 
     next() {
       if (!this.userDetails.email) return false;
-      this.userDetails.countryId = this.selectedCountry && this.selectedCountry.id ? this.selectedCountry.id : '';
+      this.userDetails.countryId =
+        this.selectedCountry && this.selectedCountry.id ? this.selectedCountry.id : "";
       this.loading = true;
       // axios
       //   .post("/api/onboarding", this.userDetails)
@@ -404,8 +562,8 @@ export default {
       }
     },
     setSelectedCountry() {
-      this.selectedCountry = this.countries.find(i => i.id === this.selectedCountryId)
-    }
+      this.selectedCountry = this.countries.find((i) => i.id === this.selectedCountryId);
+    },
   },
 
   computed: {
@@ -418,7 +576,7 @@ export default {
     valid() {
       let regex = /[0-9]{11}/;
       return regex.test(this.userDetails.phoneNumber);
-    }
+    },
   },
 
   beforeCreate() {
@@ -433,10 +591,12 @@ export default {
         this.selectedCountry = this.countries.find(
           (i) => i.phoneCode && i.phoneCode.toString() === this.usersPhoneCode.toString()
         );
-        this.selectedCountryId = this.selectedCountry ? this.selectedCountry.id : this.selectedCountry
+        this.selectedCountryId = this.selectedCountry
+          ? this.selectedCountry.id
+          : this.selectedCountry;
       });
     }, 2000);
-  }
+  },
 };
 </script>
 
@@ -465,14 +625,12 @@ export default {
 }
 
 .choice:hover {
-  background: #D1FDFF;
+  background: #d1fdff;
 }
 
 /* .choicehover{
   background: #7af2f8;
 } */
-
-
 
 #onboarding {
   display: flex;
@@ -535,15 +693,12 @@ export default {
   margin: 4px 0;
 }
 
-
 .step {
   text-align: center;
-  color: #FFFFFF;
+  color: #ffffff;
   margin: 30px 0;
   opacity: 0.5;
-
 }
-
 
 .onboarding-image-con {
   width: 80%;
@@ -551,7 +706,7 @@ export default {
   float: right;
   position: relative;
 }
-.el-select-v2>div.el-select-v2__wrapper{
+.el-select-v2 > div.el-select-v2__wrapper {
   height: 45px !important;
 }
 
