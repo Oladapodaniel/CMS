@@ -1,14 +1,23 @@
 <template>
   <div class="container-fluid">
     <div class="row justify-content-between">
-      <div class="head-text">Accounting Activity and Balance Report</div>
+      <div class="mb-4">
+        <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
+          Accounting Activity and Balance Report
+        </div>
+        <div @click="goBack">
+          <span class="s-18 fw-400 cursor-pointer text-black">
+            <img src="../../../assets/goback.png" alt="" /> Go back</span
+          >
+        </div>
+      </div>
       <div class="c-pointer my-sm-0 my-2">
         <el-dropdown trigger="click" class="w-100">
           <div
             class="d-flex justify-content-between default-btn text-dark w-100"
             size="large"
           >
-            <span class="mt-1">Export</span>
+            <span class="mt-1 primary--text">Export</span>
             <div class="mt-1">
               <el-icon class="el-icon--right">
                 <arrow-down />
@@ -27,72 +36,78 @@
         </el-dropdown>
       </div>
     </div>
-    <div style="background: #ebeff4; border-radius: 0.5rem" class="row mt-4 py-5">
-      <div class="col-12 col-md-6 col-lg-3">
-        <div>
-          <label for="" class="font-weight-bold">Select Account</label>
-        </div>
+    <div class="row justify-content-center py-5 border-radius-8 grey-backg">
+      <div class="col-md-10 col-12">
+        <div class="row">
+          <div class="col-12 col-md-6 ">
+            <div>
+              <label for="" class="fw-400 text-dak s-14 w-100">Select Account</label>
+            </div>
 
-        <div>
-          <el-select-v2
-            v-model="selectedAccountID"
-            class="w-100 font-weight-normal"
-            :options="
-              accountType.map((i) => ({
-                label: i.name,
-                value: i.id,
-              }))
-            "
-            placeholder="Select Account"
-            @change="setSelectedAccount"
-            size="large"
-          />
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-3">
-        <div class="">
-          <label for="icon" class="ml-2 font-weight-bold">Start Date</label>
-        </div>
-        <div>
-          <div>
-            <el-date-picker
-              v-model="startDate"
-              type="date"
-              format="DD/MM/YYYY"
-              size="large"
-              class="w-100"
-            />
+            <div>
+              <el-select-v2
+                v-model="selectedAccountID"
+                class="w-100 font-weight-normal"
+                :options="
+                  accountType.map((i) => ({
+                    label: i.name,
+                    value: i.id,
+                  }))
+                "
+                placeholder="Select Account"
+                @change="setSelectedAccount"
+                size="large"
+              />
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="">
+              <label for="icon" class="fw-400 text-dak s-14 w-100">Start Date</label>
+            </div>
+            <div>
+              <div>
+                <el-date-picker
+                  v-model="startDate"
+                  type="date"
+                  format="DD/MM/YYYY"
+                  size="large"
+                  class="w-100"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 mt-2 ">
+            <div><label for="icon" class="fw-400 text-dak s-14 w-100">End Date</label></div>
+            <div>
+              <el-date-picker
+                v-model="endDate"
+                type="date"
+                format="DD/MM/YYYY"
+                size="large"
+                class="w-100"
+              />
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <label for=""></label>
+            <div class="mt-2">
+              <el-button
+                @click="generateReport"
+                round
+                :color="primarycolor"
+                :loading="loading"
+                class=" w-100 py-4 "
+                >Generate Report</el-button
+              >
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-3">
-        <div><label for="icon" class="font-weight-bold">End Date</label></div>
-        <div>
-          <el-date-picker
-            v-model="endDate"
-            type="date"
-            format="DD/MM/YYYY"
-            size="large"
-            class="w-100"
-          />
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-3">
-        <el-button
-          class="c-pointer mt-4"
-          :color="primarycolor"
-          round
-          :loading="loading"
-          @click="generateReport"
-        >
-          Generate Report
-        </el-button>
       </div>
     </div>
   </div>
   <div id="element-to-print">
     <div class="container-fluid d-flex justify-content-center my-2" v-if="displayTitle">
-      <div class="head-text">Accounting Activity and Balance Report</div>
+      <div class="text-head font-weight-bold h2 ">Accounting Activity and Balance Report</div>
     </div>
     <section
       :class="{ 'show-report': showReport, 'hide-report': !showReport }"
@@ -184,6 +199,7 @@ import { computed, ref, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter";
 import printJS from "print-js";
+import router from "../../../router";
 import exportService from "../../../services/exportFile/exportservice";
 import currencyConverter from "../../../services/currency-converter/currencyConverter";
 
@@ -242,6 +258,9 @@ export default {
 
       return sumAllBalance;
     });
+    const goBack = () => {
+      router.go(-1);
+    };
     const downloadFile = (item) => {
       if (item.name === "pdf") {
         displayTitle.value = true;
@@ -339,13 +358,13 @@ export default {
         currentUser.value = res.data;
       } catch (err) {
         /*eslint no-undef: "warn"*/
-        NProgress.done();
         console.log(err);
       }
     };
     getCurrentlySignedInUser();
     return {
       amountTotal,
+      goBack,
       formatDate,
       accountType,
       startDate,
@@ -484,21 +503,35 @@ export default {
 }
 .table {
   width: 100% !important;
-  box-shadow: 0 0.063rem 0.25rem #02172e45;
-  border: 0.063rem solid #dde2e6;
-  border-radius: 30px;
+  box-shadow: none !important;
+  border: none !important;
   text-align: left;
   margin-bottom: auto !important;
   padding-bottom: 0.5rem;
+}
+
+.table thead th {
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+.table tbody tr{
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+}
+
+.table-header-area-main {
+  background-color: #F4F4F4;
 }
 
 .table-header-area {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-.table-header-area-main {
-  background-color: #ebeff4;
-}
+
 
 .table-main {
   width: 100% !important;

@@ -180,8 +180,6 @@ export default {
             groups,
             selectedEvent,
             getAttendanceReport,
-            startDate,
-            endDate,
             selectedGroups,
             attendanceReport,
             groupReport,

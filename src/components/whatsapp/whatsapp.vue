@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container p-0">
+    <div  :class="{ 'container-wide': lgAndUp || xlAndUp }">
       <div class="row mt-4">
         <div class="col-md-12">
           <h2 class="font-weight-bold text-white position-absolute mt-3 ml-4">
@@ -13,7 +13,7 @@
       <!-- Content Box -->
       <main id="main" class="mt-3" v-loading="logoutLoading" element-loading-text="Hang on while we log you out.">
         <div class="container-fluid">
-          <div class="row" style="min-height: 75vh">
+          <div class="row mid_height" >
             <!-- Side mennu -->
             <div class="col-md-3" id="side-menu">
               <div class="row">
@@ -24,26 +24,26 @@
                   <router-link to="/tenant/whatsapp" v-if="whatsappClientState"
                     class="btn compose-btn border-0 font-weight-bold default-btn border-none">Compose
                     Whatsapp</router-link>
-                  <router-link to="" v-else
+                  <router-link to="/tenant/whatsapp/auth" v-else
                     class="btn compose-btn border-0 font-weight-bold default-btn border-none">Connect
                     Whatsapp</router-link>
                 </div>
               </div>
               <div class="row mb-3" :class="{ show: menuShouldShow, 'links-menu': !menuShouldShow }">
                 <div class="col-md-12">
-                  <!-- <div
+                  <div
                     class="row menu-item-con py-2"
                     :class="{
-                      'active-link': route.path.includes('/tenant/sms/sent'),
+                      'active-link': route.path.includes('/tenant/whatsapp/sent'),
                     }"
-                    v-if="whatsappClientState"
+                    v-if="!whatsappClientState"
                   >
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
                           <router-link
                             class="r-link text-decoration-none"
-                            to="/tenant/sms/sent"
+                            to="/tenant/whatsapp/sent"
                           >
                             <i class="pi pi-arrow-circle-up mr-3 menu-icon"></i>
                             <span class="active">Sent</span>
@@ -51,14 +51,14 @@
                         </span>
                       </a>
                     </div>
-                  </div> -->
+                  </div>
 
-                  <!-- <div
+                  <div
                     class="row menu-item-con py-2"
                     :class="{
-                      'active-link': route.path === '/tenant/sms/scheduled',
+                      'active-link': route.path === '/tenant/whatsapp/scheduledmessages',
                     }"
-                    v-if="whatsappClientState"
+                    v-if="!whatsappClientState"
                   >
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
@@ -74,7 +74,7 @@
                         </span>
                       </a>
                     </div>
-                  </div> -->
+                  </div>
                   <div class="row menu-item-con py-2" v-if="!whatsappClientState">
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
@@ -133,7 +133,7 @@
             </div>
 
             <!-- Bigger row -->
-            <div class="col-md-9 col-xl-8" style="margin: auto">
+            <div class="col-md-9" >
               <router-view> </router-view>
             </div>
           </div>
@@ -148,6 +148,7 @@ import { ref, computed } from "@vue/reactivity";
 import { useRoute } from "vue-router";
 import store from "../../store/store";
 import swal from 'sweetalert';
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { whatsappServerBaseURL } from "../../gateway/backendapi";
 import api from "axios";
 import router from "../../router";
@@ -158,6 +159,7 @@ export default {
     const menuShouldShow = ref(false);
     const sessionId = ref("");
     const logoutLoading = ref(false)
+    const { lgAndUp, xlAndUp } = deviceBreakpoint();
     const toggleMenu = () => {
       menuShouldShow.value = !menuShouldShow.value;
     };
@@ -206,8 +208,8 @@ export default {
       try {
         let { data } = await api.get(`${whatsappServerBaseURL}single/instanceInfo?key=${clientSessionId.value}`);
         console.log(data)
-        if (!data.error) {
-        }
+        // if (!data.error) {
+        // }
       } catch (error) {
         console.error(error);
       }
@@ -217,8 +219,8 @@ export default {
       try {
         let { data } = await api.get(`${whatsappServerBaseURL}instance/restore`);
         console.log(data)
-        if (!data.error) {
-        }
+        // if (!data.error) {
+        // }
       } catch (error) {
         console.error(error);
       }
@@ -234,6 +236,7 @@ export default {
       confirmLogout,
       clientSessionId,
       logoutLoading,
+      lgAndUp, xlAndUp,
       checkInstance,
       reconnectInstance
     };
@@ -371,6 +374,9 @@ export default {
   color: #136acd;
   opacity: 1;
 }
+.mid_height{
+  min-height: 75vh
+}
 
 @media screen and (max-width: 765px) {
   .toggle {
@@ -382,6 +388,9 @@ export default {
     height: 270px;
     transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
   }
+.mid_height{
+  min-height: 2vh;
+}
 
   .links-menu {
     height: 0;

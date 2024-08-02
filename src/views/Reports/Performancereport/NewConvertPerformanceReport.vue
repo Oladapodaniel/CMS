@@ -1,13 +1,22 @@
 <template>
   <div class="container-fluid">
     <div class="row justify-content-between">
-      <div class="head-text">New Convert Performance Report</div>
+      <div class="mb-4">
+        <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
+          New Convert Performance Report
+        </div>
+        <div @click="goBack">
+          <span class="s-18 fw-400 cursor-pointer text-black">
+            <img src="../../../assets/goback.png" alt="" /> Go back</span
+          >
+        </div>
+      </div>
       <div class="my-sm-0 my-2 c-pointer">
         <el-dropdown trigger="click" class="w-100">
           <div
-            class="d-flex justify-content-between default-btn text-dark w-100"
+            class="d-flex justify-content-between default-btn text-dak w-100"
           >
-            <span class="mt-1">Export</span>
+            <span class="mt-1 primary--text">Export</span>
             <div class="mt-1">
               <el-icon class="el-icon--right">
                 <arrow-down />
@@ -34,11 +43,11 @@
     </div>
 
     <!-- date area -->
-    <div class="row pl-1 pl-md-5 bg-area mt-sm-3">
-      <div class="col-md-4 col-sm-12 px-md-0">
+    <div class="row justify-content-center py-5 border-radius-8 grey-backg mt-sm-3">
+      <div class="col-md-5 col-sm-12 px-md-0">
         <div class="p-field p-col-12 pt-md-2 pb-2">
           <div>
-            <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
+            <label for="icon" class="fw-400 mb-0  text-dak s-14" >Start Date</label>
           </div>
           <el-date-picker
             v-model="startDate"
@@ -49,10 +58,10 @@
           />
         </div>
       </div>
-      <div class="col-md-4 col-sm-12 pr-md-0">
+      <div class="col-md-5 col-sm-12 pr-md-0">
         <div class="p-field p-col-12 pt-md-2">
           <div>
-            <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+            <label for="icon" class="fw-400 mb-0  text-dak s-14" >End Date</label>
           </div>
           <el-date-picker
             v-model="endDate"
@@ -63,13 +72,13 @@
           />
         </div>
       </div>
-      <div class="col-md-4 col-sm-12 pr-md-0">
-        <div class="p-field p-col-12 pt-md-2">
+      <div class="col-md-10 d-flex justify-content-center col-sm-12 pr-md-0">
+        <div class="p-field col-md-5 ">
           <el-button
-            class="c-pointer mt-4"
-            round
+            class="mt-3 w-100 py-4"
             :color="primarycolor"
             :loading="loading"
+            round
             @click="generateReport"
           >
             Generate Report
@@ -84,7 +93,7 @@
       class="container-fluid d-flex justify-content-center my-2"
       v-if="displayTitle"
     >
-      <div class="head-text">New Convert Performance Report</div>
+      <div class="text-head font-weight-bold h2">New Convert Performance Report</div>
     </div>
     <div class="container-fluid">
       <div class="row"></div>
@@ -167,14 +176,13 @@
 import { computed, ref, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import PerformancePieChart from "../../../components/charts/ReportPieChart.vue";
-import PerformanceColumnChart from "../../../components/charts/ColumnChart.vue";
 import dateFormatter from "../../../services/dates/dateformatter";
+import router from "../../../router";
 import exportService from "../../../services/exportFile/exportservice";
 import printJS from "print-js";
 export default {
   components: {
     PerformancePieChart,
-    PerformanceColumnChart,
   },
   setup() {
     const showReport = ref(false);
@@ -200,6 +208,11 @@ export default {
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
+
+    const goBack = () => {
+      router.go(-1);
+    };
+    
 
     const attendanceChart = computed(() => {
       if (newConvertInChurch.value.length === 0) return [];
@@ -374,6 +387,7 @@ export default {
       fileToExport,
       fileHeaderToExport,
       printJS,
+      goBack,
       // downLoadExcel,
       downloadFile,
       formatDate,
@@ -421,10 +435,6 @@ export default {
   min-width: 7rem;
 }
 
-.heading-text {
-  font: normal normal 800 1.5rem Nunito sans;
-}
-
 .round-border {
   border-radius: 0.5rem;
   box-shadow: 0 0.063rem 0.25rem #02172e45;
@@ -443,20 +453,33 @@ export default {
 
 .table {
   width: 100% !important;
-  box-shadow: 0 0.063rem 0.25rem #02172e45;
-  border: 0.063rem solid #dde2e6;
-  border-radius: 30px;
+  box-shadow: none !important;
+  border: none !important;
   text-align: left;
   margin-bottom: auto !important;
   padding-bottom: 0.5rem;
 }
 
+.table thead th {
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+.table tbody tr{
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+}
+
+.table-header-area-main {
+  background-color: #F4F4F4;
+}
+
 .table-header-area {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-}
-.table-header-area-main {
-  background-color: #ebeff4;
 }
 
 .table-main {

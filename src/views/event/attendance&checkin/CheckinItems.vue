@@ -2,14 +2,24 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <div class="no-person" v-if="(items && items.length === 0) && !errorOccurred  && !loading">
+        <div
+          class="no-person"
+          v-if="items && items.length === 0 && !errorOccurred && !loading"
+        >
           <div class="empty-img mt-5">
             <p><img src="../../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You have no attendance yet</p>
+            <el-button
+              :color="primarycolor"
+              @click="registerEvent"
+              class="ml-2 header-btn"
+              round
+              >Register Event</el-button
+            >
           </div>
         </div>
 
-        <div class="row" v-if="(items && items.length > 0 ) && !loading">
+        <div class="row" v-if="items && items.length > 0 && !loading">
           <div class="col-md-12 px-0">
             <List
               :list="items"
@@ -22,34 +32,23 @@
           </div>
         </div>
         <div class="row">
-              <el-skeleton class="w-100" animated v-if="loading">
-                <template #template>
-                  <div
-                    style="
-                      display: flex;
-                      align-items: center;
-                      justify-content: space-between;
-                      margin-top: 20px;
-                    "
-                  >
-                    <el-skeleton-item
-                      variant="text"
-                      style="width: 240px; height: 240px"
-                    />
-                    <el-skeleton-item
-                      variant="text"
-                      style="width: 240px; height: 240px"
-                    />
-                  </div>
-                  <el-skeleton
-                    class="w-100 mt-5"
-                    style="height: 25px"
-                    :rows="20"
-                    animated
-                  />
-                </template>
-              </el-skeleton>
-            </div>
+          <el-skeleton class="w-100" animated v-if="loading">
+            <template #template>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  margin-top: 20px;
+                "
+              >
+                <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+                <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+              </div>
+              <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
+            </template>
+          </el-skeleton>
+        </div>
         <div class="row" v-if="cantGetItems">
           <div class="col-md-12">
             <p>Error getting items, please reload</p>
@@ -63,33 +62,39 @@
 <script>
 import List from "../../../views/event/attendance&checkin/AttendanceAndCheckinList";
 import store from "../../../store/store";
-import { ref, onMounted } from "vue";
+import router from "../../../router";
+import { ref, onMounted, inject } from "vue";
 
 export default {
   components: { List },
   async setup() {
-    const items = ref(store.getters["attendance/attendanceserviceitem"].data );
+    const items = ref(store.getters["attendance/attendanceserviceitem"].data);
+    const primarycolor = inject("primarycolor");
     const loading = ref(false);
     const errorOccurred = ref(false);
     const cantGetItems = ref(false);
-    const totalItems = ref(store.getters["attendance/attendanceserviceitem"].totalItems  );
+    const totalItems = ref(store.getters["attendance/attendanceserviceitem"].totalItems);
     const getAttendanceItems = async () => {
-    try {
-      loading.value = true;
-      cantGetItems.value = false
-      await store.dispatch("attendance/setAttendanceItemData").then((res) => {
-        items.value = res.data
-        totalItems.value = res.totalItems
-        loading.value = false;
+      try {
+        loading.value = true;
         cantGetItems.value = false;
-      });
-    } catch (error) {
-      cantGetItems.value = true;
-      console.log(error);
-      loading.value = false;
-      errorOccurred.value = true;
-    }
-    }
+        await store.dispatch("attendance/setAttendanceItemData").then((res) => {
+          items.value = res.data;
+          totalItems.value = res.totalItems;
+          loading.value = false;
+          cantGetItems.value = false;
+        });
+      } catch (error) {
+        cantGetItems.value = true;
+        console.log(error);
+        loading.value = false;
+        errorOccurred.value = true;
+      }
+    };
+
+    const registerEvent = () => {
+      router.push("/tenant/attendancecheckin/add");
+    };
     const removeCheckin = (payload) => {
       items.value = items.value.filter((i) => i.id !== payload);
     };
@@ -106,7 +111,10 @@ export default {
       items.value = payload.items;
     };
     onMounted(() => {
-      if ((!items.value) || (items.value && items.value.items && items.value.items.length == 0)){
+      if (
+        !items.value ||
+        (items.value && items.value.items && items.value.items.length == 0)
+      ) {
         getAttendanceItems();
       }
     });
@@ -120,6 +128,8 @@ export default {
       removeCheckin,
       totalItems,
       setPagedAttendance,
+      registerEvent,
+      primarycolor
     };
   },
 };

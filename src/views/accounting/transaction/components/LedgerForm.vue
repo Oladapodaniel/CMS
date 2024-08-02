@@ -55,7 +55,7 @@
       </div>
       <div class="col-md-12 mt-2 d-md-flex flex-column ">
         <span class="small-text mb-n2">Total</span>
-        <span class="font=weight-700" style="font-size: 25px">{{
+        <span class="fw-500 " style="font-size: 25px">{{
           totalAmount
         }}</span>
       </div>
@@ -64,7 +64,7 @@
     <div class="row bordered-bottom pb-3 mb-3">
       <div class="col-md-12 d-flex justify-content-center">
           <div class="col-md-4 mb-2">
-            <h5 class="font-weight-700 text-center mb-n1">Debits</h5>
+            <h5 class="fw-500 text-center mb-n1">Debits</h5>
           </div>
       </div>
       <div class="col-md-12">
@@ -101,7 +101,7 @@
                         :key="index" >
                         <div class="col-md-12 px-2">
                           <h6
-                            class="mb-0 text-capitalize font-weight-bold"
+                            class="mb-0 text-capitalize fw-500"
                             v-if="accounts.length > 0"
                           >
                             {{ accountTypes[index] }}
@@ -131,13 +131,13 @@
       <div class="col-md-12 d-flex justify-content-between">
         <div class="col-8 px-0">
           <a
-            class="text-decoration-none font-weight-700 link-color c-pointer"
+            class="text-decoration-none fw-500 link-color c-pointer"
             @click="addRecord('inflow')"
             ><span style="font-size:18px">Add Debit</span> <el-icon class="mt-2s"><CirclePlus /></el-icon> 
           </a>
         </div>
         <div class="col-4 px-0 text-center">
-          <span class="font-weight-bold">{{ sumOfRecords(debitRecords) }}</span>
+          <span class="fw-500">{{ sumOfRecords(debitRecords) }}</span>
         </div>
       </div>
     </div>
@@ -146,7 +146,7 @@
       <div class="col-md-12">
         <div class="col-md-12 d-flex justify-content-center">
             <div class="col-md-4 mb-2">
-              <h5 class="font-weight-700 text-center mb-n1">Credits</h5>
+              <h5 class="fw-500 text-center mb-n1">Credits</h5>
             </div>
         </div>
       </div>
@@ -212,14 +212,14 @@
         <div class="col-md-12 d-flex justify-content-between px-0">
           <div class="col-8 px-0">
             <a
-              class="text-decoration-none font-weight-bold link-color c-pointer"
+              class="text-decoration-none fw-500 link-color c-pointer"
               @click="addRecord('outflow')"
               ><span style="font-size:18px">Add Credit</span> 
              <el-icon class="mt-2"><CirclePlus /></el-icon> 
             </a>
           </div>
           <div class="col-4 text-center px-0">
-            <span class="font-weight-bold">{{
+            <span class="fw-500">{{
               sumOfRecords(creditRecords)
             }}</span>
           </div>
@@ -229,14 +229,14 @@
 
     <div class="row">
       <div class="col-md-12 text-center" v-if="unbalanced">
-        <span class="text-center text-danger font-weight-700">Unbalanced</span>
+        <span class="text-center text-danger fw-500">Unbalanced</span>
       </div>
       <div class="col-12 mt-4">
           <el-input v-model="note" type="textarea" :rows="3" class="w-100" />
         </div>
       <div class="col-md-12 d-flex justify-content-center my-3">
         <el-button
-          class=" text-white font-weight-700 border-0"
+          class=" text-white fw-500 border-0"
           round
           color="#136acd"
           @click="saveTransaction"
@@ -469,8 +469,9 @@ export default {
   border-top-right-radius: 30px;
 }
 .label-text {
-  font-size: 0.8em;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
   margin-bottom: 5px;
 }
 

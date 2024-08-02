@@ -21,7 +21,7 @@
         <div class="col-12">
         </div>
         <div class="col-12">
-          <div class="label-text">Write a Description <span class="text-danger">*</span></div>
+          <div class="label-text">Add a Description <span class="text-danger">*</span></div>
           <el-input class="w-100" id="description" ref="descrp" v-model="transacObj.memo" placeholder="Description"
             :autofocus="showEditTransaction" />
         </div>
@@ -814,8 +814,9 @@ export default {
 }
 
 .label-text {
-  font-size: 0.8em;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
   margin-bottom: 5px;
 }
 

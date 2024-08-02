@@ -1,14 +1,23 @@
 <template>
   <div class="container-fluid" @click="closeDropdownIfOpen">
-    <div class="row flex-row justify-content-between align-items-center">
-      <div class="head-text">Attendance Report</div>
-      <div class="my-sm-0 my-2 c-pointer">
+    <div class="row flex-row justify-content-between">
+      <div class="mb-4">
+        <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
+          Attendance Report
+        </div>
+        <div @click="goBack">
+          <span class="s-18 fw-400 cursor-pointer text-black">
+            <img src="../../../assets/goback.png" alt="" /> Go back</span
+          >
+        </div>
+      </div>
+      <div class=" c-pointer">
         <el-dropdown trigger="click" class="w-100">
           <div
             class="d-flex justify-content-between default-btn text-dark w-100"
             size="large"
           >
-            <span class="mt-1">Export</span>
+            <span class="mt-1 primary--text">Export</span>
             <div class="mt-1">
               <el-icon class="el-icon--right">
                 <arrow-down />
@@ -17,14 +26,8 @@
           </div>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item
-                v-for="(bookType, index) in bookTypeList"
-                :key="index"
-              >
-                <a
-                  class="no-decoration text-dark"
-                  @click="downLoadExcel(bookType)"
-                >
+              <el-dropdown-item v-for="(bookType, index) in bookTypeList" :key="index">
+                <a class="no-decoration text-dark" @click="downLoadExcel(bookType)">
                   {{ bookType.name }}
                 </a>
               </el-dropdown-item>
@@ -33,14 +36,11 @@
         </el-dropdown>
       </div>
     </div>
-    <div
-      class="row mt-4 py-4 px-3"
-      style="background: #ebeff4; border-radius: 0.5rem"
-    >
-      <div class="col-sm-9">
+    <div class="row  justify-content-center py-5 border-radius-8 grey-backg">
+      <div class="col-md-10 col-12">
         <div class="row">
           <div class="col-sm-6">
-            <div class="font-weight-600">Select Event</div>
+            <div class="fw-400  text-dak s-14" >Select Event</div>
             <div class="mt-2">
               <el-select-v2
                 v-model="selectedEventID"
@@ -58,26 +58,20 @@
             </div>
           </div>
           <div class="col-sm-6 mt-3 mt-sm-0">
-            <div class="font-weight-600">Select Group</div>
+            <div class="fw-400  text-dak s-14">Select Group</div>
             <div class="mt-2">
               <button
                 class="form-control d-flex justify-content-between align-items-center exempt-hide"
                 @click="setGroupProp"
               >
                 <span class="exempt-hide">
-                  <span
-                    v-if="checkedGroup.length > 0 && checkedGroup.length <= 2"
-                  >
+                  <span v-if="checkedGroup.length > 0 && checkedGroup.length <= 2">
                     <span v-for="item in checkedGroup" :key="item.id"
                       ><span class="eachGroup">{{ item.name }}</span></span
                     >
                   </span>
-                  <span
-                    v-if="checkedGroup.length > 0 && checkedGroup.length > 2"
-                  >
-                    <span
-                      v-for="item in checkedGroup.slice(0, 2)"
-                      :key="item.id"
+                  <span v-if="checkedGroup.length > 0 && checkedGroup.length > 2">
+                    <span v-for="item in checkedGroup.slice(0, 2)" :key="item.id"
                       ><span class="eachGroup">{{ item.name }}</span></span
                     >
                     ...
@@ -119,7 +113,7 @@
             </div>
           </div>
           <div class="col-sm-6 mt-3">
-            <div class="font-weight-600">Start Date</div>
+            <div class="fw-400  text-dak s-14">Start Date</div>
             <div class="mt-2">
               <el-date-picker
                 v-model="startDate"
@@ -131,7 +125,7 @@
             </div>
           </div>
           <div class="col-sm-6 mt-3">
-            <div class="font-weight-600">End Date</div>
+            <div class="fw-400  text-dak s-14">End Date</div>
             <div class="mt-2">
               <el-date-picker
                 v-model="endDate"
@@ -144,39 +138,40 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-2 col-md-3 d-flex align-items-center">
-        <!-- <div style="height: 33%"></div> -->
-        <div class="mt-2 text-center c-pointer" @click="getAttendanceReport">
-          <el-button class="" round :loading="loading" :color="primarycolor">
-            Generate Report
-          </el-button>
+      <div class="col-md-12">
+          <div class="row justify-content-center align-items-center">
+            <div class="col-md-5 mt-4">
+              <!-- <label for=""></label> -->
+              <div class="col-md-12" @click="getAttendanceReport">
+                <el-button
+                  round
+                  :color="primarycolor"
+                  :loading="loading"
+                  size="large"
+                  class="text-white py-4  w-100 c-pointer"
+                  >Generate Report
+                </el-button>
+              </div>
+            </div>
+          </div>
         </div>
+    </div>
+  </div>
+  <div class="mt-4" id="element-to-print" v-if="groupedReport.length > 0 && searched">
+    <div class="container-fluid d-flex justify-content-center my-2" v-if="displayTitle">
+      <div class="text-head font-weight-bold h2 py-0 my-0 text-black">Attendance Report</div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <GroupReportTable
+          :groupedReport="groupedReport"
+          :groupedReportByDate="groupedReportByDate"
+          @data-to-export="setDataToExport"
+          @data-header-to-export="setTableHeaderData"
+        />
       </div>
     </div>
-  </div>  
-  <div
-    class=" mt-4 "
-    id="element-to-print"
-    v-if="groupedReport.length > 0 && searched"
-  >
-  <div
-      class="container-fluid d-flex justify-content-center my-2"
-      v-if="displayTitle"
-    >
-    <div class="head-text">Attendance Report</div>
   </div>
-  <div class="container-fluid">
-    <div class="row">
-      <GroupReportTable
-      :groupedReport="groupedReport"
-      :groupedReportByDate="groupedReportByDate"
-      @data-to-export="setDataToExport"
-      @data-header-to-export="setTableHeaderData"
-    />
-    </div>
-  </div>
-  </div>
-  
 </template>
 
 <script>
@@ -185,6 +180,7 @@ import GroupReportTable from "./CheckinAttendanceReportTable.vue";
 import axios from "@/gateway/backendapi";
 import ExcelExport from "../../../services/exportFile/exportToExcel";
 import { ElMessage } from "element-plus";
+import router from "../../../router";
 import html2pdf from "html2pdf.js";
 import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
 import grousService from "../../../services/groups/groupsservice";
@@ -225,6 +221,10 @@ export default {
     const grouploading = ref(false);
     const checkedGroup = ref([]);
 
+    const goBack = () => {
+      router.go(-1);
+    };
+
     const getEvents = async () => {
       try {
         let { data } = await axios.get(`/api/Reports/events/getEvents`);
@@ -235,9 +235,7 @@ export default {
     };
     getEvents();
     const setSelectedEvent = () => {
-      selectedEvent.value = events.value.find(
-        (i) => i.id === selectedEventID.value
-      );
+      selectedEvent.value = events.value.find((i) => i.id === selectedEventID.value);
     };
 
     const getGroups = async () => {
@@ -293,9 +291,7 @@ export default {
     const groupReport = (array, key) => {
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
-        (result[currentValue[key]] = result[currentValue[key]] || []).push(
-          currentValue
-        );
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
         // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
         return result;
       }, {}); // empty object is the initial value for result object
@@ -311,9 +307,7 @@ export default {
     const groupReportByDate = (array, key) => {
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
-        (result[currentValue[key]] = result[currentValue[key]] || []).push(
-          currentValue
-        );
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
         // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
         return result;
       }, {}); // empty object is the initial value for result object
@@ -359,13 +353,7 @@ export default {
         const filterVal = fileHeaderToExport.value.map((i, index) => index);
         const list = fileToExport.value;
         const header = fileHeaderToExport.value;
-        ExcelExport.exportToExcel(
-          filterVal,
-          list,
-          header,
-          fileName.value,
-          item.name
-        );
+        ExcelExport.exportToExcel(filterVal, list, header, fileName.value, item.name);
       }
     };
 
@@ -385,8 +373,7 @@ export default {
     };
 
     const searchForGroups = computed(() => {
-      if (!searchGroupText.value && groups.value.length > 0)
-        return groups.value;
+      if (!searchGroupText.value && groups.value.length > 0) return groups.value;
       return groups.value.filter((i) =>
         i.name.toLowerCase().includes(searchGroupText.value.toLowerCase())
       );
@@ -416,8 +403,6 @@ export default {
       selectedEvent,
       getAttendanceReport,
       selectedEventID,
-      startDate,
-      endDate,
       selectedGroups,
       attendanceReport,
       groupReport,
@@ -445,29 +430,13 @@ export default {
       checkedGroup,
       closeDropdownIfOpen,
       setFilterGroups,
+      goBack
     };
   },
 };
 </script>
 
 <style scoped>
-.header {
-  font: normal normal 800 29px Nunito sans;
-}
-/* .default-btn {
-    font-weight: 600;
-    white-space: initial;
-    font-size: 1rem;
-    border-radius: 3rem;
-    padding: .5rem 1.25rem;
-    width: auto;
-	border:none;
-    max-height: 40px;
-    background: #6c757d47 !important;
-    color:#000;
-    text-decoration: none;
-    min-width: 121px;
-} */
 
 .default-btn:hover {
   text-decoration: none;

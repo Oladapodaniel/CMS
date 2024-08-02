@@ -276,9 +276,6 @@ export default {
     const date = (offDate) => {
       return monthDayYear.monthDayTime(offDate);
     };
-    const chooseContact = (payload) => {
-      selectedContact.value = payload;
-    };
     const navigateToCreatePledgeItem = () => {
       router.push("/tenant/pledge/pledgedefinition");
     };
@@ -386,7 +383,6 @@ export default {
       navigateToCreatePledgeItem,
       searchPledgeInDB,
       searchPledge,
-      chooseContact,
       showConfirmModal,
       deletePledge,
       loading,

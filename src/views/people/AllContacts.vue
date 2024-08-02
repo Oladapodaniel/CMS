@@ -26,7 +26,7 @@
             <span
               class="el-dropdown-link w-100 primary--text text-center font-weight-600"
             >
-              Menu
+              More
               <el-icon class="el-icon--right">
                 <arrow-down />
               </el-icon>

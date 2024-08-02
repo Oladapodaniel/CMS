@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid px-0">
-    <div class="row mt-5">
+    <div class="row mt-4">
       <div class="col-md-12 col-12 px-0 text-center">
         <div
           class="row tabl border-0 report d-flex justify-content-between p-2 p-md-4"
@@ -10,7 +10,7 @@
             <p class="ju paragraph1">Have an Overview of your cash flow.</p>
           </div>
           <!-- border-bottom -->
-          <div class="col-md-5 border-bottom col-12 mt-4">
+          <div class="col-md-5 border-bottom col-12 ">
             <div
               class="row d-md-flex justify-content-md-between d-flex justify-content-between"
             >
@@ -18,9 +18,9 @@
                 to="/tenant/reports/incomestatementreport"
                 class="linked"
               >
-                <h4
-                  class="ju header4 d-md-flex justify-content-md-start"
-                  style="color: #136acd"
+              <h4
+                  class="ju header4 d-md-flex s-20 justify-content-md-start"
+                  style="color: #0B55D4"
                 >
                   Income Statement
                 </h4>
@@ -49,8 +49,8 @@
             >
               <router-link to="/tenant/reports/incomereport" class="linked">
                 <h4
-                  class="ju header4 d-md-flex justify-content-md-start"
-                  style="color: #136acd"
+                  class="ju header4 d-md-flex s-20 justify-content-md-start"
+                  style="color: #0B55D4"
                 >
                   Income [Inflow] Report
                 </h4>
@@ -77,8 +77,8 @@
             >
               <router-link to="/tenant/reports/expensereport" class="linked">
                 <h4
-                  class="ju header4 d-md-flex justify-content-md-start"
-                  style="color: #136acd"
+                  class="ju header4 d-md-flex s-20 justify-content-md-start"
+                  style="color: #0B55D4"
                 >
                   Expense Report
                 </h4>
@@ -116,9 +116,9 @@
               <div
                 class="row d-md-flex justify-content-md-between d-flex justify-content-between"
               >
-                <h4
-                  class="ju header4 d-md-flex justify-content-md-start"
-                  style="color: #136acd"
+              <h4
+                  class="ju header4 d-md-flex s-20 justify-content-md-start"
+                  style="color: #0B55D4"
                 >
                   Offering [Contribution] Report
                 </h4>
@@ -153,9 +153,9 @@
               <div
                 class="row d-md-flex justify-content-md-between d-flex justify-content-between"
               >
-                <h4
-                  class="ju header4 d-md-flex justify-content-md-start"
-                  style="color: #136acd"
+              <h4
+                  class="ju header4 d-md-flex s-20 justify-content-md-start"
+                  style="color: #0B55D4"
                 >
                   Pledges/Partnership Report
                 </h4>
@@ -195,9 +195,9 @@
                 to="/tenant/reports/accountingtransactionreport"
                 class="linked"
               >
-                <h4
-                  class="ju header4 d-md-flex justify-content-md-start"
-                  style="color: #136acd"
+              <h4
+                  class="ju header4 d-md-flex s-20 justify-content-md-start"
+                  style="color: #0B55D4"
                 >
                   Account Transactions
                 </h4></router-link
@@ -223,9 +223,9 @@
                 to="/tenant/reports/financialactivitiesbalance"
                 class="linked"
               >
-                <h4
-                  class="ju header4 d-md-flex justify-content-md-start"
-                  style="color: #136acd"
+              <h4
+                  class="ju header4 d-md-flex s-20 justify-content-md-start"
+                  style="color: #0B55D4"
                 >
                   Account Activites and Balance
                 </h4>
@@ -272,14 +272,14 @@ export default {
   text-align: start;
 }
 .header4 {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 500;
 }
 .paragraph1 {
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #212529;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 27px;
+  color: #111111;
   background-color: #fff;
 }
 .rounded {

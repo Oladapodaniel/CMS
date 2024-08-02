@@ -21,7 +21,7 @@
             <el-form ref="ruleFormRef" :rules="rules" :model="userDetails" style="width: 100%">
               <div class="input-div ">
                 <label class="mb-0">{{ navigatorLang === "en-US" ? "What's your name?" :
-          $t('onboardingContent.labels.ur-name') }}</label>
+          $t('onboardingContent.labels.ur-name') }}<span style="color: red"> *</span></label>
                 <el-row :gutter="15">
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item prop="firstName">
@@ -48,14 +48,14 @@
                 <el-row :gutter="15">
                   <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
                     <label class="mb-0 ">{{ navigatorLang === "en-US" ? "Email Address" :
-          $t('onboardingContent.labels.ur-email') }}</label>
+          $t('onboardingContent.labels.ur-email') }}<span style="color: red"> *</span></label>
                     <el-form-item prop="email">
                       <el-input type="email" v-model="userDetails.email" placeholder="Email" />
                     </el-form-item>
                   </el-col>
                   <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
                     <label class="mb-0">{{ navigatorLang === "en-US" ? "What's your phone number?" :
-          $t('onboardingContent.labels.ur-phone') }}</label>
+          $t('onboardingContent.labels.ur-phone') }}<span style="color: red"> *</span></label>
                     <vue-tel-input style="height: 40px" @blur="invalidResponse" v-model="userDetails.phoneNumber"
                       @input="onInput" mode="international"></vue-tel-input>
                   </el-col>
@@ -66,7 +66,7 @@
                 <el-row :gutter="15">
                   <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
                     <label class="mb-0">{{ navigatorLang === "en-US" ? "Select Country" :
-          $t('onboardingContent.labels.ur-country') }}</label>
+          $t('onboardingContent.labels.ur-country') }}<span style="color: red"> *</span></label>
                     <div class="w-100">
                       <el-select-v2 v-model="selectedCountryId"
                         :options="countries.map(i => ({ label: i.name, value: i.id }))" @change="setSelectedCountry"
@@ -103,7 +103,7 @@
                   <el-input type="text" v-model="userDetails.websiteUrl" placeholder="Website Address/URL" />
                 </el-form-item>
               </div>
-              <el-button class="w-100" :color="primarycolor" size="large" :disabled="!disableNext" :loading="loading"
+              <el-button class="w-100" :color="primarycolor" size="large" :disabled="!disableNext || !selectedCountryId" :loading="loading"
                 @click="nextStep(ruleFormRef)" round>{{ navigatorLang === "en-US" ? "Next step" :
           $t('onboardingContent.next-btntext') }}</el-button>
               <!-- <el-button class="w-100" :color="primarycolor" size="large" :disabled="!disableNext" :loading="loading"

@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid px-0">
-    <div class="row mt-5">
+    <div class="row mt-4">
       <div class="col-md-12 col-12 px-0 text-center">
         <div
           class="row border-0 tabl report d-flex justify-content-between p-2 p-md-4"
@@ -12,14 +12,14 @@
               effective
             </p>
           </div>
-          <div class="col-md-5 col-12 mt-4">
+          <div class="col-md-5 col-12  border-bottom mb-3">
             <div
               class="row d-md-flex justify-content-md-between d-flex justify-content-between"
             >
               <router-link to="/tenant/reports/attendancereport" class="linked">
                 <h4
-                  class="ju header4 d-md-flex justify-content-md-start"
-                  style="color: #136acd"
+                  class="ju header4 d-md-flex s-20 justify-content-md-start"
+                  style="color: #0B55D4"
                 >
                   Attendance report
                 </h4></router-link
@@ -30,8 +30,8 @@
                     ><ArrowRightBold /></el-icon></span
               ></router-link>
             </div>
-            <div class="row">
-              <p class="ju mb-3 paragraph1">
+            <div class="row border-bottom mb-3">
+              <p class="ju mb-3 fw-400 paragraph1">
                 This reports provides a detailed Attendance report of your
                 ministry
               </p>
@@ -44,9 +44,9 @@
                 to="/tenant/reports/groupattendancereport"
                 class="linked"
               >
-                <h4
-                  class="ju header4 d-md-flex justify-content-md-start"
-                  style="color: #136acd"
+              <h4
+                  class="ju header4 d-md-flex s-20 justify-content-md-start"
+                  style="color: #0B55D4"
                 >
                   Group Attendance Report
                 </h4></router-link
@@ -58,7 +58,7 @@
               ></router-link>
             </div>
             <div class="row">
-              <p class="ju mb-3 paragraph1">
+              <p class="ju mb-3 paragraph1 fw-400">
                 This reports provides a detailed Attendance report of the groups
                 in your ministry.
               </p>
@@ -74,9 +74,9 @@
                 to="/tenant/reports/attendanceperformancereport"
                 class="linked"
               >
-                <h4
-                  class="ju header4 d-md-flex justify-content-md-start"
-                  style="color: #136acd"
+              <h4
+                  class="ju header4 d-md-flex s-20 justify-content-md-start"
+                  style="color: #0B55D4"
                 >
                   Church Activity Attendance
                 </h4>
@@ -89,7 +89,7 @@
               </router-link>
             </div>
             <div class="row">
-              <p class="ju mb-3 paragraph1">
+              <p class="ju mb-3 fw-400 paragraph1">
                 This reports provides a detailed Attendance perfomance report of
                 your church
               </p>
@@ -118,9 +118,9 @@
                 to="/tenant/reports/firsttimerperformancereport"
                 class="linked"
               >
-                <h4
-                  class="ju header4 d-md-flex justify-content-md-start"
-                  style="color: #136acd"
+              <h4
+                  class="ju header4 d-md-flex s-20 justify-content-md-start"
+                  style="color: #0B55D4"
                 >
                   First Timer Performance
                 </h4></router-link
@@ -132,7 +132,7 @@
               ></router-link>
             </div>
             <div class="row">
-              <p class="ju mb-3 paragraph1">
+              <p class="ju mb-3 fw-400 paragraph1">
                 This reports provides a detailed Group Category Attendance of
                 your ministry
               </p>
@@ -147,9 +147,9 @@
                 to="/tenant/reports/newconvertperformancereport"
                 class="linked"
               >
-                <h4
-                  class="ju header4 d-md-flex justify-content-md-start"
-                  style="color: #136acd"
+              <h4
+                  class="ju header4 d-md-flex s-20 justify-content-md-start"
+                  style="color: #0B55D4"
                 >
                   New Convert Performance
                 </h4></router-link
@@ -161,7 +161,7 @@
               ></router-link>
             </div>
             <div class="row">
-              <p class="ju mb-3 paragraph1">
+              <p class="ju mb-3 fw-400 paragraph1">
                 This reports provides a detailed New Convert Attendance of your
                 ministry
               </p>
@@ -192,9 +192,9 @@
                 to="/tenant/reports/summarygroupattendancereport"
                 class="linked"
               >
-                <h4
-                  class="ju header4 d-md-flex justify-content-md-start"
-                  style="color: #136acd"
+              <h4
+                  class="ju header4 d-md-flex s-20 justify-content-md-start"
+                  style="color: #0B55D4"
                 >
                   Group Summary Attendance
                 </h4></router-link
@@ -205,8 +205,8 @@
                     ><ArrowRightBold /></el-icon></span
               ></router-link>
             </div>
-            <div class="row">
-              <p class="ju mb-3 paragraph1">
+            <div class="row border-bottom mb-3">
+              <p class="ju mb-3 fw-400 paragraph1">
                 This reports provides a detailed overall summary report of your
                 group attendance report.
               </p>
@@ -217,8 +217,8 @@
             >
               <router-link to="/tenant/reports/summaryreport" class="linked"
                 ><h4
-                  class="ju header4 d-md-flex justify-content-md-start"
-                  style="color: #136acd"
+                  class="ju header4 d-md-flex s-20 justify-content-md-start"
+                  style="color: #0B55D4"
                 >
                   Summary Report
                 </h4></router-link
@@ -230,7 +230,7 @@
               ></router-link>
             </div>
             <div class="row">
-              <p class="ju mb-3 paragraph1">
+              <p class="ju mb-3 fw-400 paragraph1">
                 This reports provides a detailed Summary Attendance of your
                 ministry
               </p>
@@ -265,14 +265,14 @@ export default {
   text-align: start;
 }
 .header4 {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 500;
 }
 .paragraph1 {
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #212529;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 27px;
+  color: #111111;
   background-color: #fff;
 }
 .rounded {

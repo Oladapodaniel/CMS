@@ -1,10 +1,16 @@
 <template>
   <div class="container-fluid" id="element-to-print">
     <!-- header area -->
-    <!-- <div class="container"> -->
-    <div class="row d-flex flex-row justify-content-between align-items-center">
-      <div class="centered-items">
-        <h3 class="head-text">Birthday Report</h3>
+    <div class="row flex-row justify-content-between ">
+      <div class="mb-4">
+        <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
+          Birthday Report
+        </div>
+        <div @click="goBack">
+          <span class="s-18 fw-400 cursor-pointer text-black">
+            <img src="../../../assets/goback.png" alt="" /> Go back</span
+          >
+        </div>
       </div>
       <div class="c-pointer my-sm-0 my-2">
         <el-dropdown trigger="click" class="w-100">
@@ -12,7 +18,7 @@
             class="d-flex justify-content-between default-btn text-dark w-100"
             size="large"
           >
-            <span class="mt-1">Export</span>
+            <span class="mt-1 primary--text">Export</span>
             <div class="mt-1">
               <el-icon class="el-icon--right">
                 <arrow-down />
@@ -40,11 +46,11 @@
     <!-- </div> -->
 
     <!-- <div class="container-fluid bg-area my-3"> -->
-    <div class="row pl-1 pl-md-5 bg-area mt-sm-3">
-      <div class="col-md-4 col-sm-12 px-md-0">
+    <div class="row justify-content-center  py-5 border-radius-8 grey-backg mt-sm-3">
+      <div class="col-md-5 col-sm-12 px-md-0">
         <div class="p-field p-col-12 pt-md-2 pb-2">
           <div>
-            <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
+            <label for="icon" class="fw-400 mb-0  text-dak s-14">Start Date</label>
           </div>
           <el-date-picker
             v-model="startDate"
@@ -55,10 +61,10 @@
           />
         </div>
       </div>
-      <div class="col-md-4 col-sm-12 pr-md-0">
+      <div class="col-md-5 col-sm-12 pr-md-0">
         <div class="p-field p-col-12 pt-md-2">
           <div>
-            <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+            <label for="icon" class="fw-400 mb-0  text-dak s-14">End Date</label>
           </div>
           <el-date-picker
             v-model="endDate"
@@ -69,10 +75,10 @@
           />
         </div>
       </div>
-      <div class="col-md-4 col-sm-12 pr-md-0">
-        <div class="p-field p-col-12 pt-md-2">
+      <div class="col-md-10 d-flex justify-content-center col-sm-12 pr-md-0">
+        <div class="p-field col-md-5 ">
           <el-button
-            class="c-pointer mt-4"
+            class="c-pointer mt-3 py-4 w-100"
             round
             :color="primarycolor"
             :loading="loading"
@@ -112,7 +118,7 @@
             </div> -->
             <!-- <div class="col-12 col-sm-12 col-md-6 col-lg-6"> -->
             <div
-              class="row table"
+              class="row  chart "
               :class="birthdays && birthdays.length > 0 ? 'graph-area' : ''"
             >
               <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center">
@@ -227,6 +233,7 @@ import { computed, ref, inject } from "vue";
 // import ByGenderChart from "@/components/charts/PieChart.vue";
 import BirthdayChart from "../../../components/charts/PieChart.vue";
 import axios from "@/gateway/backendapi";
+import router from "../../../router";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
 import store from "../../../store/store";
@@ -255,6 +262,9 @@ export default {
     const selectedFileType = ref({});
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
+    const goBack = () => {
+      router.go(-1);
+    };
     const allMembersInChurch = () => {
       store.dispatch("membership/setMembershipSummary").then((response) => {
         membersInChurch.value = response;
@@ -397,6 +407,7 @@ export default {
       selectedFileType,
       downloadFile,
       showReport,
+      goBack
     };
   },
 };
@@ -458,20 +469,33 @@ export default {
 
 .table {
   width: 100% !important;
-  box-shadow: 0 0.063rem 0.25rem #02172e45;
-  border: 0.063rem solid #dde2e6;
-  border-radius: 30px;
+  box-shadow: none !important;
+  border: none !important;
   text-align: left;
   margin-bottom: auto !important;
   padding-bottom: 0.5rem;
 }
 
+.table thead th {
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+.table tbody tr{
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+}
+
+.table-header-area-main {
+  background-color: #F4F4F4;
+}
+
 .table-header-area {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-}
-.table-header-area-main {
-  background-color: #ebeff4;
 }
 
 .table-main {

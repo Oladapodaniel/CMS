@@ -1,15 +1,18 @@
 <template>
   <div class="container-fluid mb-4">
-    <div class="row d-flex justify-content-between">
-      <div class="head-text">People Report</div>
-      <div
-        class="my-sm-0 my-2 c-pointer"
-      >
-        <el-dropdown trigger="click" class="w-100">
-          <div
-            class="d-flex justify-content-between default-btn text-dark w-100"
+    <div class="row  justify-content-between">
+      <div class="mb-4">
+        <div class="text-head font-weight-bold h2 py-0 my-0 text-black ">People Report</div>
+        <div @click="goBack">
+          <span class="s-18 fw-400 cursor-pointer text-black">
+            <img src="../../../assets/goback.png" alt="" /> Go back</span
           >
-            <span class="mt-1">Export</span>
+        </div>
+      </div>
+      <div class=" c-pointer">
+        <el-dropdown trigger="click" class="w-100">
+          <div class="d-flex justify-content-between default-btn text-dark w-100">
+            <span class="mt-1 primary--text">Export</span>
             <div class="mt-1">
               <el-icon class="el-icon--right">
                 <arrow-down />
@@ -18,14 +21,8 @@
           </div>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item
-                v-for="(bookType, index) in bookTypeList"
-                :key="index"
-              >
-                <a
-                  class="no-decoration text-dark"
-                  @click="downloadFile(bookType)"
-                >
+              <el-dropdown-item v-for="(bookType, index) in bookTypeList" :key="index">
+                <a class="no-decoration text-dark" @click="downloadFile(bookType)">
                   {{ bookType.name }}
                 </a>
               </el-dropdown-item>
@@ -35,12 +32,14 @@
       </div>
     </div>
     <div class="container-fluid px-0 mt-2">
-      <div class="row py-5" style="background: #ebeff4; border-radius: 0.5rem">
-        <div class="col-md-9 col-12">
+      <div
+        class="row grey-backg justify-content-center py-5 border-radius-8"
+      >
+        <div class="col-md-10 col-12">
           <div class="row">
             <div class="col-12 col-md-6 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
               <div>
-                <label for="" class="font-weight-bold">Select Members</label>
+                <label for=""  class="fw-400  text-dak s-14" >Select Members</label>
               </div>
               <div class="">
                 <SelectAllDropdown
@@ -51,7 +50,7 @@
             </div>
             <div class="col-12 col-md-6 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
               <div class="">
-                <label for="" class="ml-2 font-weight-bold">Gender</label>
+                <label for="" class="fw-400 ml-2 text-dak s-14" >Gender</label>
               </div>
               <div>
                 <SelectAllDropdown
@@ -60,9 +59,9 @@
                 />
               </div>
             </div>
-            <div class="col-12 col-md-6 mt-2">
+            <div class="col-12 col-md-6 mt-3">
               <div>
-                <label for="" class="font-weight-bold">Marital Status</label>
+                <label for="" class="fw-400 text-dak s-14" >Marital Status</label>
               </div>
               <div>
                 <SelectAllDropdown
@@ -71,9 +70,9 @@
                 />
               </div>
             </div>
-            <div class="col-12 col-md-6 mt-2">
+            <div class="col-12 col-md-6 mt-3">
               <div>
-                <label for="" class="font-weight-bold">Age Group</label>
+                <label for="" class="fw-400 text-dak s-14">Age Group</label>
               </div>
 
               <div>
@@ -85,17 +84,17 @@
             </div>
           </div>
         </div>
-        <div class="col-12 col-md-3 d-flex align-items-center">
-          <div class="row">
-            <div class="col-12">
-              <label for=""></label>
-              <div class="" @click="genarateReport">
+        <div class="col-md-12">
+          <div class="row justify-content-center align-items-center">
+            <div class="col-md-5 mt-4">
+              <!-- <label for=""></label> -->
+              <div class="col-md-12" @click="genarateReport">
                 <el-button
                   round
                   :color="primarycolor"
                   :loading="loading"
                   size="large"
-                  class="text-white c-pointer"
+                  class="text-white py-4  w-100 c-pointer"
                   >Generate Report
                 </el-button>
               </div>
@@ -106,26 +105,18 @@
     </div>
   </div>
   <div id="element-to-print">
-    <div
-      class="container-fluid d-flex justify-content-center my-2"
-      v-if="displayTitle"
-    >
+    <div class="container-fluid d-flex justify-content-center my-2" v-if="displayTitle">
       <div class="head-text">People Report</div>
     </div>
     <div class="container-fluid">
-      <div
-        class="row"
-        :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-      >
+      <div class="row" :class="{ 'show-report': showReport, 'hide-report': !showReport }">
         <div class="col-md-12 mt-4 round-border">
           <div class="row">
             <div class="col-12 col-md-6 col-lg-6">
               <div class="row">
                 <div class="col-md-12 mt-sm-3 mt-md-0 mt-lg-2 text-center">
                   <div class="row">
-                    <div class="col-md-12 font-weight-bold">
-                      Membership By Gender
-                    </div>
+                    <div class="col-md-12 font-weight-bold">Membership By Gender</div>
 
                     <div class="col-md-12">
                       <MembershipPieChart
@@ -162,10 +153,7 @@
           </div>
         </div>
       </div>
-      <div
-        class="row"
-        :class="{ 'show-report': showReport, 'hide-report': !showReport }"
-      >
+      <div class="row" :class="{ 'show-report': showReport, 'hide-report': !showReport }">
         <div class="col-md-12 round-border mt-3">
           <!-- <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                     <div class="col-12 text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2 " >
@@ -229,16 +217,12 @@
                 <th scope="col">Age Group</th>
                 <th scope="col">Home Address</th>
                 <th scope="col">Birthday</th>
-                <th
-                  scope="col"
-                  v-for="(item, index) in dynamicCustomFields"
-                  :key="index"
-                >
+                <th scope="col" v-for="(item, index) in dynamicCustomFields" :key="index">
                   {{ item.label }}
                 </th>
               </tr>
             </thead>
-            <tbody class="small-text font-weight-bold text-nowrap">
+            <tbody class=" text-nowrap">
               <tr v-for="(member, index) in membersInChurch" :key="index">
                 <!-- <td>{{member.churchActivity}}</td> -->
                 <td>{{ member.membership }}</td>
@@ -255,12 +239,7 @@
                   v-for="(item, index) in dynamicCustomFields"
                   :key="index"
                 >
-                  {{
-                    getMemberCustomAttributeData(
-                      member.customAttributeData,
-                      item
-                    )
-                  }}
+                  {{ getMemberCustomAttributeData(member.customAttributeData, item) }}
                 </td>
                 <td
                   v-show="member.customAttributeData.length === 0"
@@ -287,16 +266,18 @@ import axios from "@/gateway/backendapi";
 import MembershipPieChart from "../../../components/charts/ReportPieChart.vue";
 import SelectAllDropdown from "../ReportsDropdown.vue";
 import printJS from "print-js";
-import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
+import router from "../../../router";
+// import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
 import exportService from "../../../services/exportFile/exportservice";
 import allCustomFields from "../../../services/customfield/customField";
 export default {
   components: {
     MembershipPieChart,
     SelectAllDropdown,
-    GroupTree,
+    // GroupTree,
   },
   setup(prop) {
+    console.log(prop);
     const selectedMember = ref([]);
     const primarycolor = inject("primarycolor");
     const selectedGender = ref([]);
@@ -338,15 +319,18 @@ export default {
     const setSelectedAgeGroup = (payload) => {
       selectedAgeGroup.value = payload;
     };
+
+    const goBack = () => {
+      router.go(-1);
+    };
+
     const genderChart = (array, key) => {
       // Accepts the array and key
       // Return the end result
       genderChartResult.value = [];
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
-        (result[currentValue[key]] = result[currentValue[key]] || []).push(
-          currentValue
-        );
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
         return result;
       }, []); // empty object is the initial value for result object
       // genderChartResult.value
@@ -368,9 +352,7 @@ export default {
       memberChartResult.value = [];
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
-        (result[currentValue[key]] = result[currentValue[key]] || []).push(
-          currentValue
-        );
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
         return result;
       }, []); // empty object is the initial value for result object
       // genderChartResult.value
@@ -393,9 +375,7 @@ export default {
       maritalStatusChartResult.value = [];
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
-        (result[currentValue[key]] = result[currentValue[key]] || []).push(
-          currentValue
-        );
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
         return result;
       }, []); // empty object is the initial value for result object
       // genderChartResult.value
@@ -416,9 +396,7 @@ export default {
       // Return the end result
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
-        (result[currentValue[key]] = result[currentValue[key]] || []).push(
-          currentValue
-        );
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
         return result;
       }, []); // empty object is the initial value for result object
 
@@ -558,10 +536,7 @@ export default {
     };
     getCustomFields();
 
-    const getMemberCustomAttributeData = (
-      memberCustomData,
-      singleCustomField
-    ) => {
+    const getMemberCustomAttributeData = (memberCustomData, singleCustomField) => {
       if (memberCustomData && memberCustomData.length === 0) return "--";
       const findData = memberCustomData.findIndex(
         (i) => i.customAttribute.id === singleCustomField.id
@@ -608,6 +583,7 @@ export default {
       fileToExport,
       fileHeaderToExport,
       printJS,
+      goBack,
       downloadFile,
       dynamicCustomFields,
       getMemberCustomAttributeData,
@@ -665,9 +641,7 @@ export default {
   min-width: 7rem;
 }
 
-.heading-text {
-  font: normal normal 800 1.5rem Nunito sans;
-}
+
 
 .bg-area {
   background-color: #ebeff4;
@@ -695,25 +669,38 @@ li li:hover {
 
 .table {
   width: 100% !important;
-  box-shadow: 0 0.063rem 0.25rem #02172e45;
-  border: 0.063rem solid #dde2e6;
-  border-radius: 30px;
+  box-shadow: none !important;
+  border: none !important;
   text-align: left;
   margin-bottom: auto !important;
   padding-bottom: 0.5rem;
 }
-.round-border {
-  border-radius: 0.5rem;
-  box-shadow: 0 0.063rem 0.25rem #02172e45;
-  border: 0.063rem solid #dde2e6;
+
+.table thead th {
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+.table tbody tr{
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
 }
 
+.table-header-area-main {
+  background-color: #F4F4F4;
+}
 .table-header-area {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-.table-header-area-main {
-  background-color: #ebeff4;
+
+.round-border {
+  border-radius: 0.5rem;
+  box-shadow: 0 0.063rem 0.25rem #02172e45;
+  border: 0.063rem solid #dde2e6;
 }
 
 .table-main {

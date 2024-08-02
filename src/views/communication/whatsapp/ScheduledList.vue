@@ -1,166 +1,391 @@
+
 <template>
-    <el-tooltip class="box-item" effect="dark" v-if="markedSchedules.length > 0" content="Delete schedule(s)"
-        placement="top-start">
-        <el-icon :size="20" class="mt-4 c-pointer" v-if="markedSchedules.length > 0"
-            @click="showConfirmModal('', 'multiple')">
-            <Delete />
-        </el-icon>
-    </el-tooltip>
-    <Table :data="scheduledWhatsappList" :headers="scheduledListHeaders" :checkMultipleItem="true"
-        @checkedrow="handleSelectionChange" v-loading="schedulesloading" class="mt-4">
-        <template #date="{ item }">
-            <span>
-                {{ formatDate(item.date) }}
-            </span>
-        </template>
-        <template #message="{ item }">
-            <span class="small-text">{{ item.message.length > 20 ? `${item.message.substring(0, 20)}...` : item.message
-            }}</span>
-        </template>
-        <template #chatRecipients="{ item }">
-            <span class="small-text">
-                <el-tag class="ml-2" type="info" v-for="(recipient, index) in item.chatRecipients" :key="index">{{ recipient
-                }}</el-tag>
-            </span>
-        </template>
-        <template #whatsappAttachment="{ item }">
-            <span class="small-text">
-                <span>{{ item.base64File ? item.whatsappAttachment.fileName : "-" }}</span>&nbsp;
-                <sub class="text-grey">{{ item.base64File ? formatBytes(item.whatsappAttachment.fileSize) : "-" }}</sub>
-            </span>
-        </template>
-        <template #action="{ item }">
-            <el-dropdown trigger="click">
-                <el-icon>
-                    <MoreFilled />
+  <div>
+    <div class="container-fluid">
+      <!-- Content Box -->
+      <main id="main" class="mt-3">
+        <div class="container-fluid px-0">
+          <div class="row px-0">
+            <div class="col-md-12 px-0">
+              <div class="text-head font-weight-bold text-black h2">Scheduled</div>
+              <div class="grey-backg py-2 border-radius-8 col-md-4">
+                <router-link
+                  to="/tenant/whatsapp/sent"
+                  class="text-decoration-none s-18 text-dak"
+                >
+                  <span class="linear-gradient">SMS>Scheduled Whatsapp</span>
+                </router-link>
+              </div>
+              <!-- <div class="row d-md-flex align-items-center justify-content-between mt-3 mb-4">
+                <div class="col-md-8 col-sm-12">
+                  <div class="search-div">
+                    <el-icon style="vertical-align: middle" class="search-sms mr-1">
+                      <Search />
+                    </el-icon>
+                    <input type="text" placeholder="Search here..." v-model="scheduledMssg" class="pl-4 w-100" />
+                  </div>
+                </div>
+                <div class="col-sm-5 col-md-4 mt-sm-2 units-container">
+                  <UnitsArea />
+                </div>
+              </div> -->
+
+              <div class="table-options mt-4" v-if="markedSchedules.length > 0">
+                <el-icon class="text-danger c-pointer" @click="showConfirmModal">
+                  <Delete />
                 </el-icon>
-                <template #dropdown>
-                    <el-dropdown-menu>
-                        <el-dropdown-item>
-                            View file
-                        </el-dropdown-item>
-                        <el-dropdown-item>
-                            <div @click.prevent="showConfirmModal(item.id, 'single')" class="text-color">
-                                Delete
-                            </div>
-                        </el-dropdown-item>
-                    </el-dropdown-menu>
+              </div>
+              <Table
+                :data="searchScheduleMssg"
+                :headers="scheduledSMSHeader"
+                :checkMultipleItem="true"
+                @checkedrow="handleSelectionChange"
+                v-loading="loading"
+              >
+                <!-- <template #subject="{ item }">
+                  <span>
+                    <span class="text-dak">{{
+                      !item.subject ? "(no subject)" : item.subject
+                    }}</span>
+                  </span>
+                </template> -->
+                <template #message="{ item }">
+                  <span class="text-dak">{{
+                    `${
+                      item.message ? item.message.split("").slice(0, 30).join("") : ""
+                    }...`
+                  }}</span>
                 </template>
-            </el-dropdown>
-        </template>
-    </Table>
+                <template #isExecuted="{ item }">
+                  <span class="small-text">{{
+                    item.isExecuted === false ? "No" : "Yes"
+                  }}</span>
+                </template>
+                <template #executionDate="{ item }">
+                  <span class="timestam small-text">{{
+                    item.date
+                  }}</span>
+                </template>
+                <template v-slot:action="{ item }">
+                  <el-dropdown trigger="click">
+                    <el-icon>
+                      <MoreFilled />
+                    </el-icon>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item>
+                          <div
+                            class="text-decoration-none text-color"
+                            @click="showConfirmModal(item.id)"
+                          >
+                            Delete
+                          </div>
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
+                </template>
+              </Table>
+              <div class="row" v-if="schedules.length === 0 && !loading">
+                <div class="col-md-12 d-flex justify-content-center">
+                  <span class="my-4 font-weight-bold">No scheduled mesages</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
 </template>
 
 <script>
-import { ref } from "vue"
-import Table from "@/components/table/Table";
-import store from '../../../store/store';
+import { onMounted, ref, computed } from "vue";
 import dateFormatter from "../../../services/dates/dateformatter";
+import axios from "@/gateway/backendapi";
+import store from "../../../store/store";
+import stopProgressBar from "../../../services/progressbar/progress";
 import { ElMessage, ElMessageBox } from "element-plus";
-import axios from '@/gateway/backendapi';
+import Table from "@/components/table/Table";
 
 export default {
-    components: {
-        Table
-    },
-    setup() {
-        const scheduledWhatsappList = ref(store.getters['communication/scheduledWhatsappList'])
-        const scheduledListHeaders = ref([
-            { name: 'DATE', value: 'date' },
-            { name: 'MESSAGE', value: 'message' },
-            { name: 'RECIPIENTS', value: 'chatRecipients' },
-            { name: 'ATTACHMENTS', value: 'whatsappAttachment' },
-            { name: 'ACTION', value: 'action' },
-        ])
-        const markedSchedules = ref([])
-        const schedulesloading = ref(false)
+  components: { Table },
+  setup() {
+    const schedules = ref(store.getters["communication/scheduledWhatsappList"]);
+    const loading = ref(false);
+    const scheduledMssg = ref("");
+    const scheduledSMSHeader = ref([
+      // { name: "SUBJECT", value: "subject" },
+      { name: "MESSAGE", value: "message" },
+      { name: "IS EXECUTED", value: "isExecuted" },
+      { name: "EXECUTION DATE", value: "executionDate" },
+      { name: "ACTION", value: "action" },
+    ]);
 
+    const getScheduledSMS = async () => {
+      try {
+        loading.value = true;
+        store.dispatch("communication/setScheduledWhatsappMessages").then((response) => {
+          loading.value = false;
+        schedules.value = response;
+        });
+        
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
+    const formattedDate = (date) => {
+      return dateFormatter.monthDayTime(date);
+    };
 
-        const whatsappScheduledList = async () => {
-            schedulesloading.value = true
-            try {
-                store.dispatch('communication/setScheduledWhatsappMessages').then(response => {
-                    console.log(response);
-                    scheduledWhatsappList.value = response
-                    schedulesloading.value = false
-                })
-            } catch (error) {
-                console.error(error);
-                schedulesloading.value = false
-            }
+    onMounted(() => {
+      getScheduledSMS();
+    });
+
+    const searchScheduleMssg = computed(() => {
+      if (scheduledMssg.value === "" && schedules.value.length > 0) {
+        return schedules.value;
+      }
+      return schedules.value.filter((i) =>
+        i.message.toLowerCase().includes(scheduledMssg.value.toLowerCase())
+      );
+    });
+
+    // code to mark single item in schedules
+    const markedSchedules = ref([]);
+
+    // function to delete schedules
+    const mainone = (k) => {
+      return k.map((i) => i.id).join(",");
+    };
+
+    const deleteSchedules = (id) => {
+      let sub = mainone(markedSchedules.value);
+      axios
+        .delete(
+          `api/Messaging/DeleteWhatsAppScheduledMessages?scheduledMessageIdList=${
+            sub ? sub : id
+          }`
+        )
+        .then(() => {
+          if (sub) {
+            schedules.value = schedules.value.filter((item) => {
+              const p = markedSchedules.value.findIndex((i) => i.id === item.id);
+              if (p >= 0) return false;
+              return true;
+            });
+            markedSchedules.value = [];
+          } else {
+            schedules.value = schedules.value.filter((del) => {
+              return del.id != id;
+            });
+          }
+          ElMessage({
+            type: "success",
+            message: "Scheduled Message deleted successfully",
+            duration: 5000,
+          });
+        })
+        .catch((err) => {
+          stopProgressBar();
+          ElMessage({
+            type: "error",
+            message: "Draft delete failed",
+            duration: 5000,
+          });
+          console.log(err);
+        });
+    };
+
+    const showConfirmModal = (id) => {
+      ElMessageBox.confirm(
+        "This delete action cannot be reversed. do you want to continue?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
         }
-        if (scheduledWhatsappList.value.length == 0) whatsappScheduledList()
+      )
+        .then(() => {
+          deleteSchedules(id);
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Delete canceled",
+          });
+        });
+    };
 
-        const deleteWhatsappSchedule = async (id, type) => {
-            let payload = type == 'single' ? id : markedSchedules.value.map(i => i.id).join(",")
-            try {
-                let { data } = await axios.delete(`/api/Messaging/DeleteWhatsAppScheduledMessages?scheduledMessageIdList=${payload}`)
-                whatsappScheduledList()
-                ElMessage({
-                    type: "success",
-                    message: data.message,
-                    duration: 5000,
-                });
+    const handleSelectionChange = (val) => {
+      markedSchedules.value = val;
+    };
 
-            } catch (error) {
-                console.error(error);
-            }
-        }
-
-        const formatDate = (date) => {
-            return dateFormatter.monthDayTime(date);
-        }
-
-        const formatBytes = (bytes, decimals = 2) => {
-            if (!+bytes) return '0 Bytes'
-
-            const k = 1024
-            const dm = decimals < 0 ? 0 : decimals
-            const sizes = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-
-            const i = Math.floor(Math.log(bytes) / Math.log(k))
-
-            return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
-        }
-
-        const showConfirmModal = (id, type) => {
-            ElMessageBox.confirm(
-                "Are you sure you want to proceed?",
-                "Confirm delete",
-                {
-                    confirmButtonText: "OK",
-                    cancelButtonText: "Cancel",
-                    type: "error",
-                }
-            )
-                .then(() => {
-                    deleteWhatsappSchedule(id, type);
-                })
-                .catch(() => {
-                    ElMessage({
-                        type: "info",
-                        message: "Delete canceled",
-                        duration: 5000,
-                    });
-                });
-        };
-
-        const handleSelectionChange = (value) => {
-            markedSchedules.value = value
-        }
-
-
-        return {
-            scheduledWhatsappList,
-            scheduledListHeaders,
-            formatDate,
-            formatBytes,
-            showConfirmModal,
-            markedSchedules,
-            handleSelectionChange,
-            schedulesloading
-        }
-    }
-}
+    return {
+      schedules,
+      loading,
+      formattedDate,
+      scheduledMssg,
+      searchScheduleMssg,
+      markedSchedules,
+      deleteSchedules,
+      showConfirmModal,
+      scheduledSMSHeader,
+      handleSelectionChange,
+    };
+  },
+};
 </script>
+
+<style scoped>
+.search-div {
+  padding: 10px;
+  background: #f5f8f9;
+  border-radius: 200px;
+}
+
+.search-div input {
+  background: none;
+  border: none;
+  outline: transparent;
+}
+
+.search-sms {
+  position: absolute;
+  top: 14px;
+}
+
+.table-options {
+  /* border: 1px solid rgb(212, 221, 227); */
+  border-bottom: none;
+  padding: 7px 7px 0 7px;
+}
+
+.compose-btn {
+  background: #136acd;
+  box-shadow: 0px 6px 12px #708eb170;
+  border-radius: 22px;
+  color: #fff;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-icon {
+  font-size: 20px;
+}
+
+.units-div {
+  border: 1px solid #dde2e6;
+  border-radius: 20px;
+  padding: 15px 0;
+  background: #f9a9a933 !important;
+}
+
+.hidden-header {
+  display: none;
+}
+
+.th {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.inbox-count {
+  background: rgba(19, 106, 205, 0.3);
+  padding: 4px 8px;
+  border-radius: 22px;
+}
+
+.menu-item-con {
+  color: #002044;
+  opacity: 0.5;
+}
+
+.menu-item-con.active {
+  background: rgba(19, 106, 205, 0.05);
+  border-left: 2px solid #136acd;
+  opacity: 1;
+}
+
+.buy-btn {
+  background: rgb(112, 142, 177, 0.33);
+  border-radius: 22px;
+}
+
+.btn-text {
+  opacity: 1;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.timestamp {
+  font-size: 14px;
+  color: #333333;
+  opacity: 0.5;
+}
+
+.view-btn {
+  background: #ebeff4;
+  border-radius: 21px;
+  padding: 4px 18px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.center-flexed {
+  display: flex;
+  justify-content: center;
+}
+
+.table-box {
+  border: 1px solid #4762f01f;
+}
+
+@media screen and (max-width: 767px) {
+  .hidden-header {
+    display: inline-block;
+    font-size: 12px;
+  }
+
+  .header-row {
+    display: none;
+  }
+
+  #menu-items {
+    flex-direction: row !important;
+  }
+
+  .search-div {
+    width: 100%;
+  }
+
+  .units-div {
+    width: 100%;
+  }
+
+  .units-container {
+    margin-left: 0;
+    margin: auto;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .msg-n-time {
+    flex-direction: column;
+    margin-bottom: 8px;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  #menu-items {
+    min-width: 100% !important;
+  }
+}
+</style>
+

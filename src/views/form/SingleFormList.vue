@@ -384,9 +384,9 @@
 
 <script>
 import { ref, computed, onMounted, watch, inject, watchEffect } from "vue";
-import Table from "@/components/table/Table";
 import pieChart from "@/components/charts/FormPieChart.vue";
 import monthDayTime from "../../services/dates/dateformatter";
+import monthDayYear from "../../services/dates/dateformatter";
 import finish from "../../services/progressbar/progress";
 import axios from "@/gateway/backendapi";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -398,7 +398,6 @@ import formsService from "../../services/forms/formservice";
 import { Search } from "@element-plus/icons-vue";
 export default {
   components: {
-    Table,
     pieChart,
   },
   setup() {
@@ -466,7 +465,7 @@ export default {
           fileHeaderToExport.value = labels.value.map((i) => i);
           fileToExport.value = formItems.value.map((obj) => {
             // if it has date property, formate the date value
-            obj.date ? (obj.date = monthDayTime.monthDayYear(obj.date)) : null;
+            obj.date ? monthDayYear.monthDayTime(obj.date) : null;
             let newObj = {};
             obj.data.forEach((prop, index) => {
               newObj[index] = prop.data;
@@ -538,7 +537,7 @@ export default {
           date: item.date,
         };
         item.data.forEach((dataItem) => {
-          const { label, data } = dataItem.customAttribute;
+          const { label } = dataItem.customAttribute;
           sortedItem[label] = dataItem && dataItem.data ? dataItem : "";
         });
 
@@ -847,7 +846,6 @@ export default {
 } */
 
 .table-header-area-main {
-  /* background-color: #ebeff4; */
   color: #334d6e !important;
   font-weight: 500 !important;
   font-size: 13px !important;

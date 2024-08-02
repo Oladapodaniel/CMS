@@ -111,6 +111,9 @@ rect.highcharts-background[fill] {
   .grey-backg {
     background: #EBEDFF !important;
   }
+  .report-tab{
+    background: #EDFDFF !important;
+  }
 
   .grey-border {
     border: 1px solid #DDE2E6;
@@ -138,6 +141,9 @@ rect.highcharts-background[fill] {
   .border-radius-20{
     border-radius: 20px !important;
     /* border: 1px solid #C9C9C9 !important; */
+  }
+  .border-botom{
+    border-bottom: 1px solid #B0B0B0 !important;
   }
 
   .border-no-radius{

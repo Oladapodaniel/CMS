@@ -3,6 +3,17 @@ import stopProgressBar from "../../services/progressbar/progress"
 
 
 const communicationService = {
+    async getAllSentWhatsapp() {
+        try {
+            const { data } = await axios.get(`/api/Messaging/getAllSentWhatsApp?page=1`);
+            return data;
+        } catch (error) {
+            
+            stopProgressBar();
+            console.log(error);
+            return false;
+        }
+    },
     async getAllSentSMS() {
         try {
             const { data } = await axios.get(`/api/Messaging/getAllSentSms?page=1`);

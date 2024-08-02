@@ -1,14 +1,21 @@
 <template>
   <div class="container-fluid" @click="closeDropdownIfOpen">
     <div class="row justify-content-between">
-      <div class="head-text">Group Summary Attendance Report</div>
-      <div class="my-sm-0 my-2 c-pointer">
+      <div class="mb-4">
+        <div class="text-head font-weight-bold h2 py-0 my-0 text-black ">Group Summary Attendance Report</div>
+        <div @click="goBack">
+          <span class="s-18 fw-400 cursor-pointer text-black">
+            <img src="../../../assets/goback.png" alt="" /> Go back</span
+          >
+        </div>
+      </div>
+      <div class="c-pointer">
         <el-dropdown trigger="click" class="w-100">
           <div
             class="d-flex justify-content-between default-btn text-dark w-100"
             size="large"
           >
-            <span class="mt-1">Export</span>
+            <span class="mt-1 primary--text">Export</span>
             <div class="mt-1">
               <el-icon class="el-icon--right">
                 <arrow-down />
@@ -34,13 +41,12 @@
       </div>
     </div>
     <div
-      class="row mt-4 py-4 px-3"
-      style="background: #ebeff4; border-radius: 0.5rem"
+      class="row grey-backg justify-content-center py-5 border-radius-8"
     >
-      <div class="col-sm-9">
+      <div class="col-md-10 col-12">
         <div class="row">
           <div class="col-sm-6">
-            <div class="font-weight-600">Select Event</div>
+            <div class="fw-400 mb-0  text-dak s-14">Select Event</div>
             <div class="mt-2">
               <el-select-v2
                 v-model="selectedEventID"
@@ -58,7 +64,7 @@
             </div>
           </div>
           <div class="col-sm-6">
-            <div class="font-weight-600">Select Group</div>
+            <div class="fw-400 mb-0  text-dak s-14">Select Group</div>
             <div class="mt-2">
               <button
                 class="form-control d-flex justify-content-between align-items-center exempt-hide"
@@ -113,7 +119,7 @@
             </div>
           </div>
           <div class="col-sm-6 mt-3">
-            <div class="font-weight-600">Start Date</div>
+            <div class="fw-400 mb-0  text-dak s-14">Start Date</div>
             <div class="mt-2">
               <el-date-picker
                 v-model="startDate"
@@ -125,7 +131,7 @@
             </div>
           </div>
           <div class="col-sm-6 mt-3">
-            <div class="font-weight-600">End Date</div>
+            <div class="fw-400 mb-0  text-dak s-14">End Date</div>
             <div class="mt-2">
               <el-date-picker
                 v-model="endDate"
@@ -138,16 +144,22 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-2 col-md-3 d-flex align-items-center">
-        <div
-          class="mt-2 text-center col-md-10 col-lg-10 col-10 c-pointer"
-          @click="getAttendanceReport"
-        >
-          <el-button round :color="primarycolor" :loading="loading">
-            Generate Report
-          </el-button>
+      <div class="col-md-12">
+          <div class="row justify-content-center align-items-center">
+            <div class="col-md-5 mt-4">
+              <div class="col-md-12" @click="getAttendanceReport">
+                <el-button
+                  round
+                  :color="primarycolor"
+                  :loading="loading"
+                  size="large"
+                  class="text-white py-4  w-100 c-pointer"
+                  >Generate Report
+                </el-button>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
     </div>
   </div>
   <div
@@ -159,14 +171,14 @@
       class="container-fluid d-flex justify-content-center my-2"
       v-if="displayTitle"
     >
-      <div class="head-text">Group Summary Attendance Report</div>
+      <div class="text-head font-weight-bold h2">Group Summary Attendance Report</div>
     </div>
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12 p-0 scroll-table">
           <table class="table table-hover" style="border-radius: 0" id="table">
             <thead>
-              <tr class="table-row-bg font-weight-bold">
+              <tr class="table-row-bg fw-500 s-14 text-dak">
                 <th>Group</th>
                 <th>Leader</th>
                 <th>Leader_Phone</th>
@@ -180,7 +192,7 @@
                 </th>
               </tr>
             </thead>
-            <tbody class="small-text font-weight-bold text-nowrap">
+            <tbody class="small-text fw-400 s-14 text-dak text-nowrap">
               <tr v-for="(item, index) in availabilityReport" :key="index">
                 <td>{{ item.groupName }}</td>
                 <td>{{ item.groupLeaderName }}</td>
@@ -213,6 +225,7 @@ import { ref, computed, nextTick, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import exportService from "../../../services/exportFile/exportservice";
 import html2pdf from "html2pdf.js";
+import router from "../../../router";
 import GroupTree from "../../groups/component/GroupTreeCheckboxParent.vue";
 import grouspService from "../../../services/groups/groupsservice";
 import dateFormatter from "../../../services/dates/dateformatter";
@@ -266,6 +279,10 @@ export default {
       }
     };
     getEvents();
+
+    const goBack = () => {
+      router.go(-1);
+    };
 
     const setSelectedEvent = () => {
       selectedEvent.value = events.value.find(
@@ -474,8 +491,7 @@ export default {
       groups,
       selectedEvent,
       getAttendanceReport,
-      startDate,
-      endDate,
+      goBack,
       selectedGroups,
       groupReport,
       groupedReport,
@@ -509,9 +525,6 @@ export default {
 </script>
 
 <style scoped>
-.header {
-  font: normal normal 800 29px Nunito sans;
-}
 /* .default-btn {
     font-weight: 600;
     white-space: initial;
@@ -562,6 +575,32 @@ export default {
 }
 
 .table-row-bg {
-  background: #ebeff4;
+  background: #F4F4F4;
+}
+
+.table {
+  width: 100% !important;
+  box-shadow: none !important;
+  border: none !important;
+  text-align: left;
+  margin-bottom: auto !important;
+  padding-bottom: 0.5rem;
+}
+
+.table thead th {
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+.table tbody tr{
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+}
+
+.table-header-area-main {
+  background-color: #F4F4F4;
 }
 </style>

@@ -61,10 +61,10 @@
 
 <script>
 import { ref, inject, onMounted, watchEffect, computed } from "vue";
-import axios from "@/gateway/backendapi";
+// import axios from "@/gateway/backendapi";
 import finish from "../../services/progressbar/progress";
 import FamilyList from "./FamilyList.vue";
-import Loader from "../accounting/offering/SkeletonLoader.vue";
+// import Loader from "../accounting/offering/SkeletonLoader.vue";
 import router from "../../router";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import store from "../../store/store";
@@ -73,7 +73,7 @@ import MemberCapExceeded from "@/components/membership/MembershipCapExceeded.vue
 export default {
   components: {
     FamilyList,
-    Loader,
+    // Loader,
     MemberCapExceeded
   },
   setup() {

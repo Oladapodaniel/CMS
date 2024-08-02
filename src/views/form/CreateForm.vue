@@ -3,6 +3,26 @@
     <div class="row">
       <div class="col-md-12 h2 font-weight-bold text-black text-head">Create Form</div>
     </div>
+    <!-- <div class="row">
+      <div class="col-md-12">
+      
+        <FileUpload
+          :is-loading="uploading"
+          label="Upload Avatar"
+          @uploaded="handleUploadProfileAvatar"
+        >
+          <template #upload-button="{ trigger }">
+            <div class="w-16 h-16 cursor-pointer" @click="trigger">
+              <div
+                class="w-full h-full flex items-center justify-center bg-gray-100 rounded text-white"
+              >
+                UpLoad picture
+              </div>
+            </div>
+          </template>
+        </FileUpload>
+      </div>
+    </div> -->
     <div class="row justify-content-center mt-4">
       <div class="col-md-8">
         <div class="row mt-3">
@@ -633,19 +653,21 @@
 </template>
 
 <script>
-import { ref, inject, computed, watch, onMounted } from "vue";
+import { ref, inject, computed } from "vue";
 import axios from "@/gateway/backendapi";
 import axio from "axios";
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessage } from "element-plus";
 import finish from "../../services/progressbar/progress";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import ContributionItems from "@/components/firsttimer/contributionItemModal";
+// import FileUpload from "../../components/image-picker/FileUpload.vue";
 import { useRoute } from "vue-router";
 import router from "../../router";
 import draggable from "vuedraggable";
 export default {
   components: {
     draggable,
+    // FileUpload,
     ContributionItems,
   },
   setup() {
@@ -665,6 +687,7 @@ export default {
     const nigerianBanks = ref([]);
     const accountResolving = ref(false);
     const dialogVisible = ref(false);
+    const networkError = ref(false);
     const checkedYes = ref(false);
     const currentInput = ref("");
     const selectedBank = ref("");
@@ -692,6 +715,14 @@ export default {
       { name: "Number", id: 5 },
       { name: "TextArea", id: 6 },
     ]);
+
+    const uploading = ref(false);
+
+    const handleUploadProfileAvatar = async (file) => {
+      uploading.value = true;
+      console.log("file", file);
+      uploading.value = false;
+    };
 
     const previewForm = () => {
       dialogVisible.value = true;
@@ -761,6 +792,7 @@ export default {
       });
       try {
         let data = await axios.put("/api/Forms/reOrderform", payload);
+        console.log(data);
         reoderloading.value = false;
         ElMessage({
           type: "success",
@@ -1055,7 +1087,7 @@ export default {
       accountName.value && selectedBank.value.code && accountNumber.value
         ? formData.append("paymentFormString", JSON.stringify(paymentForm))
         : null;
-        formData.append(
+      formData.append(
         "isAmountFIxed",
         paymentType.value || !paymentType.value ? paymentType.value : ""
       );
@@ -1196,6 +1228,7 @@ export default {
       accountResolving,
       accountName,
       nigerianBanks,
+      networkError,
       newConItems,
       reorderCustomField,
       previewForm,
@@ -1216,7 +1249,9 @@ export default {
       paymentType,
       bankCode,
       paymentFormID,
+      uploading,
       setChecked,
+      handleUploadProfileAvatar,
     };
   },
 };

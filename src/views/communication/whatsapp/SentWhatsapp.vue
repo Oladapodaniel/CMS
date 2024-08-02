@@ -5,10 +5,10 @@
       <main id="main" class="mt-3">
         <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
           <div>
-            <div class="text-head font-weight-bold h2 py-0 my-0 text-black">SMS</div>
-            <div class="s-18">Showing all SMS Data</div>
+            <div class="text-head font-weight-bold h2 py-0 my-0 text-black">Whatsapp</div>
+            <div class="s-18">Showing all Sent Whatsapp</div>
           </div>
-          <div class="d-flex flex-wrap flex-sm-nowrap mt-3 mt-sm-0">
+          <!-- <div class="d-flex flex-wrap flex-sm-nowrap mt-3 mt-sm-0">
             <div class="d-flex mt-1 w-100" @click="watchVideo">
               <span class="s-18 primary--text">Watch Video </span>
               <span class="mt-0 ml-1"
@@ -35,7 +35,7 @@
                       :to="`/tenant/sms/sent`"
                       class="no-decoration fw-400 text-black"
                     >
-                      <img src="../../assets/sent.png" alt="" />
+                      <img src="../../../assets/sent.png" alt="" />
                       Sent
                     </router-link>
                   </el-dropdown-item>
@@ -44,7 +44,7 @@
                       :to="`/tenant/sms/scheduled`"
                       class="no-decoration fw-400 text-black"
                     >
-                      <img src="../../assets/CalendarCheck.png" alt="" />
+                      <img src="../../../assets/CalendarCheck.png" alt="" />
                       Scheduled
                     </router-link>
                   </el-dropdown-item>
@@ -53,7 +53,7 @@
                       :to="`/tenant/sms/contacts`"
                       class="no-decoration text-black"
                     >
-                      <img src="../../assets/contactlist.png" alt="" />
+                      <img src="../../../assets/contactlist.png" alt="" />
                       Contact list
                     </router-link>
                   </el-dropdown-item>
@@ -62,20 +62,19 @@
                       :to="`/tenant/sms/draft`"
                       class="no-decoration text-black"
                     >
-                      <img src="../../assets/FileDashed.png" alt="" />
+                      <img src="../../../assets/FileDashed.png" alt="" />
                       Draft
                     </router-link>
                   </el-dropdown-item>
                   <el-dropdown-item class="text-black">
-                    <router-link :to="`/tenant/sms`" class="no-decoration text-black">
-                      <img src="../../assets/ArrowBendUpLeft.png" alt="" />
+                    <router-link :to="`/tenant/sms`" class="no-decoration../ text-black">
+                      <img src="../../../assets/ArrowBendUpLeft.png" alt="" />
                       <span> Replies</span>
                     </router-link>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
-            <!-- <el-button @click="importMembers" class="header-btn secondary-button" round>Import</el-button> -->
             <router-link :to="`/tenant/sms/compose`" class="no-decoration w-100">
               <el-button
                 :color="primarycolor"
@@ -84,7 +83,7 @@
                 >Send SMS</el-button
               >
             </router-link>
-          </div>
+          </div> -->
         </div>
         <div class="container-fluid mt-5">
           <div class="row px-0">
@@ -170,17 +169,10 @@
                 :checkMultipleItem="true"
                 @checkedrow="handleSelectionChange"
                 v-loading="loading"
+                v-if="searchedMessages && searchedMessages.length > 0 && !loading"
               >
                 <template #message="{ item }">
-                  <div>
-                    <router-link
-                      :to="{
-                        name: 'SendMessage',
-                        query: { messageId: item.id },
-                      }"
-                      class="text-decoration-none text-dak"
-                    >
-                      <!-- <el-tooltip class="box-item" effect="dark" :content="item.message" placement="top-start"> -->
+                  <div class="cursor-pointer" @click="composeWhatsapp(item.id)">
                       <span class="fw-400">{{
                         item.message && item.message.length > 25
                           ? `${item.message.split("").slice(0, 25).join("")}...`
@@ -188,21 +180,11 @@
                           ? item.message
                           : ""
                       }}</span>
-                      <!-- </el-tooltip> -->
-                    </router-link>
                   </div>
                 </template>
                 <template #dateSent="{ item }">
-                  <div>
-                    <router-link
-                      :to="{
-                        name: 'SendMessage',
-                        query: { messageId: item.id },
-                      }"
-                      class="text-decoration-none"
-                    >
+                  <div class="cursor-pointer" @click="composeWhatsapp(item.id)">
                       <span class="timestamp text-dak ml-1">{{ item.dateSent }}</span>
-                    </router-link>
                   </div>
                 </template>
                 <template v-slot:status="{ item }">
@@ -229,7 +211,7 @@
                   <div>
                     <router-link
                       :to="{
-                        name: 'DeliveryReport',
+                        name: 'WhatsappDeliveryReport',
                         params: { messageId: item.id },
                         query: { units: item.smsUnitsUsed },
                       }"
@@ -250,7 +232,7 @@
                             <router-link
                               :to="
                                 item.phone
-                                  ? `/tenant/sms/compose?phone=${item.phone}`
+                                  ? `/tenant/whatsapp/compose?phone=${item.phone}`
                                   : ''
                               "
                               :class="{
@@ -280,6 +262,11 @@
                   </div>
                 </template>
               </Table>
+              <div class="row " style="margin-top: 5rem" v-else>
+                <div class="col-md-12 py-4 text-center mt-3 fw-500 ">
+                  No data Found
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -288,7 +275,7 @@
           <div class="row">
             <div class="col-md-12 mb-3 pagination-container">
               <!-- <PaginationButtons @getcontent="getSMSByPage" :itemsCount="itemsCount" :currentPage="currentPage"
-                :totalItems="sentSMS.totalItems" /> -->
+                  :totalItems="sentSMS.totalItems" /> -->
               <el-pagination
                 v-model:current-page="serverOptions.page"
                 v-model:page-size="serverOptions.rowsPerPage"
@@ -332,12 +319,13 @@ import axios from "@/gateway/backendapi";
 import { computed, ref, onMounted, watch, inject } from "vue";
 import { useStore } from "vuex";
 // import store from "../../store/store";
-import UnitsArea from "../../components/units/UnitsArea";
-import stopProgressBar from "../../services/progressbar/progress";
+import UnitsArea from "../../../components/units/UnitsArea";
+import stopProgressBar from "../../../services/progressbar/progress";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Table from "@/components/table/Table";
+import router from "../../../router";
 import { Search } from "@element-plus/icons-vue";
-import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 
 export default {
   components: {
@@ -347,9 +335,9 @@ export default {
   setup() {
     const loading = ref(false);
     const store = useStore();
-    const sentSMS = ref(store.getters["communication/getSentSMS"].data);
+    const sentSMS = ref(store.getters["communication/getSentWhatsapp"].data);
     const searchText = ref("");
-    const totalItems = ref(store.getters["communication/getSentSMS"].totalItems);
+    const totalItems = ref(store.getters["communication/getSentWhatsapp"].totalItems);
     const showAddMemberVideo = ref(false);
     const primarycolor = inject("primarycolor");
     const videoURL = ref("https://www.youtube.com/embed/woeot9MAId8?si=SVsS8hJcYIzyPohR");
@@ -365,6 +353,21 @@ export default {
       page: 1,
       rowsPerPage: 50,
     });
+    const whatsappClientState = computed(() => {
+      return store.getters["communication/isWhatsappClientReady"];
+    });
+
+    const composeWhatsapp = (id) => {
+      if(whatsappClientState.value){
+        router.push(`/tenant/whatsapp?messageId=${id}`)
+      }else{
+        ElMessage({
+          type: "warning",
+          message: `Can't Access the page, Please Connect your Whatsapp`,
+          duration: 5000,
+        });
+      }
+    }
 
     watch(
       serverOptions.value,
@@ -377,7 +380,7 @@ export default {
     const getSentSMS = async () => {
       loading.value = true;
       try {
-        await store.dispatch("communication/getAllSMS").then((res) => {
+        await store.dispatch("communication/getAllSentWhatapp").then((res) => {
           loading.value = false;
           sentSMS.value = res.data;
           totalItems.value = res.totalItems;
@@ -392,7 +395,7 @@ export default {
       loading.value = true;
       try {
         const data = await axios.get(
-          `/api/Messaging/getAllSentSms?page=${serverOptions.value.page}`
+          `/api/Messaging/getAllSentWhatsApp?page=${serverOptions.value.page}`
         );
         loading.value = false;
         if (data) {
@@ -497,7 +500,7 @@ export default {
             duration: 5000,
           });
           marked.value.forEach((i) => {
-            store.dispatch("communication/removeSentSMS", i.id);
+            store.dispatch("communication/removeSentWhatsapp", i.id);
           });
           marked.value = [];
         })
@@ -576,6 +579,8 @@ export default {
       primarycolor,
       Search,
       watchVideo,
+      composeWhatsapp,
+      whatsappClientState
     };
   },
 };
@@ -685,10 +690,10 @@ export default {
 }
 
 /* .view-btn:hover {
-  cursor: pointer;
-  background-color: #136acd;
-  color: #fff;
-} */
+    cursor: pointer;
+    background-color: #136acd;
+    color: #fff;
+  } */
 
 .center-flexed {
   display: flex;
@@ -720,7 +725,7 @@ export default {
   /* border: 1px solid #d4dde3; */
   /* max-width: 83.333333% !important; */
 }
-.tab-options{
+.tab-options {
   position: relative;
 }
 

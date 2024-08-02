@@ -2,43 +2,63 @@
   <div class="container-fluid">
     <!-- header area -->
 
-    <div class="row d-flex flex-row justify-content-between mt-5 align-items-center">
-      <div class="centered-items">
-        <h3 class="heading-text ml-2">Accounting Transactions Report</h3>
+    <div class="row d-flex flex-row justify-content-between">
+      <div class="mb-4">
+        <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
+          Accounting Transactions Report
+        </div>
+        <div @click="goBack">
+          <span class="s-18 fw-400 cursor-pointer text-black">
+            <img src="../../../assets/goback.png" alt="" /> Go back</span
+          >
+        </div>
       </div>
     </div>
 
     <!--end of header area -->
     <!-- date area -->
 
-    <div class="row pl-1 pl-md-5 bg-area mt-sm-3">
-      <div class="col-md-4 col-sm-12 px-md-0">
+    <div class="row justify-content-center py-5 border-radius-8 grey-backg mt-sm-3">
+      <div class="col-md-5 col-sm-12 px-md-0">
         <div class="p-field p-col-12 pt-md-2 pb-2">
           <div>
-            <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
+            <label for="icon" class="fw-400 mb-0 text-dak s-14">Start Date</label>
           </div>
-          <el-date-picker v-model="startDate" type="date" format="DD/MM/YYYY" size="large" class="w-100" />
+          <el-date-picker
+            v-model="startDate"
+            type="date"
+            format="DD/MM/YYYY"
+            size="large"
+            class="w-100"
+          />
         </div>
       </div>
-      <div class="col-md-4 col-sm-12 pr-md-0">
+      <div class="col-md-5 col-sm-12 pr-md-0">
         <div class="p-field p-col-12 pt-md-2">
           <div>
-            <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+            <label for="icon" class="fw-400 mb-0 text-dak s-14">End Date</label>
           </div>
 
-          <el-date-picker v-model="endDate" type="date" format="DD/MM/YYYY" size="large" class="w-100" />
+          <el-date-picker
+            v-model="endDate"
+            type="date"
+            format="DD/MM/YYYY"
+            size="large"
+            class="w-100"
+          />
         </div>
       </div>
-      <div class="col-md-4 col-sm-12 pr-md-0">
-        <div class="p-field p-col-12 pt-md-2">
-          <el-button class="c-pointer mt-4" :color="primarycolor" round :loading="loading" @click="generateReport">
+      <div class="col-md-10 d-flex justify-content-center col-sm-12 pr-md-0">
+        <div class="p-field col-md-5">
+          <el-button
+            class="c-pointer w-100 py-4 mt-3"
+            :color="primarycolor"
+            :loading="loading"
+            round
+            @click="generateReport"
+          >
             Generate Report
           </el-button>
-          <!-- <button
-                            class="default-btn generate-report c-pointer font-weight-normal mt-4"
-                            @click="generateReport">
-                            Generate Report
-                    </button> -->
         </div>
       </div>
     </div>
@@ -48,7 +68,13 @@
       <section class="">
         <div class="chart">
           <div style="width: 45%" class="ml-md-4 chart1">
-            <ByGenderChart domId="chart" title="By Gender" distance="5" :titleMargin="10" :summary="firstTimerChart" />
+            <ByGenderChart
+              domId="chart"
+              title="By Gender"
+              distance="5"
+              :titleMargin="10"
+              :summary="firstTimerChart"
+            />
           </div>
         </div>
       </section>
@@ -56,10 +82,15 @@
       <section class="col-md-12 px-0">
         <!-- table header -->
         <div v-if="accountTransaction.length > 0">
-          <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness">
+          <div
+            class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness"
+          >
             <table class="table remove-styles mt-0 table-header-area">
               <thead class="table-header-area-main">
-                <tr class="text-capitalize text-nowrap font-weight-bold" style="border-bottom: 0; font-size: medium">
+                <tr
+                  class="text-capitalize text-nowrap font-weight-bold"
+                  style="border-bottom: 0; font-size: medium"
+                >
                   <th scope="col">Account Name</th>
                   <th scope="col">Reference Number</th>
                   <th scope="col">Description</th>
@@ -68,11 +99,19 @@
                   <th scope="col">Date</th>
                 </tr>
               </thead>
-              <tbody class="font-weight-bold text-nowrap mt-4" style="font-size: small" v-for="(fund, index) in funds"
-                :key="index">
+              <tbody
+                class="font-weight-bold text-nowrap mt-4"
+                style="font-size: small"
+                v-for="(fund, index) in funds"
+                :key="index"
+              >
                 <tr>
                   <!-- v-if="fund.name !== 'null' " -->
-                  <td v-if="fund.name !== 'null'" class="fundType-color" style="font-size: medium">
+                  <td
+                    v-if="fund.name !== 'null'"
+                    class="fundType-color"
+                    style="font-size: medium"
+                  >
                     {{ fund.name }}
                   </td>
                   <td></td>
@@ -89,11 +128,13 @@
                   <td>{{ account.refNumber }}</td>
                   <td>{{ account.description }}</td>
                   <td class="text-success font-weight-bolder">
-                    {{ account.currency ? account.currency.symbol : "" }}{{ account.debit.toLocaleString() }}.00
+                    {{ account.currency ? account.currency.symbol : ""
+                    }}{{ account.debit.toLocaleString() }}.00
                   </td>
                   <!-- <td class="credit" v-if="account.credit === 0 ? account.value : (account.value) ">({{ account.credit }}.00)</td> -->
                   <td class="text-danger font-weight-bolder">
-                    {{ account.currency ? account.currency.symbol : "" }}{{ Math.abs(account.credit).toLocaleString() }}.00
+                    {{ account.currency ? account.currency.symbol : ""
+                    }}{{ Math.abs(account.credit).toLocaleString() }}.00
                   </td>
                   <td>{{ formatDate(account.date) }}</td>
                 </tr>
@@ -102,7 +143,8 @@
                   <td></td>
                   <td></td>
                   <td class="text-success fund-answer">
-                    {{ currentUser.currencySymbol }} {{ total(fund.value, "debit").toLocaleString() }}.00
+                    {{ currentUser.currencySymbol }}
+                    {{ total(fund.value, "debit").toLocaleString() }}.00
                   </td>
                   <td class="text-danger fund-answer">
                     {{ currentUser.currencySymbol }} ({{
@@ -126,7 +168,8 @@
                   <td></td>
                   <td></td>
                   <td class="gross-total responsive-horizontalrule">
-                    {{ currentUser.currencySymbol }} {{ sumOfCreditAndDebit("debit").toLocaleString() }}.00
+                    {{ currentUser.currencySymbol }}
+                    {{ sumOfCreditAndDebit("debit").toLocaleString() }}.00
                     <hr class="horizontal-rule" />
                   </td>
                   <td class="gross-total responsive-horizontalrule">
@@ -154,9 +197,10 @@ import ByGenderChart from "@/components/charts/PieChart.vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter";
 import printJS from "print-js";
+import router from "../../../router";
 import exportService from "../../../services/exportFile/exportservice";
 import groupResponse from "../../../services/groupArray/groupResponse.js";
-import { useStore } from "vuex"
+import { useStore } from "vuex";
 
 export default {
   components: {
@@ -217,6 +261,10 @@ export default {
         });
     };
 
+    const goBack = () => {
+      router.go(-1);
+    };
+
     /* Code For Exporting File */
     const downloadFile = () => {
       exportService.downLoadExcel(
@@ -235,10 +283,7 @@ export default {
 
     // grouped different type of funds
     const groupedFundType = () => {
-      fundType.value = groupResponse.groupData(
-        accountTransaction.value,
-        "fund"
-      );
+      fundType.value = groupResponse.groupData(accountTransaction.value, "fund");
       console.log(fundType.value, "🎄🎄");
       for (const prop in fundType.value) {
         funds.value.push({
@@ -294,9 +339,10 @@ export default {
       showExport,
       bookTypeList,
       printJS,
+      goBack,
       selectedFileType,
       firstTimerChart,
-      currentUser
+      currentUser,
     };
   },
 };
@@ -361,12 +407,28 @@ export default {
 
 .table {
   width: 100% !important;
-  box-shadow: 0 0.063rem 0.25rem #02172e45;
-  border: 0.063rem solid #dde2e6;
-  border-radius: 30px;
+  box-shadow: none !important;
+  border: none !important;
   text-align: left;
   margin-bottom: auto !important;
   padding-bottom: 0.5rem;
+}
+
+.table thead th {
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+.table tbody tr{
+  font-weight: 400 !important;
+  color: #000000 !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+}
+
+.table-header-area-main {
+  background-color: #F4F4F4;
 }
 
 .table-header-area {
@@ -374,9 +436,6 @@ export default {
   border-top-right-radius: 0;
 }
 
-.table-header-area-main {
-  background-color: #ebeff4;
-}
 
 .table-main {
   width: 100% !important;

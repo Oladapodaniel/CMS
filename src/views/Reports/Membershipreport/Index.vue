@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid px-0">
-    <div class="row mt-5">
+    <div class="row mt-4">
       <div class="col-md-12 px-0 col-12 text-center">
         <div
           class="row tabl border-0 report d-flex justify-content-between p-2 p-md-4"
@@ -18,8 +18,8 @@
             >
               <router-link to="/tenant/reports/membershipreport" class="linked"
                 ><h4
-                  class="ju header4 d-md-flex justify-content-md-start"
-                  style="color: #136acd"
+                  class="ju header4 d-md-flex s-20 justify-content-md-start"
+                  style="color: #0B55D4"
                 >
                   Membership Report
                 </h4></router-link
@@ -32,7 +32,7 @@
               </router-link>
             </div>
             <div class="row">
-              <p class="ju mb-3 paragraph1">
+              <p class="ju mb-3 paragraph1 fw-400">
                 This reports provides a detailed report of the Membership in
                 your ministry.
               </p>
@@ -46,8 +46,8 @@
             >
               <router-link to="/tenant/reports/firsttimersreport" class="linked"
                 ><h4
-                  class="ju header4 d-md-flex justify-content-md-start"
-                  style="color: #136acd"
+                  class="ju header4 d-md-flex s-20 justify-content-md-start"
+                  style="color: #0B55D4"
                 >
                   First Timer Report
                 </h4></router-link
@@ -59,7 +59,7 @@
               ></router-link>
             </div>
             <div class="row">
-              <p class="ju mb-3 paragraph1">
+              <p class="ju mb-3 paragraph1 fw-400">
                 This reports provides a detailed report of the first timers in
                 your ministry.
               </p>
@@ -73,8 +73,8 @@
             >
               <router-link to="/tenant/reports/newconvertreport" class="linked"
                 ><h4
-                  class="ju header4 d-md-flex justify-content-md-start"
-                  style="color: #136acd"
+                  class="ju header4 d-md-flex s-20 justify-content-md-start"
+                  style="color: #0B55D4"
                 >
                   New Convert
                 </h4></router-link
@@ -86,7 +86,7 @@
               ></router-link>
             </div>
             <div class="row">
-              <p class="ju mb-3 paragraph1">
+              <p class="ju mb-3 paragraph1 fw-400">
                 This reports provides a detailed report of new converts in your
                 ministry.
               </p>
@@ -115,8 +115,8 @@
                 to="/tenant/reports/celebrationsreport"
                 class="linked"
                 ><h4
-                  class="ju header4 d-md-flex justify-content-md-start"
-                  style="color: #136acd"
+                  class="ju header4 d-md-flex s-20 justify-content-md-start"
+                  style="color: #0B55D4"
                 >
                   Birthday Report
                 </h4></router-link
@@ -128,7 +128,7 @@
               ></router-link>
             </div>
             <div class="row">
-              <p class="ju mb-3 paragraph1">
+              <p class="ju mb-3 paragraph1 fw-400">
                 This reports provides a detailed list of all the church contacts
                 celebrating their birthday within the selected period
               </p>
@@ -143,8 +143,8 @@
                 to="/tenant/reports/weddinganniversaryreport"
                 class="linked"
                 ><h4
-                  class="ju header4 d-md-flex justify-content-md-start"
-                  style="color: #136acd"
+                  class="ju header4 d-md-flex s-20 justify-content-md-start"
+                  style="color: #0B55D4"
                 >
                   Wedding Anniversary Report
                 </h4></router-link
@@ -156,7 +156,7 @@
               ></router-link>
             </div>
             <div class="row">
-              <p class="ju mb-3 paragraph1">
+              <p class="ju mb-3 paragraph1 fw-400">
                 This reports provides a detailed list of all the church contacts
                 celebrating their weddings within the selected period.
               </p>
@@ -190,14 +190,14 @@ export default {
   text-align: start;
 }
 .header4 {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 500;
 }
 .paragraph1 {
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #212529;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 27px;
+  color: #111111;
   background-color: #fff;
 }
 .rounded {

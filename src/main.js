@@ -14,12 +14,13 @@ import axios from "./gateway/backendapi";
 import NProgress from "nprogress";
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import Toaster from '@meforma/vue-toaster';
+import { Cropper } from 'vue-advanced-cropper'
 // import VueTelInput from 'vue3-tel-input'
 // import 'vue3-tel-input/dist/vue3-tel-input.css'
 import VueTelInput from 'vue-tel-input';
 import 'vue-tel-input/dist/vue-tel-input.css';
 // import "./styles/index.scss";
-import * as Sentry from "@sentry/vue";
+// import * as Sentry from "@sentry/vue";
 // if you just want to import css
 import 'element-plus/theme-chalk/dark/css-vars.css';
 
@@ -61,6 +62,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 
+
 AOS.init({
   duration: 1000, // You can customize the options here
 });
@@ -71,6 +73,7 @@ axios.interceptors.request.use((config) => {
   if (typeof window === 'undefined') return config;
   const token = localStorage.getItem('token');
   const checkinToken = localStorage.getItem('checkinToken');
+  console.log(checkinToken);
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -127,6 +130,7 @@ app.component("SplitButton", SplitButton);
 app.component("Checkbox", Checkbox);
 app.component("Tag", Tag);
 app.component("Editor", Editor);
+app.component('Cropper', Cropper)
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)

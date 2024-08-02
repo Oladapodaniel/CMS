@@ -5,7 +5,7 @@
         <div class="col-md-12 px-0">
           <div class="parent-table">
             <div
-              class="px-0 container-fluid mt-4"
+              class="px-0 container-fluid  mt-4"
               style="height: fit-content"
               :class="{
                 bordered: !showEditTransaction,
@@ -242,7 +242,7 @@
             </div>
 
             <div
-              class="table edit-transac col-12 border col-sm-10 col-md-8 w-100 w-sm-50 w-md-50 w-lg-50 col-lg-4 mobile-form mywidt"
+              class="table edit-transac   col-12 border col-sm-10 col-md-8 w-100 w-sm-50 w-md-50 w-lg-50 col-lg-4 mobile-form mywidt"
               v-if="showEditTransaction"
             >
               <TransferForm
@@ -328,7 +328,7 @@
   </div>
 </template>
 <script>
-import { ref, computed, inject, onMounted, watchEffect, watch } from "vue";
+import { ref, computed, inject, onMounted, watch } from "vue";
 import axios from "@/gateway/backendapi";
 import finish from "../../services/progressbar/progress";
 import TransactionForm from "../../views/accounting/transaction/EditTransaction";
@@ -379,7 +379,8 @@ export default {
     ]);
     // const types = ["assets", "liability", "income", "expense", "equity"];
     const handleSelectionChange = (val) => {
-      // checkedFirstTimer.value = val
+      // checkedFirstTimer.value = log
+      console.log(val, 'jjks');
     };
 
     const showReciept = () => {
@@ -674,6 +675,7 @@ export default {
     const amountWithCommas = (amount) => numbers_formatter.amountWithCommas(amount);
 
     const delTransaction = async (id, index) => {
+      console.log(index);
       refreshing.value = true;
       try {
         const response = await transaction_service.deleteTransaction(id);
@@ -1156,6 +1158,7 @@ html {
 
 .mobile-form {
   border-radius: 22px;
+  margin-top: 8.5rem;
 }
 
 .slide-form {
