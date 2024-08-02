@@ -807,7 +807,7 @@ export default {
 
         if (data.pledgeResponseDTO && Object.keys(data.pledgeResponseDTO).length > 0) {
           memberAlreadyPledgedToPledgeItem.value = true;
-          amountToPledge.value = data.pledgeResponseDTO.amount;
+          amountToPledge.value = data.pledgeResponseDTO.balance;
           amountToPayNow.value = data.pledgeResponseDTO.balance;
           // amountToPayNow.value = data.pledgeResponseDTO.balance
           pledgedData.value = data.pledgeResponseDTO;
