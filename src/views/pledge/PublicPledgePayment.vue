@@ -477,7 +477,7 @@
               </div>
             </div>
             <div class="col-md-12">
-              <div class="row  justify-content-center">
+              <div class="row justify-content-center">
                 <div class="col-10 col-sm-8 col-md-9">
                   <div class="row justify-content-center">
                     <!-- <div class="col-md-12 d-flex    "> -->
@@ -703,7 +703,7 @@ export default {
           personToggle.value = true;
           contactDetail.value = data.person ? data.person : {};
           donorDetail.value = data.pledgeItemDTO ? data.pledgeItemDTO : {};
-          amountToPledge.value = donorDetail.value.balance;
+          amountToPledge.value = donorDetail.value.donorPaymentSpecificAmount;
           maxEmail.value = contactDetail.value.email
             ? mask.maskEmail2(contactDetail.value.email)
             : "";
@@ -720,7 +720,7 @@ export default {
 
           if (data.pledgeResponseDTO && Object.keys(data.pledgeResponseDTO).length > 0) {
             memberAlreadyPledgedToPledgeItem.value = true;
-            amountToPledge.value = data.pledgeResponseDTO.amount;
+            amountToPledge.value = data.pledgeResponseDTO.balance;
             amountToPayNow.value = data.pledgeResponseDTO.balance;
             // amountToPayNow.value = data.pledgeResponseDTO.balance
             pledgedData.value = data.pledgeResponseDTO;
@@ -903,8 +903,14 @@ export default {
           selectPledgeItemID.value = contributionDetail.value.id;
           // selectedPledgeItem.value.name = contributionDetail.value.name
           // selectedPledgeItem.value = contributionDetail.value.id
-          churchLogo2.value = res.data.pledgeItemDTO.logo;
-          churchName.value = res.data.pledgeItemDTO.tenantName;
+          churchLogo2.value =
+            res.data && res.data.pledgeItemDTO && res.data.pledgeItemDTO.logo
+              ? res.data.pledgeItemDTO.logo
+              : "";
+          churchName.value =
+            res.data && res.data.pledgeItemDTO && res.data.pledgeItemDTO.tenantName
+              ? res.data.pledgeItemDTO.tenantName
+              : "";
           selectedCurrency.value = contributionDetail.value.currency;
           selectedCurrencyCode.value = contributionDetail.value.currency.shortCode;
           pledgePaymentForm.value = contributionDetail.value.fillPaymentFormDTO;
@@ -913,13 +919,19 @@ export default {
           console.log(2);
           console.log(res.data);
           let decomposedPledgeList = [{ ...res.data.pledgeItemDTO }];
-          contributionDetail.value = res.data.pledgeItemDTO;
+          contributionDetail.value = res.data && res.data.pledgeItemDTO ? res.data.pledgeItemDTO : {} ;
           contributionDetail.value.pledgeItemDTOs = decomposedPledgeList;
           selectPledgeItemID.value = contributionDetail.value.id;
           // selectedPledgeItem.value.name = contributionDetail.value.name
           // selectedPledgeItem.value = contributionDetail.value.id
-          churchLogo2.value = res.data.pledgeItemDTO.logo;
-          churchName.value = res.data.pledgeItemDTO.tenantName;
+          churchLogo2.value =
+            res.data && res.data.pledgeItemDTO && res.data.pledgeItemDTO.logo
+              ? res.data.pledgeItemDTO.logo
+              : "";
+          churchName.value =
+            res.data && res.data.pledgeItemDTO && res.data.pledgeItemDTO.tenantName
+              ? res.data.pledgeItemDTO.tenantName
+              : "";
           contactDetail.value = res.data.person;
           maxEmail.value =
             contactDetail.value && contactDetail.value.email
@@ -939,7 +951,7 @@ export default {
             : "";
           personToggle.value = true;
           donorDetail.value = res.data.pledgeItemDTO;
-          amountToPledge.value = res.data.pledgeResponseDTO.amount;
+          amountToPledge.value = res.data.pledgeResponseDTO.balance;
           pledgedData.value = res.data.pledgeResponseDTO;
           memberAlreadyPledgedToPledgeItem.value = true;
           selectedCurrency.value = res.data.pledgeResponseDTO.currency;

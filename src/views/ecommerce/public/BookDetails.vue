@@ -72,7 +72,7 @@ const reviews = ref([
       </div>
     </div>
   </div>
-  <div class="container mt-4">
+  <div class="container-slim mt-4">
     <div class="row">
       <div class="col-md-6">
         <img :src="book.image" alt="Book Image" class="img-fluid rounded" />
