@@ -110,7 +110,7 @@
                     :placeholder="item.label"
                   />
                   <el-input
-                    type="number"
+                    type="text"
                     v-if="item.controlType === 5"
                     class="w-100"
                     v-model="item.data"
@@ -124,15 +124,17 @@
                     :placeholder="item.label"
                   />
                   <el-input
+                    type="number"
+                    v-if="item.controlType === 8"
+                    class="w-100"
                     v-model="item.data"
-                    v-if="item.controlType === 7"
-                    type="text"
                     :placeholder="item.label"
                   />
                   <el-input
-                    v-model="item.data"
-                    v-if="item.controlType === 8"
                     type="text"
+                    v-if="item.controlType === 9"
+                    class="w-100"
+                    v-model="item.data"
                     :placeholder="item.label"
                   />
                   <span

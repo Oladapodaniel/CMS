@@ -615,8 +615,23 @@
                           :placeholder="item.label"
                         />
                         <el-input
-                          type="number"
+                          type="text"
                           v-if="item.controlType === 5"
+                          class="w-100"
+                          v-model="item.currentInput"
+                          :placeholder="item.label"
+                        />
+                        <el-input
+                          type="textarea"
+                          v-if="item.controlType === 6"
+                          class="w-100"
+                          :rows="3"
+                          v-model="item.currentInput"
+                          :placeholder="item.label"
+                        />
+                        <el-input
+                          type="number"
+                          v-if="item.controlType === 7"
                           class="w-100"
                           v-model="item.currentInput"
                           :placeholder="item.label"
@@ -712,10 +727,11 @@ export default {
       { name: "CheckBox", id: 2 },
       { name: "DateTime", id: 3 },
       { name: "Email", id: 4 },
-      { name: "Number", id: 5 },
+      { name: "Phone", id: 5 },
       { name: "TextArea", id: 6 },
-      { name: "Name", id: 7 },
-      { name: "Phone", id: 8 },
+      // { name: "Image", id: 7 },
+      { name: "Number", id: 8 },
+      { name: "Name", id: 9 },
     ]);
 
     const uploading = ref(false);
