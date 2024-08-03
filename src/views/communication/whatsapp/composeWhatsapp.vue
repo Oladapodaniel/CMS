@@ -1,7 +1,7 @@
 <template>
   <!-- <testing /> -->
   <div @click="hideEmojiWrapper">
-    <div class="container " >
+    <div class="container ">
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
         <div class="col-md-12 my-3 text-center text-md-left">
@@ -760,25 +760,25 @@ export default {
         groupRecipients: userWhatsappGroupsId.value ? userWhatsappGroupsId.value : [],
       }
 
-       const { status, message, communicationReportID } = await checkBilling(payload);
-       if (!status) {
-         swal({
-           title: "Oops 😬",
-           text: message,
-           buttons: ["Close", "Buy unit"],
-           icon: "info"
-         })
-           .then((value) => {
-             if (value) {
-               router.push({ name: 'BuyUnits', path: '/tenant/buyunits' })
-             }
-           })
-         return;
-       }
+      const { status, message, communicationReportID } = await checkBilling(payload);
+      if (!status) {
+        swal({
+          title: "Oops 😬",
+          text: message,
+          buttons: ["Close", "Buy unit"],
+          icon: "info"
+        })
+          .then((value) => {
+            if (value) {
+              router.push({ name: 'BuyUnits', path: '/tenant/buyunits' })
+            }
+          })
+        return;
+      }
 
-       if (status) {
+      if (status) {
         messageGroupID.value = communicationReportID;
-       }
+      }
 
 
       if (whatsappAttachment.value && whatsappAttachment.value.type?.includes('image')) {
@@ -876,7 +876,7 @@ export default {
 
       let formData = new FormData();
       formData.append("MediaFileImage", e.raw);
-      
+
       try {
         let { data } = await axios.post("/api/Media/UploadWhatsAppAttachment", formData);
         console.log(data);
@@ -886,7 +886,7 @@ export default {
       } catch (error) {
         console.error(error);
       }
-      
+
       if (e.raw.type.includes('image')) {
         fileAudio.value = false
         fileVideo.value = false
@@ -982,7 +982,7 @@ export default {
       let removeDuplicate = chatRecipients.value.filter(({ phoneNumber }, index) => !ids.includes(phoneNumber, index + 1))
       console.log(removeDuplicate)
 
-      
+
       if (userWhatsappGroupsId.value && userWhatsappGroupsId.value.length > 0) {
         const mappedGroup = userWhatsappGroupsId.value.map(i => ({
           name: "group",
@@ -1001,8 +1001,8 @@ export default {
         return;
       }
 
-       // Check for billing before sending the messages
-       const bilingPayload = {
+      // Check for billing before sending the messages
+      const bilingPayload = {
         message: editorData.value,
         sessionId: clientSessionId.value,
         chatRecipients: removeDuplicate,
@@ -1012,170 +1012,180 @@ export default {
 
       // Check for Billing;
       const { status, message, communicationReportID } = await checkBilling(bilingPayload);
-       if (!status) {
-         swal({
-           title: "Oops 😬",
-           text: message,
-           buttons: ["Close", "Buy unit"],
-           icon: "info"
-         })
-           .then((value) => {
-             if (value) {
-               router.push({ name: 'BuyUnits', path: '/tenant/buyunits' })
-             }
-           })
-         return;
-       }
-
-       if (status) {
-        messageGroupID.value = communicationReportID;
-       }
-      
-      let payload = {
-          chatRecipients: removeDuplicate,
-          message: editorData.value,
-          id: messageGroupID.value,
-          sessionId: clientSessionId.value,
-          date: scheduledWhatsappDate.value,
-          fileUrl: fileUrl.value ? JSON.stringify({ url: fileUrl.value, fileType: whatsappAttachment.value.type }) : ""
-        }
-
-      try {
-        let { data } = await axios.post("/api/Messaging/saveWhatsAppSchedule", payload)
-        // let { data } = await axios.post(whatsappServerBaseURL + "api/whatsapp/schedule", payload)
-        console.log(data, 'schedule successful');
-        whatsappScheduleDialog.value = false;
-        scheduleloading.value = false
+      if (!status) {
         swal({
-          title: "Success",
-          text: `Your Whatsapp message has been scheduled for\n${dateFormatter.monthDayTime(scheduledWhatsappDate.value)}`,
-          icon: "success",
+          title: "Oops 😬",
+          text: message,
+          buttons: ["Close", "Buy unit"],
+          icon: "info"
         })
+          .then((value) => {
+            if (value) {
+              router.push({ name: 'BuyUnits', path: '/tenant/buyunits' })
+            }
+          })
+        return;
+      }
 
-        // Reset data on page
-        phoneNumber.value = "";
-        selectedMembers.value = new Array();
-        editorData.value = "";
-        userWhatsappGroupsId.value = new Array();
-        allSelectedNumbers.value = new Array();
-        chatRecipients.value = new Array();
-        sendToAll.value = false;
-        groupSelectionTab.value = false;
-        membershipSelectionTab.value = false;
-        phoneNumberSelectionTab.value = false;
-        whatsappGroupSelectionTab.value = false;
-        groupMultipleIDs.value = new Array();
-        removeDuplicate = new Array()
-        handleRemove();
+      if (status) {
+        messageGroupID.value = communicationReportID;
       }
-      catch (err) {
-        scheduleloading.value = false
-        console.error(err);
+
+      let payload = {
+        chatRecipients: removeDuplicate,
+        message: editorData.value,
+        id: messageGroupID.value,
+        sessionId: clientSessionId.value,
+        date: scheduledWhatsappDate.value,
+        fileUrl: fileUrl.value ? JSON.stringify({ url: fileUrl.value, fileType: whatsappAttachment.value.type }) : ""
       }
+
+      // let payload = {
+      //   ChatRecipients: removeDuplicate,
+      //   Message: editorData.value,
+      //   ID: messageGroupID.value,
+      //   SessionId: clientSessionId.value,
+      //   Date: scheduledWhatsappDate.value,
+      //   FileUrl: fileUrl.value ? JSON.stringify({ url: fileUrl.value, fileType: whatsappAttachment.value.type }) : ""
+      // }
+    
+
+    try {
+      let { data } = await axios.post("/api/Messaging/saveWhatsAppSchedule", payload)
+      // let { data } = await axios.post(whatsappServerBaseURL + "api/whatsapp/schedule", payload)
+      console.log(data, 'schedule successful');
+      whatsappScheduleDialog.value = false;
+      scheduleloading.value = false
+      swal({
+        title: "Success",
+        text: `Your Whatsapp message has been scheduled for\n${dateFormatter.monthDayTime(scheduledWhatsappDate.value)}`,
+        icon: "success",
+      })
+
+      // Reset data on page
+      phoneNumber.value = "";
+      selectedMembers.value = new Array();
+      editorData.value = "";
+      userWhatsappGroupsId.value = new Array();
+      allSelectedNumbers.value = new Array();
+      chatRecipients.value = new Array();
+      sendToAll.value = false;
+      groupSelectionTab.value = false;
+      membershipSelectionTab.value = false;
+      phoneNumberSelectionTab.value = false;
+      whatsappGroupSelectionTab.value = false;
+      groupMultipleIDs.value = new Array();
+      removeDuplicate = new Array()
+      handleRemove();
     }
+    catch (err) {
+      scheduleloading.value = false
+      console.error(err);
+    }
+  }
 
 
     const removeTag = (value) => {
-      console.log(value);
-      selectedGroups.value = selectedGroups.value.filter(i => !i.data.includes(value))
-      getMemberPhoneNumber()
-    }
+    console.log(value);
+    selectedGroups.value = selectedGroups.value.filter(i => !i.data.includes(value))
+    getMemberPhoneNumber()
+  }
 
     return {
-      editorData,
-      editorConfig,
-      possibleSMSDestinations,
-      sendToAll,
-      // toggleGroupsVissibility,
-      selectedGroups,
-      selectGroup,
-      removeGroup,
-      showSection,
-      groupSelectionTab,
-      membershipSelectionTab,
-      phoneNumberSelectionTab,
-      categories,
-      allGroups,
-      selectedMembers,
-      removeMember,
-      selectMember,
-      searchText,
-      filteredMembers,
-      charactersCount,
-      pageCount,
-      phoneNumber,
-      searchForPerson,
-      loading,
-      memberSearchResults,
-      // groupListShown,
-      // showGroupList,
-      groupSelectInput,
-      memberSelectInput,
-      invalidDestination,
-      invalidMessage,
-      moment,
-      // isPersonalized,
-      route,
-      contactUpload,
-      uploadFile,
-      multipleContact,
-      // sendSMSToUploadedContacts,
-      session,
-      qrCode,
-      // createSessionForWhatsapp,
-      sessionId,
-      // getAllChats,
-      getSessionId,
-      // getSessionForWhatsapp,
-      // connected,
-      // connect,
-      // disconnect,
-      userWhatsappGroups,
-      primarycolor,
-      whatsappGroupSelectionTab,
-      userWhatsappGroupsId,
-      sendWhatsappMessage,
-      allSelectedNumbers,
-      allcountries,
-      getUser,
-      tenantCountry,
-      whatsappGroupsLoading,
-      handleEmojiClick,
-      displayEmoji,
-      chooseFile,
-      fileAudio,
-      fileImage,
-      fileVideo,
-      audioPlayer,
-      videoPlayer,
-      selectedFileUrl,
-      handleRemove,
-      whatsappAttachment,
-      clientSessionId,
-      base64String,
-      fileReady,
-      hideEmojiWrapper,
-      groupMembersData,
-      whatsappScheduleDialog,
-      scheduleWhatsappMessage,
-      scheduledWhatsappDate,
-      chatRecipients,
-      mdAndUp,
-      lgAndUp,
-      xlAndUp,
-      xsOnly,
-      groupMultipleIDs,
-      getMemberPhoneNumber,
-      removeTag,
-      scheduleloading,
-      toOthers,
-      memberdataloading,
-      // chunkProgress,
-      messageGroupID,
-      fileUrl,
-      iSoStringFormat
-    };
-  },
+    editorData,
+    editorConfig,
+    possibleSMSDestinations,
+    sendToAll,
+    // toggleGroupsVissibility,
+    selectedGroups,
+    selectGroup,
+    removeGroup,
+    showSection,
+    groupSelectionTab,
+    membershipSelectionTab,
+    phoneNumberSelectionTab,
+    categories,
+    allGroups,
+    selectedMembers,
+    removeMember,
+    selectMember,
+    searchText,
+    filteredMembers,
+    charactersCount,
+    pageCount,
+    phoneNumber,
+    searchForPerson,
+    loading,
+    memberSearchResults,
+    // groupListShown,
+    // showGroupList,
+    groupSelectInput,
+    memberSelectInput,
+    invalidDestination,
+    invalidMessage,
+    moment,
+    // isPersonalized,
+    route,
+    contactUpload,
+    uploadFile,
+    multipleContact,
+    // sendSMSToUploadedContacts,
+    session,
+    qrCode,
+    // createSessionForWhatsapp,
+    sessionId,
+    // getAllChats,
+    getSessionId,
+    // getSessionForWhatsapp,
+    // connected,
+    // connect,
+    // disconnect,
+    userWhatsappGroups,
+    primarycolor,
+    whatsappGroupSelectionTab,
+    userWhatsappGroupsId,
+    sendWhatsappMessage,
+    allSelectedNumbers,
+    allcountries,
+    getUser,
+    tenantCountry,
+    whatsappGroupsLoading,
+    handleEmojiClick,
+    displayEmoji,
+    chooseFile,
+    fileAudio,
+    fileImage,
+    fileVideo,
+    audioPlayer,
+    videoPlayer,
+    selectedFileUrl,
+    handleRemove,
+    whatsappAttachment,
+    clientSessionId,
+    base64String,
+    fileReady,
+    hideEmojiWrapper,
+    groupMembersData,
+    whatsappScheduleDialog,
+    scheduleWhatsappMessage,
+    scheduledWhatsappDate,
+    chatRecipients,
+    mdAndUp,
+    lgAndUp,
+    xlAndUp,
+    xsOnly,
+    groupMultipleIDs,
+    getMemberPhoneNumber,
+    removeTag,
+    scheduleloading,
+    toOthers,
+    memberdataloading,
+    // chunkProgress,
+    messageGroupID,
+    fileUrl,
+    iSoStringFormat
+  };
+},
 };
 </script>
 
