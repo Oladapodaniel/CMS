@@ -253,7 +253,13 @@
                       :selectedTriggerIndex="selectedTriggerIndex"
                       :condition="getTrigger(12)"
                     />
-                    <FromSubmission v-else-if="selectedTrigger.triggerType === 13" />
+                    <FromSubmission 
+                    @updatetrigger="updateTrigger"
+                    :selectedTriggerIndex="selectedTriggerIndex"
+                    @removetrigger="removeTrigger"
+                    :condition="getTrigger(13)"
+                    v-else-if="selectedTrigger.triggerType === 13" 
+                    />
                     <Individual
                       v-else-if="selectedTrigger.triggerType === 7"
                       :groups="groups"
@@ -705,6 +711,11 @@ export default {
         triggerType: 12,
       },
       {
+        name: "On Form Submission",
+        icon: "pi pi-book",
+        triggerType: 13,
+      },
+      {
         name: "Individual - Event",
         icon: "pi pi-book",
         triggerType: 7,
@@ -881,7 +892,7 @@ export default {
       let parsed = JSON.parse(data);
       console.log(parsed);
       let foo;
-      if (typeof parsed.groups !== "string") {
+      if (parsed.groups && typeof parsed.groups !== "string") {
         parsed.groups = parsed.groups.join(",");
       } else {
         parsed = data;
