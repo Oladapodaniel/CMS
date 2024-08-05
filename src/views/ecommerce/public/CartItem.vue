@@ -30,6 +30,8 @@ const cartItems = ref([
   },
 ]);
 
+const searchQuery = ref('');
+
 const increment = (item) => {
   item.quantity++;
 };

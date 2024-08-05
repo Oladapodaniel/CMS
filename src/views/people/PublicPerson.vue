@@ -971,7 +971,7 @@ export default {
         };
 
         branchItems.value = data;
-        branchList.value = data.branches;
+        branchList.value = data && data.branches ? data.branches : [];
         branchList.value.unshift(branchObj);
         if (branchList.value.length === 1) {
           getPeopleClassifications();
