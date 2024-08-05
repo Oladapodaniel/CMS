@@ -1,7 +1,9 @@
 <script setup>
 import { ref } from "vue";
 import Combien from "../../../assets/ecommerce/Combien.png";
+import AudioBookIcon from "../../../assets/ecommerce/audioBookIcon.png";
 import Products from "./component/Products.vue";
+import { Search } from "@element-plus/icons-vue";
 
 const goBack = () => {
   // Logic to navigate back
@@ -75,26 +77,47 @@ const reviews = ref([
   <div class="container-slim mt-4">
     <div class="row">
       <div class="col-md-6">
-        <img :src="book.image" alt="Book Image" class="img-fluid rounded" />
+        <img
+          :src="book.image"
+          alt="Book Image"
+          style="width: 32rem"
+          class="img-fluid rounded"
+        />
       </div>
       <div class="col-md-6">
-        <h2 class="font-weight-bold">{{ book.title }}</h2>
-        <p>
-          <strong>Author</strong>
-          <span class="text-muted">{{ book.author }}</span>
-        </p>
-        <h4 class="font-weight-bold">{{ book.price }}</h4>
-        <p>
-          <strong>Product Description</strong>
-          <span class="text-muted">{{ book.description }}</span>
-        </p>
-        <div class="d-flex justify-content-between align-items-center mt-4">
-          <button class="btn btn-outline-secondary">
-            <i class="fas fa-heart"></i> Add to favourite
-          </button>
-          <button class="btn btn-warning">
-            <i class="fas fa-shopping-cart"></i> Add to Cart
-          </button>
+        <div class="col-md-12 d-flex align-items-center justify-content-between">
+          <div class="fw-500 s-36 text-dak">{{ book.title }}</div>
+          <div class="s-13 fw-400 d-flex align-items-center"><img style="width: 20px" class="mr-1" :src="AudioBookIcon" alt=""><div>AudioBook</div></div>
+        </div>
+        <div class="col-md-12 mt-3 d-flex justify-content-between">
+          <div>
+            <div class="fw-400 s-24 text-grey-1">Author</div>
+            <span class="s-20 fw-500 text-dak">{{ book.author }}</span>
+          </div>
+          <h2 class="fw-500 text-dak">{{ book.price }}</h2>
+        </div>
+        <div class="col-md-12 mt-3">
+          <div class="text-grey-1 s-24">Product Description</div>
+          <div class="text-dak">{{ book.description }}</div>
+        </div>
+        <div class="col-md-12 mt-4">
+          <div class="row">
+            <div class="col-md-12">
+              <el-button round class="w-100 py-4">
+                Add to favourite <i class="fas fa-heart"></i>
+              </el-button>
+            </div>
+            <div class="col-md-12">
+              <el-button
+                size="large"
+                round
+                color="#FF5906"
+                class="mt-3 w-100 text-white py-4"
+              >
+              Add to Cart <i class="fas fa-shopping-cart"></i>
+              </el-button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
