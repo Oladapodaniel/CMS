@@ -57,6 +57,9 @@
 .s-10 {
   font-size: 10px !important;
 }
+.s-11 {
+  font-size: 11px !important;
+}
 .s-12 {
   font-size: 12px !important;
 }
@@ -116,6 +119,12 @@ rect.highcharts-background[fill] {
   .bg-gray-500{
     background: #F5F5F5 !important;
   }
+  .bg-gray-100{
+    background: #FBFBFB !important;
+  }
+  .bg-gray-600{
+    background: #EEEEEE !important;
+  }
 
   .light-grey-bg {
     background: rgb(235, 239, 244, .3)
@@ -150,8 +159,15 @@ rect.highcharts-background[fill] {
   .border-radius-10{
     border-radius: 8px !important;
   }
+  .border-radius-15{
+    border-radius: 15px !important;
+  }
   .border-radius-20{
     border-radius: 20px !important;
+    /* border: 1px solid #C9C9C9 !important; */
+  }
+  .border-radius-60{
+    border-radius: 60px !important;
     /* border: 1px solid #C9C9C9 !important; */
   }
   .border-botom{

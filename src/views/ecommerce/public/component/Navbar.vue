@@ -37,7 +37,7 @@ const createAccount = () => {
             <div class="collaps navbar-collaps row " id="navbarNav">
             <ul class="navbar-nav col-md-12 justify-content-between ">
               <li class="nav-item">
-                <a class="nav-link active" href="#">Home</a>
+                <router-link to="/store/home" class="nav-link active" href="#">Home</router-link>
               </li>
               <li class="nav-item dropdown">
                 <a
