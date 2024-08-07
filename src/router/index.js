@@ -754,6 +754,17 @@ const routes = [
                 },
                 {
 
+                    path: 'branchdashoboard',
+                    name: "NewMainBranch",
+                    meta: {
+                        title: 'Churchplus - Branch',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "addfirsttimer" */ '../views/branch/NewMainBranch')
+
+                },
+                {
+
                     path: 'addbranch',
                     name: "AddBranch",
                     meta: {
@@ -2112,6 +2123,15 @@ const routes = [
         component: () =>
             import( /* webpackChunkName: "Store" */ '../views/ecommerce/public/HomePage.vue'),
         children: [
+            {
+                path: 'home',
+                name: "LandingPage",
+                meta: {
+                    title: 'Churchplus - Ecommerce',
+                },
+                component: () =>
+                    import( /* webpackChunkName: "LandingPage" */ '../views/ecommerce/public/LandingPage.vue')
+            },
             {
                 path: 'login',
                 name: "PublicLogin",
