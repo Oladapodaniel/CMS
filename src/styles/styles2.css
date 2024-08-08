@@ -75,6 +75,10 @@
   font-size: 16px !important;
 }
 
+.upload-product .el-upload {
+  width: 100%;
+}
+
 .el-select-group__title {
   text-transform: uppercase !important;
   font-weight: 700;
