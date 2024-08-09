@@ -155,11 +155,21 @@
                         v-model="selectedCountryId"
                         :options="countries.map((i) => ({ label: i.name, value: i.id }))"
                         @change="setSelectedCountry"
+                        @click.native.stop
                         filterable
                         placeholder="Select country"
                         size="large"
                         class="w-100"
                       />
+                      <!-- <el-select-v2
+                        v-model="selectedCountryId"
+                        :options="countries.map((i) => ({ label: i.name, value: i.id }))"
+                        @change="setSelectedCountry"
+                        filterable
+                        placeholder="Select country"
+                        size="large"
+                        class="w-100"
+                      /> -->
                     </div>
                   </el-col>
                   <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
