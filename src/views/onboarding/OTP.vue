@@ -33,10 +33,12 @@
 
                     <br />
                     <span class="font-weight-600">
-                      {{ onboardingDatas ? onboardingDatas.email : "Email" }} and
+                      {{ onboardingDatas ? onboardingDatas.email : "Email" }} 
+                      <!-- and
                       {{
                         onboardingDatas ? onboardingDatas.phoneNumber : "Phone Number"
-                      }}</span
+                      }} -->
+                      </span
                     >
                   </span>
                 </div>

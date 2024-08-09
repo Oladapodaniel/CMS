@@ -177,6 +177,9 @@ rect.highcharts-background[fill] {
   .border-no-radius{
     border: 1px solid #C9C9C9 !important;
   }
+  .border-black{
+    border: 1px solid #000000 !important;
+  }
 
   .gray-text{
     color: #737373 !important;
