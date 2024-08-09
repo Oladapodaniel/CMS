@@ -1,6 +1,8 @@
 <script setup>
+import deviceBreakpoint from '../../../mixins/deviceBreakpoint';
 import HeaderSection from './component/HeaderSection.vue';
 
+const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
 const reviews = [
     {
         text: 'Best Book I have come across so far, I recommend you get own a copy in your Library,  I recommend you get own a copy in your Library.',
