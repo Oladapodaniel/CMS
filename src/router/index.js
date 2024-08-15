@@ -707,6 +707,17 @@ const routes = [
                         import( /* webpackChunkName: "branchreport" */ '../views/branch/report/BranchReport.vue')
 
                 },
+                {
+
+                    path: 'pastorinfo',
+                    name: "PastorInfo",
+                    meta: {
+                        title: 'Churchplus - Branch',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "pastorinfo" */ '../views/branch/subpages/PastorInfo.vue')
+
+                },
                 // {
 
                 //     path: 'branchincomestatementreport',
@@ -754,7 +765,18 @@ const routes = [
                 },
                 {
 
-                    path: 'branchdashoboard',
+                    path: 'hierarchicalbranch',
+                    name: "HierarchicalBranch",
+                    meta: {
+                        title: 'Churchplus - Branch',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "HierarchicalBranch" */ '../views/branch/HierarchicalBranch.vue')
+
+                },
+                {
+
+                    path: 'branchdashboard',
                     name: "NewMainBranch",
                     meta: {
                         title: 'Churchplus - Branch',

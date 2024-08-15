@@ -9,7 +9,35 @@
             <img src="../../assets/goback.png" alt="" /> Go back</span
           >
         </div>
-          <div class="row my-2 mt-2">
+        <div class="row my-1 mt-3">
+            <div class="col-md-10 offset-md-2">
+              <div class="row">
+                <div class="col-md-4 text-md-right align-self-center">
+                  <label for="" class="fw-500 text-head s-18 text-dak"> Hierarchy level <sup class="text-danger">*</sup>
+                  </label>
+                </div>
+                <div class="col-md-8">
+                  <el-tree-select v-model="value" class="w-100" :data="branches" :check-strictly="false"
+                    :render-after-expand="false" />
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="row my-1 mt-3">
+            <div class="col-md-10 offset-md-2">
+              <div class="row">
+                <div class="col-md-4 text-md-right align-self-center">
+                  <label for="" class="fw-500 text-head s-18 text-dak"> Branch you report to <sup class="text-danger">*</sup>
+                  </label>
+                </div>
+                <div class="col-md-8">
+                  <el-tree-select v-model="value" class="w-100" :data="branches" :check-strictly="false"
+                    :render-after-expand="false" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row my-2 mt-3">
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div class="col-md-4 text-md-right align-self-center">
@@ -34,20 +62,6 @@
 
                 <div class="col-md-8">
                   <el-input type="text" v-model="Address" placeholder="Address" class="w-100" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row my-1 mt-3">
-            <div class="col-md-10 offset-md-2">
-              <div class="row">
-                <div class="col-md-4 text-md-right align-self-center">
-                  <label for="" class="fw-500 text-head s-18 text-dak">Parent Branch <sup class="text-danger">*</sup>
-                  </label>
-                </div>
-                <div class="col-md-8">
-                  <el-tree-select v-model="value" class="w-100" :data="branches" :check-strictly="false"
-                    :render-after-expand="false" />
                 </div>
               </div>
             </div>
@@ -356,6 +370,7 @@ export default {
     const isNameValid = ref(true);
     const displayModal = ref(false);
     const isEmailValid = ref(true);
+    const errorMessage = ref('');
 
     const goBack = () => {
       router.go(-1);
@@ -418,6 +433,13 @@ export default {
     }
 
     const addBranch = async () => {
+      if (password.value !== confirmPassword.value) {
+        errorMessage.value = "Passwords do not match. Please try again.";
+      } else {
+        errorMessage.value = "";
+        // Proceed with further actions if needed
+        console.log("Passwords match!");
+      }
       if (value.value) {
         const formData = new FormData();
         formData.append("churchName", churchName.value ? churchName.value : "");
@@ -425,6 +447,8 @@ export default {
         formData.append("parentID", value.value ? value.value : "");
         formData.append("pastorName", pastorName.value ? pastorName.value : "");
         formData.append("email", pastorEmail.value ? pastorEmail.value : "");
+        formData.append("emailAddress", emailAddress.value ? emailAddress.value : "");
+        formData.append("password", password.value ? password.value : "");
         formData.append(
           "pastorPhone",
           pastorPhone.value ? pastorPhone.value : ""
@@ -549,6 +573,7 @@ export default {
       pastorEmail,
       pastorPhone,
       emailAddress,
+      errorMessage,
       password,
       confirmPassword,
       imageSelected,

@@ -232,7 +232,6 @@
                     round
                     color="#EBEDFF"
                     class="upload-area-btn py-4 px-5 w-100"
-                    @click="altClick"
                     v-if="!imageUrl"
                     >Upload</el-button
                   >

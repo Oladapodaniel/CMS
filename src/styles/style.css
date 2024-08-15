@@ -119,6 +119,9 @@ rect.highcharts-background[fill] {
   .bg-gray-500{
     background: #F5F5F5 !important;
   }
+  .bg-gray-400{
+    background: #F8F8F8 !important;
+  }
   .bg-gray-100{
     background: #FBFBFB !important;
   }

@@ -21,16 +21,49 @@
             </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item class="text-black"> Add Member </el-dropdown-item>
-                <el-dropdown-item class="text-black"> Add First timer </el-dropdown-item>
-                <el-dropdown-item class="text-black"> Send Sms </el-dropdown-item>
-                <el-dropdown-item class="text-black"> Send Email </el-dropdown-item>
-                <el-dropdown-item class="text-black"> Send Whatsapp </el-dropdown-item>
+                <el-dropdown-item class="text-black"
+                  ><router-link
+                    class="text-dak text-decoration-none"
+                    to="/tenant/people/add"
+                    >Add Member</router-link
+                  >
+                </el-dropdown-item>
+                <el-dropdown-item class="text-black">
+                  <router-link
+                    class="text-dak text-decoration-none cursor-pointer"
+                    to="/tenant/people/addfirsttimer"
+                    >Add First Timer</router-link
+                  >
+                </el-dropdown-item>
+                <el-dropdown-item class="text-black">
+                  <div @click="sendMarkedMemberSms">Send Sms</div>
+                </el-dropdown-item>
+                <el-dropdown-item class="text-black" @click="sendMarkedBranchEmail">
+                  Send Email
+                </el-dropdown-item>
+                <el-dropdown-item class="text-black" @click="displayWhatsappDrawer">
+                  Send Whatsapp
+                </el-dropdown-item>
+                <el-dropdown-item class="text-black w-100">
+                  <router-link
+                    class="text-black text-decoration-none w-100"
+                    to="/tenant/branch/hierarchicalbranch"
+                  >
+                    Hierarchy setup
+                  </router-link>
+                </el-dropdown-item>
                 <el-dropdown-item class="text-black font-weight-bold w-100">
-                  <div class="d-flex justify-content-between w-100">
-                    <span>Report </span>
-                    <span><img style="height: 1.5rem" :src="AnalysicIcon" alt="" /></span>
-                  </div>
+                  <router-link
+                    class="text-dak text-decoration-none w-100"
+                    to="/tenant/reports"
+                  >
+                    <div class="d-flex justify-content-between w-100">
+                      <span>Report </span>
+                      <span
+                        ><img style="height: 1.5rem" :src="AnalysicIcon" alt=""
+                      /></span>
+                    </div>
+                  </router-link>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -51,80 +84,128 @@
     <!-- Top Summary -->
     <div class="row">
       <div class="col-md-3 mb-4">
-        <div class="card border-radius-15 bg-gray-500 border-no-radius h-100 p-3">
-          <div class="card-icon my-2">
+        <div
+          class="card border-radius-15 bg-gray-500 border-no-radius h-100 pb-2 px-3 pt-1"
+          v-loading="branchLoading"
+        >
+          <div class="card-icon d-flex justify-content-between my-2">
             <img :src="BranchIcon" style="height: 3rem" alt="" />
+            <div class="mb-1">
+              <span class="card-text">Total People</span>
+              <h5 class="card-title text-right font-weight-600">
+                {{ getTotalPeopleBch.toLocaleString() }}
+              </h5>
+            </div>
           </div>
-          <div class="card-content mt-1">
-            <div class="d-flex justify-content-between mb-2">
+          <div class="card-content mt-3">
+            <div class="mb-2">
               <span class="card-text">Total Branches</span>
               <h5 class="card-title font-weight-600">
                 {{ allBranchDetail.length.toLocaleString() }}
               </h5>
             </div>
-            <div class="d-flex justify-content-between mb-1">
-              <span class="card-text">Total People</span>
-              <h5 class="card-title font-weight-600">
-                {{ getTotalPeopleBch.toLocaleString() }}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div
+          class="card border-radius-15 bg-gray-500 border-no-radius h-100 pb-2 px-3 pt-1"
+          v-loading="branchLoading"
+        >
+          <div class="card-icon my-2">
+            <img :src="WalkIcon" style="height: 3rem" alt="" />
+          </div>
+          <div class="card-content mt-3">
+            <div class="mb-2">
+              <span class="card-text">Average Attendance</span>
+              <h5 class="card-title s-24 font-weight-600">
+                {{ Math.round(getTotalAverageAttendance).toLocaleString() }}
               </h5>
             </div>
           </div>
         </div>
       </div>
       <div class="col-md-3 mb-4">
-        <div class="card border-radius-15 bg-gray-500 border-no-radius h-100 p-3">
-          <div class="card-icon my-2">
-            <img :src="WalkIcon" style="height: 3rem" alt="" />
-          </div>
-          <div class="card-content mt-1">
-            <div class="mb-2">
-              <span class="card-text">Average Monthly Attendance</span>
-            </div>
-            <div class="mb-1">
-              <h5 class="card-title s-24 font-weight-600">865</h5>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 mb-4">
-        <div class="card border-radius-15 bg-gray-500 border-no-radius h-100 p-3">
+        <div
+          class="card border-radius-15 bg-gray-500 border-no-radius h-100 pb-2 px-3 pt-1"
+          v-loading="branchLoading"
+        >
           <div class="card-icon d-flex justify-content-between my-2">
             <img :src="ArrowDown" style="height: 3rem" alt="" />
-            <span class="text-success d-flex align-items-center"
-              ><span>+23%</span><el-icon class="text-success" :size="25"><Top /></el-icon
-            ></span>
+            <div class="text-right">
+              <div class="s-15">Current year inflow</div>
+              <div class="font-weight-600 s-15">
+                {{
+                  allBranchDetail && allBranchDetail[0] && allBranchDetail[0].currency
+                    ? allBranchDetail[0].currency.shortCode
+                    : ""
+                }}
+                {{ Math.round(getCurrentYearInflow).toLocaleString() }}
+              </div>
+            </div>
           </div>
-          <div class="card-content mt-1">
+          <div class="card-content d-flex justify-content-between mt-3">
             <div class="mb-2">
-              <span class="card-text">Monthly Inflow</span>
+              <span class="card-text">{{ currentMonth }} Inflow</span>
+              <h5 class="card-title s-24 font-weight-600">
+                {{
+                  allBranchDetail && allBranchDetail[0] && allBranchDetail[0].currency
+                    ? allBranchDetail[0].currency.shortCode
+                    : ""
+                }}
+                {{ Math.round(getTotalMonthlyInflow).toLocaleString() }}
+              </h5>
             </div>
-            <div class="mb-1">
-              <h5 class="card-title s-24 font-weight-600">NGN 368,000</h5>
-            </div>
+            <span class="text-success d-flex align-items-center">
+              <span>+{{ Math.round(incomePercentage) }}%</span>
+              <el-icon class="text-success" :size="25"><Top /></el-icon>
+            </span>
           </div>
         </div>
       </div>
       <div class="col-md-3 mb-4">
-        <div class="card border-radius-15 bg-gray-500 border-no-radius h-100 p-3">
+        <div
+          class="card border-radius-15 bg-gray-500 border-no-radius h-100 pb-2 px-3 pt-1"
+          v-loading="branchLoading"
+        >
           <div class="card-icon d-flex justify-content-between my-2">
             <img :src="ArrowUp" style="height: 3rem" alt="" />
-            <span class="text-danger d-flex align-items-center"
-              ><span>+23%</span><el-icon class="text-danger" :size="25"><Top /></el-icon
-            ></span>
+            <div class="text-right">
+              <div class="s-15">Current year Outflow</div>
+              <div class="font-weight-600 s-15">
+                {{
+                  allBranchDetail && allBranchDetail[0] && allBranchDetail[0].currency
+                    ? allBranchDetail[0].currency.shortCode
+                    : ""
+                }}{{ Math.round(getCurrentYearOutflow).toLocaleString() }}
+              </div>
+            </div>
           </div>
-          <div class="card-content mt-1">
+          <div class="card-content d-flex justify-content-between mt-3">
             <div class="mb-1">
-              <span class="card-text">Monthly Outflow</span>
+              <span class="card-text"> {{ currentMonth }} Outflow</span>
+              <h5 class="card-title s-24 font-weight-600">
+                {{
+                  allBranchDetail && allBranchDetail[0] && allBranchDetail[0].currency
+                    ? allBranchDetail[0].currency.shortCode
+                    : ""
+                }}
+                {{ Math.round(getTotalMonthlyOutflow).toLocaleString() }}
+              </h5>
             </div>
-            <div class="mb-1">
-              <h5 class="card-title s-24 font-weight-600">NGN 6,414,000</h5>
-            </div>
+            <span class="text-danger d-flex align-items-center"
+              ><span>+{{ Math.round(expensePercentage) }}%</span
+              ><el-icon class="text-danger" :size="25"><Top /></el-icon
+            ></span>
           </div>
         </div>
       </div>
     </div>
     <!-- Branch Data Overview -->
-    <div class="table-responsive mt-4 border-radius-8 bg-gray-100 border-radius-border-8">
+    <div
+      class="table-responsive mt-4 border-radius-8 bg-gray-100 border-radius-border-8"
+      v-loading="branchLoading"
+    >
       <div class="row px-5 pt-4">
         <div
           class="col-md-12 align-items-center d-flex flex-column flex-sm-row justify-content-md-between"
@@ -148,7 +229,7 @@
                   </el-icon>
                 </span>
                 <template #dropdown>
-                  <el-dropdown-menu>
+                  <!-- <el-dropdown-menu>
                     <el-dropdown-item class="text-black"> Branch Name </el-dropdown-item>
                     <el-dropdown-item class="text-black">
                       Membership size
@@ -156,6 +237,23 @@
                     <el-dropdown-item class="text-black">Attendance </el-dropdown-item>
                     <el-dropdown-item class="text-black"> Income </el-dropdown-item>
                     <el-dropdown-item class="text-black"> Expense </el-dropdown-item>
+                  </el-dropdown-menu> -->
+                  <el-dropdown-menu @command="(command) => (sortOption.value = command)">
+                    <el-dropdown-item command="Branch Name" class="text-black"
+                      >Branch Name</el-dropdown-item
+                    >
+                    <el-dropdown-item command="Membership size" class="text-black"
+                      >Membership Size</el-dropdown-item
+                    >
+                    <el-dropdown-item command="Attendance" class="text-black"
+                      >Attendance</el-dropdown-item
+                    >
+                    <el-dropdown-item command="Income" class="text-black"
+                      >Income</el-dropdown-item
+                    >
+                    <el-dropdown-item command="Expense" class="text-black"
+                      >Expense</el-dropdown-item
+                    >
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -177,11 +275,12 @@
             <th>Branch</th>
             <th>Membership Size</th>
             <th>Avg. Attendance</th>
-            <th>Avg. Income</th>
-            <th>Avg. Expenses</th>
+            <th>Income</th>
+            <th>Expenses</th>
+            <th>Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="cursor-pointer">
           <tr v-for="(branch, index) in searchBranchDetail" :key="index">
             <td @click="viewBranch(branch)" class="fw-500">{{ branch.name }}</td>
             <td>{{ branch.membershipSize.toLocaleString() }}</td>
@@ -199,7 +298,7 @@
                   ? branch.currency.shortCode
                   : ""
               }}
-              {{ Math.abs(branch.currentYearAverageIncome).toLocaleString() }}
+              {{ Math.abs(branch.currentYearIncome).toLocaleString() }}
             </td>
             <td @click="viewBranch(branch)">
               {{
@@ -207,31 +306,57 @@
                   ? branch.currency.shortCode
                   : ""
               }}
-              {{ Math.abs(branch.currentYearAverageExpense).toLocaleString() }}
+              {{ Math.abs(branch.currentYearExpense).toLocaleString() }}
+            </td>
+            <td>
+              <el-dropdown trigger="click">
+                <el-icon>
+                  <MoreFilled />
+                </el-icon>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <!-- <el-dropdown-item>
+                      <router-link
+                        :to="`/tenant/pledge/makepledge?id=${item.id}`"
+                        class="text-color"
+                        >Edit</router-link
+                      >
+                    </el-dropdown-item> -->
+                    <el-dropdown-item>
+                      <div
+                        @click.prevent="showConfirmModal(branch.id, index)"
+                        class="text-color"
+                      >
+                        Delete
+                      </div>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
     <div class="container-fluid">
-      <div
-        class="row border mt-4"
-        v-loading="branchLoading"
-      >
+      <div class="row border mt-4" v-loading="branchLoading">
         <div class="adjust-view col-md-12 d-flex justify-content-end">
-          <div>
+          <div class="py-2 pl-4 primary--text s-15 bg-gray-500 fw-500">
             <el-dropdown trigger="click" class="w-100">
               <span class="el-dropdown-link w-100">
                 <div
-                  class="d-flex justify-content-between h5 text-secondary w-100"
+                  class="d-flex justify-content-between primary--text w-100"
                   size="large"
                 >
-                  <span>Sort By {{
-                    selectedWeekly && selectedWeekly.name
-                      ? selectedWeekly.name
-                      : selectedWeekly
-                  }}</span>
-                  <div>
+                  <span class="my-2"
+                    >Sort By
+                    {{
+                      selectedWeekly && selectedWeekly.name
+                        ? selectedWeekly.name
+                        : selectedWeekly
+                    }}</span
+                  >
+                  <div class="bg-white d-flex py-1 my-1">
                     <el-icon class="el-icon--right">
                       <arrow-down />
                     </el-icon>
@@ -251,12 +376,9 @@
             </el-dropdown>
           </div>
         </div>
-        <div class="col-md-12"  v-loading="branchLoading">
-          <ColumnChart
-            domId="chart2"
-            title="First Timer InFlow"
-          />
-        </div>
+        <!-- <div class="col-md-12" v-loading="branchLoading">
+          <ColumnChart domId="chart2" title="First Timer InFlow" />
+        </div> -->
         <!-- <div class="col-md-12" v-if="firstTimerWeeklyAtt" v-loading="loading">
           <ColumnChart
             domId="chart2"
@@ -268,11 +390,205 @@
         </div> -->
         <div class="col-md-12" v-loading="branchLoading">
           <ColumnChart
-            domId="chart2"
-            title="First Timer InFlow"
-
+            :series="series2"
+            :data="incomeExpenseCharrt"
+            header="Income vs Expense Trend"
+            domId="chart"
+            title="Showing All branch Data"
           />
-        <!-- <div class="col-md-12" v-if="firstTimerMonthlyAtt" v-loading="loading">
+          <!-- <div class="col-md-12" v-if="firstTimerMonthlyAtt" v-loading="loading">
+          <ColumnChart
+            domId="chart2"
+            :data="monthlyFirstTimerObj"
+            :series="series2"
+            title="First Timer InFlow"
+            :header="firstTimerHeader"
+          /> -->
+        </div>
+      </div>
+      <div class="row border mt-4" v-loading="branchLoading">
+        <div class="adjust-view col-md-12 d-flex justify-content-end">
+          <div class="py-2 pl-4 primary--text s-15 bg-gray-500 fw-500">
+            <el-dropdown trigger="click" class="w-100">
+              <span class="el-dropdown-link w-100">
+                <div
+                  class="d-flex justify-content-between primary--text w-100"
+                  size="large"
+                >
+                  <span class="my-2"
+                    >Sort By
+                    {{
+                      selectedCurrYear && selectedCurrYear.name
+                        ? selectedCurrYear.name
+                        : selectedCurrYear
+                    }}
+                  </span>
+                  <div class="bg-white d-flex py-1 my-1">
+                    <el-icon class="el-icon--right">
+                      <arrow-down />
+                    </el-icon>
+                  </div>
+                </div>
+              </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item
+                    v-for="(itm, indx) in currentYearItem"
+                    :key="indx"
+                    @click="selectedType(itm)"
+                    >{{ itm.name }}
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </div>
+        </div>
+        <!-- <div class="col-md-12" v-loading="branchLoading">
+          <ColumnChart domId="chart2" title="First Timer InFlow" />
+        </div> -->
+        <!-- <div class="col-md-12" v-if="firstTimerWeeklyAtt" v-loading="loading">
+          <ColumnChart
+            domId="chart2"
+            :data="weeklyFirstTimerObj"
+            :series="series2"
+            title="First Timer InFlow"
+            :header="firstTimerHeader"
+          />
+        </div> -->
+        <div class="col-md-12" v-loading="branchLoading">
+          <ColumnChart
+            :series="series"
+            :data="incomeExpenseChart"
+            header="Income vs Expense by Branch"
+            domId="chart3"
+          />
+          <!-- <div class="col-md-12" v-if="firstTimerMonthlyAtt" v-loading="loading">
+          <ColumnChart
+            domId="chart2"
+            :data="monthlyFirstTimerObj"
+            :series="series2"
+            title="First Timer InFlow"
+            :header="firstTimerHeader"
+          /> -->
+        </div>
+      </div>
+      <div class="row border mt-4" v-loading="branchLoading">
+        <div class="adjust-view col-md-12 d-flex justify-content-end">
+          <div class="py-2 pl-4 primary--text s-15 bg-gray-500 fw-500">
+            <el-dropdown trigger="click" class="w-100">
+              <span class="el-dropdown-link w-100">
+                <div
+                  class="d-flex justify-content-between primary--text w-100"
+                  size="large"
+                >
+                  <span class="my-2"
+                    >Sort By
+                    {{
+                      selectedWeekly && selectedWeekly.name
+                        ? selectedWeekly.name
+                        : selectedWeekly
+                    }}</span
+                  >
+                  <div class="bg-white d-flex py-1 my-1">
+                    <el-icon class="el-icon--right">
+                      <arrow-down />
+                    </el-icon>
+                  </div>
+                </div>
+              </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item
+                    v-for="(itm, indx) in chartItemdropdown"
+                    :key="indx"
+                    @click="selectedType2(itm)"
+                    >{{ itm.name }}
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </div>
+        </div>
+        <!-- <div class="col-md-12" v-loading="branchLoading">
+          <ColumnChart domId="chart2" title="First Timer InFlow" />
+        </div> -->
+        <!-- <div class="col-md-12" v-if="firstTimerWeeklyAtt" v-loading="loading">
+          <ColumnChart
+            domId="chart2"
+            :data="weeklyFirstTimerObj"
+            :series="series2"
+            title="First Timer InFlow"
+            :header="firstTimerHeader"
+          />
+        </div> -->
+        <div class="col-md-12" v-loading="branchLoading">
+          <LineChart
+            domId="Attendance"
+            :categories="series2"
+            title=""
+            header="Average Service Attendance"
+            :seriesData="averageAttendanceCharrt"
+          />
+        </div>
+      </div>
+      <div class="row border mt-4" v-loading="branchLoading">
+        <div class="adjust-view col-md-12 d-flex justify-content-end">
+          <div class="py-2 pl-4 primary--text s-15 bg-gray-500 fw-500">
+            <el-dropdown trigger="click" class="w-100">
+              <span class="el-dropdown-link w-100">
+                <div
+                  class="d-flex justify-content-between primary--text w-100"
+                  size="large"
+                >
+                  <span class="my-2"
+                    >Sort By
+                    {{
+                      selectedCurrYear && selectedCurrYear.name
+                        ? selectedCurrYear.name
+                        : selectedCurrYear
+                    }}</span
+                  >
+                  <div class="bg-white d-flex py-1 my-1">
+                    <el-icon class="el-icon--right">
+                      <arrow-down />
+                    </el-icon>
+                  </div>
+                </div>
+              </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item
+                    v-for="(itm, indx) in currentYearItem"
+                    :key="indx"
+                    @click="selectedType(itm)"
+                    >{{ itm.name }}
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </div>
+        </div>
+        <!-- <div class="col-md-12" v-loading="branchLoading">
+          <ColumnChart domId="chart2" title="First Timer InFlow" />
+        </div> -->
+        <!-- <div class="col-md-12" v-if="firstTimerWeeklyAtt" v-loading="loading">
+          <ColumnChart
+            domId="chart2"
+            :data="weeklyFirstTimerObj"
+            :series="series2"
+            title="First Timer InFlow"
+            :header="firstTimerHeader"
+          />
+        </div> -->
+        <div class="col-md-12" v-loading="branchLoading">
+          <ColumnChart
+            :series="series"
+            :data="averageAttendanceChart"
+            header="Service attendance by Branch"
+            domId="chart4"
+            title="Showing All branch Data"
+          />
+          <!-- <div class="col-md-12" v-if="firstTimerMonthlyAtt" v-loading="loading">
           <ColumnChart
             domId="chart2"
             :data="monthlyFirstTimerObj"
@@ -283,65 +599,397 @@
         </div>
       </div>
     </div>
-    <el-dialog class="border-radius-20" v-model="displayModal" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" align-center>
-      <div class="row ">
+    <div
+      class="no-person"
+      v-if="
+        !branchLoading && allBranchDetail && allBranchDetail.length === 0 && !networkError
+      "
+    >
+      <div class="empty-img">
+        <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
+        <p class="tip">You haven't added any Branch yet</p>
+        <el-button round class="header-btn" @click="showModal" :color="primarycolor">
+          Add Branch
+        </el-button>
+      </div>
+    </div>
+    <div class="adjust-network" v-else-if="networkError">
+      <img src="../../assets/network-disconnected.png" />
+      <div>Opps, Your internet connection was disrupted</div>
+    </div>
+    <el-drawer
+      v-model="showSMS"
+      :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
+      direction="rtl"
+    >
+      <template #header>
+        <h4>Send SMS</h4>
+      </template>
+      <template #default>
+        <div>
+          <smsComponent @closesidemodal="() => (showSMS = false)" />
+          <!-- <smsComponent :phoneNumbers="contacts" @closesidemodal="() => showSMS = false" /> -->
+        </div>
+      </template>
+    </el-drawer>
+    <el-drawer
+      v-model="showEmail"
+      :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
+      direction="rtl"
+    >
+      <template #header>
+        <h4>Send Email</h4>
+      </template>
+      <template #default>
+        <div>
+          <emailComponent @closesidemodal="() => (showEmail = false)" />
+        </div>
+      </template>
+    </el-drawer>
+    <el-drawer
+      v-model="showWhatsapp"
+      :size="mdAndUp || lgAndUp || xlAndUp ? '70%' : '100%'"
+      direction="rtl"
+    >
+      <template #default>
+        <div>
+          <whatSappComponent
+            :allBranchDetail="allBranchDetail"
+            @closesidemodal="() => (showWhatsapp = false)"
+          />
+        </div>
+      </template>
+    </el-drawer>
+    <el-skeleton class="w-100" animated v-if="branchLoading">
+      <template #template>
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+          "
+        >
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+          <el-skeleton-item variant="text" style="width: 240px; height: 240px" />
+        </div>
+        <el-skeleton class="w-100 mt-5" style="height: 25px" :rows="20" animated />
+      </template>
+    </el-skeleton>
+    <el-dialog
+      class="border-radius-20"
+      v-model="displayModal"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+      align-center
+    >
+      <div class="row">
         <div class="col-md-12 d-flex justify-content-center">
           <div class="text-dak s-24 fw-500">
             Which of these option best suit your intentions?
           </div>
         </div>
         <div class="col-md-12 mt-4">
-          <div class="row d-flex justify-content-center ">
-            <div class="col-md-6 d-flex flex-column align-items-center justify-content-center">
-              <el-button round size="large" @click="simpleBranch" :color="primarycolor" class="w-100 mb-3 py-4 text-center c-pointer">
-                <span class="fw-400 s-20">Simple branch network</span>
+          <div class="row d-flex justify-content-center">
+            <div
+              class="col-md-6 d-flex flex-column align-items-center justify-content-center"
+            >
+              <el-button
+                round
+                size="large"
+                @click="simpleBranch"
+                :color="primarycolor"
+                class="w-100 mb-3 py-4 text-center c-pointer"
+              >
+                <span class="fw-400">Simple Branch Setup</span>
               </el-button>
-              <el-button round size="large"  class=" w-100 border-black text-dak  py-4 mb-3 text-center c-pointer">
-                <span class="fw-400 s-20">Hierarchical Branch Network</span>
+              <el-button
+                round
+                size="large"
+                @click="hierarchicalBranch"
+                class="w-100 border-black text-dak py-4 mb-3 text-center c-pointer"
+              >
+                <span class="fw-400">Advance Branch Setup</span>
               </el-button>
             </div>
           </div>
         </div>
       </div>
     </el-dialog>
+    <el-dialog
+      v-model="displayHierarchiesModal"
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+      align-center
+    >
+      <div class="row">
+        <div class="col-md-12">
+          <HierarchiesSample />
+          <!-- <div class=" py-3 col-md-12">
+            <h5 class=" font-weight-700" id="importgroupModalLabel">
+              Church Hierarchies and Organisation Structure
+            </h5>
+          </div> -->
+
+          <!-- <div class="row">
+            <div class="col-md-12">
+              <div class="mb-3" style="font-size: 1.2em">
+                Set up your branch hierarchies, your branch hierarchies represent the church organisation structure,
+                Fill the form below to create yours. For example Headquarter,Regionetc.
+              </div>
+              <button
+                class="mt-3 mb-3 offset-5 col-4 default-btn primary-bg text-white font-weight-bold c-pointer border-0 text-center"
+                data-dismiss="modal" @click="goToAddBranch">
+                Proceed
+              </button>
+            </div>
+          </div> -->
+        </div>
+        <div class="col-md-12 d-flex justify-content-center">
+          <div class="col-md-6">
+            <el-button
+                class="mt-3 mb-3 w-100 primary-bg text-white text-center" @click="proceedToBranchHierachy">
+                Proceed
+              </el-button>
+          </div>
+        </div>
+      </div>
+      <!-- <BranchSettings /> -->
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { ref, inject, onMounted, computed } from "vue";
+import { ref, inject, onMounted, watch, computed, watchEffect } from "vue";
 import axios from "@/gateway/backendapi";
 import BranchIcon from "../../assets/ecommerce/branchIcon.png";
 import router from "../../router";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import AnalysicIcon from "../../assets/ecommerce/analysicIcon.png";
+import HierarchiesSample from "./component/HierarchiesSample.vue";
 import ArrowUp from "../../assets/ecommerce/ArrowUp.png";
 import ArrowDown from "../../assets/ecommerce/ArrowDown.png";
 import WalkIcon from "../../assets/ecommerce/WalkIcon.png";
+import LineChart from "@/components/charts/LineChart.vue";
 import ColumnChart from "@/components/charts/BranchColumnChart.vue";
+import whatSappComponent from "../groups/component/whatSappComponent.vue";
+import smsComponent from "../groups/component/smsComponent.vue";
+import emailComponent from "../groups/component/emailComponent.vue";
 import { Search } from "@element-plus/icons-vue";
 import { useRoute } from "vue-router";
 import store from "../../store/store";
-const tenantId = ref(
-      store.getters.currentUser && store.getters.currentUser.tenantId
-        ? store.getters.currentUser.tenantId
-        : 0
-    );
-// import router from "../../router";
+import { socket } from "@/socket";
+import swal from "sweetalert";
+import { ElMessage, ElMessageBox } from "element-plus";
 
 export default {
   components: {
-    ColumnChart
+    ColumnChart,
+    LineChart,
+    emailComponent,
+    whatSappComponent,
+    smsComponent,
+    HierarchiesSample,
   },
   setup() {
     const displayModal = ref(false);
+    const showSMS = ref(false);
+    const showEmail = ref(false);
     const networkError = ref(false);
+    const showWhatsapp = ref(false);
     const branchLoading = ref(false);
+    const firstTimerMonthlyAtt = ref(false);
+    const firstTimerWeeklyAtt = ref(false);
+    const sendWhatsappToMultiple = ref(false);
+    const mainIncomeExpenseData = ref([]);
+    const mainAverageAttData = ref([]);
+    const hierarchies = ref([]);
+    const displayHierarchiesModal = ref(false);
+    const series = ref([]);
     const route = useRoute();
+    const expenseData = ref([]);
+    const incomeData = ref([]);
+    const data1 = ref({});
+    const branchChatDetail = ref([]);
     const searchText = ref("");
+    const weekdays = ref(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]);
+    const attendanceData = ref([
+      {
+        name: "Attendance",
+        data: [12, 10, 8, 9, 7],
+      },
+    ]);
     const tenantInfo = ref({});
+    const tenantInfoFirstTimerMonthly = ref([]);
+    const averageAttData = ref([]);
+    const firstTimerDataExist = ref(false);
+    const sendingwhatsappmessage = ref(false);
+    const mappedBranch = ref([]);
+    const incomeExpenseCharrtData = ref([]);
+    const averageAttChartData = ref([]);
+    const xAxis = ref([]);
     const selectedWeekly = ref("Month");
+    const selectedCurrYear = ref("Current Year");
     const allBranchDetail = ref(store.getters["branch/getbranches"]);
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
+    const monthXaxis = ref([
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ]);
+
+    const sendMarkedMemberSms = () => {
+      showSMS.value = true;
+    };
+    const sendMarkedBranchEmail = () => {
+      showEmail.value = true;
+    };
+    const sortOption = ref(""); // Add this line
+
+    // Watch for changes in the sortOption to trigger sorting
+    watch(sortOption, (newSortOption) => {
+      sortBranches(newSortOption);
+    });
+
+    const currentMonth = ref("");
+
+    // Function to get the current month
+    const getCurrentMonth = () => {
+      const date = new Date();
+      // Get the month as a string (e.g., January, February)
+      const month = date.toLocaleString("default", { month: "long" });
+      currentMonth.value = month;
+    };
+
+    // Call the function when the component is mounted
+    onMounted(() => {
+      getCurrentMonth();
+    });
+    const proceedToBranchHierachy = () => {
+      displayModal.value = false;
+      router.push("/tenant/branch/hierarchicalbranch");
+    };
+
+    const hierarchicalBranch = () => {
+      if (hierarchies.value.length === 0) {
+        displayHierarchiesModal.value = true;
+      } else {
+        displayModal.value = false;
+        router.push("/tenant/branch/addbranch");
+      }
+    };
+
+    const getIncomeExpenseChartForBranches = async () => {
+      try {
+        const { data } = await axios.get(
+          "/api/Branching/GetIncomeExpenseChatDataForBranches"
+        );
+        incomeExpenseCharrtData.value = data.returnObject;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getIncomeExpenseChartForBranches();
+
+    const getAverageAttChartForBranches = async () => {
+      try {
+        const { data } = await axios.get(
+          "/api/Branching/GetaverageAttendanceChatDataForBranches"
+        );
+        averageAttChartData.value = data.returnObject;
+        console.log(data, "getAverageAttChartForBranches");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getAverageAttChartForBranches();
+
+    const incomeExpenseCharrt = computed(() => {
+      const incomeData = [];
+      const expenseData = [];
+
+      // Populate the arrays based on the raw data
+      incomeExpenseCharrtData.value.forEach((item) => {
+        incomeData.push(Math.abs(item.income)); // Add income to the incomeData array
+        expenseData.push(item.expense); // Add expense to the expenseData array
+      });
+
+      // Return the transformed data
+      return [
+        {
+          name: "Income",
+          color: "#08A53D",
+          data: incomeData,
+        },
+        {
+          name: "Expense",
+          color: "#F45C1A",
+          data: expenseData,
+        },
+      ];
+    });
+    const averageAttendanceCharrt = computed(() => {
+      const averageAttChart = [];
+
+      // Populate the arrays based on the raw data
+      averageAttChartData.value.forEach((item) => {
+        averageAttChart.push(Math.abs(item.attendance)); // Add income to the incomeData array
+      });
+
+      // Return the transformed data
+      return [
+        {
+          name: "Attendance",
+          color: "#0745AF",
+          data: averageAttChart,
+        },
+      ];
+    });
+
+    // Define the sorting function
+    const sortBranches = (criteria) => {
+      // Implement sorting logic based on the criteria
+      searchBranchDetail.value.sort((a, b) => {
+        switch (criteria) {
+          case "Branch Name":
+            return a.name.localeCompare(b.name);
+          case "Membership size":
+            return a.membershipSize - b.membershipSize;
+          case "Attendance":
+            return a.currentYearAverageAttendance - b.currentYearAverageAttendance;
+          case "Income":
+            return a.currentYearIncome - b.currentYearIncome;
+          case "Expense":
+            return a.currentYearExpense - b.currentYearExpense;
+          default:
+            return 0;
+        }
+      });
+    };
+    watchEffect(() => {
+      socket.on("messagesent", (data) => {
+        console.log(data, "status");
+
+        swal(" Success", "Whatsapp message sent successfully!", "success");
+        showWhatsapp.value = false;
+        sendingwhatsappmessage.value = false;
+      });
+    });
+    const displayWhatsappDrawer = (item) => {
+      showWhatsapp.value = true;
+      if (item) {
+        sendWhatsappToMultiple.value = false;
+      } else {
+        sendWhatsappToMultiple.value = true;
+      }
+    };
 
     const primarycolor = inject("primarycolor");
     const showModal = () => {
@@ -349,8 +997,43 @@ export default {
     };
     const chartItemdropdown = ref([
       { name: "Month", id: 1 },
-      { name: "Week", id: 2 },
+      // { name: "Week", id: 2 },
     ]);
+    const currentYearItem = ref([
+      { name: "Current Year", id: 1 },
+      // { name: "Week", id: 2 },
+    ]);
+    const tenantId = ref(
+      store.getters.currentUser && store.getters.currentUser.tenantId
+        ? store.getters.currentUser.tenantId
+        : 0
+    );
+    const series2 = computed(() => {
+      if (firstTimerWeeklyAtt.value === true) return xAxis.value;
+      return monthXaxis.value;
+    });
+    onMounted(() => {
+      for (let i = 1; i <= 52; i++) {
+        xAxis.value.push(i);
+      }
+      if (selectedWeekly.value === "Monthly") {
+        firstTimerMonthlyAtt.value = true;
+        getBranchTenantDashboard();
+      }
+    });
+
+    const getCurrentlySignedInUser = async () => {
+      try {
+        const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+        tenantId.value = res.data.tenantId;
+        console.log(tenantId.value, "hhgh");
+      } catch (err) {
+        /*eslint no-undef: "warn"*/
+        console.log(err);
+      }
+    };
+    getCurrentlySignedInUser();
+
     const viewBranch = (item) => {
       console.log(item, "mmmmmmmm");
       localStorage.setItem("branchId", item.id);
@@ -359,11 +1042,17 @@ export default {
     };
 
     const simpleBranch = () => {
-      router.push('/tenant/branch/simplebranch')
-    }
+      router.push("/tenant/branch/simplebranch");
+    };
+    // const hierarchicalBranch = () => {
+    //   router.push("/tenant/branch/hierarchicalbranch");
+    // };
 
     const selectedType2 = (item) => {
       selectedWeekly.value = item;
+    };
+    const selectedType = (item) => {
+      selectedCurrYear.value = item;
     };
     const getBranches = async () => {
       branchLoading.value = true;
@@ -383,6 +1072,191 @@ export default {
         }
       }
     };
+    const getFirtTimerSeris = () => {
+      branchChatDetail.value.forEach((i) => {
+        let serviceIndex = Object.keys(i).findIndex((i) => i === "name");
+        let serviceValue = Object.values(i)[serviceIndex];
+
+        series.value.unshift(serviceValue);
+      });
+    };
+    const getBranchChartDetail = async () => {
+      branchLoading.value = true;
+
+      try {
+        let { data } = await axios.get("/api/Branching");
+        console.log(data, "kkkk");
+        branchChatDetail.value = data.returnObject;
+        // getAverageIncomeChart.value = data.returnObject.map((i) => ({
+        //   name: i.name,
+        //   value: i.currentYearAverageIncome,
+        // }));
+        // getAverageAttendanceItem.value = data.returnObject.map((i) => ({
+        //   name: i.name,
+        //   value: i.currentYearAverageAttendance,
+        // }));
+        mappedBranch.value = branchChatDetail.value.map((i) => {
+          return {
+            mainID: i.id,
+            data: { name: i.name, avatar: i.logo, label: "CEO" },
+            parent: i.parentID,
+            styleClass: "p-person",
+          };
+        });
+        let matchedValues = [];
+
+        const allIDs = mappedBranch.value.map((i) => i.mainID);
+        let sum = 0;
+        allIDs.forEach((i) => {
+          mappedBranch.value.forEach((j, ind) => {
+            if (i == j.parent) {
+              j.id = ind;
+              j.parentid = sum;
+              matchedValues.push(j);
+            }
+          });
+          sum++;
+        });
+        const unflatten = function (array, parent, tree) {
+          tree = typeof tree !== "undefined" ? tree : [];
+          parent = typeof parent !== "undefined" ? parent : { id: 0 };
+          var children = _.filter(array, function (child) {
+            return child.parentid == parent.id;
+          });
+          if (!_.isEmpty(children)) {
+            if (parent.id == 0) {
+              tree = children;
+            } else {
+              parent["children"] = children;
+            }
+            _.each(children, function (child) {
+              unflatten(array, child);
+            });
+          }
+          return tree;
+        };
+        let treeConstruted = unflatten(matchedValues);
+        const HQ = branchChatDetail.value.find((i) =>
+          i.parentID.includes("00000000-000")
+        );
+        const belowHQ = branchChatDetail.value[0];
+        let treeData = {
+          key: "0",
+          type: "person",
+          styleClass: "p-hq",
+          data: {
+            label: HQ ? HQ : belowHQ,
+            name: HQ && HQ.name ? HQ.name : belowHQ.name,
+            avatar: HQ && HQ.logo ? HQ.logo : belowHQ.logo,
+          },
+          children: treeConstruted,
+        };
+        data1.value = treeData;
+        getFirtTimerSeris();
+        // averageIncomeChart(data.returnObject, "currentYearAverageIncome");
+        branchLoading.value = false;
+      } catch (error) {
+        console.log(error, "sssddsd");
+        branchLoading.value = false;
+        networkError.value = true;
+        if (error.toString().toLowerCase().includes("network error")) {
+          networkError.value = true;
+        } else {
+          networkError.value = false;
+        }
+      }
+    };
+    getBranchChartDetail();
+
+    const showConfirmModal = (id, index) => {
+      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "error",
+      })
+        .then(() => {
+          deleteBranch(id, index);
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Delete canceled",
+            duration: 5000,
+          });
+        });
+    };
+    const deleteBranch = (id) => {
+      axios
+        .delete(`/api/Branching/${id}`)
+        .then((res) => {
+          console.log(res);
+          ElMessage({
+            type: "success",
+            message: "Branch form deleted",
+            duration: 5000,
+          });
+          allBranchDetail.value = allBranchDetail.value.filter(
+            (branchlist) => branchlist.id !== id
+          );
+          // store.dispatch("pledge/removePledgeFromStore", id);
+        })
+        .catch((err) => {
+          if (err.response.status === 400) {
+            ElMessage({
+              type: "error",
+              message: "Unable to delete",
+              duration: 5000,
+            });
+          } else {
+            ElMessage({
+              type: "error",
+              message: "Unable to delete",
+              duration: 5000,
+            });
+          }
+        });
+    };
+
+    const incomeExpenseChart = computed(() => {
+      if (branchChatDetail.value.length === 0) return [];
+      branchChatDetail.value.forEach((i) => {
+        let incomeIndex = Object.keys(i).findIndex((i) => i === "currentYearIncome");
+        let incomeValue = Object.values(i)[incomeIndex];
+        incomeData.value.unshift(Math.abs(incomeValue));
+
+        let expenseIndex = Object.keys(i).findIndex((i) => i === "currentYearExpense");
+        let expenseValue = Object.values(i)[expenseIndex];
+        expenseData.value.unshift(expenseValue);
+      });
+
+      mainIncomeExpenseData.value.push({
+        name: " Income ",
+        color: "#08A53D",
+        data: incomeData.value,
+      });
+      mainIncomeExpenseData.value.push({
+        name: " Expenses ",
+        color: "#F45C1A",
+        data: expenseData.value,
+      });
+
+      return mainIncomeExpenseData.value;
+    });
+    const averageAttendanceChart = computed(() => {
+      if (branchChatDetail.value.length === 0) return [];
+      branchChatDetail.value.forEach((i) => {
+        let averageAttIndex = Object.keys(i).findIndex((i) => i === "currentYearExpense");
+        let averageAttValue = Object.values(i)[averageAttIndex];
+        averageAttData.value.unshift(averageAttValue);
+      });
+
+      mainAverageAttData.value.push({
+        name: " Attendance ",
+        color: "#0745AF",
+        data: averageAttData.value,
+      });
+      return mainAverageAttData.value;
+    });
 
     const getTotalPeopleBch = computed(() => {
       if (allBranchDetail.value && allBranchDetail.value.length > 0) {
@@ -393,6 +1267,73 @@ export default {
         return 0;
       }
     });
+    const getTotalMonthlyInflow = computed(() => {
+      if (allBranchDetail.value && allBranchDetail.value.length > 0) {
+        return allBranchDetail.value
+          .map((i) => i.currentMonthIncome)
+          .reduce((b, a) => b + a, 0);
+      } else {
+        return 0;
+      }
+    });
+    const getTotalAverageAttendance = computed(() => {
+      if (allBranchDetail.value && allBranchDetail.value.length > 0) {
+        return allBranchDetail.value
+          .map((i) => i.currentYearAverageAttendance)
+          .reduce((b, a) => b + a, 0);
+      } else {
+        return 0;
+      }
+    });
+    const getTotalMonthlyOutflow = computed(() => {
+      if (allBranchDetail.value && allBranchDetail.value.length > 0) {
+        return allBranchDetail.value
+          .map((i) => i.currentMonthExpense)
+          .reduce((b, a) => b + a, 0);
+      } else {
+        return 0;
+      }
+    });
+    const getCurrentYearInflow = computed(() => {
+      if (allBranchDetail.value && allBranchDetail.value.length > 0) {
+        return allBranchDetail.value
+          .map((i) => i.currentYearIncome)
+          .reduce((b, a) => b + a, 0);
+      } else {
+        return 0;
+      }
+    });
+    const getCurrentYearOutflow = computed(() => {
+      if (allBranchDetail.value && allBranchDetail.value.length > 0) {
+        return allBranchDetail.value
+          .map((i) => i.currentYearExpense)
+          .reduce((b, a) => b + a, 0);
+      } else {
+        return 0;
+      }
+    });
+    const lastMonthIncomeSum = computed(() => {
+      return allBranchDetail.value.reduce((sum, item) => {
+        return sum + (item.lastMonthIncome || 0);
+      }, 0);
+    });
+    const lastMonthExpenseSum = computed(() => {
+      return allBranchDetail.value.reduce((sum, item) => {
+        return sum + (item.lastMonthExpense || 0);
+      }, 0);
+    });
+    const expensePercentage = computed(() => {
+      return lastMonthExpenseSum.value === 0
+        ? 0
+        : (getTotalMonthlyOutflow.value / lastMonthExpenseSum.value) * 100;
+    });
+
+    const incomePercentage = computed(() => {
+      return lastMonthIncomeSum.value === 0
+        ? 0
+        : (getTotalMonthlyInflow.value / lastMonthIncomeSum.value) * 100;
+    });
+
     const searchBranchDetail = computed(() => {
       if (searchText.value !== "" && allBranchDetail.value.length > 0) {
         return allBranchDetail.value.filter((i) => {
@@ -404,43 +1345,57 @@ export default {
       }
     });
     const getBranchTenantDashboard = async () => {
-      branchLoading.value = true
+      branchLoading.value = true;
       try {
         const { data } = await axios.get(
           `/DashboardForTenant?_TenantId=${tenantId.value}`
         );
-        tenantInfo.value = data
-        console.log(tenantInfo.value, 'ghhs');
+        tenantInfo.value = data;
+        console.log(tenantInfo.value, "ghhs");
         // tenantInfoFirstTimerWeekly.value =
         //   data.firstTimerSummary.firstTimerWeekly;
-        // tenantInfoFirstTimerMonthly.value =
-        //   data.firstTimerSummary.firstTimerMonthly;
+        tenantInfoFirstTimerMonthly.value = data.firstTimerSummary.firstTimerMonthly;
 
-        // tenantInfoFirstTimerMonthly.value[0].data.forEach((element) => {
-        //   if (element > 0) {
-        //     firstTimerDataExist.value = true;
-        //   }
-        // });
-        branchLoading.value = false
+        tenantInfoFirstTimerMonthly.value[0].data.forEach((element) => {
+          if (element > 0) {
+            firstTimerDataExist.value = true;
+          }
+        });
+        branchLoading.value = false;
       } catch (error) {
         if (error.toString().toLowerCase().includes("network error")) {
-          networkError.value = true
+          networkError.value = true;
         } else {
-          networkError.value = false
+          networkError.value = false;
         }
-        branchLoading.value = false
+        branchLoading.value = false;
       }
     };
     getBranchTenantDashboard();
 
+    const monthlyFirstTimerObj = computed(() => {
+      if (!tenantInfoFirstTimerMonthly.value) return [];
+      // tenantInfoFirstTimerMonthly.value[0].color = '#002044';
+      return tenantInfoFirstTimerMonthly.value;
+    });
+
     onMounted(() => {
       if (allBranchDetail.value && allBranchDetail.value.length == 0) getBranches();
     });
-    
 
     return {
       tenantInfo,
+      mappedBranch,
       viewBranch,
+      averageAttendanceCharrt,
+      incomeExpenseCharrtData,
+      expensePercentage,
+      incomePercentage,
+      incomeExpenseCharrt,
+      averageAttChartData,
+      mainIncomeExpenseData,
+      lastMonthIncomeSum,
+      lastMonthExpenseSum,
       selectedWeekly,
       tenantId,
       getTotalPeopleBch,
@@ -455,14 +1410,57 @@ export default {
       ArrowDown,
       WalkIcon,
       AnalysicIcon,
+      firstTimerWeeklyAtt,
+      sendWhatsappToMultiple,
+      mainAverageAttData,
+      averageAttData,
       showModal,
+      hierarchies,
+      displayWhatsappDrawer,
+      firstTimerDataExist,
+      monthlyFirstTimerObj,
       searchText,
       searchBranchDetail,
+      tenantInfoFirstTimerMonthly,
+      firstTimerMonthlyAtt,
+      currentMonth,
       Search,
+      series2,
+      monthXaxis,
+      xAxis,
       chartItemdropdown,
       selectedType2,
+      selectedType,
       simpleBranch,
-      mdAndUp, lgAndUp, xlAndUp, xsOnly
+      hierarchicalBranch,
+      showConfirmModal,
+      proceedToBranchHierachy,
+      series,
+      currentYearItem,
+      incomeExpenseChart,
+      mdAndUp,
+      selectedCurrYear,
+      lgAndUp,
+      xlAndUp,
+      xsOnly,
+      data1,
+      attendanceData,
+      getTotalMonthlyInflow,
+      getTotalMonthlyOutflow,
+      getCurrentYearInflow,
+      getCurrentYearOutflow,
+      getTotalAverageAttendance,
+      weekdays,
+      showEmail,
+      showSMS,
+      showWhatsapp,
+      sendingwhatsappmessage,
+      incomeData,
+      expenseData,
+      averageAttendanceChart,
+      branchChatDetail,
+      sendMarkedMemberSms,
+      sendMarkedBranchEmail,
     };
   },
 };
@@ -483,7 +1481,7 @@ export default {
 }
 .card-text {
   margin: 0;
-  font-size: 15px;
+  font-size: 14px;
   color: #555555;
 }
 .card-title {
@@ -517,6 +1515,12 @@ export default {
   color: #787878;
   font-weight: 600 !important;
   border: none;
+}
+.adjust-view {
+  position: relative;
+  top: 35px;
+  right: 10px;
+  z-index: 1;
 }
 
 .table tbody tr:hover {

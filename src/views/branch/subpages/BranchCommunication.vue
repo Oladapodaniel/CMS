@@ -109,13 +109,13 @@ import whatSappComponent from "../../groups/component/whatSappComponent.vue";
 import { socket } from "@/socket";
 // import { ElMessage } from "element-plus";
 import swal from "sweetalert";
-import AuthenticateWhatsapp from "../../../components/whatsapp/AuthenticateWhatsapp.vue";
+// import AuthenticateWhatsapp from "../../../components/whatsapp/AuthenticateWhatsapp.vue";
 export default {
      components: {
     whatSappComponent,
     emailComponent,
     smsComponent,
-    AuthenticateWhatsapp,
+    // AuthenticateWhatsapp,
   },
     setup() {
 

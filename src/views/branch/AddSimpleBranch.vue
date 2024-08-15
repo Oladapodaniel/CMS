@@ -73,8 +73,8 @@
           </div> -->
           <div class="row my-1 mt-3">
             <div class="col-md-10 offset-md-2">
-              <div class="col-md-6 mb-4 mt-5">
-                <div class="text-head font-weight-600 h2 py-0 my-0 text-black">
+              <div class="col-12 mb-4 mt-5">
+                <div class="text-head font-weight-600 h3 py-0 my-0 text-black">
                   Pastor's information
                 </div>
               </div>
@@ -141,8 +141,8 @@
           </div>
           <div class="row my-1 mt-3">
             <div class="col-md-10 offset-md-2">
-              <div class="col-md-6 mb-4 mt-5">
-                <div class="text-head font-weight-600 h2 py-0 my-0 text-black">
+              <div class="col-12 mb-4 mt-5">
+                <div class="text-head font-weight-600 h3 py-0 my-0 text-black">
                   Login Credentials
                 </div>
               </div>
@@ -158,7 +158,7 @@
                     placeholder="email"
                     class="w-100"
                     :class="{ 'is-invalid': !isEmailValid }"
-                    @blur="checkEmailValue"
+                    @blur="checkLoginEmail"
                   />
                   <div class="invalid-feedback">Please enter your email.</div>
                 </div>
@@ -199,8 +199,13 @@
                     type="password"
                     placeholder="*******"
                     v-model="confirmPassword"
+                    :class="{ 'is-invalid': !errorMessage }"
+                    @input="checkPassword"
                     class="w-100"
                   />
+                  <div v-if="password !== confirmPassword" class="invalid-feedback">
+                    Passwords do not match. Please try again
+                  </div>
                 </div>
               </div>
             </div>
@@ -327,11 +332,6 @@
         <div class="col-md-6 offset-md-3 mt-4">
           <div class="row d-flex flex-column align-items-center justify-content-center">
             <div class="mt-4 col-md-7">
-              <el-button class="w-100 py-4 " color="#FF5500" @click="generateCodeModal" round size="large">
-                <span class="fw-400 s-18">Generate Branch Code</span>
-              </el-button>
-            </div>
-            <div class="mt-4 col-md-7">
               <el-button
                 :loading="loading"
                 :color="primarycolor"
@@ -340,12 +340,23 @@
                 class="w-100 border-0 py-4 text-white"
                 @click="addBranch"
               >
-                <span class="font-weight-600 s-18">Save</span>
+                <span class="fw-400">Save</span>
               </el-button>
             </div>
-            <div class="mt-4 col-md-7">
+            <div class="mt-3 col-md-7">
+              <el-button
+                class="w-100 border-0 py-4"
+                @click="generateCodeModal"
+                round
+                color="#333434"
+                size="large"
+              >
+                <span class="fw-400 text-white">Generate Branch Code</span>
+              </el-button>
+            </div>
+            <div class="mt-2 col-md-7">
               <el-button class="w-100" round size="large border-0" data-dismiss="modal"
-                ><span class="fw-400 s-18 text-dak">Cancel</span></el-button
+                ><span class="fw-400 text-dak">Cancel</span></el-button
               >
             </div>
           </div>
@@ -359,58 +370,67 @@
     v-model="displayModal"
     :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
     align-center
+    class="border-radius-20"
   >
     <div class="row">
       <div class="col-md-12 pr-2">
-        <div class="py-3">
-          <h5 class="modal-title font-weight-700" id="codemodalModalLabel">
-            Generate your branch code.
-          </h5>
-        </div>
-        <div class="row">
-          <div class="col-12 mb-2">
-            Select the branch level you want your code to be generated with, then copy the
-            generated code.
-          </div>
+        <div class="row justify-content-center">
+          <div class="col-md-10">
+            <div class="row">
+              <div class="col-md-12 text-center">
+                <h4 class=" text-dak fw-500" id="codemodalModalLabel">
+                  Generate your branch code
+                </h4>
+              </div>
+              <div class="col-md-12 s-18 fw-300 text-dak text-center mb-3">
+                Select the branch level you want your code to be generated with, then copy
+                the generated code.
+              </div>
 
-          <div class="col-9 mt-2">
-            <el-tree-select
-              v-model="value"
-              class="w-100"
-              :data="branches"
-              :check-strictly="false"
-              :render-after-expand="false"
-            />
-          </div>
-          <el-button
-            round
-            :color="primarycolor"
-            :loading="loadingCode"
-            size="large"
-            class="mt-2 mb-3 col-2 text-white font-weight-bold c-pointer border-0 text-center"
-            @click="generateCode"
-          >
-            Generate
-          </el-button>
-          <div class="col-md-9 d-flex mb-3" v-if="requestedCode">
-            <el-input
-              type="text"
-              class="w-100"
-              placeholder="Heres your code"
-              :value="requestedCode"
-              ref="code"
-              aria-describedby="basic-addon1"
-            />
-            <div class="input-group-prepend">
-              <span
-                class="input-group-text c-pointer"
-                id="basic-addon1"
-                @click="copyCode"
-              >
-                <el-icon>
-                  <CopyDocument />
-                </el-icon>
-              </span>
+              <div class="col-md-12 mt-2">
+                <el-tree-select
+                  v-model="value"
+                  class="w-100"
+                  :data="branches"
+                  :check-strictly="false"
+                  :render-after-expand="false"
+                />
+              </div>
+              <div class="col-md-12 d-flex justify-content-center">
+                <div class="col-md-6 mt-3">
+                  <el-button
+                    round
+                    :color="primarycolor"
+                    :loading="loadingCode"
+                    size="large"
+                    class="mt-2 w-100 mb-3 py-4 text-white c-pointer border-0 text-center"
+                    @click="generateCode"
+                  >
+                    <span class="fw-400 s-15">Generate</span>
+                  </el-button>
+                </div>
+              </div>
+              <div class="col-md-12 d-flex mb-3" v-if="requestedCode">
+                <el-input
+                  type="text"
+                  class="w-100"
+                  placeholder="Heres your code"
+                  :value="requestedCode"
+                  ref="code"
+                  aria-describedby="basic-addon1"
+                />
+                <div class="input-group-prepend">
+                  <span
+                    class="input-group-text c-pointer"
+                    id="basic-addon1"
+                    @click="copyCode"
+                  >
+                    <el-icon>
+                      <CopyDocument />
+                    </el-icon>
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -458,6 +478,7 @@ export default {
     const isNameValid = ref(true);
     const displayModal = ref(false);
     const isEmailValid = ref(true);
+    const errorMessage = ref(true);
 
     const goBack = () => {
       router.go(-1);
@@ -518,68 +539,73 @@ export default {
     }
 
     const addBranch = async () => {
-      if (value.value) {
-        const formData = new FormData();
-        formData.append("churchName", churchName.value ? churchName.value : "");
-        formData.append("address", Address.value ? Address.value : "");
-        formData.append("parentID", value.value ? value.value : "");
-        formData.append("pastorName", pastorName.value ? pastorName.value : "");
-        formData.append("email", pastorEmail.value ? pastorEmail.value : "");
-        formData.append("pastorPhone", pastorPhone.value ? pastorPhone.value : "");
-        formData.append("image", image.value ? image.value : "");
-        formData.append("duplicateAttendances", replicateAttendance.value);
-        formData.append("duplicateFinancials", replicateFinancial.value);
-        formData.append("duplicateEvents", replicateEvent.value);
-        formData.append("duplicateGroups", replicateGroup.value);
-        try {
-          loading.value = true;
-          let { data } = await axios.post("/api/Branching", formData);
-          loading.value = false;
-          displayModal.value = false;
+      // if (password.value !== confirmPassword.value) {
+      const formData = new FormData();
+      formData.append("churchName", churchName.value ? churchName.value : "");
+      formData.append("address", Address.value ? Address.value : "");
+      formData.append("parentID", value.value ? value.value : "");
+      formData.append("pastorName", pastorName.value ? pastorName.value : "");
+      formData.append("email", pastorEmail.value ? pastorEmail.value : "");
+      formData.append("emailAddress", emailAddress.value ? emailAddress.value : "");
+      formData.append("password", password.value ? password.value : "");
+      formData.append("pastorPhone", pastorPhone.value ? pastorPhone.value : "");
+      formData.append("image", image.value ? image.value : "");
+      formData.append("duplicateAttendances", replicateAttendance.value);
+      formData.append("duplicateFinancials", replicateFinancial.value);
+      formData.append("duplicateEvents", replicateEvent.value);
+      formData.append("duplicateGroups", replicateGroup.value);
+      try {
+        console.log(formData, "ghhgh");
 
-          let SMSBody = {
-            category: "",
-            contacts: [],
-            emailAddress: "",
-            emailDisplayName: "",
-            gateWayToUse: "hybridKonnect",
-            groupedContacts: [],
-            isPersonalized: true,
-            isoCode: isoCode.value,
-            message: `YOU HAVE BEEN ADDED AS A BRANCH ON CHURCHPLUS, \n You are on the right place and track, take control of your ministry, know the key information that will help you make better decision and become an effective manager. Use your credentials below to login and get started now \n Email: ${pastorEmail.value} \n Password: Branch@123 please do well to change your password after you login`,
-            toOthers: pastorPhone.value,
-          };
-          if (data.status) {
-            axios
-              .post("/api/Messaging/sendSms", SMSBody)
-              .then((res) => console.log(res))
-              .catch((err) => console.log(err));
-            ElMessage({
-              type: "success",
-              message: data.message,
-              duration: 5000,
-            });
-            setTimeout(() => {
-              router.push("/tenant/branch/mainbranchsummary");
-              // router.push("/tenant/branch/branchsummary");
-            }, 3000);
-          }
-        } catch (err) {
-          let resData = err.response.data.Message;
+        loading.value = true;
+        let { data } = await axios.post("/api/Branching", formData);
+        loading.value = false;
+        displayModal.value = false;
+
+        let SMSBody = {
+          category: "",
+          contacts: [],
+          emailAddress: "",
+          emailDisplayName: "",
+          gateWayToUse: "hybridKonnect",
+          groupedContacts: [],
+          isPersonalized: true,
+          isoCode: isoCode.value,
+          message: `YOU HAVE BEEN ADDED AS A BRANCH ON CHURCHPLUS, \n You are on the right place and track, take control of your ministry, know the key information that will help you make better decision and become an effective manager. Use your credentials below to login and get started now \n Email: ${pastorEmail.value} \n Password: Branch@123 please do well to change your password after you login`,
+          toOthers: pastorPhone.value,
+        };
+        if (data.status) {
+          axios
+            .post("/api/Messaging/sendSms", SMSBody)
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
           ElMessage({
-            type: "error",
-            message: resData,
+            type: "success",
+            message: data.message,
+            duration: 5000,
           });
-          loading.value = false;
+          setTimeout(() => {
+            router.push("/tenant/branch/mainbranchsummary");
+            // router.push("/tenant/branch/branchsummary");
+          }, 3000);
         }
-      } else {
+      } catch (err) {
+        let resData = err.response.data.Message;
         ElMessage({
-          type: "warning",
-          message:
-            "Choose the level you want to create this branch under, then click Save.",
-          duration: 5000,
+          type: "error",
+          message: resData,
         });
+        loading.value = false;
       }
+      // }
+      // else {
+      //   ElMessage({
+      //     type: "warning",
+      //     message:
+      //       "Passwords do not match. Please try again.",
+      //     duration: 5000,
+      //   });
+      // }
     };
 
     const generateCode = async () => {
@@ -637,6 +663,20 @@ export default {
         isEmailValid.value = true;
       }
     };
+    const checkLoginEmail = () => {
+      if (emailAddress.value.length == 0) {
+        isEmailValid.value = false;
+      } else {
+        isEmailValid.value = true;
+      }
+    };
+    const checkPassword = () => {
+      if (password.value !== confirmPassword.value) {
+        errorMessage.value = true;
+      } else {
+        errorMessage.value = false;
+      }
+    };
 
     return {
       addBranch,
@@ -662,10 +702,13 @@ export default {
       branchValue,
       generateCode,
       generateCodeModal,
+      checkPassword,
+      checkLoginEmail,
       displayModal,
       requestedCode,
       hierarchies,
       primarycolor,
+      errorMessage,
       code,
       mdAndUp,
       lgAndUp,
