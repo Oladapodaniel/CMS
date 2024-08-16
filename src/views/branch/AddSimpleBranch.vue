@@ -585,6 +585,7 @@ export default {
             duration: 5000,
           });
           setTimeout(() => {
+            router.push("/tenant/branch/branchdashboard");
             router.push("/tenant/branch/mainbranchsummary");
             // router.push("/tenant/branch/branchsummary");
           }, 3000);

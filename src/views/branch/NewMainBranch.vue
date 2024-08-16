@@ -719,6 +719,7 @@
       v-model="displayHierarchiesModal"
       :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
       align-center
+      class="border-radius-20"
     >
       <div class="row">
         <div class="col-md-12">
@@ -745,7 +746,7 @@
         </div>
         <div class="col-md-12 d-flex justify-content-center">
           <div class="col-md-6">
-            <el-button
+            <el-button round size="large"
                 class="mt-3 mb-3 w-100 primary-bg text-white text-center" @click="proceedToBranchHierachy">
                 Proceed
               </el-button>
@@ -874,17 +875,27 @@ export default {
     });
     const proceedToBranchHierachy = () => {
       displayModal.value = false;
-      router.push("/tenant/branch/hierarchicalbranch");
+      router.push("/tenant/branch/initialhierachysetup");
     };
 
     const hierarchicalBranch = () => {
-      if (hierarchies.value.length === 0) {
+      if (hierarchies.value.length > 0) {
         displayHierarchiesModal.value = true;
       } else {
         displayModal.value = false;
         router.push("/tenant/branch/addbranch");
       }
     };
+    const getHierarchies = async () => {
+      try {
+        let { data } = await axios.get("/branching/hierarchies");
+        console.log(data);
+        hierarchies.value = data.returnObject;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getHierarchies();
 
     const getIncomeExpenseChartForBranches = async () => {
       try {
@@ -1216,46 +1227,83 @@ export default {
           }
         });
     };
+     // branchChatDetail.value.forEach((i) => {
+      //   let incomeIndex = Object.keys(i).findIndex((i) => i === "currentYearIncome");
+      //   let incomeValue = Object.values(i)[incomeIndex];
+      //   incomeData.value.unshift(Math.abs(incomeValue));
+
+      //   let expenseIndex = Object.keys(i).findIndex((i) => i === "currentYearExpense");
+      //   let expenseValue = Object.values(i)[expenseIndex];
+      //   expenseData.value.unshift(expenseValue);
+      // });
+
+      // mainIncomeExpenseData.value.push({
+      //   name: " Income ",
+      //   color: "#08A53D",
+      //   data: incomeData.value,
+      // });
+      // mainIncomeExpenseData.value.push({
+      //   name: " Expenses ",
+      //   color: "#F45C1A",
+      //   data: expenseData.value,
+      // });
+
+      // return mainIncomeExpenseData.value;
 
     const incomeExpenseChart = computed(() => {
       if (branchChatDetail.value.length === 0) return [];
-      branchChatDetail.value.forEach((i) => {
-        let incomeIndex = Object.keys(i).findIndex((i) => i === "currentYearIncome");
-        let incomeValue = Object.values(i)[incomeIndex];
-        incomeData.value.unshift(Math.abs(incomeValue));
+      const incomeData = [];
+      const expenseData = [];
 
-        let expenseIndex = Object.keys(i).findIndex((i) => i === "currentYearExpense");
-        let expenseValue = Object.values(i)[expenseIndex];
-        expenseData.value.unshift(expenseValue);
+      // Populate the arrays based on the raw data
+      branchChatDetail.value.forEach((item) => {
+        incomeData.push(Math.abs(item.currentYearIncome)); // Add income to the incomeData array
+        expenseData.push(item.currentYearExpense); // Add expense to the expenseData array
       });
 
-      mainIncomeExpenseData.value.push({
-        name: " Income ",
-        color: "#08A53D",
-        data: incomeData.value,
-      });
-      mainIncomeExpenseData.value.push({
-        name: " Expenses ",
-        color: "#F45C1A",
-        data: expenseData.value,
-      });
-
-      return mainIncomeExpenseData.value;
+      // Return the transformed data
+      return [
+        {
+          name: "Income",
+          color: "#08A53D",
+          data: incomeData,
+        },
+        {
+          name: "Expense",
+          color: "#F45C1A",
+          data: expenseData,
+        },
+      ];
+     
     });
+    // branchChatDetail.value.forEach((i) => {
+    //     let averageAttIndex = Object.keys(i).findIndex((i) => i === "currentYearAverageAttendance");
+    //     let averageAttValue = Object.values(i)[averageAttIndex];
+    //     averageAttData.value.unshift(averageAttValue);
+    //   });
+
+    //   mainAverageAttData.value.push({
+    //     name: " Attendance ",
+    //     color: "#0745AF",
+    //     data: averageAttData.value,
+    //   });
+    //   return mainAverageAttData.value;
     const averageAttendanceChart = computed(() => {
       if (branchChatDetail.value.length === 0) return [];
-      branchChatDetail.value.forEach((i) => {
-        let averageAttIndex = Object.keys(i).findIndex((i) => i === "currentYearExpense");
-        let averageAttValue = Object.values(i)[averageAttIndex];
-        averageAttData.value.unshift(averageAttValue);
+      const currentYearAttendanceData = [];
+      branchChatDetail.value.forEach((item) => {
+        currentYearAttendanceData.push(Math.abs(item.currentYearAverageAttendance));
       });
 
-      mainAverageAttData.value.push({
-        name: " Attendance ",
-        color: "#0745AF",
-        data: averageAttData.value,
-      });
-      return mainAverageAttData.value;
+      // Return the transformed data
+      return [
+        {
+          name: "Attendance",
+          color: "#0745AF",
+          data: currentYearAttendanceData,
+        },
+      ];
+     
     });
 
     const getTotalPeopleBch = computed(() => {
@@ -1412,6 +1460,7 @@ export default {
       AnalysicIcon,
       firstTimerWeeklyAtt,
       sendWhatsappToMultiple,
+      displayHierarchiesModal,
       mainAverageAttData,
       averageAttData,
       showModal,

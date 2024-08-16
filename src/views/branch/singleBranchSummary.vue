@@ -425,7 +425,7 @@ import { socket } from "@/socket";
 // import { ElMessage } from "element-plus";
 // import AuthenticateWhatsapp from "../../components/whatsapp/AuthenticateWhatsapp.vue";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
-import LineChart from "@/components/charts/LineChart.vue";
+// import LineChart from "@/components/charts/LineChart.vue";
 import store from "../../store/store";
 import swal from "sweetalert";
 export default {
@@ -434,7 +434,7 @@ export default {
     whatSappComponent,
     smsComponent,
     emailComponent,
-    LineChart,
+    // LineChart,
     // AuthenticateWhatsapp,
   },
   setup() {
@@ -627,7 +627,10 @@ export default {
           `/Dashboard/CelebrationsForTenant?_TenantId=${branchID}`
         );
         console.log(data, "DashboardCelebrant");
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+        
+      }
     };
     getBranchTenantCelebrants();
 

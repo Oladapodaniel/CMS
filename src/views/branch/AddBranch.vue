@@ -39,6 +39,11 @@
           </div>
           <div class="row my-2 mt-3">
             <div class="col-md-10 offset-md-2">
+              <div class="col-12 mb-4 mt-4">
+                <div class="text-head font-weight-600 h3 py-0 my-0 text-black">
+                  Branch information
+                </div>
+              </div>
               <div class="row">
                 <div class="col-md-4 text-md-right align-self-center">
                   <label for="" class="fw-500 text-head s-18 text-dak">Branch name <sup class="text-danger">*</sup>
@@ -69,8 +74,10 @@
           <div class="row my-1 mt-3">
             
             <div class="col-md-10 offset-md-2">
-              <div class="col-md-6 mb-4 mt-5">
-                <div class=" text-head font-weight-600 h2 py-0 my-0 text-black">Pastor's information</div>
+              <div class="col-12 mb-4 mt-4">
+                <div class="text-head font-weight-600 h3 py-0 my-0 text-black">
+                  Pastor's information
+                </div>
               </div>
               <div class="row">
                 <div class="col-md-4 text-md-right align-self-center">
@@ -115,8 +122,10 @@
           <div class="row my-1 mt-3">
             
             <div class="col-md-10 offset-md-2">
-              <div class="col-md-6 mb-4 mt-5">
-                <div class=" text-head font-weight-600 h2 py-0 my-0 text-black">Login Credentials</div>
+              <div class="col-12 mb-4 mt-4">
+                <div class="text-head font-weight-600 h3 py-0 my-0 text-black">
+                  Login Credentials
+                </div>
               </div>
               <div class="row">
                 <div class="col-md-4 text-md-right align-self-center">
@@ -262,11 +271,11 @@
         <!-- <div class="row my-1 pt-4"> -->
        <div class="col-md-6 offset-md-3 mt-4">
           <div class="row d-flex flex-column align-items-center justify-content-center">
-            <div class="mt-4 col-md-7">
+            <!-- <div class="mt-4 col-md-7">
               <el-button class="w-100 py-4 " color="#FF5500" @click="generateCodeModal" round size="large">
                 <span class="fw-400 s-18">Generate Branch Code</span>
               </el-button>
-            </div>
+            </div> -->
             <div class="mt-4 col-md-7">
               <el-button
                 :loading="loading"
@@ -276,12 +285,12 @@
                 class="w-100 border-0 py-4 text-white"
                 @click="addBranch"
               >
-                <span class="font-weight-600 s-18">Save</span>
+                <span class="font-weight-600 s-15">Save</span>
               </el-button>
             </div>
             <div class="mt-4 col-md-7">
               <el-button class="w-100" round size="large border-0" data-dismiss="modal"
-                ><span class="fw-400 s-18 text-dak">Cancel</span></el-button
+                ><span class="fw-400 s-16 text-dak">Cancel</span></el-button
               >
             </div>
           </div>
@@ -487,7 +496,8 @@ export default {
               duration: 5000,
             });
             setTimeout(() => {
-              router.push("/tenant/branch/mainbranchsummary");
+              router.push("/tenant/branch/branchdashboard");
+              // router.push("/tenant/branch/mainbranchsummary");
               // router.push("/tenant/branch/branchsummary");
             }, 3000);
           }

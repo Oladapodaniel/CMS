@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
-          Structure and hierarchy setup
+          Hierarchical Branching system
         </div>
         <div @click="goBack">
           <span class="s-18 fw-400 cursor-pointer text-black">
@@ -20,10 +20,10 @@
       </div> -->
       <div class="col-md-12">
         <div class="row">
-          <div class="col-md-6">
+          <!-- <div class="col-md-6">
             <BranchSettings/>
-          </div>
-          <div class="col-md-6">
+          </div> -->
+          <div class="col-md-12">
             <div
               class="col-md-12 mt-4 domId d-flex justify-content-center bg-gray-500 py-5 align-items-center"
               v-show="mappedBranch.length > 0"
@@ -59,7 +59,7 @@ import { ref } from "vue";
 import router from "../../router";
 import axios from "@/gateway/backendapi";
 import OrganizationChart from "primevue/organizationchart";
-import BranchSettings from "../settings/BranchLevelSettings.vue";
+// import BranchSettings from "../settings/BranchLevelSettings.vue";
 const selection = ref({});
 const data1 = ref({});
 const branchChatDetail = ref([]);

@@ -394,7 +394,8 @@ export default {
           {
             name: 'Dashboard',
             logo: '/',
-            route: '/tenant/branch/mainbranchsummary',
+            route: '/tenant/branch/branchdashboard',
+            // route: '/tenant/branch/mainbranchsummary',
             // route: '/tenant/branch/branchsummary',
           },
           // {

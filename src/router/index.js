@@ -776,6 +776,17 @@ const routes = [
                 },
                 {
 
+                    path: 'initialhierachysetup',
+                    name: "InitialHierarchySetup",
+                    meta: {
+                        title: 'Churchplus - Branch',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "InitialHierarchySetup" */ '../views/branch/subpages/InitialHierarchySetup.vue')
+
+                },
+                {
+
                     path: 'branchdashboard',
                     name: "NewMainBranch",
                     meta: {
