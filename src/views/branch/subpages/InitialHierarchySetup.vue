@@ -15,7 +15,7 @@
       <!-- Left Section: Add/Edit Branch Level -->
       <div class="col-md-6 px-0 mt-4">
         <div class="car p-4">
-          <h5 class="mb-3">{{ isEditing ? 'Edit Branch Level' : 'Add Branch Level' }}</h5>
+          <h5 class="mb-3">{{ isEditing ? "Edit Branch Level" : "Add Branch Level" }}</h5>
           <el-input
             type="text"
             v-model="newBranch"
@@ -29,7 +29,7 @@
             class="w-100 mb-4 py-4"
             @click="isEditing ? saveEditedBranch() : addBranch()"
           >
-            {{ isEditing ? 'Save Changes' : 'Add Level' }}
+            {{ isEditing ? "Save Changes" : "Add Level" }}
           </el-button>
           <p class="mt-4 text-dark text-center s-16 fw-400">
             After you have successfully added branch level(s), click on <br />
@@ -50,7 +50,10 @@
             >
               <div class="col-md-4 d-flex align-items-center">
                 <div class="w-100">
-                  <div @click="editBranch(branch)" class="hierarchy text-center w-100 px-4 py-3">
+                  <div
+                    @click="editBranch(branch)"
+                    class="hierarchy text-center w-100 px-4 py-3"
+                  >
                     <span>{{ branch.name }}</span>
                   </div>
                   <div class="w-100 d-flex justify-content-center">
@@ -63,7 +66,10 @@
                 <div class="d-flex ml-3 mr-4" v-if="index == 0"></div>
               </div>
             </li>
-            <!-- <li v-if="tempBranch " class="col-md-12 justify-content-center d-flex">
+            <li
+              v-if="tempBranch && !isEditing"
+              class="col-md-12 justify-content-center d-flex"
+            >
               <div class="col-md-4 d-flex align-items-center">
                 <div class="w-100 d-flex">
                   <div class="hierarchy text-center w-100 px-4 py-3">
@@ -74,7 +80,7 @@
                   </div>
                 </div>
               </div>
-            </li> -->
+            </li>
           </ul>
         </div>
       </div>
@@ -94,8 +100,6 @@
     </div>
   </div>
 </template>
-
-
 
 <script setup>
 import { ref } from "vue";
@@ -136,6 +140,7 @@ const addBranch = async () => {
 
     getBranchCycles();
     newBranch.value = "";
+    tempBranch.value = "";
     ElMessage.success("Branch saved successfully!");
   } catch (error) {
     finish();
@@ -157,6 +162,7 @@ const updateBranch = async (item) => {
     console.log(response);
 
     getBranchCycles();
+    tempBranch.value = ""
     ElMessage.success("Branch updated successfully!");
   } catch (error) {
     finish();
@@ -198,15 +204,11 @@ const deleteBranch = async (id) => {
 
 // Confirmation popup before deleting a branch
 const deletePop = (id) => {
-  ElMessageBox.confirm(
-    "Are you sure you want to delete this branch?",
-    "Confirm Delete",
-    {
-      confirmButtonText: "OK",
-      cancelButtonText: "Cancel",
-      type: "warning",
-    }
-  )
+  ElMessageBox.confirm("Are you sure you want to Delete this branch?", "Confirm delete", {
+    confirmButtonText: "OK",
+    cancelButtonText: "Cancel",
+    type: "error",
+  })
     .then(() => {
       deleteBranch(id);
     })
@@ -248,10 +250,7 @@ const saveBranch = () => {
 const handleInput = () => {
   tempBranch.value = newBranch.value;
 };
-
 </script>
-
-
 
 <style scoped>
 .go-back {
