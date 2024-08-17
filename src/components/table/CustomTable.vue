@@ -1,9 +1,21 @@
 <template>
   <div>
-    <el-dropdown trigger="click"   class="el-dropdown  border-0 w-100 py-2 d-flex justify-content-end">
-      <span class="el-dropdown-link" >
-        <el-tooltip class="box-item" effect="dark" content="Export data on table to excel" placement="top-start">
-          <el-button type="" style="background: #EEEEEE;" class="mr-3 py-3 text-dak fw-excel" >
+    <!-- <el-dropdown
+      trigger="click"
+      class="el-dropdown border-0 w-100 py-2 d-flex justify-content-end"
+    >
+      <span class="el-dropdown-link">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          content="Export data on table to excel"
+          placement="top-start"
+        >
+          <el-button
+            type=""
+            style="background: #eeeeee"
+            class="mr-3 py-3 text-dak fw-excel"
+          >
             Export to excel<el-icon class="el-icon--right">
               <Download />
             </el-icon>
@@ -19,27 +31,39 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </template>
-    </el-dropdown>
+    </el-dropdown> -->
     <div ref="scrollRef">
       <div class="table-parent mt-3">
         <table class="table-border w-100">
           <thead class="table-head mobile">
             <tr>
               <th v-if="checkMultipleItem">
-                <el-checkbox v-model="checked" @change="checkAllRows" :indeterminate="isIndeterminate"
-                  :checked="data.length > 0 && data.length === checkedRow.length" size="large" />
+                <el-checkbox
+                  v-model="checked"
+                  @change="checkAllRows"
+                  :indeterminate="isIndeterminate"
+                  :checked="data.length > 0 && data.length === checkedRow.length"
+                  size="large"
+                />
               </th>
             </tr>
           </thead>
           <thead class="table-head desktop">
             <tr>
               <th v-if="checkMultipleItem">
-                <!-- <input type="checkbox" v-model="checked" id="flexCheckDefault" @change="checkAllRows"
-                  :indeterminate="isIndeterminate" :checked="data.length > 0 && data.length === checkedRow.length"> -->
-                <el-checkbox v-model="checked" @change="checkAllRows" :indeterminate="isIndeterminate"
-                  :checked="data.length > 0 && data.length === checkedRow.length" size="large" />
+                <el-checkbox
+                  v-model="checked"
+                  @change="checkAllRows"
+                  :indeterminate="isIndeterminate"
+                  :checked="data.length > 0 && data.length === checkedRow.length"
+                  size="large"
+                />
               </th>
-              <th v-for="(head, index) in headers" :key="index" :class="{ 'py-3': !checkMultipleItem }">
+              <th
+                v-for="(head, index) in headers"
+                :key="index"
+                :class="{ 'py-3': !checkMultipleItem }"
+              >
                 <h2>{{ head.name }}</h2>
               </th>
             </tr>
@@ -47,9 +71,18 @@
           <tbody>
             <tr v-for="(item, index) in dataInView" :key="index">
               <td v-if="checkMultipleItem" class="py-3">
-                <input type="checkbox"  v-model="item.check" id="flexCheckDefault" @change="checkSingleRow(index)">
+                <input
+                  type="checkbox"
+                  v-model="item.check"
+                  id="flexCheckDefault"
+                  @change="checkSingleRow(index)"
+                />
               </td>
-              <td v-for="(head, index) in headers" :key="index" :class="{ 'py-2': !checkMultipleItem }">
+              <td
+                v-for="(head, index) in headers"
+                :key="index"
+                :class="{ 'py-2': !checkMultipleItem }"
+              >
                 <span>
                   <h2>{{ head.name }}</h2>
                 </span>
@@ -66,78 +99,13 @@
       </div>
     </div>
   </div>
-  <!-- <div>
-    <el-dropdown trigger="click" class="el-dropdown w-100 py-2 d-flex justify-content-end">
-      <span class="el-dropdown-link">
-        <el-tooltip class="box-item" effect="dark" content="Export data on table to excel" placement="top-start">
-          <el-button type="" class="mr-3" text bg>
-            Export to excel<el-icon class="el-icon--right">
-              <Download />
-            </el-icon>
-          </el-button>
-        </el-tooltip>
-      </span>
-      <template #dropdown>
-        <el-dropdown-menu>
-          <el-dropdown-item v-for="(bookType, index) in bookTypeList" :key="index">
-            <div @click="downloadFile(bookType)">
-              {{ bookType.name }}
-            </div>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </template>
-    </el-dropdown>
-    <div ref="scrollRef">
-      <div class="table-parent">
-        <table class="table-border w-100">
-          <thead class="table-head mobile">
-            <tr>
-              <th v-if="checkMultipleItem">
-                <el-checkbox v-model="checked" @change="checkAllRows" :indeterminate="isIndeterminate"
-                  :checked="data.length > 0 && data.length === checkedRow.length" size="large" />
-              </th>
-            </tr>
-          </thead>
-          <thead class="table-head desktop">
-            <tr>
-              <th v-if="checkMultipleItem">
-                <el-checkbox v-model="checked" @change="checkAllRows" :indeterminate="isIndeterminate"
-                  :checked="data.length > 0 && data.length === checkedRow.length" size="large" />
-              </th>
-              <th v-for="(head, index) in headers" :key="index" :class="{ 'py-3': !checkMultipleItem }">
-                <h2>{{ head.name }}</h2>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, index) in dataInView" :key="index">
-              <td v-if="checkMultipleItem" class="py-3">
-                <input type="checkbox"  v-model="item.check" id="flexCheckDefault" @change="checkSingleRow(index)">
-              </td>
-              <td v-for="(head, index) in headers" :key="index" :class="{ 'py-2': !checkMultipleItem }">
-                <span>
-                  <h2>{{ head.name }}</h2>
-                </span>
-                <slot :name="head.value" v-bind:item="item">-</slot>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="infinite-loader" v-if="tableInfiniteLoading">
-        <el-icon class="is-loading">
-          <Loading />
-        </el-icon>
-      </div>
-    </div>
-  </div> -->
 </template>
 
 <script>
 import { ref, onMounted, watchEffect } from "vue";
 import getData from "@/services/loading/loading";
 import exportService from "../../services/exportFile/exportservice";
-import dateFormatter from "@/services/dates/dateformatter.js"
+import dateFormatter from "@/services/dates/dateformatter.js";
 
 export default {
   emits: ["checkedrow"],
@@ -145,17 +113,17 @@ export default {
     data: {
       type: Array,
       required: true,
-      default: () => ({}),
+      default: () => ([]),
     },
     headers: {
       type: Array,
       required: true,
-      default: () => ({}),
+      default: () => ([]),
     },
     checkMultipleItem: {
       type: Boolean,
       required: false,
-      default: () => ({}),
+      default: () => (false),
     },
   },
   setup(props, { emit }) {
@@ -227,7 +195,7 @@ export default {
       }
     };
 
-    const handleScroll = (e) => {
+    const handleScroll = () => {
       const element = scrollRef.value;
       setTimeout(() => {
         if (element !== null) {
@@ -259,7 +227,7 @@ export default {
           fileHeaderToExport.value = props.headers.map((i) => i.name);
           fileToExport.value = props.data.map((obj) => {
             // if it has date property, formate the date value
-            obj.date ? obj.date = dateFormatter.monthDayYear(obj.date) : null;
+            obj.date ? (obj.date = dateFormatter.monthDayYear(obj.date)) : null;
             let newObj = {};
             props.headers.forEach((prop, index) => {
               newObj[index] = obj[prop.value];
@@ -303,17 +271,18 @@ export default {
   box-sizing: border-box;
 }
 
-.table-head {
-  background: #F4F4F4AB;
-}
+/* .table-head {
+  background: #f4f4f4ab;
+} */
 
 .table-head h2 {
-  font-weight: 500;
+  font-weight: 600;
   /* font-weight: bold; */
-  font-size: 14px;
+  font-size: 16px !important;
   text-transform: lowercase;
   margin: 0;
-  color: #000000;
+  color: #787878;
+  ;
   /* color: #172B4D; */
 }
 
@@ -322,10 +291,10 @@ export default {
 }
 
 tbody tr td {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   color: #000000;
-  text-transform: lowercase;
+  /* text-transform: lowercase; */
 }
 
 tbody h2 {
@@ -347,13 +316,18 @@ tbody h2:first-line {
 
 table td,
 table th {
-  padding: 0px 10px;
+  /* padding: 0px 10px; */
+  padding: 1.2rem 1rem 1.2rem 3rem !important;
+}
+.table tbody tr:hover {
+  background-color: #f1f1f1;
 }
 
 table tbody tr,
 table thead tr {
   /* height: 60px; */
-  border-bottom: 1px solid #d4dde3;
+  /* border-bottom: 2px solid #d4dde3; */
+  border-bottom: 0.5px solid #939393
 }
 
 table tbody tr:hover {
@@ -361,8 +335,8 @@ table tbody tr:hover {
 }
 
 /* table tbody tr:nth-child(even) {
-  background-color: #fafafa;
-} */
+    background-color: #fafafa;
+  } */
 
 table tbody tr td:first-child input {
   width: 20px;

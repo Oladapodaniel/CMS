@@ -203,7 +203,7 @@
                     @input="checkPassword"
                     class="w-100"
                   />
-                  <div v-if="password !== confirmPassword" class="invalid-feedback">
+                  <div v-if="password !== confirmPassword" class="text-danger small">
                     Passwords do not match. Please try again
                   </div>
                 </div>
@@ -586,7 +586,7 @@ export default {
           });
           setTimeout(() => {
             router.push("/tenant/branch/branchdashboard");
-            router.push("/tenant/branch/mainbranchsummary");
+            // router.push("/tenant/branch/mainbranchsummary");
             // router.push("/tenant/branch/branchsummary");
           }, 3000);
         }

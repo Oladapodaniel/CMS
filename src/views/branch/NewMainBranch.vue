@@ -203,7 +203,7 @@
     </div>
     <!-- Branch Data Overview -->
     <div
-      class="table-responsive mt-4 border-radius-8 bg-gray-100 border-radius-border-8"
+      class=" mt-4 border-radius-8 bg-gray-100 border-radius-border-8"
       v-loading="branchLoading"
     >
       <div class="row px-5 pt-4">
@@ -269,7 +269,73 @@
           </div>
         </div>
       </div>
-      <table class="table border table-hover">
+      <CustomTable
+        :data="searchBranchDetail"
+        :headers="branchHeaders"
+        :checkMultipleItem="false"
+        v-loading="branchLoading"
+      >
+        <template v-slot:name="{ item }">
+          <div class="c-pointer fw-500" @click="viewBranch(item)">
+            {{ item.name }}
+          </div>
+        </template>
+        <template v-slot:membershipSize="{ item }">
+          <div class="c-pointer" @click="viewBranch(item)">
+            {{ item.membershipSize.toLocaleString() }}
+          </div>
+        </template>
+        <template v-slot:currentYearAverageAttendance="{ item }">
+          <div class="c-pointer" @click="viewBranch(item)">
+            {{
+              item.currency && item.currency.shortCode
+                  ? item.currency.shortCode
+                  : ""
+              }}
+              {{ Math.abs(item.currentYearAverageAttendance).toLocaleString() }}
+          </div>
+        </template>
+        <template v-slot:currentYearIncome="{ item }">
+          <div class="c-pointer" @click="viewBranch(item)">
+            {{
+              item.currency && item.currency.shortCode
+                  ? item.currency.shortCode
+                  : ""
+              }}
+              {{ Math.abs(item.currentYearIncome).toLocaleString() }}
+          </div>
+        </template>
+        <template v-slot:currentYearExpense="{ item }">
+          <div class="c-pointer" @click="viewBranch(item)">
+            {{
+              item.currency && item.currency.shortCode
+                  ? item.currency.shortCode
+                  : ""
+              }}
+              {{ Math.abs(item.currentYearExpense).toLocaleString() }}
+          </div>
+        </template>
+        <!-- <template v-slot:action="{ item }">
+              <el-dropdown trigger="click">
+                <el-icon>
+                  <MoreFilled />
+                </el-icon>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item>
+                      <div
+                        @click.prevent="showConfirmModal(item.id, index)"
+                        class="text-color"
+                      >
+                        Delete
+                      </div>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+        </template> -->
+      </CustomTable>
+      <!-- <table class="table border table-hover">
         <thead>
           <tr>
             <th>Branch</th>
@@ -315,13 +381,6 @@
                 </el-icon>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <!-- <el-dropdown-item>
-                      <router-link
-                        :to="`/tenant/pledge/makepledge?id=${item.id}`"
-                        class="text-color"
-                        >Edit</router-link
-                      >
-                    </el-dropdown-item> -->
                     <el-dropdown-item>
                       <div
                         @click.prevent="showConfirmModal(branch.id, index)"
@@ -336,7 +395,7 @@
             </td>
           </tr>
         </tbody>
-      </table>
+      </table> -->
     </div>
     <div class="container-fluid">
       <div class="row border mt-4" v-loading="branchLoading">
@@ -376,18 +435,6 @@
             </el-dropdown>
           </div>
         </div>
-        <!-- <div class="col-md-12" v-loading="branchLoading">
-          <ColumnChart domId="chart2" title="First Timer InFlow" />
-        </div> -->
-        <!-- <div class="col-md-12" v-if="firstTimerWeeklyAtt" v-loading="loading">
-          <ColumnChart
-            domId="chart2"
-            :data="weeklyFirstTimerObj"
-            :series="series2"
-            title="First Timer InFlow"
-            :header="firstTimerHeader"
-          />
-        </div> -->
         <div class="col-md-12" v-loading="branchLoading">
           <ColumnChart
             :series="series2"
@@ -396,14 +443,6 @@
             domId="chart"
             title="Showing All branch Data"
           />
-          <!-- <div class="col-md-12" v-if="firstTimerMonthlyAtt" v-loading="loading">
-          <ColumnChart
-            domId="chart2"
-            :data="monthlyFirstTimerObj"
-            :series="series2"
-            title="First Timer InFlow"
-            :header="firstTimerHeader"
-          /> -->
         </div>
       </div>
       <div class="row border mt-4" v-loading="branchLoading">
@@ -773,6 +812,7 @@ import LineChart from "@/components/charts/LineChart.vue";
 import ColumnChart from "@/components/charts/BranchColumnChart.vue";
 import whatSappComponent from "../groups/component/whatSappComponent.vue";
 import smsComponent from "../groups/component/smsComponent.vue";
+import CustomTable from "@/components/table/CustomTable";
 import emailComponent from "../groups/component/emailComponent.vue";
 import { Search } from "@element-plus/icons-vue";
 import { useRoute } from "vue-router";
@@ -785,6 +825,7 @@ export default {
   components: {
     ColumnChart,
     LineChart,
+    CustomTable,
     emailComponent,
     whatSappComponent,
     smsComponent,
@@ -846,6 +887,15 @@ export default {
       "Dec",
     ]);
 
+    const branchHeaders = ref([
+      { name: "BRANCH", value: "name" },
+      { name: "MEMBERS", value: "membershipSize" },
+      { name: "AVG.ATTENDANCE.", value: "currentYearAverageAttendance" },
+      { name: "INCOME", value: "currentYearIncome" },
+      { name: "EXPENSE", value: "currentYearExpense" },
+      // { name: "ACTION", value: "action" },
+    ]);
+
     const sendMarkedMemberSms = () => {
       showSMS.value = true;
     };
@@ -879,7 +929,7 @@ export default {
     };
 
     const hierarchicalBranch = () => {
-      if (hierarchies.value.length > 0) {
+      if (hierarchies.value.length === 0) {
         displayHierarchiesModal.value = true;
       } else {
         displayModal.value = false;
@@ -1449,6 +1499,7 @@ export default {
       getTotalPeopleBch,
       allBranchDetail,
       route,
+      branchHeaders,
       networkError,
       displayModal,
       branchLoading,
