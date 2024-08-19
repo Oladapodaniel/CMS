@@ -506,15 +506,25 @@ export default {
     const goBack = () => {
       router.go(-1);
     };
-    
+
     const setSelectedHierachy = () => {
       selectedbranchHierarhy.value = hierarchies.value.find((i) => {
         return i.id == branchHierarhyId.value;
       });
       console.log(selectedbranchHierarhy.value, "selectec branch");
-      if(selectedbranchHierarhy.value){
-        getChurchToReportTo()
-      }
+      getChurchToReportTo();
+
+      // if (hierarchies.value[0].level == 0 && selectedbranchHierarhy.value.level == 0) {
+      //   ElMessage({
+      //     type: "warning",
+      //     message: `You Cannot Select ${hierarchies.value[0].name} please click the next level  `,
+      //     duration: 5000,
+      //   });
+
+      //   console.log(selectedbranchHierarhy.value, "selectec branch");
+      // } else {
+      //   getChurchToReportTo();
+      // }
     };
     const setSelectedReportBranch = () => {
       selectedReportBranch.value = reportBranchList.value.find((i) => {
@@ -524,19 +534,31 @@ export default {
     };
 
     const getChurchToReportTo = async () => {
-      try {
-        const { data } = await axios.get(
-          `/api/Branching/GetChurchesToReportTo?hierarchyId=${selectedbranchHierarhy.value.id}`
-        );
-        reportBranchList.value = data.returnObject;
-        console.log(data, "hhshshsh");
-      } catch (error) {
-        console.log(error);
+      if (selectedbranchHierarhy.value.level !== 0) {
+        try {
+          const { data } = await axios.get(
+            `/api/Branching/GetChurchesToReportTo?hierarchyId=${selectedbranchHierarhy.value.id}`
+          );
+          reportBranchList.value = data.returnObject;
+          console.log(data, "hhshshsh");
+          if (reportBranchList.value.length == 0) {
+            ElMessage({
+              type: "warning",
+              message: `No branch in this level , please select another level  `,
+              duration: 5000,
+            });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        ElMessage({
+          type: "warning",
+          message: `You Cannot Select ${selectedbranchHierarhy.value.name} please click the next level  `,
+          duration: 5000,
+        });
       }
     };
-    // getChurchToReportTo();
-
-    
 
     const imageSelected = (e) => {
       image.value = e.target.files[0];
@@ -546,6 +568,7 @@ export default {
       try {
         let { data } = await axios.get("/branching/hierarchies");
         hierarchies.value = data.returnObject;
+        console.log(hierarchies.value, "kjjjjj");
       } catch (err) {
         console.log(err);
       }
@@ -593,7 +616,7 @@ export default {
     }
 
     const addBranch = async () => {
-      if (selectedbranchHierarhy.value) {
+      if (selectedbranchHierarhy.value && selectedbranchHierarhy.value.name && selectedReportBranch.value.name) {
         const formData = new FormData();
         formData.append("churchName", churchName.value ? churchName.value : "");
         formData.append("address", Address.value ? Address.value : "");
@@ -662,7 +685,7 @@ export default {
         ElMessage({
           type: "warning",
           message:
-            "Choose the level you want to create this branch under, then click Save.",
+            "Please Select Hierarchy level and Choose the branch you want to report to .",
           duration: 5000,
         });
       }
