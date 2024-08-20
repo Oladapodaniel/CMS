@@ -2503,6 +2503,13 @@ const routes = [
             import( /* webpackChunkName: "followupfeedback" */ '@/views/people/followup/FollowUpFeedbackForm'),
 
     },
+    {
+        path: '/app/mobile',
+        name: 'MobileAppDeepLink',
+        component: () =>
+            import( /* webpackChunkName: "mobile app deep link" */ '@/views/MobileAppDeepLink.vue'),
+
+    },
 ]
 
 const router = createRouter({
@@ -2550,7 +2557,8 @@ router.beforeEach((to, from, next) => {
             to.name === "PublicLogin" ||
             to.name === "CartItem" ||
             to.name === "CheckOut" ||
-            to.name === "BookDetails"
+            to.name === "BookDetails" ||
+            to.name === "MobileAppDeepLink"
         ) && !tokenIsValid
     ) {
         return next(true);
