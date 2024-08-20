@@ -8,21 +8,21 @@ const products = ref([
     id: 1,
     image: ProductOneIcon,
     title: "48 Laws of Power",
-    review: "4.5 stars",
+    review: "4.5",
     price: "₦3,000,000",
   },
   {
     id: 2,
     image: ProductOneIcon,
     title: "48 Laws of Power",
-    review: "4.5 stars",
+    review: "4.5",
     price: "₦3,000,000",
   },
   {
     id: 3,
     image: ProductOneIcon,
     title: "48 Laws of Power",
-    review: "4.5 stars",
+    review: "4.5",
     price: "₦3,000,000",
   },
   {
@@ -32,7 +32,35 @@ const products = ref([
     review: "4.5 stars",
     price: "₦3,000,000",
   },
-  // Add more products here
+  {
+    id: 5,
+    image: ProductOneIcon,
+    title: "48 Laws of Power",
+    review: "4.5 stars",
+    price: "₦3,000,000",
+  },
+  {
+    id: 6,
+    image: ProductOneIcon,
+    title: "48 Laws of Power",
+    review: "4.5 stars",
+    price: "₦3,000,000",
+  },
+  {
+    id: 7,
+    image: ProductOneIcon,
+    title: "48 Laws of Power",
+    review: "4.5 stars",
+    price: "₦3,000,000",
+  },
+  {
+    id: 8,
+    image: ProductOneIcon,
+    title: "48 Laws of Power",
+    review: "4.5 stars",
+    price: "₦3,000,000",
+  },
+
 ]);
 </script>
 

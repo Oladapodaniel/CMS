@@ -24,11 +24,7 @@
                 to="/tenant/people/addfirsttimer">Add First Timer</router-link>
             </div>
             <div class="mt-2 h6 font-weight-bold primary--text cursor-pointer" @click="sendMarkedMemberSms">
-              <!-- <router-link class="primary--text" to="/tenant/sms/compose"
-                > -->
               Send SMS
-              <!-- </router-link
-              > -->
             </div>
             <div class="mt-2 h6 font-weight-bold primary--text cursor-pointer" @click="sendMarkedBranchEmail">
               Send Email
@@ -47,9 +43,6 @@
                 <div class="row">
                   <div class="col-md-2 mt-2 text-color">
                     <img src="../../assets/git-branch.png" class="rounded-circle px-1 py-1 icon" alt="" />
-                    <!-- <el-icon :size="35" class="rounded-circle p-1 icon"
-                    ><Share
-                  /></el-icon> -->
                   </div>
                 </div>
               </div>
@@ -69,9 +62,6 @@
                 <div class="row">
                   <div class="primary--text col-md-2 mt-2">
                     <img src="../../assets/users4.png" alt="" class="rounded-circle p-1 icon" />
-                    <!-- <el-icon :size="35" class="rounded-circle p-1 icon"
-                    ><User
-                  /></el-icon> -->
                   </div>
                 </div>
               </div>
@@ -114,7 +104,7 @@
                 </div>
               </div>
               <div class="col-md-12 mt-4 pt-2 font-weight-bold h4 text-right" v-loading="loading" v-if="openHideAmonut">
-                {{ getAllAverageIncome }}
+                {{ Math.round(getAllAverageIncome).toLocaleString() }}
               </div>
               <div class="col-md-12 mt-4 pt-2 font-weight-bold text-secondary h4 text-right" v-if="!openHideAmonut">
                 **********
@@ -142,29 +132,6 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="row">
-            <div class="col-md-12 mt-4">
-              <div class="font-weight-bold">Top Performing Branches</div>
-            </div>
-            <div class="col-md-12 mt-3">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="font-weight-bold">First Timers</div>
-                  <div class="mt-3 col-md-12">
-                    <RadialChart domId="view2" />
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="font-weight-bold">Finance</div>
-                  <div class="mt-3"><RadialChart domId="view4" /></div>
-                </div>
-                <div class="col-md-4">
-                  <div class="font-weight-bold">New Convert</div>
-                  <div class="mt-3" style=""><RadialChart domId="view1" /></div>
-                </div>
-              </div>
-            </div>
-          </div> -->
           </div>
           <div class="col-md-4 px-0 mx-0 col-12 mt-3 mt-md-0 shadow rounded" v-loading="loading">
             <div class="row">
@@ -184,7 +151,7 @@
                 </div>
 
                 <div class="font-weight-bold h5 mt-2" v-if="openHideAmonut">
-                  {{ getAllAverageIncome }}
+                  {{ Math.round(getAllAverageIncome).toLocaleString() }}
                 </div>
                 <div class="font-weight-bold mt-2 text-secondary h5" v-if="!openHideAmonut">
                   HIDDEN
@@ -199,39 +166,6 @@
       </div>
       <div class="container-fluid mt-4" v-loading="loading">
         <div class="row border">
-          <!-- <div class="col-md-12 d-flex justify-content-end py-3">
-          <div>
-            <el-dropdown trigger="click" class="w-100">
-              <span class="el-dropdown-link w-100">
-                <div
-                  class="d-flex justify-content-between h5 text-secondary w-100"
-                  size="large"
-                >
-                  <span>{{
-                    selectedBranches && selectedBranches.name
-                      ? selectedBranches.name
-                      : selectedBranches
-                  }}</span>
-                  <div>
-                    <el-icon class="el-icon--right">
-                      <arrow-down />
-                    </el-icon>
-                  </div>
-                </div>
-              </span>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item
-                    v-for="(itm, indx) in chartItemdropdown"
-                    :key="indx"
-                    @click="selectedType3(itm)"
-                    >{{ itm.name }}
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </div>
-        </div> -->
           <div class="col-md-12">
             <ColumnChart domId="chart2" :data="firstTimerChart" :series="series" :header="firstTimerHeader" />
           </div>
@@ -239,39 +173,6 @@
       </div>
       <div class="container-fluid mt-4" v-loading="loading">
         <div class="row border">
-          <!-- <div class="col-md-12 mt-2 d-flex justify-content-end py-3">
-          <div>
-            <el-dropdown trigger="click" class="w-100">
-              <span class="el-dropdown-link w-100">
-                <div
-                  class="d-flex justify-content-between h5 text-secondary w-100"
-                  size="large"
-                >
-                  <span>{{
-                    selectedWeekly && selectedWeekly.name
-                      ? selectedWeekly.name
-                      : selectedWeekly
-                  }}</span>
-                  <div>
-                    <el-icon class="el-icon--right">
-                      <arrow-down />
-                    </el-icon>
-                  </div>
-                </div>
-              </span>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item
-                    v-for="(itm, indx) in chartItemdropdown"
-                    :key="indx"
-                    @click="selectedType2(itm)"
-                    >{{ itm.name }}
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </div>
-        </div> -->
           <div class="col-md-12">
             <ColumnChart domId="chart4" :data="membersAttendanceChart" :series="series" :header="membersHeader" />
           </div>
@@ -279,39 +180,6 @@
       </div>
       <div class="container-fluid mt-4" v-loading="loading">
         <div class="row border">
-          <!-- <div class="col-md-12 d-flex justify-content-end py-3">
-          <div>
-            <el-dropdown trigger="click" class="w-100">
-              <span class="el-dropdown-link w-100">
-                <div
-                  class="d-flex justify-content-between h5 text-secondary w-100"
-                  size="large"
-                >
-                  <span>{{
-                    selectedMonthly && selectedMonthly.name
-                      ? selectedMonthly.name
-                      : selectedMonthly
-                  }}</span>
-                  <div>
-                    <el-icon class="el-icon--right">
-                      <arrow-down />
-                    </el-icon>
-                  </div>
-                </div>
-              </span>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item
-                    v-for="(itm, indx) in chartItemdropdown"
-                    :key="indx"
-                    @click="selectedType1(itm)"
-                    >{{ itm.name }}
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </div>
-        </div> -->
           <div class="col-md-12">
             <ColumnChart domId="chart1" :data="incomeExpenseChart" :series="series" :header="IncomeExpHeader" />
           </div>
@@ -547,7 +415,6 @@
       <template #default>
         <div>
           <emailComponent @closesidemodal="() => (showEmail = false)" />
-          <!-- <emailComponent :selectedGroupMembers="markedMembers" @closesidemodal="() => showEmail = false" /> -->
         </div>
       </template>
     </el-drawer>
@@ -555,7 +422,6 @@
       <template #default>
         <div>
           <whatSappComponent :allBranchDetail="allBranchDetail" @closesidemodal="() => (showWhatsapp = false)" />
-          <!-- <emailComponent :selectedGroupMembers="markedMembers" @closesidemodal="() => showEmail = false" /> -->
         </div>
       </template>
 
@@ -632,9 +498,7 @@
             <div class="col-md-12">
               <div class="mb-3" style="font-size: 1.2em">
                 Set up your branch hierarchies, your branch hierarchies represent the church organisation structure,
-                Fill the form below to create yours. For example Headquarter, Region etc.
-                <!-- You dont have branch hierarchies set up yet, create the
-                  hierarchies, then you can proceed to create your branch -->
+                Fill the form below to create yours. For example Headquarter,Regionetc.
               </div>
               <BranchSettings />
               <button
@@ -652,16 +516,14 @@
 </template>
 
 <script>
-import { ref, inject, onMounted, onUpdated, watchEffect, computed } from "vue";
+import { ref, inject, onMounted, watchEffect, computed } from "vue";
 import { socket } from "@/socket";
-import AuthenticateWhatsapp from "../../components/whatsapp/AuthenticateWhatsapp.vue";
 import PieChart from "../../components/charts/BranchPieChart.vue";
 import BranchSettings from "../settings/BranchLevelSettings.vue";
 import router from "../../router";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import axios from "@/gateway/backendapi";
 import DonutChart from "../../components/charts/DonutChart.vue";
-import RadialChart from "../../components/charts/RadialChart.vue";
 import ColumnChart from "@/components/charts/BranchColumnChart.vue";
 import whatSappComponent from "../groups/component/whatSappComponent.vue";
 import smsComponent from "../groups/component/smsComponent.vue";
@@ -677,9 +539,7 @@ export default {
     BranchSettings,
     emailComponent,
     whatSappComponent,
-    AuthenticateWhatsapp,
     smsComponent,
-    RadialChart,
     ColumnChart,
     OrganizationChart,
   },
@@ -757,7 +617,6 @@ export default {
 
     const getTotalPeopleBch = computed(() => {
       if (allBranchDetail.value && allBranchDetail.value.length > 0) {
-        loading.value = false;
         return allBranchDetail.value.map((i) => i.membershipSize)
           .reduce((b, a) => b + a, 0);
       } else {
@@ -766,7 +625,6 @@ export default {
     })
     const getAllAverageAttendance = computed(() => {
       if (allBranchDetail.value && allBranchDetail.value.length > 0) {
-        loading.value = false;
         return allBranchDetail.value
           .map((i) => i.currentYearAverageAttendance)
           .reduce((b, a) => b + a, 0)
@@ -784,11 +642,9 @@ export default {
       }
     })
     const sendMarkedMemberSms = () => {
-      // contacts.value = marked.value.filter((i) => i.mobilePhone).map((i) => i.mobilePhone).join()
       showSMS.value = true;
     };
     const sendMarkedBranchEmail = () => {
-      // contacts.value = marked.value.filter((i) => i.mobilePhone).map((i) => i.mobilePhone).join()
       showEmail.value = true;
     };
 
@@ -820,25 +676,6 @@ export default {
       { name: "Monthly", id: 3 },
     ]);
 
-
-
-    // const sendWhatsapp = () => {
-    //   sendingwhatsappmessage.value = true
-    //   if (sendWhatsappToMultiple.value) {
-    //     socket.emit('sendwhatsappmessage', {
-    //       id: clientSessionId.value,
-    //       phone_number: marked.value.map(i => i.mobilePhone),
-    //       message: whatsappmessage.value
-    //     })
-    //   }
-    //   else {
-    //     socket.emit('sendwhatsappmessage', {
-    //       id: clientSessionId.value,
-    //       phone_number: whatsappRecipient.value.mobilePhone,
-    //       message: whatsappmessage.value
-    //     })
-    //   }
-    // }
     const getallBracnches = async () => {
       try {
         let { data } = await axios.get(
@@ -908,10 +745,10 @@ export default {
     const displayWhatsappDrawer = (item) => {
       showWhatsapp.value = true;
       if (item) {
-        // whatsappRecipient.value = item;
+
         sendWhatsappToMultiple.value = false;
       } else {
-        // marked.value = marked.value.filter(i => i.mobilePhone).splice(0, 10)
+  
         sendWhatsappToMultiple.value = true;
       }
     };
@@ -959,7 +796,7 @@ export default {
       firstTimerAttendanceData.value.push({
         name: "First Timer",
         color: `#1AA8E9`,
-        // color: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
+
         data: firstTimerData.value,
       });
       return firstTimerAttendanceData.value;
@@ -969,7 +806,7 @@ export default {
       branchChatDetail.value.forEach((i) => {
         let serviceIndex = Object.keys(i).findIndex((i) => i === "name");
         let serviceValue = Object.values(i)[serviceIndex];
-        // let serviceValue = serviceIndex
+    
         series.value.unshift(serviceValue);
       });
     };
@@ -993,14 +830,7 @@ export default {
       }
     };
 
-    // const mappAllBranchDetail = computed(() => {
 
-    // })
-
-    // onMounted(() => {
-    //   if(allBranchDetail.value.length === 0) return []
-    //   return allBranchDetail.value
-    // })
     const mappedAverageIncome = computed(() => {
       if (averageIncomeChartResult.value.length === 0) return [];
       return averageIncomeChartResult.value.map((i) => i);
@@ -1025,7 +855,6 @@ export default {
       branchLoading.value = true;
 
       try {
-        // let { data } = await axios.get("/api/Branching");
         await store.dispatch("branch/getBranches").then((res) => {
           console.log(res, "kkkek");
           allBranchDetail.value = res;
@@ -1154,7 +983,6 @@ export default {
         let { data } = await axios.post("/api/Branching/joinnetwork", {
           code: code.value,
         });
-        // closeJoinNetworkModal.value.ref.click();
         displayJoinModal.value = false
         ElMessage({
           type: "success",
@@ -1199,7 +1027,6 @@ export default {
       displayModal,
       mappedBranch,
       membersAttendanceChart,
-      // mappAllBranchDetail,
       joinNetwork,
       displayJoinModal,
       mdAndUp,
@@ -1313,7 +1140,6 @@ export default {
 
 .empty-img {
   width: 85%;
-  /* min-width: 397px; */
   margin: auto;
 }
 
@@ -1342,7 +1168,6 @@ export default {
 
 .icon {
   background: #c0dbfacc;
-  /* padding: 1rem; */
   height: 2.1rem;
 }
 
@@ -1361,6 +1186,5 @@ export default {
 .card-summary {
   background: #ffff;
   border-radius: 0.5rem;
-  /* width: 100% !important; */
 }
 </style>

@@ -754,6 +754,17 @@ const routes = [
                 },
                 {
 
+                    path: 'branchdashoboard',
+                    name: "NewMainBranch",
+                    meta: {
+                        title: 'Churchplus - Branch',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "addfirsttimer" */ '../views/branch/NewMainBranch')
+
+                },
+                {
+
                     path: 'addbranch',
                     name: "AddBranch",
                     meta: {
@@ -2167,6 +2178,15 @@ const routes = [
             import( /* webpackChunkName: "Store" */ '../views/ecommerce/public/HomePage.vue'),
         children: [
             {
+                path: 'home',
+                name: "LandingPage",
+                meta: {
+                    title: 'Churchplus - Ecommerce',
+                },
+                component: () =>
+                    import( /* webpackChunkName: "LandingPage" */ '../views/ecommerce/public/LandingPage.vue')
+            },
+            {
                 path: 'login',
                 name: "PublicLogin",
                 meta: {
@@ -2483,6 +2503,13 @@ const routes = [
             import( /* webpackChunkName: "followupfeedback" */ '@/views/people/followup/FollowUpFeedbackForm'),
 
     },
+    {
+        path: '/app/mobile',
+        name: 'MobileAppDeepLink',
+        component: () =>
+            import( /* webpackChunkName: "mobile app deep link" */ '@/views/MobileAppDeepLink.vue'),
+
+    },
 ]
 
 const router = createRouter({
@@ -2530,7 +2557,8 @@ router.beforeEach((to, from, next) => {
             to.name === "PublicLogin" ||
             to.name === "CartItem" ||
             to.name === "CheckOut" ||
-            to.name === "BookDetails"
+            to.name === "BookDetails" ||
+            to.name === "MobileAppDeepLink"
         ) && !tokenIsValid
     ) {
         return next(true);
