@@ -121,7 +121,7 @@
             class="
               col-lg-5 col-sm-12
               mt-lg-0 mt-sm-5 mt-md-5 mt-lg-0 mt-5
-              pl-lg-5
+              pl-lg-3
               pr-lg-5
               pl-sm-3
               pr-3 pr-sm-2
@@ -142,9 +142,41 @@
             </div>
             <div class="row">
               <div class="col-12">
-                <table class="table border-none m-0">
+                <div 
+                  class="d-flex flex-wrap justify-content-between w-100 role-access p-2" 
+                  :class="{ 'border-bottom': index == roles.length - 1 }"
+                  v-for="(item, index) in roles" :key="index"
+                  v-if="
+                          item !== 'FollowUp' &&
+                          item !== 'GroupLeader' &&
+                          item !== 'FirsttimerFollowUp' &&
+                          item !== 'CanAccessNewConverts' &&
+                          item !== 'CanAccessFollowUps'
+                        "
+                      >
+                  <div class="s-12"
+                  >{{ item }}</div>
+                  <div 
+                  class="font-weight-600"
+                  :class="{
+                          'text-success':
+                            selectedRole.find((i) => i == item) ||
+                            selectedRole.some(
+                              (i) => i.toLowerCase() == 'admin'
+                            ),
+                        }"
+                        >
+                    {{
+                          selectedRole.find((i) => i == item) ||
+                          selectedRole.some((i) => i.toLowerCase() == "admin")
+                            ? "Full Access"
+                            : "No Access"
+                        }}
+                  </div>
+                </div>
+             <!-- <table class="table border-none m-0">
                   <tbody>
-                    <tr v-for="(item, index) in roles" :key="index">
+                    <tr       v-for="(item, index) in roles" :key="index">
                       <td
                         v-if="
                           item !== 'FollowUp' &&
@@ -172,16 +204,16 @@
                             ),
                         }"
                       >
-                        {{
+                      {{
                           selectedRole.find((i) => i == item) ||
                           selectedRole.some((i) => i.toLowerCase() == "admin")
                             ? "Full Access"
                             : "No Access"
-                        }}
+                        }} 
                       </td>
                     </tr>
                   </tbody>
-                </table>
+                </table>  -->
               </div>
             </div>
           </div>
@@ -341,6 +373,7 @@ export default {
           this.password2 = data.password;
           this.phoneNumber = data.phone;
           this.selectedRole = data.roles;
+          console.log(this.selectedRole, 'ffff')
         } catch (error) {
           console.log(error);
         }
@@ -429,6 +462,16 @@ export default {
 }
 .rolesBackground {
   color: green;
+}
+
+.role-access {
+  border-top: 1px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
+  border-left: 1px solid #dee2e6;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #dee2e6;
 }
 
 @media (max-width: 771px) {
