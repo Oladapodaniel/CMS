@@ -28,7 +28,6 @@ onMounted(() => {
     const type = params.get('type');
     const id = params.get('id');
     window.location.href = `${scheme}://${type}/${id}`
-    console.log(`${scheme}://${type}/${id}`)
 })
 
 
