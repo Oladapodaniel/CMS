@@ -1,10 +1,24 @@
 <script setup>
-import { inject } from 'vue';
+import { inject, onMounted } from 'vue';
 import deviceBreakpoint from '../../../mixins/deviceBreakpoint';
 import HeaderSection from './component/HeaderSection.vue';
+import { getProductCategories } from '../../../services/ecommerce/ecommerceservice';
 
 const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
-const primarycolor = inject('primarycolor')
+const primarycolor = inject('primarycolor');
+
+onMounted(() => {
+    getCategories()
+})
+
+const getCategories = async() => {
+    try {
+        let response = await getProductCategories();
+        console.log(response, 'response here')
+    } catch (error) {
+        console.error(error)
+    }
+}
 </script>
 
 <template>
