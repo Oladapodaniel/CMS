@@ -378,7 +378,7 @@ export default {
       //   logo: require('../../assets/dashboardlinks/dashboard-icon/Cart.svg'),
       //   route: '/tenant/store',
       //   submenu: []
-      }
+      // }
       // const report = {
       //   id: 6,
       //   name: 'Reports',
