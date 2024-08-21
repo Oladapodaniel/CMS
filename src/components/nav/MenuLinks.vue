@@ -478,7 +478,6 @@ export default {
 
 
       roleOfCurrentUser.value.forEach(i => {
-        console.log(i)
         // If people object is not already in the list, push it and its submenu, else just push its sub menu
         if (i.toLowerCase() == 'canaccessfirsttimers' && roleOfCurrentUser.value.indexOf('Admin') < 0) {
           if (menuLink.value.findIndex(i => i.id == people.id) < 0) {
@@ -570,7 +569,8 @@ export default {
         }
 
         if (i.toLowerCase() == 'admin') {
-          menuLink.value.push(dashboard, people, communication, event, form, financial, social, ecommerce, report, more,)
+          menuLink.value.push(dashboard, people, communication, event, form, financial, social, report, more)
+          // ecommerce
           // menuLink.value.push(dashboard, people, communication, event, financial,  report, more)
           menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(allContacts, members, firsttimers, newconverts, groups, families)
           menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(media, branch, settings)
