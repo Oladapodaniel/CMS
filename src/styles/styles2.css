@@ -270,6 +270,11 @@ div.el-dialog.is-align-center.expiredSubDialog > .el-dialog__header {
   background: #fef8f0 !important;
 }
 
+div.el-textarea textarea.el-textarea__inner {
+  box-shadow: none;
+  border: 1px solid #787878 !important;
+}
+
 /* Error Confirm modal */
 
 .el-overlay-message-box[aria-label="Confirm delete"] .el-message-box {

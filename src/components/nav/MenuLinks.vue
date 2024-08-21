@@ -372,13 +372,13 @@ export default {
         submenu: []
       }
 
-      // const ecommerce = {
-      //   id: 10,
-      //   name: 'E-commerce',
-      //   logo: require('../../assets/dashboardlinks/dashboard-icon/Cart.svg'),
-      //   route: '/tenant/store',
-      //   submenu: []
-      // }
+      const ecommerce = {
+        id: 10,
+        name: 'E-commerce',
+        logo: require('../../assets/dashboardlinks/dashboard-icon/Cart.svg'),
+        route: '/tenant/store',
+        submenu: []
+      }
       // const report = {
       //   id: 6,
       //   name: 'Reports',
@@ -569,8 +569,7 @@ export default {
         }
 
         if (i.toLowerCase() == 'admin') {
-          menuLink.value.push(dashboard, people, communication, event, form, financial, social, report, more)
-          // ecommerce
+          menuLink.value.push(dashboard, people, communication, event, form, financial, social, ecommerce, report, more)
           // menuLink.value.push(dashboard, people, communication, event, financial,  report, more)
           menuLink.value.find(i => i.name.toLowerCase() == 'people').submenu.push(allContacts, members, firsttimers, newconverts, groups, families)
           menuLink.value.find(i => i.name.toLowerCase() == 'more').submenu.push(media, branch, settings)
