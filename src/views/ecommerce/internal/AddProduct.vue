@@ -2,7 +2,7 @@
 import { inject, onMounted, reactive, ref } from 'vue';
 import deviceBreakpoint from '../../../mixins/deviceBreakpoint';
 import HeaderSection from './component/HeaderSection.vue';
-import { addProductCategory, getProductCategories, productType } from '../../../services/ecommerce/ecommerceservice';
+import { addProduct, addProductCategory, getProductCategories, productType } from '../../../services/ecommerce/ecommerceservice';
 import { ElMessage } from "element-plus";
 import media_service from '../../../services/media/media_service';
 
@@ -15,7 +15,14 @@ const productCategories = ref([]);
 const selectedCategory = ref(null);
 const selectedProductType = ref(null);
 const coverurl = ref("");
+const fileurl = ref("");
 const loadingCoverImage = ref(false);
+const loadingFile = ref(false);
+const fileResponse = ref(null);
+const coverImageResponse = ref(null);
+const productName = ref("");
+const description = ref("");
+const price = ref("");
 
 onMounted(() => {
     getCategories();
@@ -51,40 +58,64 @@ const saveNewCategory = async () => {
     }
 }
 
-const uploadCoverImage = async (e) => {
-    loadingCoverImage.value = true;
+const uploadImage = async (e, type) => {
+    console.log(type)
+    type == 1 ? loadingCoverImage.value = true : loadingFile.value = true;
     let formData = new FormData();
     formData.append("mediaFileImage", e.raw);
-    coverurl.value = URL.createObjectURL(e.raw);
+    type == 1 ? coverurl.value = URL.createObjectURL(e.raw) : fileurl.value = URL.createObjectURL(e.raw)
     try {
-        let data = await media_service.uploadImage(formData);
+        let data = await media_service.uploadFileAndImage(formData);
         console.log(data)
-        loadingCoverImage.value = false;
+        if (type == 1) {
+            loadingCoverImage.value = false
+            coverImageResponse.value = data
+            console.log("uploading Cover Image")
+        } else {
+            console.log("uploading file")
+            loadingFile.value = false;
+            fileResponse.value = data;
+        }
     } catch (error) {
-        loadingCoverImage.value = false;
+        type == 1 ? loadingCoverImage.value = false : loadingFile.value = false;
         console.log(error);
     }
 }
 
-const createProduct = () => {
+const isImage = (fileUrl) => {
+    return fileUrl?.match(/\.(jpg|jpeg|png|gif)$/i);
+};
+
+const isAudio = (fileUrl) => {
+    return fileUrl?.match(/\.(mp3|wav|ogg|m4a)$/i);
+};
+
+const isVideo = (fileUrl) => {
+    return fileUrl?.match(/\.(mp4|webm|ogg)$/i);
+};
+
+const createProduct = async () => {
     let payload = {
-        "id": "00000000-0000-0000-0000-000000000000",
-        "name": null,
-        "productName": null,
-        "ProductType": 0,
-        "description": null,
-        "price": 0.0,
-        "stockQuantity": 0,
-        "ecommerceCategoryID": null,
-        "ecommerceBrandID": null,
-        "imageURL": null,
-        "imageURLBlobName": null,
-        "fileURL": null,
-        "fileURLBlobName": null,
-        "isArchived": false,
-        "dateAdded": "0001-01-01T00:00:00",
-        "tenantID": "00000000-0000-0000-0000-000000000000"
+        name: productName.value,
+        productName: productName.value,
+        productType: selectedProductType.value,
+        description: description.value,
+        price: price.value,
+        ecommerceCategoryID: selectedCategory.value,
+        imageURL: coverImageResponse.value?.pictureUrl ?? "",
+        imageURLBlobName: coverImageResponse.value?.imageBlobName ?? "",
+        fileURL: fileResponse.value?.pictureUrl ?? "",
+        fileURLBlobName: fileResponse.value?.imageBlobName ?? "",
     }
+
+    try {
+        let data = await addProduct(payload);
+        console.log(data)
+    } catch (error) {
+        console.log(error);
+    }
+
+    console.log(payload)
 }
 </script>
 
@@ -98,10 +129,13 @@ const createProduct = () => {
                 <el-col :sm="24" :md="16" :lg="16" :xl="16">
                     <div class="image-thumbnail-parent mx-auto d-lg-none">
                         <div class="image-thumbnail">
-                            <img src="../../../assets/people/phone-import.svg" alt="Upload Image" />
+                            <img :src="coverurl" class="w-100" v-if="coverurl" />
+                            <img src="../../../assets/people/phone-import.svg" alt="Upload Image" v-else />
                         </div>
-                        <el-upload class="upload-product w-100 mt-4" :auto-upload="false">
-                            <el-button size="large" class="upload-file">Upload cover image</el-button>
+                        <el-upload class="upload-product w-100 mt-4" :auto-upload="false"
+                            @change="uploadImage($event, 1)">
+                            <el-button size="large" :loading="loadingCoverImage" class="upload-file">Upload cover
+                                image</el-button>
                         </el-upload>
                     </div>
                     <div>
@@ -121,37 +155,54 @@ const createProduct = () => {
                     </div>
                     <div class="mt-2">
                         <label>Product name</label>
-                        <el-input type="text" placeholder="Enter Product name" />
+                        <el-input type="text" placeholder="Enter Product name" v-model="productName" />
                     </div>
                     <div class="mt-4">
                         <label>Product Description</label>
-                        <el-input type="textarea" rows="3" placeholder="Description" />
+                        <el-input type="textarea" rows="3" placeholder="Description" v-model="description" />
                     </div>
                     <el-collapse-transition>
-                        <div class="mt-4" v-show="selectedProductType !== 4 && selectedProductType !== 5 && selectedProductType !== 6">
-                            <el-upload class="upload-product w-100" :auto-upload="false">
-                                <el-button size="large" class="upload-file">Click to upload {{ productType[selectedProductType] }} file</el-button>
+                        <div class="mt-4"
+                            v-show="selectedProductType !== 4 && selectedProductType !== 5 && selectedProductType !== 6">
+                            <img :src="fileurl && isImage(fileurl)" class="w-100 mb-3 rounded-lg" v-if="fileurl" />
+                            <div v-if="fileResponse && fileResponse.pictureUrl && isAudio(fileResponse.pictureUrl)">
+                                <audio class="w-100" controls>
+                                    <source :src="fileurl" />
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+                            <div v-if="fileResponse && fileResponse.pictureUrl && isVideo(fileResponse.pictureUrl)">
+                                <video width="320" height="240" controls>
+                                    <source :src="fileurl" />
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            <el-upload class="upload-product w-100" :auto-upload="false"
+                                @change="uploadImage($event, 2)">
+                                <el-button size="large" :loading="loadingFile" class="upload-file">Click to upload {{
+                                    productType[selectedProductType] }} file</el-button>
                             </el-upload>
-                            <div>No file selected</div>
+                            <div v-if="!fileurl || !fileResponse">No file selected</div>
                         </div>
                     </el-collapse-transition>
                     <div class="mt-4">
                         <el-row :gutter="15">
-                            <el-col :sm="24" :md="12" :lg="12" :xl="12">
+                            <el-col :sm="24" :md="24" :lg="24" :xl="24">
                                 <div>
-                                    <label>Amount</label>
-                                    <el-input type="text" placeholder="NGN 20,000" />
+                                    <label>Price</label>
+                                    <el-input type="text" placeholder="NGN 20,000" v-model="price" />
                                 </div>
                             </el-col>
-                            <el-col :sm="24" :md="12" :lg="12" :xl="12">
+                            <!-- <el-col :sm="24" :md="12" :lg="12" :xl="12">
                                 <div>
                                     <label>Discount</label>
                                     <el-input type="text" placeholder="5%" />
                                 </div>
-                            </el-col>
+                            </el-col> -->
                         </el-row>
                         <div class="mt-4">
-                            <el-button size="large" class="w-100" :color="primarycolor" round>Save & upload</el-button>
+                            <el-button size="large" class="w-100" :color="primarycolor" round
+                                @click="createProduct">Save & upload</el-button>
                         </div>
                     </div>
                 </el-col>
@@ -161,8 +212,10 @@ const createProduct = () => {
                             <img :src="coverurl" class="w-100" v-if="coverurl" />
                             <img src="../../../assets/people/phone-import.svg" alt="Upload Image" v-else />
                         </div>
-                        <el-upload class="upload-product w-100 mt-4" :auto-upload="false" @change="uploadCoverImage">
-                            <el-button size="large" :loading="loadingCoverImage" class="upload-file">Upload cover image</el-button>
+                        <el-upload class="upload-product w-100 mt-4" :auto-upload="false"
+                            @change="uploadImage($event, 1)">
+                            <el-button size="large" :loading="loadingCoverImage" class="upload-file">Upload cover
+                                image</el-button>
                         </el-upload>
                     </div>
                 </el-col>

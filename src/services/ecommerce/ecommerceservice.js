@@ -19,3 +19,12 @@ export const addProductCategory = async(payload) => {
         return error
     }
 }
+
+export const addProduct = async(payload) => {
+    try {
+        let { data } = await axios.post("/api/Ecommerce/AddProduct", payload);
+        return data
+    } catch (error) {
+        return error
+    }
+}
