@@ -1135,6 +1135,15 @@ const routes = [
                 import( /* webpackChunkName: "firsttimers" */ '@/views/people/FirstTimersList.vue')
         },
         {
+            path: 'firsttimeranalytics',
+            name: 'FirstTimerAnalytics',
+            meta: {
+                title: 'Churchplus - First Timers',
+            },
+            component: () =>
+                import( /* webpackChunkName: "firsttimers" */ '@/views/people/FirstTimerAnalytics.vue')
+        },
+        {
             path: 'firsttimerslist',
             name: 'FirstTimerEmpty',
             meta: {
