@@ -153,7 +153,7 @@ export default {
 
 
       const showItem =() =>{
-             axios.get(`/api/FirsttimerManager/analytics?startDate=${defaultStartDate}&endDate=${defaultEndDate}`).then((res)=> {
+             axios.get(`/api/FirsttimerManager/analytics`).then((res)=> {
                analyticsData.value = res.data.returnObject;
                console.log(analyticsData.value)
           }).catch((err)=> {

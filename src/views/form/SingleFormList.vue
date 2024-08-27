@@ -159,7 +159,10 @@
             <td>{{ date(item.date) }}</td>
             <td v-if="item.isPaymentForm">{{ item.amount }}</td>
             <td v-for="(value, label) in item.data" :key="label">
-              <span>{{ value.data ? value.data : '' }} </span>
+              <div v-if="value.data?.includes(',')">
+                <el-tag type="primary" v-for="item in value.data.split(',')" size="large" class="ml-1 mt-1">{{ item }}</el-tag>
+              </div>
+              <span v-else>{{ value.data ? value.data : '' }} </span>
             </td>
             <td>
               <div class="c-pointer">

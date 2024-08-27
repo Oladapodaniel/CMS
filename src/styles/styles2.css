@@ -107,9 +107,9 @@
   background: #FCFCFC !important;
   border-radius: 5px !important;
   box-shadow: none !important;
-
-
-
+  
+  
+  
 }
 .el-input__wrapper:hover {
   padding: 6px 11px !important;
@@ -117,10 +117,13 @@
   background: #FCFCFC !important;
   border-radius: 5px !important;
   box-shadow: none !important;
- 
+}
 
-
-
+.el-select-v2__wrapper {
+  border: 1px solid #787878 !important;
+  background: #FCFCFC !important;
+  border-radius: 5px !important;
+  
 }
 
 /* button.el-button:hover {
