@@ -52,6 +52,25 @@
                           </div>
                         </div>
                       </div>
+                      <div class="col-md-12 col-sm-12 mt-3 w-100" v-if="selectedControl.name == 'MultiSelectDropdownList'">
+                        <label for="">
+                          Enter your MultiSelectDropdownList options here </label>
+                        <div class="row  justify-content-center">
+                          <div class="col-md-12">
+                            <div class="chip-container col-md-12 p-0 m-0 ">
+                              <div class="chip px-2  d-flex justify-content-between my-2 mx-1"
+                                v-for="(chip, i) of dropdownList" :key="chip.label">
+                                <span>{{ chip }}</span>
+                                <i class=" pt-1 text-dark align-items-center" @click="deleteChip(i)"><el-icon>
+                                    <CircleClose />
+                                  </el-icon></i>
+                              </div>
+                              <input class="inputt  py-2 " v-model="currentInput" @keypress.enter="saveChip"
+                                @input="checkComma" @keydown.delete="backspaceDelete">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                       <div class="col-md-12 col-sm-12 mt-3">
                         <label for="">Select the Entity Type you want to Extend
                         </label>
@@ -315,6 +334,7 @@ export default {
       { name: "Email", id: "4" },
       { name: "Image", id: "5" },
       { name: "Number", id: "6" },
+      { name: "MultiSelectDropdownList", id: "11" },
     ]);
     const entityType = ref([
       { name: "Member", id: "0" },
@@ -512,6 +532,8 @@ export default {
         parameterValues: dropdownList.value ? dropdownList.value.join(",") : "",
         controlType: selectedControl.value.name,
       };
+
+      console.log(body)
 
       try {
         const { data } = await axios.post(

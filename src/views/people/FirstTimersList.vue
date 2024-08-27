@@ -678,7 +678,7 @@
           </div>
         </template>
       </Table>
-      <div v-if="searchMember.length == 0">
+      <div v-if="searchMember.length == 0" class="push-down">
         <el-alert
           title="First Timer not found"
           type="warning"
@@ -863,7 +863,6 @@
                   placeholder="First name"
                   class="w-100"
                   v-model="filter.name"
-                  @input="setFilteredValue"
                 />
               </div>
               <div class="col-md-11 form-group">
@@ -874,16 +873,28 @@
                   v-model="filter.phoneNumber"
                 />
               </div>
+              <div class="col-md-11 form-group" v-if="lifeCycle.length > 0">
+                <div class="text-black">Lifecycle</div>
+                <el-select-v2
+                  v-model="selectedLifeCycle"
+                  :options="lifeCycle.map(i => ({label: i.name, value: i.id }))"
+                  label="Choose lifecycle"
+                  placeholder="Choose lifecycle"
+                  size="large"
+                  class="w-100"
+                />
+              </div>
               <div class="col-md-12 d-flex justify-content-center">
                 <el-button
                   class="col-md-11"
                   :color="primarycolor"
                   @click="applyFilter"
                   :loading="applyLoading"
-                  :disabled="disableBtn"
+                  size="large"
                   round
                   >Apply</el-button
-                >
+                  >
+                  <!-- :disabled="disableBtn" -->
                 <!-- <div class="mt-2 col-md-11">
                       <el-button @click="clearAll" class="mr-2" text
                         >Clear all</el-button
@@ -928,6 +939,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import router from "../../router";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import Table from "@/components/table/Table";
+import frmservice from "@/services/FRM/firsttimermanagement";
 
 export default {
   props: ["firstTimersList", "totalItems"],
@@ -974,6 +986,8 @@ export default {
     const showFilter = ref(false);
     const route = useRoute();
     const filterFormIsVissible = ref(false);
+    const lifeCycle = ref([]);
+    const selectedLifeCycle = ref(null)
     const toggleFilterFormVissibility = () => {
       showFilter.value = true;
       // (filterFormIsVissible.value = !filterFormIsVissible.value);
@@ -1117,18 +1131,25 @@ export default {
     });
 
     const applyFilter = () => {
+      console.log(selectedLifeCycle.value)
+      const lifecycle = lifeCycle.value.find(i => i.id === selectedLifeCycle.value);
+      // console.log(lifecycle)
       applyLoading.value = true;
       filter.value.name = filter.value.name == undefined ? "" : filter.value.name;
       filter.value.phoneNumber =
         filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber;
+      filter.value.lifecycle = lifecycle?.name ?? "";
+    
 
       let url =
         "/api/People/FilterFirstTimers?firstname=" +
         filter.value.name +
-        "&lastname=" +
-        filter.value.name +
+        // "&lastname=" +
+        // filter.value.name +
         "&phone_number=" +
         filter.value.phoneNumber +
+        "&lifecycle=" +
+        filter.value.lifecycle +
         "&page=1";
       axios
         .get(url)
@@ -1136,8 +1157,9 @@ export default {
           // noRecords.value = true;
           filterResult.value = res.data;
           applyLoading.value = false;
+          showFilter.value = false
         })
-        .catch((err) => console.log(err), (applyLoading.value = false));
+        .catch((err) => console.log(err), (applyLoading.value = false), (showFilter.value = false));
     };
 
     const searchNamesInDB = ref([]);
@@ -1183,8 +1205,7 @@ export default {
       ) {
         return [];
       } else if (
-        filterResult.value.length > 0 &&
-        (filter.value.name || filter.value.phoneNumber)
+        filter.value.name || filter.value.phoneNumber || filter.value.lifecycle
       ) {
         return filterResult.value;
       } else {
@@ -1196,10 +1217,10 @@ export default {
       filterFormIsVissible.value = false;
     };
 
-    const disableBtn = computed(() => {
-      if (!filter.value.name && !filter.value.phoneNumber) return true;
-      return false;
-    });
+    // const disableBtn = computed(() => {
+    //   if (!filter.value.name && !filter.value.phoneNumber) return true;
+    //   return false;
+    // });
 
     const membersCount = computed(() => {
       if (totalFirstTimer.value > 100) return Math.ceil(totalFirstTimer.value / 100);
@@ -1668,6 +1689,16 @@ export default {
       totalFirstTimer.value = payload;
     };
 
+    const getLifeCycle = async () => {
+      try {
+        let res = await frmservice.getLifeCycle();
+        lifeCycle.value = res.returnObject.sort((a, b) => a.order - b.order);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getLifeCycle();
+
     return {
       churchMembers,
       showFilter,
@@ -1714,7 +1745,7 @@ export default {
       searchMember,
       clearAll,
       contacts,
-      disableBtn,
+      // disableBtn,
       hide,
       totalItems,
       setFirsttimer,
@@ -1751,6 +1782,8 @@ export default {
       chooseGroupforAllmembers,
       chooseGrouptoMoveto,
       chooseGroupto,
+      lifeCycle,
+      selectedLifeCycle
     };
   },
 };
@@ -1876,6 +1909,14 @@ a {
     width: 400px;
     padding: 40px;
   }
+
+  .filter-options-shown {
+    height: 150px;
+  }
+
+  .push-down {
+    margin-top: 10px
+  }
 }
 
 @media screen and (max-width: 575px) {
@@ -1944,9 +1985,9 @@ a {
   }
 }
 
-@media (max-width: 767px) {
-  .filter-options-shown {
-    height: 150px;
+@media (min-width: 767px) {
+  .push-down {
+    margin-top: 106px;
   }
 }
 </style>
