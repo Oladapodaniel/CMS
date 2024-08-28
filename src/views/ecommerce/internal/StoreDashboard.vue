@@ -1,5 +1,5 @@
 <script setup>
-import { inject } from 'vue';
+import { inject, onMounted, ref } from 'vue';
 import deviceBreakpoint from '../../../mixins/deviceBreakpoint';
 import HeaderSection from './component/HeaderSection.vue';
 import DatasetAnalytics from './component/DatasetAnalytics.vue';
@@ -8,10 +8,15 @@ import ChartCard from './component/ChartCard.vue';
 import ColumnChartEcommerce from './component/charts/ColumnChartEcommerce.vue';
 import AreaChart from './component/charts/AreaChart.vue';
 import router from '../../../router';
+import store from '../../../store/store';
+import converter from '../../../services/currency-converter/currencyConverter';
+import { getProductCategories, productType } from '../../../services/ecommerce/ecommerceservice';
 
 
 const primarycolor = inject("primarycolor");
 const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
+const products = ref(store.getters["ecommerce/getproducts"]);
+const productCategories = ref(store.getters["ecommerce/getCategories"]);
 const orderBody = [
   {
     name: '48 Laws of Power',
@@ -51,6 +56,14 @@ const orderBody = [
   },
 ]
 
+const productsheader = [
+  { name: 'Product name', value: 'name' },
+  { name: 'Product price', value: 'price' },
+  { name: 'Product Type', value: 'productType' },
+  { name: 'Category', value: 'ecommerceCategoryID' },
+  { name: 'Status', value: 'status' },
+]
+
 const orderheader = [
   { name: 'Product name', value: 'name' },
   { name: 'Product price', value: 'price' },
@@ -66,6 +79,29 @@ const handleClick = () => {
 const handleSelectionChange = (payload) => {
   console.log(payload, 'he')
 }
+
+const getCategories = async () => {
+  store.dispatch("ecommerce/getProductCategory").then((response => {
+    productCategories.value = response
+    if (products.value.length === 0) {
+      allProducts();
+    }
+  }))
+}
+
+const allProducts = async () => {
+  store.dispatch("ecommerce/getAllProducts").then((response => {
+    products.value = response
+  }))
+}
+
+onMounted(() => {
+  if (productCategories.value.length === 0) {
+    getCategories();
+  }
+})
+
+const getProductCategoriesValue = (id) => productCategories.value.find(i => i.id === id)?.categoryName;
 </script>
 
 <template>
@@ -122,17 +158,20 @@ const handleSelectionChange = (payload) => {
     </div>
     <div class="row mt-5">
       <div class="col-12 col-md-8">
-        <StoreTable :data="orderBody" :headers="orderheader" :checkMultipleItem="true"
+        <StoreTable :data="products" :headers="productsheader" :checkMultipleItem="true"
           @checkedrow="handleSelectionChange" headerText="Top Selling Products"
           :viewall="{ name: 'View all products', route: '/tenant/store/products' }">
           <template v-slot:name="{ item }">
             <div @click="showMemberRow(item)" class="c-pointer">
-              {{ item.name }}
+              <div class="d-flex align-items-center gap-3">
+                <img :src="item.imageURL" alt="Product Image" class="product-image" />
+                <div class="ml-2">{{ item.name }}</div>
+              </div>
             </div>
           </template>
           <template v-slot:price="{ item }">
             <div @click="showMemberRow(item)" class="c-pointer">
-              {{ item.price }}
+              {{ converter.numberWithCommas(item.price) }}
             </div>
           </template>
           <template v-slot:status="{ item }">
@@ -140,9 +179,14 @@ const handleSelectionChange = (payload) => {
               {{ item.status }}
             </div>
           </template>
-          <template v-slot:type="{ item }">
+          <template v-slot:productType="{ item }">
             <div @click="showMemberRow(item)" class="c-pointer">
-              {{ item.type }}
+              {{ productType[item.productType] }}
+            </div>
+          </template>
+          <template v-slot:ecommerceCategoryID="{ item }">
+            <div @click="showMemberRow(item)" class="c-pointer">
+              {{ getProductCategoriesValue(item.ecommerceCategoryID) }}
             </div>
           </template>
         </StoreTable>
@@ -177,6 +221,13 @@ const handleSelectionChange = (payload) => {
   background-color: rgba(245, 245, 245, 1);
   padding: 60px;
   border-radius: 8px;
+}
+
+.product-image {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 3px;
 }
 
 @media (max-width: 767px) {

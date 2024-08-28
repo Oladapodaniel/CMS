@@ -28,3 +28,38 @@ export const addProduct = async(payload) => {
         return error
     }
 }
+
+export const getAllProduct = async() => {
+    try {
+        let { data } = await axios.get("/api/Ecommerce/GetAllProducts");
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const deleteSingleProduct = async(id) => {
+    try {
+        let { data } = await axios.delete(`/api/Ecommerce/DeleteProduct?productId=${id}`);
+        return data
+    } catch (error) {
+        return error
+    }
+}
+
+export const updateProductCategory = async(payload) => {
+    try {
+        let { data } = await axios.put(`/api/Ecommerce/UpdateCategory`, payload);
+        return data
+    } catch (error) {
+        return error
+    }
+}
+
+export const deleteProductCategory = async(id) => {
+    try {
+        let { data } = await axios.delete(`/api/Ecommerce/DeleteCategory?categoryId=${id}`);
+        return data
+    } catch (error) {
+        return error
+    }
+}

@@ -2,16 +2,19 @@
 import { inject, onMounted, reactive, ref } from 'vue';
 import deviceBreakpoint from '../../../mixins/deviceBreakpoint';
 import HeaderSection from './component/HeaderSection.vue';
-import { addProduct, addProductCategory, getProductCategories, productType } from '../../../services/ecommerce/ecommerceservice';
-import { ElMessage } from "element-plus";
+import { addProduct, addProductCategory, deleteProductCategory, getProductCategories, productType, updateProductCategory } from '../../../services/ecommerce/ecommerceservice';
+import { ElMessage, ElMessageBox } from "element-plus";
 import media_service from '../../../services/media/media_service';
+import router from '../../../router';
+import store from '../../../store/store';
+
 
 const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
 const primarycolor = inject('primarycolor');
 const categoryDialog = ref(false)
-const category = reactive({});
+const category = ref({});
 const categoryLoading = ref(false);
-const productCategories = ref([]);
+const productCategories = ref(store.getters["ecommerce/getCategories"]);
 const selectedCategory = ref(null);
 const selectedProductType = ref(null);
 const coverurl = ref("");
@@ -23,30 +26,107 @@ const coverImageResponse = ref(null);
 const productName = ref("");
 const description = ref("");
 const price = ref("");
+const createProductLoading = ref(false)
 
 onMounted(() => {
-    getCategories();
+    if (productCategories.value.length === 0) {
+        getCategories();
+    }
 })
 
 const getCategories = async () => {
-    try {
-        let response = await getProductCategories();
+    store.dispatch("ecommerce/getProductCategory").then((response => {
         productCategories.value = response
+    }))
+}
+
+const displaNewCategoryDialog = () => {
+    category.value = new Object();
+    categoryDialog.value = true
+}
+
+const showConfirmModal = (item, index) => {
+    console.log(item, "nnjnnjnjk");
+    ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+            confirmButtonText: "OK",
+            cancelButtonText: "Cancel",
+            type: "error",
+        }
+    )
+        .then(() => {
+            deleteCategory(item, index)
+        })
+        .catch(() => {
+            ElMessage({
+                type: "info",
+                message: "Rejected",
+                duration: 5000,
+            });
+        });
+};
+
+const deleteCategory = async (item, index) => {
+    console.log(item,index)
+    try {
+        let response = await deleteProductCategory(item.value);
+        productCategories.value.splice(index, 1)
+        getCategories();
+        ElMessage({
+                type: "success",
+                message: "Category deleted successfully",
+                duration: 5000
+            });
+            selectedCategory.value = null
+        console.log(response)
     } catch (error) {
         console.error(error)
     }
 }
 
-const displaNewCategoryDialog = () => categoryDialog.value = true
-
 const saveNewCategory = async () => {
     categoryLoading.value = true;
+    if (!category.value?.id) {
+        console.log('save cat')
+        try {
+            let response = await addProductCategory(category.value);
+            categoryLoading.value = false;
+            categoryDialog.value = false;
+            productCategories.value.push(response);
+            selectedCategory.value = response.id;
+            getCategories();
+            category = new Object();
+            ElMessage({
+                type: "success",
+                message: "Category created successfully",
+                duration: 5000
+            });
+        } catch (error) {
+            console.error(error)
+        }
+    } else {
+        editCategory();
+    }
+}
+
+const displayCategoriesToUpdate = (item) => {
+    category.value = productCategories.value.find(i => i.id === item.value)
+    categoryDialog.value = true
+}
+
+const editCategory = async() => {
+    console.log('edit cat')
+
+    delete category.value.products
     try {
-        let response = await addProductCategory(category);
+        let response = await updateProductCategory(category.value);
         categoryLoading.value = false;
         categoryDialog.value = false;
         productCategories.value.push(response);
         selectedCategory.value = response.id;
+        getCategories();
         category = new Object();
         ElMessage({
             type: "success",
@@ -95,6 +175,7 @@ const isVideo = (fileUrl) => {
 };
 
 const createProduct = async () => {
+    createProductLoading.value = true;
     let payload = {
         name: productName.value,
         productName: productName.value,
@@ -109,10 +190,15 @@ const createProduct = async () => {
     }
 
     try {
-        let data = await addProduct(payload);
-        console.log(data)
+        const response = await addProduct(payload);
+        console.log(response)
+        createProductLoading.value = false;
+        store.dispatch("ecommerce/getAllProducts").then((() => {
+            router.push('/tenant/store/products')
+        }))
     } catch (error) {
-        console.log(error);
+        createProductLoading.value = false;
+        console.log(error, 'hre');
     }
 
     console.log(payload)
@@ -148,7 +234,26 @@ const createProduct = async () => {
                         <label>Category</label>
                         <el-select-v2 v-model="selectedCategory"
                             :options="productCategories.map((i) => ({ label: i.categoryName, value: i.id }))"
-                            placeholder="Choose category" size="large" class="w-100" />
+                            placeholder="Choose category" size="large" class="w-100">
+                            <template #default="{ item, index }">
+                                <div class="d-flex justify-content-between">
+                                    <span style="margin-right: 8px">{{ item.label }}</span>
+                                    <span style="color: var(--el-text-color-secondary); font-size: 13px">
+                                        <el-button type="primary" circle @click="displayCategoriesToUpdate(item)">
+                                            <el-icon>
+                                                <Edit />
+                                            </el-icon>
+                                        </el-button>
+                                        <el-button type="danger" circle @click="showConfirmModal(item, index)">
+                                            <el-icon>
+                                                <Delete />
+                                            </el-icon>
+                                        </el-button>
+                                        <!-- <el-button type="danger" :icon="Delete" circle /> -->
+                                    </span>
+                                </div>
+                            </template>
+                        </el-select-v2>
                         <div class="d-flex justify-content-end mt-2" @click="displaNewCategoryDialog">
                             <el-button text>+Add new Category</el-button>
                         </div>
@@ -190,7 +295,7 @@ const createProduct = async () => {
                             <el-col :sm="24" :md="24" :lg="24" :xl="24">
                                 <div>
                                     <label>Price</label>
-                                    <el-input type="text" placeholder="NGN 20,000" v-model="price" />
+                                    <el-input type="number" placeholder="20000" v-model="price" />
                                 </div>
                             </el-col>
                             <!-- <el-col :sm="24" :md="12" :lg="12" :xl="12">
@@ -201,8 +306,9 @@ const createProduct = async () => {
                             </el-col> -->
                         </el-row>
                         <div class="mt-4">
-                            <el-button size="large" class="w-100" :color="primarycolor" round
-                                @click="createProduct">Save & upload</el-button>
+                            <el-button size="large" class="w-100" :color="primarycolor" :loading="createProductLoading"
+                                :disabled="loadingCoverImage || loadingFile" round @click="createProduct">Save &
+                                upload</el-button>
                         </div>
                     </div>
                 </el-col>

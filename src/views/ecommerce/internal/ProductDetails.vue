@@ -1,8 +1,62 @@
 <script setup>
 import deviceBreakpoint from '../../../mixins/deviceBreakpoint';
+import router from '../../../router';
+import { deleteSingleProduct } from '../../../services/ecommerce/ecommerceservice';
 import HeaderSection from './component/HeaderSection.vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { useRoute } from 'vue-router';
+import store from '../../../store/store';
+import { ref } from 'vue';
 
 const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
+const route = useRoute();
+const deleteLoading = ref(false)
+
+const showConfirmModal = (item) => {
+    console.log(item, "nnjnnjnjk");
+    ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+            confirmButtonText: "OK",
+            cancelButtonText: "Cancel",
+            type: "error",
+        }
+    )
+        .then(() => {
+            deleteProduct()
+        })
+        .catch(() => {
+            ElMessage({
+                type: "info",
+                message: "Rejected",
+                duration: 5000,
+            });
+        });
+};
+
+const deleteProduct = async () => {
+    const id = route.params.id
+    deleteLoading.value = true;
+    try {
+        let response = await deleteSingleProduct(id);
+        ElMessage({
+            type: "success",
+            message: "Product deleted successfully",
+            duration: 5000,
+        });
+        store.dispatch("ecommerce/getAllProducts").then((() => {
+            router.push("/tenant/store/products")
+        }))
+        console.log(response, 'deleted')
+        deleteLoading.value = false;
+    }
+    catch (error) {
+        console.error(error)
+        deleteLoading.value = false;
+    }
+}
+
 const reviews = [
     {
         text: 'Best Book I have come across so far, I recommend you get own a copy in your Library,  I recommend you get own a copy in your Library.',
@@ -49,7 +103,7 @@ const reviews = [
 
 <template>
     <div class="container-top" :class="{ 'container-wide': lgAndUp || xlAndUp }">
-        <HeaderSection title="Product Information" @handleClick="handleClick"
+        <HeaderSection title="Product Information"
             :breadcrumbs="{ name: 'Products > Product Information', route: '/tenant/store/products' }" />
 
         <div class="row mt-5">
@@ -78,7 +132,10 @@ const reviews = [
                     <button class="button">
                         <img src="../../../assets/archive.svg" width="18" class="mr-1" />
                         Archive</button>
-                    <button class="button">
+                    <button class="button" @click="showConfirmModal">
+                        <el-icon class="is-loading mr-2" v-if="deleteLoading">
+                            <Loading />
+                        </el-icon>
                         <img src="../../../assets/delete.svg" width="18" class="mr-1" />
                         Delete</button>
                     <button class="button">
@@ -136,6 +193,8 @@ const reviews = [
     border-radius: 15px;
     padding: 13px 25px;
     font-weight: 500;
+    display: flex;
+    align-items: center;
 }
 
 .group-button {
