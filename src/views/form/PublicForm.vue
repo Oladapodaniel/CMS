@@ -29,9 +29,6 @@
             </div>
           </div>
         </div>
-        <!-- <div class="col-md-7 text-center d-flex justify-content-center">
-                    
-                </div> -->
       </div>
       <div
         class="row justify-content-center mt-3"
@@ -136,6 +133,15 @@
                     class="w-100"
                     v-model="item.data"
                     :placeholder="item.label"
+                  />
+                  <el-select-v2
+                  v-if="item.controlType === 11"
+                    v-model="item.data"
+                    :options="item.parameterValues.split(',').map((i) => ({ label: i, value: i }))"
+                    :placeholder="item.label"
+                    class="w-100"
+                    size="large"
+                    multiple
                   />
                   <span
                     class="w-100 small text-danger"
@@ -362,6 +368,7 @@ export default {
       { name: "Email", id: "4" },
       { name: "Image", id: "5" },
       { name: "Number", id: "6" },
+      { name: "MultiSelectDropdownList", id: "11" },
     ]);
 
     const saveChip = (index) => {
@@ -712,7 +719,7 @@ export default {
             `/api/public/saveformdata?formID=${route.params.id}`,
             singleFormData.value.customAttributes.map((i) => ({
               customAttributeID: i.id,
-              data: i.data ? i.data : dropdownItem.value,
+              data: i.data ? Array.isArray(i.data) ? i.data.join(",") : i.data : dropdownItem.value,
               isRequired: i.isRequired,
             }))
           );

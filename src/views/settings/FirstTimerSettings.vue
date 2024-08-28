@@ -38,9 +38,18 @@
                   </div>
                   <div class="row mt-2 d-flex justify-content-around">
                     <div class="col-md-7">
-                    <el-checkbox v-model="isDefault" :binary="true" />
-                    <span class="ml-4 mt-2">Mark As Default</span>
-                      
+                    <div>
+                      <el-checkbox v-model="isDefault" :binary="true" />
+                    <span class="ml-2 mt-2">Mark As Default</span>
+                    </div>
+                    <div>
+                      <el-checkbox v-model="createGroup" :binary="true" />
+                    <span class="ml-2 mt-2">Create group 
+                      <el-tooltip class="box-item" effect="dark" content="This creates a group where members in this lifecycle will be added" placement="top-start">
+                        <sup class="help">?</sup>
+                      </el-tooltip>
+                    </span>
+                    </div>
                     </div>
                     <div class="col-md-3">
 
@@ -158,11 +167,11 @@ inject: ['primarycolor'],
       firstTimerName: "",
       firstTimerOrder: "",
       firstTimerTypes: "",
-      tenantId: "",
       isDefault: false,
       loading: false,
       enabled: true,
-      dragging: false
+      dragging: false,
+      createGroup: false
     }
   },
 
@@ -178,6 +187,7 @@ inject: ['primarycolor'],
         console.log(data);
         this.loading = false
       } catch (error) {
+        this.loading = false
         console.log(error);
       }
     },
@@ -213,8 +223,8 @@ inject: ['primarycolor'],
       try{
         let createFirsttimer = {
           name: this.firstTimerTypes,
-          tenantID: this.tenantId,
           isDefault: this.isDefault,
+          createAsAGroup: this.createGroup
         } 
         await axios.post('/firsttimercycle/create', createFirsttimer);
         this.getFirstTimerCyles()
@@ -303,10 +313,6 @@ inject: ['primarycolor'],
 
   created() {
     this.getFirstTimerCyles();
-     membershipService.getSignedInUser()
-      .then(res => {
-        this.tenantId = res.tenantId;
-      })
   },
 };
 
@@ -415,6 +421,16 @@ input::placeholder {
   opacity: 1;
 }
 
-  
+}
+.help {
+  border: 1px solid #6a6a6a;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  padding: 6px 0px 6px 3px;
+  border-radius: 50%;
+  color: #6a6a6a;
+  cursor: pointer;
+
 }
 </style>

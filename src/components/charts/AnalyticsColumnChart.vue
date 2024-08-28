@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { onUpdated , ref } from "vue";
 import Highcharts from "highcharts";
 export default {
   components: {},
@@ -17,7 +17,7 @@ export default {
     const chart = ref(null);
     const headerText = ref(null);
 
-    onMounted(() => {
+    onUpdated(() => {
       headerText.value = props.header;
 
       var highchartsOptions = {
@@ -26,13 +26,14 @@ export default {
           renderTo: props.domId,
         },
         title: {
-          text: props.desc,
+          text: `<div class="s-18 font-weight-600 text-head mb-2">${props.desc}</div>`,
+          align: 'left'
         },
         // subtitle: {
         //     text: 'Source: WorldClimate.com'
         // },
         xAxis: {
-          categories: props.xAxisData,
+          categories: props && props.xAxisData ? props.xAxisData : [],
           crosshair: true,
         },
         yAxis: {

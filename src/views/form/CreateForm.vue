@@ -176,7 +176,7 @@
                 </div>
                 <div class="row mt-2">
                   <div class="col-md-3"></div>
-                  <div class="col-md-8" v-if="element.controlType === 1">
+                  <div class="col-md-8" v-if="element.controlType === 1 || element.controlType === 11">
                     <!-- <div>Input your options and press enter</div> -->
                     <div class="chip-container col-md-12 p-0 m-0">
                       <div
@@ -207,9 +207,9 @@
                   <div class="col-md-3"></div>
                   <div
                     class="col-md-8 px-0 d-flex justify-content-between"
-                    :class="{ 'justify-content-between': element.controlType === 1 }"
+                    :class="{ 'justify-content-between': element.controlType === 1 || element.controlType === 11 }"
                   >
-                    <div @click="saveChip(index)" v-if="element.controlType === 1">
+                    <div @click="saveChip(index)" v-if="element.controlType === 1 || element.controlType === 11">
                       <!-- <div @click="saveChip(index)" v-if="index === cutomFieldData.length - 1"> -->
                       <div class="d-flex mt-1 ml-2" style="font-weight: 500">
                         <el-icon :size="14" class="mt-1 mr-0 font-weight-bold">
@@ -732,6 +732,7 @@ export default {
       // { name: "Image", id: 7 },
       { name: "Number", id: 8 },
       { name: "Name", id: 9 },
+      { name: "MultiSelectDropdownList", id: 11 },
     ]);
 
     const uploading = ref(false);

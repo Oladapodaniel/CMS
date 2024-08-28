@@ -298,7 +298,7 @@ export default {
       periodId.value = periodRange.value.find((i) => i.name.includes("30")).code;
       axios
         .get(
-          `/api/FirsttimerManager/analytics?startDate=${defaultStartDate}&endDate=${defaultEndDate}`
+          `/api/FirsttimerManager/analytics`
         )
         .then((res) => {
           analyticsData.value = res.data.returnObject;

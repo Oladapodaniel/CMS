@@ -156,6 +156,9 @@ rect.highcharts-background[fill] {
     border: 1px solid #787878 !important; 
     border-radius: 5px !important;
   }
+  .border-gray-100{
+    border: 1px solid  #F1F1F1 !important;
+  }
   .border-radius-8{
     border-radius: 8px !important;
   }

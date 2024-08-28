@@ -76,7 +76,7 @@
       <div class="row justify-content-between">
         <!-- First Column -->
         <div class="col-md-6 pr-sm-1">
-          <div class="col-md-12 h-100 px-0 bg-gray-500 border-radius-border-8">
+          <div class="col-md-12 py-3 h-100 px-0 bg-gray-500 border-radius-border-8">
             <div class="row align-items-center h-100">
               <div class="col-md-4 text-center">
                 <div class="fw-500 text-head">Total First Timers</div>
@@ -99,42 +99,37 @@
           <div class="col-md-12 h-100 border-radius-border-8">
             <div class="row justify-content-between align-items-center">
               <div class="col">
-                <div class="s-18 text-head mt-2 font-weight-600">
-                  How did u hear about us?
+                <div class="s-18 text-head mt-3 font-weight-600">
+                  Top Acquisition channel
                 </div>
-                <div class="d-flex flex-wrap justify-content-around mt-2">
+                <div class="d-flex flex-wrap justify-content-around mt-3">
                   <div
                     class="text-center d-flex align-items-center mb-3"
                     v-for="(item, index) in topThreeSources"
                     :key="index"
                   >
-                    <!-- <i class="fas fa-globe fa-2x text-primary"></i> -->
-                    <span class="rounded-circle bg-color p-3"><GlobeIcon /></span>
                     <div class="ml-2">
+                      <span
+                      class="rounded-circle bg-color"
+                      v-if="item.name == 'Website'"
+                      ><GlobeIcon
+                    /></span>
+                      <span
+                      class="rounded-circle bg-color"
+                      v-if="item.name == 'Friend'"
+                      ><PeopleIcon
+                    /></span>
+                      <span
+                      class="rounded-circle bg-color"
+                      v-if="item.name == 'Social Media'"
+                      ><SocialMediaIcon
+                    /></span>
                       <p class="fw-400 s-20 my-1">{{ item.name }}</p>
                       <p class="font-weight-600 s-20">
-                        {{ item.value }}
+                        {{ item.percentage.toFixed(1) }}%
                       </p>
                     </div>
                   </div>
-                  <!-- <div class="text-center mb-3 d-flex align-items-center">
-                    <span><MegaPhoneIcon /></span>
-                    <div class="ml-2">
-                      <p class="fw-400 s-20 my-1">Referrals</p>
-                      <p class="font-weight-600 s-20">
-                        {{ analyticsData2.acquisitionChannels.referrals }}%
-                      </p>
-                    </div>
-                  </div> -->
-                  <!-- <div class="text-center mb-3 d-flex align-items-center">
-                    <span><CalenderIcon /></span>
-                    <div class="ml-2">
-                      <p class="fw-400 s-20 my-1">Events</p>
-                      <p class="font-weight-600 s-20">
-                        {{ analyticsData2.acquisitionChannels.events }}%
-                      </p>
-                    </div>
-                  </div> -->
                 </div>
               </div>
             </div>
@@ -149,11 +144,11 @@
         </div>
       </div>
       <div class="col-md-6 col-12">
-        <div class="p-3">
-          <ColumnChart
-            domId="column"
-            :columndata="analyticsData.retentionSummary"
-            :yAxis="`Number of Guest`"
+        <div class="p-3 border-radius-border-8">
+          <AnalyticsColumnChart
+            domId="inflow4"
+            :columndata="columnDataChart"
+            :xAxisData="analyticsData.retentionSummary && analyticsData.retentionSummary.categories ? analyticsData.retentionSummary.categories : []"
             :desc="`First timer inflow`"
           />
         </div>
@@ -189,66 +184,84 @@
             </div>
 
             <!-- Age Group -->
-            <div class="col-md-4">
-              <div class="card">
+            <div class="col-md-4 mb-4">
+              <div class="bg-white border-gray-100 h-100 border-radius-15">
                 <div class="card-body">
                   <h5 class="card-title">Age Group</h5>
                   <!-- <ChartComponent :data="ageGroupData" /> -->
                   <AnalyticsPieChart
                     domId="join"
-                    title="Age Group"
                     :titleMargin="10"
-                    :summary="[{ Femi: '30' }, { male: '30' }, { female: '20' }]"
+                    :summary="analyticsData.ageGroupSummary"
                   />
                 </div>
               </div>
             </div>
 
             <!-- Gender -->
-            <div class="col-md-4">
-              <div class="card">
+            <div class="col-md-4 mb-4">
+              <div class="bg-white border-gray-100 h-100 border-radius-15">
                 <div class="card-body">
                   <h5 class="card-title">Gender</h5>
                   <!-- <ChartComponent :data="genderData" /> -->
+                  <AnalyticsPieChart
+                    domId="Gender"
+                    :titleMargin="10"
+                    :summary="analyticsData.genderSummary"
+                  />
                 </div>
               </div>
             </div>
 
             <!-- Marital Status -->
-            <div class="col-md-4">
-              <div class="card">
+            <div class="col-md-4 mb-4">
+              <div class="bg-white border-gray-100 h-100 border-radius-15">
                 <div class="card-body">
                   <h5 class="card-title">Marital Status</h5>
-                  <!-- <ChartComponent :data="maritalStatusData" /> -->
+                  <AnalyticsPieChart
+                    domId="Marital"
+                    :titleMargin="10"
+                    :summary="analyticsData.maritalSummary"
+                  />
                 </div>
               </div>
             </div>
 
             <!-- Location -->
-            <div class="col-md-4">
-              <div class="card">
+            <div class="col-md-4 mb-4">
+              <div class="bg-white border-gray-100 h-100 border-radius-15">
                 <div class="card-body">
-                  <!-- <h5 class="card-title">How did you hear about us?</h5> -->
+                  <h5 class="card-title">How did you hear about us?</h5>
                   <!-- <ChartComponent :data="locationData" /> -->
-                  <PieChart
+                  <!-- <PieChart
                     domId="piechart2"
                     :piedata1="analyticsData.sourceSummary"
                     :data="name2"
+                  /> -->
+                  <AnalyticsPieChart
+                    domId="aboutus"
+                    :titleMargin="10"
+                    :summary="analyticsData.sourceSummary"
                   />
                 </div>
               </div>
             </div>
 
             <!-- Giving Percentage -->
-            <div class="col-md-4">
-              <div class="card h-100">
+            <div class="col-md-4 mb-4">
+              <div class="bg-white border-gray-100 border-radius-15 h-100">
                 <div class="card-body">
-                  <!-- <h5 class="card-title">Interested in Joining us ?</h5> -->
+                  <h5 class="card-title">Interested in Joining us ?</h5>
                   <div class="p-3">
-                    <PieChart
+                    <!-- <PieChart
                       domId="piechart3"
                       :piedata1="analyticsData.interestedSummary"
                       :data="name1"
+                    /> -->
+                    <AnalyticsPieChart
+                      domId="Interested"
+                      :titleMargin="10"
+                      :summary="analyticsData.interestedSummary"
                     />
                   </div>
                 </div>
@@ -256,11 +269,16 @@
             </div>
 
             <!-- Event Attendance -->
-            <div class="col-md-4">
-              <div class="card">
+            <div class="col-md-4 mb-4">
+              <div class="bg-white border-gray-100 h-100 border-radius-15">
                 <div class="card-body">
                   <h5 class="card-title">Want to be Visited</h5>
                   <!-- <ChartComponent :data="eventAttendanceData" /> -->
+                  <AnalyticsPieChart
+                    domId="Visited"
+                    :titleMargin="10"
+                    :summary="analyticsData.wantToBeVisitedSummary"
+                  />
                 </div>
               </div>
             </div>
@@ -271,11 +289,7 @@
     <div class="container-fluid mt-5 px-4">
       <div
         class="row"
-        v-if="
-          analyticsData &&
-          analyticsData.retentionSummary &&
-          analyticsData.retentionSummary.series[1].name == 'Converted'
-        "
+        
       >
         <div class="col-md-12 bg-gray-500 border-radius-border-8 py-5 px-4">
           <div class="row">
@@ -285,8 +299,8 @@
                   <div class="p-3">
                     <AnalyticsColumnChart
                       domId="column2"
-                      :columndata="[analyticsData.retentionSummary.series[1]]"
-                      :xAxisData="analyticsData.retentionSummary.categories"
+                      :columndata="[columnDataChart2[1]]"
+                      :xAxisData="analyticsData.retentionSummary && analyticsData.retentionSummary.categories ? analyticsData.retentionSummary.categories : []"
                       :desc="`Membership Conversion Chart`"
                     />
                   </div>
@@ -305,36 +319,23 @@
       </div>
       <div class="col-md-12 border-radius-border-8 mt-2 py-4 px-3">
         <div class="row align-items-center">
-          <div class="col-md-8 fw-500 s-24 text-black">First service attended</div>
-          <div class="col-md-4">Chart</div>
+          <div
+            class="col-md-6 mb-5 h-100"
+            v-for="(item, index) in analyticsData.formDataCharts"
+            :key="index"
+          >
+            <div class="fw-500 s-16 text-black">{{ item.name }}</div>
+            <div>
+              <AnalyticsPieChart2
+                :domId="`chart2${index}`"
+                :titleMargin="10"
+                :summary="item.pieChartData"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- <div class="row pl-3 border-radius-border-8 align-items-center">
-      <div class="col-md-3">
-        <div class="col-md-11 px-0 text-center">
-          <div class="text-head s-18 font-weight-600">Total Guest</div>
-          <div class="h2 font-weight-600">
-            {{ analyticsData.totalGuests }}
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="col-md-11 px-0 text-center">
-          <div class="text-head s-18 font-weight-600">Retention Rate</div>
-          <div class="h2 font-weight-600">{{ analyticsData.retentionRate }}%</div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="col-md-11 px-0 text-center">
-          <div class="text-head s-18 font-weight-600">Activity Involved</div>
-          <div class="h2 font-weight-600">
-            {{ analyticsData.averageActivity }}
-          </div>
-        </div>
-      </div>
-    </div> -->
   </div>
   <!-- <div class="row mt-5 mb-4">
     <div class="col-md-5 sub-header primary--text px-0">Overview</div>
@@ -366,24 +367,24 @@ import { ref, computed } from "vue";
 import axios from "@/gateway/backendapi";
 import router from "../../router";
 import FunnelChart from "@/components/charts/FunnelChart.vue";
-import PieChart from "@/components/charts/FirstTimerPiechart.vue";
-import ColumnChart from "../../components/charts/FirstTimersColumnchart.vue";
+// import PieChart from "@/components/charts/FirstTimerPiechart.vue";
 import AnalyticsColumnChart from "../../components/charts/AnalyticsColumnChart.vue";
 import GlobeIcon from "../../components/svg/GlobeIcon.vue";
-// import CalenderIcon from "../../components/svg/CalenderIcon.vue";
-// import MegaPhoneIcon from "../../components/svg/MegaPhoneIcon.vue";
+import SocialMediaIcon from "../../components/svg/SocialMediaIcon.vue";
+import PeopleIcon from "../../components/svg/PeopleIcon.vue";
 import AnalyticsPieChart from "@/components/charts/PieChart";
+import AnalyticsPieChart2 from "@/components/charts/AnalyticsPieChart";
 // import PieChartSmall from "../../components/charts/PieChartSmall.vue";
 export default {
   components: {
     FunnelChart,
-    PieChart,
+    // PieChart,
     GlobeIcon,
-    // MegaPhoneIcon,
-    // CalenderIcon,
-    ColumnChart,
+    SocialMediaIcon,
+    PeopleIcon,
     AnalyticsColumnChart,
     AnalyticsPieChart,
+    AnalyticsPieChart2,
     // PieChartSmall,
   },
   emits: ["firsttimers", "totalfirstimer"],
@@ -430,16 +431,6 @@ export default {
     const selectedContactOwner = ref({});
     const contactOwnerId = ref(null);
     const periodId = ref(null);
-    const analyticsData2 = ref({
-      totalFirstTimers: 12630,
-      becameMember: 5530,
-      retentionRate: 89,
-      acquisitionChannels: {
-        website: 25,
-        referrals: 50,
-        events: 25,
-      },
-    });
 
     const getAllDatePeriods = (item) => {
       selectedContactOwner.value = item;
@@ -464,7 +455,7 @@ export default {
           )
           .then((res) => {
             analyticsData.value = res.data.returnObject;
-            emit("firsttimers", res.data.returnObject.firsttimers);
+            // emit("firsttimers", res.data.returnObject.firsttimers);
           })
           .catch((err) => {
             console.log(err);
@@ -476,7 +467,7 @@ export default {
           )
           .then((res) => {
             analyticsData.value = res.data.returnObject;
-            emit("firsttimers", res.data.returnObject.firsttimers);
+            // emit("firsttimers", res.data.returnObject.firsttimers);
           })
           .catch((err) => {
             console.log(err);
@@ -492,10 +483,62 @@ export default {
     // });
 
     const topThreeSources = computed(() => {
-      // Create a shallow copy of the array to avoid mutating the original array
-      return [...analyticsData.value.sourceSummary]
-        .sort((a, b) => b.value - a.value)
+      return [...percentages.value]
+        .sort((a, b) => b.percentage - a.percentage)
         .slice(0, 3);
+    });
+    const totalValue = computed(() => {
+      return analyticsData.value && analyticsData.value.sourceSummary
+        ? analyticsData.value.sourceSummary.reduce((sum, item) => sum + item.value, 0)
+        : [];
+    });
+    const percentages = computed(() => {
+      return analyticsData.value && analyticsData.value.sourceSummary
+        ? analyticsData.value.sourceSummary.map((item) => ({
+            name: item.name,
+            percentage: totalValue.value > 0 ? (item.value / totalValue.value) * 100 : 0,
+          }))
+        : [];
+    });
+
+    const columnDataChart2 = computed(() => {
+      if (
+        analyticsData.value &&
+        analyticsData.value.retentionSummary &&
+        analyticsData.value.retentionSummary.series.length === 0
+      )
+        return [];
+
+        const colors = ["#111111", "#08A53D"];
+
+      // Return the transformed data
+      return analyticsData.value && analyticsData.value.retentionSummary && analyticsData.value.retentionSummary.series
+        ? analyticsData.value.retentionSummary.series.map((item, index) => ({
+            name: item.name,
+            color: colors[index],
+            data: item.data,
+          }))
+        : [];
+    });
+    const columnDataChart = computed(() => {
+      if (
+        analyticsData.value &&
+        analyticsData.value.retentionSummary &&
+        analyticsData.value.retentionSummary.series.length === 0
+      ){
+        return [];
+      }
+       
+
+      // Return the transformed data
+      const colors = ["#08A53D", "#111111"];
+      return analyticsData.value && analyticsData.value.retentionSummary && analyticsData.value.retentionSummary.series
+        ? analyticsData.value.retentionSummary.series.map((item, index) => ({
+            name: item.name,
+            color: colors[index],
+            data: item.data,
+          }))
+        : [];
     });
 
     const ViewFirstTimer = () => {
@@ -559,9 +602,12 @@ export default {
       periodId,
       showFirstTimer,
       ViewFirstTimer,
+      totalValue,
+      percentages,
       topThreeSources,
-      analyticsData2,
       goBack,
+      columnDataChart,
+      columnDataChart2
     };
   },
 };
