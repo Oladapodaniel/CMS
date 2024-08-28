@@ -372,7 +372,7 @@ import AnalyticsColumnChart from "../../components/charts/AnalyticsColumnChart.v
 import GlobeIcon from "../../components/svg/GlobeIcon.vue";
 import SocialMediaIcon from "../../components/svg/SocialMediaIcon.vue";
 import PeopleIcon from "../../components/svg/PeopleIcon.vue";
-import AnalyticsPieChart from "@/components/charts/PieChart";
+import AnalyticsPieChart from "@/components/charts/AnalyticsPieChart2";
 import AnalyticsPieChart2 from "@/components/charts/AnalyticsPieChart";
 // import PieChartSmall from "../../components/charts/PieChartSmall.vue";
 export default {
@@ -571,7 +571,7 @@ export default {
       periodId.value = periodRange.value.find((i) => i.name.includes("30")).code;
       axios
         .get(
-          `/api/FirsttimerManager/analyticsDashboard?startDate=${defaultStartDate}&endDate=${defaultEndDate}`
+          `/api/FirsttimerManager/analyticsDashboard`
         )
         .then((res) => {
           analyticsData.value = res.data.returnObject;
