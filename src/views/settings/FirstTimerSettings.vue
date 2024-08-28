@@ -230,6 +230,7 @@ inject: ['primarycolor'],
         this.getFirstTimerCyles()
         this.firstTimerTypes = ""
         this.isDefault = false
+        this.createGroup = false
         ElMessage({
               type: 'success',
               message: 'New Guest Life Cycle Save Successfully',
