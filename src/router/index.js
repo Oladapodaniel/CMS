@@ -38,16 +38,16 @@ const routes = [
         path: '/',
         name: 'Login',
         component: () => {
-          // Your condition to determine which component to load
-          const condition =  getSubdomain() === 'alatfaith'; // or false based on your logic
-    
-          // Dynamically import the component based on the condition
-          return condition
-            ? import(/* webpackChunkName: "alatfaithhomepage" */ '../components/churcheslandingpage/AlatFaith.vue')
-            : import(/* webpackChunkName: "churchpluslogin" */ '../views/account/Login.vue');
+            // Your condition to determine which component to load
+            const condition = getSubdomain() === 'alatfaith'; // or false based on your logic
+
+            // Dynamically import the component based on the condition
+            return condition
+                ? import(/* webpackChunkName: "alatfaithhomepage" */ '../components/churcheslandingpage/AlatFaith.vue')
+                : import(/* webpackChunkName: "churchpluslogin" */ '../views/account/Login.vue');
         },
         meta: {
-          title:  getSubdomain() === 'alatfaith' ? 'AlatFaith - Welcome' : 'Churchplus - Login',
+            title: getSubdomain() === 'alatfaith' ? 'AlatFaith - Welcome' : 'Churchplus - Login',
         }
     },
     {
@@ -1517,53 +1517,53 @@ const routes = [
                 },
                 component: () =>
                     import( /* webpackChunkName: "socialdashboard" */ '@/views/social&mobile/dashboard/Index'),
-                    children: [
-                        {
-                            path: 'feed',
-                            name: 'AllPosts',
-                            meta: {
-                                title: 'Churchplus - Socail Media - All Posts',
-                            },
-                            component: () =>
-                                import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/general/Index'),
+                children: [
+                    {
+                        path: 'feed',
+                        name: 'AllPosts',
+                        meta: {
+                            title: 'Churchplus - Socail Media - All Posts',
                         },
-                        
-                        {
-                            path: 'feed/facebook',
-                            name: 'FacebookPosts',
-                            meta: {
-                                title: 'Churchplus - Socail Media - Facebook Posts',
-                            },
-                            component: () =>
-                                import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/facebook/Index'),
+                        component: () =>
+                            import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/general/Index'),
+                    },
+
+                    {
+                        path: 'feed/facebook',
+                        name: 'FacebookPosts',
+                        meta: {
+                            title: 'Churchplus - Socail Media - Facebook Posts',
                         },
-                        {
-                            path: 'feed/twitter',
-                            name: 'TwitterPosts',
-                            meta: {
-                                title: 'Churchplus - Socail Media - Twitter Posts',
-                            },
-                            component: () =>
-                                import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/twitter/Index'),
+                        component: () =>
+                            import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/facebook/Index'),
+                    },
+                    {
+                        path: 'feed/twitter',
+                        name: 'TwitterPosts',
+                        meta: {
+                            title: 'Churchplus - Socail Media - Twitter Posts',
                         },
-                        {
-                            path: 'feed/instagram',
-                            name: 'InstagramPosts',
-                            meta: {
-                                title: 'Churchplus - Socail Media - Instagram Posts',
-                            },
-                            component: () =>
-                                import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/instagram/Index'),
+                        component: () =>
+                            import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/twitter/Index'),
+                    },
+                    {
+                        path: 'feed/instagram',
+                        name: 'InstagramPosts',
+                        meta: {
+                            title: 'Churchplus - Socail Media - Instagram Posts',
                         },
-                        {
-                            path: 'feed/fwhatsapp',
-                            name: 'WhatsappPosts',
-                            meta: {
-                                title: 'Churchplus - Socail Media - WhatsApp Posts',
-                            },
-                            component: () =>
-                                import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/whatsapp/Index'),
+                        component: () =>
+                            import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/instagram/Index'),
+                    },
+                    {
+                        path: 'feed/fwhatsapp',
+                        name: 'WhatsappPosts',
+                        meta: {
+                            title: 'Churchplus - Socail Media - WhatsApp Posts',
                         },
+                        component: () =>
+                            import( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/whatsapp/Index'),
+                    },
                 ]
             },
             {
@@ -2115,7 +2115,61 @@ const routes = [
                         import( /* webpackChunkName: "pledgepaymentlist" */ '../views/pledge/PledgePaymentList.vue')
                 },
             ]
-        }
+        },
+        {
+            path: 'store',
+            name: "StoreDashboard",
+            meta: {
+                title: 'Churchplus - Add Product',
+            },
+            component: () =>
+                import( /* webpackChunkName: "internal store" */ '../views/ecommerce/internal/StoreDashboard.vue'),
+        },
+        {
+            path: 'store/add',
+            name: 'AddProduct',
+            meta: {
+                title: 'Churchplus - Add Product',
+            },
+            component: () =>
+                import( /* webpackChunkName: "addstoreproduct" */ '../views/ecommerce/internal/AddProduct.vue')
+        },
+        {
+            path: 'store/orders',
+            name: 'Orders',
+            meta: {
+                title: 'Churchplus - Orders',
+            },
+            component: () =>
+                import( /* webpackChunkName: "addstoreproduct" */ '../views/ecommerce/internal/Orders.vue')
+        },
+        {
+            path: 'store/products',
+            name: 'ExistingProducts',
+            meta: {
+                title: 'Churchplus - Existing Products',
+            },
+            component: () =>
+                import( /* webpackChunkName: "addstoreproduct" */ '../views/ecommerce/internal/ExistingProducts.vue')
+        },
+        {
+            path: 'store/product/:id',
+            name: 'ProductDetails',
+            meta: {
+                title: 'Churchplus - Products Details',
+            },
+            component: () =>
+                import( /* webpackChunkName: "addstoreproduct" */ '../views/ecommerce/internal/ProductDetails.vue')
+        },
+        {
+            path: 'store/archive',
+            name: 'ArchivedProducts',
+            meta: {
+                title: 'Churchplus - Archived Products',
+            },
+            component: () =>
+                import( /* webpackChunkName: "addstoreproduct" */ '../views/ecommerce/internal/ArchivedProducts.vue')
+        },
 
         ],
     },
@@ -2502,6 +2556,13 @@ const routes = [
             import( /* webpackChunkName: "followupfeedback" */ '@/views/people/followup/FollowUpFeedbackForm'),
 
     },
+    {
+        path: '/app/mobile',
+        name: 'MobileAppDeepLink',
+        component: () =>
+            import( /* webpackChunkName: "mobile app deep link" */ '@/views/MobileAppDeepLink.vue'),
+
+    },
 ]
 
 const router = createRouter({
@@ -2516,7 +2577,7 @@ router.beforeEach((to, from, next) => {
     const role = localStorage.getItem("roles") ? JSON.parse(localStorage.getItem("roles")) : ''
     const tokenIsValid = token && token.length > 30 ? true : false;
     const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
-    
+
     if (
         (
             to.name === "ResetPassword" ||
@@ -2549,7 +2610,8 @@ router.beforeEach((to, from, next) => {
             to.name === "PublicLogin" ||
             to.name === "CartItem" ||
             to.name === "CheckOut" ||
-            to.name === "BookDetails" 
+            to.name === "BookDetails" ||
+            to.name === "MobileAppDeepLink"
         ) && !tokenIsValid
     ) {
         return next(true);
@@ -2606,9 +2668,9 @@ router.beforeEach((to, from, next) => {
             next()
         }
     } else if ((role && role.length === 1 && role[0] === "FollowUp" && token) && (to.path !== "/tenant/followup" && to.name !== "FirsttimerManagement")) {
-            localStorage.removeItem('token')
-            next("/")
-        } else{
+        localStorage.removeItem('token')
+        next("/")
+    } else {
         next();
     }
 

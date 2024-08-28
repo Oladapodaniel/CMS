@@ -142,18 +142,18 @@ export default {
       return state.connected;
     });
 
-    const createGetWhatsappSession = (sessionId, type) => {
-      if (type == "createsession") {
-        QRCodeDialog.value = true;
-        qrloading.value = true;
-      } else {
-        connectingExistingSession.value = true;
-      }
-      console.log(sessionId);
-      console.log("creating session, check WS");
-      store.dispatch("communication/whatsappSessionId", sessionId);
-      // socket.emit("getsession", { id: sessionId });
-    };
+    // const createGetWhatsappSession = (sessionId, type) => {
+    //   if (type == "createsession") {
+    //     QRCodeDialog.value = true;
+    //     qrloading.value = true;
+    //   } else {
+    //     connectingExistingSession.value = true;
+    //   }
+    //   console.log(sessionId);
+    //   console.log("creating session, check WS");
+    //   store.dispatch("communication/whatsappSessionId", sessionId);
+    //   // socket.emit("getsession", { id: sessionId });
+    // };
 
     const saveSessionIdonAuthSuccess = async () => {
       savingSession.value = true;
@@ -188,6 +188,7 @@ export default {
           // sessionStatus.value = "sessionReady";
         } else {
           sessionStatus.value = "newSession";
+          connectingExistingSession.value = false;
         }
         // else {
         //   // create a new instance
@@ -196,6 +197,7 @@ export default {
         // }
       } catch (err) {
         console.error(err);
+        connectingExistingSession.value = false;
       }
     };
     if (!isClientReady.value) getSessionIdFromBackend();

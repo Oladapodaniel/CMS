@@ -10,7 +10,7 @@
       </div>
 </div>
   <div class="wrapper">
-    <div class="chart-div" :id="domId" style="height: 100%" ref="chartDiv"></div>
+    <div class="chart-div" :id="domId" style="height: 700px" ref="chartDiv"></div>
   </div>
 </template>
 

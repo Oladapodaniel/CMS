@@ -59,7 +59,6 @@ export default {
 
         watchEffect(() => {
             if (props.condition.jsonCondition) {
-                console.log(props.condition.jsonCondition, 'djsvkjb')
                 parsedData.value = JSON.parse(props.condition.jsonCondition);
                 data.value.forms = parsedData.value.forms ? parsedData.value.forms.split(",") : [];
             }

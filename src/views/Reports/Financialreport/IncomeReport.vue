@@ -108,7 +108,7 @@
             <!-- <div class="col-12">No Data Available</div> -->
             <div class="col-12" style="">
               <ColumnChart2
-                domId="chart"
+                domId="domId"
                 title=""
                 :titleMargin="10"
                 :series="series"
