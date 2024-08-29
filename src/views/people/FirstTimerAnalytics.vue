@@ -55,20 +55,6 @@
                 </template>
               </el-dropdown>
             </div>
-            <!-- <div class="dropdown">
-            <button
-              class="btn btn-outline-secondary dropdown-toggle"
-              type="button"
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-            >
-              Custom
-            </button>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-            </div>
-          </div> -->
           </div>
         </div>
         <!-- <div class="col-md-12">
