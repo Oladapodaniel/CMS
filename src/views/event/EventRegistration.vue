@@ -1088,6 +1088,7 @@ export default {
       disableClick.value = true;
       try {
         let res = await axios.post("/EventRegistration", registerData);
+        console.log(res);
         disableClick.value = false;
         swal(
           "Registration Successful!",
