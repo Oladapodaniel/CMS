@@ -580,6 +580,11 @@
             {{ item.movement }}
           </div>
         </template>
+        <template v-slot:lifeCycle="{ item }">
+          <div @click="showMemberRow(item)" class="c-pointer">
+            {{ item.lifeCycle }}
+          </div>
+        </template>
         <template v-slot:interactions="{ item }">
           <div @click="showMemberRow(item)" class="c-pointer">
             {{ item.interactions }}
@@ -1004,6 +1009,7 @@ export default {
       { name: "SOURCE", value: "howDidYouAboutUsName" },
       { name: "INTERESTED", value: "interestedInJoining" },
       { name: "DATE", value: "date" },
+      { name: "LIFE CYCLE", value: "lifeCycle" },
       { name: "MOVEMENT", value: "movement" },
       { name: "INTERACTION", value: "interactions" },
       { name: "ACTION", value: "action" },

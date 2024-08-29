@@ -149,11 +149,11 @@
                   {{ navigatorLang === "en-US" ? "1. Buy NGN 1,000 Worth of SMS" : $t('startingPointContent.stepOne') }}
                 </div>
                 <div class="text-font  col-md-12 col-12 px-0 " style="color: #111111;">
-                  {{ navigatorLang === "en-US" ? '2. Offer is open to both new and existing customers' :
+                  {{ navigatorLang === "en-US" ? '2. Offer is open to new customers only' :
         $t('startingPointContent.existing-customers') }}
                 </div>
                 <div class="text-font  col-md-12 col-12 px-0  " style="color: #111111;">
-                  {{ navigatorLang === "en-US" ? '3. This is a one time offer for the duration of this campaign' :
+                  {{ navigatorLang === "en-US" ? '3. ⁠This is a one time offer on your first sms unit purchase' :
         $t('startingPointContent.one-time-offer') }}
                 </div>
               </div>
