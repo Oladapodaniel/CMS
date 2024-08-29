@@ -17,12 +17,13 @@
             class="col-md-12 fw-500 s-12 primary-text flex-wrap d-flex justify-content-between align-items-center"
           >
             <span
-              class="px-2 mb-3 mb-md-0 cursor-pointer"
+              class="px-2 mb-3 mb-md-0 cursor-pointer hover-btn"
               v-for="(item, indx) in periodRange"
               :key="indx"
               @click="getAllDatePeriods(item)"
               >{{ item.name }}</span
             >
+            <span @click="showCustomModal" class="cursor-pointer"> Custom </span>
             <div class="d-flex justify-content-between align-items-center">
               <el-dropdown trigger="click" class="w-100">
                 <span class="el-dropdown-link w-100">
@@ -70,13 +71,19 @@
           </div> -->
           </div>
         </div>
+        <!-- <div class="col-md-12">
+          <div class="fw-400">Showing data for {{ selectedPeriod.name }}</div>
+        </div> -->
       </div>
     </div>
     <div class="container-fuild mt-5 px-0">
       <div class="row justify-content-between">
         <!-- First Column -->
         <div class="col-md-6 pr-sm-1">
-          <div class="col-md-12 py-3 h-100 px-0 bg-gray-500 border-radius-border-8" v-loading="loading">
+          <div
+            class="col-md-12 py-3 h-100 px-0 bg-gray-500 border-radius-border-8"
+            v-loading="loading"
+          >
             <div class="row align-items-center h-100">
               <div class="col-md-4 text-center">
                 <div class="fw-500 text-head">Total First Timers</div>
@@ -109,31 +116,25 @@
                     :key="index"
                   >
                     <div class="ml-2">
+                      <span class="rounded-circle bg-color" v-if="item.name == 'Website'"
+                        ><GlobeIcon
+                      /></span>
+                      <span class="rounded-circle bg-color" v-if="item.name == 'Friend'"
+                        ><PeopleIcon
+                      /></span>
                       <span
-                      class="rounded-circle bg-color"
-                      v-if="item.name == 'Website'"
-                      ><GlobeIcon
-                    /></span>
+                        class="rounded-circle bg-color"
+                        v-if="item.name == 'Social Media'"
+                        ><SocialMediaIcon
+                      /></span>
+                      <span class="rounded-circle bg-color" v-if="item.name == 'Flyer'"
+                        ><DocumentIcon
+                      /></span>
                       <span
-                      class="rounded-circle bg-color"
-                      v-if="item.name == 'Friend'"
-                      ><PeopleIcon
-                    /></span>
-                      <span
-                      class="rounded-circle bg-color"
-                      v-if="item.name == 'Social Media'"
-                      ><SocialMediaIcon
-                    /></span>
-                      <span
-                      class="rounded-circle bg-color"
-                      v-if="item.name == 'Flyer'"
-                      ><DocumentIcon
-                    /></span>
-                      <span
-                      class="rounded-circle bg-color"
-                      v-if="item.name == 'Not Specified'"
-                      ><PlaceHolderIcon
-                    /></span>
+                        class="rounded-circle bg-color"
+                        v-if="item.name == 'Not Specified'"
+                        ><PlaceHolderIcon
+                      /></span>
                       <p class="fw-400 s-20 my-1">{{ item.name }}</p>
                       <p class="font-weight-600 s-20">
                         {{ item.percentage.toFixed(1) }}%
@@ -158,7 +159,11 @@
           <AnalyticsColumnChart
             domId="inflow4"
             :columndata="columnDataChart"
-            :xAxisData="analyticsData.retentionSummary && analyticsData.retentionSummary.categories ? analyticsData.retentionSummary.categories : []"
+            :xAxisData="
+              analyticsData.retentionSummary && analyticsData.retentionSummary.categories
+                ? analyticsData.retentionSummary.categories
+                : []
+            "
             :desc="`First timer inflow`"
           />
         </div>
@@ -195,7 +200,10 @@
 
             <!-- Age Group -->
             <div class="col-md-4 mb-4">
-              <div class="bg-white border-gray-100 h-100 border-radius-15" v-loading="loading">
+              <div
+                class="bg-white border-gray-100 h-100 border-radius-15"
+                v-loading="loading"
+              >
                 <div class="card-body">
                   <h5 class="card-title">Age Group</h5>
                   <!-- <ChartComponent :data="ageGroupData" /> -->
@@ -210,7 +218,10 @@
 
             <!-- Gender -->
             <div class="col-md-4 mb-4">
-              <div class="bg-white border-gray-100 h-100 border-radius-15" v-loading="loading">
+              <div
+                class="bg-white border-gray-100 h-100 border-radius-15"
+                v-loading="loading"
+              >
                 <div class="card-body">
                   <h5 class="card-title">Gender</h5>
                   <!-- <ChartComponent :data="genderData" /> -->
@@ -225,7 +236,10 @@
 
             <!-- Marital Status -->
             <div class="col-md-4 mb-4">
-              <div class="bg-white border-gray-100 h-100 border-radius-15" v-loading="loading">
+              <div
+                class="bg-white border-gray-100 h-100 border-radius-15"
+                v-loading="loading"
+              >
                 <div class="card-body">
                   <h5 class="card-title">Marital Status</h5>
                   <AnalyticsPieChart
@@ -239,7 +253,10 @@
 
             <!-- Location -->
             <div class="col-md-4 mb-4">
-              <div class="bg-white border-gray-100 h-100 border-radius-15" v-loading="loading">
+              <div
+                class="bg-white border-gray-100 h-100 border-radius-15"
+                v-loading="loading"
+              >
                 <div class="card-body">
                   <h5 class="card-title">How did you hear about us?</h5>
                   <!-- <ChartComponent :data="locationData" /> -->
@@ -259,7 +276,10 @@
 
             <!-- Giving Percentage -->
             <div class="col-md-4 mb-4">
-              <div class="bg-white border-gray-100 border-radius-15 h-100" v-loading="loading">
+              <div
+                class="bg-white border-gray-100 border-radius-15 h-100"
+                v-loading="loading"
+              >
                 <div class="card-body">
                   <h5 class="card-title">Interested in Joining us ?</h5>
                   <div class="p-3">
@@ -280,7 +300,10 @@
 
             <!-- Event Attendance -->
             <div class="col-md-4 mb-4">
-              <div class="bg-white border-gray-100 h-100 border-radius-15" v-loading="loading">
+              <div
+                class="bg-white border-gray-100 h-100 border-radius-15"
+                v-loading="loading"
+              >
                 <div class="card-body">
                   <h5 class="card-title">Want to be Visited</h5>
                   <!-- <ChartComponent :data="eventAttendanceData" /> -->
@@ -297,11 +320,11 @@
       </div>
     </div>
     <div class="container-fluid mt-5 px-4">
-      <div
-        class="row"
-        
-      >
-        <div class="col-md-12 bg-gray-500 border-radius-border-8 py-5 px-4" v-loading="loading">
+      <div class="row">
+        <div
+          class="col-md-12 bg-gray-500 border-radius-border-8 py-5 px-4"
+          v-loading="loading"
+        >
           <div class="row">
             <div class="col-md-12">
               <div class="card">
@@ -310,7 +333,12 @@
                     <AnalyticsColumnChart
                       domId="column2"
                       :columndata="[columnDataChart2[1]]"
-                      :xAxisData="analyticsData.retentionSummary && analyticsData.retentionSummary.categories ? analyticsData.retentionSummary.categories : []"
+                      :xAxisData="
+                        analyticsData.retentionSummary &&
+                        analyticsData.retentionSummary.categories
+                          ? analyticsData.retentionSummary.categories
+                          : []
+                      "
                       :desc="`Membership Conversion Chart`"
                     />
                   </div>
@@ -370,6 +398,40 @@
       />
     </div>
   </div> -->
+  <el-dialog v-model="customModal" class="border-radius-20" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-12 font-weight-600 text-head text-black mb-2">Set Custom Report Period</div>
+          <div class="col-md-12 mb-3">
+            <el-date-picker
+              v-model="startDate"
+              type="date"
+              placeholder="From"
+              format="DD/MM/YYYY"
+              size="large"
+              class="w-100"
+            />
+          </div>
+          <div class="col-md-12 mb-3">
+            <el-date-picker
+              v-model="endDate"
+              type="date"
+              placeholder="To"
+              format="DD/MM/YYYY"
+              size="large"
+              class="w-100"
+            />
+          </div>
+          <div class="col-md-12 d-flex justify-content-center">
+            <div class="col-md-6">
+              <el-button round :loading="loading" size="large" @click="getAllDatePeriods()" class="py-4 w-100 primary-bg text-white">Apply</el-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </el-dialog>
 </template>
 
 <script>
@@ -386,6 +448,7 @@ import PeopleIcon from "../../components/svg/PeopleIcon.vue";
 import PlaceHolderIcon from "../../components/svg/PlaceHolderIcon.vue";
 import AnalyticsPieChart from "@/components/charts/AnalyticsPieChart2";
 import AnalyticsPieChart2 from "@/components/charts/AnalyticsPieChart";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 // import PieChartSmall from "../../components/charts/PieChartSmall.vue";
 export default {
   components: {
@@ -409,9 +472,10 @@ export default {
     const endDate = ref("");
     const analyticsData = ref([]);
     const showFirstTimer = ref(false);
-    const loading = ref(false)
+    const loading = ref(false);
     const pieAnalyticsData = ref([]);
     const selectedPeriod = ref({});
+    const { mdAndUp, lgAndUp, xlAndUp, } = deviceBreakpoint();
     const periodRange = ref([
       {
         name: "Last 30days",
@@ -446,8 +510,16 @@ export default {
     const selectedContactOwner = ref({});
     const contactOwnerId = ref(null);
     const periodId = ref(null);
+    const customModal = ref(false);
+
+    const showCustomModal = () => {
+      customModal.value = true;
+    };
 
     const getAllDatePeriods = (item) => {
+      console.log(item, 'jjjjj');
+      
+      customModal.value = false;
       loading.value = true;
       selectedContactOwner.value = item;
       selectedContactOwner.value = contactOwners.value.find((i) => {
@@ -457,6 +529,8 @@ export default {
       selectedPeriod.value = periodRange.value.find((i) => {
         return i.code == periodId.value;
       });
+      console.log(selectedPeriod.value, '');
+      
 
       let startDate = selectedPeriod.value.code;
       let endDate = new Date().toLocaleDateString("en-US");
@@ -472,11 +546,11 @@ export default {
           .then((res) => {
             analyticsData.value = res.data.returnObject;
             // emit("firsttimers", res.data.returnObject.firsttimers);
-            loading.value = false
+            loading.value = false;
           })
           .catch((err) => {
             console.log(err);
-            loading.value = false
+            loading.value = false;
           });
       } else {
         axios
@@ -486,11 +560,11 @@ export default {
           .then((res) => {
             analyticsData.value = res.data.returnObject;
             // emit("firsttimers", res.data.returnObject.firsttimers);
-            loading.value = false
+            loading.value = false;
           })
           .catch((err) => {
             console.log(err);
-            loading.value = false
+            loading.value = false;
           });
       }
     };
@@ -529,10 +603,12 @@ export default {
       )
         return [];
 
-        const colors = ["#111111", "#08A53D"];
+      const colors = ["#111111", "#08A53D"];
 
       // Return the transformed data
-      return analyticsData.value && analyticsData.value.retentionSummary && analyticsData.value.retentionSummary.series
+      return analyticsData.value &&
+        analyticsData.value.retentionSummary &&
+        analyticsData.value.retentionSummary.series
         ? analyticsData.value.retentionSummary.series.map((item, index) => ({
             name: item.name,
             color: colors[index],
@@ -545,14 +621,15 @@ export default {
         analyticsData.value &&
         analyticsData.value.retentionSummary &&
         analyticsData.value.retentionSummary.series.length === 0
-      ){
+      ) {
         return [];
       }
-       
 
       // Return the transformed data
       const colors = ["#08A53D", "#111111"];
-      return analyticsData.value && analyticsData.value.retentionSummary && analyticsData.value.retentionSummary.series
+      return analyticsData.value &&
+        analyticsData.value.retentionSummary &&
+        analyticsData.value.retentionSummary.series
         ? analyticsData.value.retentionSummary.series.map((item, index) => ({
             name: item.name,
             color: colors[index],
@@ -587,26 +664,26 @@ export default {
     getContactOwners();
 
     const showItem = () => {
-      loading.value = true
+      loading.value = true;
       selectedPeriod.value = periodRange.value.find((i) => i.name.includes("30"));
       periodId.value = periodRange.value.find((i) => i.name.includes("30")).code;
       axios
-        .get(
-          `/api/FirsttimerManager/analyticsDashboard`
-        )
+        .get(`/api/FirsttimerManager/analyticsDashboard`)
         .then((res) => {
           analyticsData.value = res.data.returnObject;
           emit("totalfirstimer", res.data.returnObject.totalGuests);
-          loading.value = false
+          loading.value = false;
         })
         .catch((err) => {
           console.log(err);
-          loading.value = false
+          loading.value = false;
         });
     };
     showItem();
 
     return {
+      customModal,
+      showCustomModal,
       name1,
       name2,
       startDate,
@@ -630,8 +707,11 @@ export default {
       topThreeSources,
       goBack,
       loading,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
       columnDataChart,
-      columnDataChart2
+      columnDataChart2,
     };
   },
 };
@@ -703,6 +783,11 @@ export default {
 .card-title {
   font-size: 16px;
   font-weight: 500;
+}
+.hover-btn:hover{
+  background: white;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 /* .chart-border {

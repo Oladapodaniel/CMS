@@ -3,10 +3,23 @@ import JurrasicIcon from "../../../assets/ecommerce/jurrasic.png";
 import ShoppingCart from "../../../assets/ecommerce/ShoppingCart.svg";
 import { Search } from "@element-plus/icons-vue";
 import { ref } from "vue";
+import axios from "@/gateway/backendapi";
 import ProductCard from "./component/ProductCard.vue";
 import ProductOneIcon from "../../../assets/ecommerce/Temps.png";
 
 const searchQuery = ref("");
+
+const getAllProduct = async () => {
+ try {
+   const { data } = await axios.get('/api/Ecommerce/GetAllProducts')
+   console.log(data, 'hhh');
+   
+ } catch (error) {
+  console.log(error);
+  
+ }
+}
+getAllProduct()
 const products = ref([
   {
     id: 1,
@@ -107,6 +120,7 @@ const products = ref([
     <div class="container">
       <div class="row">
         <div class="col-md-12 mt-4 p-5 bg-gray-500 border-radius-8">
+
           <div class="row">
             <div class="col-md-3" v-for="product in products" :key="product.id">
               <ProductCard
