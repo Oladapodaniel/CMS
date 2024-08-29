@@ -14,7 +14,7 @@
       <div class="col-md-6 mt-2">
         <div class="col-md-12 bg-gray-500 d-flex justify-content-end py-3 px-2">
           <div
-            class="col-md-11 fw-500 s-12 primary-text flex-wrap d-flex justify-content-between align-items-center"
+            class="col-md-12 fw-500 s-12 primary-text flex-wrap d-flex justify-content-between align-items-center"
           >
             <span
               class="px-2 mb-3 mb-md-0 cursor-pointer"
@@ -76,7 +76,7 @@
       <div class="row justify-content-between">
         <!-- First Column -->
         <div class="col-md-6 pr-sm-1">
-          <div class="col-md-12 py-3 h-100 px-0 bg-gray-500 border-radius-border-8">
+          <div class="col-md-12 py-3 h-100 px-0 bg-gray-500 border-radius-border-8" v-loading="loading">
             <div class="row align-items-center h-100">
               <div class="col-md-4 text-center">
                 <div class="fw-500 text-head">Total First Timers</div>
@@ -96,7 +96,7 @@
 
         <!-- Second Column -->
         <div class="col-md-6 pr-sm-1 pr-md-0 mt-3 mt-md-0">
-          <div class="col-md-12 h-100 border-radius-border-8">
+          <div class="col-md-12 h-100 border-radius-border-8" v-loading="loading">
             <div class="row justify-content-between align-items-center">
               <div class="col">
                 <div class="s-18 text-head mt-3 font-weight-600">
@@ -124,6 +124,16 @@
                       v-if="item.name == 'Social Media'"
                       ><SocialMediaIcon
                     /></span>
+                      <span
+                      class="rounded-circle bg-color"
+                      v-if="item.name == 'Flyer'"
+                      ><DocumentIcon
+                    /></span>
+                      <span
+                      class="rounded-circle bg-color"
+                      v-if="item.name == 'Not Specified'"
+                      ><PlaceHolderIcon
+                    /></span>
                       <p class="fw-400 s-20 my-1">{{ item.name }}</p>
                       <p class="font-weight-600 s-20">
                         {{ item.percentage.toFixed(1) }}%
@@ -138,12 +148,12 @@
       </div>
     </div>
     <div class="row mt-5">
-      <div class="col-md-6 col-12 mb-5">
+      <div class="col-md-6 col-12 mb-5" v-loading="loading">
         <div class="p-3">
           <FunnelChart domId="funnel" :funneldata="analyticsData.lifeCycleSummary" />
         </div>
       </div>
-      <div class="col-md-6 col-12">
+      <div class="col-md-6 col-12" v-loading="loading">
         <div class="p-3 border-radius-border-8">
           <AnalyticsColumnChart
             domId="inflow4"
@@ -185,7 +195,7 @@
 
             <!-- Age Group -->
             <div class="col-md-4 mb-4">
-              <div class="bg-white border-gray-100 h-100 border-radius-15">
+              <div class="bg-white border-gray-100 h-100 border-radius-15" v-loading="loading">
                 <div class="card-body">
                   <h5 class="card-title">Age Group</h5>
                   <!-- <ChartComponent :data="ageGroupData" /> -->
@@ -200,7 +210,7 @@
 
             <!-- Gender -->
             <div class="col-md-4 mb-4">
-              <div class="bg-white border-gray-100 h-100 border-radius-15">
+              <div class="bg-white border-gray-100 h-100 border-radius-15" v-loading="loading">
                 <div class="card-body">
                   <h5 class="card-title">Gender</h5>
                   <!-- <ChartComponent :data="genderData" /> -->
@@ -215,7 +225,7 @@
 
             <!-- Marital Status -->
             <div class="col-md-4 mb-4">
-              <div class="bg-white border-gray-100 h-100 border-radius-15">
+              <div class="bg-white border-gray-100 h-100 border-radius-15" v-loading="loading">
                 <div class="card-body">
                   <h5 class="card-title">Marital Status</h5>
                   <AnalyticsPieChart
@@ -229,7 +239,7 @@
 
             <!-- Location -->
             <div class="col-md-4 mb-4">
-              <div class="bg-white border-gray-100 h-100 border-radius-15">
+              <div class="bg-white border-gray-100 h-100 border-radius-15" v-loading="loading">
                 <div class="card-body">
                   <h5 class="card-title">How did you hear about us?</h5>
                   <!-- <ChartComponent :data="locationData" /> -->
@@ -249,7 +259,7 @@
 
             <!-- Giving Percentage -->
             <div class="col-md-4 mb-4">
-              <div class="bg-white border-gray-100 border-radius-15 h-100">
+              <div class="bg-white border-gray-100 border-radius-15 h-100" v-loading="loading">
                 <div class="card-body">
                   <h5 class="card-title">Interested in Joining us ?</h5>
                   <div class="p-3">
@@ -270,7 +280,7 @@
 
             <!-- Event Attendance -->
             <div class="col-md-4 mb-4">
-              <div class="bg-white border-gray-100 h-100 border-radius-15">
+              <div class="bg-white border-gray-100 h-100 border-radius-15" v-loading="loading">
                 <div class="card-body">
                   <h5 class="card-title">Want to be Visited</h5>
                   <!-- <ChartComponent :data="eventAttendanceData" /> -->
@@ -291,7 +301,7 @@
         class="row"
         
       >
-        <div class="col-md-12 bg-gray-500 border-radius-border-8 py-5 px-4">
+        <div class="col-md-12 bg-gray-500 border-radius-border-8 py-5 px-4" v-loading="loading">
           <div class="row">
             <div class="col-md-12">
               <div class="card">
@@ -317,7 +327,7 @@
           <span class="s-32 fw-500 text-black">First Timers Feedbacks</span>
         </div>
       </div>
-      <div class="col-md-12 border-radius-border-8 mt-2 py-4 px-3">
+      <div class="col-md-12 border-radius-border-8 mt-2 py-4 px-3" v-loading="loading">
         <div class="row align-items-center">
           <div
             class="col-md-6 mb-5 h-100"
@@ -371,7 +381,9 @@ import FunnelChart from "@/components/charts/FunnelChart.vue";
 import AnalyticsColumnChart from "../../components/charts/AnalyticsColumnChart.vue";
 import GlobeIcon from "../../components/svg/GlobeIcon.vue";
 import SocialMediaIcon from "../../components/svg/SocialMediaIcon.vue";
+import DocumentIcon from "../../components/svg/DocumentIcon.vue";
 import PeopleIcon from "../../components/svg/PeopleIcon.vue";
+import PlaceHolderIcon from "../../components/svg/PlaceHolderIcon.vue";
 import AnalyticsPieChart from "@/components/charts/AnalyticsPieChart2";
 import AnalyticsPieChart2 from "@/components/charts/AnalyticsPieChart";
 // import PieChartSmall from "../../components/charts/PieChartSmall.vue";
@@ -379,6 +391,8 @@ export default {
   components: {
     FunnelChart,
     // PieChart,
+    DocumentIcon,
+    PlaceHolderIcon,
     GlobeIcon,
     SocialMediaIcon,
     PeopleIcon,
@@ -395,6 +409,7 @@ export default {
     const endDate = ref("");
     const analyticsData = ref([]);
     const showFirstTimer = ref(false);
+    const loading = ref(false)
     const pieAnalyticsData = ref([]);
     const selectedPeriod = ref({});
     const periodRange = ref([
@@ -433,6 +448,7 @@ export default {
     const periodId = ref(null);
 
     const getAllDatePeriods = (item) => {
+      loading.value = true;
       selectedContactOwner.value = item;
       selectedContactOwner.value = contactOwners.value.find((i) => {
         return i.id == contactOwnerId.value;
@@ -456,9 +472,11 @@ export default {
           .then((res) => {
             analyticsData.value = res.data.returnObject;
             // emit("firsttimers", res.data.returnObject.firsttimers);
+            loading.value = false
           })
           .catch((err) => {
             console.log(err);
+            loading.value = false
           });
       } else {
         axios
@@ -468,9 +486,11 @@ export default {
           .then((res) => {
             analyticsData.value = res.data.returnObject;
             // emit("firsttimers", res.data.returnObject.firsttimers);
+            loading.value = false
           })
           .catch((err) => {
             console.log(err);
+            loading.value = false
           });
       }
     };
@@ -567,6 +587,7 @@ export default {
     getContactOwners();
 
     const showItem = () => {
+      loading.value = true
       selectedPeriod.value = periodRange.value.find((i) => i.name.includes("30"));
       periodId.value = periodRange.value.find((i) => i.name.includes("30")).code;
       axios
@@ -576,9 +597,11 @@ export default {
         .then((res) => {
           analyticsData.value = res.data.returnObject;
           emit("totalfirstimer", res.data.returnObject.totalGuests);
+          loading.value = false
         })
         .catch((err) => {
           console.log(err);
+          loading.value = false
         });
     };
     showItem();
@@ -606,6 +629,7 @@ export default {
       percentages,
       topThreeSources,
       goBack,
+      loading,
       columnDataChart,
       columnDataChart2
     };
