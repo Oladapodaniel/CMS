@@ -91,6 +91,7 @@ const getCategories = async () => {
 
 const allProducts = async () => {
   store.dispatch("ecommerce/getAllProducts").then((response => {
+    console.log(response, 'ffrr')
     products.value = response
   }))
 }
@@ -102,11 +103,15 @@ onMounted(() => {
 })
 
 const getProductCategoriesValue = (id) => productCategories.value.find(i => i.id === id)?.categoryName;
+
+const navigateToAddMember = (item) => {
+  console.log(item)
+  router.push(`/tenant/store/add/${item.id}`)
+}
 </script>
 
 <template>
   <div class="container-top" :class="{ 'container-wide': lgAndUp || xlAndUp }">
-    <!-- :breadcrumbs="{ name: 'dashboard', route: '/tenant' }"  -->
     <HeaderSection title="Ecommerce" rightbuttontext="Upload New Product" @handleClick="handleClick">
       <template #rightbutton>
         <div class="d-flex">
@@ -121,7 +126,15 @@ const getProductCategoriesValue = (id) => productCategories.value.find(i => i.id
       </template>
     </HeaderSection>
     <DatasetAnalytics />
-    <div class="row mt-5">
+    <div class="layerparent">
+      <div class="coverlayer"></div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <div class="cardheader">ffff</div>
+      </div>
+    </div>
+    <!-- <div class="row mt-5">
       <div class="col-12 col-md-8">
         <StoreTable :data="orderBody" :headers="orderheader" :checkMultipleItem="true"
           @checkedrow="handleSelectionChange" headerText="Recent Orders"
@@ -162,7 +175,7 @@ const getProductCategoriesValue = (id) => productCategories.value.find(i => i.id
           @checkedrow="handleSelectionChange" headerText="Top Selling Products"
           :viewall="{ name: 'View all products', route: '/tenant/store/products' }">
           <template v-slot:name="{ item }">
-            <div @click="showMemberRow(item)" class="c-pointer">
+            <div @click="navigateToAddMember(item)" class="c-pointer">
               <div class="d-flex align-items-center gap-3">
                 <img :src="item.imageURL" alt="Product Image" class="product-image" />
                 <div class="ml-2">{{ item.name }}</div>
@@ -170,22 +183,22 @@ const getProductCategoriesValue = (id) => productCategories.value.find(i => i.id
             </div>
           </template>
           <template v-slot:price="{ item }">
-            <div @click="showMemberRow(item)" class="c-pointer">
+            <div @click="navigateToAddMember(item)" class="c-pointer">
               {{ converter.numberWithCommas(item.price) }}
             </div>
           </template>
           <template v-slot:status="{ item }">
-            <div @click="showMemberRow(item)" class="c-pointer">
+            <div @click="navigateToAddMember(item)" class="c-pointer">
               {{ item.status }}
             </div>
           </template>
           <template v-slot:productType="{ item }">
-            <div @click="showMemberRow(item)" class="c-pointer">
+            <div @click="navigateToAddMember(item)" class="c-pointer">
               {{ productType[item.productType] }}
             </div>
           </template>
           <template v-slot:ecommerceCategoryID="{ item }">
-            <div @click="showMemberRow(item)" class="c-pointer">
+            <div @click="navigateToAddMember(item)" class="c-pointer">
               {{ getProductCategoriesValue(item.ecommerceCategoryID) }}
             </div>
           </template>
@@ -198,7 +211,7 @@ const getProductCategoriesValue = (id) => productCategories.value.find(i => i.id
           </template>
         </ChartCard>
       </div>
-    </div>
+    </div> 
     <div class="row mt-5">
       <div class="col-12">
         <div class="chart-bg">
@@ -211,7 +224,7 @@ const getProductCategoriesValue = (id) => productCategories.value.find(i => i.id
           </div>
         </div>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -228,6 +241,25 @@ const getProductCategoriesValue = (id) => productCategories.value.find(i => i.id
   height: 30px;
   object-fit: cover;
   border-radius: 3px;
+}
+
+.layerparent {
+  position: relative;
+}
+
+.coverlayer {
+  height: 200px;
+  position: absolute;
+  z-index: 10000000000;
+  top: -178px;
+  width: 100%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.13) 0%, #FFFFFF 100%);
+}
+
+.cardheader {
+  background-color: #0745AF;
+  border-radius: 20px 20px 0px 0px;
+  height: 50px
 }
 
 @media (max-width: 767px) {

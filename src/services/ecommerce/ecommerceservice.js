@@ -63,3 +63,21 @@ export const deleteProductCategory = async(id) => {
         return error
     }
 }
+
+export const getProductById = async(id) => {
+    try {
+        let { data } = await axios.get(`/api/Ecommerce/GetSingleProductById?productId=${id}`);
+        return data
+    } catch (error) {
+        return error
+    }
+}
+
+export const updateProduct = async(payload) => {
+    try {
+        let { data } = await axios.put(`/api/Ecommerce/UpdateProduct`, payload);
+        return data
+    } catch (error) {
+        return error
+    }
+}

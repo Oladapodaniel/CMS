@@ -2,15 +2,17 @@
 import { inject, onMounted, reactive, ref } from 'vue';
 import deviceBreakpoint from '../../../mixins/deviceBreakpoint';
 import HeaderSection from './component/HeaderSection.vue';
-import { addProduct, addProductCategory, deleteProductCategory, getProductCategories, productType, updateProductCategory } from '../../../services/ecommerce/ecommerceservice';
+import { addProduct, addProductCategory, deleteProductCategory, getProductById, getProductCategories, productType, updateProduct, updateProductCategory } from '../../../services/ecommerce/ecommerceservice';
 import { ElMessage, ElMessageBox } from "element-plus";
 import media_service from '../../../services/media/media_service';
 import router from '../../../router';
 import store from '../../../store/store';
+import { useRoute } from "vue-router";
 
 
 const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
 const primarycolor = inject('primarycolor');
+const route = useRoute();
 const categoryDialog = ref(false)
 const category = ref({});
 const categoryLoading = ref(false);
@@ -69,17 +71,17 @@ const showConfirmModal = (item, index) => {
 };
 
 const deleteCategory = async (item, index) => {
-    console.log(item,index)
+    console.log(item, index)
     try {
         let response = await deleteProductCategory(item.value);
         productCategories.value.splice(index, 1)
         getCategories();
         ElMessage({
-                type: "success",
-                message: "Category deleted successfully",
-                duration: 5000
-            });
-            selectedCategory.value = null
+            type: "success",
+            message: "Category deleted successfully",
+            duration: 5000
+        });
+        selectedCategory.value = null
         console.log(response)
     } catch (error) {
         console.error(error)
@@ -97,7 +99,7 @@ const saveNewCategory = async () => {
             productCategories.value.push(response);
             selectedCategory.value = response.id;
             getCategories();
-            category = new Object();
+            category.value = new Object();
             ElMessage({
                 type: "success",
                 message: "Category created successfully",
@@ -116,7 +118,7 @@ const displayCategoriesToUpdate = (item) => {
     categoryDialog.value = true
 }
 
-const editCategory = async() => {
+const editCategory = async () => {
     console.log('edit cat')
 
     delete category.value.products
@@ -127,10 +129,10 @@ const editCategory = async() => {
         productCategories.value.push(response);
         selectedCategory.value = response.id;
         getCategories();
-        category = new Object();
+        category.value = new Object();
         ElMessage({
             type: "success",
-            message: "Category created successfully",
+            message: "Category updated successfully",
             duration: 5000
         });
     } catch (error) {
@@ -189,20 +191,68 @@ const createProduct = async () => {
         fileURLBlobName: fileResponse.value?.imageBlobName ?? "",
     }
 
-    try {
-        const response = await addProduct(payload);
-        console.log(response)
-        createProductLoading.value = false;
-        store.dispatch("ecommerce/getAllProducts").then((() => {
-            router.push('/tenant/store/products')
-        }))
-    } catch (error) {
-        createProductLoading.value = false;
-        console.log(error, 'hre');
+    if (!route.params.id) {
+        try {
+            const response = await addProduct(payload);
+            console.log(response)
+            createProductLoading.value = false;
+            ElMessage({
+                type: "success",
+                message: "Product created successfully",
+                duration: 5000
+            });
+            store.dispatch("ecommerce/getAllProducts").then((() => {
+                router.push('/tenant/store/products')
+            }))
+        } catch (error) {
+            createProductLoading.value = false;
+            console.log(error);
+        }
+    } else {
+        payload.id = route.params.id;
+        try {
+            const response = await updateProduct(payload);
+            console.log(response)
+            createProductLoading.value = false;
+            ElMessage({
+                type: "success",
+                message: "Product updated successfully",
+                duration: 5000
+            });
+            store.dispatch("ecommerce/getAllProducts").then((() => {
+                router.push('/tenant/store/products')
+            }))
+        } catch (error) {
+            createProductLoading.value = false;
+            console.log(error);
+        }
     }
 
-    console.log(payload)
 }
+
+const getSingleProduct = async () => {
+
+    try {
+        const response = await getProductById(route.params.id);
+        console.log(response, 'single')
+        selectedProductType.value = response.productType;
+        selectedCategory.value = response.ecommerceCategoryID;
+        productName.value = response.productName;
+        description.value = response.description;
+        price.value = response.price;
+        coverurl.value = response.imageURL;
+        coverImageResponse.value = new Object();
+        coverImageResponse.value.pictureUrl = response.imageURL;
+        coverImageResponse.value.imageBlobName = response.imageURLBlobName;
+        fileurl.value = response.fileURL
+        fileResponse.value = new Object();
+        fileResponse.value.pictureUrl = response.fileURL;
+        fileResponse.value.imageBlobName = response.fileURLBlobName
+    } catch (error) {
+        console.log(error);
+    }
+}
+if (route.params.id) getSingleProduct()
 </script>
 
 <template>
@@ -269,14 +319,14 @@ const createProduct = async () => {
                     <el-collapse-transition>
                         <div class="mt-4"
                             v-show="selectedProductType !== 4 && selectedProductType !== 5 && selectedProductType !== 6">
-                            <img :src="fileurl && isImage(fileurl)" class="w-100 mb-3 rounded-lg" v-if="fileurl" />
-                            <div v-if="fileResponse && fileResponse.pictureUrl && isAudio(fileResponse.pictureUrl)">
+                            <img :src="fileurl" class="w-50 mb-3 rounded-lg" v-if="fileurl && isImage(fileurl)" />
+                            <div v-if="fileurl && isAudio(fileurl)">
                                 <audio class="w-100" controls>
                                     <source :src="fileurl" />
                                     Your browser does not support the audio element.
                                 </audio>
                             </div>
-                            <div v-if="fileResponse && fileResponse.pictureUrl && isVideo(fileResponse.pictureUrl)">
+                            <div v-if="fileurl && isVideo(fileurl)">
                                 <video width="320" height="240" controls>
                                     <source :src="fileurl" />
                                     Your browser does not support the video tag.

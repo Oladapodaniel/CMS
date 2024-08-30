@@ -2073,7 +2073,7 @@ const routes = [
                 import( /* webpackChunkName: "internal store" */ '../views/ecommerce/internal/StoreDashboard.vue'),
         },
         {
-            path: 'store/add',
+            path: 'store/add/:id?',
             name: 'AddProduct',
             meta: {
                 title: 'Churchplus - Add Product',
