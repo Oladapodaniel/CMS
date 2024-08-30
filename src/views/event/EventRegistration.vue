@@ -369,7 +369,7 @@
               </div>
               <div class="col-md-7 mt-2">
                 <p class="text-center fw-normal" style="color: #136acd">
-                  Powered by CHURCHPLUS
+                 <a href="https://churchplus.co" class="text-decoration-none primary--text" target="_blank">Powered by CHURCHPLUS</a>
                 </p>
               </div>
               <!-- Modal -->
@@ -725,6 +725,7 @@ export default {
       axios
         .post("/EventRegistration", newPerson)
         .then((res) => {
+          console.log(res);
           loading.value = false;
           autosearch.value = false;
           disableClick.value = false;
@@ -1087,6 +1088,7 @@ export default {
       disableClick.value = true;
       try {
         let res = await axios.post("/EventRegistration", registerData);
+        console.log(res);
         disableClick.value = false;
         swal(
           "Registration Successful!",

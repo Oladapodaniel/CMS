@@ -1,7 +1,7 @@
 <template>
   <div class="container-wide container-top">
     <div class="row justify-content-between">
-      <div class="mb-4 col-md-6">
+      <div class="mb-4 col-md-5">
         <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
           First Timer Analytics
         </div>
@@ -11,19 +11,19 @@
           >
         </div>
       </div>
-      <div class="col-md-6 mt-2">
+      <div class="col-md-7 mt-2">
         <div class="col-md-12 bg-gray-500 d-flex justify-content-end py-3 px-2">
           <div
-            class="col-md-12 fw-500 s-12 primary-text flex-wrap d-flex justify-content-between align-items-center"
+            class="col-md-12  fw-500 s-12 primary-text flex-wrap d-flex justify-content-between align-items-center"
           >
             <span
-              class="px-2 mb-3 mb-md-0 cursor-pointer hover-btn"
+              class="px-2 mb-3 mb-sm-0 cursor-pointer hover-btn"
               v-for="(item, indx) in periodRange"
               :key="indx"
               @click="getAllDatePeriods(item)"
               >{{ item.name }}</span
             >
-            <span @click="showCustomModal" class="cursor-pointer"> Custom </span>
+            <span @click="showCustomModal" class="cursor-pointer px-2 hover-btn"> Custom </span>
             <div class="d-flex justify-content-between align-items-center">
               <el-dropdown trigger="click" class="w-100">
                 <span class="el-dropdown-link w-100">
@@ -31,7 +31,7 @@
                     class="d-flex justify-content-between mt-1 s-12 fw-500 primary--text w-100"
                     size="large"
                   >
-                    <span>{{
+                    <span class="hover-btn px-2">{{
                       selectedContactOwner && selectedContactOwner.name
                         ? selectedContactOwner.name
                         : "Select Contact"
@@ -707,6 +707,9 @@ export default {
 .overview {
   margin-left: -27px !important;
 }
+.h-12{
+  height: 3rem;
+}
 
 /* .header1{
   text-align: left;
@@ -772,8 +775,11 @@ export default {
 }
 .hover-btn:hover{
   background: white;
-  padding-top: 6px;
-  padding-bottom: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
 }
 
 /* .chart-border {
