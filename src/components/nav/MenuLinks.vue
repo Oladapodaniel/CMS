@@ -27,9 +27,9 @@
               </el-sub-menu>
               <el-menu-item-group @click="routeToPage(x)" v-else>
                 <el-menu-item :index="`${index + 1}-${indexe + 1}`">{{ x.name }}
-                  <el-tag type="success" class="ml-3" effect="dark" v-if="index === 2 && indexe === 3" size="" round>
+                  <!-- <el-tag type="success" class="ml-3" effect="dark" v-if="index === 2 && indexe === 3" size="" round>
                     <span style="display: flex; font-size: 14px">Beta</span>
-                  </el-tag>
+                  </el-tag> -->
                 </el-menu-item>
               </el-menu-item-group>
             </div>

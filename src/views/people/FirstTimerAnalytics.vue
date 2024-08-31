@@ -14,7 +14,7 @@
       <div class="col-md-7 mt-2">
         <div class="col-md-12 bg-gray-500 d-flex justify-content-end py-3 px-2">
           <div
-            class="col-md-12  fw-500 s-12 primary-text flex-wrap d-flex justify-content-between align-items-center"
+            class="col-md-12 fw-500 s-12 primary-text flex-wrap d-flex justify-content-between align-items-center"
           >
             <span
               class="px-2 mb-3 mb-sm-0 cursor-pointer hover-btn"
@@ -23,7 +23,9 @@
               @click="getAllDatePeriods(item)"
               >{{ item.name }}</span
             >
-            <span @click="showCustomModal" class="cursor-pointer px-2 hover-btn"> Custom </span>
+            <span @click="showCustomModal" class="cursor-pointer px-2 hover-btn">
+              Custom
+            </span>
             <div class="d-flex justify-content-between align-items-center">
               <el-dropdown trigger="click" class="w-100">
                 <span class="el-dropdown-link w-100">
@@ -137,7 +139,7 @@
     <div class="row mt-5">
       <div class="col-md-6 col-12 mb-5" v-loading="loading">
         <div class="p-3">
-          <FunnelChart domId="funnel" :funneldata="analyticsData.lifeCycleSummary" />
+          <FunnelChart domId="funnel" :funneldata="funnelDataChart" />
         </div>
       </div>
       <div class="col-md-6 col-12" v-loading="loading">
@@ -384,11 +386,17 @@
       />
     </div>
   </div> -->
-  <el-dialog v-model="customModal" class="border-radius-20" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
+  <el-dialog
+    v-model="customModal"
+    class="border-radius-20"
+    :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+  >
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="row">
-          <div class="col-md-12 font-weight-600 text-head text-black mb-2">Set Custom Report Period</div>
+          <div class="col-md-12 font-weight-600 text-head text-black mb-2">
+            Set Custom Report Period
+          </div>
           <div class="col-md-12 mb-3">
             <el-date-picker
               v-model="startDate"
@@ -411,7 +419,14 @@
           </div>
           <div class="col-md-12 d-flex justify-content-center">
             <div class="col-md-6">
-              <el-button round :loading="loading" size="large" @click="getAllDatePeriods()" class="py-4 w-100 primary-bg text-white">Apply</el-button>
+              <el-button
+                round
+                :loading="loading"
+                size="large"
+                @click="getAllDatePeriods()"
+                class="py-4 w-100 primary-bg text-white"
+                >Apply</el-button
+              >
             </div>
           </div>
         </div>
@@ -461,7 +476,7 @@ export default {
     const loading = ref(false);
     const pieAnalyticsData = ref([]);
     const selectedPeriod = ref({});
-    const { mdAndUp, lgAndUp, xlAndUp, } = deviceBreakpoint();
+    const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
     const periodRange = ref([
       {
         name: "Last 30days",
@@ -503,8 +518,8 @@ export default {
     };
 
     const getAllDatePeriods = (item) => {
-      console.log(item, 'jjjjj');
-      
+      console.log(item, "jjjjj");
+
       customModal.value = false;
       loading.value = true;
       selectedContactOwner.value = item;
@@ -515,8 +530,7 @@ export default {
       selectedPeriod.value = periodRange.value.find((i) => {
         return i.code == periodId.value;
       });
-      console.log(selectedPeriod.value, '');
-      
+      console.log(selectedPeriod.value, "");
 
       let startDate = selectedPeriod.value.code;
       let endDate = new Date().toLocaleDateString("en-US");
@@ -554,6 +568,28 @@ export default {
           });
       }
     };
+
+    const funnelDataChart = computed(() => {
+      if (
+        analyticsData.value &&
+        analyticsData.value.lifeCycleSummary &&
+        analyticsData.value.lifeCycleSummary.length === 0
+      )
+        return [];
+
+      const colors = ["#70EEFF","#FF5C00", "#155CD7","#FF5733","FF5C00","#70EEFF","#155CD7"];
+
+      // Return the transformed data
+      return analyticsData.value &&
+        analyticsData.value.lifeCycleSummary &&
+        analyticsData.value.lifeCycleSummary
+        ? analyticsData.value.lifeCycleSummary.map(([name, y],index) => ({
+            name,
+            y,
+            color: colors[index] || "#000000",
+          }))
+        : [];
+    });
 
     // const percentage = computed(() => {
     //   if (totalVisitorsSinceLastMonth.value === 0) {
@@ -676,6 +712,7 @@ export default {
       endDate,
       analyticsData,
       pieAnalyticsData,
+      funnelDataChart,
       periodRange,
       selectedPeriod,
       getAllDatePeriods,
@@ -707,7 +744,7 @@ export default {
 .overview {
   margin-left: -27px !important;
 }
-.h-12{
+.h-12 {
   height: 3rem;
 }
 
@@ -773,7 +810,7 @@ export default {
   font-size: 16px;
   font-weight: 500;
 }
-.hover-btn:hover{
+.hover-btn:hover {
   background: white;
   font-weight: 600;
   font-size: 14px;

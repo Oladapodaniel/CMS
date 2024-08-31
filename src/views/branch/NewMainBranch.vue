@@ -131,7 +131,7 @@
           v-loading="branchLoading"
         >
           <div class="card-icon d-flex justify-content-between my-2">
-            <img :src="ArrowDown" style="height: 3rem" alt="" />
+            <img :src="ArrowDown" class="inflow" style="height: 3rem" alt="" />
             <div class="text-right">
               <div class="s-15">Current year inflow</div>
               <div class="font-weight-600 s-15">
@@ -169,7 +169,7 @@
           v-loading="branchLoading"
         >
           <div class="card-icon d-flex justify-content-between my-2">
-            <img :src="ArrowUp" style="height: 3rem" alt="" />
+            <img :src="ArrowUp" class="outflow" style="height: 3rem" alt="" />
             <div class="text-right">
               <div class="s-15">Current year Outflow</div>
               <div class="font-weight-600 s-15">
@@ -216,7 +216,7 @@
           <div
             class="d-flex flex-column flex-sm-row align-items-center justify-content-sm-end"
           >
-            <div class="col-md-5">
+            <!-- <div class="col-md-5">
               <el-dropdown
                 trigger="click"
                 class="align-items-center justify-sm-content-center border-radius-60 d-flex ml-md-3 ml-0 bg-gray-600 py-0 mr-2"
@@ -229,15 +229,6 @@
                   </el-icon>
                 </span>
                 <template #dropdown>
-                  <!-- <el-dropdown-menu>
-                    <el-dropdown-item class="text-black"> Branch Name </el-dropdown-item>
-                    <el-dropdown-item class="text-black">
-                      Membership size
-                    </el-dropdown-item>
-                    <el-dropdown-item class="text-black">Attendance </el-dropdown-item>
-                    <el-dropdown-item class="text-black"> Income </el-dropdown-item>
-                    <el-dropdown-item class="text-black"> Expense </el-dropdown-item>
-                  </el-dropdown-menu> -->
                   <el-dropdown-menu @command="(command) => (sortOption.value = command)">
                     <el-dropdown-item command="Branch Name" class="text-black"
                       >Branch Name</el-dropdown-item
@@ -257,8 +248,8 @@
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
-            </div>
-            <div class="col-md-5 mt-sm-0 mt-3">
+            </div> -->
+            <div class="col-md-10 mt-sm-0 mt-3">
               <el-input
                 class="w-100 rounded-border"
                 :prefix-icon="Search"
@@ -287,11 +278,6 @@
         </template>
         <template v-slot:currentYearAverageAttendance="{ item }">
           <div class="c-pointer" @click="viewBranch(item)">
-            {{
-              item.currency && item.currency.shortCode
-                  ? item.currency.shortCode
-                  : ""
-              }}
               {{ Math.abs(item.currentYearAverageAttendance).toLocaleString() }}
           </div>
         </template>
@@ -335,71 +321,10 @@
               </el-dropdown>
         </template> -->
       </CustomTable>
-      <!-- <table class="table border table-hover">
-        <thead>
-          <tr>
-            <th>Branch</th>
-            <th>Membership Size</th>
-            <th>Avg. Attendance</th>
-            <th>Income</th>
-            <th>Expenses</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody class="cursor-pointer">
-          <tr v-for="(branch, index) in searchBranchDetail" :key="index">
-            <td @click="viewBranch(branch)" class="fw-500">{{ branch.name }}</td>
-            <td>{{ branch.membershipSize.toLocaleString() }}</td>
-            <td @click="viewBranch(branch)">
-              {{
-                branch.currency && branch.currency.shortCode
-                  ? branch.currency.shortCode
-                  : ""
-              }}
-              {{ Math.abs(branch.currentYearAverageAttendance).toLocaleString() }}
-            </td>
-            <td @click="viewBranch(branch)">
-              {{
-                branch.currency && branch.currency.shortCode
-                  ? branch.currency.shortCode
-                  : ""
-              }}
-              {{ Math.abs(branch.currentYearIncome).toLocaleString() }}
-            </td>
-            <td @click="viewBranch(branch)">
-              {{
-                branch.currency && branch.currency.shortCode
-                  ? branch.currency.shortCode
-                  : ""
-              }}
-              {{ Math.abs(branch.currentYearExpense).toLocaleString() }}
-            </td>
-            <td>
-              <el-dropdown trigger="click">
-                <el-icon>
-                  <MoreFilled />
-                </el-icon>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item>
-                      <div
-                        @click.prevent="showConfirmModal(branch.id, index)"
-                        class="text-color"
-                      >
-                        Delete
-                      </div>
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-            </td>
-          </tr>
-        </tbody>
-      </table> -->
     </div>
     <div class="container-fluid">
       <div class="row border mt-4" v-loading="branchLoading">
-        <div class="adjust-view col-md-12 d-flex justify-content-end">
+        <!-- <div class="adjust-view col-md-12 d-flex justify-content-end">
           <div class="py-2 pl-4 primary--text s-15 bg-gray-500 fw-500">
             <el-dropdown trigger="click" class="w-100">
               <span class="el-dropdown-link w-100">
@@ -434,8 +359,8 @@
               </template>
             </el-dropdown>
           </div>
-        </div>
-        <div class="col-md-12" v-loading="branchLoading">
+        </div> -->
+        <div class="col-md-12 mt-4" v-loading="branchLoading">
           <ColumnChart
             :series="series2"
             :data="incomeExpenseCharrt"
@@ -446,7 +371,7 @@
         </div>
       </div>
       <div class="row border mt-4" v-loading="branchLoading">
-        <div class="adjust-view col-md-12 d-flex justify-content-end">
+        <!-- <div class="adjust-view col-md-12 d-flex justify-content-end">
           <div class="py-2 pl-4 primary--text s-15 bg-gray-500 fw-500">
             <el-dropdown trigger="click" class="w-100">
               <span class="el-dropdown-link w-100">
@@ -481,38 +406,18 @@
               </template>
             </el-dropdown>
           </div>
-        </div>
-        <!-- <div class="col-md-12" v-loading="branchLoading">
-          <ColumnChart domId="chart2" title="First Timer InFlow" />
         </div> -->
-        <!-- <div class="col-md-12" v-if="firstTimerWeeklyAtt" v-loading="loading">
-          <ColumnChart
-            domId="chart2"
-            :data="weeklyFirstTimerObj"
-            :series="series2"
-            title="First Timer InFlow"
-            :header="firstTimerHeader"
-          />
-        </div> -->
-        <div class="col-md-12" v-loading="branchLoading">
+        <div class="col-md-12 mt-4" v-loading="branchLoading">
           <ColumnChart
             :series="series"
             :data="incomeExpenseChart"
             header="Income vs Expense by Branch"
             domId="chart3"
           />
-          <!-- <div class="col-md-12" v-if="firstTimerMonthlyAtt" v-loading="loading">
-          <ColumnChart
-            domId="chart2"
-            :data="monthlyFirstTimerObj"
-            :series="series2"
-            title="First Timer InFlow"
-            :header="firstTimerHeader"
-          /> -->
         </div>
       </div>
       <div class="row border mt-4" v-loading="branchLoading">
-        <div class="adjust-view col-md-12 d-flex justify-content-end">
+        <!-- <div class="adjust-view col-md-12 d-flex justify-content-end">
           <div class="py-2 pl-4 primary--text s-15 bg-gray-500 fw-500">
             <el-dropdown trigger="click" class="w-100">
               <span class="el-dropdown-link w-100">
@@ -547,20 +452,8 @@
               </template>
             </el-dropdown>
           </div>
-        </div>
-        <!-- <div class="col-md-12" v-loading="branchLoading">
-          <ColumnChart domId="chart2" title="First Timer InFlow" />
         </div> -->
-        <!-- <div class="col-md-12" v-if="firstTimerWeeklyAtt" v-loading="loading">
-          <ColumnChart
-            domId="chart2"
-            :data="weeklyFirstTimerObj"
-            :series="series2"
-            title="First Timer InFlow"
-            :header="firstTimerHeader"
-          />
-        </div> -->
-        <div class="col-md-12" v-loading="branchLoading">
+        <div class="col-md-12 mt-4" v-loading="branchLoading">
           <LineChart
             domId="Attendance"
             :categories="series2"
@@ -571,7 +464,7 @@
         </div>
       </div>
       <div class="row border mt-4" v-loading="branchLoading">
-        <div class="adjust-view col-md-12 d-flex justify-content-end">
+        <!-- <div class="adjust-view col-md-12 d-flex justify-content-end">
           <div class="py-2 pl-4 primary--text s-15 bg-gray-500 fw-500">
             <el-dropdown trigger="click" class="w-100">
               <span class="el-dropdown-link w-100">
@@ -606,20 +499,8 @@
               </template>
             </el-dropdown>
           </div>
-        </div>
-        <!-- <div class="col-md-12" v-loading="branchLoading">
-          <ColumnChart domId="chart2" title="First Timer InFlow" />
         </div> -->
-        <!-- <div class="col-md-12" v-if="firstTimerWeeklyAtt" v-loading="loading">
-          <ColumnChart
-            domId="chart2"
-            :data="weeklyFirstTimerObj"
-            :series="series2"
-            title="First Timer InFlow"
-            :header="firstTimerHeader"
-          />
-        </div> -->
-        <div class="col-md-12" v-loading="branchLoading">
+        <div class="col-md-12 mt-4" v-loading="branchLoading">
           <ColumnChart
             :series="series"
             :data="averageAttendanceChart"
@@ -627,14 +508,6 @@
             domId="chart4"
             title="Showing All branch Data"
           />
-          <!-- <div class="col-md-12" v-if="firstTimerMonthlyAtt" v-loading="loading">
-          <ColumnChart
-            domId="chart2"
-            :data="monthlyFirstTimerObj"
-            :series="series2"
-            title="First Timer InFlow"
-            :header="firstTimerHeader"
-          /> -->
         </div>
       </div>
     </div>
@@ -1578,6 +1451,12 @@ export default {
 }
 .card-icon {
   font-size: 18px;
+}
+.inflow{
+  transform: rotate(180deg);
+}
+.outflow{
+  transform: rotate(-180deg);
 }
 .card-text {
   margin: 0;

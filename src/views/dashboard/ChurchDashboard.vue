@@ -505,8 +505,11 @@
                   tenantInfoAttendanceWeekly[0].data.some((i) => i > 0))
               "
             >
-            <router-link to="/tenant/whatsapp/auth">
+            <!-- <router-link to="/tenant/whatsapp/auth">
               <img src="../../assets/whatsapp_banner.jpeg" class="w-100 my-4" />
+            </router-link> -->
+            <router-link to="/tenant/firsttimeranalytics">
+              <img src="../../assets/people/FirsttimerIcon.jpg" class="w-100 my-4" />
             </router-link>
               <div class="more-things side p-3 " v-if="!tenantInfoExtra.hasMobileApp">
                 <img src="../../assets/mobileapp2.svg" class="w-100" />
