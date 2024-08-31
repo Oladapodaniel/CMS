@@ -2117,6 +2117,15 @@ const routes = [
             component: () =>
                 import( /* webpackChunkName: "addstoreproduct" */ '../views/ecommerce/internal/ArchivedProducts.vue')
         },
+        {
+            path: 'store/setup',
+            name: 'StoreSetup',
+            meta: {
+                title: 'Churchplus - Store Setup',
+            },
+            component: () =>
+                import( /* webpackChunkName: "setupstore" */ '../views/ecommerce/internal/StoreSetup.vue')
+        },
 
         ],
     },

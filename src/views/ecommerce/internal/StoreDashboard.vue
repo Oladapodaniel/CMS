@@ -14,7 +14,7 @@ import { getProductCategories, productType } from '../../../services/ecommerce/e
 
 
 const primarycolor = inject("primarycolor");
-const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
+const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
 const products = ref(store.getters["ecommerce/getproducts"]);
 const productCategories = ref(store.getters["ecommerce/getCategories"]);
 const orderBody = [
@@ -76,6 +76,10 @@ const handleClick = () => {
   console.log('button cliked')
 }
 
+const getStarted = () => {
+  router.push('/tenant/store/setup')
+}
+
 const handleSelectionChange = (payload) => {
   console.log(payload, 'he')
 }
@@ -129,9 +133,30 @@ const navigateToAddMember = (item) => {
     <div class="layerparent">
       <div class="coverlayer"></div>
     </div>
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <div class="cardheader">ffff</div>
+    <div class="row mt-5">
+      <div class="col-12 col-md-8 offset-md-2">
+        <div class="cardheader">
+          <div class="d-flex justify-content-between align-items-center">
+            <img src="../../../assets/cart_art.svg" />
+            <div class="d-flex">
+              <div class="faint_text">Home</div>
+            <div class="ml-5 mr-3 faint_text">Cart</div>
+            <div class="ml-5 mr-3 faint_text">All products</div>
+            </div>
+          </div>
+        </div>
+        <div class="cardbody">
+          <h2 class="font-weight-600 text-center pt-4">Set-up your Ecommerce Store</h2>
+          <div class="s-22 text-center">In few clicks</div>
+          <div class="d-flex justify-content-center mt-4">
+            <el-button class="get_started" @click="getStarted">
+            Get started
+          </el-button>
+        </div>
+        <div class="d-flex justify-content-center mt-5">
+          <img src="../../../assets/steps.svg" />
+        </div>
+      </div>
       </div>
     </div>
     <!-- <div class="row mt-5">
@@ -224,7 +249,7 @@ const navigateToAddMember = (item) => {
           </div>
         </div>
       </div>
-    </div>-->
+    </div> -->
   </div>
 </template>
 
@@ -259,7 +284,30 @@ const navigateToAddMember = (item) => {
 .cardheader {
   background-color: #0745AF;
   border-radius: 20px 20px 0px 0px;
-  height: 50px
+  padding: 10px;
+}
+
+.cardbody {
+  background: linear-gradient(180deg, #EDEDED 0%, #FFFFFF 100%);
+}
+
+.get_started {
+  background-color: #FF5906;
+  padding: 20px;
+  border-radius: 60px;
+  color: white;
+  border: 1px solid #FF5906
+}
+.get_started:hover, .get_started:focus, .get_started:active {
+  background-color: #ff5906e3;
+  padding: 20px;
+  border-radius: 60px;
+  color: white;
+  border: 1px solid #FF5906
+}
+
+.faint_text {
+  color: #C2C2C2
 }
 
 @media (max-width: 767px) {
