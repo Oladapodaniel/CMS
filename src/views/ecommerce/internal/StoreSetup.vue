@@ -4,6 +4,8 @@ import deviceBreakpoint from '../../../mixins/deviceBreakpoint';
 import SlidedMenu from '../../../components/nav/SlidedMenu.vue';
 import SetUpOne from './component/SetUpOne.vue';
 import SetUpTwo from './component/SetUpTwo.vue';
+import SetUpThree from './component/SetUpThree.vue';
+import StepFour from './component/StepFour.vue';
 
 const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
 const stepMenu = [
@@ -23,7 +25,9 @@ const activeMenu = ref(0)
             <div class="col-md-6 col-xl-5 mt-3 mt-md-0">
                 <div class="body-card">
                     <!-- <SetUpOne /> -->
-                    <SetUpTwo />
+                    <!-- <SetUpTwo /> -->
+                     <!-- <SetUpThree /> -->
+                      <StepFour />
                 </div>
             </div>
         </div>
