@@ -8,6 +8,9 @@ defineProps({
     }
 })
 
+const emit = defineEmits({
+    event: "index"
+})
 const activeMenu = ref(0)
 
 
@@ -18,7 +21,7 @@ const activeMenu = ref(0)
             'active': index == activeMenu,
             'menuItem1': index - activeMenu <= 0,
             'menuItem2': index - activeMenu > 0
-        }" class="menuItem" @click="activeMenu = index">{{ item }}</div>
+        }" class="menuItem" @click="(activeMenu = index),(emit('index', index))">{{ item }}</div>
     </div>
 </template>
 

@@ -53,7 +53,7 @@ const selectGateway = (item, index) => {
         </div>
         <div class="d-flex justify-content-between flex-wrap mt-5">
             <el-button size="large" round text>Go back</el-button>
-            <el-button type="success" size="large" round>Complete Setup</el-button>
+            <el-button color="#01A439" size="large" round>Complete Setup</el-button>
         </div>
     </div>
 </template>
