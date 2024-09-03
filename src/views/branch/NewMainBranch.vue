@@ -202,21 +202,24 @@
       </div>
     </div>
     <!-- Branch Data Overview -->
-    <div
-      class=" mt-4 border-radius-8 bg-gray-100 border-radius-border-8"
-      v-loading="branchLoading"
-    >
-      <div class="row px-5 pt-4">
-        <div
-          class="col-md-12 align-items-center d-flex flex-column flex-sm-row justify-content-md-between"
-        >
-          <div style="color: #0b55d4" class="font-weight-600 s-24">
-            Branch Data Overview
-          </div>
-          <div
-            class="d-flex flex-column flex-sm-row align-items-center justify-content-sm-end"
-          >
-            <!-- <div class="col-md-5">
+
+    <div class="container-fluid" v-show="allBranchDetail && allBranchDetail.length > 0 && !branchLoading && !networkError">
+      <div
+        class="mt-4 row border-radius-8 bg-gray-100 border-radius-border-8"
+        v-loading="branchLoading"
+      >
+        <div class="col-md-12 px-0">
+          <div class="row px-5 pt-4">
+            <div
+              class="col-md-12 align-items-center d-flex flex-column flex-sm-row justify-content-md-between"
+            >
+              <div style="color: #0b55d4" class="font-weight-600 s-24">
+                Branch Data Overview
+              </div>
+              <div
+                class="d-flex flex-column flex-sm-row align-items-center justify-content-sm-end"
+              >
+                <!-- <div class="col-md-5">
               <el-dropdown
                 trigger="click"
                 class="align-items-center justify-sm-content-center border-radius-60 d-flex ml-md-3 ml-0 bg-gray-600 py-0 mr-2"
@@ -249,59 +252,57 @@
                 </template>
               </el-dropdown>
             </div> -->
-            <div class="col-md-10 mt-sm-0 mt-3">
-              <el-input
-                class="w-100 rounded-border"
-                :prefix-icon="Search"
-                placeholder="Search"
-                v-model="searchText"
-              />
+                <div class="col-md-10 mt-sm-0 mt-3">
+                  <el-input
+                    class="w-100 rounded-border"
+                    :prefix-icon="Search"
+                    placeholder="Search"
+                    v-model="searchText"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <CustomTable
-        :data="searchBranchDetail"
-        :headers="branchHeaders"
-        :checkMultipleItem="false"
-        v-loading="branchLoading"
-      >
-        <template v-slot:name="{ item }">
-          <div class="c-pointer fw-500" @click="viewBranch(item)">
-            {{ item.name }}
-          </div>
-        </template>
-        <template v-slot:membershipSize="{ item }">
-          <div class="c-pointer" @click="viewBranch(item)">
-            {{ item.membershipSize.toLocaleString() }}
-          </div>
-        </template>
-        <template v-slot:currentYearAverageAttendance="{ item }">
-          <div class="c-pointer" @click="viewBranch(item)">
-              {{ Math.abs(item.currentYearAverageAttendance).toLocaleString() }}
-          </div>
-        </template>
-        <template v-slot:currentYearIncome="{ item }">
-          <div class="c-pointer" @click="viewBranch(item)">
-            {{
-              item.currency && item.currency.shortCode
-                  ? item.currency.shortCode
-                  : ""
-              }}
-              {{ Math.abs(item.currentYearIncome).toLocaleString() }}
-          </div>
-        </template>
-        <template v-slot:currentYearExpense="{ item }">
-          <div class="c-pointer" @click="viewBranch(item)">
-            {{
-              item.currency && item.currency.shortCode
-                  ? item.currency.shortCode
-                  : ""
-              }}
-              {{ Math.abs(item.currentYearExpense).toLocaleString() }}
-          </div>
-        </template>
-        <!-- <template v-slot:action="{ item }">
+        <div class="col-md-12 px-0">
+          <CustomTable
+            :data="searchBranchDetail"
+            :headers="branchHeaders"
+            :checkMultipleItem="false"
+            v-loading="branchLoading"
+          >
+            <template v-slot:name="{ item }">
+              <div class="c-pointer fw-500" @click="viewBranch(item)">
+                {{ item.name }}
+              </div>
+            </template>
+            <template v-slot:membershipSize="{ item }">
+              <div class="c-pointer" @click="viewBranch(item)">
+                {{ item.membershipSize.toLocaleString() }}
+              </div>
+            </template>
+            <template v-slot:currentYearAverageAttendance="{ item }">
+              <div class="c-pointer" @click="viewBranch(item)">
+                {{ Math.abs(item.currentYearAverageAttendance).toLocaleString() }}
+              </div>
+            </template>
+            <template v-slot:currentYearIncome="{ item }">
+              <div class="c-pointer" @click="viewBranch(item)">
+                {{
+                  item.currency && item.currency.shortCode ? item.currency.shortCode : ""
+                }}
+                {{ Math.abs(item.currentYearIncome).toLocaleString() }}
+              </div>
+            </template>
+            <template v-slot:currentYearExpense="{ item }">
+              <div class="c-pointer" @click="viewBranch(item)">
+                {{
+                  item.currency && item.currency.shortCode ? item.currency.shortCode : ""
+                }}
+                {{ Math.abs(item.currentYearExpense).toLocaleString() }}
+              </div>
+            </template>
+            <!-- <template v-slot:action="{ item }">
               <el-dropdown trigger="click">
                 <el-icon>
                   <MoreFilled />
@@ -320,9 +321,9 @@
                 </template>
               </el-dropdown>
         </template> -->
-      </CustomTable>
-    </div>
-    <div class="container-fluid">
+          </CustomTable>
+        </div>
+      </div>
       <div class="row border mt-4" v-loading="branchLoading">
         <!-- <div class="adjust-view col-md-12 d-flex justify-content-end">
           <div class="py-2 pl-4 primary--text s-15 bg-gray-500 fw-500">
@@ -606,6 +607,7 @@
               class="col-md-6 d-flex flex-column align-items-center justify-content-center"
             >
               <el-button
+                v-if="hierarchies.length === 0"
                 round
                 size="large"
                 @click="simpleBranch"
@@ -615,10 +617,21 @@
                 <span class="fw-400">Simple Branch Setup</span>
               </el-button>
               <el-button
+                v-if="hierarchies.length === 0"
                 round
                 size="large"
                 @click="hierarchicalBranch"
                 class="w-100 border-black text-dak py-4 mb-3 text-center c-pointer"
+              >
+                <span class="fw-400">Advance Branch Setup</span>
+              </el-button>
+              <el-button
+                v-else
+                round
+                size="large"
+                :color="primarycolor"
+                @click="hierarchicalBranch"
+                class="w-100 border-black text-white py-4 mb-3 text-center c-pointer"
               >
                 <span class="fw-400">Advance Branch Setup</span>
               </el-button>
@@ -658,10 +671,14 @@
         </div>
         <div class="col-md-12 d-flex justify-content-center">
           <div class="col-md-6">
-            <el-button round size="large"
-                class="mt-3 mb-3 w-100 primary-bg text-white text-center" @click="proceedToBranchHierachy">
-                Proceed
-              </el-button>
+            <el-button
+              round
+              size="large"
+              class="mt-3 mb-3 w-100 primary-bg text-white text-center"
+              @click="proceedToBranchHierachy"
+            >
+              Proceed
+            </el-button>
           </div>
         </div>
       </div>
@@ -1150,28 +1167,28 @@ export default {
           }
         });
     };
-     // branchChatDetail.value.forEach((i) => {
-      //   let incomeIndex = Object.keys(i).findIndex((i) => i === "currentYearIncome");
-      //   let incomeValue = Object.values(i)[incomeIndex];
-      //   incomeData.value.unshift(Math.abs(incomeValue));
+    // branchChatDetail.value.forEach((i) => {
+    //   let incomeIndex = Object.keys(i).findIndex((i) => i === "currentYearIncome");
+    //   let incomeValue = Object.values(i)[incomeIndex];
+    //   incomeData.value.unshift(Math.abs(incomeValue));
 
-      //   let expenseIndex = Object.keys(i).findIndex((i) => i === "currentYearExpense");
-      //   let expenseValue = Object.values(i)[expenseIndex];
-      //   expenseData.value.unshift(expenseValue);
-      // });
+    //   let expenseIndex = Object.keys(i).findIndex((i) => i === "currentYearExpense");
+    //   let expenseValue = Object.values(i)[expenseIndex];
+    //   expenseData.value.unshift(expenseValue);
+    // });
 
-      // mainIncomeExpenseData.value.push({
-      //   name: " Income ",
-      //   color: "#08A53D",
-      //   data: incomeData.value,
-      // });
-      // mainIncomeExpenseData.value.push({
-      //   name: " Expenses ",
-      //   color: "#F45C1A",
-      //   data: expenseData.value,
-      // });
+    // mainIncomeExpenseData.value.push({
+    //   name: " Income ",
+    //   color: "#08A53D",
+    //   data: incomeData.value,
+    // });
+    // mainIncomeExpenseData.value.push({
+    //   name: " Expenses ",
+    //   color: "#F45C1A",
+    //   data: expenseData.value,
+    // });
 
-      // return mainIncomeExpenseData.value;
+    // return mainIncomeExpenseData.value;
 
     const incomeExpenseChart = computed(() => {
       if (branchChatDetail.value.length === 0) return [];
@@ -1197,7 +1214,6 @@ export default {
           data: expenseData,
         },
       ];
-     
     });
     // branchChatDetail.value.forEach((i) => {
     //     let averageAttIndex = Object.keys(i).findIndex((i) => i === "currentYearAverageAttendance");
@@ -1226,7 +1242,6 @@ export default {
           data: currentYearAttendanceData,
         },
       ];
-     
     });
 
     const getTotalPeopleBch = computed(() => {
@@ -1452,10 +1467,10 @@ export default {
 .card-icon {
   font-size: 18px;
 }
-.inflow{
+.inflow {
   transform: rotate(180deg);
 }
-.outflow{
+.outflow {
   transform: rotate(-180deg);
 }
 .card-text {
@@ -1504,5 +1519,19 @@ export default {
 
 .table tbody tr:hover {
   background-color: #f1f1f1;
+}
+.empty-img {
+  width: 85%;
+  margin: auto;
+}
+
+.empty-img img {
+  width: 100%;
+  max-width: 200px;
+}
+.no-person {
+  height: 80vh;
+  display: flex;
+  text-align: center;
 }
 </style>

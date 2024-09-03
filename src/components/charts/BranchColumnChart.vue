@@ -60,7 +60,7 @@ export default {
         },
         title: {
           // text: '',
-          text: `<b>${props.title ? props.title : ""}<b>`,
+          text: `<div class="s-18 font-weight-600 text-head mb-2">${props.title ? props.title : ""}</div>`,
           align: "left",
           x: 70,
           margin: 50,
