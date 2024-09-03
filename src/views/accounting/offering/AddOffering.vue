@@ -1016,7 +1016,7 @@
         </el-button>
         <div class="col-md-12">
           <label class="fw-500 s-24" for="add-note">Add Note</label>
-          <el-input :rows="5" class="w-100 " type="textarea" placeholder="Notes..." />
+          <el-input :rows="5" class="w-100 " v-model="addNote" type="textarea" placeholder="Notes..." />
         </div>
         
 
@@ -1102,6 +1102,7 @@ export default {
     const selectedIncomeAccount = ref("");
     const name = ref("");
     const selectedCashAccount = ref("");
+    const addNote = ref("");
     const cashBankAccount = ref([]);
     const offeringToAddDonor = ref(0);
     const donorBoolean = ref(false);
@@ -1879,6 +1880,7 @@ export default {
       routeParams,
       addRemittance,
       paymentChannels,
+      addNote,
       remitance,
       deleteItem,
       incomeAccount,
