@@ -543,10 +543,10 @@ export default {
       const formData = new FormData();
       formData.append("churchName", churchName.value ? churchName.value : "");
       formData.append("address", Address.value ? Address.value : "");
-      formData.append("parentID", value.value ? value.value : "");
+      // formData.append("parentID", value.value ? value.value : "");
       formData.append("pastorName", pastorName.value ? pastorName.value : "");
-      formData.append("email", pastorEmail.value ? pastorEmail.value : "");
-      formData.append("emailAddress", emailAddress.value ? emailAddress.value : "");
+      formData.append("pastorEmail", pastorEmail.value ? pastorEmail.value : "");
+      formData.append("email", emailAddress.value ? emailAddress.value : "");
       formData.append("password", password.value ? password.value : "");
       formData.append("pastorPhone", pastorPhone.value ? pastorPhone.value : "");
       formData.append("image", image.value ? image.value : "");

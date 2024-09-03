@@ -630,8 +630,8 @@ export default {
           selectedReportBranch.value.id ? selectedReportBranch.value.id : ""
         );
         formData.append("pastorName", pastorName.value ? pastorName.value : "");
-        formData.append("email", pastorEmail.value ? pastorEmail.value : "");
-        formData.append("emailAddress", emailAddress.value ? emailAddress.value : "");
+        formData.append("pastorEmail", pastorEmail.value ? pastorEmail.value : "");
+        formData.append("email", emailAddress.value ? emailAddress.value : "");
         formData.append("password", password.value ? password.value : "");
         formData.append("pastorPhone", pastorPhone.value ? pastorPhone.value : "");
         formData.append("image", image.value ? image.value : "");
