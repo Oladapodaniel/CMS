@@ -340,7 +340,7 @@
     <div class="container-fluid mt-5">
       <div class="row">
         <div class="col-md-12">
-          <span class="s-32 fw-500 text-black">First Timers Feedbacks</span>
+          <span class="s-32 fw-500 text-black">First Timer Survey Analysis</span>
         </div>
       </div>
       <div class="col-md-12 border-radius-border-8 mt-2 py-4 px-3" v-loading="loading">
