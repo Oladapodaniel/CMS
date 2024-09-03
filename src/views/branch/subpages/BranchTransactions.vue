@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container-fluid px-0">
+    <div class="container-fluid">
       <div class="row mb-3">
         <div class="col-md-6 px-0 first-timers-text">
           <h2 class="head-text">Branch Transactions</h2>
@@ -132,7 +132,7 @@
 
 <script>
 import { ref, computed, watch } from "@vue/runtime-core";
-import BranchSelect from "../component/BranchSelect.vue";
+// import BranchSelect from "../component/BranchSelect.vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter";
 import Table from "@/components/table/Table";
@@ -140,7 +140,7 @@ import { ElMessage } from "element-plus";
 
 export default {
   components: {
-    BranchSelect,
+    // BranchSelect,
     Table,
   },
 
