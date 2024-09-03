@@ -14,7 +14,7 @@
           <hr class="hr my-1" />
         </div>
       </div>
-      <div v-if="route.fullPath == '/tenant/branch/mainbranchsummary'" class="row">
+      <div v-if="route.fullPath == '/tenant/branch/branchdashboard'" class="row">
         <div class="col-12 p-0 col-sm-2 align-self-center">
           <span class="small-text">Send to: </span>
         </div>
@@ -686,7 +686,7 @@ export default {
         }
       }
 
-      // if (route.fullPath == "/tenant/branch/mainbranchsummary") {
+      // if (route.fullPath == '/tenant/branch/branchdashboard') {
 
       // }
       // if (selectedBranch.value.length > 0) {
