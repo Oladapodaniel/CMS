@@ -1332,6 +1332,7 @@ export default {
               : offObj.paymentChannel,
           donor: "",
           date: iSoStringFormat.value,
+          memo: addNote.value,
           activityID: selectedEventAttended.value.activityID,
           currencyID:
             currencyList.value && tenantCurrency.value
@@ -1525,6 +1526,7 @@ export default {
           name: i.name,
           financialContributionID: i.financialContributionID,
           date: i.date,
+          memo: i.memo,
           amount: toNumber ? toNumber : 0,
           paymentChannel: i.paymentChannel,
           activityID: i.activityID,
@@ -1581,6 +1583,7 @@ export default {
                 amount: i.amount,
                 contribution: i.contribution.name,
                 date: i.date,
+                memo: i.memo,
                 donor: `${i.person && i.person.firstName ? i.person.firstName : ""} ${
                   i.person && i.person.lastName ? i.person.lastName : ""
                 }`,
@@ -1591,7 +1594,7 @@ export default {
                 currencyName: currencyList.value.find((j) => j.id === i.currencyID).name,
               };
             });
-            console.log(contriTransact);
+            console.log(contriTransact, 'jjjjj');
             store.dispatch("contributions/newlyAddedContribution", contriTransact);
           })
           .catch((err) => {
@@ -1605,6 +1608,7 @@ export default {
           });
       } else {
         contributions[0].id = route.params.offId;
+        contributions[0].memo = addNote.value;
 
         console.log(contributions);
 
@@ -1773,11 +1777,13 @@ export default {
             activityID: data.activityID,
           };
           eventDate.value = data.date.split("T")[0];
+          addNote.value = data.memo
           offeringItem.value = [
             {
               name: data && data.contribution ? data.contribution.name : "",
               financialContributionID: data.financialContributionID,
               date: data.date.split("T")[0],
+              memo: data.memo,
               activityID: data.activityID,
               paymentChannel: data.paymentChannel,
               currencyID: data.currencyID,

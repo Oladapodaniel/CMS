@@ -155,7 +155,7 @@
                         v-model="selectedCountryId"
                         :options="countries.map((i) => ({ label: i.name, value: i.id }))"
                         @change="setSelectedCountry"
-                        @click.native.stop
+                        @click.stop
                         filterable
                         placeholder="Select country"
                         size="large"
