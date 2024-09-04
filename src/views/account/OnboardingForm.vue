@@ -155,7 +155,7 @@
                         v-model="selectedCountryId"
                         :options="countries.map((i) => ({ label: i.name, value: i.id }))"
                         @change="setSelectedCountry"
-                        @click.stop
+                        @click="handleClick"
                         filterable
                         placeholder="Select country"
                         size="large"
@@ -390,6 +390,10 @@ export default {
       setI18nLanguage(val);
     });
 
+    const handleClick = (event) => {
+      event.stopPropagation(); // Ensure this stops the event on iOS
+    };
+
     const nextStep = async (formEl) => {
       if (!formEl) return;
       await formEl.validate((valid, fields) => {
@@ -419,6 +423,7 @@ export default {
       lgAndUp,
       xlAndUp,
       xsOnly,
+      handleClick,
       nextStep,
       // verifyEmail
       // showWebsite,
@@ -659,6 +664,9 @@ export default {
   display: flex;
   padding: 10px;
   transition: all 0.7s ease-in-out;
+}
+.w-100 {
+  pointer-events: auto; /* or 'none' based on the need */
 }
 
 .swap-box1 {
