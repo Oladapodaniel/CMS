@@ -4,22 +4,26 @@ import ShoppingCart from "../../../assets/ecommerce/ShoppingCart.svg";
 import { Search } from "@element-plus/icons-vue";
 import { ref } from "vue";
 import axios from "@/gateway/backendapi";
+import router from "../../../router";
 import ProductCard from "./component/ProductCard.vue";
 import ProductOneIcon from "../../../assets/ecommerce/Temps.png";
 
 const searchQuery = ref("");
 
 const getAllProduct = async () => {
- try {
-   const { data } = await axios.get('/api/Ecommerce/GetAllProducts')
-   console.log(data, 'hhh');
-   
- } catch (error) {
-  console.log(error);
+  try {
+    const { data } = await axios.get("/api/Ecommerce/GetAllProducts");
+    console.log(data, "hhh");
+  } catch (error) {
+    console.log(error);
+  }
+};
+getAllProduct();
+const productItem = (item) => {
+  console.log(item, '');
+  router.push('/store/bookdetails')
   
- }
 }
-getAllProduct()
 const products = ref([
   {
     id: 1,
@@ -120,15 +124,26 @@ const products = ref([
     <div class="container">
       <div class="row">
         <div class="col-md-12 mt-4 p-5 bg-gray-500 border-radius-8">
-
           <div class="row">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-9 d-flex flex-wrap justify-content-between">
+                  <div>Business</div>
+                  <div>Corporate</div>
+                  <div>Investment</div>
+                  <div>Ecommerce</div>
+                </div>
+              </div>
+            </div>
             <div class="col-md-3" v-for="product in products" :key="product.id">
-              <ProductCard
+              <div class="cursor-pointer" @click="productItem(product)">
+                <ProductCard
                 :image="product.image"
                 :title="product.title"
                 :review="product.review"
                 :price="product.price"
               />
+              </div>
             </div>
           </div>
         </div>
