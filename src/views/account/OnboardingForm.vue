@@ -155,7 +155,7 @@
                         v-model="selectedCountryId"
                         :options="countries.map((i) => ({ label: i.name, value: i.id }))"
                         @change="setSelectedCountry"
-                        @click="handleClick"
+                        @touchstart.stop="handleClick"
                         filterable
                         placeholder="Select country"
                         size="large"
@@ -664,9 +664,6 @@ export default {
   display: flex;
   padding: 10px;
   transition: all 0.7s ease-in-out;
-}
-.w-100 {
-  pointer-events: auto; /* or 'none' based on the need */
 }
 
 .swap-box1 {
