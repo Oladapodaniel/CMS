@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 
+
 defineProps({
     links: {
         type: Array,
@@ -8,9 +9,7 @@ defineProps({
     }
 })
 
-const emit = defineEmits({
-    event: "index"
-})
+const emit = defineEmits(["index"])
 const activeMenu = ref(0)
 
 

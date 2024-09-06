@@ -81,3 +81,30 @@ export const updateProduct = async(payload) => {
         return error
     }
 }
+
+export const createEcommerceSetup = async(payload) => {
+    try {
+        let { data } = await axios.post(`/api/Ecommerce/AddSetup`, payload);
+        return data
+    } catch (error) {
+        return error
+    }
+}
+
+export const getEcommerceSetup = async () => {
+    return new Promise((resolve, reject) => {
+        axios.delete("/api/Ecommerce/GetSetup")
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(error => {
+                 /*eslint no-undef: "warn"*/
+                 NProgress.done();
+                if (error.response) {
+                    reject(error.response);
+                } else {
+                    reject(error);
+                }
+            })
+    })
+}

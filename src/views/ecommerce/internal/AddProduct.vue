@@ -16,7 +16,7 @@ const route = useRoute();
 const categoryDialog = ref(false)
 const category = ref({});
 const categoryLoading = ref(false);
-const productCategories = ref(store.getters["ecommerce/getCategories"]);
+const productCategories = ref(store.getters["ecommerce/getCategories"] ?? []);
 const selectedCategory = ref(null);
 const selectedProductType = ref(null);
 const coverurl = ref("");
@@ -48,7 +48,6 @@ const displaNewCategoryDialog = () => {
 }
 
 const showConfirmModal = (item, index) => {
-    console.log(item, "nnjnnjnjk");
     ElMessageBox.confirm(
         "Are you sure you want to proceed?",
         "Confirm delete",
@@ -71,7 +70,6 @@ const showConfirmModal = (item, index) => {
 };
 
 const deleteCategory = async (item, index) => {
-    console.log(item, index)
     try {
         let response = await deleteProductCategory(item.value);
         productCategories.value.splice(index, 1)
@@ -91,7 +89,6 @@ const deleteCategory = async (item, index) => {
 const saveNewCategory = async () => {
     categoryLoading.value = true;
     if (!category.value?.id) {
-        console.log('save cat')
         try {
             let response = await addProductCategory(category.value);
             categoryLoading.value = false;
@@ -119,7 +116,6 @@ const displayCategoriesToUpdate = (item) => {
 }
 
 const editCategory = async () => {
-    console.log('edit cat')
 
     delete category.value.products
     try {
@@ -141,14 +137,12 @@ const editCategory = async () => {
 }
 
 const uploadImage = async (e, type) => {
-    console.log(type)
     type == 1 ? loadingCoverImage.value = true : loadingFile.value = true;
     let formData = new FormData();
     formData.append("mediaFileImage", e.raw);
     type == 1 ? coverurl.value = URL.createObjectURL(e.raw) : fileurl.value = URL.createObjectURL(e.raw)
     try {
         let data = await media_service.uploadFileAndImage(formData);
-        console.log(data)
         if (type == 1) {
             loadingCoverImage.value = false
             coverImageResponse.value = data

@@ -1,11 +1,13 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import deviceBreakpoint from '../../../mixins/deviceBreakpoint';
 import SlidedMenu from '../../../components/nav/SlidedMenu.vue';
 import SetUpOne from './component/SetUpOne.vue';
 import SetUpTwo from './component/SetUpTwo.vue';
 import SetUpThree from './component/SetUpThree.vue';
 import StepFour from './component/StepFour.vue';
+import store from '../../../store/store';
+import { createEcommerceSetup } from '../../../services/ecommerce/ecommerceservice';
 
 const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
 const stepMenu = [
@@ -16,6 +18,9 @@ const setupone = ref(true);
 const setuptwo = ref(false);
 const setupthree = ref(false);
 const setupfour = ref(false);
+const contributionItems = ref(store.getters["contributions/contributionItem"] ?? []);
+const setupPayload = ref({});
+const displayStoreSetupSuccessDialog = ref(false);
 
 const setSelectedMenuValue = (payload) => {
     console.log(payload)
@@ -56,6 +61,35 @@ const setSelectedMenuValue = (payload) => {
     }
 }
 
+const getContributionItems = () => {
+    store.dispatch("contributions/setContributionItem")
+        .then(response => {
+            contributionItems.value = response
+        })
+        .catch(error => console.error(error))
+}
+getContributionItems();
+
+const setPayload = async ({ payload, type}) => {
+    console.log(payload)
+    setupPayload.value = {
+        ...setupPayload.value,
+        ...payload
+    }
+    console.log(setupPayload.value, 'valueee')
+
+    if (type === 4) {
+        try {
+            let response = await createEcommerceSetup(setupPayload.value);
+            console.log(response)
+            displayStoreSetupSuccessDialog.value = true
+        } catch (error) {
+            console.error(error)
+        }
+    } else {
+        setSelectedMenuValue(type);
+    }
+}
 </script>
 <template>
     <div class="container-top" :class="{ 'container-wide': lgAndUp || xlAndUp }">
@@ -68,20 +102,36 @@ const setSelectedMenuValue = (payload) => {
             <div class="col-md-6 col-xl-5 mt-3 mt-md-0">
                 <div class="body-card">
                     <transition name="el-zoom-in-top">
-                        <SetUpOne v-show="setupone" />
+                        <SetUpOne @onpayload="setPayload" v-show="setupone" />
                     </transition>
                     <transition name="el-zoom-in-top">
-                        <SetUpTwo v-show="setuptwo" />
+                        <SetUpTwo @onpayload="setPayload" v-show="setuptwo" />
                     </transition>
                     <transition name="el-zoom-in-top">
-                        <SetUpThree v-show="setupthree" />
+                        <SetUpThree @onpayload="setPayload" v-show="setupthree" />
                     </transition>
                     <transition name="el-zoom-in-top">
-                        <StepFour v-show="setupfour" />
+                        <StepFour :contributionItems="contributionItems" @onpayload="setPayload" v-show="setupfour" />
                     </transition>
                 </div>
             </div>
         </div>
+        <el-dialog v-model="displayStoreSetupSuccessDialog" title=""
+      :width="mdAndUp || lgAndUp || xlAndUp ? `35%` : xsOnly ? `90%` : `70%`" class="QRCodeDialog border-radius-20"
+      align-center>
+
+      <div class="container-fluid">
+        <div class="d-flex flex-column align-items-center">
+          <img src="@/assets/checked-success.svg" width="120" />
+          <h4 class="text-center success_text mt-4 font-weight-600">You have set up your <br />Ecommerce store
+            successfully</h4>
+          <router-link to="/tenant/store/add">
+            <el-button color="#FF5906" class="text-white mt-3 p-4" size="large" round>Add First Product now</el-button>
+          </router-link>
+          <el-button color="#FF5906" class="mt-3 p-4" size="large" @click="displayStoreSetupSuccessDialog = false" round text>Close</el-button>
+        </div>
+      </div>
+    </el-dialog>
     </div>
 </template>
 

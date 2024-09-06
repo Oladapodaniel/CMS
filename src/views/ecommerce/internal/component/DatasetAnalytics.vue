@@ -3,34 +3,34 @@ const dataset = [
     {
         icon: require('@/assets/MoneyIcon.svg'),
         type: 'Total sales',
-        performance: '23%',
-        value: '22,200',
+        performance: '-',
+        value: '-',
 
     },
     {
         icon: require('@/assets/ShoppingCart.svg'),
         type: 'Total orders',
-        performance: '23%',
-        value: '22,200'
+        performance: '-',
+        value: '-'
     },
     {
         icon: require('@/assets/Cube.svg'),
         type: 'All Products',
-        performance: '23%',
-        value: '22,200'
+        performance: '-',
+        value: '-'
     },
     {
         icon: require('@/assets/Bank.svg'),
         type: 'Revenue',
-        performance: '23%',
-        value: '22,200'
+        performance: '-',
+        value: '-'
     },
 ]
 </script>
 
 <template>
     <div class="row mt-2">
-        <div class="col-6 col-sm-4 col-md-3 mt-4" v-for="(item, index) in dataset" :key="index">
+        <div class="col-12 col-sm-6 col-md-3 mt-4" v-for="(item, index) in dataset" :key="index">
             <div class="cards">
                 <div class="d-flex justify-content-between">
                     <div class="icon-bg" :class="{
