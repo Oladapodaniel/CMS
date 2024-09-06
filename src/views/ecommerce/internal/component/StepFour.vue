@@ -1,7 +1,5 @@
 <script setup>
-import { onMounted, ref, watchEffect } from 'vue';
-import deviceBreakpoint from '../../../../mixins/deviceBreakpoint';
-import store from '../../../../store/store';
+import { ref, watchEffect } from 'vue';
 import contributionservice from '../../../../services/financials/contributionservice';
 import axios from 'axios';
 import { ElMessage } from "element-plus";
@@ -9,8 +7,6 @@ import finish from '../../../../services/progressbar/progress';
 import api from "@/gateway/backendapi";
 
 
-const displayStoreSetupSuccessDialog = ref(false);
-const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
 const { contributionItems } = defineProps(['contributionItems']);
 const emit = defineEmits(['onpayload'])
 const accountNumber = ref("");
@@ -165,7 +161,7 @@ getGateWays();
 
 
 const completesetup = () => {
-  // displayStoreSetupSuccessDialog = true
+  
 
   let payload = {
     paymentForm: {
@@ -231,24 +227,6 @@ const completesetup = () => {
       <el-button color="#01A439" size="large" @click="completesetup" round>Complete
         Setup</el-button>
     </div>
-
-    <el-dialog v-model="displayStoreSetupSuccessDialog" title=""
-      :width="mdAndUp || lgAndUp || xlAndUp ? `35%` : xsOnly ? `90%` : `70%`" class="QRCodeDialog border-radius-20"
-      align-center>
-
-      <div class="container-fluid">
-        <div class="d-flex flex-column align-items-center">
-          <img src="@/assets/checked-success.svg" width="120" />
-          <h4 class="text-center success_text mt-4 font-weight-600">You have set up your <br />Ecommerce store
-            successfully</h4>
-          <router-link to="/tenant/store/add">
-            <el-button color="#FF5906" class="text-white mt-3 p-4" size="large" round>Add First Product now</el-button>
-          </router-link>
-          <el-button color="#FF5906" class="mt-3 p-4" size="large" round text>Close</el-button>
-        </div>
-      </div>
-
-    </el-dialog>
   </div>
 </template>
 

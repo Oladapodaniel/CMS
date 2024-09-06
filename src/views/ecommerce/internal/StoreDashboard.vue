@@ -15,7 +15,7 @@ import DashboardLoader from './component/DashboardLoader.vue';
 
 
 const primarycolor = inject("primarycolor");
-const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
+const { lgAndUp, xlAndUp } = deviceBreakpoint();
 const products = ref(store.getters["ecommerce/getproducts"]);
 const productCategories = ref(store.getters["ecommerce/getCategories"]);
 const productLoading = ref(false);
