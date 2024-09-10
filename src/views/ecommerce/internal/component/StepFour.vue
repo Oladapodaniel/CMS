@@ -8,7 +8,7 @@ import api from "@/gateway/backendapi";
 
 
 const { contributionItems } = defineProps(['contributionItems']);
-const emit = defineEmits(['onpayload'])
+const emit = defineEmits(['onpayload', 'back'])
 const accountNumber = ref("");
 const accountName = ref("");
 const selectedBank = ref(null);
@@ -223,7 +223,7 @@ const completesetup = () => {
       </div>
     </div>
     <div class="d-flex justify-content-between flex-wrap mt-5">
-      <el-button size="large" round text>Go back</el-button>
+      <el-button size="large" round text @click="emit('back')">Go back</el-button>
       <el-button color="#01A439" size="large" @click="completesetup" round>Complete
         Setup</el-button>
     </div>

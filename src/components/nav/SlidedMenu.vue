@@ -1,16 +1,21 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 
-defineProps({
+const { activeNav } = defineProps({
     links: {
         type: Array,
+        required: true
+    },
+    activeMenu: {
+        type: Number,
         required: true
     }
 })
 
 const emit = defineEmits(["index"])
-const activeMenu = ref(0)
+
+
 
 
 </script>
@@ -20,7 +25,7 @@ const activeMenu = ref(0)
             'active': index == activeMenu,
             'menuItem1': index - activeMenu <= 0,
             'menuItem2': index - activeMenu > 0
-        }" class="menuItem" @click="(activeMenu = index),(emit('index', index))">{{ item }}</div>
+        }" class="menuItem" @click="(emit('index', index))">{{ item }}</div>
     </div>
 </template>
 

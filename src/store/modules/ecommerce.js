@@ -24,7 +24,10 @@ export default {
         },
         SET_CATEGORIES(state, payload) {
             state.allCategories = payload
-        }
+        },
+        clearState(state) {
+            Object.assign(state, defaultState())
+          }
     },
     actions: {
         async getAllProducts({ commit }) {
@@ -39,5 +42,8 @@ export default {
                 return response
             })
         },
+        clearState ({ commit }) {
+            commit('clearState')
+        }
     }
 }

@@ -137,7 +137,7 @@ getStoreSetup();
   <div class="container-top" :class="{ 'container-wide': lgAndUp || xlAndUp }">
     <HeaderSection title="Ecommerce" rightbuttontext="Upload New Product" @handleClick="handleClick">
       <template #rightbutton>
-        <div class="d-flex">
+        <div class="d-flex" v-if="storeSetup">
           <el-button :color="primarycolor" class="ml-0 ml-sm-2 mt-sm-0 mt-3 w-100 header-btn" @click="handleClick"
             size="large" round>
             Upload new Product

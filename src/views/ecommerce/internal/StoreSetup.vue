@@ -21,9 +21,10 @@ const setupfour = ref(false);
 const contributionItems = ref(store.getters["contributions/contributionItem"] ?? []);
 const setupPayload = ref({});
 const displayStoreSetupSuccessDialog = ref(false);
+const activeMenu = ref(0)
 
 const setSelectedMenuValue = (payload) => {
-    console.log(payload)
+    activeMenu.value = payload
     switch (payload) {
         case 0:
             setuptwo.value = false;
@@ -49,13 +50,12 @@ const setSelectedMenuValue = (payload) => {
                 setupthree.value = true;
             }, 400);
             break;
-            default:
-                setupone.value = false;
-                setuptwo.value = false;
-                setupthree.value = false;
-                setTimeout(() => {
+        default:
+            setupone.value = false;
+            setuptwo.value = false;
+            setupthree.value = false;
+            setTimeout(() => {
                 setupfour.value = true;
-                
             }, 400);
             break;
     }
@@ -70,13 +70,14 @@ const getContributionItems = () => {
 }
 getContributionItems();
 
-const setPayload = async ({ payload, type}) => {
+const setPayload = async ({ payload, type }) => {
     console.log(payload)
     setupPayload.value = {
         ...setupPayload.value,
         ...payload
     }
     console.log(setupPayload.value, 'valueee')
+
 
     if (type === 4) {
         try {
@@ -90,6 +91,11 @@ const setPayload = async ({ payload, type}) => {
         setSelectedMenuValue(type);
     }
 }
+
+const perviousStep = () => {
+    activeMenu.value -= 1
+    setSelectedMenuValue(activeMenu.value)
+}
 </script>
 <template>
     <div class="container-top" :class="{ 'container-wide': lgAndUp || xlAndUp }">
@@ -97,7 +103,7 @@ const setPayload = async ({ payload, type}) => {
 
         <div class="row mt-5">
             <div class="col-md-3 col-xl-2">
-                <SlidedMenu :links="stepMenu" @index="setSelectedMenuValue" />
+                <SlidedMenu :links="stepMenu" @index="setSelectedMenuValue" :activeMenu="activeMenu" />
             </div>
             <div class="col-md-6 col-xl-5 mt-3 mt-md-0">
                 <div class="body-card">
@@ -105,33 +111,35 @@ const setPayload = async ({ payload, type}) => {
                         <SetUpOne @onpayload="setPayload" v-show="setupone" />
                     </transition>
                     <transition name="el-zoom-in-top">
-                        <SetUpTwo @onpayload="setPayload" v-show="setuptwo" />
+                        <SetUpTwo @onpayload="setPayload" @back="perviousStep" v-show="setuptwo" />
                     </transition>
                     <transition name="el-zoom-in-top">
-                        <SetUpThree @onpayload="setPayload" v-show="setupthree" />
+                        <SetUpThree @onpayload="setPayload" @back="perviousStep" v-show="setupthree" />
                     </transition>
                     <transition name="el-zoom-in-top">
-                        <StepFour :contributionItems="contributionItems" @onpayload="setPayload" v-show="setupfour" />
+                        <StepFour :contributionItems="contributionItems" @back="perviousStep" @onpayload="setPayload" v-show="setupfour" />
                     </transition>
                 </div>
             </div>
         </div>
         <el-dialog v-model="displayStoreSetupSuccessDialog" title=""
-      :width="mdAndUp || lgAndUp || xlAndUp ? `35%` : xsOnly ? `90%` : `70%`" class="QRCodeDialog border-radius-20"
-      align-center>
+            :width="mdAndUp || lgAndUp || xlAndUp ? `35%` : xsOnly ? `90%` : `70%`"
+            class="QRCodeDialog border-radius-20" align-center>
 
-      <div class="container-fluid">
-        <div class="d-flex flex-column align-items-center">
-          <img src="@/assets/checked-success.svg" width="120" />
-          <h4 class="text-center success_text mt-4 font-weight-600">You have set up your <br />Ecommerce store
-            successfully</h4>
-          <router-link to="/tenant/store/add">
-            <el-button color="#FF5906" class="text-white mt-3 p-4" size="large" round>Add First Product now</el-button>
-          </router-link>
-          <el-button color="#FF5906" class="mt-3 p-4" size="large" @click="displayStoreSetupSuccessDialog = false" round text>Close</el-button>
-        </div>
-      </div>
-    </el-dialog>
+            <div class="container-fluid">
+                <div class="d-flex flex-column align-items-center">
+                    <img src="@/assets/checked-success.svg" width="120" />
+                    <h4 class="text-center success_text mt-4 font-weight-600">You have set up your <br />Ecommerce store
+                        successfully</h4>
+                    <router-link to="/tenant/store/add">
+                        <el-button color="#FF5906" class="text-white mt-3 p-4" size="large" round>Add First Product
+                            now</el-button>
+                    </router-link>
+                    <el-button color="#FF5906" class="mt-3 p-4" size="large"
+                        @click="displayStoreSetupSuccessDialog = false" round text>Close</el-button>
+                </div>
+            </div>
+        </el-dialog>
     </div>
 </template>
 

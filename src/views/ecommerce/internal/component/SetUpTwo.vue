@@ -8,7 +8,7 @@ const loadingLogoImage = ref(false);
 const loadingBanner = ref(false);
 const logo = ref("");
 const banner = ref("");
-const emit = defineEmits(['onpayload'])
+const emit = defineEmits(['onpayload', 'back'])
 
 const uploadImage = async (e, type) => {
     type == 1 ? loadingLogoImage.value = true : loadingBanner.value = true;
@@ -61,7 +61,7 @@ const uploadImage = async (e, type) => {
             </el-upload>
         </div>
         <div class="d-flex justify-content-between flex-wrap mt-5">
-            <el-button size="large" round text>Go back</el-button>
+            <el-button size="large" round text @click="emit('back')">Go back</el-button>
             <el-button :color="primarycolor" size="large" @click="emit('onpayload', { payload, type: 2  })" round>Save & Proceed</el-button>
         </div>
     </div>
