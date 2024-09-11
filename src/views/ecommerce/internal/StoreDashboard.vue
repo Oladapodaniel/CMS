@@ -1,5 +1,5 @@
 <script setup>
-import { inject, onMounted, ref } from 'vue';
+import { computed, inject, onMounted, ref, watchEffect } from 'vue';
 import deviceBreakpoint from '../../../mixins/deviceBreakpoint';
 import HeaderSection from './component/HeaderSection.vue';
 import DatasetAnalytics from './component/DatasetAnalytics.vue';
@@ -12,6 +12,7 @@ import store from '../../../store/store';
 import converter from '../../../services/currency-converter/currencyConverter';
 import { getEcommerceSetup, getProductCategories, productType } from '../../../services/ecommerce/ecommerceservice';
 import DashboardLoader from './component/DashboardLoader.vue';
+import { ElMessage } from 'element-plus';
 
 
 const primarycolor = inject("primarycolor");
@@ -21,6 +22,7 @@ const productCategories = ref(store.getters["ecommerce/getCategories"]);
 const productLoading = ref(false);
 const storeSetup = ref(null);
 const dashboardLoading = ref(false);
+const tenantID = ref("");
 const orderBody = [
   {
     name: '48 Laws of Power',
@@ -131,6 +133,46 @@ const getStoreSetup = async () => {
   }
 }
 getStoreSetup();
+
+const getUser = computed(() => {
+      if (
+        !store.getters.currentUser ||
+        (store.getters.currentUser &&
+          Object.keys(store.getters.currentUser).length == 0)
+      )
+        return "";
+      return store.getters.currentUser;
+    });
+
+    watchEffect(() => {
+      if (getUser.value) {
+        tenantID.value = getUser.value.tenantId
+      }
+    });
+
+const memberlink = computed(() => {
+      if (!tenantID.value) return "";
+      return `${window.location.origin}/store/home?id=${tenantID.value}`;
+    });
+
+const copylink = () => {
+            const textarea = document.createElement("textarea");
+            textarea.value = memberlink.value;
+
+            document.body.appendChild(textarea);
+
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+
+            document.execCommand("copy");
+            document.body.removeChild(textarea)
+
+            ElMessage({
+                showClose: true,
+                message: "URL Copied Successfully!",
+                type: "success",
+            });
+        };
 </script>
 
 <template>
