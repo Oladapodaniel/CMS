@@ -81,7 +81,9 @@ const handleClick = () => {
 }
 
 const getStarted = () => {
-  router.push('/tenant/store/setup')
+  !storeSetup ? 
+  router.push('/tenant/store/setup') :
+  router.push(`/tenant/store/setup/${storeSetup.value.id}`)
 }
 
 const handleSelectionChange = (payload) => {
@@ -101,7 +103,6 @@ const getCategories = async () => {
 
 const allProducts = async () => {
   store.dispatch("ecommerce/getAllProducts").then((response => {
-    console.log(response, 'ffrr')
     products.value = response
   }))
 }
@@ -122,7 +123,6 @@ const getStoreSetup = async () => {
   dashboardLoading.value = true;
   try {
     let response = await getEcommerceSetup();
-    console.log(response, 'setup here');
     storeSetup.value = response
     dashboardLoading.value = false;
   } catch (error) {
@@ -138,6 +138,35 @@ getStoreSetup();
     <HeaderSection title="Ecommerce" rightbuttontext="Upload New Product" @handleClick="handleClick">
       <template #rightbutton>
         <div class="d-flex" v-if="storeSetup">
+          <el-dropdown
+            trigger="click"
+            class="align-items-center justify-content-center d-flex ml-md-3 ml-0 default-btn py-0 m-0 border"
+            style="height: 2.2rem"
+          >
+            <span class="el-dropdown-link w-100 primary--text text-center font-weight-600 p-2">
+              More
+              <el-icon class="el-icon--right">
+                <arrow-down />
+              </el-icon>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu >
+                <el-dropdown-item class="text-black" @click="copylink"
+                  >Copy Store Link
+                  <img
+                    class="ml-2"
+                    src="../../../assets/copyurl-icon.png"
+                    alt=""
+                  />
+                </el-dropdown-item>
+                <el-dropdown-item
+                  @click="getStarted"
+                >
+                  Manage Setup
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
           <el-button :color="primarycolor" class="ml-0 ml-sm-2 mt-sm-0 mt-3 w-100 header-btn" @click="handleClick"
             size="large" round>
             Upload new Product

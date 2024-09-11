@@ -7,7 +7,9 @@ import SetUpTwo from './component/SetUpTwo.vue';
 import SetUpThree from './component/SetUpThree.vue';
 import StepFour from './component/StepFour.vue';
 import store from '../../../store/store';
-import { createEcommerceSetup } from '../../../services/ecommerce/ecommerceservice';
+import { createEcommerceSetup, getEcommerceSetup, UpdateEcommerceSetup } from '../../../services/ecommerce/ecommerceservice';
+import { ElMessage } from 'element-plus'
+import { useRoute } from 'vue-router';
 
 const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
 const stepMenu = [
@@ -21,7 +23,9 @@ const setupfour = ref(false);
 const contributionItems = ref(store.getters["contributions/contributionItem"] ?? []);
 const setupPayload = ref({});
 const displayStoreSetupSuccessDialog = ref(false);
-const activeMenu = ref(0)
+const activeMenu = ref(0);
+const storeSetup = ref(null);
+const route = useRoute();
 
 const setSelectedMenuValue = (payload) => {
     activeMenu.value = payload
@@ -70,25 +74,52 @@ const getContributionItems = () => {
 }
 getContributionItems();
 
-const setPayload = async ({ payload, type }) => {
-    console.log(payload)
+const setPayload = async ({ payload, type, edit }) => {
     setupPayload.value = {
         ...setupPayload.value,
         ...payload
     }
-    console.log(setupPayload.value, 'valueee')
-
-
     if (type === 4) {
-        try {
-            let response = await createEcommerceSetup(setupPayload.value);
-            console.log(response)
-            displayStoreSetupSuccessDialog.value = true
-        } catch (error) {
-            console.error(error)
+        if (route.params.id) {
+            try {
+                await UpdateEcommerceSetup(setupPayload.value);
+                displayStoreSetupSuccessDialog.value = true
+                ElMessage({
+                    type: "success",
+                    message: "Setup update successful",
+                    duration: 5000,
+                });
+            } catch (error) {
+                console.error(error)
+                ElMessage({
+                    type: "error",
+                    message: "Setup update not successful, please try again",
+                    duration: 5000,
+                });
+            }
+        } else {
+            try {
+                await createEcommerceSetup(setupPayload.value);
+                displayStoreSetupSuccessDialog.value = true
+                ElMessage({
+                    type: "success",
+                    message: "Store setup successful",
+                    duration: 5000,
+                });
+            } catch (error) {
+                console.error(error)
+                ElMessage({
+                    type: "error",
+                    message: "Setup not successful, please try again",
+                    duration: 5000,
+                });
+            }
         }
-    } else {
-        setSelectedMenuValue(type);
+    } 
+    else {
+        if (!edit) {
+            setSelectedMenuValue(type);
+        }
     }
 }
 
@@ -96,6 +127,21 @@ const perviousStep = () => {
     activeMenu.value -= 1
     setSelectedMenuValue(activeMenu.value)
 }
+
+const getStoreSetup = async () => {
+//   dashboardLoading.value = true;
+  try {
+    let response = await getEcommerceSetup();
+    console.log(response, 'setup here');
+    storeSetup.value = response
+    // dashboardLoading.value = false;
+  } catch (error) {
+    // dashboardLoading.value = false;
+    console.error(error);
+  }
+}
+if (route.params.id) getStoreSetup();
+
 </script>
 <template>
     <div class="container-top" :class="{ 'container-wide': lgAndUp || xlAndUp }">
@@ -108,16 +154,17 @@ const perviousStep = () => {
             <div class="col-md-6 col-xl-5 mt-3 mt-md-0">
                 <div class="body-card">
                     <transition name="el-zoom-in-top">
-                        <SetUpOne @onpayload="setPayload" v-show="setupone" />
+                        <SetUpOne @onpayload="setPayload" v-show="setupone" :updateStoreSetup="storeSetup" />
                     </transition>
                     <transition name="el-zoom-in-top">
-                        <SetUpTwo @onpayload="setPayload" @back="perviousStep" v-show="setuptwo" />
+                        <SetUpTwo @onpayload="setPayload" @back="perviousStep" v-show="setuptwo" :updateStoreSetup="storeSetup" />
                     </transition>
                     <transition name="el-zoom-in-top">
-                        <SetUpThree @onpayload="setPayload" @back="perviousStep" v-show="setupthree" />
+                        <SetUpThree @onpayload="setPayload" @back="perviousStep" v-show="setupthree" :updateStoreSetup="storeSetup" />
                     </transition>
                     <transition name="el-zoom-in-top">
-                        <StepFour :contributionItems="contributionItems" @back="perviousStep" @onpayload="setPayload" v-show="setupfour" />
+                        <StepFour :contributionItems="contributionItems" @back="perviousStep" @onpayload="setPayload"
+                            v-show="setupfour" :updateStoreSetup="storeSetup" />
                     </transition>
                 </div>
             </div>

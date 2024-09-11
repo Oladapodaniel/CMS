@@ -7,7 +7,7 @@ import finish from '../../../../services/progressbar/progress';
 import api from "@/gateway/backendapi";
 
 
-const { contributionItems } = defineProps(['contributionItems']);
+// const { contributionItems } = defineProps(['contributionItems']);
 const emit = defineEmits(['onpayload', 'back'])
 const accountNumber = ref("");
 const accountName = ref("");
@@ -35,6 +35,33 @@ const gateways = ref([
     selected: false
   }
 ])
+
+const props = defineProps({
+  contributionItems: {
+    type: Array,
+    required: false
+  },
+  updateStoreSetup: {
+    type: Object,
+    required: false
+  }
+})
+
+watchEffect(() => {
+  if (props.updateStoreSetup) {
+    // selectedBank.value = props.updateStoreSetup?.bankName
+    // let payload = {
+    //   paymentForm: {
+    //     accountName: accountName.value,
+    //     accountNumber: accountNumber.value,
+    //     bankCode: selectedBank.value,
+    //     contributionItems: [{ financialContributionID: selectedContribution.value }],
+    //     paymentGateWays: paymentGateWaysDb.value.filter(i => i.selected).map(i => ({ paymentGateWayID: i.id }))
+    //   }
+    // }
+    // emit("onpayload", { payload, type: 4 })
+  }
+})
 
 const selectGateway = (item, index) => {
   paymentGateWaysDb.value[index].selected = !paymentGateWaysDb.value[index].selected
@@ -118,8 +145,8 @@ watchEffect(() => {
 const getGateWays = () => {
   gatewayLoading.value = true;
   api
-  .get("/api/Financials/GetPaymentGateways")
-  .then((res) => {
+    .get("/api/Financials/GetPaymentGateways")
+    .then((res) => {
       gatewayLoading.value = false;
       console.log(res);
       const paymentGateWay = res.data.map((i) => {
@@ -161,14 +188,13 @@ getGateWays();
 
 
 const completesetup = () => {
-  
 
   let payload = {
     paymentForm: {
       accountName: accountName.value,
       accountNumber: accountNumber.value,
       bankCode: selectedBank.value,
-      contributionItems: [ { financialContributionID: selectedContribution.value } ],
+      contributionItems: [{ financialContributionID: selectedContribution.value }],
       paymentGateWays: paymentGateWaysDb.value.filter(i => i.selected).map(i => ({ paymentGateWayID: i.id }))
     }
   }
@@ -209,7 +235,7 @@ const completesetup = () => {
       <div class="bank_info mb-2 mt-2">Payment Gateway</div>
       <p>Select from the available Payment gateways. Note that this will require a Verified Merchant account with
         API Keys.</p>
-        <div class="d-flex justify-content-center mt-1" v-if="gatewayLoading">
+      <div class="d-flex justify-content-center mt-1" v-if="gatewayLoading">
         <el-icon class="is-loading">
           <Loading />
         </el-icon>

@@ -1,5 +1,5 @@
 <script setup>
-import { inject, ref } from 'vue';
+import { inject, ref, watchEffect } from 'vue';
 import media_service from '../../../../services/media/media_service';
 
 const primarycolor = inject("primarycolor")
@@ -8,7 +8,13 @@ const loadingLogoImage = ref(false);
 const loadingBanner = ref(false);
 const logo = ref("");
 const banner = ref("");
-const emit = defineEmits(['onpayload', 'back'])
+const emit = defineEmits(['onpayload', 'back']);
+const props = defineProps({
+    updateStoreSetup: {
+        type: Object,
+        required: false
+    }
+})
 
 const uploadImage = async (e, type) => {
     type == 1 ? loadingLogoImage.value = true : loadingBanner.value = true;
@@ -32,6 +38,17 @@ const uploadImage = async (e, type) => {
     }
 }
 
+    watchEffect(() => {
+        if (props.updateStoreSetup) {
+            logo.value = props.updateStoreSetup?.headerLogoURL;
+            payload.value.headerLogoURL = props.updateStoreSetup?.headerLogoURL;
+            payload.value.headerLogoBlobName = props.updateStoreSetup?.headerLogoBlobName;
+            banner.value = props.updateStoreSetup?.bannerURL;
+            payload.value.bannerURL = props.updateStoreSetup?.bannerURL;
+            payload.value.bannerBlobName = props.updateStoreSetup?.bannerBlobName;
+            emit('onpayload', { payload: payload.value, type: 2, edit: true })
+        }
+    })
 </script>
 
 <template>
@@ -39,12 +56,13 @@ const uploadImage = async (e, type) => {
         <p class="font-weight-600 text-center">Upload High-resolution Website Header Logo</p>
         <div class="d-flex justify-content-center">
             <transition name="el-fade-in-linear">
-                <img :src="logo" class="w-50" v-if="logo"/>
+                <img :src="logo" class="w-50" v-if="logo" />
             </transition>
         </div>
         <div class="d-flex justify-content-center mt-4">
             <el-upload class="upload-demo" :limit="1" :auto-upload="false" @change="uploadImage($event, 1)">
-                <el-button class="upload-button" size="large" :loading="loadingLogoImage" round>Upload website logo</el-button>
+                <el-button class="upload-button" size="large" :loading="loadingLogoImage" round>Upload website
+                    logo</el-button>
             </el-upload>
         </div>
         <el-divider />
@@ -57,12 +75,14 @@ const uploadImage = async (e, type) => {
         </div>
         <div class="d-flex justify-content-center mt-4">
             <el-upload class="upload-demo" :limit="1" :auto-upload="false" @change="uploadImage($event, 2)">
-                <el-button class="upload-button" size="large" :loading="loadingBanner" round>Upload website logo</el-button>
+                <el-button class="upload-button" size="large" :loading="loadingBanner" round>Upload website
+                    logo</el-button>
             </el-upload>
         </div>
         <div class="d-flex justify-content-between flex-wrap mt-5">
             <el-button size="large" round text @click="emit('back')">Go back</el-button>
-            <el-button :color="primarycolor" size="large" @click="emit('onpayload', { payload, type: 2  })" round>Save & Proceed</el-button>
+            <el-button :color="primarycolor" size="large" @click="emit('onpayload', { payload, type: 2 })" round>Save &
+                Proceed</el-button>
         </div>
     </div>
 </template>

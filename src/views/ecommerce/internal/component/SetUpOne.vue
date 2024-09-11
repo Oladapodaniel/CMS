@@ -1,9 +1,26 @@
 <script setup>
-import { inject, ref } from 'vue';
+import { inject, ref, watchEffect } from 'vue';
 
+const props = defineProps({
+    updateStoreSetup: {
+        type: Object,
+        required: false
+    }
+})
 const emit = defineEmits(['onpayload']);
 const primarycolor = inject('primarycolor');
 const payload = ref({})
+
+watchEffect(() => {
+    if (props.updateStoreSetup) {
+        payload.value.websiteName = props.updateStoreSetup?.websiteName
+        payload.value.physicalAddress = props.updateStoreSetup?.physicalAddress
+        payload.value.customerServiceEmail = props.updateStoreSetup?.customerServiceEmail
+        payload.value.customerServicePhone = props.updateStoreSetup?.customerServicePhone
+        payload.value.customerServiceWhatsapp = props.updateStoreSetup?.customerServiceWhatsapp
+        emit('onpayload', { payload: payload.value, type: 1, edit: true })
+    }
+})
 
 </script>
 
@@ -17,7 +34,7 @@ const payload = ref({})
         <div class="mt-4">
             <label class="text-head font-weight-700">Physical Address</label>
             <el-input type="textarea" rows="3" placeholder="Physical address" v-model="payload.physicalAddress" />
-            <p class="s-14">Physical address of the church for shipping and contct purposes.</p>
+            <p class="s-14">Physical address of the church for shipping and contact purposes.</p>
         </div>
         <div class="mt-4">
             <label class="text-head font-weight-700">Customer Service and Help Contact</label>

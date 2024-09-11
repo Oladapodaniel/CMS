@@ -1,10 +1,22 @@
 <script setup>
-import { inject, ref } from 'vue';
+import { inject, ref, watchEffect } from 'vue';
 
 const primarycolor = inject('primarycolor');
 const payload = ref({});
 const emit = defineEmits(['onpayload', 'back']);
+const props = defineProps({
+    updateStoreSetup: {
+        type: Object,
+        required: false
+    }
+})
 
+watchEffect(() => {
+        if (props.updateStoreSetup) {
+            payload.value.returnPolicy = props.updateStoreSetup?.returnPolicy;
+            emit('onpayload', { payload: payload.value, type: 3, edit: true })
+        }
+    })
 </script>
 <template>
     <div>
