@@ -683,9 +683,9 @@
               <div class="col-md-12 small-text mt-2 notecolour font-weight-bold">
                 <span class="text-dark font-weight-bold"> NB :</span>
                 <span>
-                  Messages should be sent between 8am to 8pm (By NCC). Messages sent after
-                  8pm will be delivered the next day by 8am. This affects
-                  MTN, GLO and 9Mobile
+                  Messages should be sent between 8am to 7pm (By NCC). Messages sent after
+                  7pm will be delivered the next day by 8am. This affects
+                  MTN, GLO and 9Mobile
                 </span>
                 <!-- <span>
                   Messages sent between <span class="text-secondary"> 8pm to 8am (Night
