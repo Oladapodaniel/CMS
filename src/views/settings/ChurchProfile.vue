@@ -338,6 +338,7 @@ export default {
       formData.append("AKA", churchData.value.aka);
       formData.append("Address", churchData.value.address);
       formData.append("PhoneNumber", churchData.value.phoneNumber);
+      formData.append("email", churchData.value.email);
       formData.append("CountryID", selectCountry.value ? selectCountry.value.id : "" );
       formData.append("TimeZone", selectTime.value ? selectTime.value.value : "" );
       formData.append("WebsiteUrl", churchData.value.websiteUrl);
@@ -345,6 +346,8 @@ export default {
       formData.append("HeadPastorEmail", churchData.value.headPastorEmail);
       formData.append("HeadPastorPhone", churchData.value.headPastorPhone);
       formData.append("ChurchLogo", image);
+      console.log(formData, 'klll');
+      
       axios
         .put("/api/Settings/ChurchProfileSettings", formData)
         .then((res) => {
