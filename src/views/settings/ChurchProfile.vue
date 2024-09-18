@@ -133,7 +133,6 @@
                 type="text"
                 placeholder="Email"
                 class="w-100 ml-0 "
-                disabled
                 v-model="churchData.email"
                 size="large"
               />
