@@ -597,7 +597,10 @@
     >
       <div class="row">
         <div class="col-md-12 d-flex justify-content-center">
-          <div class="text-dak s-24 fw-500">
+          <div class="text-dak s-24 fw-500" v-if="hierarchies.length === 0">
+            Click the button to setup
+          </div>
+          <div class="text-dak s-24 fw-500" v-else>
             Which of these option best suit your intentions?
           </div>
         </div>
@@ -615,15 +618,6 @@
                 class="w-100 mb-3 py-4 text-center c-pointer"
               >
                 <span class="fw-400">Simple Branch Setup</span>
-              </el-button>
-              <el-button
-                v-if="hierarchies.length === 0"
-                round
-                size="large"
-                @click="hierarchicalBranch"
-                class="w-100 border-black text-dak py-4 mb-3 text-center c-pointer"
-              >
-                <span class="fw-400">Advance Branch Setup</span>
               </el-button>
               <el-button
                 v-else

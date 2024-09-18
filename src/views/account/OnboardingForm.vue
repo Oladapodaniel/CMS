@@ -127,10 +127,18 @@
                           : $t("onboardingContent.labels.ur-phone")
                       }}<span style="color: red"> *</span></label
                     >
-                    <el-form-item prop="phoneNumber">
+                    <!-- <el-form-item prop="phoneNumber">
                       <vue-tel-input
                         style="height: 40px"
                         @blur="invalidResponse"
+                        v-model="userDetails.phoneNumber"
+                        @input="onInput"
+                        mode="international"
+                      ></vue-tel-input>
+                    </el-form-item> -->
+                    <el-form-item prop="phoneNumber">
+                      <vue-tel-input
+                        style="height: 40px"
                         v-model="userDetails.phoneNumber"
                         @input="onInput"
                         mode="international"
@@ -203,10 +211,19 @@
                       class="border cursor-pointer choice d-flex align-items-center mr-2 mt-2 px-3 py-2 rounded"
                       v-for="(item, index) in websiteOpt"
                       :key="index"
+                      :class="{ 'active-choice': selectedChoice === item }"
                       @click="setChoice(item)"
                     >
                       {{ item }}
                     </div>
+                    <!-- <div
+                      class="border cursor-pointer choice d-flex align-items-center mr-2 mt-2 px-3 py-2 rounded"
+                      v-for="(item, index) in websiteOpt"
+                      :key="index"
+                      @click="setChoice(item)"
+                    >
+                      {{ item }}
+                    </div> -->
                   </div>
                 </div>
               </div>
@@ -446,6 +463,7 @@ export default {
 
       selectedCountry: {},
       countries: [],
+      selectedChoice: null,
       loading: false,
       showWebsite: false,
       codeUrl: {},
@@ -468,15 +486,30 @@ export default {
     };
   },
   methods: {
-    onInput(phone, phoneObject, input) {
+    onInput(phone, phoneObject) {
+      // Set user's phone code
       this.usersPhoneCode = phoneObject ? phoneObject.country.dialCode : "";
+      // Update phone number
       if (phoneObject?.formatted) {
         this.userDetails.phoneNumber = phoneObject.formatted;
+        // Set country based on phoneObject's country data
         this.selectedCountry = this.countries.find(
-          (i) => i.phoneCode == phoneObject.countryCallingCode
+          (i) => i.phoneCode == phoneObject?.countryCallingCode
         );
       }
+
+      // Validate if phone number exists to toggle 'disableNext'
+      this.disableNext = this.userDetails.phoneNumber ? true : false;
     },
+    // onInput(phone, phoneObject, input) {
+    //   this.usersPhoneCode = phoneObject ? phoneObject.country.dialCode : "";
+    //   if (phoneObject?.formatted) {
+    //     this.userDetails.phoneNumber = phoneObject.formatted;
+    //     this.selectedCountry = this.countries.find(
+    //       (i) => i.phoneCode == phoneObject.countryCallingCode
+    //     );
+    //   }
+    // },
 
     async verifyEmail() {
       this.loading = true;
@@ -508,6 +541,7 @@ export default {
       // this.checkboxGroup = []
     },
     setChoice(item) {
+      this.selectedChoice = item;
       if (item === "Yes") {
         this.showWebsite = true;
         // this.checkboxGroup
@@ -641,6 +675,9 @@ export default {
 
 .choice:hover {
   background: #d1fdff;
+}
+.active-choice {
+  background-color: #d1fdff !important; /* Active state background */
 }
 
 /* .choicehover{
