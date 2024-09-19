@@ -706,9 +706,12 @@ export default {
     const getFamilyRoles = async () => {
       try {
         let { data } = await axios.get("/getfamilyroles");
-        memberRoles.value = data.result;
+        memberRoles.value = data;
         getFamilyDetails();
-      } catch (err) {}
+      } catch (err) {
+      console.log(err);
+      
+      }
     };
     getFamilyRoles();
 
@@ -843,19 +846,19 @@ export default {
       wardSearchString.value = member.name;
       //   wardIndex.value = index
       selectedMember.value = member;
-
-      console.log(wardSearchString.value, member);
     };
 
     const getWardId = (payload) => {
-      console.log(payload);
-      wardSearchString.value = payload.personFirstName;
+      console.log(payload, 'hhjjyuuu');
+      
+      // wardSearchString.value = `${payload.personFirstName} ${payload.personLastName}`
+      wardSearchString.value = payload.personFirstName
 
       //   const constructSelectedMember = new Object()
       selectedMember.value.name = payload.personFirstName;
       selectedMember.value.id = payload.personId;
       //   familyMembers.value.push(constructSelectedMember)
-      console.log(selectedMember);
+
     };
 
     const addWard = async () => {
@@ -1059,7 +1062,7 @@ export default {
     };
 
     const clearField = (payload) => {
-      wardSearchString.value = payload.name;
+      // wardSearchString.value = payload.name;
       roleId.value = payload.roleId;
       wardState.value = 1;
     };

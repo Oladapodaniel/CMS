@@ -650,7 +650,7 @@
                   </div>
                 </div>
               </div>
-              <!-- <div class="col-md-6 px-1 mt-3 mt-md-0">
+              <div class="col-md-12 px-1 mt-3 mt-md-0">
                 <div class="container">
                   <div class="row">
                     <div class="col-md-12">
@@ -658,7 +658,7 @@
                         SENDER ID</label>
                     </div>
                     <div class=" col-md-12 my-2 send-now-div py-2 d-flex justify-content-center">
-                      <el-button type="info" @click="contructScheduleMessageBody(1, 'hostedsms')" round>Send SMS
+                      <el-button type="info" class="w-100" @click="contructScheduleMessageBody(1, 'hostedsms')" round>Send SMS
                         now</el-button>
                     </div>
                     <div class="col-md-12 px-0">
@@ -672,7 +672,7 @@
                     </div>
                   </div>
                 </div>
-              </div> -->
+              </div>
             </div>
             <!-- <div class="row mt-3">
               <div class="col-md-12 px-1">
