@@ -650,7 +650,7 @@
                   </div>
                 </div>
               </div>
-              <!-- <div class="col-md-12 px-1 mt-3 mt-md-0">
+              <div class="col-md-12 px-1 mt-3 mt-md-0">
                 <div class="container">
                   <div class="row">
                     <div class="col-md-12">
@@ -672,7 +672,7 @@
                     </div>
                   </div>
                 </div>
-              </div> -->
+              </div>
             </div>
             <!-- <div class="row mt-3">
               <div class="col-md-12 px-1">
