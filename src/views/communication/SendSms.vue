@@ -674,7 +674,7 @@
                     <div class="col-md-12 d-flex flex-column">
                       <span>Send to DND: YES </span>
                       <span>Time: 24/7 </span>
-                      <span>Cost: N4 per SMS </span>
+                      <span>Cost: N5 per SMS </span>
                       <!-- <span>Sender ID Customization - NO</span> -->
                       <!-- <span>Not Affected by DND.</span> -->
                       <!-- <span>Failed SMS are Retried with Other
