@@ -358,7 +358,7 @@ import { ref, reactive, watch, inject } from "vue";
 import { ElNotification, ElMessage } from "element-plus";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useI18n } from "vue-i18n";
-import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from "../../i18n";
+import { SUPPORT_LOCALES as setI18nLanguage } from "../../i18n";
 export default {
   components: {
     // VueTelInput,

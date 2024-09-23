@@ -1213,7 +1213,8 @@ export default {
     const getFamilyRoles = async () => {
       try {
         let { data } = await axios.get("/getfamilyroles");
-        memberRoles.value = data.result;
+        memberRoles.value = data;
+        // memberRoles.value = data.result;
       } catch (err) {
         console.log(err);
       }

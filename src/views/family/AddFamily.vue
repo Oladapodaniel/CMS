@@ -648,7 +648,6 @@
 import { ref, inject } from "vue";
 import FamilyWards from "./FamilyWards";
 import membershipService from "../../services/membership/membershipservice";
-import Dialog from "primevue/dialog";
 import NewPerson from "../../components/membership/NewDonor.vue";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import axios from "@/gateway/backendapi";
@@ -663,7 +662,6 @@ export default {
   components: {
     FamilyWards,
     // MemberForm,
-    Dialog,
     NewPerson,
     // Dropdown,
   },
