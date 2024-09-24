@@ -1,16 +1,14 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid px-0">
     <div class="row">
-      <div class="col-12 col-md-11">
+      <div class="col-12 col-md-12">
         <div
-          class="col-md-12 d-flex align-items-center justify-content-center"
-          style="height: 100vh"
-        >
-          <div class="col-12 mx-0 px-0 col-md-12 col-lg-11" style="height: 50%">
+          class="col-md-12 col-12 px-0  d-flex align-items-center justify-content-center" >
+          <div class="col-12 mx-0 px-0 col-md-12 col-lg-11">
             <div class="row">
               <div class="col-md-12 d-flex justify-content-center">
-                <div class="col-2 col-md-2">
-                  <img class="col-md-12" src="../../assets/verifyIcon.png" alt="" />
+                <div class="col-6 col-md-2">
+                  <img class="col-md-12 w-100" src="../../assets/verifyIcon.png" alt="" />
                 </div>
               </div>
             </div>
@@ -33,7 +31,7 @@
 
                     <br />
                     <span class="font-weight-600">
-                      {{ onboardingDatas ? onboardingDatas.email : "Email" }}
+                      {{ churchData ? churchData.email : "Email" }}
                       <!-- and
                         {{
                           onboardingDatas ? onboardingDatas.phoneNumber : "Phone Number"
@@ -43,12 +41,12 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-12 d-flex justify-content-center align-items-center">
+            <div class="col-md-12 px-0 d-flex justify-content-center align-items-center">
               <div class="col-12 px-0 mx-0 col-md-12 col-lg-10">
                 <div class="row text-center">
                   <div class="col-md-12">
-                    <div class="row justify-content-center">
-                      <div class="col-md-5 d-flex">
+                    <div class="row">
+                      <div class="col-md-12 d-flex">
                         <div
                           class="col-md-3 justify-content-center rounded d-flex otp-field px-0 mx-0"
                           v-for="(digit, index) in otp"
@@ -72,7 +70,7 @@
                   </div>
                 </div>
                 <div class="col-md-12 mt-4 d-flex justify-content-center">
-                  <div class="col-md-4">
+                  <div class="col-md-10 col-12">
                     <el-button
                       @click="completeVerification"
                       :loading="loading"
@@ -90,7 +88,7 @@
                 </div>
                 <div class="col-md-12 d-flex justify-content-center mt-5">
                   <div
-                    class="py-2 col-md-5 getcode d-flex flex-wrap justify-content-center"
+                    class="py-2 col-md-10 col-12 getcode d-flex flex-wrap justify-content-center"
                   >
                     <span>{{
                       navigatorLang === "en-US"
@@ -117,7 +115,7 @@
                   </div>
                 </div>
                 <div class="col-md-12 mt-3 d-flex justify-content-center">
-                  <div class="col-md-4">
+                  <div class="col-md-10 col-12">
                     <el-button @click="cancel" size="large" class="w-100" round>{{
                       navigatorLang === "en-US"
                         ? "Cancel"
@@ -131,58 +129,6 @@
         </div>
       </div>
     </div>
-    <el-dialog
-      class=""
-      style="border-radius: 25px"
-      v-model="displaySuccess"
-      title=""
-      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
-    >
-      <div class="row justify-content-center">
-        <div class="col-md-10 col-11 mt-4 h-100 bg-white mb-5">
-          <div class="row justify-content-center align-items-center">
-            <div class="col-md-10 d-flex justify-content-center">
-              <div class="col-md-4 col-5 col-sm-3">
-                <img class="w-100" src="../../assets/shieldGif.gif" alt="" />
-              </div>
-            </div>
-            <div class="col-md-12 mt-2 d-flex justify-content-center">
-              <div class="col-md-7 col-12 col-sm-8">
-                <div
-                  class="text-font font-weight-600 col-md-12 col-12 px-0 h4 text-center"
-                  style="color: #111111"
-                >
-                  {{
-                    navigatorLang === "en-US"
-                      ? "Verification was Successful!"
-                      : $t("onboardingContent.verifySuccess")
-                  }}
-                </div>
-              </div>
-            </div>
-            <div
-              class="col-md-12 my-3 d-flex flex-column justify-content-center align-items-center"
-            >
-              <div class="col-md-6">
-                <el-button
-                  @click="whatNext"
-                  :loading="loading"
-                  :color="primarycolor"
-                  size="large"
-                  class="w-100"
-                  round
-                  >{{
-                    navigatorLang === "en-US"
-                      ? "See What’s Next"
-                      : $t("onboardingContent.whatNext")
-                  }}</el-button
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </el-dialog>
     <el-dialog
       class=""
       style="border-radius: 25px"
@@ -239,19 +185,29 @@
 
 <script>
 import { ref, watch, inject, onMounted } from "vue";
-import router from "../../router";
 import { useStore } from "vuex";
 import axios from "@/gateway/backendapi";
 import { ElMessage } from "element-plus";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useI18n } from "vue-i18n";
 import { SUPPORT_LOCALES as setI18nLanguage } from "../../i18n";
+// import { emit } from "hellojs";
 // import { validateNumberInput } from '../../services/otpvalidation/validation'
 // import { ElNotification } from "element-plus";
 // import { trim } from "lodash";
 
 export default {
-  setup() {
+  props: {
+    verificationData: {
+      type: Object,
+      required: true,
+    },
+    churchData: {
+      type: Object,
+      required: true,
+    },
+  },
+  setup(props, { emit }) {
     const store = useStore();
     const loading = ref(false);
     const navigatorLang = ref(navigator.language);
@@ -259,20 +215,18 @@ export default {
     const displayFailed = ref(false);
     const displaySuccess = ref(false);
     const primarycolor = inject("primarycolor");
-    const onboardingDatas = ref(store.getters.onboardingData);
-    const optVerifyData = ref(store.getters.verifyEmailData);
     const userPassword = ref(store.getters.userPassword);
     const countdownTime = ref(1 * 60);
     const timerInterval = ref();
     const partialEmail = ref(
-      onboardingDatas.value && onboardingDatas.value.email
-        ? onboardingDatas.value.email.replace(/(\w{3})[\w.-]+@([\w.]+\w)/, "$1***@$2")
+      props.churchData && props.churchData.email
+        ? props.churchData.email.replace(/(\w{3})[\w.-]+@([\w.]+\w)/, "$1***@$2")
         : ""
     );
     const partialNumber = ref(
-      onboardingDatas.value && onboardingDatas.value.phoneNumber
-        ? onboardingDatas.value.phoneNumber.slice(0, 6) +
-            onboardingDatas.value.phoneNumber.slice(2).replace(/.(?=...)/g, "*")
+      props.churchData && props.churchData.phoneNumber
+        ? props.churchData.phoneNumber.slice(0, 6) +
+        props.churchData.phoneNumber.slice(2).replace(/.(?=...)/g, "*")
         : ""
     );
 
@@ -349,8 +303,8 @@ export default {
     const reSendCode = async () => {
       try {
         const res = await axios.get(
-          `/mobile/v1/Account/SendOTP?phoneNumber=${onboardingDatas.value.phoneNumber.trim()}&email=${
-            onboardingDatas.value.email
+          `/mobile/v1/Account/SendOTP?phoneNumber=${props.churchData.phoneNumber.trim()}&email=${
+            props.churchData.email
           }&tenantId=176bb861-d22e-4598-b2fe-f877888d819c `
         );
         if (res.data.status) {
@@ -378,10 +332,11 @@ export default {
       console.log(code, "jjkk");
       try {
         const res = await axios.get(
-          `/mobile/v1/Account/ConfirmOTP?token=${optVerifyData.value.returnObject.token}&otp=${code}`
+          `/mobile/v1/Account/ConfirmOTP?token=${props.verificationData.returnObject.token}&otp=${code}`
         );
         if (res.data.status) {
           displaySuccess.value = true;
+          emit('verified', displaySuccess.value)
         } else {
           displayFailed.value = true;
         }
@@ -394,7 +349,7 @@ export default {
     };
 
     const cancel = () => {
-      router.push("/onboarding");
+      emit('cancel', true)
     };
 
 
@@ -404,7 +359,6 @@ export default {
       xlAndUp,
       xsOnly,
       displayFailed,
-      onboardingDatas,
       formattedTime,
       countdownTime,
       timerInterval,
@@ -412,7 +366,6 @@ export default {
       completeVerification,
       displaySuccess,
       reSendCode,
-      optVerifyData,
       navigatorLang,
       partialEmail,
       partialNumber,
