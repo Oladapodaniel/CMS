@@ -675,12 +675,14 @@ import { ElMessage } from "element-plus";
 import finish from "../../services/progressbar/progress";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import ContributionItems from "@/components/firsttimer/contributionItemModal";
+import DecoupledEditor from "@/components/RichEditor";
 // import FileUpload from "../../components/image-picker/FileUpload.vue";
 import { useRoute } from "vue-router";
 import router from "../../router";
 import draggable from "vuedraggable";
 export default {
   components: {
+    DecoupledEditor,
     draggable,
     // FileUpload,
     ContributionItems,
