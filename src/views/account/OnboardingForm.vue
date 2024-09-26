@@ -68,7 +68,7 @@
               <div class="input-div">
                 <el-row :gutter="15">
                   <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-                    <label class="mb-0">{{
+                    <label class="mb-0 ">{{
                       navigatorLang === "en-US"
                         ? "What's the name of your ministry?"
                         : $t("onboardingContent.labels.ur-ministry")
@@ -82,7 +82,7 @@
                     </div>
                   </el-col>
                   <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-                    <label class="mb-0 mt-md-4 mt-lg-4 mt-xl-0">{{
+                    <label class="mb-0 mt-4 mt-lg-4 mt-xl-0">{{
                       navigatorLang === "en-US"
                         ? "Church Type"
                         : $t("onboardingContent.labels.church-type")
@@ -138,6 +138,7 @@
                     </el-form-item> -->
                     <el-form-item prop="phoneNumber">
                       <vue-tel-input
+                      class="w-100"
                         style="height: 40px"
                         v-model="userDetails.phoneNumber"
                         @input="onInput"
@@ -159,16 +160,18 @@
                       }}<span style="color: red"> *</span></label
                     >
                     <div class="w-100">
-                      <el-select-v2
-                        v-model="selectedCountryId"
-                        :options="countries.map((i) => ({ label: i.name, value: i.id }))"
-                        @change="setSelectedCountry"
-                        @touchstart.stop="handleClick"
-                        filterable
-                        placeholder="Select country"
-                        size="large"
-                        class="w-100"
-                      />
+                      <el-form-item prop="countryId">
+                        <!-- @change="setSelectedCountry" -->
+                        <el-select-v2
+                          v-model="userDetails.countryId"
+                          :options="countries.map((i) => ({ label: i.name, value: i.id }))"
+                          @touchstart.stop="handleClick"
+                          filterable
+                          placeholder="Select country"
+                          size="large"
+                          class="w-100"
+                        />
+                      </el-form-item>
                       <!-- <el-select-v2
                         v-model="selectedCountryId"
                         :options="countries.map((i) => ({ label: i.name, value: i.id }))"
@@ -245,7 +248,7 @@
                 class="w-100 mt-4"
                 :color="primarycolor"
                 size="large"
-                :disabled="!disableNext || !selectedCountryId"
+                :disabled="!disableNext"
                 :loading="loading"
                 @click="nextStep(ruleFormRef)"
                 round
@@ -398,10 +401,13 @@ export default {
       ],
       email: [{ required: true, message: "Please input your email", trigger: "blur" }],
       churchSize: [
-        { required: true, message: "Please input your church size", trigger: "change" },
+        { required: false, message: "Please input your church size", trigger: "change" },
       ],
       categorization: [
-        { required: true, message: "Please input your church Type", trigger: "change" },
+        { required: false, message: "Please input your church Type", trigger: "change" },
+      ],
+      countryId: [
+        { required: true, message: "Please select your country", trigger: "change" },
       ],
     });
     const { locale } = useI18n({ useScope: "global" });
@@ -417,7 +423,6 @@ export default {
       if (!formEl) return;
       await formEl.validate((valid, fields) => {
         if (valid) {
-          // this.next()
           displayVerifyModal.value = true;
         } else {
           console.log("error submit!", fields);
@@ -459,7 +464,7 @@ export default {
       clickOnce: false,
       userDetails: {
         subscriptionPlanID: 1,
-        countryId: 89,
+        countryId: null,
         password: "password",
         phoneNumber: "",
       },
@@ -484,14 +489,13 @@ export default {
         { name: "Catholic", value: 2 },
         { name: "Others", value: 3 },
       ].map((i) => ({ value: i.value, label: i.name })),
-      usersPhoneCode: "",
-      selectedCountryId: null,
+      // usersPhoneCode: ""
     };
   },
   methods: {
     onInput(phone, phoneObject) {
       // Set user's phone code
-      this.usersPhoneCode = phoneObject ? phoneObject.country.dialCode : "";
+      // this.usersPhoneCode = phoneObject ? phoneObject.country.dialCode : "";
       // Update phone number
       if (phoneObject?.formatted) {
         this.userDetails.phoneNumber = phoneObject.formatted;
@@ -574,8 +578,8 @@ export default {
 
     next() {
       if (!this.userDetails.email) return false;
-      this.userDetails.countryId =
-        this.selectedCountry && this.selectedCountry.id ? this.selectedCountry.id : "";
+      // this.userDetails.countryId =
+      //   this.selectedCountry && this.selectedCountry.id ? this.selectedCountry.id : "";
       this.loading = true;
       axios
         .post("/api/onboarding", this.userDetails)
@@ -613,9 +617,9 @@ export default {
         this.disableNext = true;
       }
     },
-    setSelectedCountry() {
-      this.selectedCountry = this.countries.find((i) => i.id === this.selectedCountryId);
-    },
+    // setSelectedCountry() {
+    //   this.selectedCountry = this.countries.find((i) => i.id === this.selectedCountryId);
+    // },
   },
 
   computed: {
@@ -640,12 +644,12 @@ export default {
     setTimeout(() => {
       axios.get("/api/GetAllCountries").then((res) => {
         this.countries = res.data;
-        this.selectedCountry = this.countries.find(
-          (i) => i.phoneCode && i.phoneCode.toString() === this.usersPhoneCode.toString()
-        );
-        this.selectedCountryId = this.selectedCountry
-          ? this.selectedCountry.id
-          : this.selectedCountry;
+        // this.userDetails.countryId = this.countries.find(
+        //   (i) => i.phoneCode && i.phoneCode.toString() === this.usersPhoneCode.toString()
+        // );
+        // this.selectedCountryId = this.selectedCountry
+        //   ? this.selectedCountry.id
+        //   : this.selectedCountry;
       });
     }, 2000);
   },
