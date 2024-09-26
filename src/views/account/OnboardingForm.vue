@@ -296,24 +296,26 @@
       :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
     >
       <div class="row justify-content-center">
-        <div class="col-md-10 col-11 mt-4 h-100 bg-white mb-5">
+        <div class="col-md-10 col-11 mt-4 h-100 bg-white mb-5 px-0">
           <div class="row justify-content-center align-items-center">
             <div class="col-md-10 d-flex justify-content-center">
-              <div class="col-md-3 col-5 col-sm-3">
+              <div class=" col-5 col-sm-2">
                 <img class="w-100" src="../../assets/verifyIcon.png" alt="" />
               </div>
             </div>
             <div class="col-md-12 mt-2 d-flex justify-content-center">
-              <div class="col-md-7 col-12 col-sm-8">
-                <div
-                  class="text-font font-weight-600 col-md-12 col-12 px-0 h4 text-center"
+              <div class="col-12 col-sm-8">
+                <div class="row">
+                  <div
+                  class="text-font font-weight-600 col-md-12 col-12 px-0 h4 text-center mt-3"
                   style="color: #111111"
                 >
                   {{
                     navigatorLang === "en-US"
-                      ? "We will Verify your Email & Phone Number"
+                      ? "You will be required to verify your email to have full access of the software in your Trial Plan"
                       : $t("onboardingContent.emailVerification")
                   }}
+                </div>
                 </div>
               </div>
             </div>
@@ -322,12 +324,12 @@
             >
               <div class="col-md-6">
                 <el-button
-                  @click="verifyEmail"
+                  @click="next"
                   :loading="loading"
                   :disabled="clickOnce"
                   :color="primarycolor"
                   size="large"
-                  class="w-100"
+                  class="w-100 mt-3"
                   round
                   >{{
                     navigatorLang === "en-US"
@@ -336,11 +338,11 @@
                   }}</el-button
                 >
               </div>
-              <div class="col-md-6">
+              <!-- <div class="col-md-6">
                 <el-button size="large" class="w-100 mt-3" round>{{
                   navigatorLang === "en-US" ? "Cancel" : $t("onboardingContent.cancel")
                 }}</el-button>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -411,10 +413,11 @@ export default {
       event.stopPropagation(); // Ensure this stops the event on iOS
     };
 
-    const nextStep = async (formEl) => {
+    const nextStep = async(formEl) => {
       if (!formEl) return;
       await formEl.validate((valid, fields) => {
         if (valid) {
+          // this.next()
           displayVerifyModal.value = true;
         } else {
           console.log("error submit!", fields);
@@ -425,7 +428,7 @@ export default {
           });
         }
       });
-    };
+    }
 
     return {
       ruleFormRef,
@@ -441,7 +444,7 @@ export default {
       xlAndUp,
       xsOnly,
       handleClick,
-      nextStep,
+      nextStep
       // verifyEmail
       // showWebsite,
       // setChoice,
@@ -511,35 +514,35 @@ export default {
     //   }
     // },
 
-    async verifyEmail() {
-      this.loading = true;
-      this.clickOnce = true;
-      try {
-        const res = await axios.get(
-          `/mobile/v1/Account/SendOTP?phoneNumber=${this.userDetails.phoneNumber}&email=${this.userDetails.email}&tenantId=176bb861-d22e-4598-b2fe-f877888d819c `
-        );
-        console.log(res, "hh");
-        this.clickOnce = false;
-        if (res.data.status) {
-          this.$store.dispatch("setVerifyEmailData", res.data);
-          this.next();
-          this.$router.push("/onetimepassword");
-          this.loading = false;
-        } else {
-          ElMessage({
-            type: "error",
-            message: "Request Failed",
-            duration: 5000,
-          });
-        }
-      } catch (error) {
-        console.log(error);
-        this.loading = false;
-      }
+    // async verifyEmail() {
+    //   this.loading = true;
+    //   this.clickOnce = true;
+    //   try {
+    //     const res = await axios.get(
+    //       `/mobile/v1/Account/SendOTP?phoneNumber=${this.userDetails.phoneNumber}&email=${this.userDetails.email}&tenantId=176bb861-d22e-4598-b2fe-f877888d819c `
+    //     );
+    //     console.log(res, "hh");
+    //     this.clickOnce = false;
+    //     if (res.data.status) {
+    //       this.$store.dispatch("setVerifyEmailData", res.data);
+    //       this.next();
+    //       this.$router.push("/onetimepassword");
+    //       this.loading = false;
+    //     } else {
+    //       ElMessage({
+    //         type: "error",
+    //         message: "Request Failed",
+    //         duration: 5000,
+    //       });
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //     this.loading = false;
+    //   }
 
-      // this.$router.push('/onetimepassword');
-      // this.checkboxGroup = []
-    },
+    //   // this.$router.push('/onetimepassword');
+    //   // this.checkboxGroup = []
+    // },
     setChoice(item) {
       this.selectedChoice = item;
       if (item === "Yes") {
@@ -574,33 +577,33 @@ export default {
       this.userDetails.countryId =
         this.selectedCountry && this.selectedCountry.id ? this.selectedCountry.id : "";
       this.loading = true;
-      // axios
-      //   .post("/api/onboarding", this.userDetails)
-      //   .then((res) => {
-      // if (res.data.isOnboarded) {
-      //   ElNotification({
-      //     title: 'Well done',
-      //     message: 'Onboarding successful',
-      //     type: 'success',
-      //   })
-      // }
-      // if (!res.data.token) {
-      //   const preToken = localStorage.getItem("pretoken");
-      //   localStorage.setItem("token", preToken);
-      //   localStorage.removeItem("pretoken");
-      // } else {
-      //   localStorage.setItem("token", res.data.token);
-      //   localStorage.setItem("roles", JSON.stringify(["Admin"]));
-      // }
+      axios
+        .post("/api/onboarding", this.userDetails)
+        .then((res) => {
+      if (res.data.isOnboarded) {
+        ElNotification({
+          title: 'Well done',
+          message: 'Onboarding successful',
+          type: 'success',
+        })
+      }
+      if (!res.data.token) {
+        const preToken = localStorage.getItem("pretoken");
+        localStorage.setItem("token", preToken);
+        localStorage.removeItem("pretoken");
+      } else {
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("roles", JSON.stringify(["Admin"]));
+      }
       this.loading = false;
       this.$store.dispatch("setOnboardingData", this.userDetails);
-      // this.$router.push("/onboarding/step2");
-      // })
-      // .catch((err) => {
-      //   finish()
-      //   this.loading = false;
-      //   console.log(err.response);
-      // });
+      this.$router.push("/onboarding/step2");
+      })
+      .catch((err) => {
+        finish()
+        this.loading = false;
+        console.log(err.response);
+      });
     },
 
     invalidResponse() {
