@@ -81,7 +81,12 @@
             <label for="">Description</label>
           </div>
           <div class="col-md-8">
-            <el-input type="textarea" :rows="3" v-model="description" />
+            <!-- <el-input type="textarea" :rows="3" v-model="description" /> -->
+            <DecoupledEditor
+                      v-model="description"
+                      :loadedMessage="loadedMessage"
+                      :label="'you find me'"
+                    />
           </div>
           <div class=""></div>
         </div>
@@ -978,11 +983,13 @@ export default {
     };
 
     const dateUpdated = ref("");
+    const loadedMessage = ref("");
     const getSingleForm = async () => {
       try {
         const { data } = await axios.get(
           `/api/Forms/getsingleform?Id=${route.params.id}`
         );
+        loadedMessage.value = data,
         formName.value = data.name;
         description.value = data.description;
         dateUpdated.value = data.date;
@@ -1263,6 +1270,7 @@ export default {
       backspaceDelete,
       deleteChip,
       saveCustomField,
+      loadedMessage,
       specificAmount,
       pledgeType,
       freeWill,

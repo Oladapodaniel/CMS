@@ -21,11 +21,12 @@
               {{ singleFormData && singleFormData.name ? singleFormData.name : "" }}
             </div>
             <div class="col-md-11 col-lg-11 text-center">
-              {{
+              <!-- {{
                 singleFormData && singleFormData.description === "null"
                   ? ""
                   : singleFormData.description
-              }}
+              }} -->
+              <div v-html="formattedDescription"></div>
             </div>
           </div>
         </div>
@@ -428,6 +429,11 @@ export default {
       }
     };
     getSingleForm();
+    const formattedDescription = computed(() => {
+  return singleFormData.value && singleFormData.value.description !== "null"
+    ? singleFormData.value.description
+    : "";
+});
 
     const triggerPayment = () => {
       paymentDialog.value = true;
@@ -850,6 +856,7 @@ export default {
       paystackGate,
       publicPaymentForm,
       paymentFormCurrency,
+      formattedDescription,
       dropdownItem,
       payWithPaystack,
       payWithFlutterwave,
