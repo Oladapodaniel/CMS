@@ -82,11 +82,17 @@
           </div>
           <div class="col-md-8">
             <!-- <el-input type="textarea" :rows="3" v-model="description" /> -->
-            <DecoupledEditor
+            <!-- <DecoupledEditor
                       v-model="description"
                       :loadedMessage="loadedMessage"
                       :label="'you find me'"
-                    />
+                    /> -->
+            <ckeditor
+              v-model="editorData"
+              :editor="DecoupledEditor"
+              :config="editorConfig"
+              @ready="onReady"
+            ></ckeditor>
           </div>
           <div class=""></div>
         </div>
@@ -181,7 +187,10 @@
                 </div>
                 <div class="row mt-2">
                   <div class="col-md-3"></div>
-                  <div class="col-md-8" v-if="element.controlType === 1 || element.controlType === 11">
+                  <div
+                    class="col-md-8"
+                    v-if="element.controlType === 1 || element.controlType === 11"
+                  >
                     <!-- <div>Input your options and press enter</div> -->
                     <div class="chip-container col-md-12 p-0 m-0">
                       <div
@@ -212,9 +221,15 @@
                   <div class="col-md-3"></div>
                   <div
                     class="col-md-8 px-0 d-flex justify-content-between"
-                    :class="{ 'justify-content-between': element.controlType === 1 || element.controlType === 11 }"
+                    :class="{
+                      'justify-content-between':
+                        element.controlType === 1 || element.controlType === 11,
+                    }"
                   >
-                    <div @click="saveChip(index)" v-if="element.controlType === 1 || element.controlType === 11">
+                    <div
+                      @click="saveChip(index)"
+                      v-if="element.controlType === 1 || element.controlType === 11"
+                    >
                       <!-- <div @click="saveChip(index)" v-if="index === cutomFieldData.length - 1"> -->
                       <div class="d-flex mt-1 ml-2" style="font-weight: 500">
                         <el-icon :size="14" class="mt-1 mr-0 font-weight-bold">
@@ -680,20 +695,25 @@ import { ElMessage } from "element-plus";
 import finish from "../../services/progressbar/progress";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import ContributionItems from "@/components/firsttimer/contributionItemModal";
-import DecoupledEditor from "@/components/RichEditor";
+// import DecoupledEditor from "@/components/RichEditor";
+// import CKEditor from "@ckeditor/ckeditor5-vue";
+import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
 // import FileUpload from "../../components/image-picker/FileUpload.vue";
 import { useRoute } from "vue-router";
 import router from "../../router";
 import draggable from "vuedraggable";
 export default {
   components: {
-    DecoupledEditor,
+    // DecoupledEditor,
+    // CKEditor,
     draggable,
     // FileUpload,
     ContributionItems,
   },
   setup() {
     const formName = ref("");
+    const editor = DecoupledEditor;
+    const editorData = ref("<p>Initial content</p>");
     const description = ref("");
     const cutomFieldData = ref([{ parameterValues: [] }]);
     const route = useRoute();
@@ -743,6 +763,17 @@ export default {
     ]);
 
     const uploading = ref(false);
+    const onReady = (editor) => {
+      console.log("Editor is ready", editor);
+
+      // If you want to customize the toolbar placement manually (like decoupling the toolbar)
+      editor.ui
+        .getEditableElement()
+        .parentElement.insertBefore(
+          editor.ui.view.toolbar.element,
+          editor.ui.getEditableElement()
+        );
+    };
 
     const handleUploadProfileAvatar = async (file) => {
       uploading.value = true;
@@ -989,8 +1020,7 @@ export default {
         const { data } = await axios.get(
           `/api/Forms/getsingleform?Id=${route.params.id}`
         );
-        loadedMessage.value = data,
-        formName.value = data.name;
+        (loadedMessage.value = data), (formName.value = data.name);
         description.value = data.description;
         dateUpdated.value = data.date;
         url.value = data.pictureUrl;
@@ -1232,6 +1262,7 @@ export default {
       currentInput,
       checkedYes,
       tenantId,
+      editor,
       route,
       xsOnly,
       mdAndUp,
@@ -1258,6 +1289,9 @@ export default {
       nigerianBanks,
       networkError,
       newConItems,
+      editorData,
+      DecoupledEditor,
+      onReady,
       reorderCustomField,
       previewForm,
       chooseFile,
