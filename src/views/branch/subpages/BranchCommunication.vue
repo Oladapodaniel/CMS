@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid px-0">
+    <div class="container-fluid">
         <div class="row mt-1">
             <div class="col-12 col-md-4 mt-3 mt-md-0">
                 <div class="row ">
@@ -109,13 +109,13 @@ import whatSappComponent from "../../groups/component/whatSappComponent.vue";
 import { socket } from "@/socket";
 // import { ElMessage } from "element-plus";
 import swal from "sweetalert";
-import AuthenticateWhatsapp from "../../../components/whatsapp/AuthenticateWhatsapp.vue";
+// import AuthenticateWhatsapp from "../../../components/whatsapp/AuthenticateWhatsapp.vue";
 export default {
      components: {
     whatSappComponent,
     emailComponent,
     smsComponent,
-    AuthenticateWhatsapp,
+    // AuthenticateWhatsapp,
   },
     setup() {
 

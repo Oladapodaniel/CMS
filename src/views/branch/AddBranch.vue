@@ -1,91 +1,244 @@
 <template>
-  <div class="container-fluid container-top">
+  <div class="container-wide container-top">
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-8">
-          <div class="heading-text">Add branch</div>
-          <div class="row my-2 mt-2">
+          <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
+            Add new branch
+          </div>
+          <div @click="goBack">
+            <span class="s-18 fw-400 cursor-pointer text-black">
+              <img src="../../assets/goback.png" alt="" /> Go back</span
+            >
+          </div>
+          <div class="row my-1 mt-3">
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div class="col-md-4 text-md-right align-self-center">
-                  <label for="" class="">Branch name <sup class="text-danger">*</sup>
+                  <label for="" class="fw-500 text-head s-18 text-dak">
+                    Hierarchy level <sup class="text-danger">*</sup>
+                  </label>
+                </div>
+                <div class="col-md-8">
+                  <el-select-v2
+                    v-model="branchHierarhyId"
+                    @change="setSelectedHierachy"
+                    :options="hierarchies.map((i) => ({ label: i.name, value: i.id }))"
+                    placeholder="Select Hierarchy level"
+                    size="large"
+                    class="w-100"
+                  />
+                  <!-- <el-tree-select v-model="value" class="w-100" :data="branches" :check-strictly="false"
+                    :render-after-expand="false" /> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row my-1 mt-3">
+            <div class="col-md-10 offset-md-2">
+              <div class="row">
+                <div class="col-md-4 text-md-right align-self-center">
+                  <label for="" class="fw-500 text-head s-18 text-dak">
+                    Branch you report to <sup class="text-danger">*</sup>
+                  </label>
+                </div>
+                <div class="col-md-8">
+                  <el-select-v2
+                    v-model="reportbranchId"
+                    @change="setSelectedReportBranch"
+                    :options="
+                      reportBranchList.map((i) => ({ label: i.name, value: i.id }))
+                    "
+                    placeholder="Select"
+                    size="large"
+                    class="w-100"
+                  />
+                  <!-- <el-tree-select v-model="value" class="w-100" :data="branches" :check-strictly="false"
+                    :render-after-expand="false" /> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row my-2 mt-3">
+            <div class="col-md-10 offset-md-2">
+              <div class="col-12 mb-4 mt-4">
+                <div class="text-head font-weight-600 h3 py-0 my-0 text-black">
+                  Branch information
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 text-md-right align-self-center">
+                  <label for="" class="fw-500 text-head s-18 text-dak"
+                    >Branch name <sup class="text-danger">*</sup>
                   </label>
                 </div>
 
                 <div class="col-md-8">
-                  <el-input type="text" v-model="churchName" class="w-100" :class="{ 'is-invalid': !isNameValid }"
-                    @blur="checkNameValue" />
+                  <el-input
+                    type="text"
+                    v-model="churchName"
+                    class="w-100"
+                    :class="{ 'is-invalid': !isNameValid }"
+                    @blur="checkNameValue"
+                  />
                   <div class="invalid-feedback">Please enter branch name.</div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="row my-1 mt-2">
+          <div class="row my-1 mt-3">
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div class="col-md-4 text-md-right align-self-center">
-                  <label for="" class="">Address </label>
+                  <label for="" class="fw-500 text-head s-18 text-dak">Address </label>
                 </div>
 
                 <div class="col-md-8">
-                  <el-input type="text" v-model="Address" class="w-100" />
+                  <el-input
+                    type="text"
+                    v-model="Address"
+                    placeholder="Address"
+                    class="w-100"
+                  />
                 </div>
               </div>
             </div>
           </div>
-          <div class="row my-1 mt-2">
+          <div class="row my-1 mt-3">
             <div class="col-md-10 offset-md-2">
-              <div class="row">
-                <div class="col-md-4 text-md-right align-self-center">
-                  <label for="" class="">Parent Branch <sup class="text-danger">*</sup>
-                  </label>
-                </div>
-                <div class="col-md-8">
-                  <el-tree-select v-model="value" class="w-100" :data="branches" :check-strictly="false"
-                    :render-after-expand="false" />
+              <div class="col-12 mb-4 mt-4">
+                <div class="text-head font-weight-600 h3 py-0 my-0 text-black">
+                  Pastor's information
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="heading-text">Pastor</div>
-          <div class="row my-1 mt-2">
-            <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div class="col-md-4 text-md-right align-self-center">
-                  <label for="" class="">Pastor name </label>
-                </div>
-
-                <div class="col-md-8">
-                  <el-input type="text" v-model="pastorName" class="w-100" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row my-1 mt-2">
-            <div class="col-md-10 offset-md-2">
-              <div class="row">
-                <div class="col-md-4 text-md-right align-self-center">
-                  <label for="" class="">Pastor email <sup class="text-danger">*</sup>
+                  <label for="" class="fw-500 text-head s-18 text-dak"
+                    >Pastor's name
                   </label>
                 </div>
 
                 <div class="col-md-8">
-                  <el-input type="text" v-model="pastorEmail" class="w-100" :class="{ 'is-invalid': !isEmailValid }"
-                    @blur="checkEmailValue" />
+                  <el-input
+                    type="text"
+                    v-model="pastorName"
+                    placeholder="Pastor's name"
+                    class="w-100"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row my-1 mt-3">
+            <div class="col-md-10 offset-md-2">
+              <div class="row">
+                <div class="col-md-4 text-md-right align-self-center">
+                  <label for="" class="fw-500 text-head s-18 text-dak"
+                    >Email <sup class="text-danger">*</sup>
+                  </label>
+                </div>
+
+                <div class="col-md-8">
+                  <el-input
+                    type="text"
+                    v-model="pastorEmail"
+                    placeholder="email"
+                    class="w-100"
+                    :class="{ 'is-invalid': !isEmailValid }"
+                    @blur="checkEmailValue"
+                  />
                   <div class="invalid-feedback">Please enter your email.</div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="row my-1 mt-2">
+          <div class="row my-1 mt-3">
             <div class="col-md-10 offset-md-2">
               <div class="row">
                 <div class="col-md-4 text-md-right align-self-center">
-                  <label for="" class="">Pastor phone </label>
+                  <label for="" class="fw-500 text-head s-18 text-dak"
+                    >Pastor phone
+                  </label>
                 </div>
 
                 <div class="col-md-8">
-                  <el-input type="text" v-model="pastorPhone" class="w-100" />
+                  <el-input
+                    type="text"
+                    v-model="pastorPhone"
+                    placeholder="Phone number"
+                    class="w-100"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row my-1 mt-3">
+            <div class="col-md-10 offset-md-2">
+              <div class="col-12 mb-4 mt-4">
+                <div class="text-head font-weight-600 h3 py-0 my-0 text-black">
+                  Login Credentials
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 text-md-right align-self-center">
+                  <label for="" class="fw-500 text-head s-18 text-dak">Email </label>
+                </div>
+
+                <div class="col-md-8">
+                  <el-input
+                    type="text"
+                    v-model="emailAddress"
+                    placeholder="email"
+                    class="w-100"
+                    :class="{ 'is-invalid': !isEmailValid }"
+                    @blur="checkEmailValue"
+                  />
+                  <div class="invalid-feedback">Please enter your email.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row my-1 mt-3">
+            <div class="col-md-10 offset-md-2">
+              <div class="row">
+                <div class="col-md-4 text-md-right align-self-center">
+                  <label for="" class="fw-500 text-head s-18 text-dak"
+                    >Password <sup class="text-danger">*</sup>
+                  </label>
+                </div>
+
+                <div class="col-md-8">
+                  <el-input
+                    type="password"
+                    placeholder="*******"
+                    v-model="password"
+                    class="w-100"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row my-1 mt-3">
+            <div class="col-md-10 offset-md-2">
+              <div class="row">
+                <div class="col-md-4 text-md-right align-self-center">
+                  <label for="" class="fw-500 text-head s-18 text-dak"
+                    >Confirm Password
+                  </label>
+                </div>
+
+                <div class="col-md-8">
+                  <el-input
+                    type="password"
+                    placeholder="*******"
+                    v-model="confirmPassword"
+                    :class="{ 'is-invalid': !errorMessage }"
+                    @input="checkPassword"
+                    class="w-100"
+                  />
+                  <div v-if="confirmPassword !== password" class="text-danger small">
+                    Passwords do not match. Please try again
+                  </div>
                 </div>
               </div>
             </div>
@@ -96,7 +249,7 @@
                 <div class="col-4"></div>
                 <div class="col-8">
                   <div class="row">
-                    <div class="col-12 mt-2">
+                    <div class="col-md-6 mt-2">
                       <el-checkbox v-model="replicateAttendance" />
                       <!-- <Checkbox
                         id="binary"
@@ -105,7 +258,7 @@
                       /> -->
                       Replicate attendance
                     </div>
-                    <div class="col-12 mt-2">
+                    <div class="col-md-6 mt-2">
                       <el-checkbox v-model="replicateFinancial" />
                       <!-- <Checkbox
                         id="binary"
@@ -114,7 +267,7 @@
                       /> -->
                       Replicate financial
                     </div>
-                    <div class="col-12 mt-2">
+                    <div class="col-md-6 mt-2">
                       <el-checkbox v-model="replicateEvent" />
                       <!-- <Checkbox
                         id="binary"
@@ -123,7 +276,7 @@
                       /> -->
                       Replicate event
                     </div>
-                    <div class="col-12 mt-2">
+                    <div class="col-md-6 mt-2">
                       <el-checkbox v-model="replicateGroup" />
                       <!-- <Checkbox
                         id="binary"
@@ -143,20 +296,35 @@
             <div class="grey-bg">
               <div>
                 <div class="person-img">
-                  <img v-if="!url" src="../../assets/people/phone-import.svg" alt="Uploaded Image" />
-                  <img v-else :src="url" alt="Uploaded Image" style="
+                  <img
+                    v-if="!url"
+                    src="../../assets/people/phone-import.svg"
+                    alt="Uploaded Image"
+                  />
+                  <img
+                    v-else
+                    :src="url"
+                    alt="Uploaded Image"
+                    style="
                       width: 110px;
                       height: 110px;
                       border-radius: 50%;
                       object-fit: cover;
-                    " />
+                    "
+                  />
                 </div>
               </div>
               <div>
                 <div class="cs-input">
                   <label for="imgUpload" class="choose-file">
                     Choose image
-                    <input type="file" class="input file-input" placeholder="" id="imgUpload" @change="imageSelected" />
+                    <input
+                      type="file"
+                      class="input file-input"
+                      placeholder=""
+                      id="imgUpload"
+                      @change="imageSelected"
+                    />
                   </label>
                 </div>
               </div>
@@ -183,9 +351,11 @@
               <div v-for="(item, index) in hierarchies" :key="index">
                 <div class="d-flex" v-if="index > 0">
                   <span :class="`ml-${index + 1}`" class="border-style"></span>
-                  <span class="mt-4 ml-1 d-flex"><el-icon class="mt-2 px-0 ml-0 mr-1 primary--text">
-                      <ArrowRightBold />
-                    </el-icon>{{ item.name }}</span>
+                  <span class="mt-4 ml-1 d-flex"
+                    ><el-icon class="mt-2 px-0 ml-0 mr-1 primary--text">
+                      <ArrowRightBold /> </el-icon
+                    >{{ item.name }}</span
+                  >
                 </div>
               </div>
             </div>
@@ -193,20 +363,28 @@
         </div>
         <!-- <div class="row my-1 pt-4"> -->
         <div class="col-md-6 offset-md-3 mt-4">
-          <div class="row d-flex justify-content-between">
-            <div class="mt-4">
-              <el-button class="" round size="large" data-dismiss="modal">Cancel</el-button>
-            </div>
-            <div class="mt-4">
-              <el-button class="" @click="generateCodeModal" round size="large">
-                Generate branch join code
+          <div class="row d-flex flex-column align-items-center justify-content-center">
+            <!-- <div class="mt-4 col-md-7">
+              <el-button class="w-100 py-4 " color="#FF5500" @click="generateCodeModal" round size="large">
+                <span class="fw-400 s-18">Generate Branch Code</span>
+              </el-button>
+            </div> -->
+            <div class="mt-4 col-md-7">
+              <el-button
+                :loading="loading"
+                :color="primarycolor"
+                round
+                size="large"
+                class="w-100 border-0 py-4 text-white"
+                @click="addBranch"
+              >
+                <span class="font-weight-600 s-15">Save</span>
               </el-button>
             </div>
-            <div class="mt-4">
-              <el-button :loading="loading" :color="primarycolor" round size="large" class=" border-0 text-white"
-               @click="addBranch">
-                Save
-              </el-button>
+            <div class="mt-4 col-md-7">
+              <el-button class="w-100 border-0" round size="large"
+                ><span class="fw-400 s-16 text-dak">Cancel</span></el-button
+              >
             </div>
           </div>
         </div>
@@ -215,33 +393,58 @@
     </div>
   </div>
   <!-- Generate Join Branch Code Modal -->
-  <el-dialog v-model="displayModal" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" align-center>
-    <div class="row ">
-      <div class=" col-md-12 pr-2">
-        <div class=" py-3">
+  <el-dialog
+    v-model="displayModal"
+    :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+    align-center
+  >
+    <div class="row">
+      <div class="col-md-12 pr-2">
+        <div class="py-3">
           <h5 class="modal-title font-weight-700" id="codemodalModalLabel">
             Generate your branch code.
           </h5>
         </div>
         <div class="row">
           <div class="col-12 mb-2">
-            Select the branch level you want your code to be generated with,
-            then copy the generated code.
+            Select the branch level you want your code to be generated with, then copy the
+            generated code.
           </div>
 
           <div class="col-9 mt-2">
-            <el-tree-select v-model="value" class="w-100" :data="branches" :check-strictly="false"
-              :render-after-expand="false" />
+            <el-tree-select
+              v-model="value"
+              class="w-100"
+              :data="branches"
+              :check-strictly="false"
+              :render-after-expand="false"
+            />
           </div>
-          <el-button round :color="primarycolor" :loading="loadingCode" size="large"
-            class="mt-2 mb-3 col-2  text-white font-weight-bold c-pointer border-0 text-center" @click="generateCode">
+          <el-button
+            round
+            :color="primarycolor"
+            :loading="loadingCode"
+            size="large"
+            class="mt-2 mb-3 col-2 text-white font-weight-bold c-pointer border-0 text-center"
+            @click="generateCode"
+          >
             Generate
           </el-button>
-          <div class=" col-md-9 d-flex mb-3 " v-if="requestedCode">
-            <el-input type="text" class="w-100" placeholder="Heres your code" :value="requestedCode" ref="code"
-              aria-describedby="basic-addon1" />
+          <div class="col-md-9 d-flex mb-3" v-if="requestedCode">
+            <el-input
+              type="text"
+              class="w-100"
+              placeholder="Heres your code"
+              :value="requestedCode"
+              ref="code"
+              aria-describedby="basic-addon1"
+            />
             <div class="input-group-prepend">
-              <span class="input-group-text c-pointer" id="basic-addon1" @click="copyCode">
+              <span
+                class="input-group-text c-pointer"
+                id="basic-addon1"
+                @click="copyCode"
+              >
                 <el-icon>
                   <CopyDocument />
                 </el-icon>
@@ -249,7 +452,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </el-dialog>
@@ -261,7 +463,7 @@ import { ref, inject } from "vue";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import router from "../../router";
 import store from "../../store/store";
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessage } from "element-plus";
 export default {
   setup() {
     const primarycolor = inject("primarycolor");
@@ -271,6 +473,9 @@ export default {
     const pastorName = ref("");
     const pastorEmail = ref("");
     const pastorPhone = ref("");
+    const emailAddress = ref("");
+    const password = ref("");
+    const confirmPassword = ref("");
     const hierarchies = ref([]);
     const url = ref("");
     const image = ref("");
@@ -288,10 +493,72 @@ export default {
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
     const value = ref(null);
     const branchValue = ref(null);
+    const branchHierarhyId = ref(null);
+    const reportbranchId = ref(null);
     const isNameValid = ref(true);
     const displayModal = ref(false);
     const isEmailValid = ref(true);
+    const errorMessage = ref(true);
+    const selectedbranchHierarhy = ref({});
+    const selectedReportBranch = ref({});
+    const reportBranchList = ref([]);
 
+    const goBack = () => {
+      router.go(-1);
+    };
+
+    const setSelectedHierachy = () => {
+      selectedbranchHierarhy.value = hierarchies.value.find((i) => {
+        return i.id == branchHierarhyId.value;
+      });
+      console.log(selectedbranchHierarhy.value, "selectec branch");
+      getChurchToReportTo();
+
+      // if (hierarchies.value[0].level == 0 && selectedbranchHierarhy.value.level == 0) {
+      //   ElMessage({
+      //     type: "warning",
+      //     message: `You Cannot Select ${hierarchies.value[0].name} please click the next level  `,
+      //     duration: 5000,
+      //   });
+
+      //   console.log(selectedbranchHierarhy.value, "selectec branch");
+      // } else {
+      //   getChurchToReportTo();
+      // }
+    };
+    const setSelectedReportBranch = () => {
+      selectedReportBranch.value = reportBranchList.value.find((i) => {
+        return i.id == reportbranchId.value;
+      });
+      console.log(selectedReportBranch.value, "report branch");
+    };
+
+    const getChurchToReportTo = async () => {
+      if (selectedbranchHierarhy.value.level !== 0) {
+        try {
+          const { data } = await axios.get(
+            `/api/Branching/GetChurchesToReportTo?hierarchyId=${selectedbranchHierarhy.value.id}`
+          );
+          reportBranchList.value = data.returnObject;
+          console.log(data, "hhshshsh");
+          if (reportBranchList.value.length == 0) {
+            ElMessage({
+              type: "warning",
+              message: `No branch in this level , please select another level  `,
+              duration: 5000,
+            });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        ElMessage({
+          type: "warning",
+          message: `You Cannot Select ${selectedbranchHierarhy.value.name} please click the next level  `,
+          duration: 5000,
+        });
+      }
+    };
 
     const imageSelected = (e) => {
       image.value = e.target.files[0];
@@ -301,14 +568,15 @@ export default {
       try {
         let { data } = await axios.get("/branching/hierarchies");
         hierarchies.value = data.returnObject;
+        console.log(hierarchies.value, "kjjjjj");
       } catch (err) {
         console.log(err);
       }
     };
     getHierarchies();
     const generateCodeModal = () => {
-      displayModal.value = true
-    }
+      displayModal.value = true;
+    };
     const getAllBranchList = async () => {
       try {
         axios
@@ -320,11 +588,11 @@ export default {
                 value: i.id,
                 children: i.teanants
                   ? i.teanants.map((j) => {
-                    return {
-                      label: j.name,
-                      value: j.id,
-                    };
-                  })
+                      return {
+                        label: j.name,
+                        value: j.id,
+                      };
+                    })
                   : "",
               };
             });
@@ -335,7 +603,6 @@ export default {
       }
     };
     getAllBranchList();
-
 
     if (store.getters.currentUser && store.getters.currentUser.isoCode) {
       isoCode.value = store.getters.currentUser.isoCode;
@@ -349,17 +616,24 @@ export default {
     }
 
     const addBranch = async () => {
-      if (value.value) {
+      if (selectedbranchHierarhy.value && selectedbranchHierarhy.value.name && selectedReportBranch.value.name) {
         const formData = new FormData();
         formData.append("churchName", churchName.value ? churchName.value : "");
         formData.append("address", Address.value ? Address.value : "");
-        formData.append("parentID", value.value ? value.value : "");
-        formData.append("pastorName", pastorName.value ? pastorName.value : "");
-        formData.append("email", pastorEmail.value ? pastorEmail.value : "");
         formData.append(
-          "pastorPhone",
-          pastorPhone.value ? pastorPhone.value : ""
+          "hierarchyID",
+          selectedbranchHierarhy.value.id ? selectedbranchHierarhy.value.id : ""
         );
+        // formData.append("parentID", value.value ? value.value : "");
+        formData.append(
+          "parentID",
+          selectedReportBranch.value.id ? selectedReportBranch.value.id : ""
+        );
+        formData.append("pastorName", pastorName.value ? pastorName.value : "");
+        formData.append("pastorEmail", pastorEmail.value ? pastorEmail.value : "");
+        formData.append("email", emailAddress.value ? emailAddress.value : "");
+        formData.append("password", password.value ? password.value : "");
+        formData.append("pastorPhone", pastorPhone.value ? pastorPhone.value : "");
         formData.append("image", image.value ? image.value : "");
         formData.append("duplicateAttendances", replicateAttendance.value);
         formData.append("duplicateFinancials", replicateFinancial.value);
@@ -394,7 +668,8 @@ export default {
               duration: 5000,
             });
             setTimeout(() => {
-              router.push("/tenant/branch/mainbranchsummary");
+              router.push("/tenant/branch/branchdashboard");
+              // router.push("/tenant/branch/mainbranchsummary");
               // router.push("/tenant/branch/branchsummary");
             }, 3000);
           }
@@ -409,7 +684,8 @@ export default {
       } else {
         ElMessage({
           type: "warning",
-          message: "Choose the level you want to create this branch under, then click Save.",
+          message:
+            "Please Select Hierarchy level and Choose the branch you want to report to .",
           duration: 5000,
         });
       }
@@ -470,6 +746,13 @@ export default {
         isEmailValid.value = true;
       }
     };
+    const checkPassword = () => {
+      if (password.value !== confirmPassword.value) {
+        errorMessage.value = true;
+      } else {
+        errorMessage.value = false;
+      }
+    };
 
     return {
       addBranch,
@@ -479,6 +762,10 @@ export default {
       pastorName,
       pastorEmail,
       pastorPhone,
+      emailAddress,
+      errorMessage,
+      password,
+      confirmPassword,
       imageSelected,
       url,
       image,
@@ -497,13 +784,24 @@ export default {
       hierarchies,
       primarycolor,
       code,
-      mdAndUp, lgAndUp, xlAndUp, xsOnly,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      xsOnly,
       copyCode,
+      branchHierarhyId,
+      setSelectedHierachy,
+      selectedbranchHierarhy,
+      reportBranchList,
       isoCode,
       loading,
       loadingCode,
-
+      goBack,
+      checkPassword,
       checkNameValue,
+      setSelectedReportBranch,
+      selectedReportBranch,
+      reportbranchId,
       isNameValid,
       isEmailValid,
       checkEmailValue,

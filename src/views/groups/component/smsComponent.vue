@@ -93,7 +93,7 @@
         </div>
       </div>
       <div
-        v-if="route.fullPath == '/tenant/branch/mainbranchsummary'"
+        v-if="route.fullPath == '/tenant/branch/branchdashboard'"
         class="row"
       >
         <div class="col-md-2 pr-md-0 col-lg-2 align-self-center">
@@ -757,7 +757,7 @@
                 >
                 <el-dropdown-item
                   v-if="
-                    !route.fullPath == '/tenant/branch/mainbranchsummary' ||
+                    !route.fullPath == '/tenant/branch/branchdashboard' ||
                     !route.fullPath == '/tenant/branches/branch_communication'
                   "
                   @click="draftMessage"
@@ -1326,7 +1326,7 @@ export default {
       disableBtn.value = true;
       if (
         route.fullPath == "/tenant/branches/branch_communication" ||
-        route.fullPath == "/tenant/branch/mainbranchsummary"
+        route.fullPath == '/tenant/branch/branchdashboard'
       ) {
         axios
           .post("/api/BranchNetwork/sendSms", data)
@@ -1537,7 +1537,7 @@ export default {
         data.tenantID = branchID;
       }
 
-      if (route.fullPath == "/tenant/branch/mainbranchsummary") {
+      if (route.fullPath == '/tenant/branch/branchdashboard') {
         data.tenantID = tenantId.value;
       }
 
@@ -1588,7 +1588,7 @@ export default {
 
       if (
         route.fullPath == "/tenant/branches/branch_communication" ||
-        route.fullPath == "/tenant/branch/mainbranchsummary"
+        route.fullPath == '/tenant/branch/branchdashboard'
       ) {
         try {
           const response = await axios.post(

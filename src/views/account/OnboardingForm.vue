@@ -68,7 +68,7 @@
               <div class="input-div">
                 <el-row :gutter="15">
                   <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-                    <label class="mb-0">{{
+                    <label class="mb-0 ">{{
                       navigatorLang === "en-US"
                         ? "What's the name of your ministry?"
                         : $t("onboardingContent.labels.ur-ministry")
@@ -82,7 +82,7 @@
                     </div>
                   </el-col>
                   <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-                    <label class="mb-0 mt-md-4 mt-lg-4 mt-xl-0">{{
+                    <label class="mb-0 mt-4 mt-lg-4 mt-xl-0">{{
                       navigatorLang === "en-US"
                         ? "Church Type"
                         : $t("onboardingContent.labels.church-type")
@@ -127,10 +127,19 @@
                           : $t("onboardingContent.labels.ur-phone")
                       }}<span style="color: red"> *</span></label
                     >
-                    <el-form-item prop="phoneNumber">
+                    <!-- <el-form-item prop="phoneNumber">
                       <vue-tel-input
                         style="height: 40px"
                         @blur="invalidResponse"
+                        v-model="userDetails.phoneNumber"
+                        @input="onInput"
+                        mode="international"
+                      ></vue-tel-input>
+                    </el-form-item> -->
+                    <el-form-item prop="phoneNumber">
+                      <vue-tel-input
+                      class="w-100"
+                        style="height: 40px"
                         v-model="userDetails.phoneNumber"
                         @input="onInput"
                         mode="international"
@@ -151,16 +160,18 @@
                       }}<span style="color: red"> *</span></label
                     >
                     <div class="w-100">
-                      <el-select-v2
-                        v-model="selectedCountryId"
-                        :options="countries.map((i) => ({ label: i.name, value: i.id }))"
-                        @change="setSelectedCountry"
-                        @click.native.stop
-                        filterable
-                        placeholder="Select country"
-                        size="large"
-                        class="w-100"
-                      />
+                      <el-form-item prop="countryId">
+                        <!-- @change="setSelectedCountry" -->
+                        <el-select-v2
+                          v-model="userDetails.countryId"
+                          :options="countries.map((i) => ({ label: i.name, value: i.id }))"
+                          @touchstart.stop="handleClick"
+                          filterable
+                          placeholder="Select country"
+                          size="large"
+                          class="w-100"
+                        />
+                      </el-form-item>
                       <!-- <el-select-v2
                         v-model="selectedCountryId"
                         :options="countries.map((i) => ({ label: i.name, value: i.id }))"
@@ -203,10 +214,19 @@
                       class="border cursor-pointer choice d-flex align-items-center mr-2 mt-2 px-3 py-2 rounded"
                       v-for="(item, index) in websiteOpt"
                       :key="index"
+                      :class="{ 'active-choice': selectedChoice === item }"
                       @click="setChoice(item)"
                     >
                       {{ item }}
                     </div>
+                    <!-- <div
+                      class="border cursor-pointer choice d-flex align-items-center mr-2 mt-2 px-3 py-2 rounded"
+                      v-for="(item, index) in websiteOpt"
+                      :key="index"
+                      @click="setChoice(item)"
+                    >
+                      {{ item }}
+                    </div> -->
                   </div>
                 </div>
               </div>
@@ -228,7 +248,7 @@
                 class="w-100 mt-4"
                 :color="primarycolor"
                 size="large"
-                :disabled="!disableNext || !selectedCountryId"
+                :disabled="!disableNext"
                 :loading="loading"
                 @click="nextStep(ruleFormRef)"
                 round
@@ -279,24 +299,26 @@
       :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
     >
       <div class="row justify-content-center">
-        <div class="col-md-10 col-11 mt-4 h-100 bg-white mb-5">
+        <div class="col-md-10 col-11 mt-4 h-100 bg-white mb-5 px-0">
           <div class="row justify-content-center align-items-center">
             <div class="col-md-10 d-flex justify-content-center">
-              <div class="col-md-3 col-5 col-sm-3">
+              <div class=" col-5 col-sm-2">
                 <img class="w-100" src="../../assets/verifyIcon.png" alt="" />
               </div>
             </div>
             <div class="col-md-12 mt-2 d-flex justify-content-center">
-              <div class="col-md-7 col-12 col-sm-8">
-                <div
-                  class="text-font font-weight-600 col-md-12 col-12 px-0 h4 text-center"
+              <div class="col-12 col-sm-8">
+                <div class="row">
+                  <div
+                  class="text-font font-weight-600 col-md-12 col-12 px-0 h4 text-center mt-3"
                   style="color: #111111"
                 >
                   {{
                     navigatorLang === "en-US"
-                      ? "We will Verify your Email & Phone Number"
+                      ? "You will be required to verify your email to have full access of the software in your Trial Plan"
                       : $t("onboardingContent.emailVerification")
                   }}
+                </div>
                 </div>
               </div>
             </div>
@@ -305,12 +327,12 @@
             >
               <div class="col-md-6">
                 <el-button
-                  @click="verifyEmail"
+                  @click="next"
                   :loading="loading"
                   :disabled="clickOnce"
                   :color="primarycolor"
                   size="large"
-                  class="w-100"
+                  class="w-100 mt-3"
                   round
                   >{{
                     navigatorLang === "en-US"
@@ -319,11 +341,11 @@
                   }}</el-button
                 >
               </div>
-              <div class="col-md-6">
+              <!-- <div class="col-md-6">
                 <el-button size="large" class="w-100 mt-3" round>{{
                   navigatorLang === "en-US" ? "Cancel" : $t("onboardingContent.cancel")
                 }}</el-button>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -341,7 +363,7 @@ import { ref, reactive, watch, inject } from "vue";
 import { ElNotification, ElMessage } from "element-plus";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useI18n } from "vue-i18n";
-import { SUPPORT_LOCALES as supportLocales, setI18nLanguage } from "../../i18n";
+import { SUPPORT_LOCALES as setI18nLanguage } from "../../i18n";
 export default {
   components: {
     // VueTelInput,
@@ -379,10 +401,13 @@ export default {
       ],
       email: [{ required: true, message: "Please input your email", trigger: "blur" }],
       churchSize: [
-        { required: true, message: "Please input your church size", trigger: "change" },
+        { required: false, message: "Please input your church size", trigger: "change" },
       ],
       categorization: [
-        { required: true, message: "Please input your church Type", trigger: "change" },
+        { required: false, message: "Please input your church Type", trigger: "change" },
+      ],
+      countryId: [
+        { required: true, message: "Please select your country", trigger: "change" },
       ],
     });
     const { locale } = useI18n({ useScope: "global" });
@@ -390,7 +415,11 @@ export default {
       setI18nLanguage(val);
     });
 
-    const nextStep = async (formEl) => {
+    const handleClick = (event) => {
+      event.stopPropagation(); // Ensure this stops the event on iOS
+    };
+
+    const nextStep = async(formEl) => {
       if (!formEl) return;
       await formEl.validate((valid, fields) => {
         if (valid) {
@@ -404,7 +433,7 @@ export default {
           });
         }
       });
-    };
+    }
 
     return {
       ruleFormRef,
@@ -419,7 +448,8 @@ export default {
       lgAndUp,
       xlAndUp,
       xsOnly,
-      nextStep,
+      handleClick,
+      nextStep
       // verifyEmail
       // showWebsite,
       // setChoice,
@@ -434,13 +464,14 @@ export default {
       clickOnce: false,
       userDetails: {
         subscriptionPlanID: 1,
-        countryId: 89,
+        countryId: null,
         password: "password",
         phoneNumber: "",
       },
 
       selectedCountry: {},
       countries: [],
+      selectedChoice: null,
       loading: false,
       showWebsite: false,
       codeUrl: {},
@@ -458,51 +489,66 @@ export default {
         { name: "Catholic", value: 2 },
         { name: "Others", value: 3 },
       ].map((i) => ({ value: i.value, label: i.name })),
-      usersPhoneCode: "",
-      selectedCountryId: null,
+      // usersPhoneCode: ""
     };
   },
   methods: {
-    onInput(phone, phoneObject, input) {
-      this.usersPhoneCode = phoneObject ? phoneObject.country.dialCode : "";
+    onInput(phone, phoneObject) {
+      // Set user's phone code
+      // this.usersPhoneCode = phoneObject ? phoneObject.country.dialCode : "";
+      // Update phone number
       if (phoneObject?.formatted) {
         this.userDetails.phoneNumber = phoneObject.formatted;
+        // Set country based on phoneObject's country data
         this.selectedCountry = this.countries.find(
-          (i) => i.phoneCode == phoneObject.countryCallingCode
+          (i) => i.phoneCode == phoneObject?.countryCallingCode
         );
       }
-    },
 
-    async verifyEmail() {
-      this.loading = true;
-      this.clickOnce = true;
-      try {
-        const res = await axios.get(
-          `/mobile/v1/Account/SendOTP?phoneNumber=${this.userDetails.phoneNumber}&email=${this.userDetails.email}&tenantId=176bb861-d22e-4598-b2fe-f877888d819c `
-        );
-        console.log(res, "hh");
-        this.clickOnce = false;
-        if (res.data.status) {
-          this.$store.dispatch("setVerifyEmailData", res.data);
-          this.next();
-          this.$router.push("/onetimepassword");
-          this.loading = false;
-        } else {
-          ElMessage({
-            type: "error",
-            message: "Request Failed",
-            duration: 5000,
-          });
-        }
-      } catch (error) {
-        console.log(error);
-        this.loading = false;
-      }
-
-      // this.$router.push('/onetimepassword');
-      // this.checkboxGroup = []
+      // Validate if phone number exists to toggle 'disableNext'
+      this.disableNext = this.userDetails.phoneNumber ? true : false;
     },
+    // onInput(phone, phoneObject, input) {
+    //   this.usersPhoneCode = phoneObject ? phoneObject.country.dialCode : "";
+    //   if (phoneObject?.formatted) {
+    //     this.userDetails.phoneNumber = phoneObject.formatted;
+    //     this.selectedCountry = this.countries.find(
+    //       (i) => i.phoneCode == phoneObject.countryCallingCode
+    //     );
+    //   }
+    // },
+
+    // async verifyEmail() {
+    //   this.loading = true;
+    //   this.clickOnce = true;
+    //   try {
+    //     const res = await axios.get(
+    //       `/mobile/v1/Account/SendOTP?phoneNumber=${this.userDetails.phoneNumber}&email=${this.userDetails.email}&tenantId=176bb861-d22e-4598-b2fe-f877888d819c `
+    //     );
+    //     console.log(res, "hh");
+    //     this.clickOnce = false;
+    //     if (res.data.status) {
+    //       this.$store.dispatch("setVerifyEmailData", res.data);
+    //       this.next();
+    //       this.$router.push("/onetimepassword");
+    //       this.loading = false;
+    //     } else {
+    //       ElMessage({
+    //         type: "error",
+    //         message: "Request Failed",
+    //         duration: 5000,
+    //       });
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //     this.loading = false;
+    //   }
+
+    //   // this.$router.push('/onetimepassword');
+    //   // this.checkboxGroup = []
+    // },
     setChoice(item) {
+      this.selectedChoice = item;
       if (item === "Yes") {
         this.showWebsite = true;
         // this.checkboxGroup
@@ -532,36 +578,36 @@ export default {
 
     next() {
       if (!this.userDetails.email) return false;
-      this.userDetails.countryId =
-        this.selectedCountry && this.selectedCountry.id ? this.selectedCountry.id : "";
+      // this.userDetails.countryId =
+      //   this.selectedCountry && this.selectedCountry.id ? this.selectedCountry.id : "";
       this.loading = true;
-      // axios
-      //   .post("/api/onboarding", this.userDetails)
-      //   .then((res) => {
-      // if (res.data.isOnboarded) {
-      //   ElNotification({
-      //     title: 'Well done',
-      //     message: 'Onboarding successful',
-      //     type: 'success',
-      //   })
-      // }
-      // if (!res.data.token) {
-      //   const preToken = localStorage.getItem("pretoken");
-      //   localStorage.setItem("token", preToken);
-      //   localStorage.removeItem("pretoken");
-      // } else {
-      //   localStorage.setItem("token", res.data.token);
-      //   localStorage.setItem("roles", JSON.stringify(["Admin"]));
-      // }
+      axios
+        .post("/api/onboarding", this.userDetails)
+        .then((res) => {
+      if (res.data.isOnboarded) {
+        ElNotification({
+          title: 'Well done',
+          message: 'Onboarding successful',
+          type: 'success',
+        })
+      }
+      if (!res.data.token) {
+        const preToken = localStorage.getItem("pretoken");
+        localStorage.setItem("token", preToken);
+        localStorage.removeItem("pretoken");
+      } else {
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("roles", JSON.stringify(["Admin"]));
+      }
       this.loading = false;
       this.$store.dispatch("setOnboardingData", this.userDetails);
-      // this.$router.push("/onboarding/step2");
-      // })
-      // .catch((err) => {
-      //   finish()
-      //   this.loading = false;
-      //   console.log(err.response);
-      // });
+      this.$router.push("/onboarding/step2");
+      })
+      .catch((err) => {
+        finish()
+        this.loading = false;
+        console.log(err.response);
+      });
     },
 
     invalidResponse() {
@@ -571,9 +617,9 @@ export default {
         this.disableNext = true;
       }
     },
-    setSelectedCountry() {
-      this.selectedCountry = this.countries.find((i) => i.id === this.selectedCountryId);
-    },
+    // setSelectedCountry() {
+    //   this.selectedCountry = this.countries.find((i) => i.id === this.selectedCountryId);
+    // },
   },
 
   computed: {
@@ -598,12 +644,12 @@ export default {
     setTimeout(() => {
       axios.get("/api/GetAllCountries").then((res) => {
         this.countries = res.data;
-        this.selectedCountry = this.countries.find(
-          (i) => i.phoneCode && i.phoneCode.toString() === this.usersPhoneCode.toString()
-        );
-        this.selectedCountryId = this.selectedCountry
-          ? this.selectedCountry.id
-          : this.selectedCountry;
+        // this.userDetails.countryId = this.countries.find(
+        //   (i) => i.phoneCode && i.phoneCode.toString() === this.usersPhoneCode.toString()
+        // );
+        // this.selectedCountryId = this.selectedCountry
+        //   ? this.selectedCountry.id
+        //   : this.selectedCountry;
       });
     }, 2000);
   },
@@ -636,6 +682,9 @@ export default {
 
 .choice:hover {
   background: #d1fdff;
+}
+.active-choice {
+  background-color: #d1fdff !important; /* Active state background */
 }
 
 /* .choicehover{

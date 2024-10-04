@@ -174,7 +174,8 @@ import axios from "@/gateway/backendapi";
             try {
                 let { data } = await axios.get('/getfamilyroles')
                 console.log(data)
-                roles.value = data.result
+                roles.value = data
+                // roles.value = data.result
             }
             catch (err) {
                 console.log(err)

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex">
-      <div class="head-text mb-3">
+      <div class="fw-500 s-24  text-dak mb-3">
         <p>{{ headerText }}</p>
       </div>
     </div>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { onMounted, onUpdated, ref } from "vue";
+import { onUpdated, ref } from "vue";
 import Highcharts from "highcharts";
 import { useRoute } from "vue-router";
 export default {
@@ -60,7 +60,7 @@ export default {
         },
         title: {
           // text: '',
-          text: `<b>${props.title ? props.title : ""}<b>`,
+          text: `<div class="s-18 font-weight-600 text-head mb-2">${props.title ? props.title : ""}</div>`,
           align: "left",
           x: 70,
           margin: 50,

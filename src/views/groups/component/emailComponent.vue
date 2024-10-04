@@ -58,7 +58,7 @@
         </div>
       </div>
       <div
-        v-if="route.fullPath == '/tenant/branch/mainbranchsummary'"
+        v-if="route.fullPath == '/tenant/branch/branchdashboard'"
         class="row"
       >
         <div class="col-md-2 pr-md-0 col-lg-2 align-self-center">
@@ -701,7 +701,7 @@
                 <el-dropdown-item @click="showScheduleModal"
                   >Schedule</el-dropdown-item
                 >
-                <el-dropdown-item v-if=" !route.fullPath == '/tenant/branch/mainbranchsummary' ||  !route.fullPath == '/tenant/branches/branch_communication' " @click="draftMessage"
+                <el-dropdown-item v-if=" !route.fullPath == '/tenant/branch/branchdashboard' ||  !route.fullPath == '/tenant/branches/branch_communication' " @click="draftMessage"
                   >Save as draft</el-dropdown-item
                 >
               </el-dropdown-menu>
@@ -969,7 +969,7 @@ export default {
       });
       if (
         route.fullPath == "/tenant/branches/branch_communication" ||
-        route.fullPath == "/tenant/branch/mainbranchsummary"
+        route.fullPath == '/tenant/branch/branchdashboard'
       ) {
         axios
           .post("/api/BranchNetwork/sendEmail", data)
@@ -1131,7 +1131,7 @@ export default {
         data.tenantID = branchID
       }
 
-      if(route.fullPath == "/tenant/branch/mainbranchsummary"){
+      if(route.fullPath == '/tenant/branch/branchdashboard'){
         data.tenantID = tenantId.value
       }
       if (selectedBranch.value.length > 0) {
@@ -1163,7 +1163,7 @@ export default {
       const formattedDate = dateFormatter.monthDayTime(data.executionDate);
       if (
         route.fullPath == "/tenant/branches/branch_communication" ||
-        route.fullPath == "/tenant/branch/mainbranchsummary"
+        route.fullPath == '/tenant/branch/branchdashboard'
       ) {
         try {
           await axios.post("/api/BranchNetwork/saveEmailSchedule", data);

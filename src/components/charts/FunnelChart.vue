@@ -30,7 +30,8 @@ export default {
           renderTo: props.domId
         },
         title: {
-          text: "Lifecycle Summary",
+          text: `<div class="fw-500 text-font s-24">Retention Flow</div>`,
+          align: 'left'
         },
         plotOptions: {
           series: {

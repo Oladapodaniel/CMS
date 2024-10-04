@@ -48,11 +48,6 @@
             <tr v-for="(item, index) in dataInView" :key="index">
               <td v-if="checkMultipleItem" class="py-3">
                 <input type="checkbox"  v-model="item.check" id="flexCheckDefault" @change="checkSingleRow(index)">
-                <!-- <el-checkbox
-                  v-model="item.check"
-                  @change="checkSingleRow(index)"
-                  size="large"
-                /> -->
               </td>
               <td v-for="(head, index) in headers" :key="index" :class="{ 'py-2': !checkMultipleItem }">
                 <span>

@@ -1,5 +1,5 @@
 <template>
-    <div class="container container-top container-wide">
+    <div class="container-top container-wide">
         <div class="row d-flex justify-content-between px-3 mb-3">
             <div class="heading-text">Branch</div>
             <div class="mb-3">

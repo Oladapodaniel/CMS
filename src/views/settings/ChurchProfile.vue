@@ -4,11 +4,7 @@
       <div class="row page-header">
         <div class="col-12">
           <h3
-            class="
-              header-text
-              font-weight-bold
-              text-md-left text-lg-left text-xl-left text-sm-center text-center
-            "
+            class="header-text font-weight-bold text-md-left text-lg-left text-xl-left text-sm-center text-center"
           >
             Church Profile
           </h3>
@@ -17,25 +13,18 @@
 
       <div class="row form-container">
         <div
-          class="
-            col-10
-            offset-1 offset-sm-0
-            col-sm-12
-            text-md-left text-lg-left text-xl-left text-sm-center text-center
-          "
+          class="col-10 offset-1 offset-sm-0 col-sm-12 text-md-left text-lg-left text-xl-left text-sm-center text-center"
         >
           <span class="sub-header">Church Details </span>
           <div class="row first-row">
             <div class="col-12 col-md-3 text-md-right pr-0">
-              <label for="firstname" class="small-text lb lb font-weight-600"
-                >Name</label
-              >
+              <label for="firstname" class="small-text lb lb font-weight-600">Name</label>
             </div>
             <div class="col-12 col-md-5 form-group">
               <el-input
                 type="text"
                 placeholder="name()"
-                class="w-100 ml-0 "
+                class="w-100 ml-0"
                 id="firstname"
                 size="large"
                 v-model="churchData.churchName"
@@ -74,16 +63,14 @@
 
           <div class="row">
             <div class="col-12 col-md-3 text-md-right pr-0">
-              <label class="small-text lb font-weight-600" for=""
-                >Aka/Parish</label
-              >
+              <label class="small-text lb font-weight-600" for="">Aka/Parish</label>
             </div>
             <div class="col-12 col-md-5 form-group">
               <el-input
                 type="text"
                 placeholder="Aka/Parish"
                 v-model="churchData.aka"
-                class=" w-100 ml-0"
+                class="w-100 ml-0"
                 size="large"
               />
             </div>
@@ -99,7 +86,7 @@
                 type="text"
                 placeholder="Address"
                 v-model="churchData.address"
-                class=" w-100 ml-0"
+                class="w-100 ml-0"
                 size="large"
               />
             </div>
@@ -108,16 +95,14 @@
 
           <div class="row">
             <div class="col-12 col-md-3 text-md-right pr-0">
-              <label class="small-text lb font-weight-600" for=""
-                >Phone number</label
-              >
+              <label class="small-text lb font-weight-600" for="">Phone number</label>
             </div>
             <div class="col-12 col-md-5 form-group">
               <el-input
                 type="text"
                 placeholder="Phone Number"
                 v-model="churchData.phoneNumber"
-                class="w-100 ml-0 "
+                class="w-100 ml-0"
                 size="large"
               />
             </div>
@@ -132,8 +117,7 @@
               <el-input
                 type="text"
                 placeholder="Email"
-                class="w-100 ml-0 "
-                disabled
+                class="w-100 ml-0"
                 v-model="churchData.email"
                 size="large"
               />
@@ -146,15 +130,15 @@
               <label class="small-text lb font-weight-600">Country</label>
             </div>
             <div class="col-12 col-md-5 form-group">
-                <el-select-v2
-                  v-model="selectCountryID"
-                  @change="setSelectedCountry"
-                  :options="countries.map((i) =>({label: i.name , value: i.id }))"
-                  placeholder="Select Country"
-                  class="w-100"
-                  size="large"
-                  style="width: 100%"
-                />
+              <el-select-v2
+                v-model="selectCountryID"
+                @change="setSelectedCountry"
+                :options="countries.map((i) => ({ label: i.name, value: i.id }))"
+                placeholder="Select Country"
+                class="w-100"
+                size="large"
+                style="width: 100%"
+              />
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -164,29 +148,27 @@
             </div>
             <div class="col-12 col-md-5 form-group">
               <el-select-v2
-                  v-model="selectTimeID"
-                  @change="setSelectTimeZone"
-                  :options="timeZone.map((i) =>({label: i.name , value: i.value }))"
-                  placeholder="Select time zone"
-                  class="w-100"
-                  size="large"
-                  style="width: 100%"
-                />
+                v-model="selectTimeID"
+                @change="setSelectTimeZone"
+                :options="timeZone.map((i) => ({ label: i.name, value: i.value }))"
+                placeholder="Select time zone"
+                class="w-100"
+                size="large"
+                style="width: 100%"
+              />
             </div>
             <div class="col-md-4"></div>
           </div>
 
           <div class="row">
             <div class="col-12 col-md-3 text-md-right pr-0">
-              <label class="small-text lb font-weight-600" for=""
-                >Website URL</label
-              >
+              <label class="small-text lb font-weight-600" for="">Website URL</label>
             </div>
             <div class="col-12 col-md-5 form-group">
               <el-input
                 type="text"
                 placeholder="Website URL"
-                class=" ml-0 "
+                class="ml-0"
                 v-model="churchData.websiteUrl"
                 size="large"
               />
@@ -215,7 +197,7 @@
                 type="text"
                 placeholder="Name"
                 v-model="churchData.headPastorName"
-                class="w-100  ml-0"
+                class="w-100 ml-0"
                 size="large"
               />
             </div>
@@ -230,7 +212,7 @@
               <el-input
                 type="text"
                 placeholder="Email"
-                class="w-100 ml-0 "
+                class="w-100 ml-0"
                 v-model="churchData.headPastorEmail"
                 size="large"
               />
@@ -242,8 +224,25 @@
             <div class="col-12 col-md-3 text-md-right pr-0">
               <label class="small-text" for=""></label>
             </div>
-            <div class="col-12 col-md-5 ">
-              <el-button class="primary-btn font-weight-bold text-white px-4" @click.prevent="churchProfile"  :color="primarycolor" size="large" :loading="loading" round>Save</el-button>
+            <div class="col-12 col-md-5">
+              <!-- <el-button
+                class="primary-btn font-weight-bold text-white px-4"
+                @click.prevent="churchProfile"
+                :color="primarycolor"
+                size="large"
+                :loading="loading"
+                round
+                >Save</el-button
+              > -->
+              <el-button
+                class="primary-btn font-weight-bold text-white px-4"
+                @click.prevent="churchData1"
+                :color="primarycolor"
+                size="large"
+                :loading="loading"
+                round
+                >Save</el-button
+              >
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -251,25 +250,163 @@
       </div>
     </div>
   </el-form>
+  <div>
+    <el-dialog
+      class=""
+      style="border-radius: 25px"
+      v-model="displayVerifyModal"
+      title=""
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+    >
+      <div class="row justify-content-center">
+        <div class="col-md-10 col-11 mt-4 h-100 bg-white mb-5">
+          <div class="row justify-content-center align-items-center">
+            <div class="col-md-10 d-flex justify-content-center">
+              <div class="col-md-3 col-5 col-sm-3">
+                <img class="w-100" src="../../assets/verifyIcon.png" alt="" />
+              </div>
+            </div>
+            <div class="col-md-12 mt-2 d-flex justify-content-center">
+              <div class="col-md-7 col-12 col-sm-8">
+                <div
+                  class="text-font font-weight-600 col-md-12 col-12 px-0 h4 text-center"
+                  style="color: #111111"
+                >
+                  {{
+                    navigatorLang === "en-US"
+                      ? "We will Verify your Email"
+                      : $t("onboardingContent.emailVerification")
+                  }}
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-md-12 my-3 d-flex flex-column justify-content-center align-items-center"
+            >
+              <div class="col-md-6">
+                <el-button
+                  @click="verifyEmail"
+                  :loading="loading"
+                  :disabled="clickOnce"
+                  :color="primarycolor"
+                  size="large"
+                  class="w-100 text-white"
+                  round
+                  >{{
+                    navigatorLang === "en-US"
+                      ? "Continue"
+                      : $t("onboardingContent.continue")
+                  }}</el-button
+                >
+              </div>
+              <div class="col-md-6">
+                <el-button size="large" class="w-100 mt-3" round>{{
+                  navigatorLang === "en-US" ? "Cancel" : $t("onboardingContent.cancel")
+                }}</el-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog
+      class=""
+      style="border-radius: 25px"
+      v-model="showOTP"
+      title=""
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+    >
+      <BaseOTP
+        :verificationData="verificationData"
+        @cancel="cancel"
+        @verified="verifiedInfo"
+        :churchData="churchData"
+      />
+    </el-dialog>
+    <el-dialog
+      class=""
+      style="border-radius: 25px"
+      v-model="displaySuccess"
+      title=""
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+    >
+      <div class="row justify-content-center">
+        <div class="col-md-10 col-11 mt-4 h-100 bg-white mb-5">
+          <div class="row justify-content-center align-items-center">
+            <div class="col-md-10 d-flex justify-content-center">
+              <div class="col-md-4 col-5 col-sm-3">
+                <img class="w-100" src="../../assets/shieldGif.gif" alt="" />
+              </div>
+            </div>
+            <div class="col-md-12 mt-2 d-flex justify-content-center">
+              <div class="col-md-7 col-12 col-sm-8">
+                <div
+                  class="text-font font-weight-600 col-md-12 col-12 px-0 h4 text-center"
+                  style="color: #111111"
+                >
+                  {{
+                    navigatorLang === "en-US"
+                      ? "Verification was Successful!"
+                      : $t("onboardingContent.verifySuccess")
+                  }}
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-md-12 my-3 d-flex flex-column justify-content-center align-items-center"
+            >
+              <div class="col-md-6">
+                <el-button
+                  @click="churchProfile"
+                  :loading="loading"
+                  :color="primarycolor"
+                  size="large"
+                  class="w-100 text-white"
+                  round
+                  >{{
+                    navigatorLang === "en-US"
+                      ? "See What’s Next"
+                      : $t("onboardingContent.whatNext")
+                  }}</el-button
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
 import axios from "@/gateway/backendapi";
+import BaseOTP from "../../components/otp/BaseOTP.vue";
 import { ElMessage } from "element-plus";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import store from "@/store/store";
-import { ref, inject } from "vue";
+import { useI18n } from "vue-i18n";
+import { SUPPORT_LOCALES as setI18nLanguage } from "../../i18n";
+import { ref, inject, watch } from "vue";
 import router from "../../router";
 import TimeZone from "@/services/user/timeZone";
 export default {
-  components: { },
+  components: { BaseOTP },
   setup() {
-    const primarycolor = inject('primarycolor')
+    const primarycolor = inject("primarycolor");
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
+    const showOTP = ref(false);
     const churchData = ref({});
+    const navigatorLang = ref(navigator.language);
+    const verificationData = ref({});
+    const displaySuccess = ref(false);
     let filterFields = ref([]);
-    const loading = ref(false)
+    const loading = ref(false);
+    const clickOnce = ref(false);
+    const displayVerifyModal = ref(false);
     const timeZone = ref(TimeZone.timeZones);
-    const selectCountryID = ref(null)
-    const selectTimeID = ref(null)
+    const selectCountryID = ref(null);
+    const initialEmail = ref("");
+    const selectTimeID = ref(null);
     let url = ref("");
     let a = ref("");
     let b = ref("b");
@@ -277,19 +414,129 @@ export default {
     let selectTime = ref({});
     let image;
 
+    const { locale } = useI18n({ useScope: "global" });
+    watch(locale, (val) => {
+      setI18nLanguage(val);
+    });
+
+    const churchData1 = () => {
+      if (churchData.value.email == initialEmail.value) {
+        loading.value = true;
+        let formData = new FormData();
+        formData.append("ChurchName", churchData.value.churchName);
+        formData.append("AKA", churchData.value.aka);
+        formData.append("Address", churchData.value.address);
+        formData.append("PhoneNumber", churchData.value.phoneNumber);
+        formData.append("email", churchData.value.email);
+        formData.append("CountryID", selectCountry.value ? selectCountry.value.id : "");
+        formData.append("TimeZone", selectTime.value ? selectTime.value.value : "");
+        formData.append("WebsiteUrl", churchData.value.websiteUrl);
+        formData.append("HeadPastorName", churchData.value.headPastorName);
+        formData.append("HeadPastorEmail", churchData.value.headPastorEmail);
+        formData.append("HeadPastorPhone", churchData.value.headPastorPhone);
+        formData.append("ChurchLogo", image);
+        console.log(formData, "klll");
+
+        axios
+          .put("/api/Settings/ChurchProfileSettings", formData)
+          .then((res) => {
+            ElMessage({
+              type: "success",
+              message: res.data.response,
+              duration: 5000,
+            });
+            displaySuccess.value = false;
+            router.push("/tenant/settings/defaultmessage");
+            loading.value = false;
+          })
+          .catch((error) => {
+            console.log(error);
+            loading.value = false;
+          });
+      } else {
+        displayVerifyModal.value = true;
+      }
+    };
+    const cancel = (payload) => {
+      if (payload) {
+        showOTP.value = false;
+      } else {
+        showOTP.value = true;
+      }
+    };
+
     const setSelectedCountry = () => {
       selectCountry.value = countries.value.find((i) => {
-        return i.id === selectCountryID.value
-      })
-    }
+        return i.id === selectCountryID.value;
+      });
+    };
     const setSelectTimeZone = () => {
       selectTime.value = timeZone.value.find((i) => {
-        return i.value === selectTimeID.value
-      })
-    }
+        return i.value === selectTimeID.value;
+      });
+    };
     const imageSelected = (e) => {
       image = e.target.files[0];
       url.value = URL.createObjectURL(image);
+    };
+
+    const verifyEmail = async () => {
+      if (currentUser.value && currentUser.value.tenantId) {
+        try {
+          const { data } = await axios.get(
+            `/mobile/v1/Account/SendOTP?phoneNumber=${churchData.value.phoneNumber.trim()}&email=${
+              churchData.value.email
+            }&tenantId=${currentUser.value.tenantId}`
+          );
+          if (data.status) {
+            verificationData.value = data;
+            console.log(verificationData.value, "gdfd");
+
+            ElMessage({
+              type: "success",
+              message: "Request sent",
+              duration: 5000,
+            });
+          } else {
+            ElMessage({
+              type: "error",
+              message: "Request Failed",
+              duration: 5000,
+            });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+        showOTP.value = true;
+        displayVerifyModal.value = false;
+      } else {
+        try {
+          const { data } = await axios.get(
+            `/mobile/v1/Account/SendOTP?phoneNumber=${churchData.value.phoneNumber.trim()}&email=${
+              churchData.value.email
+            }&tenantId=176bb861-d22e-4598-b2fe-f877888d819c`
+          );
+          if (data.status) {
+            verificationData.value = data;
+            console.log(verificationData.value, "gdfd");
+            ElMessage({
+              type: "success",
+              message: "Request sent",
+              duration: 5000,
+            });
+          } else {
+            ElMessage({
+              type: "error",
+              message: "Request Failed",
+              duration: 5000,
+            });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+        showOTP.value = true;
+        displayVerifyModal.value = false;
+      }
     };
 
     const uploadImage = () => {};
@@ -303,7 +550,8 @@ export default {
         console.log(data);
         countries.value = data;
         getChurchProfile();
-      } catch (error) {getChurchProfile
+      } catch (error) {
+        getChurchProfile;
         console.log(error);
       }
     };
@@ -313,16 +561,19 @@ export default {
       try {
         const { data } = await axios.get("/mobile/v1/Profile/GetChurchProfile");
         churchData.value = data.returnObject;
-        
-          selectCountry.value = countries.value.find((i) => {
-            return i.id === churchData.value.countryID;
-          });
-          selectCountryID.value = selectCountry.value ? selectCountry.value.id : selectCountry.value
+        initialEmail.value = data.returnObject.email;
+
+        selectCountry.value = countries.value.find((i) => {
+          return i.id === churchData.value.countryID;
+        });
+        selectCountryID.value = selectCountry.value
+          ? selectCountry.value.id
+          : selectCountry.value;
 
         selectTime.value = TimeZone.timeZones.find(
           (i) => i.value == churchData.value.timeZone
         );
-         selectTimeID.value = selectTime.value ? selectTime.value.value : selectTime.value
+        selectTimeID.value = selectTime.value ? selectTime.value.value : selectTime.value;
 
         console.log(churchData.value);
       } catch (error) {
@@ -332,34 +583,46 @@ export default {
 
     const uploadData = ref({});
     const display = ref(false);
+    const verifiedInfo = (payload) => {
+      console.log(payload, "ghshs");
+      if (payload) {
+        displaySuccess.value = true;
+      } else {
+        displaySuccess.value = false;
+      }
+    };
     const churchProfile = () => {
-      loading.value = true
+      loading.value = true;
       let formData = new FormData();
       formData.append("ChurchName", churchData.value.churchName);
       formData.append("AKA", churchData.value.aka);
       formData.append("Address", churchData.value.address);
       formData.append("PhoneNumber", churchData.value.phoneNumber);
-      formData.append("CountryID", selectCountry.value ? selectCountry.value.id : "" );
-      formData.append("TimeZone", selectTime.value ? selectTime.value.value : "" );
+      formData.append("email", churchData.value.email);
+      formData.append("CountryID", selectCountry.value ? selectCountry.value.id : "");
+      formData.append("TimeZone", selectTime.value ? selectTime.value.value : "");
       formData.append("WebsiteUrl", churchData.value.websiteUrl);
       formData.append("HeadPastorName", churchData.value.headPastorName);
       formData.append("HeadPastorEmail", churchData.value.headPastorEmail);
       formData.append("HeadPastorPhone", churchData.value.headPastorPhone);
       formData.append("ChurchLogo", image);
+      console.log(formData, "klll");
+
       axios
         .put("/api/Settings/ChurchProfileSettings", formData)
         .then((res) => {
           ElMessage({
             type: "success",
             message: res.data.response,
-            duration: 5000
+            duration: 5000,
           });
+          displaySuccess.value = false;
           router.push("/tenant/settings/defaultmessage");
-          loading.value = false
+          loading.value = false;
         })
         .catch((error) => {
           console.log(error);
-          loading.value = false
+          loading.value = false;
         });
     };
 
@@ -369,7 +632,7 @@ export default {
           .get(`/api/Membership/GetCurrentSignedInUser`)
           .then((response) => {
             currentUser.value = response.data;
-            console.log(response.data);
+            console.log(response.data, "kjjkk");
           })
           .catch((error) => console.log(error));
       } else {
@@ -379,6 +642,7 @@ export default {
     getCurrentUser();
 
     return {
+      verifiedInfo,
       churchData,
       loading,
       selectCountryID,
@@ -393,15 +657,28 @@ export default {
       countries,
       getCountries,
       getChurchProfile,
+      verifyEmail,
       selectCountry,
       selectTime,
       uploadData,
       display,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      xsOnly,
+      displaySuccess,
       churchProfile,
+      verificationData,
+      churchData1,
+      cancel,
+      displayVerifyModal,
+      clickOnce,
+      showOTP,
+      navigatorLang,
       a,
       b,
       filterFields,
-      primarycolor
+      primarycolor,
     };
   },
 };
@@ -469,7 +746,7 @@ export default {
   border-radius: 50%;
   vertical-align: middle;
   border: 1px solid #b9c5cf;
-  -webkit-appearance: none;
+  /* -webkit-appearance: none; */
   outline: none;
   cursor: pointer;
 }

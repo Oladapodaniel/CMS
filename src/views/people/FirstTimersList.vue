@@ -287,7 +287,7 @@
               </el-input>
               <div
                 style="background: #eeeeee"
-                class="ml-2 mt-3 mt-sm-0 d-flex w-50 align-items-center justify-content-center border-radius-8"
+                class="ml-2 mt-3 mt-sm-0 d-flex w-100 align-items-center justify-content-center border-radius-8"
               >
                 <div
                   @click="toggleFilterFormVissibility"
@@ -421,7 +421,7 @@
                 v-model="searchText"
                 placeholder="Search..."
                 @input="searchingMember = true"
-                @keyup.enter.prevent="searchPeopleInDB($event)"
+                @keyup.enter.prevent="searchMemberInDB($event)"
                 class="search-input col-md-12 col-9"
               >
                 <template #suffix>
@@ -435,7 +435,7 @@
                   </el-button>
                 </template>
                 <template #append>
-                  <el-button class="btn-search" @click.prevent="searchPeopleInDB($event)">
+                  <el-button class="btn-search" @click.prevent="searchMemberInDB($event)">
                     <el-icon :size="13">
                       <Search />
                     </el-icon>
@@ -933,7 +933,6 @@ import smsComponent from "../groups/component/smsComponent.vue";
 import emailComponent from "../groups/component/emailComponent.vue";
 import FirstTimersChartArea from "./FirstTimersChartArea.vue";
 import axios from "@/gateway/backendapi";
-import { useRoute } from "vue-router";
 import dateFormatter from "../../services/dates/dateformatter";
 import membershipservice from "../../services/membership/membershipservice";
 import groupsService from "../../services/groups/groupsservice";
@@ -989,7 +988,6 @@ export default {
     const applyLoading = ref(false);
     const searchingMember = ref(true);
     const showFilter = ref(false);
-    const route = useRoute();
     const filterFormIsVissible = ref(false);
     const lifeCycle = ref([]);
     const selectedLifeCycle = ref(null)
@@ -1177,8 +1175,8 @@ export default {
         .get(url)
         .then((res) => {
           searchingMember.value = false;
-          paginatedTableLoading.value = false;
           searchNamesInDB.value = res.data;
+          paginatedTableLoading.value = false;
           if (res.data.length === 0) {
             ElMessage({
               type: "warning",

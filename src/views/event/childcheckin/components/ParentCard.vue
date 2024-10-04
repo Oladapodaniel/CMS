@@ -75,7 +75,8 @@ export default {
             try {
                 let { data } = await axios.get('/getfamilyroles')
                 console.log(data)
-                roles.value = data.result
+                // roles.value = data.result
+                roles.value = data
             }
             catch (err) {
                 console.log(err)

@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <div class="row pl-3 border-radius-border-8 align-items-center">
+    <div class="row pl-3 py-4 bg-gray-500 border-radius-border-8 align-items-center">
       <div class="col-md-3">
         <div class="col-md-11 px-0 text-center">
           <div class="text-head s-18 font-weight-600">Total Guest</div>
@@ -15,7 +15,7 @@
           <div class="h2 font-weight-600">{{ analyticsData.retentionRate }}%</div>
         </div>
       </div>
-      <div class="col-md-3  ">
+      <div class="col-md-3">
         <div class="col-md-11 px-0 text-center">
           <div class="text-head s-18 font-weight-600">Activity Involved</div>
           <div class="h2 font-weight-600">
@@ -24,28 +24,32 @@
         </div>
       </div>
       <div class="col-md-3">
+        <div class="col-md-11 px-0 text-center">
+          <div class="text-head s-18 font-weight-600">Top acquisition source</div>
+          <div class="h2 font-weight-600" v-for="(item, index) in topThreeSources " :key="index">
+            {{ item.name }}
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-md-3">
         <div class="">
-          <PieChartSmall
-            domId="piechartww"
-            :piedata1="analyticsData.interestedSummary"
-          />
-          <!-- <PieChartSmall
-            domId="piechartww"
-            :piedata1="analyticsData.interestedSummary"
-            :data="name1"
-          /> -->
+          <PieChartSmall domId="piechartww" :piedata1="analyticsData.interestedSummary" />
         </div>
         <div @click="ViewFirstTimer" class="s-14 cursor-pointer">
           <span v-if="!showFirstTimer"><u>Show more</u> </span>
           <span v-if="showFirstTimer"><u>Hide</u> </span>
         </div>
-      </div>
-      <!-- <div class="col-md-12 s-14 d-flex justify-content-end mt-2">
-        <div>
-          <span class="text-green">+{{ analyticsData.percentageGrowth }}% </span>
-          <span> Since last month</span>
-        </div>
       </div> -->
+    </div>
+    <div class="row">
+      <div class="col-md-12 d-flex justify-content-end mt-3">
+        <router-link to="/tenant/firsttimeranalytics" class="text-decoration-none py-2 px-3 analytics text-dak border-radius-60 bg-gray-200">
+          <div class="d-flex align-items-center">
+            <span class="pr-1"><ChatBarVue /></span>
+            <span>show all analytics</span>
+          </div>
+        </router-link>
+      </div>
     </div>
   </div>
   <div class="container-fluid mt-4" v-if="showFirstTimer">
@@ -164,18 +168,20 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import axios from "@/gateway/backendapi";
 import FunnelChart from "@/components/charts/FunnelChart.vue";
 import PieChart from "@/components/charts/FirstTimerPiechart.vue";
 import ColumnChart from "../../components/charts/FirstTimersColumnchart.vue";
-import PieChartSmall from "../../components/charts/PieChartSmall.vue";
+// import PieChartSmall from "../../components/charts/PieChartSmall.vue";
+import ChatBarVue from "../../components/svg/ChatBar.vue";
 export default {
   components: {
     FunnelChart,
+    ChatBarVue,
     PieChart,
     ColumnChart,
-    PieChartSmall,
+    // PieChartSmall,
   },
   emits: ["firsttimers", "totalfirstimer"],
   setup(props, { emit }) {
@@ -278,6 +284,12 @@ export default {
       }
     };
 
+    const topThreeSources = computed(() => {
+      return analyticsData.value && analyticsData.value.sourceSummary ? [...analyticsData.value.sourceSummary]
+        .sort((a, b) => b.value - a.value)
+        .slice(0, 1) : []
+    });
+
     const getContactOwners = () => {
       axios
         .get(`/api/FirsttimerManager/contactowners`)
@@ -297,9 +309,7 @@ export default {
       selectedPeriod.value = periodRange.value.find((i) => i.name.includes("30"));
       periodId.value = periodRange.value.find((i) => i.name.includes("30")).code;
       axios
-        .get(
-          `/api/FirsttimerManager/analytics`
-        )
+        .get(`/api/FirsttimerManager/analytics`)
         .then((res) => {
           analyticsData.value = res.data.returnObject;
           emit("totalfirstimer", res.data.returnObject.totalGuests);
@@ -329,6 +339,7 @@ export default {
       periodId,
       showFirstTimer,
       ViewFirstTimer,
+      topThreeSources,
     };
   },
 };
@@ -383,6 +394,9 @@ opacity: 1;
 .item-total {
   font-size: 20px;
   line-height: 1.2;
+}
+.analytics{
+  box-shadow: 0px 4px 4px 0px #0000001A;
 }
 
 .top-icon-div {

@@ -6,7 +6,7 @@
     <main :class="{ 'container-wide': lgAndUp || xlAndUp }" id="main">
       <div class="second-col container-top">
         <div class="row justify-content-end">
-          <div class="col-lg-5 col-md-12">
+          <div class="col-lg-6 col-md-12">
             <div class="row justify-content-between">
               <!-- <div class="col-md-5">
                 <el-input
@@ -86,6 +86,15 @@
         </div>
         <div class="row mb-4">
           <div class="col-12">
+            <!-- VERIFY EMAIL CODE -->
+            <!-- <div class="col-md-12 py-3 mb-1 day1">
+              <div class="">
+                You are required to verify your email to have access to ChurchPlus
+              </div>
+              <div class="cursor-pointer" @click="subscribeNow">
+                <el-button round>Verify now</el-button>
+              </div>
+            </div> -->
             <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 10">
               <div class="">
                 10 days remaining before your subscription expires, kindly subscribe
@@ -505,8 +514,11 @@
                   tenantInfoAttendanceWeekly[0].data.some((i) => i > 0))
               "
             >
-            <router-link to="/tenant/whatsapp/auth">
+            <!-- <router-link to="/tenant/whatsapp/auth">
               <img src="../../assets/whatsapp_banner.jpeg" class="w-100 my-4" />
+            </router-link> -->
+            <router-link to="/tenant/firsttimeranalytics">
+              <img src="../../assets/people/FirsttimerIcon.jpg" class="w-100 my-4" />
             </router-link>
               <div class="more-things side p-3 " v-if="!tenantInfoExtra.hasMobileApp">
                 <img src="../../assets/mobileapp2.svg" class="w-100" />
@@ -1870,6 +1882,7 @@ export default {
   font-weight: 700;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .renew-btn-color {

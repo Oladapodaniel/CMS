@@ -66,7 +66,7 @@
                       <span class="mt-2 ml-2">{{
                         navigatorLang === "en-US"
                           ? "Financial Stewardship Made Simple"
-                          : $t("home-content.stewarship")
+                          : $t("home-content.stewardship")
                       }}</span>
                     </div>
                   </div>

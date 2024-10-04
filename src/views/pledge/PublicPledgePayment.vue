@@ -620,7 +620,7 @@ export default {
     const withinRange = ref(true);
     const searchRef = ref("");
     const currentUser = ref(store.getters.currentUser);
-    const tenantId = ref(currentUser.tenantId);
+    const tenantId = ref(currentUser.value.tenantId);
     const selectedCurrency = ref({});
     const selectedCurrencyCode = ref();
     const userSearchString = ref("");

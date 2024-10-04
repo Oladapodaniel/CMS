@@ -707,6 +707,17 @@ const routes = [
                         import( /* webpackChunkName: "branchreport" */ '../views/branch/report/BranchReport.vue')
 
                 },
+                {
+
+                    path: 'pastorinfo',
+                    name: "PastorInfo",
+                    meta: {
+                        title: 'Churchplus - Branch',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "pastorinfo" */ '../views/branch/subpages/PastorInfo.vue')
+
+                },
                 // {
 
                 //     path: 'branchincomestatementreport',
@@ -754,7 +765,29 @@ const routes = [
                 },
                 {
 
-                    path: 'branchdashoboard',
+                    path: 'hierarchicalbranch',
+                    name: "HierarchicalBranch",
+                    meta: {
+                        title: 'Churchplus - Branch',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "HierarchicalBranch" */ '../views/branch/HierarchicalBranch.vue')
+
+                },
+                {
+
+                    path: 'initialhierachysetup',
+                    name: "InitialHierarchySetup",
+                    meta: {
+                        title: 'Churchplus - Branch',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "InitialHierarchySetup" */ '../views/branch/subpages/InitialHierarchySetup.vue')
+
+                },
+                {
+
+                    path: 'branchdashboard',
                     name: "NewMainBranch",
                     meta: {
                         title: 'Churchplus - Branch',
@@ -772,6 +805,17 @@ const routes = [
                     },
                     component: () =>
                         import( /* webpackChunkName: "addfirsttimer" */ '../views/branch/AddBranch')
+
+                },
+                {
+
+                    path: 'simplebranch',
+                    name: "SimpleBranch",
+                    meta: {
+                        title: 'Churchplus - Branch',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "addfirsttimer" */ '../views/branch/AddSimpleBranch')
 
                 },
                 {
@@ -1089,6 +1133,15 @@ const routes = [
             },
             component: () =>
                 import( /* webpackChunkName: "firsttimers" */ '@/views/people/FirstTimersList.vue')
+        },
+        {
+            path: 'firsttimeranalytics',
+            name: 'FirstTimerAnalytics',
+            meta: {
+                title: 'Churchplus - First Timers',
+            },
+            component: () =>
+                import( /* webpackChunkName: "firsttimers" */ '@/views/people/FirstTimerAnalytics.vue')
         },
         {
             path: 'firsttimerslist',

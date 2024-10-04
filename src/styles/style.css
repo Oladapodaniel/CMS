@@ -119,6 +119,12 @@ rect.highcharts-background[fill] {
   .bg-gray-500{
     background: #F5F5F5 !important;
   }
+  .bg-gray-400{
+    background: #F8F8F8 !important;
+  }
+  .bg-gray-200{
+    background: #F6F6F6 !important;
+  }
   .bg-gray-100{
     background: #FBFBFB !important;
   }
@@ -153,6 +159,9 @@ rect.highcharts-background[fill] {
     border: 1px solid #787878 !important; 
     border-radius: 5px !important;
   }
+  .border-gray-100{
+    border: 1px solid  #F1F1F1 !important;
+  }
   .border-radius-8{
     border-radius: 8px !important;
   }
@@ -176,6 +185,9 @@ rect.highcharts-background[fill] {
 
   .border-no-radius{
     border: 1px solid #C9C9C9 !important;
+  }
+  .border-black{
+    border: 1px solid #000000 !important;
   }
 
   .gray-text{

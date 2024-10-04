@@ -812,17 +812,13 @@
 import { ref, reactive, onMounted, computed, nextTick, inject } from "vue";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
-import Dropdown from "primevue/dropdown";
 import { useRoute } from "vue-router";
-import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress";
 import setupService from "../../services/setup/setupservice";
-import ImageForm from "../../components/membership/ImageForm.vue";
 import SearchMembers from "../../components/membership/MembersSearch.vue";
 import grousService from "../../services/groups/groupsservice";
 import { useStore } from "vuex";
 import allCustomFields from "../../services/customfield/customField";
-import GroupTree from "../groups/component/GroupTree.vue";
 import collector from "../../services/groupArray/mapTree";
 import flatten from "../../services/groupArray/flatTree";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
@@ -830,11 +826,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 
 export default {
   components: {
-    Dropdown,
-    Dialog,
-    ImageForm,
     SearchMembers,
-    "group-tree": GroupTree,
   },
 
   setup() {
@@ -948,7 +940,7 @@ export default {
     const showAddInfo = ref(false);
     const customFileLoading = ref(false);
     const loadingtwo = ref(false);
-    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
+    const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
     const createCatLoading = ref(false);
 
     const eventName = computed(() => {

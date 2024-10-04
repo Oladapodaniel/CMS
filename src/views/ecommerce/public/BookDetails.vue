@@ -4,12 +4,18 @@ import Combien from "../../../assets/ecommerce/Combien.png";
 import AudioBookIcon from "../../../assets/ecommerce/audioBookIcon.png";
 import Products from "./component/Products.vue";
 import { Search } from "@element-plus/icons-vue";
+import router from "../../../router";
 import StarIcon from '../../../assets/ecommerce/starIcon.png'
 
 const goBack = () => {
   // Logic to navigate back
   window.history.back();
 };
+
+const addToCart = () =>{
+  router.push('/store/cart')
+}
+const searchQuery = ref('')
 
 const book = ref({
   image: Combien, // replace with actual path
@@ -67,7 +73,7 @@ const reviews = ref([
   <div class="row">
     <div class="col-md-12 d-flex bg-black-2 py-4">
       <div
-        class="d-flex col-md-3 align-items-center justify-content-center mr-2 text-white"
+        class="d-flex col-md-3 align-items-center cursor-pointer justify-content-center mr-2 text-white"
         @click="goBack"
       >
         <el-icon :size="25"><Back /></el-icon>
@@ -122,6 +128,7 @@ const reviews = ref([
             </div>
             <div class="col-md-12">
               <el-button
+              @click="addToCart"
                 size="large"
                 round
                 color="#FF5906"

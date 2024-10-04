@@ -1,11 +1,18 @@
 <script setup>
 import { ref } from "vue";
 import HeaderSection from "./component/HeaderSection.vue";
+import { ElMessage } from "element-plus";
 
 const email = ref("");
 const password = ref("");
 
 const handleLogin = () => {
+  ElMessage({
+        type: "success",
+        showClose: true,
+        message: "Welcome Onboard",
+        duration: 10000,
+      });
   // Handle login logic here
   console.log("Email:", email.value);
   console.log("Password:", password.value);

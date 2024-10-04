@@ -12,7 +12,7 @@
           </div>
         </div>
       </div>
-      <div class="contaniner-fluid border   border-radius-8 mt-5 pt-5">
+      <div class="contaniner-fluid border border-radius-8 mt-5 pt-5">
         <div class="row justify-content-center">
           <div class="col-md-8 col-12">
             <div class="row">
@@ -599,11 +599,16 @@
         <div class="row" v-else>
           <div class="col-md-12">
             <div class="row">
-              <div class="col-md-12 px-1">
+              <div class="col-md-12">
                 <p>
-                  <strong> Multi-Layered SMS Send:</strong> We leverage 3 channels to
-                  ensure you get the best delivery for your SMS. 👏🥳
+                  <span class="small-text font-weight-600 py-2"
+                    >REGURLAR BULK SMS CHANNEL USING SENDER ID
+                  </span>
                 </p>
+                <!-- <p>
+                  <strong> Multi-Layered SMS Send:</strong> We leverage 3 channels to
+                  ensure you get the best delivery for your SMS, 👏🥳
+                </p> -->
               </div>
             </div>
 
@@ -638,30 +643,44 @@
                         Send SMS Now
                       </button> -->
                     </div>
-                    <!-- <div class="col-md-12 px-0">
+                    <div class="col-md-12 d-flex flex-column">
+                      <span>Sender ID : YES</span>
+                      <span>Time: 8am - 7:30pm</span>
+                    </div>
+                    <div class="col-md-12 px-0">
                       <hr class="hr my-2" />
                     </div>
-                    <div class="col-md-12 px-0 d-flex flex-column">
-                      <span>Sender ID Customization - YES</span>
-                      <span>Not Affected by DND.</span>
-                      <span>Failed SMS are Retried with Other
-                        Options.</span>
-                    </div> -->
+                    <div class="col-md-12">
+                      <label for="" class="small-text font-weight-600 pt-2"
+                        >DEDICATED NUMBER CHANNEL- USES NUMBER AS SENDER ID</label
+                      >
+                    </div>
                   </div>
                 </div>
               </div>
-              <!-- <div class="col-md-6 px-1 mt-3 mt-md-0">
+              <div class="col-md-12 px-1 mt-3 mt-md-0">
                 <div class="container">
                   <div class="row">
-                    <div class="col-md-12">
-                      <label for="" class="small-text font-weight-600 py-2">DEDICATED NUMBER CHANNEL- USES NUMBER AS
-                        SENDER ID</label>
+                    <div
+                      class="col-md-12 my-2 send-now-div py-2 d-flex justify-content-center"
+                    >
+                      <el-button
+                        class="w-100 secondary-button"
+                        @click="contructScheduleMessageBody(1, 'hostedsms')"
+                        round
+                        >Send SMS now</el-button
+                      >
                     </div>
-                    <div class=" col-md-12 my-2 send-now-div py-2 d-flex justify-content-center">
-                      <el-button type="info" @click="contructScheduleMessageBody(1, 'hostedsms')" round>Send SMS
-                        now</el-button>
+                    <div class="col-md-12 d-flex flex-column">
+                      <span>Send to DND: YES </span>
+                      <span>Time: 24/7 </span>
+                      <span>Cost: N5 per SMS </span>
+                      <!-- <span>Sender ID Customization - NO</span> -->
+                      <!-- <span>Not Affected by DND.</span> -->
+                      <!-- <span>Failed SMS are Retried with Other
+                        Options.</span> -->
                     </div>
-                    <div class="col-md-12 px-0">
+                    <!-- <div class="col-md-12 px-0">
                       <hr class="hr my-2" />
                     </div>
                     <div class="col-md-12 px-0 d-flex flex-column">
@@ -669,10 +688,10 @@
                       <span>Not Affected by DND.</span>
                       <span>Failed SMS are not retried with other
                         options.</span>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
-              </div> -->
+              </div>
             </div>
             <!-- <div class="row mt-3">
               <div class="col-md-12 px-1">
@@ -681,12 +700,12 @@
             </div> -->
             <div class="row">
               <div class="col-md-12 small-text mt-2 notecolour font-weight-bold">
-                <span class="text-dark font-weight-bold"> NB :</span>
+                <!-- <span class="text-dark font-weight-bold"> NB :</span>
                 <span>
-                  Messages should be sent between 8am to 8pm (By NCC). Messages sent after
-                  8pm will be delivered the next day by 8am. This affects
-                  MTN, GLO and 9Mobile
-                </span>
+                  Messages should be sent between 8am to 7pm (By NCC). Messages sent after
+                  7pm will be delivered the next day by 8am. This affects
+                  MTN, GLO and 9Mobile
+                </span> -->
                 <!-- <span>
                   Messages sent between <span class="text-secondary"> 8pm to 8am (Night
                   Messages)</span> will be delivered using the dedicated
@@ -710,18 +729,20 @@
         class="p-4 border-radius-20"
       >
         <div class="row">
-          <div class="col-md-12 d-flex flex-column justify-content-center align-items-center">
-            <div class="h2 fw-50 text-black" >Schedule SMS</div>
+          <div
+            class="col-md-12 d-flex flex-column justify-content-center align-items-center"
+          >
+            <div class="h2 fw-50 text-black">Schedule SMS</div>
             <div class="gray-text s-20 fw-400">Select Period</div>
           </div>
           <!-- <el-date-picker v-model="executionDate" type="datetime" class="w-100" placeholder="Select date and time" /> -->
           <div class="col-md-12">
             <input
-            type="datetime-local"
-            class="form-control my-3 py-4"
-            v-model="executionDate"
-            placeholder="Select date and time"
-          />
+              type="datetime-local"
+              class="form-control my-3 py-4"
+              v-model="executionDate"
+              placeholder="Select date and time"
+            />
           </div>
         </div>
         <template #footer>
@@ -738,7 +759,10 @@
                 </el-button>
               </div>
               <div class="col-md-12 d-flex justify-content-center mt-3">
-                <el-button @click="display = false" class="gray-text fw-400 text-dak border-0 w-50" round
+                <el-button
+                  @click="display = false"
+                  class="gray-text fw-400 text-dak border-0 w-50"
+                  round
                   >Cancel</el-button
                 >
               </div>

@@ -1016,7 +1016,7 @@
         </el-button>
         <div class="col-md-12">
           <label class="fw-500 s-24" for="add-note">Add Note</label>
-          <el-input :rows="5" class="w-100 " type="textarea" placeholder="Notes..." />
+          <el-input :rows="5" class="w-100 " v-model="addNote" type="textarea" placeholder="Notes..." />
         </div>
         
 
@@ -1102,6 +1102,7 @@ export default {
     const selectedIncomeAccount = ref("");
     const name = ref("");
     const selectedCashAccount = ref("");
+    const addNote = ref("");
     const cashBankAccount = ref([]);
     const offeringToAddDonor = ref(0);
     const donorBoolean = ref(false);
@@ -1331,6 +1332,7 @@ export default {
               : offObj.paymentChannel,
           donor: "",
           date: iSoStringFormat.value,
+          memo: addNote.value,
           activityID: selectedEventAttended.value.activityID,
           currencyID:
             currencyList.value && tenantCurrency.value
@@ -1524,6 +1526,7 @@ export default {
           name: i.name,
           financialContributionID: i.financialContributionID,
           date: i.date,
+          memo: i.memo,
           amount: toNumber ? toNumber : 0,
           paymentChannel: i.paymentChannel,
           activityID: i.activityID,
@@ -1580,6 +1583,7 @@ export default {
                 amount: i.amount,
                 contribution: i.contribution.name,
                 date: i.date,
+                memo: i.memo,
                 donor: `${i.person && i.person.firstName ? i.person.firstName : ""} ${
                   i.person && i.person.lastName ? i.person.lastName : ""
                 }`,
@@ -1590,7 +1594,7 @@ export default {
                 currencyName: currencyList.value.find((j) => j.id === i.currencyID).name,
               };
             });
-            console.log(contriTransact);
+            console.log(contriTransact, 'jjjjj');
             store.dispatch("contributions/newlyAddedContribution", contriTransact);
           })
           .catch((err) => {
@@ -1604,6 +1608,7 @@ export default {
           });
       } else {
         contributions[0].id = route.params.offId;
+        contributions[0].memo = addNote.value;
 
         console.log(contributions);
 
@@ -1772,11 +1777,13 @@ export default {
             activityID: data.activityID,
           };
           eventDate.value = data.date.split("T")[0];
+          addNote.value = data.memo
           offeringItem.value = [
             {
               name: data && data.contribution ? data.contribution.name : "",
               financialContributionID: data.financialContributionID,
               date: data.date.split("T")[0],
+              memo: data.memo,
               activityID: data.activityID,
               paymentChannel: data.paymentChannel,
               currencyID: data.currencyID,
@@ -1879,6 +1886,7 @@ export default {
       routeParams,
       addRemittance,
       paymentChannels,
+      addNote,
       remitance,
       deleteItem,
       incomeAccount,

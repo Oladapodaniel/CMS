@@ -1,9 +1,11 @@
 <script setup>
 import UserCircleIcon from '../../../../components/icons/UserCircleIcon.vue';
+import router from '../../../../router';
 
 const createAccount = () => {
   // Handle create account action
   console.log("Create account button clicked");
+  router.push('/store/createaccount')
 };
 </script>
 
@@ -80,10 +82,10 @@ const createAccount = () => {
               </el-button>
             </div>
             <div class="nav-item">
-              <a class="nav-link text-decoration-none text-dak d-flex align-items-center" href="#">
+              <router-link to="/store/login" class="nav-link text-decoration-none text-dak d-flex align-items-center" href="#">
                 <span>Login</span>
                 <span><UserCircleIcon /></span>
-              </a>
+              </router-link>
             </div>
           </div>
         </div>

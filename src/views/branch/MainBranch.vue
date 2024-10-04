@@ -532,6 +532,7 @@ import store from "../../store/store";
 import OrganizationChart from "primevue/organizationchart";
 import { ElMessage } from "element-plus";
 import { useRoute } from "vue-router";
+import swal from "sweetalert";
 export default {
   components: {
     PieChart,
