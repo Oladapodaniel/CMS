@@ -78,7 +78,7 @@
                     @change="setSelectedItem"
                     v-if="item.controlType === 1"
                   >
-                  <option disabled value="" selected>{{ item.label }}</option>
+                    <option disabled value="" selected>{{ item.label }}</option>
                     <option
                       v-for="(itm, index) in item.parameterValues.split(',')"
                       :key="index"
@@ -136,9 +136,11 @@
                     :placeholder="item.label"
                   />
                   <el-select-v2
-                  v-if="item.controlType === 11"
+                    v-if="item.controlType === 11"
                     v-model="item.data"
-                    :options="item.parameterValues.split(',').map((i) => ({ label: i, value: i }))"
+                    :options="
+                      item.parameterValues.split(',').map((i) => ({ label: i, value: i }))
+                    "
                     :placeholder="item.label"
                     class="w-100"
                     size="large"
@@ -329,7 +331,7 @@
 <script>
 import { ref, inject, computed, watchEffect } from "vue";
 import axios from "@/gateway/backendapi";
-import { ElMessage} from "element-plus";
+import { ElMessage } from "element-plus";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useRoute } from "vue-router";
 import { ElLoading } from "element-plus";
@@ -430,10 +432,10 @@ export default {
     };
     getSingleForm();
     const formattedDescription = computed(() => {
-  return singleFormData.value && singleFormData.value.description !== "null"
-    ? singleFormData.value.description
-    : "";
-});
+      return singleFormData.value && singleFormData.value.description !== "null"
+        ? singleFormData.value.description
+        : "";
+    });
 
     const triggerPayment = () => {
       paymentDialog.value = true;
@@ -725,7 +727,11 @@ export default {
             `/api/public/saveformdata?formID=${route.params.id}`,
             singleFormData.value.customAttributes.map((i) => ({
               customAttributeID: i.id,
-              data: i.data ? Array.isArray(i.data) ? i.data.join(",") : i.data : dropdownItem.value,
+              data: i.data
+                ? Array.isArray(i.data)
+                  ? i.data.join(",")
+                  : i.data
+                : dropdownItem.value,
               isRequired: i.isRequired,
             }))
           );
