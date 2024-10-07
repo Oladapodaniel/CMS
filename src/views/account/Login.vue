@@ -382,6 +382,7 @@ export default {
         localStorage.setItem("expiryDate", data.expiryTime);
         localStorage.setItem("roles", JSON.stringify(data.roles));
         localStorage.setItem("accountExpired", data?.subStatus?.toLowerCase() === 'expired' ? true : false);
+        localStorage.setItem("isVerified", JSON.stringify(data?.isVerified));
         if (data.roles.length > 0) {
           let roleIndex = data.roles.findIndex((i) => {
             return i.toLowerCase() == "family" || i.toLowerCase() == "mobileuser";
