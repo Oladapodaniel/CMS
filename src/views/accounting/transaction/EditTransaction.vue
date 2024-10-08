@@ -194,7 +194,7 @@
             <div class=" border rounded col-md-11 py-3 bg-white">
               <el-upload class="upload-demo col-md-12 mt-3 d-flex flex-column justify-content-center" action="" multiple
                 :on-remove="handleRemove" :show-file-list="true" :on-change="chooseFile" :limit="1" :auto-upload="false">
-                <el-button class="primary--text " >Select a file to upload</el-button>
+                <el-button class="primary--text " :loading="loadingFile">Select a file to upload</el-button>
                 <template #tip>
                   <div class="el-upload__tip text-center">
                     files with a size less than 3MB.
@@ -227,6 +227,7 @@ import SearchMember from "../../../components/search/SearchMember"
 import dateFormatter from "../../../services/dates/dateformatter";
 import store from "../../../store/store";
 import { ElMessage } from 'element-plus'
+import media_service from "../../../services/media/media_service";
 export default {
   components: { SearchMember },
   props: ["transactionDetails", "showEditTransaction", "gettingSelectedTrsn"],
@@ -243,6 +244,8 @@ export default {
     const transacObj = ref(props.transactionDetails);
     const splittedTransactions = ref([{ ...props.transactionDetails }])
     const savingAccount = ref(false);
+    const loadingFile = ref(false);
+    const fileResponse = ref(null);
 
     const amountRef = ref("");
     const descrp = ref("");
@@ -286,18 +289,6 @@ export default {
 
     const handleRemove = () => {
       selectedFileUrl.value = "";
-    }
-    const chooseFile = (e) => {
-      selectedFileUrl.value = ""
-      console.log(e)
-      if (e.raw.type.includes("image")) {
-        selectedFileUrl.value = URL.createObjectURL(e.raw);
-        fileImage.value = true;
-        console.log(selectedFileUrl.value, 'hhhhh');
-      } else {
-        fileImage.value = false;
-      }
-
     }
 
     const filterUncategorizedAsset = computed(() => {
@@ -629,6 +620,22 @@ export default {
       splittedTransactions.value.splice(index, 1);
     }
 
+    const chooseFile = async (e) => {
+    loadingFile.value = true;
+    let formData = new FormData();
+    formData.append("mediaFileImage", e.raw);
+    try {
+        let data = await media_service.uploadFileAndImage(formData);
+            console.log("uploaded file")
+            loadingFile.value = false;
+            fileResponse.value = data;
+    } catch (error) {
+        loadingFile.value = false;
+        console.log(error);
+    }
+}
+
+
     return {
       showAccount,
       iSoStringFormat,
@@ -679,7 +686,9 @@ export default {
       formIsValid,
       removeSplit,
       dateField,
-      savingAccount
+      savingAccount,
+      loadingFile,
+      fileResponse
     };
   },
 };
