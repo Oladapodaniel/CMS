@@ -1,5 +1,25 @@
 <script setup>
+import { inject, ref } from 'vue';
+import deviceBreakpoint from '../../mixins/deviceBreakpoint';
+import router from '../../router';
+import axios from 'axios';
 
+const primarycolor = inject('primarycolor');
+const displayDialog = ref(false);
+const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
+const sent = ref(false)
+
+const toggleDialog = () => displayDialog.value = !displayDialog.value;
+const updateProfile = () => router.push('/tenant/settings/profile');
+
+const verifyEmail = async () => {
+    try {
+        const response = await axios.post('endpoint to send otp')
+
+    } catch (error) {
+        console.error(error)
+    }
+}
 </script>
 
 <template>
@@ -8,10 +28,33 @@
             <h4 class="font-weight-600">Your email is not verified yet</h4>
             <div class="s-14">Limited feature use, <span class="font-weight-600">Verify to go unlimited!</span></div>
         </div>
-        <div class="cursor-pointer" @click="subscribeNow">
+        <div class="cursor-pointer" @click="toggleDialog">
             <el-button size="large" class="verify_button" round>Verify now</el-button>
         </div>
     </div>
+    <el-dialog v-model="displayDialog" title="" class="pastorsDialog "
+        :width="mdAndUp || lgAndUp || xlAndUp ? `40%` : `90%`" align-center>
+        <div class="d-flex justify-content-between px-4">
+            <h4 class="font-weight-700 verify_text" style="color: #1E1E1E">Verify email</h4>
+            <div class="s-16">oladapodaniel@gmail.com</div>
+        </div>
+        <div class="px-5 mt-4 mb-4" v-if="!sent">
+            <div class="s-16 text-center" style="color: #171717">By Verifying this email, you confirm
+                that your ChurchPlus Account be linked to it.
+            </div>
+            <div>
+                <el-button class="w-100 secondary-button mt-4" size="large" @click="updateProfile" round>Update email address</el-button>
+            </div>
+            <el-button class=" border-0 text-white mt-3 w-100" :color="primarycolor" size="large" round>Verify email now</el-button>
+        </div>
+        <div class="px-5 mt-4 mb-4" v-else>
+            <div class="s-16 text-center" style="color: #171717">A link to verify your account has been sent to your email
+            </div>
+            <div>
+                <el-button class="w-100 secondary-button mt-4" size="large" @click="displayDialog = false" round>Close</el-button>
+            </div>
+        </div>
+    </el-dialog>
 </template>
 
 <style scoped>
@@ -44,4 +87,8 @@
 .verify_button:hover {
     background-color: #e97e7e;
 }
+
+/* .verify_text {
+    color: "#000000" !important
+} */
 </style>
