@@ -188,22 +188,22 @@
         <div class="col-12 mt-1 modified">
           Transaction last modified on {{ new Date(Date.now()).toLocaleDateString() }}
         </div>
-        <!-- <div class="font-weight-bold col-md-12 mt-2">Receipt</div> -->
-        <!-- <div class="col-md-12 ">
+        <div class="font-weight-bold col-md-12 mt-2">Receipt</div>
+        <div class="col-md-12 ">
           <div class="row justify-content-center">
             <div class=" border rounded col-md-11 py-3 bg-white">
               <el-upload class="upload-demo col-md-12 mt-3 d-flex flex-column justify-content-center" action="" multiple
-                :on-remove="handleRemove" :show-file-list="true" :on-change="chooseFile" :limit="3">
+                :on-remove="handleRemove" :show-file-list="true" :on-change="chooseFile" :limit="1" :auto-upload="false">
                 <el-button class="primary--text " >Select a file to upload</el-button>
                 <template #tip>
                   <div class="el-upload__tip text-center">
-                    files with a size less than 6MB.
+                    files with a size less than 3MB.
                   </div>
                 </template>
               </el-upload>
             </div>
           </div>
-        </div> -->
+        </div>
         <div class="col-6 offset-sm-3 mb-2 mt-3">
           <div class=" text-center cpon">
             <el-button class=" text-white border-0 d-flex justify-content-center" :loading="savingAccount"
