@@ -80,8 +80,8 @@
                   >
                     <option disabled value="" selected>{{ item.label }}</option>
                     <option
-                      v-for="(itm, index) in item.parameterValues.split(',')"
-                      :key="index"
+                      v-for="(itm, indx) in item.parameterValues.split(',')"
+                      :key="indx"
                       :value="itm"
                     >
                       <p>{{ itm }}</p>
@@ -92,13 +92,13 @@
                     v-model="item.data"
                     size="large"
                   />
-                  <el-date-picker
+                  <CustomDatePicker 
                     v-if="item.controlType === 3"
-                    v-model="item.data"
-                    class="w-100"
-                    type="date"
-                    :placeholder="item.label"
-                    size="default"
+                    :value="item.data" 
+                    :label="item.label"
+                    class="w-100" 
+                    size="large"
+                    @date="setSelectedDate($event, index)"
                   />
                   <el-input
                     type="email"
@@ -336,7 +336,9 @@ import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useRoute } from "vue-router";
 import { ElLoading } from "element-plus";
 import swal from "sweetalert";
+import CustomDatePicker from "../../components/datetimepicker/CustomDatePicker.vue";
 export default {
+  components: { CustomDatePicker },
   setup() {
     const formName = ref("");
     const description = ref("");
@@ -830,6 +832,11 @@ export default {
       // }
     };
 
+    const setSelectedDate = (payload, index) => {
+      const parameters = singleFormData.value.customAttributes[index]
+      parameters.data = payload 
+    }
+
     return {
       formName,
       primarycolor,
@@ -876,6 +883,7 @@ export default {
       saveCustomField,
       triggerPayment,
       setSelectedItem,
+      setSelectedDate
     };
   },
 };
