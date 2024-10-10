@@ -86,7 +86,7 @@
         </div>
         <div class="row mb-4">
           <div class="col-12">
-            <div v-if="isVerified">
+            <div v-if="!isVerified">
               <UnverifiedAccount />
             </div>
             <div class="col-md-12 text-dark mb-2 day3" v-if="notifiedDays === 10">

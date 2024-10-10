@@ -2572,6 +2572,12 @@ const routes = [
             import( /* webpackChunkName: "mobile app deep link" */ '@/views/MobileAppDeepLink.vue'),
 
     },
+    {
+        path: '/verification',
+        name: 'VerifyAccount',
+        component: () =>
+            import( /* webpackChunkName: "verify churchplus account" */ '@/components/verification/VerifyAccount.vue'),
+    },
 ]
 
 const router = createRouter({
@@ -2620,7 +2626,8 @@ router.beforeEach((to, from, next) => {
             to.name === "CartItem" ||
             to.name === "CheckOut" ||
             to.name === "BookDetails" ||
-            to.name === "MobileAppDeepLink"
+            to.name === "MobileAppDeepLink" ||
+            to.name === "VerifyAccount"
         ) && !tokenIsValid
     ) {
         return next(true);
