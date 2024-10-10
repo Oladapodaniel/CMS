@@ -7,7 +7,17 @@
     </div>
   </div>
     <ThemeProvider>
+      <HandleCache ref="cacheBuster">
+    <template v-slot="{ isLoading, isLatestVersionAvailable }">
+      <h1 v-if="isLoading">Loading...</h1>
+      <div v-else-if="isLatestVersionAvailable">
       <router-view />
+    </div>
+      <template v-else>
+        {{ cacheBuster.clearCacheAndReload() }}
+      </template>
+    </template>
+  </HandleCache>
     </ThemeProvider>
 </template>
 
@@ -16,6 +26,7 @@ import ConnectionBar from "@/components/connectivity/ConnectionStatus.vue";
 import setupService from "./services/setup/setupservice";
 import mixin from "@/mixins/currentUser.mixin.js";
 import ThemeProvider from "./theme/ThemeProvider.vue";
+import HandleCache from '@/components/cache/HandleCache.vue';
 
 export default {
   name: "App",
@@ -23,12 +34,14 @@ export default {
   components: {
     ConnectionBar,
     ThemeProvider,
+    HandleCache
   },
   mixins: [mixin],
   data() {
     return {
       transitionName: null,
       alartRoute: true,
+      cacheBuster: null
     };
   },
   created() {

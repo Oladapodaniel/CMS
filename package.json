@@ -1,13 +1,14 @@
 {
   "name": "churchplus",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "engines": {
     "node": "16.x"
   },
   "scripts": {
+    "generate-build-version": "node generate-build-version",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "pnpm generate-build-version && vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
