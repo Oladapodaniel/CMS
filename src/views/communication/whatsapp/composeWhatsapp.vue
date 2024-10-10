@@ -811,10 +811,10 @@ export default {
 
       swal({
         position: "top-end",
-        title: "Success 🥳",
+        title: "Sending...",
         text: "Your Whatsapp message is being sent!",
         icon: "success",
-        timer: 1500
+        timer: 3000
       })
 
       // Reset data on page
