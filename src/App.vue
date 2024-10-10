@@ -9,7 +9,9 @@
     <ThemeProvider>
       <HandleCache ref="cacheBuster">
     <template v-slot="{ isLoading, isLatestVersionAvailable }">
-      <h1 v-if="isLoading">Loading...</h1>
+      <div v-if="isLoading" class="vh-100 d-flex justify-content-center align-items-center">
+        <GridLoader :loading="true" color="#136acd" size="20px" />
+      </div>
       <div v-else-if="isLatestVersionAvailable">
       <router-view />
     </div>
@@ -27,6 +29,7 @@ import setupService from "./services/setup/setupservice";
 import mixin from "@/mixins/currentUser.mixin.js";
 import ThemeProvider from "./theme/ThemeProvider.vue";
 import HandleCache from '@/components/cache/HandleCache.vue';
+import { GridLoader } from "vue3-spinner";
 
 export default {
   name: "App",
@@ -34,7 +37,8 @@ export default {
   components: {
     ConnectionBar,
     ThemeProvider,
-    HandleCache
+    HandleCache,
+    GridLoader
   },
   mixins: [mixin],
   data() {
