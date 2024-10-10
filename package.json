@@ -63,6 +63,7 @@
     "vue-qrcode": "^2.2.0",
     "vue-router": "^4.0.0-0",
     "vue-tel-input": "^6.0.5",
+    "vue3-spinner": "^0.0.17",
     "vuedraggable": "^4.1.0",
     "vuemoji-picker": "^0.1.4",
     "vuex": "^4.0.0-0",
