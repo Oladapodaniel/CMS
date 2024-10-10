@@ -8,7 +8,7 @@
   "scripts": {
     "generate-build-version": "node generate-build-version",
     "serve": "vue-cli-service serve",
-    "build": "pnpm generate-build-version && vue-cli-service build",
+    "build": "node generate-build-version && vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
