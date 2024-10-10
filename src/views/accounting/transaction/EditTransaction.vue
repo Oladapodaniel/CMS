@@ -185,23 +185,18 @@
         <div class="col-12 mt-4">
           <el-input v-model="transacObj.note" type="textarea" :rows="3" class="w-100" />
         </div>
-        <div class="col-12 mt-1 modified">
-          Transaction last modified on {{ new Date(Date.now()).toLocaleDateString() }}
-        </div>
-        <div class="font-weight-bold col-md-12 mt-2">Receipt</div>
         <div class="col-md-12 ">
           <div class="row justify-content-center">
-            <div class=" border rounded col-md-11 py-3 bg-white">
-              <el-upload class="upload-demo col-md-12 mt-3 d-flex flex-column justify-content-center" action="" multiple
-                :on-remove="handleRemove" :show-file-list="true" :on-change="chooseFile" :limit="1" :auto-upload="false">
-                <el-button class="primary--text " :loading="loadingFile">Select a file to upload</el-button>
+            <!-- <el-button class="mt-1" text>View uploaded file</el-button> -->
+              <el-upload class="col-md-12 mt-1 d-flex flex-column justify-content-center" action="" multiple
+                :on-remove="handleRemove" accept="image/*, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" :show-file-list="true" :on-change="chooseFile" :limit="1" :auto-upload="false">
+                <el-button class="primary--text bg-white" :loading="loadingFile">Select a file to upload</el-button>
                 <template #tip>
                   <div class="el-upload__tip text-center">
-                    files with a size less than 3MB.
+                    Accepts file with image and pdf files only
                   </div>
                 </template>
               </el-upload>
-            </div>
           </div>
         </div>
         <div class="col-6 offset-sm-3 mb-2 mt-3">
@@ -451,7 +446,9 @@ export default {
         debitAccountID: selectedCashAccount.value.id,
         memo: transacObj.value.memo,
         note: transacObj.value.note,
-        transactionNumber: props.transactionDetails.transactionNumber ? props.transactionDetails.transactionNumber : ""
+        transactionNumber: props.transactionDetails.transactionNumber ? props.transactionDetails.transactionNumber : "",
+        documentUrl: fileResponse.value?.pictureUrl,
+        documentBlobName: fileResponse.value?.imageBlobName
       }
       if (props.transactionDetails.id) {
         reqBody.id = props.transactionDetails.id;
@@ -509,7 +506,9 @@ export default {
             transactionNumber: props.transactionDetails.transactionNumber ? props.transactionDetails.transactionNumber : "",
             amount: Math.abs(+transacObj.value.amount),
             // amount: Math.abs(+transacObj.value.amount),
-            category: "outflow"
+            category: "outflow",
+            documentUrl: fileResponse.value?.pictureUrl,
+            documentBlobName: fileResponse.value?.imageBlobName
           }
 
           if (props.transactionDetails.id) {
