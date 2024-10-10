@@ -238,6 +238,34 @@
             </el-form-item>
             <el-form-item>
               <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
+                <div class="mr-3 s-18 fw-500 text-dak text-head">Wedding Anniversary</div>
+                <div class="input-width d-flex">
+                  <el-select-v2
+                    v-model="firstTimersObj.dayOfWedding"
+                    :options="day.map((i) => ({ label: i, value: i }))"
+                    placeholder="Day"
+                    size="large"
+                    class="w-100 mr-1"
+                  />
+                  <el-select-v2
+                    v-model="monthOfWedding"
+                    :options="month.map((i) => ({ label: i, value: i }))"
+                    placeholder="Month"
+                    size="large"
+                    class="w-100 ml-1"
+                  />
+                  <el-select-v2
+                    v-model="firstTimersObj.yearOfWedding"
+                    :options="year.map((i) => ({ label: i, value: i }))"
+                    placeholder="Year"
+                    size="large"
+                    class="w-100 ml-1"
+                  />
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="d-flex flex-column flex-lg-row justify-content-end w-100">
                 <label for="firstName" class="mr-3 s-18 fw-500 text-dak text-head"
                   >Person to follow-up</label
                 >
@@ -965,6 +993,7 @@ export default {
     };
 
     const birthMonth = ref();
+    const monthOfWedding = ref();
 
     const hideCelebTab = ref(true);
     const hideAddInfoTab = ref(true);
@@ -1022,6 +1051,16 @@ export default {
       formData.append(
         "birthYear",
         firstTimersObj.value && firstTimersObj.value.birthYear ? firstTimersObj.value.birthYear : 0
+      );
+
+      formData.append(
+        "dayOfWedding",
+        firstTimersObj.value && firstTimersObj.value.dayOfWedding ? firstTimersObj.value.dayOfWedding : 0
+      );
+      
+      formData.append(
+        "yearOfWedding",
+        firstTimersObj.value && firstTimersObj.value.yearOfWedding ? firstTimersObj.value.yearOfWedding : 0
       );
       formData.append(
         "maritalStatusId",
@@ -1162,6 +1201,59 @@ export default {
         case "December":
           formData.append("birthMonth", "12");
           // firstTimersObj.value.birthMonth = "12";
+          break;
+        default:
+          break;
+      }
+
+      switch (monthOfWedding.value) {
+        case "January":
+          formData.append("monthOfWedding", "1");
+          // firstTimersObj.value.monthOfWedding = "1";
+          break;
+        case "February":
+          formData.append("monthOfWedding", "2");
+          // firstTimersObj.value.monthOfWedding = "2";
+          break;
+        case "March":
+          formData.append("monthOfWedding", "3");
+          // firstTimersObj.value.monthOfWedding = "3";
+          break;
+        case "April":
+          formData.append("monthOfWedding", "4");
+          // firstTimersObj.value.monthOfWedding = "4";
+          break;
+        case "May":
+          formData.append("monthOfWedding", "5");
+          // firstTimersObj.value.monthOfWedding = "5";
+          break;
+        case "June":
+          formData.append("monthOfWedding", "6");
+          // firstTimersObj.value.monthOfWedding = "6";
+          break;
+        case "July":
+          formData.append("monthOfWedding", "7");
+          // firstTimersObj.value.monthOfWedding = "7";
+          break;
+        case "August":
+          formData.append("monthOfWedding", "8");
+          // firstTimersObj.value.monthOfWedding = "8";
+          break;
+        case "September":
+          formData.append("monthOfWedding", "9");
+          // firstTimersObj.value.monthOfWedding = "9";
+          break;
+        case "October":
+          formData.append("monthOfWedding", "10");
+          // firstTimersObj.value.monthOfWedding = "10";
+          break;
+        case "November":
+          formData.append("monthOfWedding", "11");
+          // firstTimersObj.value.monthOfWedding = "11";
+          break;
+        case "December":
+          formData.append("monthOfWedding", "12");
+          // firstTimersObj.value.monthOfWedding = "12";
           break;
         default:
           break;
@@ -1919,6 +2011,7 @@ export default {
       contactOwner,
       cancelGroupModal,
       chooseGroup,
+      monthOfWedding
     };
   },
 };
