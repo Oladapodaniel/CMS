@@ -45,7 +45,7 @@ const verifyEmail = async () => {
 <template>
     <div class="col-md-12 mb-1 verify_email">
         <div>
-            <h4 class="font-weight-600">Your email is not verified yet</h4>
+            <h4 class="font-weight-600 line-height">Your email is not verified yet</h4>
             <div class="s-14">Limited feature use, <span class="font-weight-600">Verify to go unlimited!</span></div>
         </div>
         <div class="cursor-pointer" @click="toggleDialog">
@@ -63,9 +63,9 @@ const verifyEmail = async () => {
                 that your ChurchPlus Account be linked to it.
             </div>
             <div>
-                <el-button class="w-100 secondary-button mt-4" size="large" @click="updateProfile" round>Update email address</el-button>
+                <el-button class=" border-0 text-white mt-3 w-100" :color="primarycolor" size="large" @click="verifyEmail" :loading="verifying" round>Verify email now</el-button>
             </div>
-            <el-button class=" border-0 text-white mt-3 w-100" :color="primarycolor" size="large" @click="verifyEmail" :loading="verifying" round>Verify email now</el-button>
+            <el-button class="w-100 secondary-button mt-4" size="large" @click="updateProfile" round>Update email address</el-button>
         </div>
         <div class="px-5 mt-4 mb-4" v-else>
             <div class="s-16 text-center" style="color: #171717">A link to verify your account has been sent to your email
@@ -89,7 +89,7 @@ const verifyEmail = async () => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 30px 20px;
+    padding: 20px 10px;
 }
 
 .verify_button {
@@ -107,6 +107,11 @@ const verifyEmail = async () => {
 .verify_button:hover {
     background-color: #e97e7e;
 }
+
+.line-height{
+    line-height: 14px
+}
+
 
 /* .verify_text {
     color: "#000000" !important
