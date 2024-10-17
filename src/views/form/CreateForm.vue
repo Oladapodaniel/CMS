@@ -762,6 +762,21 @@ export default {
     const pledgeCategory = ref("specific");
     const paymentType = ref(false);
 
+    const editorConfig = ref({
+      toolbar: {
+        items: [
+          'heading', '|',
+          'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|',
+          'blockQuote', 'insertTable', '|',
+          'undo', 'redo'
+        ]
+      },
+      language: 'en',
+      table: {
+        contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+      }
+    });
+
     const responseType = ref([
       { name: "Text", id: 0 },
       { name: "DropdownList", id: 1 },
@@ -1306,6 +1321,7 @@ export default {
       editorData,
       DecoupledEditor,
       onReady,
+      editorConfig,
       reorderCustomField,
       previewForm,
       chooseFile,

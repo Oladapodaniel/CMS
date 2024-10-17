@@ -14,9 +14,7 @@
     </div>
     <div class="row mt-4 border rounded">
       <div class="col-md-12 col-sm-12 col-lg-12 px-0 mt-3 mb-4">
-        <div class=" fw-400 h5 p-4 my-0 text-dak">
-          Attendance and Check-in Details
-        </div>
+        <div class="fw-400 h5 p-4 my-0 text-dak">Attendance and Check-in Details</div>
       </div>
       <div class="row m-auto">
         <div class="col-md-8 offset">
@@ -95,7 +93,8 @@
       </div>
       <div class="row w-100" v-if="eventRegLink">
         <div
-          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded" style="background: #F4FDFF;"
+          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+          style="background: #f4fdff"
         >
           <div class="row">
             <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
@@ -146,7 +145,8 @@
       </div>
       <div class="row w-100 mt-3">
         <div
-          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded" style="background: #F8F8F8;"
+          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+          style="background: #f8f8f8"
         >
           <div class="row">
             <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
@@ -196,34 +196,35 @@
       </div>
       <div class="col-md-12 mb-3"></div>
       <div class="row w-100" v-if="!route.query.fromBranch">
-        <div
-          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded" style="background: #F4FDFF;"
+        <router-link
+          class="text-decoration-none col-md-12 px-0 text-dak link-color"
+          :to="{
+            name: 'MarkAttendance',
+            query: { id: route.query.id },
+          }"
         >
-          <div class="row">
-            <div class="col-md-2 col-sm-2 image mt-3">
-              <img src="../../../assets/group1.svg" alt="marked Attendance image" />
-            </div>
-            <div class="col-md-10 col-sm-10 mt-3">
-              <h5 class="fw-400 text-dak">
-                <router-link
-                  class="text-decoration-none text-dak link-color"
-                  :to="{
-                    name: 'MarkAttendance',
-                    query: { id: route.query.id },
-                  }"
-                  >Manual Attendance Check-in</router-link
-                >
-              </h5>
-              <p class="para">Manually check in registered members.</p>
+          <div
+            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+            style="background: #f4fdff"
+          >
+            <div class="row">
+              <div class="col-md-2 col-sm-2 image mt-3">
+                <img src="../../../assets/group1.svg" alt="marked Attendance image" />
+              </div>
+              <div class="col-md-10 col-sm-10 mt-3">
+                <h5 class="fw-400 text-dak">Manual Attendance Check-in ></h5>
+                <p class="para">Manually check in registered members.</p>
+              </div>
             </div>
           </div>
-        </div>
+        </router-link>
       </div>
       <div class="col-md-12 mb-3"></div>
 
       <div class="row w-100">
         <div
-          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded" style="background: #F8F8F8;"
+          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+          style="background: #f8f8f8"
         >
           <div class="row">
             <div class="col-md-2 col-sm-2 image mt-3">
@@ -235,7 +236,9 @@
             </div>
             <div class="col-md-10 col-sm-10 mt-3">
               <h5 class="fw-400 text-dak">
-                <a class="text-decoration-none text-dak link-color">Family Registration</a>
+                <a class="text-decoration-none text-dak link-color"
+                  >Family Registration</a
+                >
               </h5>
               <p class="para">Register your family members for this event</p>
               <p class="para">
@@ -266,7 +269,8 @@
 
       <div class="row w-100 c-pointer mt-3" @click="routeToChildCheckin">
         <div
-          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded" style="background: #F4FDFF;"
+          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+          style="background: #f4fdff"
         >
           <div class="row">
             <div class="col-md-2 col-sm-2 image mt-3">
@@ -317,25 +321,27 @@
     </div> -->
       <div class="col-md-12 mb-3"></div>
       <div class="row w-100">
-        <div
-          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded" style="background: #F8F8F8;"
+        <router-link
+          class="text-decoration-none col-md-12 px-0 text-dak link-color"
+          :to="{ name: 'SMSCheckin', query: { id: route.query.id } }"
         >
-          <div class="row">
-            <div class="col-md-2 col-sm-2 image mt-3">
-              <img src="../../../assets/group.svg" alt="marked Attendance image" />
-            </div>
-            <div class="col-md-10 col-sm-10 mt-3">
-              <h5 class="fw-400 text-dak">
-                <router-link
-                  class="text-decoration-none text-dak link-color"
-                  :to="{ name: 'SMSCheckin', query: { id: route.query.id } }"
-                  >SMS</router-link
-                >
-              </h5>
-              <p class="para">SMS number for marking attendance through mobile phones.</p>
+          <div
+            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+            style="background: #f8f8f8"
+          >
+            <div class="row">
+              <div class="col-md-2 col-sm-2 image mt-3">
+                <img src="../../../assets/group.svg" alt="marked Attendance image" />
+              </div>
+              <div class="col-md-10 col-sm-10 mt-3">
+                <h5 class="fw-400 text-dak">SMS</h5>
+                <p class="para">
+                  SMS number for marking attendance through mobile phones.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        </router-link>
       </div>
       <div class="row w-100">
         <div
@@ -344,17 +350,16 @@
       </div>
       <div class="row w-100 mt-3">
         <div
-          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded" style="background: #F4FDFF;"
+          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border cursor-pointer rounded"
+          @click="showAdditionalField"
+          style="background: #f4fdff"
         >
           <div class="row">
             <div class="col-md-2 col-sm-2 image mt-3">
               <img src="../../../assets/group1.svg" alt="marked Attendance image" />
             </div>
             <div class="col-md-10 col-sm-10 mt-3">
-              <h5
-                class="fw-400 text-dak mt-3 text-primary cursor-pointer"
-                @click="showAdditionalField"
-              >
+              <h5 class="fw-400 text-dak mt-3 text-primary cursor-pointer">
                 Additional Custom Field
               </h5>
             </div>
@@ -406,7 +411,8 @@
 
       <div class="row w-100" style="opacity: 0.3">
         <div
-          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded" style="background: #F4FDFF;"
+          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+          style="background: #f4fdff"
         >
           <div class="row">
             <div class="col-md-2 col-sm-2 image mt-3">
@@ -434,7 +440,7 @@
         align-center
       >
         <div class="d-flex align-items-center flex-column">
-         <h5 class="text-capitalize font-weight">Checkin QR Code</h5>
+          <h5 class="text-capitalize font-weight">Checkin QR Code</h5>
         </div>
         <div class="d-flex justify-content-center">
           <div class="img-wrapper">
@@ -467,7 +473,7 @@
 </template>
 
 <script>
-import MultiSelect from "primevue/multiselect";
+// import MultiSelect from "primevue/multiselect";
 import { useRoute } from "vue-router";
 import { computed, ref } from "vue";
 import attendanceservice from "../../../services/attendance/attendanceservice";
@@ -477,8 +483,6 @@ import router from "../../../router";
 import { ElMessage } from "element-plus";
 
 export default {
-  components: { MultiSelect },
-
   setup() {
     const route = useRoute();
     const groups = ref([]);

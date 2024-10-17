@@ -369,7 +369,7 @@
         <div class="row">
           <div class="col-12 py-2">
             <div class="d-flex justify-content-between align-items-center">
-              <div class="mt-2 fw-500 s-24 col-md-4 text-center">Paid Event details</div>
+              <div class="mt-2 fw-500 s-24 col-md-4 text-center">More Event details</div>
               <!-- <hr style="width: 80%" /> -->
               <el-divider class="col-md-6"></el-divider>
               <div class="col-md-12">
@@ -391,8 +391,7 @@
           <el-collapse-transition class="col-md-12">
             <div v-show="templateDisplay">
               <div class="container-fluid">
-                
-                <div class="row   mt-4">
+                <div class="row mt-4">
                   <!-- <div class="col-sm-3 col-md-1 text-sm-right"></div> -->
                   <div
                     class="col-sm-3 col-md-3 text-head fw-500 s-18 text-dak text-sm-right"
@@ -410,10 +409,18 @@
 
                   <div class="col-sm-3 col-md-3 text-sm-right"></div>
                   <div class="col-sm-7 col-md-6 col-lg-5">
-                    <div class="col-md-12 mt-4 px-0" @click="openPaymentModal">
-                      <u class="primary--text text-head font-weight-600 cursor-pointer"
+                    <div
+                      class="col-md-12 mt-4 d-flex flex-wrap justify-content-between cursor-pointer px-0"
+                      @click="openPaymentModal"
+                    >
+                      <u class="primary--text text-head font-weight-600"
                         >Set up Payment Gateway now
                       </u>
+                      <span
+                        v-if="accountName"
+                        class="primary--text text-head s-12 font-weight-500"
+                        >{{ accountName }}</span
+                      >
                     </div>
                     <div class="col-md-12"></div>
                     <!-- <div class="row">
@@ -634,101 +641,100 @@
                     </div>
                   </el-collapse-transition> -->
                 </div>
-              </div>
-              <!-- <div class="transition-box">el-collapse-transition</div>
-              <div class="transition-box">el-collapse-transition</div> -->
-            </div>
-          </el-collapse-transition>
-        </div>
-        <!-- <div class="container-fluid"> -->
-        <div class="row my-3">
-          <div class="col-sm-3 col-md-3 text-sm-right align-self-center">
-            <label for="" class="fw-500 s-18 text-head text-dak">Slot</label>
-          </div>
-          <div class="col-sm-7 col-md-7">
-            <el-input
-              type="number"
-              class="w-100"
-              v-model="slot"
-              placeholder="slot available"
-            />
-          </div>
-        </div>
-        <!-- </div> -->
-        <div class="row mt-3">
-          <div class="col-sm-3 col-md-3 text-sm-right align-self-center"></div>
-          <div class="col-sm-7 col-md-7 d-flex mt-2">
-            <div class="row">
-              <div class="col-md-12 my-4 fw-400">
-                Kindly add default message for checkin & Registration
-              </div>
-              <div class="col-md-6">
-                <div class="col-md-12 text-head font-weight-600 s-18">SMS</div>
-                <el-tabs type="border-card">
-                  <el-tab-pane label="Checkin">
-                    <SenderIdVue @setselectedsenderid="setSelectedSenderIdCheckin" />
+                <div class="row my-3">
+                  <div class="col-sm-3 col-md-3 text-sm-right align-self-center">
+                    <label for="" class="fw-500 s-18 text-head text-dak">Slot</label>
+                  </div>
+                  <div class="col-sm-7 col-md-7">
                     <el-input
-                      v-model="checkinSMS"
-                      :rows="4"
-                      type="textarea"
-                      class="mt-2"
+                      type="number"
+                      class="w-100"
+                      v-model="slot"
+                      placeholder="slot available"
                     />
-                  </el-tab-pane>
-                  <el-tab-pane label="Registration">
-                    <SenderIdVue @setselectedsenderid="setSelectedSenderIdRegistration" />
-                    <el-input
-                      v-model="registrationSMS"
-                      :rows="4"
-                      type="textarea"
-                      class="mt-2"
-                    />
-                  </el-tab-pane>
-                </el-tabs>
-              </div>
-              <div class="col-md-6">
-                <div class="col-md-12 mt-3 mt-md-0 text-head font-weight-600 s-18">
-                  Email
+                  </div>
                 </div>
-                <el-tabs type="border-card">
-                  <el-tab-pane label="Checkin">
-                    <div class="col-md-12 my-2"></div>
-                    <el-input
-                      v-model="checkinEmailSubject"
-                      type="text "
-                      placeholder="Enter subject"
-                      class="mt-2"
-                    />
-                    <div class="col-md-12 my-4"></div>
-                    <el-input
-                      v-model="checkinEmail"
-                      :rows="4"
-                      type="textarea"
-                      class="mt-2"
-                    />
-                  </el-tab-pane>
-                  <el-tab-pane label="Registration">
-                    <el-input
-                      v-model="registrationEmailSubject"
-                      placeholder="Enter subject"
-                      type="text"
-                      class="mt-2"
-                    />
-                    <div class="col-md-12 my-5"></div>
-                    <el-input
-                      v-model="registrationEmail"
-                      :rows="4"
-                      type="textarea"
-                      class="mt-2"
-                    />
-                  </el-tab-pane>
-                </el-tabs>
-              </div>
-            </div>
-          </div>
+                <!-- </div> -->
+                <div class="row mt-3">
+                  <div class="col-sm-3 col-md-3 text-sm-right align-self-center"></div>
+                  <div class="col-sm-7 col-md-7 d-flex mt-2">
+                    <div class="row">
+                      <div class="col-md-12 my-4 fw-400">
+                        Kindly add default message for checkin & Registration
+                      </div>
+                      <div class="col-md-6">
+                        <div class="col-md-12 text-head font-weight-600 s-18">SMS</div>
+                        <el-tabs type="border-card">
+                          <el-tab-pane label="Checkin">
+                            <SenderIdVue
+                              @setselectedsenderid="setSelectedSenderIdCheckin"
+                            />
+                            <el-input
+                              v-model="checkinSMS"
+                              :rows="4"
+                              type="textarea"
+                              class="mt-2"
+                            />
+                          </el-tab-pane>
+                          <el-tab-pane label="Registration">
+                            <SenderIdVue
+                              @setselectedsenderid="setSelectedSenderIdRegistration"
+                            />
+                            <el-input
+                              v-model="registrationSMS"
+                              :rows="4"
+                              type="textarea"
+                              class="mt-2"
+                            />
+                          </el-tab-pane>
+                        </el-tabs>
+                      </div>
+                      <div class="col-md-6">
+                        <div
+                          class="col-md-12 mt-3 mt-md-0 text-head font-weight-600 s-18"
+                        >
+                          Email
+                        </div>
+                        <el-tabs type="border-card">
+                          <el-tab-pane label="Checkin">
+                            <div class="col-md-12 my-2"></div>
+                            <el-input
+                              v-model="checkinEmailSubject"
+                              type="text "
+                              placeholder="Enter subject"
+                              class="mt-2"
+                            />
+                            <div class="col-md-12 my-4"></div>
+                            <el-input
+                              v-model="checkinEmail"
+                              :rows="4"
+                              type="textarea"
+                              class="mt-2"
+                            />
+                          </el-tab-pane>
+                          <el-tab-pane label="Registration">
+                            <el-input
+                              v-model="registrationEmailSubject"
+                              placeholder="Enter subject"
+                              type="text"
+                              class="mt-2"
+                            />
+                            <div class="col-md-12 my-5"></div>
+                            <el-input
+                              v-model="registrationEmail"
+                              :rows="4"
+                              type="textarea"
+                              class="mt-2"
+                            />
+                          </el-tab-pane>
+                        </el-tabs>
+                      </div>
+                    </div>
+                  </div>
 
-          <!-- <div class="col-sm-2 col-lg-3"></div> -->
+                  <!-- <div class="col-sm-2 col-lg-3"></div> -->
 
-          <!-- <div
+                  <!-- <div
                     class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-3 align-self-center"
                   >
                     <label for="" class="font-weight-600">Email</label>
@@ -766,32 +772,41 @@
                     </el-tabs>
                   </div> -->
 
-          <!-- <div class="col-sm-2 col-lg-3"></div>s -->
+                  <!-- <div class="col-sm-2 col-lg-3"></div>s -->
 
-          <div class="col-sm-3 col-md-3 text-sm-right mt-3 align-self-center">
-            <label for="" class="text-head fw-500 s-18 text-dak">Cut-off time</label>
-          </div>
-          <div class="col-sm-7 col-md-7 mt-4">
-            <el-tabs type="border-card">
-              <el-tab-pane label="Checkin">
-                <input
-                  type="datetime-local"
-                  class="form-control my-3"
-                  v-model="checkinCutOffTime"
-                />
-              </el-tab-pane>
-              <el-tab-pane label="Registration">
-                <input
-                  type="datetime-local"
-                  class="form-control my-3"
-                  v-model="regCutOffTimer"
-                />
-              </el-tab-pane>
-            </el-tabs>
-          </div>
+                  <div class="col-sm-3 col-md-3 text-sm-right mt-3 align-self-center">
+                    <label for="" class="text-head fw-500 s-18 text-dak"
+                      >Cut-off time</label
+                    >
+                  </div>
+                  <div class="col-sm-7 col-md-7 mt-4">
+                    <el-tabs type="border-card">
+                      <el-tab-pane label="Checkin">
+                        <input
+                          type="datetime-local"
+                          class="form-control my-3"
+                          v-model="checkinCutOffTime"
+                        />
+                      </el-tab-pane>
+                      <el-tab-pane label="Registration">
+                        <input
+                          type="datetime-local"
+                          class="form-control my-3"
+                          v-model="regCutOffTimer"
+                        />
+                      </el-tab-pane>
+                    </el-tabs>
+                  </div>
 
-          <div class="col-sm-2 col-lg-3"></div>
+                  <div class="col-sm-2 col-lg-3"></div>
+                </div>
+              </div>
+              <!-- <div class="transition-box">el-collapse-transition</div>
+              <div class="transition-box">el-collapse-transition</div> -->
+            </div>
+          </el-collapse-transition>
         </div>
+        <!-- <div class="container-fluid"> -->
 
         <div class="row my-3">
           <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right"></div>
@@ -892,24 +907,26 @@
                 @blur="resolveCustomerDetail"
               />
             </div>
-            <div class="col-md-8 col-11 mt-3">
-              <label class="fw-500 text-head s-18" for=""> Account Name </label>
-              <el-input
-                type="text"
-                class="w-100 input-height"
-                placeholder="account name"
-                v-model="accountName"
-                ref="accNameRef"
-                disabled
-              />
-            </div>
-            <div class="col-sm-2 col-lg-3 align-self-center mt-4" v-if="loading">
-              <div
-                class="spinner-border text-primary"
-                style="width: 3rem; height: 3rem"
-                role="status"
-              >
-                <span class="sr-only">Loading...</span>
+            <div class="col-md-8 col-11 mt-3 d-flex">
+              <div>
+                <label class="fw-500 text-head s-18" for=""> Account Name </label>
+                <el-input
+                  type="text"
+                  class="w-100 input-height"
+                  placeholder="account name"
+                  v-model="accountName"
+                  ref="accNameRef"
+                  disabled
+                />
+              </div>
+              <div class="align-self-center mt-4" v-if="loading">
+                <div
+                  class="spinner-border text-primary"
+                  style="width: 2rem; height: 2rem"
+                  role="status"
+                >
+                  <span class="sr-only">Loading...</span>
+                </div>
               </div>
             </div>
             <div class="col-md-8 col-11 mt-3">
@@ -982,7 +999,7 @@
                 @click="Contiue"
                 round
                 :color="primarycolor"
-                class="text-white w-100"
+                class="text-white py-4 w-100"
                 >Continue</el-button
               >
             </div>
