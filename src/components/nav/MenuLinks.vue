@@ -596,7 +596,18 @@ export default {
     }
     
     const disableNav = (id) => {
-      return getUser?.value?.subStatus?.toLowerCase() === 'expired' ? id !== 3 && id !== 1 ? true : false : false
+      if (getUser?.value?.subStatus?.toLowerCase() === 'expired' && (id !== 3 && id !== 1)) {
+        return true
+      } else {
+        // If user is on free plan, disable some features
+        if (getUser.value?.subscriptionName?.toLowerCase() === 'free plan' && 
+            (id === 4 || id === 5 || id === 6 || id === 7)) {
+          return true
+        } else {
+          console.log(id,'getUser')
+          return false
+        }
+      }
     }
 
     watchEffect(() => {
