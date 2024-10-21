@@ -13,38 +13,43 @@
     </div>
     <div class="row">
       <div class="col-md-12 px-0 mt-3">
-        <Table :data="workflows" :headers="headers" :checkMultipleItem="false" v-loading="loading">
-          <template v-slot:name="{ item }">
-            <div class="c-pointer">
-              <router-link class="text-decoration-none text-primary font-weight-700"
-                :to="`/tenant/workflow/add?workflowId=${item.id}&fw=true`">
-                {{ item.name }}
-              </router-link>
-            </div>
-          </template>
-          <template v-slot:isActive="{ item }">
-            <div class="c-pointer">
-              <router-link class="text-decoration-none text-primary font-weight-700"
-                :to="`/tenant/workflow/add?workflowId=${item.id}&fw=true`">
-                {{ item.isActive ? "Yes" : "No" }}
-              </router-link>
-            </div>
-          </template>
-          <template v-slot:action="{ item }">
-            <div class="c-pointer">
-              <el-icon class="text-danger" @click="confirmDelete(item.id)">
-                <Delete />
-              </el-icon>
-            </div>
-          </template>
-        </Table>
+        <div v-if="workflows.length > 0">
+          <Table :data="workflows" :headers="headers" :checkMultipleItem="false">
+            <template v-slot:name="{ item }">
+              <div class="c-pointer">
+                <router-link class="text-decoration-none text-primary font-weight-700"
+                  :to="`/tenant/workflow/add?workflowId=${item.id}&fw=true`">
+                  {{ item.name }}
+                </router-link>
+              </div>
+            </template>
+            <template v-slot:isActive="{ item }">
+              <div class="c-pointer">
+                <router-link class="text-decoration-none text-primary font-weight-700"
+                  :to="`/tenant/workflow/add?workflowId=${item.id}&fw=true`">
+                  {{ item.isActive ? "Yes" : "No" }}
+                </router-link>
+              </div>
+            </template>
+            <template v-slot:action="{ item }">
+              <div class="c-pointer">
+                <el-icon class="text-danger" @click="confirmDelete(item.id)">
+                  <Delete />
+                </el-icon>
+              </div>
+            </template>
+          </Table>
+        </div>
+        <div v-else>
+          <div class="font-weight-700">No workflow created yet</div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
+import { ref } from "vue";
 import workflowFunctions from "../utlity/workflow_service";
 import axios from "@/gateway/backendapi";
 import router from "../../../router";
@@ -75,7 +80,6 @@ export default {
       try {
         loading.value = true;
         const { returnObject: data } = await workflowFunctions.getWorkflows();
-        console.log(data);
         workflows.value = data;
         loading.value = false;
       } catch (error) {

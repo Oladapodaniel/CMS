@@ -1688,7 +1688,7 @@ const routes = [
                 component: () =>
                     import( /* webpackChunkName: "workflows" */ '../views/workflow/pages/Workflows.vue'),
                 meta: {
-                    title: 'Churchplus - Add Workflow',
+                    title: 'Churchplus - Workflow',
                 }
             },
             {
