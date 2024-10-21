@@ -30,10 +30,6 @@
                       {{ planUserIs }}
                     </div>
                     <div>
-                      <router-link
-                        :to="{ name: 'Subscription' }"
-                        class="mt-1 no-decoration"
-                      >
                         <el-button
                           :color="!buttonTextCheck.color ? primarycolor : ''"
                           :class="[
@@ -43,13 +39,13 @@
                               'border-0  bg-danger': notifiedDays <= 4,
                             },
                           ]"
+                          @click="checkIfVerified"
                           round
                         >
                           <p class="mb-0" :class="[buttonTextCheck.color]">
                             {{ buttonTextCheck.text }}
                           </p>
                         </el-button>
-                      </router-link>
                     </div>
                   </div>
                 </div>
@@ -87,7 +83,7 @@
         <div class="row mb-4">
           <div class="col-12">
             <div v-if="!isVerified">
-              <UnverifiedAccount />
+              <UnverifiedAccount :triggerDialog="triggerDialog" @cleartrigger="clearTrigger" />
             </div>
             <div class="col-md-12 text-dark mb-2 day3" v-if="notifiedDays === 10">
               <div>
@@ -1331,6 +1327,7 @@ export default {
     ]);
 
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
+    const triggerDialog = ref(false);
 
     const celebHeaders = ref([
       { name: "NAME", value: "name" },
@@ -1758,6 +1755,19 @@ export default {
       }
     })
 
+    const checkIfVerified = () => {
+      if (!isVerified.value) {
+        triggerDialog.value = true;
+      } else {
+        router.push({ name: 'Subscription' })
+        triggerDialog.value = false;
+      }
+    }
+
+    const clearTrigger = () => {
+      triggerDialog.value = false
+    }
+
     return {
       celebrations,
       attendanceBooleanMont,
@@ -1842,7 +1852,10 @@ export default {
       routeToTransaction,
       routeToWelcomeOnboard,
       routeToPayment,
-      isVerified
+      isVerified,
+      triggerDialog,
+      checkIfVerified,
+      clearTrigger
     };
   },
 };

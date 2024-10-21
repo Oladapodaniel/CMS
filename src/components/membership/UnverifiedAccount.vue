@@ -1,5 +1,5 @@
 <script setup>
-import { computed, inject, ref } from 'vue';
+import { computed, inject, ref, watchEffect } from 'vue';
 import deviceBreakpoint from '../../mixins/deviceBreakpoint';
 import router from '../../router';
 import axios from '@/gateway/backendapi';
@@ -17,6 +17,9 @@ const email = computed(() => {
     if (localStorage.getItem('email')) return localStorage.getItem('email')
     return "";
 })
+
+const { triggerDialog } = defineProps(['triggerDialog']);
+const emit = defineEmits(['cleartrigger'])
 
 const getUser = computed(() => {
       if (
@@ -40,6 +43,14 @@ const verifyEmail = async () => {
         console.error(error)
     }
 }
+
+watchEffect(() => {
+    console.log(triggerDialog, 'ee')
+    if (triggerDialog) {
+        displayDialog.value = true;
+        emit('cleartrigger')
+    }
+})
 </script>
 
 <template>
