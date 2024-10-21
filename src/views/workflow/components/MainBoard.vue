@@ -332,7 +332,7 @@
 </template>
 
 <script>
-import { ref, } from "@vue/reactivity";
+import { ref, } from "vue";
 // import {  watchEffect, } from "vue";
 import { inject } from "@vue/runtime-core";
 import GivingAmount from "./triggers/GivingAmount";
