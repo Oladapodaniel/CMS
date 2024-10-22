@@ -366,6 +366,26 @@
             </div>
           </div>
         </div>
+        <div class="row my-3">
+          <div class="col-sm-3 col-md-3 col-lg-3 text-sm-right">
+            <label for="" class="fw-500 s-18 text-head text-dak"
+              >Is this a paid event?</label
+            >
+          </div>
+          <div class="col-sm-7 col-md-7 d-flex">
+            <el-checkbox v-model="markAsPaid" />
+            <span class="font-weight-500 s-18">Mark as Paid Event</span>
+          </div>
+        </div>
+        <div class="row my-3" v-if="markAsPaid">
+          <div class="col-sm-3 col-md-3 col-lg-3 text-sm-right">
+            <label for="" class="fw-500 s-18 text-head text-dak">Amount</label>
+          </div>
+          <div class="col-sm-7 col-md-7">
+            <el-input type="text" class="w-100" placeholder=" Amount" v-model="amount" />
+          </div>
+        </div>
+
         <div class="row">
           <div class="col-12 py-2">
             <div class="d-flex justify-content-between align-items-center">
@@ -1039,6 +1059,7 @@ export default {
     const primarycolor = inject("primarycolor");
     const store = useStore();
     const route = useRoute();
+    const markAsPaid = ref(false);
     const groups = ref([]);
     const display = ref(false);
     const newActModal = ref(false);
@@ -1778,6 +1799,7 @@ export default {
       onContinue,
       groups,
       events,
+      markAsPaid,
       selectEvent,
       display,
       closeModal,
