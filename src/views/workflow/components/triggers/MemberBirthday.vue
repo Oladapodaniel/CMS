@@ -22,7 +22,7 @@
 <script>
 import MultiSelect from "primevue/multiselect"
 import TriggerDescription from "../TriggerDescription.vue"
-import { reactive, ref } from '@vue/reactivity';
+import { reactive, ref } from 'vue';
 import { computed } from '@vue/runtime-core';
 export default {
     components: { MultiSelect, TriggerDescription },

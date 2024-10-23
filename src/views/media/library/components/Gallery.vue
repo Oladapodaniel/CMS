@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
+import { ref } from "vue";
 import VideoFiles from "./VideoFiles";
 import media_service from "../../../../services/media/media_service";
 import membershipService from "../../../../services/membership/membershipservice";

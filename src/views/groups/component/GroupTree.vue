@@ -116,7 +116,7 @@
 
 <script>
 import Dialog from "primevue/dialog";
-import { ref } from "@vue/reactivity";
+import { ref } from "vue";
 import axios from "@/gateway/backendapi";
 import { watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";

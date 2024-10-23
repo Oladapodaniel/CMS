@@ -30,6 +30,7 @@ import mixin from "@/mixins/currentUser.mixin.js";
 import ThemeProvider from "./theme/ThemeProvider.vue";
 import HandleCache from '@/components/cache/HandleCache.vue';
 import { GridLoader } from "vue3-spinner";
+import { ref } from "vue";
 
 export default {
   name: "App",
@@ -41,11 +42,17 @@ export default {
     GridLoader
   },
   mixins: [mixin],
+  setup() {
+    const cacheBuster = ref(null)
+
+    return {
+      cacheBuster
+    }
+  },
   data() {
     return {
       transitionName: null,
       alartRoute: true,
-      cacheBuster: null
     };
   },
   created() {

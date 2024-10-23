@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
+import { ref } from "vue";
 import axios from "@/gateway/backendapi";
 import Loading from "../../components/loading/LoadingComponent";
 import { useToast } from "primevue/usetoast";

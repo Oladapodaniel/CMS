@@ -120,7 +120,7 @@
 
 <script>
 import Dialog from "primevue/dialog";
-import { ref } from "@vue/reactivity";
+import { ref } from "vue";
 import { useToast } from "primevue/usetoast";
 import axios from "@/gateway/backendapi";
 import { watchEffect } from "@vue/runtime-core";

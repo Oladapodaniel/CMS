@@ -159,7 +159,7 @@
 </template>
 
 <script>
-import { reactive, ref } from "@vue/reactivity";
+import { reactive, ref } from "vue";
 import { computed, watchEffect } from "@vue/runtime-core";
 import TriggerDescription from "../TriggerDescription.vue";
 import workflow_util from "../../utlity/workflow_util";

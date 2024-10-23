@@ -114,7 +114,7 @@
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
+import { ref } from "vue";
 import social_service from "../../../services/social/social_service";
 import membershipService from "../../../services/membership/membershipservice";
 import dateFormatter from "../../../services/dates/dateformatter";

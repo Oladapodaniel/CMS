@@ -170,7 +170,7 @@
 </template>
 
 <script>
-import { reactive, ref } from "@vue/reactivity";
+import { reactive, ref } from "vue";
 import { watchEffect } from "@vue/runtime-core";
 import { VuemojiPicker } from "vuemoji-picker";
 import axios from "@/gateway/backendapi";

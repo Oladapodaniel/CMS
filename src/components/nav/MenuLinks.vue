@@ -604,7 +604,6 @@ export default {
             (id === 4 || id === 5 || id === 6 || id === 7)) {
           return true
         } else {
-          console.log(id,'getUser')
           return false
         }
       }

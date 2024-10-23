@@ -50,7 +50,7 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import { ref } from '@vue/reactivity';
+import { ref } from 'vue';
 import dateFormatter from '../../../services/dates/dateformatter';
 export default {
     setup () {

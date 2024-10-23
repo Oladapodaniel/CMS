@@ -165,7 +165,7 @@
 
 <script>
 import TriggerDescription from "../TriggerDescription.vue";
-import { reactive, ref } from "@vue/reactivity";
+import { reactive, ref } from "vue";
 import { computed, watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import workflow_util from "../../utlity/workflow_util";

@@ -250,7 +250,7 @@
 </template>
 
 <script>
-import { ref} from "@vue/reactivity";
+import { ref} from "vue";
 import transactionals from "../../chartOfAccount/utilities/transactionals";
 import { computed, watch, watchEffect } from '@vue/runtime-core';
 import transaction_service from '../../../../services/financials/transaction_service';

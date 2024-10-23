@@ -1,6 +1,6 @@
 {
   "name": "churchplus",
-  "version": "0.1.2",
+  "version": "0.1.9",
   "private": true,
   "engines": {
     "node": "16.x"

@@ -15,7 +15,7 @@
 <script>
 import MultiSelect from "primevue/multiselect"
 import attendanceservice from '../../../../services/attendance/attendanceservice'
-import { reactive, ref } from '@vue/reactivity'
+import { reactive, ref } from 'vue'
 import { watchEffect } from '@vue/runtime-core'
 import workflow_util from '../../utlity/workflow_util'
 

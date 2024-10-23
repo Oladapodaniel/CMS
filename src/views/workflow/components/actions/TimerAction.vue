@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { reactive, ref } from '@vue/reactivity';
+import { reactive, ref } from 'vue';
 import Dropdown from "primevue/dropdown"
 import { watchEffect } from '@vue/runtime-core';
 

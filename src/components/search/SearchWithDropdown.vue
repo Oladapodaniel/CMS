@@ -30,7 +30,7 @@
 
 <script>
 // import axios from "@/gateway/backendapi";
-import { ref } from '@vue/reactivity';
+import { ref } from 'vue';
 import composerObj from '../../services/communication/composer';
 
 export default {

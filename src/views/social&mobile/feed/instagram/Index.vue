@@ -310,7 +310,7 @@
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
+import { ref } from "vue";
 import Skeleton from "primevue/skeleton";
 import social_service from '../../../../services/social/social_service';
 import membershipService from '../../../../services/membership/membershipservice';
