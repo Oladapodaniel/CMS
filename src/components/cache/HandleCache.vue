@@ -38,7 +38,7 @@ const clearCacheAndReload = () => {
 
   // Store the latest version in localStorage to avoid redundant reloads
   localStorage.setItem('appVersion', appVersion.value);
-  // window.location.reload(true);
+  window.location.reload(true);
 };
 
 const checkVersionMismatch = (latestVersion, currentVersion) => {
