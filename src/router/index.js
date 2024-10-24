@@ -1874,6 +1874,31 @@ const routes = [
             ]
         },
         {
+            path: 'branchremittance',
+            name: 'BranchRemittanceDashboard',
+            component: () =>
+                import( /* webpackChunkName: "branch remittance" */ '@/views/remittance/branch/Dashboard.vue'),
+            children: [{
+                path: '',
+                name: 'BranchRemittanceDashboard',
+                meta: {
+                    title: 'Churchplus - Branch Remittance',
+                },
+                component: () =>
+                import( /* webpackChunkName: "branch remittance" */ '@/views/remittance/branch/Dashboard.vue')
+            },
+            // {
+            //     path: 'invitenewuser',
+            //     name: 'InviteNewUser',
+            //     meta: {
+            //         title: 'Churchplus - Church Settings - Invite User',
+            //     },
+            //     component: () =>
+            //         import( /* webpackChunkName: "ministryusers" */ '@/views/settings/InviteNewUser')
+            // }
+]
+        },
+        {
             path: 'upload',
             name: 'UploadMedia',
             meta: {
