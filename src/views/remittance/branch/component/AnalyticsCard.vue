@@ -13,7 +13,7 @@
                 <div class="topvalue">{{ item.topvalue }}</div>
             </div>
         </div>
-        <div class="d-flex justify-content-between mt-5">
+        <div class="d-flex justify-content-between mt-4">
             <div>
                 <div class="texttop">{{ item.textbottom }}</div>
                 <div class="bottomvalue">{{ item.bottomvalue }}</div>
@@ -49,7 +49,7 @@
 .bottomvalue {
     color: #1E1E1E;
     font-weight: 600;
-    font-size: 28px
+    font-size: 25px
 }
 
 .trend {

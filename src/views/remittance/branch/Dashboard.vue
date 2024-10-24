@@ -4,6 +4,8 @@ import deviceBreakpoint from '../../../mixins/deviceBreakpoint';
 import AnalyticsCard from './component/AnalyticsCard.vue';
 import MoreDropdown from './component/MoreDropdown.vue';
 import Table from "@/components/table/Table";
+import ColumnChart from "@/components/charts/BranchColumnChart.vue";
+import router from '../../../router';
 
 const { lgAndUp, xlAndUp, mdAndUp, xsOnly } = deviceBreakpoint();
 const analyticssummary = ref([
@@ -105,6 +107,20 @@ const body = ref([
 const handleSelectionChange = (payload) => {
     console.log(payload)
 }
+
+
+const chartseries = ref([
+        {
+            name: 'Corn',
+            data: [387749, 280000, 129000, 64300, 54000, 34300]
+        },
+        {
+            name: 'Wheat',
+            data: [45321, 140000, 10000, 140500, 19500, 113500]
+        }
+    ])
+
+    const categories = ref(['USA', 'China', 'Brazil', 'EU', 'Argentina', 'India'])
 </script>
 
 <template>
@@ -122,7 +138,7 @@ const handleSelectionChange = (payload) => {
                     </div>
                 </div>
             </section>
-            <section class="mt-4">
+            <section class="mt-5">
                 <Table :data="body" :headers="remittanceheader" :checkMultipleItem="true"
                     @checkedrow="handleSelectionChange">
                     <template v-slot:name="{ item }">
@@ -159,16 +175,24 @@ const handleSelectionChange = (payload) => {
                         </div>
                     </template>
                     <template v-slot:action>
-                        <div class="c-pointer fw-500 s-16">
+                        <div class="c-pointer fw-500 s-16" @click="router.push('/tenant/branchremittance/remittancesummary')">
                             <div>View details</div>
                         </div>
                     </template>
                 </Table>
             </section>
+            <section class="mt-5 border">
+                <ColumnChart domId="chart1" :data="chartseries" :series="categories" :header="'Remittance by Month'" />
+            </section>
+            <section class="mt-5 border">
+                <ColumnChart domId="chart2" :data="chartseries" :series="categories" :header="'Remittance by Branch'" />
+            </section>
+            <section class="mt-5 border">
+                <ColumnChart domId="chart3" :data="chartseries" :series="categories" :header="'Monthly Outstanding'" />
+            </section>
         </div>
     </main>
 </template>
-
 <style scoped>
 .transform_none {
     text-transform: none;

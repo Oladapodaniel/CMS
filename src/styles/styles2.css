@@ -396,3 +396,8 @@ div.whatsappdrawer.el-drawer .el-drawer__footer {
   background: linear-gradient(45deg, #b2e68d, #bce689);
   right: 0;
 }
+
+div.remittancesummary div.el-table__inner-wrapper table.el-table__body tbody td{
+  padding: 0px !important;
+  border-bottom: none !important;
+}

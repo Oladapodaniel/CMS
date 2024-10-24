@@ -1,3 +1,7 @@
+<script setup>
+import router from '../../../../router';
+</script>
+
 <template>
     <el-dropdown trigger="click"
         class="align-items-center justify-content-center d-flex ml-md-3 ml-0 default-btn py-0 m-0 border"
@@ -10,14 +14,12 @@
         </span>
         <template #dropdown>
             <el-dropdown-menu>
-                <el-dropdown-item class="text-black" @click="copylink">Copy Public Link
-
+                <el-dropdown-item class="text-black" @click="router.push('/tenant/branchremittance/remittancesetup')">
+                    Remittance setup
                 </el-dropdown-item>
-                <el-dropdown-item>
-                    Show QR Code
+                <el-dropdown-item class="text-black" @click="router.push('/tenant/branchremittance/bankinfosetup')">
+                    Bank info setup
                 </el-dropdown-item>
-                <el-dropdown-item>Analysis</el-dropdown-item>
-                <el-dropdown-item>Import</el-dropdown-item>
             </el-dropdown-menu>
         </template>
     </el-dropdown>
