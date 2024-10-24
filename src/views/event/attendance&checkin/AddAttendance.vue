@@ -373,8 +373,8 @@
             >
           </div>
           <div class="col-sm-7 col-md-7 d-flex">
-            <el-checkbox v-model="markAsPaid" />
-            <span class="font-weight-500 s-18">Mark as Paid Event</span>
+            <span class="mr-2"><el-checkbox v-model="markAsPaid" /></span>
+            <span class="font-weight-500 mt-1 s-18">Mark as Paid Event</span>
           </div>
         </div>
         <div class="row my-3" v-if="markAsPaid">
@@ -383,6 +383,22 @@
           </div>
           <div class="col-sm-7 col-md-7">
             <el-input type="text" class="w-100" placeholder=" Amount" v-model="amount" />
+            <div
+              class="col-md-12 mt-1 d-flex flex-wrap justify-content-end cursor-pointer px-0"
+              @click="openPaymentModal"
+            >
+              <span
+                v-if="accountNumber"
+                class="primary--text text-head s-12 font-weight-500"
+                >{{ accountNumber }}-{{ selectedBank ? selectedBank.name : "" }}</span
+              >
+              <u class="primary--text text-head font-weight-600" v-if="!accountNumber"
+                >Set up Payment Gateway now
+              </u>
+              <u class="primary--text text-head font-weight-600" v-if="accountNumber"
+                ><el-icon><EditPen /></el-icon>Edit
+              </u>
+            </div>
           </div>
         </div>
 
@@ -412,36 +428,8 @@
             <div v-show="templateDisplay">
               <div class="container-fluid">
                 <div class="row mt-4">
-                  <!-- <div class="col-sm-3 col-md-1 text-sm-right"></div> -->
-                  <div
-                    class="col-sm-3 col-md-3 text-head fw-500 s-18 text-dak text-sm-right"
-                  >
-                    Amount
-                  </div>
-                  <div class="col-sm-7 col-md-7 px-1">
-                    <el-input
-                      type="text"
-                      class="w-100"
-                      placeholder=" Amount"
-                      v-model="amount"
-                    />
-                  </div>
-
                   <div class="col-sm-3 col-md-3 text-sm-right"></div>
                   <div class="col-sm-7 col-md-6 col-lg-5">
-                    <div
-                      class="col-md-12 mt-4 d-flex flex-wrap justify-content-between cursor-pointer px-0"
-                      @click="openPaymentModal"
-                    >
-                      <u class="primary--text text-head font-weight-600"
-                        >Set up Payment Gateway now
-                      </u>
-                      <span
-                        v-if="accountName"
-                        class="primary--text text-head s-12 font-weight-500"
-                        >{{ accountName }}</span
-                      >
-                    </div>
                     <div class="col-md-12"></div>
                     <!-- <div class="row">
                       <div class="col-sm-4 align-self-center">
@@ -828,7 +816,7 @@
         </div>
         <!-- <div class="container-fluid"> -->
 
-        <div class="row my-3">
+        <!-- <div class="row my-3">
           <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right"></div>
           <div class="col-sm-7 col-md-6 col-lg-5">
             <div class="row">
@@ -846,17 +834,13 @@
                     !selectedEvent.name
                   "
                 >
-                  <!-- <i
-                    class="fas fa-circle-notch fa-spin mr-2 text-white"
-                    v-if="loading"
-                  ></i> -->
                   <span class="text-white">Save and Continue</span>
                   <span></span>
                 </el-button>
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="row"></div>
       </div>
 
@@ -926,8 +910,34 @@
                 v-model="accountNumber"
                 @blur="resolveCustomerDetail"
               />
+              <div class="col-md-12 d-flex justify-content-end text-right">
+                <span class="text-head font-weight-600">{{ accountName }}</span>
+                <div class="align-self-center mt-4" v-if="loading">
+                  <div
+                    class="spinner-border text-primary"
+                    style="width: 2rem; height: 2rem"
+                    role="status"
+                  >
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="col-md-8 col-11 mt-3 d-flex">
+            <!-- <div class="col-md-12">
+              <div class="d-flex align-items-center">
+                <span><el-radio v-model="flutterwave" size="large" /></span>
+                <span>Flutter wave</span>
+              </div>
+              <div class="d-flex align-items-center">
+                <span><el-radio v-model="paystack" size="large" /></span>
+                <span>paystack</span>
+              </div>
+              <div class="d-flex align-items-center">
+                <span><el-radio v-model="alatPay" size="large" /></span>
+                <span>AlatPay</span>
+              </div>
+            </div> -->
+            <!-- <div class="col-md-8 col-11 mt-3 d-flex">
               <div>
                 <label class="fw-500 text-head s-18" for=""> Account Name </label>
                 <el-input
@@ -939,17 +949,9 @@
                   disabled
                 />
               </div>
-              <div class="align-self-center mt-4" v-if="loading">
-                <div
-                  class="spinner-border text-primary"
-                  style="width: 2rem; height: 2rem"
-                  role="status"
-                >
-                  <span class="sr-only">Loading...</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-8 col-11 mt-3">
+              
+            </div> -->
+            <!-- <div class="col-md-8 col-11 mt-3">
               <label class="fw-500 text-head s-18" for=""> Income Account </label>
               <el-dropdown trigger="click" class="w-100">
                 <span class="el-dropdown-link w-100">
@@ -1013,15 +1015,15 @@
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
-            </div>
+            </div> -->
             <div class="col-md-8 col-11 mt-3">
               <el-button
                 @click="Contiue"
                 round
                 :color="primarycolor"
                 class="text-white py-4 w-100"
-                >Continue</el-button
-              >
+                >Save
+              </el-button>
             </div>
             <div class="col-md-8 col-11 mt-3">
               <el-button @click="cancel" round class="border-0 w-100">Cancel</el-button>
@@ -1073,7 +1075,7 @@ export default {
     const selectedBank = ref("");
     const accountNumber = ref("");
     const accountName = ref("");
-    const accNameRef = ref("");
+    // const accNameRef = ref("");
     const loading = ref(false);
     const loadingsave = ref(false);
     const eventDetails = ref("");
@@ -1085,6 +1087,9 @@ export default {
     const registrationEmail = ref("");
     const checkinSMS = ref("");
     const checkinEmail = ref("");
+    const paystack = ref("");
+    const flutterwave = ref("");
+    const alatPay = ref("");
     const amount = ref("");
     const binImage = ref("");
     const image = ref("");
@@ -1678,7 +1683,7 @@ export default {
           header
         );
         accountName.value = data.data.account_name;
-        accNameRef.value.focus();
+        // accNameRef.value.focus();
         // disabled.value = false
 
         loading.value = false;
@@ -1782,6 +1787,9 @@ export default {
 
     return {
       selectedEvent,
+      flutterwave,
+      paystack,
+      alatPay,
       setGroupValue,
       flattenedTree,
       groupMappedTree,
@@ -1829,7 +1837,7 @@ export default {
       accountNumber,
       accountName,
       resolveCustomerDetail,
-      accNameRef,
+      // accNameRef,
       loading,
       loadingsave,
       eventDetails,
