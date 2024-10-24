@@ -2117,6 +2117,35 @@ const routes = [
             ]
         },
         {
+            path: 'remittance',
+            name: "Index",
+            meta: {
+                title: 'Churchplus - Remittance',
+            },
+            component: () =>
+                import( /* webpackChunkName: "remittance" */ '../views/remittance/financial/index.vue'),
+            children: [
+                {
+                    path: 'home',
+                    name: "Remittance",
+                    meta: {
+                        title: 'Churchplus - Remittance',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "remittance home" */ '../views/remittance/financial/Remittance.vue')
+                },
+                {
+                    path: 'addremittance',
+                    name: "AddRemittance",
+                    meta: {
+                        title: 'Churchplus - Remittance',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "remittance home" */ '../views/remittance/financial/AddRemittance.vue')
+                },
+            ]
+        },
+        {
             path: 'store',
             name: "StoreDashboard",
             meta: {
