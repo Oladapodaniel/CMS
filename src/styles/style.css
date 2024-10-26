@@ -186,6 +186,9 @@ rect.highcharts-background[fill] {
   .border-no-radius{
     border: 1px solid #C9C9C9 !important;
   }
+  .br-left{
+    border-left: 1px solid #9A9A9A !important;
+  }
   .border-black{
     border: 1px solid #000000 !important;
   }

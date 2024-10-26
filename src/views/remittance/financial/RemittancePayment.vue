@@ -1,0 +1,149 @@
+<template>
+  <div class="container-fluid">
+    <div class="row flex-column flex-sm-row justify-content-sm-between">
+      <div>
+        <h2 class="text-head font-weight-bold py-0 my-0 text-black">
+          Remittance Payment
+        </h2>
+        <div @click="goBack">
+          <span class="s-18 fw-400 cursor-pointer text-black">
+            <img src="../../../assets/goback.png" alt="" /> Go back</span
+          >
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-md-12 d-flex justify-content-center">
+        <div class="col-md-7 col-11 border-radius-10 bg-gray-600 mt-4 p">
+          <!-- Header with month and remittance summary -->
+          <div class="header primary-bg text-white d-flex align-items-center justify-content-between p-3 my-4">
+            <span class="mb-0 s-24 font-weight-600">July 2024</span>
+            <span class="fw-400">Remittance summary</span>
+          </div>
+
+          <!-- Remittance details -->
+          <div class="remittance-details p-4 rounded">
+            <div class="mb-4  d-flex text-center">
+              <span class="h5">Remittance ID: ADF544215</span>
+              <span class="ml-2">
+                <img src="../../../assets/form/copyIcon.png" alt="" />
+              </span>
+            </div>
+
+            <ul class="list-group">
+              <li
+                class="list-group-item border-botom d-flex justify-content-between align-items-center"
+              >
+                Total Collection
+                <span>NGN 525,000</span>
+              </li>
+              <li
+                class="list-group-item border-botom d-flex justify-content-between align-items-center"
+              >
+                Remittable
+                <span>NGN 25,000</span>
+              </li>
+              <li
+                class="list-group-item border-botom d-flex justify-content-between align-items-center"
+              >
+                Amount Paid
+                <span>NGN 0</span>
+              </li>
+              <li
+                class="list-group-item  border-botom d-flex justify-content-between align-items-center"
+              >
+                Payment date
+                <span>-</span>
+              </li>
+              <li
+                class="list-group-item  border-botom d-flex justify-content-between align-items-center"
+              >
+                Status
+                <span>Not Paid</span>
+              </li>
+              <li
+                class="list-group-item  border-botom d-flex justify-content-between align-items-center"
+              >
+                Record status
+                <span>Pending</span>
+              </li>
+            </ul>
+
+            <!-- Payment buttons -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row justify-content-center">
+                  <div class="col-md-10 col-11 text-center mt-4">
+                    <div class="col-md-12 d-flex flex-column flex-sm-row  align-items-center justify-content-center">
+                      <el-button
+                        round
+                        color="#111111"
+                        size="large"
+                        class="text-white col-md-6 mr-0 mr-md-2"
+                        >Manual Payment</el-button
+                      >
+                      <el-button
+                        color="#FF5906"
+                        round
+                        size="large"
+                        class="mt-3 col-md-6 text-white mt-sm-0"
+                        >Pay Online</el-button
+                      >
+                    </div>
+
+                    <!-- Pay Later link -->
+                    <div class="mt-2 col-md-12">
+                      or <a href="#" class="fw-400">Pay Later</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import router from "../../../router";
+const goBack = () => {
+  router.go(-1);
+};
+</script>
+
+<style scoped>
+/* Header styles */
+.header {
+  border-radius: 8px;
+}
+
+/* Remittance details styles */
+/* .remittance-details h5 {
+  color: #333;
+} */
+
+.list-group-item {
+  border: none;
+  padding: 0.75rem 1.25rem;
+  background: none !important;
+}
+
+.list-group-item span {
+  font-weight: 600;
+}
+
+.btn-lg {
+  padding: 0.6rem 1.5rem;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+</style>
