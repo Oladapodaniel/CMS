@@ -1,44 +1,127 @@
 <script setup>
-import { inject } from 'vue';
+import { inject, reactive, ref } from 'vue';
 import deviceBreakpoint from '../../../mixins/deviceBreakpoint';
 import router from '../../../router';
 import Table from "@/components/table/Table";
+import { DeleteRemittableItem, GetRemittableItem, SaveRemittableItem, UpdateRemittableItem } from '../../../services/remittance/branchremittance';
+import { ElMessage, ElMessageBox } from "element-plus";
 
 const { lgAndUp, xlAndUp, mdAndUp, xsOnly } = deviceBreakpoint();
 const primarycolor = inject('primarycolor');
 const header = [
-    { name: 'Collection Item', value: 'collection' },
-    { name: 'Remittable', value: 'remittable' },
-    { name: 'Bank', value: 'bank' },
+    { name: 'Collection Item', value: 'name' },
+    { name: 'Remittable', value: 'percentage' },
+    { name: 'Description', value: 'description' },
     { name: 'Actions', value: 'action' },
 ]
+const initialState = {
+    name: "",
+    percentage: 0,
+    description: ""
+}
+const remittanceitem = reactive({});
+const itemloading = ref(false);
+const getitemloading = ref(false);
+const nameInputRef = ref(null)
+const deleteLoading = ref(false);
 
-const body = [
-    {
-        collection: 'Offering',
-        remittable: '10%',
-        bank: '0123323 -Access Bank',
-        Action: 'actions'
-    },
-    {
-        collection: 'Offering',
-        remittable: '10%',
-        bank: '0123323 -Access Bank',
-        action: 'actions'
-    },
-    {
-        collection: 'Offering',
-        remittable: '10%',
-        bank: '0123323 -Access Bank',
-        action: 'actions'
-    },
-    {
-        collection: 'Offering',
-        remittable: '10%',
-        bank: '0123323 -Access Bank',
-        action: 'actions'
-    },
-]
+const remittancesetupdata = ref([])
+
+const createRemittanceItem = async () => {
+    itemloading.value = true;
+    if (remittanceitem.id) {
+        try {
+            await UpdateRemittableItem(remittanceitem);
+            Object.assign(remittanceitem, { ...initialState, id: "" })
+            getRemittanceItem();
+            ElMessage({
+                type: "success",
+                message: "Remittance item updated succesfully",
+                duration: 4000,
+            });
+            itemloading.value = false;
+        } catch (error) {
+            itemloading.value = false;
+            console.error(error);
+        }
+    } else {
+        try {
+            await SaveRemittableItem(remittanceitem);
+            itemloading.value = false;
+            Object.assign(remittanceitem, initialState)
+            ElMessage({
+                type: "success",
+                message: "Remittance item created succesfully",
+                duration: 4000,
+            });
+            getRemittanceItem();
+        } catch (error) {
+            itemloading.value = false;
+            console.error(error);
+        }
+    }
+}
+
+const getRemittanceItem = async () => {
+    getitemloading.value = true;
+    try {
+        const response = await GetRemittableItem();
+        remittancesetupdata.value = response;
+        getitemloading.value = false;
+    } catch (error) {
+        getitemloading.value = false;
+        console.error(error);
+    }
+}
+getRemittanceItem();
+
+const updateRemittableItem = async (payload) => {
+    Object.assign(remittanceitem, payload)
+    nameInputRef.value.focus();
+}
+
+const showConfirmModal = (id) => {
+       ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm delete",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "error",
+        }
+      )
+        .then(() => {
+            deleteRemittableItem(id);
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "Rejected",
+            duration: 5000,
+          });
+        });
+    };
+
+const deleteRemittableItem = async (id) => {
+    deleteLoading.value = true;
+    try {
+        const response = await DeleteRemittableItem(id);
+        console.log(response)
+        const findIndex = remittancesetupdata.value.findIndex(i => i.id === id);
+        deleteLoading.value = false;
+        if (findIndex >= 0) {
+            remittancesetupdata.value.splice(findIndex, 1)
+            ElMessage({
+                type: "success",
+                message: "Remittance item deleted",
+                duration: 4000,
+            });
+        }
+    } catch (error) {
+        deleteLoading.value = false;
+        console.error(error)
+    }
+}
 </script>
 
 <template>
@@ -56,16 +139,29 @@ const body = [
             <section class="mt-4">
                 <div class="col-12 col-md-6 offset-md-3 card">
                     <div>
-                        <div class="text_label">Offering or collection items</div>
-                        <el-input type="text" placeholder="Offering" />
+                        <div class="text_label">Offering or collection item</div>
+                        <el-input type="text" placeholder="Enter collection name" ref="nameInputRef"
+                            v-model="remittanceitem.name" />
                     </div>
                     <div class="mt-4">
                         <div class="text_label">Remittance percentage</div>
-                        <el-input type="text" placeholder="10%" />
-                        <div class="small-text mt-1">10% of the total collection will be sent to the HQ, while the
-                            branch manages 90%</div>
+                        <el-input type="number" placeholder="Enter remittable percentage"
+                            v-model="remittanceitem.percentage">
+                            <template #suffix>
+                                %
+                            </template>
+                        </el-input>
+                        <div class="small-text mt-1">{{ remittanceitem?.percentage ?? 0 }}% of the total collection will
+                            be sent to the HQ,
+                            while the
+                            branch holds remaining {{ 100 - (remittanceitem?.percentage ?? 0) }}%</div>
                     </div>
                     <div class="mt-4">
+                        <div class="text_label">Description</div>
+                        <el-input type="textarea" rows="4" placeholder="Enter description"
+                            v-model="remittanceitem.description" />
+                    </div>
+                    <!-- <div class="mt-4">
                         <div class="text_label">Receiving Bank Account</div>
                         <el-input type="text" placeholder="Choose bank" />
                     </div>
@@ -74,41 +170,52 @@ const body = [
                             <CirclePlus />
                         </el-icon> &nbsp;
                         <div class="font-weight-600" :style="`color: ${primarycolor}`">Add new bank account</div>
-                    </div>
+                    </div> -->
                     <div class="d-flex justify-content-center mt-4">
-                        <el-button :color="primarycolor" class="px-5" size="large" round>Save</el-button>
+                        <el-button :color="primarycolor" :loading="itemloading" class="px-5"
+                            @click="createRemittanceItem" size="large" round>{{ remittanceitem.id ? 'Update' : 'Save'
+                            }}</el-button>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 offset-md-3 border px-0 mt-5">
-                    <Table :data="body" :headers="header" :checkMultipleItem="false">
-                        <template v-slot:collection="{ item }">
-                            <div class="c-pointer fw-500 s-16">
-                                {{ item.collection }}
-                            </div>
-                        </template>
-                        <template v-slot:remittable="{ item }">
-                            <div class="c-pointer transform_none fw-500 s-16">
-                                {{ item.remittable }}
-                            </div>
-                        </template>
-                        <template v-slot:bank="{ item }">
-                            <div class="c-pointer transform_none fw-500 s-16">
-                                {{ item.bank }}
-                            </div>
-                        </template>
-                        <template v-slot:action>
-                            <div class="c-pointer">
-                                <div>
-                                    <el-icon color="#6D6D6D" :size="20">
-                                        <Edit />
-                                    </el-icon> &nbsp;
-                                    <el-icon color="#E44040" :size="20">
-                                        <Delete />
-                                    </el-icon>
+                <div class="col-12 col-md-6 offset-md-3 border px-0 mt-5" v-loading="getitemloading">
+                    <div class="w-100" v-if="remittancesetupdata.length > 0">
+                        <Table :data="remittancesetupdata" :headers="header" :checkMultipleItem="false">
+                            <template v-slot:name="{ item }">
+                                <div class="c-pointer fw-500 s-16">
+                                    {{ item.name }}
                                 </div>
-                            </div>
-                        </template>
-                    </Table>
+                            </template>
+                            <template v-slot:percentage="{ item }">
+                                <div class="c-pointer transform_none fw-500 s-16">
+                                    {{ item.percentage }}%
+                                </div>
+                            </template>
+                            <template v-slot:description="{ item }">
+                                <div class="c-pointer transform_none fw-500 s-16">
+                                    {{ item.description }}
+                                </div>
+                            </template>
+                            <template v-slot:action="{ item }">
+                                <div class="c-pointer">
+                                    <div>
+                                        <el-icon color="#6D6D6D" @click="updateRemittableItem(item)" :size="20">
+                                            <Edit />
+                                        </el-icon> &nbsp;
+                                        <el-icon :size="20" class="is-loading" v-if="deleteLoading">
+                                            <Loading />
+                                        </el-icon>
+                                        <el-icon color="#E44040" :size="20"
+                                            @click="showConfirmModal(item.id)" v-else>
+                                            <Delete />
+                                        </el-icon>
+                                    </div>
+                                </div>
+                            </template>
+                        </Table>
+                    </div>
+                    <div class="p-2" v-else>
+                        <h4 class="font-weight-600 text-center">Your collection items will appear here</h4>
+                    </div>
                 </div>
             </section>
         </div>

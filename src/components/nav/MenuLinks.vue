@@ -406,6 +406,11 @@ export default {
             // route: '/tenant/branch/mainbranchsummary',
             // route: '/tenant/branch/branchsummary',
           },
+          {
+            name: 'Remittance',
+            logo: '/',
+            route: '/tenant/branchremittance',
+          },
           // {
           //   name: 'People',
           //   logo: '/',
