@@ -32,7 +32,7 @@
       <!-- Chart and Percentage Growth -->
       <div class="col-md-6 d-flex align-items-center justify-content-end">
         <canvas class="w-100" id="myChart" width="5" height="1"></canvas>
-        <div class=" text-right w-100">
+        <div class="text-right w-100">
           <div class="fw-400">
             <span class="text-success">+{{ growthPercentage }}% </span>
             <span>Guests Since last month</span>
@@ -44,7 +44,7 @@
     <div class="row">
       <div class="col-md-12 my-4">
         <Table
-          :data="paymentRecords"
+          :data="allRemittanceData"
           :headers="paymentRecordHeaders"
           :checkMultipleItem="true"
           @checkedrow="handleSelectionChange"
@@ -52,22 +52,22 @@
         >
           <template v-slot:month="{ item }">
             <div class="font-weight-600">
-              {{ item.month }}
+              {{ item.periodMonth }}
             </div>
           </template>
           <template v-slot:totalCollection="{ item }">
             <div>
-              {{ item.totalCollection }}
+              {{ Math.abs(item.totalCollection).toLocaleString() }}
             </div>
           </template>
-          <template v-slot:remittable="{ item }">
+          <template v-slot:totalRemittableAmount="{ item }">
             <div>
-              {{ item.remittable }}
+              {{ Math.abs(item.totalRemittableAmount).toLocaleString() }}
             </div>
           </template>
-          <template v-slot:status="{ item }">
+          <template v-slot:paymentStatus="{ item }">
             <div class="text-success" :class="item.status">
-              {{ item.status }}
+              {{ item.paymentStatus }}
             </div>
           </template>
           <template v-slot:recordStatus="{ item }">
@@ -103,7 +103,7 @@
 <script setup>
 import { ref, onMounted, inject } from "vue";
 // import finish from "../../services/progressbar/progress";
-// import axios from "@/gateway/backendapi";
+import axios from "@/gateway/backendapi";
 import Chart from "chart.js";
 import Table from "@/components/table/Table";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -115,109 +115,86 @@ const lastMonthAmount = ref(280500);
 const growthPercentage = ref(9.2025); // Percentage growth
 const marked = ref([]);
 const loading = ref(false);
+const allRemittanceData = ref([]);
 const paymentRecordHeaders = ref([
   { name: " MONTH", value: "month" },
-  { name: " TOTALCOLLECTION", value: "totalCollection" },
-  { name: " REMITTABLE", value: "remittable" },
-  { name: " STATUS", value: "status" },
-  { name: " RECORDSTATUS", value: "recordStatus" },
+  { name: " TOTAL COLLECTION", value: "totalCollection" },
+  { name: " REMITTABLE", value: "totalRemittableAmount" },
+  { name: " STATUS", value: "paymentStatus" },
+  { name: " RECORD STATUS", value: "recordStatus" },
   { name: " ACTION", value: "action" },
 ]);
 
 const handleSelectionChange = (val) => {
   marked.value = val;
 };
-const deletePaymentRecord = (id) => {
-      // axios
-      //   .delete(`/api/Pledge/DeletePledgeDefinition?ID=${id}`)
-      //   .then((res) => {
-      //     console.log(res);
-      //     ElMessage({
-      //       type: "success",
-      //       message: "Paymen form deleted",
-      //       duration: 5000,
-      //     });
-      paymentRecords.value = paymentRecords.value.filter(
-            (paymentRecords) => paymentRecords.id !== id
-          );
-        // })
-        // .catch((err) => {
-        //   finish();
-        //   if (err.response.status === 400) {
-        //     ElMessage({
-        //       type: "error",
-        //       message: "Unable to delete",
-        //       duration: 5000,
-        //     });
-        //   } else {
-        //     ElMessage({
-        //       type: "error",
-        //       message: "Unable to delete, An error occurred, please try again",
-        //       duration: 5000,
-        //     });
-        //   }
-        // });
-    };
-const showConfirmModal = (id, index) => {
-      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
-        confirmButtonText: "OK",
-        cancelButtonText: "Cancel",
-        type: "error",
-      })
-        .then(() => {
-          deletePaymentRecord(id, index);
-        })
-        .catch(() => {
-          ElMessage({
-            type: "info",
-            message: "Delete canceled",
-            duration: 5000,
-          });
-        });
-    };
 
-const paymentRecords = ref([
-  {
-    id: '1',
-    month: "July 2024",
-    totalCollection: "NGN 500,000",
-    remittable: "NGN 25,000",
-    status: "Fully Paid",
-    statusClass: "text-success",
-    recordStatus: "Locked",
-    recordStatusClass: "text-muted",
-  },
-  {
-    id: '2',
-    month: "June 2024",
-    totalCollection: "NGN 500,000",
-    remittable: "NGN 25,000",
-    status: "Partially Paid",
-    statusClass: "",
-    recordStatus: "Open for edit",
-    recordStatusClass: "text-warning",
-  },
-  {
-    id: '3',
-    month: "May 2024",
-    totalCollection: "NGN 500,000",
-    remittable: "NGN 25,000",
-    status: "Fully Paid",
-    statusClass: "text-success",
-    recordStatus: "Locked",
-    recordStatusClass: "text-muted",
-  },
-  {
-    id: '4',
-    month: "April 2024",
-    totalCollection: "NGN 500,000",
-    remittable: "NGN 25,000",
-    status: "Not Paid",
-    statusClass: "",
-    recordStatus: "Open for edit",
-    recordStatusClass: "text-warning",
-  },
-]);
+const getAllremittance = async () => {
+  try {
+    const { data } = await axios.get("/api/Remittance/GetAllRemittance");
+    allRemittanceData.value = data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+getAllremittance();
+const getRemittanceDB = async () => {
+  try {
+    const { data } = await axios.get("/api/Remittance/GetRemittanceDashboard");
+    //  allRemittanceData.value = data
+    console.log(data, "ggahh");
+  } catch (error) {
+    console.log(error);
+  }
+};
+getRemittanceDB();
+const deletePaymentRecord = (id) => {
+  axios
+    .delete(`/api/Remittance/DeleteRemittance/${id}`)
+    .then((res) => {
+      console.log(res);
+      ElMessage({
+        type: "success",
+        message: "Remittance Record deleted Successfully",
+        duration: 5000,
+      });
+      allRemittanceData.value = allRemittanceData.value.filter(
+        (paymentRecords) => paymentRecords.id !== id
+      );
+    })
+    .catch((err) => {
+      if (err.response.status === 400) {
+        ElMessage({
+          type: "error",
+          message: "Unable to delete",
+          duration: 5000,
+        });
+      } else {
+        ElMessage({
+          type: "error",
+          message: "Unable to delete, An error occurred, please try again",
+          duration: 5000,
+        });
+      }
+    });
+};
+const showConfirmModal = (id, index) => {
+  ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
+    confirmButtonText: "OK",
+    cancelButtonText: "Cancel",
+    type: "error",
+  })
+    .then(() => {
+      deletePaymentRecord(id, index);
+    })
+    .catch(() => {
+      ElMessage({
+        type: "info",
+        message: "Delete canceled",
+        duration: 5000,
+      });
+    });
+};
 
 // Chart setup on component mount
 onMounted(() => {

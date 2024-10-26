@@ -17,20 +17,45 @@
           <div class="col-md-6 px-4">
             <div class="row">
               <div class="col-12 col-md-6 mb-2 mb-md-0">
+                <div class="fw-500">Select Month:</div>
                 <el-select
                   v-model="selectedMonth"
                   placeholder="Select Month"
                   class="w-100"
                 >
-                  <el-option label="June" value="June"></el-option>
+                  <el-option
+                    v-for="(item, index) in months"
+                    :label="item"
+                    :value="item"
+                    :key="index"
+                  ></el-option>
                   <!-- Add other months here -->
                 </el-select>
               </div>
               <div class="col-12 col-md-6">
+                <div class="fw-500">Select Year:</div>
+                <!-- <el-select-v2
+                  v-model="selectedYear"
+                  :options="[
+                    { label: 'Year', value: 0 },
+                    ...yearsArr.map((i) => ({ label: i, value: i })),
+                  ]"
+                  placeholder="Select Year"
+                  size="large"
+                  class="w-100 ml-1"
+                /> -->
                 <el-select v-model="selectedYear" placeholder="Select Year" class="w-100">
-                  <el-option label="2024" value="2024"></el-option>
-                  <!-- Add other years here -->
+                  <el-option
+                    v-for="(item, index) in yearsArr"
+                    :label="item"
+                    :value="item"
+                    :key="index"
+                  ></el-option>
+                  <!-- Add other months here -->
                 </el-select>
+                <!-- <el-select v-model="selectedYear" placeholder="Select Year" class="w-100">
+                  <el-option label="2024" value="2024"></el-option>
+                </el-select> -->
               </div>
             </div>
           </div>
@@ -51,10 +76,19 @@
             <tbody class="grey-backg">
               <tr v-for="(item, index) in remittanceItems" :key="index">
                 <td>
-                  <el-input
+                  <el-select-v2
                     v-model="item.name"
-                    placeholder="Enter Income Item"
-                  ></el-input>
+                    class="w-100 font-weight-normal"
+                    placeholder="Select item"
+                    @change="setSelectedItem(item.name, index)"
+                    :options="
+                      allRemittanceItems.map((i) => ({
+                        label: i.name,
+                        value: i.id,
+                      }))
+                    "
+                    size="large"
+                  />
                 </td>
                 <td>
                   <el-input
@@ -154,7 +188,12 @@
         <div class="col-md-12 text-center justify-content-center d-flex">
           <div class="col-md-12 d-flex justify-content-center">
             <div class="col-md-6 mt-4">
-              <el-button class="w-100 py-4" @click="confirmRemittance" round size="large" :color="primarycolor"
+              <el-button
+                class="w-100 py-4"
+                @click="confirmRemittance"
+                round
+                size="large"
+                :color="primarycolor"
                 >Yes confirm</el-button
               >
             </div>
@@ -166,7 +205,9 @@
         <div class="col-md-12 mt-2 text-center justify-content-center d-flex">
           <div class="col-md-10 d-flex justify-content-center">
             <div class="col-md-6 fw-400 s-20">
-              <el-button round text class="w-100 text-dark" size="large">Cancel</el-button>
+              <el-button round text class="w-100 text-dark" size="large"
+                >Cancel</el-button
+              >
             </div>
           </div>
         </div>
@@ -188,7 +229,12 @@
         <div class="col-md-12 text-center justify-content-center d-flex">
           <div class="col-md-12 d-flex justify-content-center">
             <div class="col-md-6 mt-4">
-              <el-button class="w-100 py-4" round size="large" color="#FF5906"
+              <el-button
+                class="w-100 py-4"
+                @click="proceedPayment"
+                round
+                size="large"
+                color="#FF5906"
                 >Yes, continue to payment</el-button
               >
             </div>
@@ -200,7 +246,9 @@
         <div class="col-md-12 mt-2 text-center justify-content-center d-flex">
           <div class="col-md-10 d-flex justify-content-center">
             <div class="col-md-6 fw-400 s-20">
-              <el-button round text class="w-100 text-dark" size="large">Cancel</el-button>
+              <el-button round text class="w-100 text-dark" size="large"
+                >Cancel</el-button
+              >
             </div>
           </div>
         </div>
@@ -212,26 +260,60 @@
 <script setup>
 import { ref, computed, inject } from "vue";
 import router from "../../../router";
+import axios from "@/gateway/backendapi";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
+import store from "../../../store/store";
 
 // Data
 const primarycolor = inject("primarycolor");
-const selectedMonth = ref("June");
-const selectedYear = ref("2024");
+const selectedMonth = ref("");
+const selectedYear = ref("");
 const selectShortCode = ref("NGN");
+const tenantCurrency = ref("");
+const selectedRemittanceItem = ref({});
+const saveRemittanceData = ref({});
 const loading = ref(false);
 const showConfirmRemittance = ref(false);
 const showContinuePayment = ref(false);
+const allRemittanceItems = ref([]);
 const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 // Remittance items array
 const remittanceItems = ref([
   { name: "", amount: "", remittableAmount: "", netAmount: "" },
 ]);
+const tenantId = ref(
+  store.getters.currentUser && store.getters.currentUser.tenantId
+    ? store.getters.currentUser.tenantId
+    : 0
+);
 
 const goBack = () => {
   router.go(-1);
 };
+const yearsArr = computed(() => {
+  const arrOfYears = [];
+  let currentYear = new Date().getFullYear();
+  while (arrOfYears.length <= 100) {
+    arrOfYears.push(currentYear);
+    currentYear = currentYear - 1;
+  }
+  return arrOfYears;
+});
 
 // Computed totals
 const totalAmount = computed(() =>
@@ -247,9 +329,38 @@ const totalNetAmount = computed(() =>
   remittanceItems.value.reduce((sum, item) => sum + parseFloat(item.netAmount || 0), 0)
 );
 
+const getCurrentlySignedInUser = async () => {
+  try {
+    const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+    tenantId.value = res.data.tenantId;
+    console.log(store.getters.currentUser);
+    if (store.getters.currentUser === undefined) {
+      axios
+        .get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
+        .then((res) => {
+          tenantCurrency.value = res.data.currency;
+          console.log(res.data);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      axios
+        .get(`/api/Lookup/TenantCurrency?tenantID=${store.getters.currentUser.tenantId}`)
+        .then((res) => {
+          tenantCurrency.value = res.data.currency;
+        })
+        .catch((err) => console.log(err));
+    }
+  } catch (err) {
+    /*eslint no-undef: "warn"*/
+    console.log(err);
+  }
+};
+getCurrentlySignedInUser();
+
 // Methods
 const addNewItem = () => {
   remittanceItems.value.push({
+    id: "",
     name: "",
     amount: "",
     remittableAmount: "",
@@ -261,14 +372,63 @@ const removeItem = (index) => {
   remittanceItems.value.splice(index, 1);
 };
 
+const getAllRemittableItem = async () => {
+  try {
+    const { data } = await axios.get("/api/Remittance/GetAllRemittableItem");
+    allRemittanceItems.value = data;
+    console.log(data, "jejej");
+  } catch (error) {
+    console.log(error);
+  }
+};
+getAllRemittableItem();
+const setSelectedItem = (item, index) => {
+  selectedRemittanceItem.value = allRemittanceItems.value.find((i) => i.id == item);
+  console.log(selectedRemittanceItem.value, "jjjj");
+  remittanceItems.value[index].name = selectedRemittanceItem.value.name;
+  remittanceItems.value[index].id = selectedRemittanceItem.value.id;
+};
+
 const saveRemittance = () => {
   showConfirmRemittance.value = true;
-  // alert("Remittance saved successfully!");
 };
-const confirmRemittance = () => {
-  showConfirmRemittance.value = false;
-  showContinuePayment.value = true;
-  // alert("Remittance saved successfully!");
+const confirmRemittance = async () => {
+  // Constructing the payload
+  let payload = {
+    // id: "d7c4d68b-1b5d-4c7a-b9a6-49b63b9f4b9f",
+    // remittanceID: "RM-001",
+    // totalRemittableAmount: totalRemittableAmount.value,
+    // totalNetAmount: totalNetAmount.value,
+    periodMonth: selectedMonth.value,
+    periodYear: selectedYear.value,
+    recordStatus: 0,
+    paymentStatus: 1,
+    dateCreated: new Date().toISOString(),
+    lastPaymentDate: new Date().toISOString(),
+    tenantId: tenantId.value ? tenantId.value : "", // Adjust as per your requirement
+    remittanceItems: remittanceItems.value.map((item) => ({
+      remittableItemID: item.id, // Replace with the actual ID if available
+      amount: parseFloat(item.amount || 0),
+      netAmount: item.netAmount,
+      remittableAmount: item.remittableAmount,
+    })),
+  };
+
+  try {
+    const { data } = await axios.post("/api/Remittance/SaveRemittance", payload);
+    console.log(data, "Remittance saved successfully");
+    saveRemittanceData.value = data;
+    showConfirmRemittance.value = false;
+    showContinuePayment.value = true;
+
+    // Optionally, alert or handle success
+  } catch (error) {
+    console.error("Error saving remittance:", error);
+    // Optionally, handle error
+  }
+};
+const proceedPayment = () => {
+  router.push(`/remittance/remittancepayment?id=${saveRemittanceData.value.id}`);
 };
 </script>
 
