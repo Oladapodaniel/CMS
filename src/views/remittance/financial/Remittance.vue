@@ -20,13 +20,13 @@
       <!-- Total Remitted Amount -->
       <div class="col-md-3 text-center">
         <div class="font-weight-600 text-head">Total Remitted Amount</div>
-        <div class="s-24 font-weight-600">NGN {{ totalAmount }}</div>
+        <div class="s-24 font-weight-600">NGN {{ remittanceDashboard.currentYearTotalRemittableAmount }}</div>
       </div>
 
       <!-- Last Month -->
       <div class="col-md-3 text-center">
         <div class="font-weight-600 text-head">Last Month</div>
-        <div class="font-weight-600 s-24">NGN {{ lastMonthAmount }}</div>
+        <div class="font-weight-600 s-24">NGN {{ remittanceDashboard.lastMonthTotalRemittableAmount }}</div>
       </div>
 
       <!-- Chart and Percentage Growth -->
@@ -37,7 +37,7 @@
             <span class="text-success">+{{ growthPercentage }}% </span>
             <span>Guests Since last month</span>
           </div>
-          <div class="mt-4"><a href="#" class="text-secondary fw-400">Show more</a></div>
+          <!-- <div class="mt-4"><a href="#" class="text-secondary fw-400">Show more</a></div> -->
         </div>
       </div>
     </div>
@@ -90,9 +90,8 @@
                         View Detail
                       </router-link>
                     </el-dropdown-item>
-                  <el-dropdown-item>
+                  <el-dropdown-item @click.prevent="showConfirmModal(item.id, index)">
                     <div
-                      @click.prevent="showConfirmModal(item.id, index)"
                       class="text-color"
                     >
                       Delete
@@ -109,7 +108,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, inject } from "vue";
+import { ref, onUpdated, computed, inject } from "vue";
 // import finish from "../../services/progressbar/progress";
 import axios from "@/gateway/backendapi";
 import Chart from "chart.js";
@@ -118,10 +117,12 @@ import { ElMessage, ElMessageBox } from "element-plus";
 
 // Reactive properties
 const primarycolor = inject("primarycolor");
-const totalAmount = ref(680500);
-const lastMonthAmount = ref(280500);
+// const totalAmount = ref('');
+// const lastMonthAmount = ref('');
+const remittanceDashboard = ref({})
 const growthPercentage = ref(9.2025); // Percentage growth
 const marked = ref([]);
+const remittedChartItems = ref([]);
 const loading = ref(false);
 const allRemittanceData = ref([]);
 const paymentRecordHeaders = ref([
@@ -150,9 +151,15 @@ const getAllremittance = async () => {
 };
 getAllremittance();
 const getRemittanceDB = async () => {
+  // /api/Remittance/GetRemittanceBranchDashboard
+  // /api/Remittance/GetRemittanceDashboard
   try {
-    const { data } = await axios.get("/api/Remittance/GetRemittanceDashboard");
+    const { data } = await axios.get("/api/Remittance/GetRemittanceBranchDashboard");
     //  allRemittanceData.value = data
+    remittanceDashboard.value = data
+    
+     remittedChartItems.value = data.remittedChart
+    
     console.log(data, "ggahh");
   } catch (error) {
     console.log(error);
@@ -206,21 +213,39 @@ const showConfirmModal = (id, index) => {
       });
     });
 };
+const remittedChart = computed(() => {
+      const remittedData = [];
+
+      // Populate the arrays based on the raw data
+      remittedChartItems.value.forEach((item) => {
+        remittedData.push(Math.abs(item.remittableAmount)); // Add income to the incomeData array
+      });
+
+      // Return the transformed data
+      return [
+        {
+          label: "Remitted",
+          data: remittedData,
+          backgroundColor: "#76B7B2",
+        },
+      ];
+    });
 
 // Chart setup on component mount
-onMounted(() => {
+onUpdated(() => {
   const ctx = document.getElementById("myChart").getContext("2d");
   new Chart(ctx, {
     type: "bar",
     data: {
-      labels: ["J", "F", "M", "A"], // Months
-      datasets: [
-        {
-          label: "Guests",
-          data: [20, 50, 20, 50], // Example data
-          backgroundColor: "#76B7B2",
-        },
-      ],
+      labels: ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"], // Months
+      datasets: remittedChart.value
+      // datasets: [
+      //   {
+      //     label: "Guests",
+      //     data: [20, 50, 20, 50], 
+      //     backgroundColor: "#76B7B2",
+      //   },
+      // ],
     },
     options: {
       scales: {

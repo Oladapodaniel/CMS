@@ -97,10 +97,10 @@
                     class="input-with-select"
                   >
                     <template #prepend>
-                      <el-select v-model="selectShortCode" style="width: 70px">
+                      <div>{{selectShortCode}}</div>
+                      <!-- <el-select v-model="selectShortCode" style="width: 70px">
                         <el-option label="NGN" value="NGN"></el-option>
-                        <!-- Add other currencies if necessary -->
-                      </el-select>
+                      </el-select> -->
                     </template>
                   </el-input>
                 </td>
@@ -294,7 +294,7 @@ const months = [
 
 // Remittance items array
 const remittanceItems = ref([
-  { name: "", amount: "", remittableAmount: "", netAmount: "" },
+  { name: null, amount: "", remittableAmount: "", netAmount: "" },
 ]);
 const tenantId = ref(
   store.getters.currentUser && store.getters.currentUser.tenantId
@@ -361,7 +361,7 @@ getCurrentlySignedInUser();
 const addNewItem = () => {
   remittanceItems.value.push({
     id: "",
-    name: "",
+    name: null,
     amount: "",
     remittableAmount: "",
     netAmount: "",
