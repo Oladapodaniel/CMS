@@ -12,7 +12,9 @@
       </div>
       <div class="col-md-12 d-flex justify-content-end">
         <div class="d-flex">
-          <span class="s-20 font-weigth-600">Remittance ID: ADF544215</span>
+          <span class="s-20 font-weigth-600"
+            >Remittance ID: {{ singleRemittanceData.remittanceCode }}</span
+          >
           <span>
             <img src="../../../assets/form/copyIcon.png" alt="" />
           </span>
@@ -25,27 +27,40 @@
         <div class="row text-center">
           <div class="col">
             <p class="fw-400">Period</p>
-            <div class="s-20 font-weight-600">June 2024</div>
+            <div class="s-20 font-weight-600">
+              {{ singleRemittanceData.periodMonth }} {{ singleRemittanceData.periodYear }}
+            </div>
           </div>
           <div class="col br-left border-none">
             <p class="fw-400">Remittable</p>
-            <div class="s-20 font-weight-600">NGN 25,000</div>
+            <div class="s-20 font-weight-600">
+              NGN
+              {{ Math.abs(singleRemittanceData.totalRemittableAmount).toLocaleString() }}
+            </div>
           </div>
           <div class="col br-left border-none">
             <p class="fw-400">Amount Paid</p>
-            <div class="s-20 font-weight-600">NGN 0</div>
+            <div class="s-20 font-weight-600">
+              NGN {{ Math.abs(singleRemittanceData.amountPaid).toLocaleString() }}
+            </div>
           </div>
           <div class="col br-left border-none">
             <p class="fw-400">Payment date</p>
-            <div class="s-20 font-weight-600">-</div>
+            <div class="s-20 font-weight-600">
+              {{ formatDate(singleRemittanceData.lastPaymentDate) }}
+            </div>
           </div>
           <div class="col br-left border-none">
             <p class="fw-400">Status</p>
-            <div class="s-20 font-weight-600">Not Paid</div>
+            <div class="s-20 font-weight-600">
+              {{ paymentStatus[singleRemittanceData.paymentStatus] }}
+            </div>
           </div>
           <div class="col br-left border-none">
             <p class="fw-400">Record Status</p>
-            <h6 class="s-20 font-weight-600">Pending</h6>
+            <h6 class="s-20 font-weight-600">
+              {{ recordStatus[singleRemittanceData.recordStatus] }}
+            </h6>
           </div>
         </div>
       </div>
@@ -59,21 +74,27 @@
               <th scope="col">Amount</th>
               <th scope="col">Remittable Amount</th>
               <th scope="col">Net Amount</th>
-              <th scope="col"></th>
+              <!-- <th scope="col"></th> -->
             </tr>
           </thead>
           <tbody class="grey-backg mt-2">
             <tr v-for="(item, index) in remittanceItems" :key="index">
               <td>
                 <div>
-                  <el-input type="text" class="w-100" v-model="item.name" />
+                  <el-input
+                    type="text"
+                    disabled
+                    class="w-100"
+                    v-model="item.remittableItem.name"
+                  />
                 </div>
               </td>
               <td>
                 <div>
                   <el-input v-model="item.amount" class="input-with-select w-100">
                     <template #prepend>
-                      <el-select
+                      <div>NGN</div>
+                      <!-- <el-select
                         v-model="selectShortCode"
                         placeholder="Select"
                         style="width: 70px"
@@ -81,28 +102,31 @@
                         <el-option label="NGN" value="NGN" />
                         <el-option label="GHS" value="GHS" />
                         <el-option label="SWE" value="SWE" />
-                      </el-select>
+                      </el-select> -->
                     </template>
                   </el-input>
                 </div>
               </td>
               <td>
                 <div>
-                  <el-input type="text" class="w-100" v-model="item.amount" />
-                  <!-- {{ calculateRemittable(item.amount) }} -->
+                  <el-input
+                    type="text"
+                    class="w-100"
+                    disabled
+                    v-model="item.remittableAmount"
+                  />
                 </div>
               </td>
               <td>
                 <div>
-                  <el-input type="text" class="w-100" v-model="item.amount" />
+                  <el-input type="text" class="w-100" disabled v-model="item.netAmount" />
                 </div>
               </td>
-              <!-- <td>{{ calculateNet(item.amount) }}</td> -->
-              <td>
+              <!-- <td>
                 <div @click="removeItem(index)">
                   <el-icon><Delete /></el-icon>
                 </div>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>
@@ -115,7 +139,12 @@
             <div class="col-md-4">
               <label>Total Amount:</label>
               <div class="input-group">
-                <el-input type="text" class="w-100" v-model="totalAmount" readonly>
+                <el-input
+                  type="text"
+                  class="w-100"
+                  v-model="singleRemittanceData.totalCollection"
+                  readonly
+                >
                   <template #prepend>
                     <div>{{ selectShortCode }}</div>
                   </template>
@@ -129,7 +158,8 @@
                   <el-input
                     type="text"
                     class="w-100"
-                    v-model="totalRemittableAmount"
+                    disabled
+                    v-model="singleRemittanceData.totalRemittableAmount"
                     readonly
                   >
                     <template #prepend>
@@ -142,7 +172,12 @@
             <div class="col-md-4">
               <label>Total Net Amount:</label>
               <div class="input-group">
-                <el-input type="text" class="w-100" v-model="totalNetAmount" readonly>
+                <el-input
+                  type="text"
+                  class="w-100"
+                  v-model="singleRemittanceData.totalNetAmount"
+                  readonly
+                >
                   <template #prepend>
                     <div>{{ selectShortCode }}</div>
                   </template>
@@ -158,7 +193,7 @@
     <div class="col-md-12 mt-4">
       <div class="row justify-content-center">
         <div class="col-md-10">
-          <div class="row">
+          <div class="row justify-content-center">
             <div class="col-md-6">
               <el-button
                 class="text-white w-100 mr-3"
@@ -169,7 +204,7 @@
                 >Save</el-button
               >
             </div>
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
               <el-button
                 class="text-white w-100"
                 color="#FF5906"
@@ -178,63 +213,202 @@
                 @click="makePayment"
                 >Make Payment</el-button
               >
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
     </div>
+    <el-dialog
+      v-model="showConfirmRemittance"
+      title=""
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
+      align-center
+      class="border-radius-20"
+    >
+      <div class="row">
+        <div class="col-md-12 mt-4 text-center text-black font-weight-bold s-24">
+          Confirm Remittance information
+        </div>
+        <div class="col-md-12 text-center justify-content-center d-flex">
+          <div class="col-md-8 text-black fw-400 s-20">
+            By continuing with this process, you’ve confirmed that the remittance
+            information logged is correct
+          </div>
+        </div>
+        <div class="col-md-12 text-center justify-content-center d-flex">
+          <div class="col-md-12 d-flex justify-content-center">
+            <div class="col-md-6 mt-4">
+              <el-button
+                class="w-100 py-4"
+                @click="confirmRemittance"
+                round
+                size="large"
+                :color="primarycolor"
+                >Yes confirm</el-button
+              >
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 d-flex text-center justify-content-center">
+          <div class="col-md-6 text-center mt-2">or</div>
+        </div>
+        <div class="col-md-12 mt-2 text-center justify-content-center d-flex">
+          <div class="col-md-10 d-flex justify-content-center">
+            <div class="col-md-6 fw-400 s-20">
+              <el-button round @click="cancel" text class="w-100 text-dark" size="large"
+                >Cancel</el-button
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog
+      v-model="showContinuePayment"
+      title=""
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
+      align-center
+      class="border-radius-20"
+    >
+      <div class="row">
+        <div class="col-md-12 text-center justify-content-center d-flex">
+          <div class="col-md-8 text-black text-black font-weight-bold s-24">
+            Are you sure you want to proceed to payment?
+          </div>
+        </div>
+        <div class="col-md-12 text-center justify-content-center d-flex">
+          <div class="col-md-12 d-flex justify-content-center">
+            <div class="col-md-6 mt-4">
+              <el-button
+                class="w-100 py-4 text-white"
+                @click="proceedPayment"
+                round
+                size="large"
+                color="#FF5906"
+                >Yes, continue to payment</el-button
+              >
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 d-flex text-center justify-content-center">
+          <div class="col-md-6 text-center mt-2">or</div>
+        </div>
+        <div class="col-md-12 mt-2 text-center justify-content-center d-flex">
+          <div class="col-md-10 d-flex justify-content-center">
+            <div class="col-md-6 fw-400 s-20">
+              <el-button round @click="cancel" text class="w-100 text-dark" size="large"
+                >Cancel</el-button
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, inject } from "vue";
+import { ref, inject } from "vue";
+import dateFormatter from "../../../services/dates/dateformatter";
 import router from "../../../router";
+import axios from "@/gateway/backendapi";
+import { useRoute } from "vue-router";
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 
+const route = useRoute();
 const primarycolor = inject("primarycolor");
 const selectShortCode = ref("NGN");
+const singleRemittanceData = ref({});
+// const saveRemittanceData = ref({});
+const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
+const showConfirmRemittance = ref(false);
+const showContinuePayment = ref(false);
 
-const remittanceItems = ref([
-  { name: "Offering", amount: 520000, shortCode: "NGN" },
-  { name: "Donations", amount: 520000, shortCode: "NGN" },
-  { name: "Tithe", amount: 520000, shortCode: "NGN" },
-  { name: "Goodwill", amount: 520000, shortCode: "NGN" },
-]);
+const remittanceItems = ref([]);
+
+const paymentStatus = ["NotPaid", "FullyPaid", "PartialPayment"];
+const recordStatus = ["Pending", "Editable", "Locked"];
+
 const goBack = () => {
   router.go(-1);
 };
 
-const calculateRemittable = (amount) => (amount * 0.1).toFixed(0); // 10% remittable
-const calculateNet = (amount) => (amount - amount * 0.1).toFixed(0);
+const formatDate = (date) => {
+  return dateFormatter.monthDayYear(date);
+};
+
+// const calculateRemittable = (amount) => (amount * 0.1).toFixed(0); // 10% remittable
+// const calculateNet = (amount) => (amount - amount * 0.1).toFixed(0);
 
 // Computed values for totals
-const totalAmount = computed(() =>
-  remittanceItems.value.reduce((sum, item) => sum + parseFloat(item.amount), 0)
-);
-const totalRemittableAmount = computed(() =>
-  remittanceItems.value.reduce(
-    (sum, item) => sum + parseFloat(calculateRemittable(item.amount)),
-    0
-  )
-);
-const totalNetAmount = computed(() =>
-  remittanceItems.value.reduce(
-    (sum, item) => sum + parseFloat(calculateNet(item.amount)),
-    0
-  )
-);
+// const totalAmount = computed(() =>
+//   remittanceItems.value.reduce((sum, item) => sum + parseFloat(item.amount), 0)
+// );
+// const totalRemittableAmount = computed(() =>
+//   remittanceItems.value.reduce(
+//     (sum, item) => sum + parseFloat(calculateRemittable(item.amount)),
+//     0
+//   )
+// );
+// const totalNetAmount = computed(() =>
+//   remittanceItems.value.reduce(
+//     (sum, item) => sum + parseFloat(calculateNet(item.amount)),
+//     0
+//   )
+// );
+
+const getRemittancebyId = async () => {
+  try {
+    const { data } = await axios.get(`/api/Remittance/remittance/${route.query.id}`);
+    singleRemittanceData.value = data;
+    remittanceItems.value = data.remittanceItems;
+    // localStorage.setItem(
+    //   JSON.stringify(singleRemittanceData.value),
+    //   "singleRemittanceData"
+    // );
+    console.log(data, "datahj");
+  } catch (error) {
+    console.log(error);
+  }
+};
+getRemittancebyId();
+const confirmRemittance = async () => {
+  showConfirmRemittance.value = false;
+    showContinuePayment.value = true;
+  // try {
+  //   const { data } = await axios.post("/api/Remittance/SaveRemittance", payload);
+  //   console.log(data, "Remittance saved successfully");
+  //   saveRemittanceData.value = data;
+  //   showConfirmRemittance.value = false;
+  //   showContinuePayment.value = true;
+
+  // } catch (error) {
+  //   console.error("Error saving remittance:", error);
+  // }
+};
 
 // Methods for saving and making payments
 const saveRemittance = () => {
-  alert("Remittance saved successfully!");
+  showConfirmRemittance.value = true;
 };
-const makePayment = () => {
-  alert("Proceeding to payment...");
+const cancel = () => {
+  if (showConfirmRemittance.value) {
+    showConfirmRemittance.value = false 
+  } else {
+    showContinuePayment.value = false;
+  }
+}
+const proceedPayment = () => {
+  router.push(`/tenant/remittance/remittancepayment?id=${singleRemittanceData.value.id}`);
 };
+// const makePayment = () => {
+//   alert("Proceeding to payment...");
+// };
 
 // Remove item from the table
-const removeItem = (index) => {
-  remittanceItems.value.splice(index, 1);
-};
+// const removeItem = (index) => {
+//   remittanceItems.value.splice(index, 1);
+// };
 </script>
 
 <style scoped>

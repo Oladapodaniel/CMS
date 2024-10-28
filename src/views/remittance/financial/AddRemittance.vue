@@ -205,7 +205,7 @@
         <div class="col-md-12 mt-2 text-center justify-content-center d-flex">
           <div class="col-md-10 d-flex justify-content-center">
             <div class="col-md-6 fw-400 s-20">
-              <el-button round text class="w-100 text-dark" size="large"
+              <el-button round @click="cancel" text class="w-100 text-dark" size="large"
                 >Cancel</el-button
               >
             </div>
@@ -230,7 +230,7 @@
           <div class="col-md-12 d-flex justify-content-center">
             <div class="col-md-6 mt-4">
               <el-button
-                class="w-100 py-4"
+                class="w-100 py-4 text-white"
                 @click="proceedPayment"
                 round
                 size="large"
@@ -401,10 +401,10 @@ const confirmRemittance = async () => {
     // totalNetAmount: totalNetAmount.value,
     periodMonth: selectedMonth.value,
     periodYear: selectedYear.value,
-    recordStatus: 0,
-    paymentStatus: 1,
+    // recordStatus: 0,
+    // paymentStatus: 1,
     dateCreated: new Date().toISOString(),
-    lastPaymentDate: new Date().toISOString(),
+    // lastPaymentDate: new Date().toISOString(),
     tenantId: tenantId.value ? tenantId.value : "", // Adjust as per your requirement
     remittanceItems: remittanceItems.value.map((item) => ({
       remittableItemID: item.id, // Replace with the actual ID if available
@@ -427,8 +427,15 @@ const confirmRemittance = async () => {
     // Optionally, handle error
   }
 };
+const cancel = () => {
+  if (showConfirmRemittance.value) {
+    showConfirmRemittance.value = false 
+  } else {
+    showContinuePayment.value = false;
+  }
+}
 const proceedPayment = () => {
-  router.push(`/remittance/remittancepayment?id=${saveRemittanceData.value.id}`);
+  router.push(`/tenant/remittance/remittancepayment?id=${saveRemittanceData.value.id}`);
 };
 </script>
 

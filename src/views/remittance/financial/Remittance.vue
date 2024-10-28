@@ -83,6 +83,14 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item>
+                      <router-link
+                        :to="`/tenant/remittance/remittanceinfo?id=${item.id}`"
+                        class="text-color"
+                      >
+                        View Detail
+                      </router-link>
+                    </el-dropdown-item>
+                  <el-dropdown-item>
                     <div
                       @click.prevent="showConfirmModal(item.id, index)"
                       class="text-color"
