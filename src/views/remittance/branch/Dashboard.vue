@@ -17,9 +17,9 @@ const analyticssummary = computed(() => {
     {
         icon: require('../../../assets/ecommerce/WalkIcon.png'),
         texttop: 'Total People',
-        topvalue: '4,000',
+        topvalue: `NGN ${summaries.value?.totalPeople?.toLocaleString() ?? 0}`,
         textbottom: 'Total branches',
-        bottomvalue: '38',
+        bottomvalue: `NGN ${summaries.value?.totalBranches?.toLocaleString() ?? 0}`,
         trend: '42%&#8593;'
     },
     {
@@ -118,11 +118,14 @@ const chartseries = ref([
                 <div class="font-weight-bold h2 text-black text-head">Remittance Overview</div>
                 <MoreDropdown />
             </div>
+            <el-progress :percentage="100" :indeterminate="true" :duration="1" v-if="loading">
+                <div></div>
+            </el-progress>
             <section class="mt-4">
                 <div class="row">
                     <div class="col-12 col-md-6 col-xl-3 mt-3" style="gap: 20px"
                         v-for="(item, index) in analyticssummary" :key="index">
-                        <AnalyticsCard :item="item" v-loading="loading"/>
+                        <AnalyticsCard :item="item"/>
                     </div>
                 </div>
             </section>

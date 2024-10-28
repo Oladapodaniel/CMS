@@ -151,7 +151,7 @@ const lockTransaction = async () => {
                     <img class="ml-2" src="../../../assets/copyurl-icon.png" alt="" />
                 </el-button>
             </section>
-            <el-progress :percentage="100" status="success" :indeterminate="true" :duration="1" v-if="loading">
+            <el-progress :percentage="100" :indeterminate="true" :duration="1" v-if="loading">
                 <div></div>
             </el-progress>
             <section class="wrapper mt-4">
@@ -171,7 +171,7 @@ const lockTransaction = async () => {
                         <el-divider class="divider" direction="vertical" />
                         <div>
                             <div class="title">Amount Paid</div>
-                            <div class="value">NGN {{ remittanceSummary?.totalAmountPaid?.toLocaleString() }}</div>
+                            <div class="value">NGN {{ remittanceSummary?.amountPaid?.toLocaleString() }}</div>
                         </div>
                         <el-divider class="divider" direction="vertical" />
                         <div>
@@ -226,7 +226,7 @@ const lockTransaction = async () => {
                                     <template #default="scope">
                                         <div class="value-wrapper2">
                                             <div style="color: #949494; font-size: 13px">NGN</div>&nbsp;
-                                            <div style="color: #646464; font-weight: 600">{{ scope.row?.amount }}</div>
+                                            <div style="color: #646464; font-weight: 600">{{ scope.row?.amount?.toLocaleString() }}</div>
                                         </div>
                                     </template>
                                 </el-table-column>
@@ -234,7 +234,7 @@ const lockTransaction = async () => {
                                     <template #default="scope">
                                         <div class="value-wrapper3">
                                             <div style="color: #646464; font-weight: 600">NGN {{
-                                                scope.row?.remittableAmount }}</div>
+                                                scope.row?.remittableAmount?.toLocaleString() }}</div>
                                             <div style="color: #B5B5B5">{{ scope.row.remittableItem?.percentage }}%
                                             </div>
                                         </div>
@@ -243,7 +243,7 @@ const lockTransaction = async () => {
                                 <el-table-column prop="netAmount" label="Net amount">
                                     <template #default="scope">
                                         <div class="value-wrapper1">
-                                            <div>NGN {{ scope.row?.netAmount }}</div>
+                                            <div>NGN {{ scope.row?.netAmount?.toLocaleString() }}</div>
                                         </div>
                                     </template>
                                 </el-table-column>
@@ -266,7 +266,7 @@ const lockTransaction = async () => {
                                         <div class="total-value-wrapper2">
                                             <div style="color: #949494; font-size: 13px">NGN</div>&nbsp;
                                             <div style="color: #646464; font-weight: 600">{{
-                                                remittanceSummary?.totalCollection }}</div>
+                                                remittanceSummary?.totalCollection?.toLocaleString() }}</div>
                                         </div>
                                     </template>
                                 </el-table-column>
@@ -274,14 +274,14 @@ const lockTransaction = async () => {
                                     <template #default="scope">
                                         <div class="total-value-wrapper3">
                                             <div style="color: #646464; font-weight: 600">NGN {{
-                                                remittanceSummary?.totalRemittableAmount }}</div>
+                                                remittanceSummary?.totalRemittableAmount?.toLocaleString() }}</div>
                                         </div>
                                     </template>
                                 </el-table-column>
                                 <el-table-column>
                                     <template #default="scope">
                                         <div class="total-value-wrapper1">
-                                            <div>NGN {{ remittanceSummary?.totalNetAmount }}</div>
+                                            <div>NGN {{ remittanceSummary?.totalNetAmount?.toLocaleString() }}</div>
                                         </div>
                                     </template>
                                 </el-table-column>
