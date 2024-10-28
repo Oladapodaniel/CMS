@@ -52,8 +52,8 @@
         <canvas class="w-100" id="myChart" width="5" height="1"></canvas>
         <div class="text-right w-100">
           <div class="fw-400">
-            <span class="text-success">+{{ growthPercentage }}% </span>
-            <span>Guests Since last month</span>
+            <!-- <span class="text-success">+{{ growthPercentage }}% </span>
+            <span>Guests Since last month</span> -->
           </div>
           <!-- <div class="mt-4"><a href="#" class="text-secondary fw-400">Show more</a></div> -->
         </div>
