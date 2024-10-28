@@ -17,9 +17,9 @@ const analyticssummary = computed(() => {
     {
         icon: require('../../../assets/ecommerce/WalkIcon.png'),
         texttop: 'Total People',
-        topvalue: `NGN ${summaries.value?.totalPeople?.toLocaleString() ?? 0}`,
+        topvalue: `${summaries.value?.totalPeople?.toLocaleString() ?? 0}`,
         textbottom: 'Total branches',
-        bottomvalue: `NGN ${summaries.value?.totalBranches?.toLocaleString() ?? 0}`,
+        bottomvalue: `${summaries.value?.totalBranches?.toLocaleString() ?? 0}`,
         trend: '42%&#8593;'
     },
     {

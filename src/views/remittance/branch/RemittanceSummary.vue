@@ -189,6 +189,7 @@ const lockTransaction = async () => {
                         <div>
                             <div>
                                 <el-button size="large" color="#0745AF" style="min-width: 100px"
+                                    :disabled="remittanceSummary?.paymentStatus === 1"
                                     @click="router.push('/tenant/branchremittance/remittancesummary/recordpayment')"
                                     round>Record
                                     Payment</el-button>
