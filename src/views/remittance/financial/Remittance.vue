@@ -67,12 +67,12 @@
           </template>
           <template v-slot:paymentStatus="{ item }">
             <div class="text-success" :class="item.status">
-              {{ item.paymentStatus }}
+              {{ paymentStatus[item.paymentStatus] }}
             </div>
           </template>
           <template v-slot:recordStatus="{ item }">
             <div :class="item.recordStatus">
-              {{ item.recordStatus }}
+              {{ recordStatus[item.recordStatus] }}
             </div>
           </template>
           <template v-slot:action="{ item }">
@@ -136,6 +136,9 @@ const paymentRecordHeaders = ref([
 const handleSelectionChange = (val) => {
   marked.value = val;
 };
+const paymentStatus = ["NotPaid", "FullyPaid", "PartialPayment"];
+const recordStatus = ["Pending", "Editable", "Locked"];
+
 
 const getAllremittance = async () => {
   try {
