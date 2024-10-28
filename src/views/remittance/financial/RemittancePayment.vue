@@ -223,6 +223,7 @@ const subscriptionPayment = async (trans_id, tx_ref) => {
         if (res.data) {
           paymentFailed.value = false;
           paymentDone.value = true;
+          router.push('/tenant/remittance/home')
         } else {
           paymentFailed.value = true;
         }

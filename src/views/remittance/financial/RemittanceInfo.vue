@@ -204,7 +204,7 @@
                 >Save</el-button
               >
             </div> -->
-            <div class="col-md-6">
+            <div class="col-md-6" v-if="!singleRemittanceData.paymentStatus == 1">
               <el-button
                 class="text-white w-100"
                 color="#FF5906"
