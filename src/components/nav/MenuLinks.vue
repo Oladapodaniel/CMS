@@ -305,6 +305,11 @@ export default {
             logo: '/',
             route: '/tenant/chartofaccount',
           },
+          {
+            name: 'Remittance',
+            logo: '/',
+            route: '/tenant/remittance/home',
+          },
         ]
       }
 

@@ -151,8 +151,8 @@ const payWithFlutterwave = async (responseObject) => {
     await loadFlutterwaveScript(); // Ensure the script is loaded before using FlutterwaveCheckout
 
     window.FlutterwaveCheckout({
-      public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
-      // public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+      // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
+      public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
       tx_ref: responseObject.transactionReference,
       amount: responseObject.amount,
       currency: responseObject.tenant.country.currency,
@@ -471,7 +471,7 @@ const subscriptionPayment = async (trans_id, tx_ref) => {
         <div class="col-12">
           <div class="d-flex justify-content-center">
             <img
-              src="../../../assets/successful_payment.png"
+              src="../../../assets/mobileonboarding/sub-successful.gif"
               style="width: 250px; margin: auto"
             />
           </div>
@@ -511,7 +511,7 @@ const subscriptionPayment = async (trans_id, tx_ref) => {
               </div>
             </div>
             <div class="col-md-12 d-flex justify-content-center">
-              <div class="col-md-6 col-8">
+              <div class="col-md-7 col-8">
                 <div
                   class="text-head font-weight-bold col-md-12 px-0 h2 text-center"
                   style="color: #d21615"

@@ -194,7 +194,7 @@
       <div class="row justify-content-center">
         <div class="col-md-10">
           <div class="row justify-content-center">
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
               <el-button
                 class="text-white w-100 mr-3"
                 round
@@ -203,17 +203,17 @@
                 @click="saveRemittance"
                 >Save</el-button
               >
-            </div>
-            <!-- <div class="col-md-6">
+            </div> -->
+            <div class="col-md-6">
               <el-button
                 class="text-white w-100"
                 color="#FF5906"
                 size="large"
                 round
-                @click="makePayment"
+                @click="saveRemittance"
                 >Make Payment</el-button
               >
-            </div> -->
+            </div>
           </div>
         </div>
       </div>

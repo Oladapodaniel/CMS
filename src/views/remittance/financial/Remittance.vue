@@ -18,15 +18,33 @@
     </div>
     <div class="row p-3 border rounded mt-4 align-items-center">
       <!-- Total Remitted Amount -->
-      <div class="col-md-3 text-center">
+      <div class="col-md-3 text-center" v-loading="loading">
         <div class="font-weight-600 text-head">Total Remitted Amount</div>
-        <div class="s-24 font-weight-600">NGN {{ remittanceDashboard.currentYearTotalRemittableAmount }}</div>
+        <div class="s-24 font-weight-600">
+          NGN
+          {{
+            remittanceDashboard && remittanceDashboard.currentYearTotalRemittableAmount
+              ? Math.abs(
+                  remittanceDashboard.currentYearTotalRemittableAmount
+                ).toLocaleString()
+              : 0
+          }}
+        </div>
       </div>
 
       <!-- Last Month -->
-      <div class="col-md-3 text-center">
+      <div class="col-md-3 text-center" v-loading="loading">
         <div class="font-weight-600 text-head">Last Month</div>
-        <div class="font-weight-600 s-24">NGN {{ remittanceDashboard.lastMonthTotalRemittableAmount }}</div>
+        <div class="font-weight-600 s-24">
+          NGN
+          {{
+            remittanceDashboard && remittanceDashboard.lastMonthTotalRemittableAmount
+              ? Math.abs(
+                  remittanceDashboard.lastMonthTotalRemittableAmount
+                ).toLocaleString()
+              : 0
+          }}
+        </div>
       </div>
 
       <!-- Chart and Percentage Growth -->
@@ -42,13 +60,12 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12 my-4">
+      <div class="col-md-12 my-4" v-loading="loading">
         <Table
           :data="allRemittanceData"
           :headers="paymentRecordHeaders"
           :checkMultipleItem="true"
           @checkedrow="handleSelectionChange"
-          v-loading="loading"
         >
           <template v-slot:month="{ item }">
             <div class="font-weight-600">
@@ -83,19 +100,15 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item>
-                      <router-link
-                        :to="`/tenant/remittance/remittanceinfo?id=${item.id}`"
-                        class="text-color"
-                      >
-                        View Detail
-                      </router-link>
-                    </el-dropdown-item>
-                  <el-dropdown-item @click.prevent="showConfirmModal(item.id, index)">
-                    <div
+                    <router-link
+                      :to="`/tenant/remittance/remittanceinfo?id=${item.id}`"
                       class="text-color"
                     >
-                      Delete
-                    </div>
+                      View Detail
+                    </router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item @click.prevent="showConfirmModal(item.id, index)">
+                    <div class="text-color">Delete</div>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -119,7 +132,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 const primarycolor = inject("primarycolor");
 // const totalAmount = ref('');
 // const lastMonthAmount = ref('');
-const remittanceDashboard = ref({})
+const remittanceDashboard = ref({});
 const growthPercentage = ref(9.2025); // Percentage growth
 const marked = ref([]);
 const remittedChartItems = ref([]);
@@ -140,29 +153,32 @@ const handleSelectionChange = (val) => {
 const paymentStatus = ["NotPaid", "FullyPaid", "PartialPayment"];
 const recordStatus = ["Pending", "Editable", "Locked"];
 
-
 const getAllremittance = async () => {
+  loading.value = true;
   try {
     const { data } = await axios.get("/api/Remittance/GetAllRemittance");
     allRemittanceData.value = data;
+    loading.value = false;
   } catch (error) {
     console.log(error);
+    loading.value = false;
   }
 };
 getAllremittance();
 const getRemittanceDB = async () => {
   // /api/Remittance/GetRemittanceBranchDashboard
   // /api/Remittance/GetRemittanceDashboard
+  loading.value = true;
   try {
     const { data } = await axios.get("/api/Remittance/GetRemittanceBranchDashboard");
     //  allRemittanceData.value = data
-    remittanceDashboard.value = data
-    
-     remittedChartItems.value = data.remittedChart
-    
-    console.log(data, "ggahh");
+    remittanceDashboard.value = data;
+
+    remittedChartItems.value = data.remittedChart;
+    loading.value = false;
   } catch (error) {
     console.log(error);
+    loading.value = false;
   }
 };
 getRemittanceDB();
@@ -214,22 +230,20 @@ const showConfirmModal = (id, index) => {
     });
 };
 const remittedChart = computed(() => {
-      const remittedData = [];
-
-      // Populate the arrays based on the raw data
-      remittedChartItems.value.forEach((item) => {
-        remittedData.push(Math.abs(item.remittableAmount)); // Add income to the incomeData array
-      });
-
-      // Return the transformed data
-      return [
-        {
-          label: "Remitted",
-          data: remittedData,
-          backgroundColor: "#76B7B2",
-        },
-      ];
-    });
+  const remittedData = [];
+  // Populate the arrays based on the raw data
+  remittedChartItems.value.forEach((item) => {
+    remittedData.push(Math.abs(item.remittableAmount)); // Add income to the incomeData array
+  });
+  // Return the transformed data
+  return [
+    {
+      label: "Remitted",
+      data: remittedData,
+      backgroundColor: "#76B7B2",
+    },
+  ];
+});
 
 // Chart setup on component mount
 onUpdated(() => {
@@ -238,11 +252,11 @@ onUpdated(() => {
     type: "bar",
     data: {
       labels: ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"], // Months
-      datasets: remittedChart.value
+      datasets: remittedChart.value,
       // datasets: [
       //   {
       //     label: "Guests",
-      //     data: [20, 50, 20, 50], 
+      //     data: [20, 50, 20, 50],
       //     backgroundColor: "#76B7B2",
       //   },
       // ],
