@@ -64,3 +64,84 @@ export const DeleteRemittableItem = (id) => {
         })
     })
 }
+
+export const GetAllBranchRemmitance = () => {
+    return new Promise((resolve, reject) => {
+        // axios.get(`/api/Remittance/GetAllRemittance`)
+        axios.get(`/api/Remittance/GetRemittanceDashboard`)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
+export const GetRemittanceById = (id) => {
+    return new Promise((resolve, reject) => {
+        axios.get(`/api/Remittance/remittance/${id}`)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
+export const GetRemittanceByCode = (code) => {
+    return new Promise((resolve, reject) => {
+        axios.get(`/api/Remittance/remittancebyCode/${code}`)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
+export const RecordPaymentManually = (payload) => {
+    return new Promise((resolve, reject) => {
+        axios.post(`/api/Remittance/ManualRemittancePayment`, payload)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
+export const LockRemittanceTransaction = (payload) => {
+    return new Promise((resolve, reject) => {
+        axios.post(`/api/Remittance/LockRemittanceRecord`, payload)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}

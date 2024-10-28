@@ -1,14 +1,19 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import deviceBreakpoint from '../../../mixins/deviceBreakpoint';
 import AnalyticsCard from './component/AnalyticsCard.vue';
 import MoreDropdown from './component/MoreDropdown.vue';
 import Table from "@/components/table/Table";
 import ColumnChart from "@/components/charts/BranchColumnChart.vue";
 import router from '../../../router';
+import { GetAllBranchRemmitance } from '../../../services/remittance/branchremittance';
+import amountWithCommas from '../../../services/numbers/numbers_formatter'
 
 const { lgAndUp, xlAndUp, mdAndUp, xsOnly } = deviceBreakpoint();
-const analyticssummary = ref([
+const summaries = ref(null)
+const loading = ref(false)
+const analyticssummary = computed(() => {
+    return [
     {
         icon: require('../../../assets/ecommerce/WalkIcon.png'),
         texttop: 'Total People',
@@ -20,53 +25,53 @@ const analyticssummary = ref([
     {
         icon: require('../../../assets/money_transfer.png'),
         texttop: 'Past year remitted',
-        topvalue: 'NGN 368,000',
+        topvalue: `${summaries.value?.lastYearTotalRemittableAmount?.toLocaleString() ?? 0}`,
         textbottom: 'Current year remittable',
-        bottomvalue: 'NGN 368,000',
+        bottomvalue: `NGN ${summaries.value?.currentYearTotalRemittableAmount?.toLocaleString() ?? 0}`,
         trend: '35%&#8593;'
     },
     {
         icon: require('../../../assets/arrow_downward.png'),
         texttop: 'Last month remitted',
-        topvalue: 'NGN 368,000',
+        topvalue: `NGN ${summaries.value?.lastMonthTotalRemittableAmount?.toLocaleString() ?? 0}`,
         textbottom: 'Current month remittable',
-        bottomvalue: 'NGN 368,000',
+        bottomvalue: `NGN ${summaries.value?.currentMonthTotalRemittableAmount?.toLocaleString() ?? 0}`,
         trend: '12%&#8593;'
     },
     {
         icon: require('../../../assets/money_outstanding.png'),
         texttop: 'Month outstanding',
-        topvalue: 'NGN 368,000',
+        topvalue: `NGN ${summaries.value?.currentMonthTotalOutstandingAmount?.toLocaleString() ?? 0}`,
         textbottom: 'Year outstanding',
-        bottomvalue: 'NGN 6,148,000',
+        bottomvalue: `NGN ${summaries.value?.currentYearTotalOutstandingAmount?.toLocaleString() ?? 0}`,
         trend: '32%&#8593;'
     },
-])
+]})
 
 const remittanceheader = ref([
     {
         name: "Name",
-        value: "name"   
+        value: "tenantName"   
     },
     {
         name: "Month",
         value: "month"   
     },
     {
-        name: "Amount",
-        value: "amount"   
+        name: "Year to date",
+        value: "year"   
     },
     {
         name: "Status",
-        value: "status"   
+        value: "paymentStatus"   
     },
     {
-        name: "Year to date",
-        value: "datee"   
+        name: "Amount Paid",
+        value: "totalAmountPaid"   
     },
     {
         name: "Outstanding",
-        value: "outstanding"   
+        value: "totalOutstanding"   
     },
     {
         name: "Action",
@@ -74,39 +79,7 @@ const remittanceheader = ref([
     },
 ])
 
-const body = ref([
-    {
-        name: "Higher Ground",
-        month: 'August',
-        amount: 'NGN 200,000',
-        status: 'Paid',
-        datee: 'NGN 100,000',
-        outstanding: 'NGN 50,000',
-        action: 'action'
-    },
-    {
-        name: "Higher Ground",
-        month: 'August',
-        amount: 'NGN 200,000',
-        status: 'Paid',
-        datee: 'NGN 100,000',
-        outstanding: 'NGN 50,000',
-        action: 'action'
-    },
-    {
-        name: "Higher Ground",
-        month: 'August',
-        amount: 'NGN 200,000',
-        status: 'Paid',
-        datee: 'NGN 100,000',
-        outstanding: 'NGN 50,000',
-        action: 'action'
-    },
-])
-
-const handleSelectionChange = (payload) => {
-    console.log(payload)
-}
+const body = ref([])
 
 
 const chartseries = ref([
@@ -121,6 +94,21 @@ const chartseries = ref([
     ])
 
     const categories = ref(['USA', 'China', 'Brazil', 'EU', 'Argentina', 'India'])
+
+    const getAllBranchesRemittance = async() => {
+        loading.value = true;
+        try {
+            const response = await GetAllBranchRemmitance()
+            loading.value = false;
+            console.log(response)
+            body.value = response.remittancesummaries
+            summaries.value = response
+        } catch (error) {
+            console.error(error)
+            loading.value = false;
+        }
+    }
+    getAllBranchesRemittance();
 </script>
 
 <template>
@@ -134,19 +122,19 @@ const chartseries = ref([
                 <div class="row">
                     <div class="col-12 col-md-6 col-xl-3 mt-3" style="gap: 20px"
                         v-for="(item, index) in analyticssummary" :key="index">
-                        <AnalyticsCard :item="item" />
+                        <AnalyticsCard :item="item" v-loading="loading"/>
                     </div>
                 </div>
             </section>
-            <section class="mt-5">
-                <Table :data="body" :headers="remittanceheader" :checkMultipleItem="true"
-                    @checkedrow="handleSelectionChange">
-                    <template v-slot:name="{ item }">
+            <section class="mt-5" v-loading="loading">
+                <Table :data="body" :headers="remittanceheader" :checkMultipleItem="false"
+                    >
+                    <template v-slot:tenantName="{ item }">
                         <div class="py-2">
                             <div class="c-pointer fw-500 s-16">
-                            {{ item.name }}
+                            {{ item.tenantName }}
                         </div>
-                        <div class="s-12 text-secondary transform_none">Membership size: 256</div>
+                        <div class="s-12 text-secondary transform_none">Membership size: {{ item.membershipsize }}</div>
                         </div>
                     </template>
                     <template v-slot:month="{ item }">
@@ -154,29 +142,29 @@ const chartseries = ref([
                             {{ item.month }}
                         </div>
                     </template>
-                    <template v-slot:amount="{ item }">
+                    <template v-slot:year="{ item }">
                         <div class="c-pointer transform_none py-2 fw-500 s-16">
-                            {{ item.amount }}
+                            {{ item.year }}
                         </div>
                     </template>
-                    <template v-slot:status="{ item }">
+                    <template v-slot:paymentStatus="{ item }">
                         <div class="c-pointer transform_none py-2 fw-500 s-16">
-                            {{ item.status }}
+                            {{ item.paymentStatus }}
                         </div>
                     </template>
-                    <template v-slot:datee="{ item }">
+                    <template v-slot:totalAmountPaid="{ item }">
                         <div class="c-pointer transform_none py-2 fw-500 s-16">
-                            {{ item.datee }}
+                            {{ item.totalAmountPaid }}
                         </div>
                     </template>
-                    <template v-slot:outstanding="{ item }">
+                    <template v-slot:totalOutstanding="{ item }">
                         <div class="c-pointer transform_none py-2 fw-500 s-16">
-                            {{ item.outstanding }}
+                            NGN {{ amountWithCommas.amountWithCommas(item.totalOutstanding) }}
                         </div>
                     </template>
-                    <template v-slot:action>
-                        <div class="c-pointer fw-500 s-16" @click="router.push('/tenant/branchremittance/remittancesummary')">
-                            <div>View details</div>
+                    <template v-slot:action="{ item }">
+                        <div class="c-pointer fw-500 s-16" @click="router.push(`/tenant/branchremittance/remittancesummary/${item.id}`)">
+                            <div style="text-decoration: underline; color: #136acd">View details</div>
                         </div>
                     </template>
                 </Table>

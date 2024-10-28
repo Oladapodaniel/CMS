@@ -1901,7 +1901,7 @@ const routes = [
                 import( /* webpackChunkName: "BankInfosetup" */ '@/views/remittance/branch/BankSetup.vue')
         },
         {
-            path: 'branchremittance/remittancesummary',
+            path: 'branchremittance/remittancesummary/:id',
             name: 'RemittanceSummary',
             meta: {
                 title: 'Churchplus - Remitance Summary',
