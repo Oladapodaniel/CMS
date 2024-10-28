@@ -106,17 +106,17 @@ const recordPaymentmanually = async() => {
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="text_label">Remittance Year</div>
-                                <el-input type="text" placeholder="Choose bank" v-model="periodYear" disabled />
+                                <el-input type="text" placeholder="Year" v-model="periodYear" disabled />
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="text_label">Remittance Month</div>
-                                <el-input type="text" placeholder="Choose bank" v-model="periodMonth" disabled />
+                                <el-input type="text" placeholder="Month" v-model="periodMonth" disabled />
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-            <section>
+            <!-- <section>
                 <div class="row mt-5">
                     <div class="col-12 col-md-6 offset-md-3">
                         <div class="text-head font-weight-bold py-0 my-0 text-black">Manual Payment Record</div>
@@ -134,7 +134,7 @@ const recordPaymentmanually = async() => {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> -->
             <section>
                 <div class="d-flex justify-content-center mt-4">
                     <el-button :color="primarycolor" class="px-5" size="large" @click="recordPaymentmanually"

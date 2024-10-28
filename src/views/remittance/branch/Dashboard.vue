@@ -172,7 +172,7 @@ const chartseries = ref([
                     </template>
                 </Table>
             </section>
-            <section class="mt-5 border">
+            <!-- <section class="mt-5 border">
                 <ColumnChart domId="chart1" :data="chartseries" :series="categories" :header="'Remittance by Month'" />
             </section>
             <section class="mt-5 border">
@@ -180,7 +180,7 @@ const chartseries = ref([
             </section>
             <section class="mt-5 border">
                 <ColumnChart domId="chart3" :data="chartseries" :series="categories" :header="'Monthly Outstanding'" />
-            </section>
+            </section> -->
         </div>
     </main>
 </template>
