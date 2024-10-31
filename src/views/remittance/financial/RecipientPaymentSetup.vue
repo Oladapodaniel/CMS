@@ -40,8 +40,7 @@ const choosePayment = (index) => {
                 " placeholder="Select bank account" size="large" />
         </div>
         <div class="offset-md-3 col-md-6 mt-4 card_wrapper">
-            <label class="s-16 text-dark mb-1" style="font-weight: 500">Select Bank Account to receive
-                remittance</label>
+            <label class="s-16 text-dark mb-1" style="font-weight: 500">Choose a Payment method</label>
             <div class="inner_card mt-3" v-for="(item, index) in integration" :key="index">
                 <div class="d-flex justify-content-between align-items-start align-items-sm-center" @click="choosePayment(index)">
                     <div class="d-flex flex-column flex-sm-row">
