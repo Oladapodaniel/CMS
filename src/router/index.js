@@ -1837,6 +1837,12 @@ const routes = [
                 component: () =>
                     import( /* webpackChunkName: "defaultmessage" */ '@/views/settings/DeleteTerms')
             },
+            {
+                path: 'integrations',
+                name: 'Integrations',
+                component: () =>
+                    import( /* webpackChunkName: "integrations" */ '@/views/settings/Integrations')
+            },
             ]
         },
         {
@@ -2214,6 +2220,15 @@ const routes = [
                     },
                     component: () =>
                         import( /* webpackChunkName: "remittance home" */ '../views/remittance/financial/PaymentRoute.vue')
+                },
+                {
+                    path: 'recipientpaymentsetup',
+                    name: "RecipientPaymentSetup",
+                    meta: {
+                        title: 'Churchplus - Remittance Recipient Setup',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "remittance payment setup" */ '../views/remittance/financial/RecipientPaymentSetup.vue')
                 },
             ]
         },
