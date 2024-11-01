@@ -2,7 +2,7 @@
   <div>
     <div class="d-flex">
       <div class="fw-500 s-24  text-dak mb-3">
-        <p>{{ headerText }}</p>
+        <p class="p-3">{{ headerText }}</p>
       </div>
     </div>
   </div>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { onUpdated, ref } from "vue";
+import { onMounted, onUpdated, ref } from "vue";
 import Highcharts from "highcharts";
 import { useRoute } from "vue-router";
 export default {
@@ -43,7 +43,7 @@ export default {
     const route = useRoute();
     const fullPath = ref("");
 
-    onUpdated(() => {
+    onMounted(() => {
       headerText.value = props.header;
 
       var highchartsOptions = {

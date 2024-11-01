@@ -414,7 +414,7 @@
                       <el-icon class="d-flex align-items-center mr-1">
                         <CirclePlus />
                       </el-icon>
-                      Add new donor
+                      Add new member
                     </a>
                   </div>
                 </div>

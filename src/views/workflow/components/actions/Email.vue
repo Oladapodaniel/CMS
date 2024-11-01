@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import { reactive, ref } from '@vue/reactivity';
+import { reactive, ref } from 'vue';
 import { watchEffect } from '@vue/runtime-core';
 import DecoupledEditor from '@/components/RichEditor';
 export default {

@@ -272,7 +272,7 @@
                           <div class="modal-content">
                             <div class="modal-header bg-modal">
                               <h5 class="modal-title" id="exampleModalLongTitle">Payment methods</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <button type="button" class="close" data-dismiss="modal" ref="closepaymentmodal" aria-label="Close">
                                 <span aria-hidden="true" ref="close">&times;</span>
                               </button>
                             </div>
@@ -426,6 +426,7 @@ export default {
     const FLWupportedCurrencies = ref(supportedCurrencies);
     const callPayment = ref(false)
     const initializePaymentResponse = ref({})
+    const closepaymentmodal = ref(null)
 
 
 
@@ -524,7 +525,9 @@ export default {
             contributionCurrencyId: dfaultCurrency.value.id
           }
         ],
-        contributionItem: selectedContributionType.value.financialContribution.id
+        contributionItem: selectedContributionType.value.financialContribution.id,
+        isPaymentConnected: formResponse.value?.isPaymentConnected,
+        paymentConnectedObject: formResponse.value?.paymentConnectedObject
 
       }
       return {}
@@ -563,7 +566,13 @@ export default {
         const { data } = await axios.post('/initailizedonationpayment', donationObj.value)
         finish()
         loading.close()
+        closepaymentmodal.value.click();
         initializePaymentResponse.value = data;
+
+        if (data.initializePaymentResponseDTO?.data?.authorization_url) {
+          window.open( 
+                data.initializePaymentResponseDTO?.data?.authorization_url, "_blank")
+        }
         if (data.status) {
           callPayment.value = true
         } else {
@@ -792,7 +801,8 @@ export default {
       FLWupportedCurrencies,
       callPayment,
       resetCallPayment,
-      initializePaymentResponse
+      initializePaymentResponse,
+      closepaymentmodal
     };
   },
 };

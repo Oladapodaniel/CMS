@@ -285,7 +285,7 @@
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
+import { ref } from "vue";
 import social_service from "../../../services/social/social_service";
 import router from "../../../router";
 import { useStore } from "vuex";

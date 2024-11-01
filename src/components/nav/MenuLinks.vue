@@ -23,13 +23,17 @@
               <el-sub-menu :index="`${index + 1}-${indexe + 1}`" v-if="x.submenu && x.submenu.length > 0">
                 <template #title>{{ x.name }}</template>
                 <el-menu-item :index="`${index + 1}-${indexe + 1}-${indexee + 1}`" v-for="(y, indexee) in x.submenu"
-                  :key="indexee" @click="routeToPage(y)">{{ y.name }}</el-menu-item>
+                  :key="indexee" @click="routeToPage(y)">{{ y.name }}
+                  <el-tag type="success" class="ml-3" effect="dark" v-if="indexee === 1" size="" round>
+                    <span style="display: flex; font-size: 14px">Beta</span>
+                  </el-tag>
+                </el-menu-item>
               </el-sub-menu>
               <el-menu-item-group @click="routeToPage(x)" v-else>
                 <el-menu-item :index="`${index + 1}-${indexe + 1}`">{{ x.name }}
-                  <!-- <el-tag type="success" class="ml-3" effect="dark" v-if="index === 2 && indexe === 3" size="" round>
+                  <el-tag type="success" class="ml-3" effect="dark" v-if="index === 5 && indexe === 5" size="" round>
                     <span style="display: flex; font-size: 14px">Beta</span>
-                  </el-tag> -->
+                  </el-tag>
                 </el-menu-item>
               </el-menu-item-group>
             </div>
@@ -305,6 +309,11 @@ export default {
             logo: '/',
             route: '/tenant/chartofaccount',
           },
+          {
+            name: 'Remittance',
+            logo: '/',
+            route: '/tenant/remittance/home',
+          },
         ]
       }
 
@@ -405,6 +414,11 @@ export default {
             route: '/tenant/branch/branchdashboard',
             // route: '/tenant/branch/mainbranchsummary',
             // route: '/tenant/branch/branchsummary',
+          },
+          {
+            name: 'Remittance',
+            logo: '/',
+            route: '/tenant/branchremittance',
           },
           // {
           //   name: 'People',
@@ -595,7 +609,17 @@ export default {
     }
     
     const disableNav = (id) => {
-      return getUser?.value?.subStatus?.toLowerCase() === 'expired' ? id !== 3 && id !== 1 ? true : false : false
+      if (getUser?.value?.subStatus?.toLowerCase() === 'expired' && (id !== 3 && id !== 1)) {
+        return true
+      } else {
+        // If user is on free plan, disable some features
+        if (getUser.value?.subscriptionName?.toLowerCase() === 'free plan' && 
+            (id === 4 || id === 5 || id === 6 || id === 7)) {
+          return true
+        } else {
+          return false
+        }
+      }
     }
 
     watchEffect(() => {

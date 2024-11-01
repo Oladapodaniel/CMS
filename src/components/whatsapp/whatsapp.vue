@@ -29,7 +29,7 @@
                     Whatsapp</router-link>
                 </div>
               </div>
-              <div class="row mb-3" :class="{ show: menuShouldShow, 'links-menu': !menuShouldShow }">
+              <div class="row mb-3" style="border: 1px solid red" :class="{ 'show': menuShouldShow, 'links-menu': !menuShouldShow }">
                 <div class="col-md-12">
                   <div
                     class="row menu-item-con py-2"
@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import { ref, computed } from "@vue/reactivity";
+import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
 import store from "../../store/store";
 import swal from 'sweetalert';
@@ -160,6 +160,7 @@ export default {
     const { lgAndUp, xlAndUp } = deviceBreakpoint();
     const toggleMenu = () => {
       menuShouldShow.value = !menuShouldShow.value;
+      console.log(menuShouldShow.value)
     };
 
     const clientSessionId = computed(() => {
@@ -382,7 +383,7 @@ export default {
   }
 
   .show {
-    overflow: hidden;
+    /* overflow: hidden; */
     height: 270px;
     transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
   }

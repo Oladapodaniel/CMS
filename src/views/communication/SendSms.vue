@@ -585,6 +585,7 @@
               :disabled="disableBtn"
               :color="primarycolor"
               class="w-100"
+              size="large"
               @click="contructScheduleMessageBody(1, '')"
               round
               >Send SMS now</el-button
@@ -634,6 +635,7 @@
                         :disabled="disableBtn"
                         :color="primarycolor"
                         class="w-100"
+                        size="large"
                         @click="contructScheduleMessageBody(1, 'hybridKonnect')"
                         round
                         >Send SMS now</el-button
@@ -667,6 +669,8 @@
                       <el-button
                         class="w-100 secondary-button"
                         @click="contructScheduleMessageBody(1, 'hostedsms')"
+                        size="large"
+                        :disabled="disableBtn"
                         round
                         >Send SMS now</el-button
                       >

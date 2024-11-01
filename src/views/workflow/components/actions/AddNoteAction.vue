@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { reactive, ref } from '@vue/reactivity';
+import { reactive, ref } from 'vue';
 import { watchEffect } from '@vue/runtime-core';
 export default {
     props: [ "selectedActionIndex", "parameters", "selectNoteList" ],

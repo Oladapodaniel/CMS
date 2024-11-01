@@ -450,7 +450,7 @@
 import Dropdown from "primevue/dropdown";
 import { inject, watchEffect } from "vue";
 import Dialog from "primevue/dialog";
-import { ref } from "@vue/reactivity";
+import { ref } from "vue";
 import social_service from "../../../services/social/social_service";
 import membershipService from "../../../services/membership/membershipservice";
 import axios from "@/gateway/backendapi";

@@ -84,22 +84,6 @@ const deleteMedia = (mediaId) => {
     })
 }
 
-const uploadImage = (payload) => {
-    return new Promise((resolve, reject) => {
-        axios.post(`/api/Media/UploadProfilePicture`, payload)
-        .then(res => {
-            resolve(res.data);
-        })
-        .catch(err => {
-            if (err.response) {
-                reject(err.response);
-            } else {
-                reject(err);
-            }
-        })
-    })
-}
-
 const uploadFileAndImage = (payload) => {
     return new Promise((resolve, reject) => {
         axios.post(`/api/Media/UploadImageAndPicture`, payload)

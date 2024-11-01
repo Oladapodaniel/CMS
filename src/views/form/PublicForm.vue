@@ -21,11 +21,12 @@
               {{ singleFormData && singleFormData.name ? singleFormData.name : "" }}
             </div>
             <div class="col-md-11 col-lg-11 text-center">
-              {{
+              <!-- {{
                 singleFormData && singleFormData.description === "null"
                   ? ""
                   : singleFormData.description
-              }}
+              }} -->
+              <div v-html="formattedDescription"></div>
             </div>
           </div>
         </div>
@@ -61,26 +62,16 @@
                     :placeholder="item.label"
                     v-model="item.data"
                   />
-                  <!-- <el-select-v2
-                    v-model="item.data"
-                    v-if="item.controlType === 1"
-                    :options="
-                      item.parameterValues.split(',').map((i) => ({ label: i, value: i }))
-                    "
-                    :placeholder="item.label"
-                    class="w-100"
-                    size="large"
-                  /> -->
                   <select
                     class="form-control text-small input-adjust"
-                    v-model="item.data"
-                    @change="setSelectedItem"
                     v-if="item.controlType === 1"
+                    v-model="item.data"
+                    @change="setSelectedItem(index, $event)"
                   >
-                  <option disabled value="" selected>{{ item.label }}</option>
+                    <option disabled value="" selected>{{ item.label }}</option>
                     <option
-                      v-for="(itm, index) in item.parameterValues.split(',')"
-                      :key="index"
+                      v-for="(itm, indx) in item.parameterValues.split(',')"
+                      :key="indx"
                       :value="itm"
                     >
                       <p>{{ itm }}</p>
@@ -91,13 +82,13 @@
                     v-model="item.data"
                     size="large"
                   />
-                  <el-date-picker
+                  <CustomDatePicker 
                     v-if="item.controlType === 3"
-                    v-model="item.data"
-                    class="w-100"
-                    type="date"
-                    :placeholder="item.label"
-                    size="default"
+                    :value="item.data" 
+                    :label="item.label"
+                    class="w-100" 
+                    size="large"
+                    @date="setSelectedDate($event, index)"
                   />
                   <el-input
                     type="email"
@@ -135,9 +126,11 @@
                     :placeholder="item.label"
                   />
                   <el-select-v2
-                  v-if="item.controlType === 11"
+                    v-if="item.controlType === 11"
                     v-model="item.data"
-                    :options="item.parameterValues.split(',').map((i) => ({ label: i, value: i }))"
+                    :options="
+                      item.parameterValues.split(',').map((i) => ({ label: i, value: i }))
+                    "
                     :placeholder="item.label"
                     class="w-100"
                     size="large"
@@ -328,12 +321,14 @@
 <script>
 import { ref, inject, computed, watchEffect } from "vue";
 import axios from "@/gateway/backendapi";
-import { ElMessage} from "element-plus";
+import { ElMessage } from "element-plus";
 import deviceBreakpoint from "../../mixins/deviceBreakpoint";
 import { useRoute } from "vue-router";
 import { ElLoading } from "element-plus";
 import swal from "sweetalert";
+import CustomDatePicker from "../../components/datetimepicker/CustomDatePicker.vue";
 export default {
+  components: { CustomDatePicker },
   setup() {
     const formName = ref("");
     const description = ref("");
@@ -428,6 +423,11 @@ export default {
       }
     };
     getSingleForm();
+    const formattedDescription = computed(() => {
+      return singleFormData.value && singleFormData.value.description !== "null"
+        ? singleFormData.value.description
+        : "";
+    });
 
     const triggerPayment = () => {
       paymentDialog.value = true;
@@ -684,9 +684,9 @@ export default {
     const filterIsRequired = ref({});
     const requiredField = ref(false);
 
-    const setSelectedItem = (event) => {
-      console.log("Selected item:", event.target.value);
-      dropdownItem.value = event.target.value; // Update item.data with the selected value
+    const setSelectedItem = (index, event) => {
+      dropdownItem.value = event.target.value;
+      singleFormData.value.customAttributes[index].data = dropdownItem.value;
     };
 
     const saveForm = async () => {
@@ -719,7 +719,7 @@ export default {
             `/api/public/saveformdata?formID=${route.params.id}`,
             singleFormData.value.customAttributes.map((i) => ({
               customAttributeID: i.id,
-              data: i.data ? Array.isArray(i.data) ? i.data.join(",") : i.data : dropdownItem.value,
+              data: i.data ? (Array.isArray(i.data) ? i.data.join(",") : i.data) : "",
               isRequired: i.isRequired,
             }))
           );
@@ -739,84 +739,12 @@ export default {
           loading.value = false;
         }
       }
-      // console.log(allTrueRequired, 'jjhhdhd');
-      // console.log(singleFormData.value.customAttributes, 'jjhhdhd');
-
-      // if (isRequiredFalse && filterIsRequired.value === undefined) {
-      //     try {
-      //         const { data } = await axios.post(`/api/public/saveformdata?formID=${route.params.id}`, singleFormData.value.customAttributes.map((i) => ({
-      //             customAttributeID: i.id,
-      //             data: i.data,
-      //             isRequired: i.isRequired
-      //         })))
-      //         console.log(data, '1')
-      //         swal({
-      //             title: "Success!",
-      //             text: 'Form Successfully Submitted ',
-      //             icon: "success",
-      //             confirmButtonColor: '#8CD4F5',
-      //             dangerMode: true,
-      //         })
-      //         disabledBtn.value = true
-      //         loading.value = false
-      //     }
-      //     catch (error) {
-      //         console.log(error);
-      //         loading.value = false
-      //     }
-      // } else if (filterIsRequired.value && filterIsRequired.value.data && filterIsRequired.value.isRequired === true && allTrueRequired.value && allTrueRequired.value.length > 0) {
-      //     try {
-      //         const { data } = await axios.post(`/api/public/saveformdata?formID=${route.params.id}`, singleFormData.value.customAttributes.map((i) => ({
-      //             customAttributeID: i.id,
-      //             data: i.data,
-      //             isRequired: i.isRequired
-      //         })))
-      //         console.log(data, '2')
-      //         swal({
-      //             title: "Success!",
-      //             text: 'Form Successfully Submitted ',
-      //             icon: "success",
-      //             confirmButtonColor: '#8CD4F5',
-      //             dangerMode: true,
-      //         })
-      //         disabledBtn.value = true
-      //         loading.value = false
-      //     }
-      //     catch (error) {
-      //         console.log(error);
-      //         loading.value = false
-
-      //     }
-      // } else if (isRequiredNull && isRequiredNull.data && filterIsRequired.value === undefined) {
-      //     try {
-      //         const { data } = await axios.post(`/api/public/saveformdata?formID=${route.params.id}`, singleFormData.value.customAttributes.map((i) => ({
-      //             customAttributeID: i.id,
-      //             data: i.data,
-      //             isRequired: i.isRequired
-      //         })))
-      //         console.log(data, '3')
-      //         swal({
-      //             title: "Success!",
-      //             text: 'Form Successfully Submitted ',
-      //             icon: "success",
-      //             confirmButtonColor: '#8CD4F5',
-      //             dangerMode: true,
-      //         })
-      //         disabledBtn.value = true
-      //         loading.value = false
-      //     }
-      //     catch (error) {
-      //         console.log(error);
-      //         loading.value = false
-
-      //     }
-
-      // } else {
-      //     loading.value = false
-      //     disabledBtn.value = false
-      // }
-      // }
     };
+
+    const setSelectedDate = (payload, index) => {
+      const parameters = singleFormData.value.customAttributes[index]
+      parameters.data = payload 
+    }
 
     return {
       formName,
@@ -850,6 +778,7 @@ export default {
       paystackGate,
       publicPaymentForm,
       paymentFormCurrency,
+      formattedDescription,
       dropdownItem,
       payWithPaystack,
       payWithFlutterwave,
@@ -863,6 +792,7 @@ export default {
       saveCustomField,
       triggerPayment,
       setSelectedItem,
+      setSelectedDate
     };
   },
 };

@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { reactive, ref } from "@vue/reactivity";
+import { reactive, ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import SearchWithDropdown from "@/components/search/SearchWithDropdown";
 import { watch } from "@vue/runtime-core";

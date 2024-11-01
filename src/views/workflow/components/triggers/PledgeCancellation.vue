@@ -51,7 +51,7 @@
 
 <script>
 import TriggerDescription from "../TriggerDescription.vue";
-import { reactive, ref } from "@vue/reactivity";
+import { reactive, ref } from "vue";
 import { watchEffect } from "@vue/runtime-core";
 import workflow_util from "../../utlity/workflow_util";
 export default {

@@ -221,7 +221,7 @@
 </template>
 
 <script>
-import { ref } from '@vue/reactivity'
+import { ref } from 'vue'
 import composeService from "../../services/communication/composer";
 import { watchEffect } from '@vue/runtime-core';
 import { useRoute } from "vue-router"

@@ -156,7 +156,7 @@
 </template>
 
 <script>
-import { ref, computed } from '@vue/reactivity'
+import { ref, computed } from 'vue'
 import axios from "@/gateway/backendapi";
 import AddToGroup from "../../../components/membership/AddMemberToGroup.vue"
 import Dialog from "primevue/dialog";

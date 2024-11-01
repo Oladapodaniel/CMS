@@ -316,6 +316,10 @@ div.el-textarea textarea.el-textarea__inner {
   display: none;
 }
 
+.el-dialog.remittancepaymentmodal {
+  background: linear-gradient(270deg, #FFFFFF 0%, #F5FFFF 100%);
+}
+
 .el-checkbox.align-checkbox-totop {
   align-items: start !important;
 }
@@ -400,4 +404,9 @@ div.whatsappdrawer.el-drawer .el-drawer__footer {
 .el-popper.is-customized .el-popper__arrow::before {
   background: linear-gradient(45deg, #b2e68d, #bce689);
   right: 0;
+}
+
+div.remittancesummary div.el-table__inner-wrapper table.el-table__body tbody td{
+  padding: 0px !important;
+  border-bottom: none !important;
 }

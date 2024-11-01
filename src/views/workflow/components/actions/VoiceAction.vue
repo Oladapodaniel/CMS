@@ -170,7 +170,7 @@
   </div>
 </template>
 <script>
-import { reactive, ref, onMounted } from "@vue/reactivity";
+import { reactive, ref, onMounted } from "vue";
 import { watchEffect } from "@vue/runtime-core";
 import media_service from "../../../../services/media/media_service";
 import membershipService from "../../../../services/membership/membershipservice";

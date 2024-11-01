@@ -1688,7 +1688,7 @@ const routes = [
                 component: () =>
                     import( /* webpackChunkName: "workflows" */ '../views/workflow/pages/Workflows.vue'),
                 meta: {
-                    title: 'Churchplus - Add Workflow',
+                    title: 'Churchplus - Workflow',
                 }
             },
             {
@@ -1837,6 +1837,12 @@ const routes = [
                 component: () =>
                     import( /* webpackChunkName: "defaultmessage" */ '@/views/settings/DeleteTerms')
             },
+            {
+                path: 'integrations',
+                name: 'Integrations',
+                component: () =>
+                    import( /* webpackChunkName: "integrations" */ '@/views/settings/Integrations')
+            },
             ]
         },
         {
@@ -1872,6 +1878,51 @@ const routes = [
                     import( /* webpackChunkName: "medialibrary" */ '@/views/media/file/Index')
             },
             ]
+        },
+        {
+            path: 'branchremittance',
+            name: 'BranchRemittanceDashboard',
+            component: () =>
+                import( /* webpackChunkName: "branch remittance" */ '@/views/remittance/branch/Dashboard.vue'),
+            meta: {
+                title: 'Churchplus - Branch Remittance',
+            }
+        },
+        {
+            path: 'branchremittance/remittancesetup',
+            name: 'RemittanceSetup',
+            meta: {
+                title: 'Churchplus - Remitance Setup',
+            },
+            component: () =>
+                import( /* webpackChunkName: "remittancesetup" */ '@/views/remittance/branch/RemittanceSetup.vue')
+        },
+        {
+            path: 'branchremittance/bankinfosetup',
+            name: 'BankInfoSetup',
+            meta: {
+                title: 'Churchplus - Remitance Setup',
+            },
+            component: () =>
+                import( /* webpackChunkName: "BankInfosetup" */ '@/views/remittance/branch/BankSetup.vue')
+        },
+        {
+            path: 'branchremittance/remittancesummary/:id',
+            name: 'RemittanceSummary',
+            meta: {
+                title: 'Churchplus - Remitance Summary',
+            },
+            component: () =>
+                import( /* webpackChunkName: "RemittanceSummary" */ '@/views/remittance/branch/RemittanceSummary.vue')
+        },
+        {
+            path: 'branchremittance/remittancesummary/recordpayment',
+            name: 'ManualPaymentRecord',
+            meta: {
+                title: 'Churchplus - Remitance Manual Payment Record',
+            },
+            component: () =>
+                import( /* webpackChunkName: "ManualPaymentRecord" */ '@/views/remittance/branch/ManualPaymentRecord.vue')
         },
         {
             path: 'upload',
@@ -2113,6 +2164,71 @@ const routes = [
                     },
                     component: () =>
                         import( /* webpackChunkName: "pledgepaymentlist" */ '../views/pledge/PledgePaymentList.vue')
+                },
+            ]
+        },
+        {
+            path: 'remittance',
+            name: "Index",
+            meta: {
+                title: 'Churchplus - Remittance',
+            },
+            component: () =>
+                import( /* webpackChunkName: "remittance" */ '../views/remittance/financial/index.vue'),
+            children: [
+                {
+                    path: 'home',
+                    name: "Remittance",
+                    meta: {
+                        title: 'Churchplus - Remittance',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "remittance home" */ '../views/remittance/financial/Remittance.vue')
+                },
+                {
+                    path: 'addremittance',
+                    name: "AddRemittance",
+                    meta: {
+                        title: 'Churchplus - Remittance',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "remittance home" */ '../views/remittance/financial/AddRemittance.vue')
+                },
+                {
+                    path: 'remittanceinfo',
+                    name: "RemittanceInfo",
+                    meta: {
+                        title: 'Churchplus - Remittance',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "remittance home" */ '../views/remittance/financial/RemittanceInfo.vue')
+                },
+                {
+                    path: 'remittancepayment',
+                    name: "RemittancePayment",
+                    meta: {
+                        title: 'Churchplus - Remittance',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "remittance home" */ '../views/remittance/financial/RemittancePayment.vue')
+                },
+                {
+                    path: 'paymentroute',
+                    name: "PaymentRoute",
+                    meta: {
+                        title: 'Churchplus - Remittance',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "remittance home" */ '../views/remittance/financial/PaymentRoute.vue')
+                },
+                {
+                    path: 'recipientpaymentsetup',
+                    name: "RecipientPaymentSetup",
+                    meta: {
+                        title: 'Churchplus - Remittance Recipient Setup',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "remittance payment setup" */ '../views/remittance/financial/RecipientPaymentSetup.vue')
                 },
             ]
         },

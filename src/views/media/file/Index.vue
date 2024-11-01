@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { ref } from '@vue/reactivity'
+import { ref } from 'vue'
 import { useRoute } from "vue-router"
 import media_service from '../../../services/media/media_service';
 import dateFormatter from '../../../services/dates/dateformatter';

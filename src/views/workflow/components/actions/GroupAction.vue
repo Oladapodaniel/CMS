@@ -32,7 +32,7 @@
 
 <script>
 import Dropdown from "primevue/dropdown";
-import { reactive, ref } from "@vue/reactivity";
+import { reactive, ref } from "vue";
 import MultiSelect from "primevue/multiselect";
 import workflow_util from "../../utlity/workflow_util";
 import { watch } from "@vue/runtime-core";

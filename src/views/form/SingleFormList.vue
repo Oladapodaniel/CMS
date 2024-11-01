@@ -148,7 +148,7 @@
             <th>Date</th>
             <th v-if="searchForm[0].isPaymentForm">Amount</th>
             <th v-for="(label, index) in labels" :key="index">
-              {{ label }}
+              {{ label.label }}
             </th>
             <th>Proceed</th>
             <th>Action</th>
@@ -158,11 +158,24 @@
           <tr v-for="(item, index) in searchForm" :key="index">
             <td>{{ date(item.date) }}</td>
             <td v-if="item.isPaymentForm">{{ item.amount }}</td>
-            <td v-for="(value, label) in item.data" :key="label">
-              <div v-if="value.data?.includes(',')">
-                <el-tag type="primary" v-for="item in value.data.split(',')" size="large" class="ml-1 mt-1">{{ item }}</el-tag>
+            <td v-for="(value, index) in labels" :key="index">
+              <div v-for="(j, i) in item.data" :key="i">
+                <!-- {{ j.customAttributeID }} -->
+                <!-- {{ value }} -->
+                <div v-if="value.headerId === j.customAttributeID">{{ j.data }}</div>
+          
               </div>
-              <span v-else>{{ value.data ? value.data : '' }} </span>
+              <!-- <div v-if="value.data?.includes(',')">
+                <el-tag
+                  type="primary"
+                  v-for="(item, index) in value.data.split(',')"
+                  :key="index"
+                  size="large"
+                  class="ml-1 mt-1"
+                  >{{ item }}</el-tag
+                >
+              </div>
+              <span v-else>{{ value.data ? value.data : "" }} </span> -->
             </td>
             <td>
               <div class="c-pointer">
@@ -193,28 +206,7 @@
                   Your browser does not support the video tag.
                 </video>
               </div>
-              <!-- <div class="c-pointer">
-                <div v-if="!item.isProceed">
-                  <el-icon size="27">
-                    <CircleCheck />
-                  </el-icon>
-                </div>
-                <video
-                  height="30"
-                  autoplay
-                  class="approveservicereport"
-                  v-if="item.isProceed"
-                >
-                  <source src="../../assets/check_animated.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              </div> -->
             </td>
-
-            <!-- <td v-for="(value, label) in item" :key="label">
-              {{ value }}
-            </td> -->
-
             <td class="text-danger">
               <el-dropdown trigger="click">
                 <el-icon>
@@ -250,53 +242,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="col-md-12 p-0 scroll-table" v-if="showList">
-            <table class="table table-hover table w-100" id="table" v-for="(item, index) in formItems" :key="index">
-                <thead>
-                    <tr class=" table-row-bg ">
-                        <th v-for="(label, index) in item.data" :key="index">
-                            {{ label.customAttribute.label }}
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td v-for="(item, index) in item.data" :key="index">
-                            {{ item.data }}
-                        </td>
-                    </tr>
-                </tbody>
-
-            </table>
-
-        </div> -->
-    <!-- <div class="row mt-4" v-if="showList">
-            <div class="col-md-12  scroll-table" v-for="(item, index) in formItems" :key="index">
-                <div class="row mt-4">
-                    <hr class="col-md-12  ">
-                </div>
-                <table class="table mt-4 table-hover table w-100" id="table" v-for="(itm, index) in item.data" :key="index">
-                    <thead>
-                        <tr class=" table-row-bg ">
-                            <th>
-                                {{ itm.customAttribute.label }}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                {{ itm.data }}
-                            </td>
-                        </tr>
-                    </tbody>
-
-                </table>
-
-
-            </div>
-        </div> -->
-
     <div class="row justify-content-center mt-4 pb-5" v-if="showList">
       <div class="col-md-12">
         <div
@@ -444,12 +389,21 @@ export default {
         formItems.value = data.form.submittedData;
         formDetails.value = data;
 
+        // labels.value =
+        //   formItems.value && formItems.value[formItems.value.length - 1]
+        //     ? formItems.value[formItems.value.length - 1].data.map(
+        //         (dataItem) => dataItem.customAttribute.label
+        //       )
+        //     : "";
         labels.value =
-          formItems.value && formItems.value[formItems.value.length - 1]
-            ? formItems.value[formItems.value.length - 1].data.map(
-                (dataItem) => dataItem.customAttribute.label
-              )
-            : "";
+          formItems.value && formItems.value.length > 0
+            ? formItems.value[0].data.map((dataItem) => {
+              return {
+                headerId: dataItem.customAttribute.id,
+                label: dataItem.customAttribute.label
+              }
+            })
+            : [];
         loading.value = false;
         console.log(formDetails.value, "form");
       } catch (error) {
@@ -458,6 +412,17 @@ export default {
       }
     };
     getFormData();
+
+    // watch(
+    //   () => formItems.value,
+    //   (newVal) => {
+    //     if (newVal.length > 0) {
+    //       // Update labels dynamically when formItems change
+    //       labels.value =
+    //         newVal[0]?.data.map((field) => field.customAttribute.label) || [];
+    //     }
+    //   }
+    // );
 
     watchEffect(() => {
       if (formItems.value && formItems.value.length > 0) {
@@ -600,24 +565,6 @@ export default {
         console.log(error);
       }
     };
-    // const searchForm = computed(() => {
-    //   if (searchText.value !== "" && formItems.value.length > 0) {
-    //     return formItems.value.filter((i) => {
-    //       // Assuming i is an object with properties that you want to search through
-    //       for (let key in i) {
-    //         if (
-    //           typeof i[key] === "string" &&
-    //           i[key].toLowerCase().includes(searchText.value.toLowerCase())
-    //         ) {
-    //           return true;
-    //         }
-    //       }
-    //       return false;
-    //     });
-    //   } else {
-    //     return formItems.value;
-    //   }
-    // });
     const searchForm = computed(() => {
       if (searchText.value !== "" && formItems.value.length > 0) {
         return formItems.value.filter((item) => {
@@ -669,8 +616,8 @@ export default {
       const index = searchForm.value.findIndex((i) => i.id == item.id);
       searchForm.value[index].approvingServiceReport = true;
       let payload = {
-          id: item.id,
-          isprocessed: type == 1 ? true : false,
+        id: item.id,
+        isprocessed: type == 1 ? true : false,
       };
       try {
         // const data = await axios.get(`/api/Forms/IsFormProcessedToggle?id=${item.id}&isprocessed=${type == 1 ? true : false}`)

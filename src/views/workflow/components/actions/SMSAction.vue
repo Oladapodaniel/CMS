@@ -221,7 +221,7 @@
 </template>
 
 <script>
-import { reactive, ref } from "@vue/reactivity";
+import { reactive, ref } from "vue";
 import { computed, watchEffect } from "@vue/runtime-core";
 import axios from "@/gateway/backendapi";
 import { useToast } from "primevue/usetoast";

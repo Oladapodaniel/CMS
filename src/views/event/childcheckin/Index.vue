@@ -152,7 +152,7 @@ export default {
                 let res = await axios.get(`/api/CheckInAttendance/retrieveFamily?checkincode=${code.value}&activityId=${selectedEvent.value.activityID}`)
                 
                 loading.value = false
-                console.log(res)
+                console.log(res, 'checkind hereeee')
                 checkinDetails.value = res.data.returnObject
 
                 if (!checkinDetails.value) {

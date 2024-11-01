@@ -129,7 +129,7 @@
 <script>
 import Dropdown from "primevue/dropdown";
 import Checkbox from "primevue/checkbox";
-import { ref } from '@vue/reactivity';
+import { ref } from 'vue';
 import { useStore } from "vuex";
 import membershipService from '../../../services/membership/membershipservice';
 // import media_service from "../../../services/media/media_service";
