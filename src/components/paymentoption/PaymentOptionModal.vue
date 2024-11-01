@@ -42,23 +42,28 @@ export default {
 
 
     const paystackGate = computed(() => {
-      if (!props.formData.paymentGateWays || props.currency !== 'NGN') return false
-      return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "Paystack")
+      if (props.formData?.isPaymentConnected) return true
+      return false;
+      // if (!props.formData.paymentGateWays || props.currency !== 'NGN') return false
+      // return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "Paystack")
     })
 
     const flutterwaveGate = computed(() => {
-      if (!props.formData.paymentGateWays) return false
-      return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "FlutterWave")
+      // if (!props.formData.paymentGateWays) return false
+      // return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "FlutterWave")
+      return false
     })
 
     const paypalGate = computed(() => {
-      if (!props.formData.paymentGateWays) return false
-      return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "PayPal")
+      // if (!props.formData.paymentGateWays) return false
+      // return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "PayPal")
+      return false
     })
 
     const stripe = computed(() => {
-      if (!props.formData.paymentGateWays) return false
-      return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "Stripe")
+      // if (!props.formData.paymentGateWays) return false
+      // return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "Stripe")
+      return false
     })
 
     const initializePayment = (paymentType) => {
@@ -172,16 +177,16 @@ export default {
       });
     }
 
-    watchEffect(() => {
-      if (props.callPayment && Object.keys(props.initializePaymentResponse).length > 0) {
-        if (selectedGateway.value == 'Paystack') {
-          payWithPaystack(props.initializePaymentResponse);
-        } else {
-          payWithFlutterwave(props.initializePaymentResponse);
-        }
-        emit('resetcallpaymentprops', false)
-      }
-    })
+    // watchEffect(() => {
+      // if (props.callPayment && Object.keys(props.initializePaymentResponse).length > 0) {
+        // if (selectedGateway.value == 'Paystack') {
+        //   payWithPaystack(props.initializePaymentResponse);
+        // } else {
+        //   payWithFlutterwave(props.initializePaymentResponse);
+        // }
+        // emit('resetcallpaymentprops', false)
+      // }
+    // })
 
     return {
       paystackGate, flutterwaveGate, paypalGate, stripe, selectedGateway, initializePayment

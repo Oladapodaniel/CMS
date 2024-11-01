@@ -2,12 +2,20 @@
 import { inject, ref } from 'vue';
 import deviceBreakpoint from '../../mixins/deviceBreakpoint';
 import transaction_service from '../../services/financials/transaction_service';
+import { ConnectWithPaymentProvider, GetAllProviders } from '../../services/settings/integrations';
+import { ElMessage } from 'element-plus';
 
 const { lgAndUp, xlAndUp, mdAndUp, xsOnly } = deviceBreakpoint();
 const displayDialog = ref(false);
 const currencies = ref([]);
 const selectedCurrency = ref(null);
 const primarycolor = inject('primarycolor')
+const paymentProviders = ref([])
+const businessName = ref("");
+const email = ref("");
+const connectionResponse = ref(null);
+const loadingproviders = ref(false)
+const connecting = ref(false)
 
 const getCurrencies = async () => {
     try {
@@ -18,6 +26,52 @@ const getCurrencies = async () => {
     }
 }
 getCurrencies();
+
+const getProviders = async () => {
+    loadingproviders.value = true;
+    try {
+        const response = await GetAllProviders();
+        paymentProviders.value = response;
+        loadingproviders.value = false;
+    } catch (error) {
+        console.error(error)
+        loadingproviders.value = false;
+    }
+}
+getProviders();
+
+const connectProvider = async () => {
+
+    if (!businessName.value || !email.value || !selectedCurrency.value) {
+        ElMessage({
+            type: 'warning',
+            message: 'Please fill all fields.',
+            duration: 4000
+        })
+        return;
+    }
+    connecting.value = true;
+    let payload = {
+        business_name: businessName.value,
+        currency: selectedCurrency.value,
+        emails: [
+            email.value
+        ]
+    }
+
+    try {
+        const { status, data } = await ConnectWithPaymentProvider(payload);
+        connecting.value = false;
+        if (status) {
+            connectionResponse.value = data;
+        }
+        getProviders();
+    } catch (error) {
+        connecting.value = false;
+        console.error(error)
+    }
+    console.log(payload)
+}
 </script>
 
 <template>
@@ -30,7 +84,7 @@ getCurrencies();
                         <div class="d-flex">
                             <div class="input-wrapper">
                                 <input class="search_input" placeholder="Find an integration" type="text" />
-                                <el-icon color="#888888"  class="input-icon">
+                                <el-icon color="#888888" class="input-icon">
                                     <Search />
                                 </el-icon>
                             </div>
@@ -48,110 +102,82 @@ getCurrencies();
                 <div class="col-md-4">Status</div>
                 <div class="col-md-4">Actions</div>
             </div>
-            <div class="row">
+            <el-progress :percentage="100" :indeterminate="true" :duration="1" v-if="loadingproviders">
+                <div></div>
+            </el-progress>
+            <div class="row" v-for="(item, index) in paymentProviders" :key="index">
                 <div class="col-md-4 table_body">
                     <div class="d-flex align-items-center">
-                        <img src="../../assets/paystackLogo.png" width="40" />
-                        <div class="body_text ml-1">Paystack</div>
-                        <div class="ml-2">
+                        <img src="../../assets/paystack_white-bg.png" width="40"
+                            v-if="item.name.toLowerCase() === 'paystack'" />
+                        <div class="body_text ml-1">{{ item.name }}</div>
+                        <div class="ml-2" v-if="item.status.toLowerCase() === 'connected'">
                             <img src="../../assets/blue_tick.png" width="13" />
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 align-self-center body_text">Connected</div>
+                <div class="col-md-4 align-self-center body_text">{{ item.status }}</div>
                 <div class="col-md-4 align-self-center">
-                    <el-button class="success_connect">Connect</el-button>
-                    <el-button class="disconnect_btn">Disconnect</el-button>
-                </div>
-                <el-divider class="m-0" />
-            </div>
-            <div class="row">
-                <div class="col-md-4 table_body">
-                    <div class="d-flex align-items-center">
-                        <img src="../../assets/paystackLogo.png" width="40" />
-                        <div class="body_text ml-1">Paystack</div>
-                        <div class="ml-2">
-                            <img src="../../assets/blue_tick.png" width="13" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 align-self-center body_text">Connected</div>
-                <div class="col-md-4 align-self-center">
-                    <el-button class="success_connect" @click="displayDialog = true">Connect</el-button>
-                    <el-button class="disconnect_btn">Disconnect</el-button>
-                </div>
-                <el-divider class="m-0" />
-            </div>
-            <div class="row">
-                <div class="col-md-4 table_body">
-                    <div class="d-flex align-items-center">
-                        <img src="../../assets/paystackLogo.png" width="40" />
-                        <div class="body_text ml-1">Paystack</div>
-                        <div class="ml-2">
-                            <img src="../../assets/blue_tick.png" width="13" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 align-self-center body_text">Connected</div>
-                <div class="col-md-4 align-self-center">
-                    <el-button class="success_connect">Connect</el-button>
-                    <el-button class="disconnect_btn">Disconnect</el-button>
+                    <!-- <el-button class="success_connect" @click="displayDialog = true">Connect</el-button> -->
+                    <el-button class="success_connect" v-if="item.status.toLowerCase() === 'connected'" @click="displayDialog = true">Connect</el-button>
+                    <el-button class="disconnect_btn" v-else>Disconnect</el-button>
                 </div>
                 <el-divider class="m-0" />
             </div>
         </div>
         <el-dialog class="" style="border-radius: 25px;" v-model="displayDialog" title=""
             :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
-            <!-- <div class="p-md-4">
-                <div class="d-flex justify-content-end">
-                    <img src="../../assets/paystack.png" width="120" />
-                </div>
-                <div class="mt-3">
-                    <label class="s-18 text-dark" style="font-weight: 500">Ministry / Business name</label>
-                    <el-input type="text" />
-                </div>
-                <div class="mt-3">
-                    <label class="s-18 text-dark" style="font-weight: 500">Currency</label>
-                    <el-select-v2 v-model="selectedCurrency" class="w-100 font-weight-normal" :options="currencies.map((i) => ({
-                        label: i.name,
-                        value: i.id,
-                        shortCode: i.shortCode,
-                        symbol: i.symbol
-                    }))
-                        " placeholder="Select currency" size="large">
-                        <template #default="{ item }">
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex">
-                                    <span>{{ item.shortCode }} &nbsp; - &nbsp;</span>
-                                    <span>{{ item.label }}</span>
-                                </div>
-                                <span class="text-primary">{{ item.symbol }}</span>
-                            </div>
-                        </template>
-</el-select-v2>
-</div>
-<div class="mt-3">
-    <label class="s-18 text-dark" style="font-weight: 500">Email</label>
-    <el-input type="text" />
-</div>
-<div class="mt-5 row">
-    <div class="col-12 offset-md-3 col-md-6">
-        <el-button :color="primarycolor" class="w-100" size="large" round>Integrate</el-button>
-    </div>
-</div>
-</div> -->
-            <div class="p-md-4">
+            <div class="p-md-4" v-if="connectionResponse">
                 <div class="d-flex flex-column align-items-center">
                     <img src="../../assets/7efs.gif" width="150" />
                     <h2 class="font-weight-600 text-dark">Great work</h2>
-                    <div class="s-18 text-dark text-center">Click this <a href="#">link</a> to complete account Linking
+                    <div class="s-18 text-dark text-center">Click this <a :href="connectionResponse?.setup_link"
+                            target="_blank">link</a> to complete account Linking
                         or Check
                         your email</div>
                     <div class="mt-5 row">
                     </div>
                 </div>
                 <div class="col-12 offset-md-3 col-md-6">
-                    <el-button :color="primarycolor" class="w-100" size="large" round>Close</el-button>
+                    <el-button :color="primarycolor" class="w-100 confirm_button" size="large" @click="displayDialog = false" round>Close</el-button>
+                </div>
+            </div>
+            <div class="p-md-4" v-else>
+                <div class="d-flex justify-content-end">
+                    <img src="../../assets/paystack.png" width="120" />
+                </div>
+                <div class="mt-3">
+                    <label class="s-18 text-dark" style="font-weight: 500">Ministry / Business name</label>
+                    <el-input type="text" placeholder="Enter name" v-model="businessName" />
+                </div>
+                <div class="mt-3">
+                    <label class="s-18 text-dark" style="font-weight: 500">Currency</label>
+                    <el-select-v2 v-model="selectedCurrency" filterable class="w-100 font-weight-normal" :options="currencies.map((i) => ({
+                        label: i.name,
+                        value: i.shortCode,
+                        symbol: i.symbol
+                    }))
+                        " placeholder="Select currency" size="large">
+                        <template #default="{ item }">
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex">
+                                    <span>{{ item.value }} &nbsp; - &nbsp;</span>
+                                    <span>{{ item.label }}</span>
+                                </div>
+                                <span class="text-primary">{{ item.symbol }}</span>
+                            </div>
+                        </template>
+                    </el-select-v2>
+                </div>
+                <div class="mt-3">
+                    <label class="s-18 text-dark" style="font-weight: 500">Email</label>
+                    <el-input type="email" placeholder="Enter email" v-model="email" />
+                </div>
+                <div class="mt-5 row">
+                    <div class="col-12 offset-md-3 col-md-6">
+                        <el-button :color="primarycolor" class="confirm_button w-100" size="large" :loading="connecting"
+                            @click="connectProvider" round>Integrate</el-button>
+                    </div>
                 </div>
             </div>
         </el-dialog>
@@ -233,5 +259,17 @@ getCurrencies();
     position: absolute;
     top: 12px;
     left: 17px;
+}
+
+.confirm_button {
+    box-shadow: 10px 7px 27px -8px rgba(0, 0, 0, 0.61);
+    -webkit-box-shadow: 10px 7px 27px -8px rgba(0, 0, 0, 0.61);
+    -moz-box-shadow: 10px 7px 27px -8px rgba(0, 0, 0, 0.61);
+    -moz-o-shadow: 10px 7px 27px -8px rgba(0, 0, 0, 0.61);
+    -moz-ms-shadow: 10px 7px 27px -8px rgba(0, 0, 0, 0.61);
+}
+
+div.text-dark.text-center > a {
+    text-decoration: underline;
 }
 </style>

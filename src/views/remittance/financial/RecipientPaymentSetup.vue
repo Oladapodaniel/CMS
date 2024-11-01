@@ -2,15 +2,19 @@
 import { inject, ref } from 'vue';
 import router from '../../../router';
 import deviceBreakpoint from '../../../mixins/deviceBreakpoint';
+import lookupService from '../../../services/lookup/lookupservice';
 
 const selectedBank = ref(null)
 const { lgAndUp, xlAndUp, mdAndUp, xsOnly } = deviceBreakpoint();
 const primarycolor = inject("primarycolor");
+const allbanks = ref([])
 const integration = ref([
-    { name: 'Remita', selected: true },
-    { name: 'paystack', selected: false },
-    { name: 'paystack', selected: false },
-    { name: 'paystack', selected: false },
+    { name: 'Remita', selected: true, icon: require('../../../assets/remita.png') },
+    { name: 'Interswitch', selected: false, icon: require('../../../assets/interswitch.png') },
+    { name: 'Remita', selected: false, icon: require('../../../assets/remita.png') },
+    { name: 'Interswitch', selected: false, icon: require('../../../assets/interswitch.png') },
+    { name: 'Remita', selected: false, icon: require('../../../assets/remita.png') },
+    { name: 'Interswitch', selected: false, icon: require('../../../assets/interswitch.png') },
 ]);
 const displayDialog = ref(false)
 
@@ -19,6 +23,18 @@ const choosePayment = (index) => {
     integration.value[index].selected = true
     displayDialog.value = true;
 }
+
+const getTenantbanks = async () => {
+    try {
+        const response = await lookupService.getTenantBanks();
+        if (response.status) {
+            allbanks.value = response.returnObject;
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+getTenantbanks();
 </script>
 
 <template>
@@ -36,18 +52,28 @@ const choosePayment = (index) => {
         </div>
         <div class="offset-md-3 col-md-6 mt-4 card_wrapper">
             <label class="s-16 text-dark" style="font-weight: 500">Select Bank Account to receive remittance</label>
-            <el-select-v2 v-model="selectedBank" class="w-100 font-weight-normal" :options="[]
-                " placeholder="Select bank account" size="large" />
+            <el-select-v2 v-model="selectedBank" filterable class="w-100 font-weight-normal" :options="allbanks.map((i) => ({
+                label: i.accountNumber,
+                value: i.id,
+                bankName: i.bankName
+            }))" placeholder="Select bank" size="large">
+            <template #default="{ item }">
+                <div class="d-flex">
+                    <div>{{ item.label }}</div>&nbsp;
+                    <div>{{ item.bankName }}</div>
+                </div>
+            </template>    
+        </el-select-v2>
         </div>
         <div class="offset-md-3 col-md-6 mt-4 card_wrapper">
             <label class="s-16 text-dark mb-1" style="font-weight: 500">Choose a Payment method</label>
             <div class="inner_card mt-3" v-for="(item, index) in integration" :key="index">
-                <div class="d-flex justify-content-between align-items-start align-items-sm-center" @click="choosePayment(index)">
-                    <div class="d-flex flex-column flex-sm-row">
-                        <img src="../../../assets/remita.png" width="100" />
-                        <div class="ml-md-2">
-                            <div style="font-weight: 500">Bank Branch Payment</div>
-                            <div class="s-14">{{ item.name }}</div>
+                <div class="d-flex justify-content-between align-items-start align-items-sm-center"
+                    @click="choosePayment(index)">
+                    <div class="d-flex flex-column  flex-sm-row ">
+                        <img :src="item.icon" width="100" />
+                        <div class="ml-md-4 align-self-center">
+                            <div style="font-weight: 500;">{{ item.name }}</div>
                         </div>
                     </div>
                     <div class="radio_button_wrapper">
@@ -56,7 +82,7 @@ const choosePayment = (index) => {
                 </div>
             </div>
         </div>
-        <el-dialog class="" style="border-radius: 25px;" v-model="displayDialog" title=""
+        <el-dialog class="remittancepaymentmodal" style="border-radius: 25px;" v-model="displayDialog" title=""
             :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
             <div class="p-md-4">
                 <div class="d-flex flex-column align-items-center">
