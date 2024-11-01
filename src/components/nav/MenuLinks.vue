@@ -305,11 +305,11 @@ export default {
             logo: '/',
             route: '/tenant/chartofaccount',
           },
-          {
-            name: 'Remittance',
-            logo: '/',
-            route: '/tenant/remittance/home',
-          },
+          // {
+          //   name: 'Remittance',
+          //   logo: '/',
+          //   route: '/tenant/remittance/home',
+          // },
         ]
       }
 
@@ -411,11 +411,11 @@ export default {
             // route: '/tenant/branch/mainbranchsummary',
             // route: '/tenant/branch/branchsummary',
           },
-          {
-            name: 'Remittance',
-            logo: '/',
-            route: '/tenant/branchremittance',
-          },
+          // {
+          //   name: 'Remittance',
+          //   logo: '/',
+          //   route: '/tenant/branchremittance',
+          // },
           // {
           //   name: 'People',
           //   logo: '/',
