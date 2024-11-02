@@ -1279,7 +1279,7 @@
                   class="col-md-10 s-24 text-center border-radius-40 py-2"
                   style="background: #f2f2f2; color: #121112;"
                 >
-                  Regular Route <span class="font-weight-600 s-24" style="color: #121112;">(5.5 Naira)</span>
+                  Regular Route <span class="font-weight-600 s-24" style="color: #121112;">(3.9 Naira)</span>
                 </div>
               </div>
               <div class="col-md-12 mt-4 d-flex justify-content-center">
