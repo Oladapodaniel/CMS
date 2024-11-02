@@ -412,9 +412,9 @@
                 Quick Things you can do
               </div>
               <div>
-                <div class="quick-btn-link" @click="routeToAddMember"
-                  ><el-button size="large" round> Add Member </el-button></div
-                >
+                <div class="quick-btn-link" @click="routeToAddMember">
+                  <el-button size="large" round> Add Member </el-button>
+                </div>
               </div>
               <div>
                 <router-link to="/tenant/sms/compose" class="quick-btn-link"
@@ -433,11 +433,13 @@
                   <el-button size="large" @click="routeToOffering" round>
                     Record Offering
                   </el-button>
-                </div >
+                </div>
               </div>
               <div>
                 <div class="quick-btn-link">
-                  <el-button size="large" @click="routeToTransaction" round> Record Expense </el-button>
+                  <el-button size="large" @click="routeToTransaction" round>
+                    Record Expense
+                  </el-button>
                 </div>
               </div>
             </div>
@@ -514,20 +516,26 @@
                   tenantInfoAttendanceWeekly[0].data.some((i) => i > 0))
               "
             >
-            <!-- <router-link to="/tenant/whatsapp/auth">
+              <!-- <router-link to="/tenant/whatsapp/auth">
               <img src="../../assets/whatsapp_banner.jpeg" class="w-100 my-4" />
             </router-link> -->
-            <router-link to="/tenant/firsttimeranalytics">
-              <img src="../../assets/people/FirsttimerIcon.jpg" class="w-100 my-4" />
-            </router-link>
-              <div class="more-things side p-3 " v-if="!tenantInfoExtra.hasMobileApp">
+              <div @click="showSMSUpdate">
+                <img src="../../assets/SMSUpdate.jpg" class="w-100 my-4" />
+              </div>
+              <router-link to="/tenant/firsttimeranalytics">
+                <img src="../../assets/people/FirsttimerIcon.jpg" class="w-100 my-4" />
+              </router-link>
+              <div class="more-things side p-3" v-if="!tenantInfoExtra.hasMobileApp">
                 <img src="../../assets/mobileapp2.svg" class="w-100" />
                 <div class="mt-4 can-do text-head h5 font-weight-600">Mobile App</div>
                 <div class="more-body mt-2">
                   Get a customized mobile app for your church.
                 </div>
                 <div class="no-decoration">
-                  <el-button class="mt-1 bg-warning text-white" @click="routeToWelcomeOnboard" round
+                  <el-button
+                    class="mt-1 bg-warning text-white"
+                    @click="routeToWelcomeOnboard"
+                    round
                     >Set up now</el-button
                   >
                 </div>
@@ -555,7 +563,9 @@
                 <div class="mt-4 can-do text-head h5 font-weight-600">Online Giving</div>
                 <div class="more-body mt-2">Make online donations to your church.</div>
                 <div class="no-decoration">
-                  <el-button class="mt-1" @click="routeToPayment" round>Set up now</el-button>
+                  <el-button class="mt-1" @click="routeToPayment" round
+                    >Set up now</el-button
+                  >
                 </div>
               </div>
             </div>
@@ -577,7 +587,9 @@
                   <div class="celeb-icon">
                     <img src="../../assets/celeb-icon.svg" alt="Celebration Icon" />
                   </div>
-                  <div class="font-weight-600 text-head text-black s-32">Celebrations</div>
+                  <div class="font-weight-600 text-head text-black s-32">
+                    Celebrations
+                  </div>
                 </div>
                 <Table
                   :data="tenantInfoCeleb"
@@ -885,7 +897,10 @@
                   Get a customized mobile app for your church.
                 </div>
                 <div class="no-decoration">
-                  <el-button class="mt-1 bg-warning text-white" @click="routeToWelcomeOnboard" round
+                  <el-button
+                    class="mt-1 bg-warning text-white"
+                    @click="routeToWelcomeOnboard"
+                    round
                     >Set up now</el-button
                   >
                 </div>
@@ -919,7 +934,9 @@
                   Allow members to make online donations to your church.
                 </div>
                 <div class="no-decoration">
-                  <el-button class="mt-1" @click="routeToPayment" round>Set up now</el-button>
+                  <el-button class="mt-1" @click="routeToPayment" round
+                    >Set up now</el-button
+                  >
                 </div>
               </div>
             </div>
@@ -1211,18 +1228,75 @@
           </div>
         </div>
       </el-dialog>
-      <el-dialog v-model="subscriptionExpired" title="" class="expiredSubDialog "
-    :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" align-center :show-close="false">
-    <template #header="{ close, titleId, titleClass }">
-      <div class="my-header dialog-header">
-        <div class="d-flex justify-content-center align-items-center">
-          <img src="../../assets/expired_timer.svg" width="50" alt="expired" />
-          <h4 :id="titleId" class="text-white font-weight-bold s-24 ml-2 mt-2">You subscription has expired</h4>
+      <el-dialog
+        v-model="subscriptionExpired"
+        title=""
+        class="expiredSubDialog"
+        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+        align-center
+        :show-close="false"
+      >
+        <template #header="{ close, titleId, titleClass }">
+          <div class="my-header dialog-header">
+            <div class="d-flex justify-content-center align-items-center">
+              <img src="../../assets/expired_timer.svg" width="50" alt="expired" />
+              <h4 :id="titleId" class="text-white font-weight-bold s-24 ml-2 mt-2">
+                You subscription has expired
+              </h4>
+            </div>
+          </div>
+        </template>
+        <SubExpired />
+      </el-dialog>
+      <el-dialog
+        v-model="smsUpdateModal"
+        class="border-radius-20"
+        title=""
+        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+        align-center
+      >
+        <div class="row justify-content-center">
+          <div class="col-md-11">
+            <div class="row">
+              <div class="col-md-12 d-flex justify-content-center">
+                <div
+                  class="col-md-6 smsupdate text-white s-24 font-weight-bold py-2 text-center"
+                  style="color: #121112;"
+                >
+                  SMS Price Update
+                </div>
+              </div>
+              <div class="col-md-12 mt-3 d-flex justify-content-center">
+                <div
+                  class="col-md-10 s-24 text-center border-radius-40 py-2"
+                  style="background: #f2f2f2; color: #121112;"
+                >
+                  Dedicated Route <span class="font-weight-600 s-24" style="color: #121112;">(5.5 Naira)</span>
+                </div>
+              </div>
+              <div class="col-md-12 mt-3 d-flex justify-content-center">
+                <div
+                  class="col-md-10 s-24 text-center border-radius-40 py-2"
+                  style="background: #f2f2f2; color: #121112;"
+                >
+                  Regular Route <span class="font-weight-600 s-24" style="color: #121112;">(5.5 Naira)</span>
+                </div>
+              </div>
+              <div class="col-md-12 mt-4 d-flex justify-content-center">
+                <div class="col-md-10 s-24 text-center font-weight-600 text-blak" style="color: #121112;">
+                  The new pricing will take effect on November 7th, 2024.
+                </div>
+              </div>
+              <div class="col-md-12 mt-3 d-flex justify-content-center">
+                <div class="col-md-9 s-20 text-center fw-400" style="color: #121112;">
+                  We truly value our partnership and appreciate your understanding as we
+                  implement these new rates..
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </template>
-    <SubExpired />
-  </el-dialog>
+      </el-dialog>
     </main>
   </div>
 </template>
@@ -1257,7 +1331,7 @@ export default {
     ByGenderChart,
     Table,
     ImageForm,
-    SubExpired
+    SubExpired,
   },
   data() {
     return {};
@@ -1285,12 +1359,17 @@ export default {
         : "loading plan"
     );
     const subscriptionExpired = ref(false);
+    const smsUpdateModal = ref(false);
+
+    const showSMSUpdate = () => {
+      smsUpdateModal.value = true;
+    };
 
     const toggleMoreLinkVissibility = () => {
       moreLinksVissible.value != moreLinksVissible.value;
     };
     const showCelebrationDetail = (item) => {
-      if (getUser?.value?.subStatus?.toLowerCase() === 'expired') {
+      if (getUser?.value?.subStatus?.toLowerCase() === "expired") {
         subscriptionExpired.value = true;
         return;
       }
@@ -1716,52 +1795,52 @@ export default {
     };
 
     const routeToAddMember = () => {
-      if (getUser?.value?.subStatus?.toLowerCase() === 'expired') {
+      if (getUser?.value?.subStatus?.toLowerCase() === "expired") {
         subscriptionExpired.value = true;
         return;
       }
-      router.push("/tenant/people/add")
-    }
+      router.push("/tenant/people/add");
+    };
 
     const routeToFirstTimer = () => {
-      if (getUser?.value?.subStatus?.toLowerCase() === 'expired') {
+      if (getUser?.value?.subStatus?.toLowerCase() === "expired") {
         subscriptionExpired.value = true;
         return;
       }
-      router.push("/tenant/people/addfirsttimer")
-    }
-    
+      router.push("/tenant/people/addfirsttimer");
+    };
+
     const routeToOffering = () => {
-      if (getUser?.value?.subStatus?.toLowerCase() === 'expired') {
+      if (getUser?.value?.subStatus?.toLowerCase() === "expired") {
         subscriptionExpired.value = true;
         return;
       }
-      router.push("/tenant/addoffering")
-    }
+      router.push("/tenant/addoffering");
+    };
 
     const routeToTransaction = () => {
-      if (getUser?.value?.subStatus?.toLowerCase() === 'expired') {
+      if (getUser?.value?.subStatus?.toLowerCase() === "expired") {
         subscriptionExpired.value = true;
         return;
       }
-      router.push("/tenant/transactionlist")
-    }
+      router.push("/tenant/transactionlist");
+    };
 
     const routeToWelcomeOnboard = () => {
-      if (getUser?.value?.subStatus?.toLowerCase() === 'expired') {
+      if (getUser?.value?.subStatus?.toLowerCase() === "expired") {
         subscriptionExpired.value = true;
         return;
       }
-      router.push({ name: 'WelcomeOnboarding1' })
-    }
+      router.push({ name: "WelcomeOnboarding1" });
+    };
 
-    const routeToPayment= () => {
-      if (getUser?.value?.subStatus?.toLowerCase() === 'expired') {
+    const routeToPayment = () => {
+      if (getUser?.value?.subStatus?.toLowerCase() === "expired") {
         subscriptionExpired.value = true;
         return;
       }
-      router.push("/tenant/payments")
-    }
+      router.push("/tenant/payments");
+    };
 
     return {
       celebrations,
@@ -1832,12 +1911,13 @@ export default {
       createNew,
       router,
       primarycolor,
+      showSMSUpdate,
+      smsUpdateModal,
       pastorsDialog,
       pastordata,
       savepastordata,
       savingPastorData,
       setImage,
-      tenantDisplayName,
       theme,
       toggleTheme,
       subscriptionExpired,
@@ -1846,7 +1926,7 @@ export default {
       routeToOffering,
       routeToTransaction,
       routeToWelcomeOnboard,
-      routeToPayment
+      routeToPayment,
     };
   },
 };
@@ -2423,6 +2503,10 @@ height: 42px; */
   width: 10px;
   height: 10px;
   background: red;
+}
+.smsupdate {
+  background: #0b55d4;
+  border-radius: 20px 20px 0px 0px;
 }
 
 .celeb-badge-desc {
