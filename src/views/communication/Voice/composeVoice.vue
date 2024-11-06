@@ -463,16 +463,17 @@
                   <div class="el-upload__text">
                     Drop file here or <em>click to upload</em>
                   </div>
-                  <template #tip>
+                  <!-- <template #tip>
                     <div class="el-upload__tip">
+                      only 
                       {{
-                        [".m4a", ".mp2", ".mp3", ".ogg", ".wav", ".wma", ".webm"].join(
+                        [".mp3"].join(
                           ", "
                         )
                       }}
-                      files are accepted
+                       files are accepted and must not be longer than 30 seconds.
                     </div>
-                  </template>
+                  </template> -->
                 </el-upload>
                 <audio
                   controls
@@ -483,6 +484,7 @@
                   <source src="" type="audio/mpeg" />
                   Your browser does not support the audio element.
                 </audio>
+                <div class="small mt-1">only .mp3 files are accepted and must not be longer than 30 seconds</div>
               </div>
 
               <!-- <div class="col-md-10 mb-0 px-0" style="background: #ffffff">
