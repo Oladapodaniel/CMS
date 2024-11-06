@@ -62,7 +62,7 @@
               <tr v-for="(item, index) in remittanceItems" :key="index">
                 <td>
                   <el-select-v2 v-model="item.name" class="w-100 font-weight-normal" placeholder="Select item"
-                    @change="setSelectedItem(item.name, index)" :options="allRemittanceItems.map((i) => ({
+                    @change="setSelectedItem(item, index)" :options="allRemittanceItems.map((i) => ({
                       label: i.name,
                       value: i.id,
                     }))
@@ -321,10 +321,16 @@ const getAllRemittableItem = async () => {
 };
 getAllRemittableItem();
 const setSelectedItem = (item, index) => {
-  selectedRemittanceItem.value = allRemittanceItems.value.find((i) => i.id == item);
-  console.log(selectedRemittanceItem.value, "jjjj");
+  selectedRemittanceItem.value = allRemittanceItems.value.find((i) => i.id == item.name);
   remittanceItems.value[index].name = selectedRemittanceItem.value.name;
   remittanceItems.value[index].id = selectedRemittanceItem.value.id;
+  
+  console.log('reaching')
+  console.log(remittanceItems.value[index]?.amount)
+  if (!remittanceItems.value[index].amount) {
+    return;
+  }
+  setRemittableAmount(item, index)
 };
 
 const saveRemittance = () => {
@@ -377,8 +383,6 @@ const proceedPayment = () => {
 };
 
 const setRemittableAmount = (item, index) => {
-  console.log(index, selectedRemittanceItem.value, 'here')
-
   if (!selectedRemittanceItem.value?.percentage) {
     ElMessage({
       message: "Please select an income item first",
