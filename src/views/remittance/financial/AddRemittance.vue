@@ -5,8 +5,7 @@
         <h2 class="text-head font-weight-bold py-0 my-0 text-black">Add Remittance</h2>
         <div @click="goBack">
           <span class="s-18 fw-400 cursor-pointer text-black">
-            <img src="../../../assets/goback.png" alt="" /> Go back</span
-          >
+            <img src="../../../assets/goback.png" alt="" /> Go back</span>
         </div>
       </div>
     </div>
@@ -18,17 +17,8 @@
             <div class="row">
               <div class="col-12 col-md-6 mb-2 mb-md-0">
                 <div class="fw-500">Select Month:</div>
-                <el-select
-                  v-model="selectedMonth"
-                  placeholder="Select Month"
-                  class="w-100"
-                >
-                  <el-option
-                    v-for="(item, index) in months"
-                    :label="item"
-                    :value="item"
-                    :key="index"
-                  ></el-option>
+                <el-select v-model="selectedMonth" placeholder="Select Month" class="w-100">
+                  <el-option v-for="(item, index) in months" :label="item" :value="item" :key="index"></el-option>
                   <!-- Add other months here -->
                 </el-select>
               </div>
@@ -45,12 +35,7 @@
                   class="w-100 ml-1"
                 /> -->
                 <el-select v-model="selectedYear" placeholder="Select Year" class="w-100">
-                  <el-option
-                    v-for="(item, index) in yearsArr"
-                    :label="item"
-                    :value="item"
-                    :key="index"
-                  ></el-option>
+                  <el-option v-for="(item, index) in yearsArr" :label="item" :value="item" :key="index"></el-option>
                   <!-- Add other months here -->
                 </el-select>
                 <!-- <el-select v-model="selectedYear" placeholder="Select Year" class="w-100">
@@ -76,28 +61,18 @@
             <tbody class="grey-backg">
               <tr v-for="(item, index) in remittanceItems" :key="index">
                 <td>
-                  <el-select-v2
-                    v-model="item.name"
-                    class="w-100 font-weight-normal"
-                    placeholder="Select item"
-                    @change="setSelectedItem(item.name, index)"
-                    :options="
-                      allRemittanceItems.map((i) => ({
-                        label: i.name,
-                        value: i.id,
-                      }))
-                    "
-                    size="large"
-                  />
+                  <el-select-v2 v-model="item.name" class="w-100 font-weight-normal" placeholder="Select item"
+                    @change="setSelectedItem(item.name, index)" :options="allRemittanceItems.map((i) => ({
+                      label: i.name,
+                      value: i.id,
+                    }))
+                      " size="large" />
                 </td>
                 <td>
-                  <el-input
-                    v-model="item.amount"
-                    placeholder="Amount"
-                    class="input-with-select"
-                  >
+                  <el-input type="number" v-model="item.amount" placeholder="Amount" class="input-with-select"
+                    @input="setRemittableAmount(item, index)">
                     <template #prepend>
-                      <div>{{selectShortCode}}</div>
+                      <div>{{ selectShortCode }}</div>
                       <!-- <el-select v-model="selectShortCode" style="width: 70px">
                         <el-option label="NGN" value="NGN"></el-option>
                       </el-select> -->
@@ -105,16 +80,15 @@
                   </el-input>
                 </td>
                 <td>
-                  <el-input
-                    v-model="item.remittableAmount"
-                    placeholder="Remittable"
-                  ></el-input>
+                  <el-input v-model="item.remittableAmount" placeholder="Remittable"></el-input>
                 </td>
                 <td>
                   <el-input v-model="item.netAmount" placeholder="Net"></el-input>
                 </td>
                 <td>
-                  <el-icon @click="removeItem(index)"><Delete /></el-icon>
+                  <el-icon @click="removeItem(index)">
+                    <Delete />
+                  </el-icon>
                 </td>
               </tr>
             </tbody>
@@ -122,18 +96,14 @@
         </div>
 
         <!-- Total Amounts -->
-        <div
-          class="row my-4 totals justify-content-center align-items-center text-center"
-        >
+        <div class="row my-4 totals justify-content-center align-items-center text-center">
           <div class="col-md-10 col-11">
             <div class="row">
-              <div
-                @click="addNewItem"
-                class="col-md-3 d-flex align-items-center cursor-pointer primary--text fw-500 col-12 mb-3 mb-md-0"
-              >
-                <span class="d-flex align-items-center"
-                  ><el-icon><Plus /></el-icon> <span>New income item</span></span
-                >
+              <div @click="addNewItem"
+                class="col-md-3 d-flex align-items-center cursor-pointer primary--text fw-500 col-12 mb-3 mb-md-0">
+                <span class="d-flex align-items-center"><el-icon>
+                    <Plus />
+                  </el-icon> <span>New income item</span></span>
               </div>
               <div class="col-12 col-md-3 mb-3 mb-md-0">
                 <label>Total Amount:</label>
@@ -156,25 +126,13 @@
     <!-- Save Button -->
     <div class="row justify-content-center my-4">
       <div class="col-sm-4 col-11">
-        <el-button
-          :loading="loading"
-          :color="primarycolor"
-          size="large"
-          round
-          @click="saveRemittance"
-          class="w-100"
-        >
+        <el-button :loading="loading" :color="primarycolor" size="large" round @click="saveRemittance" class="w-100">
           Save
         </el-button>
       </div>
     </div>
-    <el-dialog
-      v-model="showConfirmRemittance"
-      title=""
-      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
-      align-center
-      class="border-radius-20"
-    >
+    <el-dialog v-model="showConfirmRemittance" title=""
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center class="border-radius-20">
       <div class="row">
         <div class="col-md-12 mt-4 text-center text-black font-weight-bold s-24">
           Confirm Remittance information
@@ -188,14 +146,8 @@
         <div class="col-md-12 text-center justify-content-center d-flex">
           <div class="col-md-12 d-flex justify-content-center">
             <div class="col-md-6 mt-4">
-              <el-button
-                class="w-100 py-4"
-                @click="confirmRemittance"
-                round
-                size="large"
-                :color="primarycolor"
-                >Yes confirm</el-button
-              >
+              <el-button class="w-100 py-4" @click="confirmRemittance" round size="large" :color="primarycolor">Yes
+                confirm</el-button>
             </div>
           </div>
         </div>
@@ -205,21 +157,14 @@
         <div class="col-md-12 mt-2 text-center justify-content-center d-flex">
           <div class="col-md-10 d-flex justify-content-center">
             <div class="col-md-6 fw-400 s-20">
-              <el-button round @click="cancel" text class="w-100 text-dark" size="large"
-                >Cancel</el-button
-              >
+              <el-button round @click="cancel" text class="w-100 text-dark" size="large">Cancel</el-button>
             </div>
           </div>
         </div>
       </div>
     </el-dialog>
-    <el-dialog
-      v-model="showContinuePayment"
-      title=""
-      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`"
-      align-center
-      class="border-radius-20"
-    >
+    <el-dialog v-model="showContinuePayment" title=""
+      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center class="border-radius-20">
       <div class="row">
         <div class="col-md-12 text-center justify-content-center d-flex">
           <div class="col-md-8 text-black text-black font-weight-bold s-24">
@@ -229,14 +174,8 @@
         <div class="col-md-12 text-center justify-content-center d-flex">
           <div class="col-md-12 d-flex justify-content-center">
             <div class="col-md-6 mt-4">
-              <el-button
-                class="w-100 py-4 text-white"
-                @click="proceedPayment"
-                round
-                size="large"
-                color="#FF5906"
-                >Yes, continue to payment</el-button
-              >
+              <el-button class="w-100 py-4 text-white" @click="proceedPayment" round size="large" color="#FF5906">Yes,
+                continue to payment</el-button>
             </div>
           </div>
         </div>
@@ -246,9 +185,7 @@
         <div class="col-md-12 mt-2 text-center justify-content-center d-flex">
           <div class="col-md-10 d-flex justify-content-center">
             <div class="col-md-6 fw-400 s-20">
-              <el-button round text class="w-100 text-dark" size="large"
-                >Cancel</el-button
-              >
+              <el-button round text class="w-100 text-dark" size="large">Cancel</el-button>
             </div>
           </div>
         </div>
@@ -263,6 +200,7 @@ import router from "../../../router";
 import axios from "@/gateway/backendapi";
 import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
 import store from "../../../store/store";
+import { ElMessage } from "element-plus";
 
 // Data
 const primarycolor = inject("primarycolor");
@@ -429,7 +367,7 @@ const confirmRemittance = async () => {
 };
 const cancel = () => {
   if (showConfirmRemittance.value) {
-    showConfirmRemittance.value = false 
+    showConfirmRemittance.value = false
   } else {
     showContinuePayment.value = false;
   }
@@ -437,6 +375,25 @@ const cancel = () => {
 const proceedPayment = () => {
   router.push(`/tenant/remittance/remittancepayment?id=${saveRemittanceData.value.id}`);
 };
+
+const setRemittableAmount = (item, index) => {
+  console.log(index, selectedRemittanceItem.value, 'here')
+
+  if (!selectedRemittanceItem.value?.percentage) {
+    ElMessage({
+      message: "Please select an income item first",
+      type: "warning",
+      duration: 3000,
+    });
+    return;
+  }
+
+  const remittable = (selectedRemittanceItem.value?.percentage / 100) * item.amount;
+  const netAmount = item.amount - remittable
+
+  remittanceItems.value[index].remittableAmount = remittable.toFixed(2)
+  remittanceItems.value[index].netAmount = netAmount.toFixed(2)
+}
 </script>
 
 <style scoped>
@@ -475,7 +432,8 @@ const proceedPayment = () => {
 
 .table-container table {
   width: 100%;
-  min-width: 600px; /* Ensures the table takes up enough space to allow scrolling */
+  min-width: 600px;
+  /* Ensures the table takes up enough space to allow scrolling */
 }
 
 /* Responsive adjustments for mobile views */
