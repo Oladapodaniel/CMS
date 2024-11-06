@@ -325,8 +325,6 @@ const setSelectedItem = (item, index) => {
   remittanceItems.value[index].name = selectedRemittanceItem.value.name;
   remittanceItems.value[index].id = selectedRemittanceItem.value.id;
   
-  console.log('reaching')
-  console.log(remittanceItems.value[index]?.amount)
   if (!remittanceItems.value[index].amount) {
     return;
   }
