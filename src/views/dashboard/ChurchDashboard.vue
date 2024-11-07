@@ -519,7 +519,7 @@
               <!-- <router-link to="/tenant/whatsapp/auth">
               <img src="../../assets/whatsapp_banner.jpeg" class="w-100 my-4" />
             </router-link> -->
-              <div @click="showSMSUpdate">
+              <div @click="showSMSUpdate" class="cursor-pointer">
                 <img src="../../assets/SMSUpdate.jpg" class="w-100 my-4" />
               </div>
               <router-link to="/tenant/firsttimeranalytics">
