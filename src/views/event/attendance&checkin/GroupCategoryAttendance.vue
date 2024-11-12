@@ -12,59 +12,66 @@
         </div>
       </div>
     </div>
-    <div class="row mt-4 border rounded">
-      <div class="col-md-12 col-sm-12 col-lg-12 px-0 mt-3 mb-4">
+    <div
+      class="row mt-4 justify-content-center rounded-lg"
+      style="border: 1px solid #575353"
+    >
+      <div class="col-md-12 px-0 mt-3 mb-4">
         <div class="fw-400 h5 p-4 my-0 text-dak">Attendance and Check-in Details</div>
       </div>
-      <div class="row m-auto">
-        <div class="col-md-8 offset">
-          <div class="row">
-            <div class="col-md-2 col-sm-12">
-              <h5 class="fw-400 text-dak mt-3">Event</h5>
-            </div>
-            <div class="col-md-10 col-sm-12">
-              <el-select-v2
-                :disabled="true"
-                v-model="selectedEventID"
-                class="w-100"
-                :options="
-                  events.map((i) => ({
-                    label: i.name,
-                    value: i.id,
-                  }))
-                "
-                @change="setselectedEvent"
-                size="large"
-              />
-            </div>
-            <div class="col-md-2 col-sm-12">
-              <h5 class="fw-400 text-dak mt-4">Group</h5>
-            </div>
-            <div class="col-md-10 mt-3 col-sm-12">
-              <div class="col-md-12 px-0">
-                <div class="chip-container col-md-12 p-0 m-0">
-                  <div
-                    class="chip px-2 d-flex justify-content-between my-2 mx-1"
-                    v-for="(chip, i) of groups"
-                    :key="chip.label"
-                  >
-                    <span>{{ chip.name }}</span>
-                    <i class="pt-1 text-dark align-items-center" @click="deleteChip(i)">
-                      <el-icon><CircleClose /></el-icon>
-                    </i>
-                  </div>
-                  <input
-                    class="inputt py-2"
-                    disabled
-                    v-model="selectedGroups.name"
-                    @keypress.enter="saveChip"
-                    @keydown.delete="backspaceDelete"
-                  />
-                </div>
+      <div class="col-md-12">
+        <div class="row d-flex justify-content-center">
+          <div class="col-md-9">
+            <div class="row">
+              <div class="col-md-2 col-sm-12">
+                <h5 class="fw-400 text-dak mt-3">Event</h5>
               </div>
+              <div class="col-md-10 col-sm-12">
+                <el-select-v2
+                  :disabled="true"
+                  v-model="selectedEventID"
+                  class="w-100"
+                  :options="
+                    events.map((i) => ({
+                      label: i.name,
+                      value: i.id,
+                    }))
+                  "
+                  @change="setselectedEvent"
+                  size="large"
+                />
+              </div>
+              <div class="col-md-2 col-sm-12">
+                <h5 class="fw-400 text-dak mt-4">Group</h5>
+              </div>
+              <div class="col-md-10 mt-3 col-sm-12">
+                <div class="col-md-12 px-0">
+                  <div class="chip-container col-md-12 p-0 m-0">
+                    <div
+                      class="chip px-2 d-flex justify-content-between align-items-center my-2 mx-2"
+                      v-for="(chip, i) of groups"
+                      :key="chip.label"
+                    >
+                      <span>{{ chip.name }}</span>
+                      <i
+                        class="d-flex text-dark align-items-center"
+                        @click="deleteChip(i)"
+                      >
+                        <el-icon><CircleClose /></el-icon>
+                      </i>
+                    </div>
+                    <input
+                      class="inputt py-2"
+                      disabled
+                      v-model="selectedGroups.name"
+                      @keypress.enter="saveChip"
+                      @keydown.delete="backspaceDelete"
+                    />
+                  </div>
+                </div>
 
-              <!-- {{selectedGroups}} -->
-              <!-- <el-tree-select
+                <!-- {{selectedGroups}} -->
+                <!-- <el-tree-select
                     v-model="selectedGroupsID"
                     :data="groups"
                     multiple
@@ -74,7 +81,7 @@
                     check-on-click-node
                     class="w-100"
                   /> -->
-              <!-- <MultiSelect
+                <!-- <MultiSelect
                   v-model="selectedGroups"
                   :options="groups"
                   style="width: 100%"
@@ -83,38 +90,44 @@
                   display="chip"
                   disabled
                 /> -->
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-md-12 mt-5 mb-2 border-bottom"></div>
+      <div class="col-md-12 mt-5 mb-2" style="border-bottom: 1px solid #575353"></div>
       <div class="col-md-12 mb-1 ml-2 py-3">
-        <h5 class="fw-400 text-dak">Check in options</h5>
+        <h5 class="fw-400 text-dak">Registration Options</h5>
       </div>
-      <div class="row w-100" v-if="eventRegLink">
-        <div
-          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
-          style="background: #f4fdff"
-        >
-          <div class="row">
-            <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
-              <img
-                src="../../../assets/link.svg"
-                alt="marked Attendance image"
-                style="width: 60px; height: 60px"
-              />
-            </div>
-            <div class="col-md-10 col-sm-10 mt-3">
-              <a class="text-decoration-none"
-                ><h5 class="fw-400 text-dak link-color c-pointer" @click="copyRegLink">
-                  Registration Link
-                </h5></a
-              >
-              <!-- <a class="c-pointer text-decoration-none"><h5 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h5></a> -->
+      <div class="col-md-12">
+        <div class="row justify-content-center" v-if="eventRegLink">
+          <div
+            class="col-md-9 col-sm-11 col-11 px-0 rounded"
+            style="background: #f8f8f8; border: 1px solid #c6eeff"
+          >
+            <div class="row">
+              <div class="col-md-12 mt-3 d-flex flex-sm-nowrap flex-wrap">
+                <div class="px-3 d-flex align-self-center image">
+                  <img
+                    src="../../../assets/link.svg"
+                    alt="marked Attendance image"
+                    style="width: 50px; height: 50px"
+                  />
+                </div>
+                <!-- <a class="c-pointer text-decoration-none"><h5 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h5></a> -->
+                <div class="para w-100 pb-4">
+                  <div
+                    class="ml-3 ml-sm-0 s-20 fw-500 text-dak link-color c-pointer"
+                    @click="copyRegLink"
+                  >
+                    Registration Link
+                  </div>
 
-              <p class="para">
-                <span class="d-flex align-items-center">
-                  <el-input
+                  <div class="col-md-12 px-0 d-flex flex-wrap justify-content-between">
+                    <div class="bg-white reg-link pl-3 pr-2">
+                      <span class="s-12">{{ eventRegLink }}</span>
+                    </div>
+                    <!-- <el-input
                     type="text"
                     ref="regLink"
                     @keydown="preventChangingOfCheckinLink"
@@ -129,101 +142,131 @@
                         </el-icon>
                       </el-button>
                     </template>
-                  </el-input>
-                  <span @click="regQRCode"
-                    ><img
-                      class="ml-2 c-pointer"
-                      style="width: 45px"
-                      src="../../../assets/group2.svg"
-                      alt="marked Attendance image"
-                  /></span>
-                </span>
-              </p>
+                  </el-input> -->
+                    <div class="d-flex justify-content-end mt-2 mt-lg-0">
+                      <el-button
+                        class="d-flex px-0"
+                        style="border: 1px solid #7ddfdf; min-width: 90px !important"
+                        @click="copyRegLink"
+                        round
+                      >
+                        <img
+                          src="../../../assets/form/copyIcon.png"
+                          style="width: 18px"
+                          alt=""
+                        />
+                        <span class="s-12 fw-500 ml-1" style="color: #191b1d">Copy</span>
+                      </el-button>
+                      <el-button
+                        @click="regQRCode"
+                        style="border: 1px solid #7ddfdf; min-width: 90px !important"
+                        round
+                        class="d-flex px-0"
+                      >
+                        <img
+                          class="c-pointer"
+                          style="width: 18px"
+                          src="../../../assets/group2.svg"
+                          alt=""
+                        />
+                        <span class="s-12 fw-500 ml-1" style="color: #191b1d"
+                          >QR code</span
+                        >
+                      </el-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="row w-100 mt-3">
-        <div
-          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
-          style="background: #f8f8f8"
-        >
-          <div class="row">
-            <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
-              <img
-                src="../../../assets/link.svg"
-                alt="marked Attendance image"
-                style="width: 60px; height: 60px"
-              />
-            </div>
-            <div class="col-md-10 col-sm-10 mt-3">
-              <a class="text-decoration-none"
-                ><h5 class="fw-400 text-dak link-color c-pointer" @click="copyLink">
-                  Checkin Link
-                </h5></a
-              >
-              <!-- <a class="c-pointer text-decoration-none"><h5 class="fw-400 text-dak"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h5></a> -->
-              <p class="para">
-                <span class="d-flex align-items-center">
-                  <el-input
+      <div class="col-md-12">
+        <div class="row justify-content-center mt-3" v-if="familyRegLink">
+          <div
+            class="col-md-9 col-sm-11 col-11 px-0 rounded"
+            style="background: #f8f8f8; border: 1px solid #c6c6c6"
+          >
+            <div class="row">
+              <div class="col-md-12 mt-3 d-flex flex-sm-nowrap flex-wrap">
+                <div class="px-3 d-flex align-self-center image">
+                  <img
+                    src="../../../assets/childcheckin.svg"
+                    style="width: 45px; height: 45px"
+                    alt="marked Attendance image"
+                  />
+                </div>
+                <!-- <a class="c-pointer text-decoration-none"><h5 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h5></a> -->
+                <div class="para w-100 pb-4">
+                  <div
+                    class="ml-3 ml-sm-0 text-dak s-20 fw-500 c-pointer"
+                    @click="copyFamilyLink"
+                  >
+                    Family Registration
+                  </div>
+
+                  <div class="ml-3 ml-sm-0 s-14" style="color: #6c6666">
+                    Register your family members for this event
+                  </div>
+                  <div class="col-md-12 px-0 d-flex flex-wrap justify-content-between">
+                    <div class="bg-white reg-link pl-3 pr-2">
+                      <span class="s-12">{{ familyRegLink }}</span>
+                    </div>
+                    <!-- <el-input
                     type="text"
-                    ref="checkinLink"
+                    ref="regLink"
                     @keydown="preventChangingOfCheckinLink"
-                    @click="copyLink"
-                    :value="link"
+                    @click="copyRegLink"
+                    :value="eventRegLink"
                     class="w-100"
                   >
                     <template #append>
-                      <el-button @click="copyLink">
+                      <el-button @click="copyRegLink">
                         <el-icon>
                           <CopyDocument />
                         </el-icon>
                       </el-button>
                     </template>
-                  </el-input>
-                  <span @click="checkInQRCode">
-                    <img
-                      class="ml-2 c-pointer"
-                      style="width: 45px"
-                      src="../../../assets/group2.svg"
-                      alt="marked Attendance image"
-                  /></span>
-                </span>
-              </p>
+                  </el-input> -->
+                    <div class="d-flex justify-content-end mt-2 mt-lg-0">
+                      <el-button
+                        class="d-flex px-0"
+                        style="border: 1px solid #7ddfdf; min-width: 90px !important"
+                        @click="copyFamilyLink"
+                        round
+                      >
+                        <img
+                          src="../../../assets/form/copyIcon.png"
+                          style="width: 18px"
+                          alt=""
+                        />
+                        <span class="s-12 fw-500 ml-1" style="color: #191b1d">Copy</span>
+                      </el-button>
+                      <!-- <el-button
+                      @click="regQRCode"
+                      style="border: 1px solid #7ddfdf; min-width: 90px !important"
+                      round
+                      class="d-flex px-0"
+                    >
+                      <img
+                        class="c-pointer"
+                        style="width: 18px"
+                        src="../../../assets/group2.svg"
+                        alt=""
+                      />
+                      <span class="s-12 fw-500 ml-1" style="color: #191b1d">QR code</span>
+                    </el-button> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-md-12 mb-3"></div>
-      <div class="row w-100" v-if="!route.query.fromBranch">
-        <router-link
-          class="text-decoration-none col-md-12 px-0 text-dak link-color"
-          :to="{
-            name: 'MarkAttendance',
-            query: { id: route.query.id },
-          }"
-        >
-          <div
-            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
-            style="background: #f4fdff"
-          >
-            <div class="row">
-              <div class="col-md-2 col-sm-2 image mt-3">
-                <img src="../../../assets/group1.svg" alt="marked Attendance image" />
-              </div>
-              <div class="col-md-10 col-sm-10 mt-3">
-                <h5 class="fw-400 text-dak">Manual Attendance Check-in ></h5>
-                <p class="para">Manually check in registered members.</p>
-              </div>
-            </div>
-          </div>
-        </router-link>
-      </div>
-      <div class="col-md-12 mb-3"></div>
-
-      <div class="row w-100">
+      <!-- <div class="row mt-3">
         <div
-          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+          class="col-md-10 col-sm-11 offset-1 col-lg-7 border rounded"
           style="background: #f8f8f8"
         >
           <div class="row">
@@ -265,26 +308,168 @@
             </div>
           </div>
         </div>
+      </div> -->
+      <div class="col-md-12 mt-5 mb-2" style="border-bottom: 1px solid #575353"></div>
+      <div class="col-md-12 mb-1 ml-2 py-3">
+        <h5 class="fw-400 text-dak">Check-in Options</h5>
+      </div>
+      <div class="col-md-12">
+        <div class="row justify-content-center" v-if="!route.query.fromBranch">
+          <router-link
+            class="text-decoration-none col-md-9 col-sm-11 col-11 px-0 text-dak link-color"
+            :to="{
+              name: 'MarkAttendance',
+              query: { id: route.query.id },
+            }"
+          >
+            <div
+              class="col-md-12 rounded"
+              style="background: #f8f8f8; border: 1px solid #c6eeff"
+            >
+              <div class="row">
+                <div class="col-md-12 d-flex flex-wrap">
+                  <div class="px-3 image mt-3">
+                    <img
+                      src="../../../assets/group1.svg"
+                      style="width: 45px; height: 45px"
+                      alt="marked Attendance image"
+                    />
+                  </div>
+                  <div class="mt-3">
+                    <h5 class="fw-400 text-dak">Manual Attendance Check-in ></h5>
+                    <p class="para">Manually check in registered members.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </router-link>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="row justify-content-center mt-3">
+          <div
+            class="col-md-9 col-sm-11 col-11 px-0 rounded"
+            style="background: #f8f8f8; border: 1px solid #c6c6c6"
+          >
+            <div class="row">
+              <div class="col-md-12 mt-3 d-flex flex-sm-nowrap flex-wrap">
+                <div class="px-3 d-flex align-self-center image">
+                  <img
+                    src="../../../assets/link.svg"
+                    alt="marked Attendance image"
+                    style="width: 50px; height: 50px"
+                  />
+                </div>
+                <div class="para w-100 pb-4">
+                  <div
+                    class="ml-3 ml-sm-0 s-20 fw-500 text-dak link-color c-pointer"
+                    @click="copyLink"
+                  >
+                    Checkin Link
+                  </div>
+
+                  <div class="col-md-12 px-0 d-flex flex-wrap justify-content-between">
+                    <div class="bg-white reg-link pl-3 pr-2">
+                      <span class="s-12">{{ link }}</span>
+                    </div>
+                    <div class="d-flex justify-content-end mt-2 mt-lg-0">
+                      <el-button
+                        class="d-flex px-0"
+                        style="border: 1px solid #7ddfdf; min-width: 90px !important"
+                        @click="copyLink"
+                        round
+                      >
+                        <img
+                          src="../../../assets/form/copyIcon.png"
+                          style="width: 18px"
+                          alt=""
+                        />
+                        <span class="s-12 fw-500 ml-1" style="color: #191b1d">Copy</span>
+                      </el-button>
+                      <el-button
+                        @click="checkInQRCode"
+                        style="border: 1px solid #7ddfdf; min-width: 90px !important"
+                        round
+                        class="d-flex px-0"
+                      >
+                        <img
+                          class="c-pointer"
+                          style="width: 18px"
+                          src="../../../assets/group2.svg"
+                          alt=""
+                        />
+                        <span class="s-12 fw-500 ml-1" style="color: #191b1d"
+                          >QR code</span
+                        >
+                      </el-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- <a class="text-decoration-none"
+                  ><h5 class="fw-400 text-dak link-color c-pointer" @click="copyLink">
+                    Checkin Link
+                  </h5></a
+                > -->
+              <!-- <a class="c-pointer text-decoration-none"><h5 class="fw-400 text-dak"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h5></a> -->
+              <!-- <p class="para">
+                  <span class="d-flex align-items-center">
+                    <el-input
+                      type="text"
+                      ref="checkinLink"
+                      @keydown="preventChangingOfCheckinLink"
+                      @click="copyLink"
+                      :value="link"
+                      class="w-100"
+                    >
+                      <template #append>
+                        <el-button @click="copyLink">
+                          <el-icon>
+                            <CopyDocument />
+                          </el-icon>
+                        </el-button>
+                      </template>
+                    </el-input>
+                    <span @click="checkInQRCode">
+                      <img
+                        class="ml-2 c-pointer"
+                        style="width: 45px"
+                        src="../../../assets/group2.svg"
+                        alt="marked Attendance image"
+                    /></span>
+                  </span>
+                </p> -->
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="row w-100 c-pointer mt-3" @click="routeToChildCheckin">
+      <div class="col-md-12">
         <div
-          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
-          style="background: #f4fdff"
+          class="row justify-content-center c-pointer mt-3"
+          @click="routeToChildCheckin"
         >
-          <div class="row">
-            <div class="col-md-2 col-sm-2 image mt-3">
-              <img
-                src="../../../assets/childcheckin.svg"
-                style="width: 54px; height: 54px"
-                alt="marked Attendance image"
-              />
-            </div>
-            <div class="col-md-10 col-sm-10 mt-3">
-              <h5 class="fw-400 text-dak">
-                <a class="text-decoration-none text-dak link-color">Child Checkin</a>
-              </h5>
-              <p class="para">Click to checkin your children</p>
+          <div
+            class="col-md-9 col-sm-11 col-11 px-0 rounded"
+            style="background: #f8f8f8; border: 1px solid #c6eeff"
+          >
+            <div class="row">
+              <div class="col-md-12 d-flex flex-wrap">
+                <div class="image mt-3 px-3">
+                  <img
+                    src="../../../assets/childcheckin.svg"
+                    style="width: 45px; height: 45px"
+                    alt="marked Attendance image"
+                  />
+                </div>
+                <div class="mt-3">
+                  <h5 class="fw-400 text-dak">
+                    <a class="text-decoration-none text-dak link-color">Child Checkin</a>
+                  </h5>
+                  <p class="para">Click to checkin your children</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -319,8 +504,7 @@
         </div>
       </div>
     </div> -->
-      <div class="col-md-12 mb-3"></div>
-      <div class="row w-100">
+      <!-- <div class="row w-100">
         <router-link
           class="text-decoration-none col-md-12 px-0 text-dak link-color"
           :to="{ name: 'SMSCheckin', query: { id: route.query.id } }"
@@ -342,26 +526,28 @@
             </div>
           </div>
         </router-link>
-      </div>
-      <div class="row w-100">
+      </div> -->
+      <div class="col-md-12 mt-5 mb-2" style="border-bottom: 1px solid #575353"></div>
+      <div class="row justify-content-center mt-4">
         <div
-          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border mt-3 rounded"
-        ></div>
-      </div>
-      <div class="row w-100 mt-3">
-        <div
-          class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border cursor-pointer rounded"
+          class="col-md-9 col-sm-11 col-11 px-0 cursor-pointer rounded"
           @click="showAdditionalField"
-          style="background: #f4fdff"
+          style="background: #f8f8f8; border: 1px solid #c6eeff"
         >
           <div class="row">
-            <div class="col-md-2 col-sm-2 image mt-3">
-              <img src="../../../assets/group1.svg" alt="marked Attendance image" />
-            </div>
-            <div class="col-md-10 col-sm-10 mt-3">
-              <h5 class="fw-400 text-dak mt-3 text-primary cursor-pointer">
-                Additional Custom Field
-              </h5>
+            <div class="col-md-12 d-flex flex-wrap">
+              <div class="px-3 image mt-3">
+                <img
+                  src="../../../assets/group1.svg"
+                  style="width: 45px; height: 45px"
+                  alt="marked Attendance image"
+                />
+              </div>
+              <div class="mt-3">
+                <h5 class="fw-400 text-dak mt-3 text-primary cursor-pointer">
+                  Additional Custom Field
+                </h5>
+              </div>
             </div>
           </div>
 
@@ -635,35 +821,71 @@ export default {
     };
 
     const copyLink = () => {
-      checkinLink.value.input.select();
-      checkinLink.value.input.setSelectionRange(
-        0,
-        checkinLink.value.input.value.length
-      ); /* For mobile devices */
-      /* Copy the text inside the text field */
+      const textarea = document.createElement("textarea");
+      textarea.value = link.value;
+
+      document.body.appendChild(textarea);
+
+      textarea.select();
+      textarea.setSelectionRange(0, 99999);
+
       document.execCommand("copy");
+      document.body.removeChild(textarea);
+
       ElMessage({
-        type: "success",
+        showClose: true,
         message: "Checkin link copied to your clipboard",
-        duration: 5000,
-      });
-      console.log(attendanceCheckinInStore.value);
-      console.log(eventRegistration.value);
-    };
-
-    const copyRegLink = () => {
-      regLink.value.input.select();
-      regLink.value.input.setSelectionRange(
-        0,
-        regLink.value.input.value.length
-      ); /* For mobile devices */
-
-      /* Copy the text inside the text field */
-      document.execCommand("copy");
-      ElMessage({
         type: "success",
+      });
+    };
+    // const copyLink = () => {
+    //   checkinLink.value.input.select();
+    //   checkinLink.value.input.setSelectionRange(
+    //     0,
+    //     checkinLink.value.input.value.length
+    //   ); /* For mobile devices */
+    //   /* Copy the text inside the text field */
+    //   document.execCommand("copy");
+    //   ElMessage({
+    //     type: "success",
+    //     message: "Checkin link copied to your clipboard",
+    //     duration: 5000,
+    //   });
+    //   console.log(attendanceCheckinInStore.value);
+    //   console.log(eventRegistration.value);
+    // };
+
+    // const copyRegLink = () => {
+    //   regLink.value.input.select();
+    //   regLink.value.input.setSelectionRange(
+    //     0,
+    //     regLink.value.input.value.length
+    //   ); /* For mobile devices */
+
+    //   /* Copy the text inside the text field */
+    //   document.execCommand("copy");
+    //   ElMessage({
+    //     type: "success",
+    //     message: "Registration link copied to your clipboard",
+    //     duration: 5000,
+    //   });
+    // };
+    const copyRegLink = () => {
+      const textarea = document.createElement("textarea");
+      textarea.value = eventRegLink.value;
+
+      document.body.appendChild(textarea);
+
+      textarea.select();
+      textarea.setSelectionRange(0, 99999);
+
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+
+      ElMessage({
+        showClose: true,
         message: "Registration link copied to your clipboard",
-        duration: 5000,
+        type: "success",
       });
     };
 
@@ -700,20 +922,38 @@ export default {
     };
 
     const copyFamilyLink = () => {
-      familyLink.value.input.select();
-      familyLink.value.input.setSelectionRange(
-        0,
-        familyLink.value.input.value.length
-      ); /* For mobile devices */
+      const textarea = document.createElement("textarea");
+      textarea.value = familyRegLink.value;
 
-      /* Copy the text inside the text field */
+      document.body.appendChild(textarea);
+
+      textarea.select();
+      textarea.setSelectionRange(0, 99999);
+
       document.execCommand("copy");
+      document.body.removeChild(textarea);
+
       ElMessage({
-        type: "info",
+        showClose: true,
         message: "Family link copied to your clipboard",
-        duration: 5000,
+        type: "success",
       });
     };
+    // const copyFamilyLink = () => {
+    //   familyLink.value.input.select();
+    //   familyLink.value.input.setSelectionRange(
+    //     0,
+    //     familyLink.value.input.value.length
+    //   ); /* For mobile devices */
+
+    //   /* Copy the text inside the text field */
+    //   document.execCommand("copy");
+    //   ElMessage({
+    //     type: "info",
+    //     message: "Family link copied to your clipboard",
+    //     duration: 5000,
+    //   });
+    // };
 
     const link = computed(() => {
       if (
@@ -740,6 +980,13 @@ export default {
       if (!tenantId.value)
         return `https://my.churchplus.co/childcheckin/${attendanceCheckinInStore.value.tenantID}`;
       return `https://my.churchplus.co/childcheckin/${tenantId.value}`;
+    });
+    const familyRegLink = computed(() => {
+      if (tenantId.value) {
+        return `https://child-checkin-seven.vercel.app/${tenantId.value}`;
+      } else {
+        return "";
+      }
     });
 
     const preventChangingOfCheckinLink = (e) => {
@@ -790,6 +1037,7 @@ export default {
       eventRegistration,
       eventRegLink,
       copyRegLink,
+      familyRegLink,
       paymentFormLink,
       copyPaymentFormLink,
       iframeLink,
@@ -817,10 +1065,23 @@ export default {
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
+.reg-link {
+  width: 25rem;
+  max-width: 25rem; /* Limits the width to allow scrolling */
+  overflow-x: auto; /* Enables horizontal scrolling */
+  white-space: nowrap; /* Prevents text from wrapping to the next line */
+}
+
+.reg-link span {
+  display: inline-block; /* Necessary for the span to respect width */
+  min-width: 25rem; /* Ensures content is wider than the container */
+}
 
 .chip-container {
   /* width: 425px; */
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
+  border: 1px solid #787878;
+  border-radius: 5px;
   background: #ffffff;
   min-height: 34px;
   display: flex;
@@ -831,8 +1092,8 @@ export default {
 .chip {
   padding: 0.2rem 0.2rem;
   border: 1px solid #02172e0d;
-  border-radius: 25px;
-  background: #02172e14;
+  border-radius: 10px;
+  background: #b4f6ff;
   /* margin:4px;
     background: #e0e0e0;
     padding:0px 4px;
