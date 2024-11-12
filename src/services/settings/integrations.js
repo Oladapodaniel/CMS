@@ -35,3 +35,21 @@ export const ConnectWithPaymentProvider = (payload) => {
         })
     })
 }
+
+
+export const ConfirmPaystackTransaction = (payload) => {
+    return new Promise((resolve, reject) => {
+        axios.post(`/PaystackTransactionCheck?reference=${payload}`)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            stopProgressBar();
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}

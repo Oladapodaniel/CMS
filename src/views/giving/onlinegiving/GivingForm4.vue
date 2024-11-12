@@ -1,4 +1,3 @@
-
 <template>
   <!-- To whoever will update this page -->
   <!-- This page is the main online giving platform for churchplus -->
@@ -18,8 +17,9 @@
           <a class="navbar-brand" href="#">
             <img :src="formResponse.churchLogo" v-if="formResponse.churchLogo" style="width: 50px" alt="" />
           </a>
-          <button class="navbar-toggler border" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler border" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
             <i class="pi pi-align-justify text-light"></i>
           </button>
 
@@ -33,8 +33,8 @@
               <li class="nav-item lstyle" @click="checkForToken">
                 <div class="text-white" href="#" style="cursor: pointer">{{
                   Object.keys(userData).length > 0 ?
-                  userData.email ? userData.email : userData.name : "Sign In"
-                }} <i class="fas fa-user text-white" v-if="signedIn"></i></div>
+                    userData.email ? userData.email : userData.name : "Sign In"
+                  }} <i class="fas fa-user text-white" v-if="signedIn"></i></div>
               </li>
               <li class="nav-item lstyle ml-4" @click="signOut" v-if="signedIn">
                 <div class="text-white" href="#" style="cursor: pointer">
@@ -53,14 +53,14 @@
       <div class="row mx-0">
         <div class="col-12 px-0">
           <div class="img">
-              <div class="col-12">
-                <p class="text-center text-white pt-5 s-42">Giving</p>
-                <p class="text-center mt-n3 sub-main-font d-none d-md-block">
-                  Give, and it will be given to you. A good measure, pressed down, shaken together and running over,<br />
-                  will be poured into your lap. For with the measure you use, it will be measured to you.”
-                </p>
-                <p class="text-white text-center d-none d-md-block">- Luke 6:38 NIV</p>
-              </div>
+            <div class="col-12">
+              <p class="text-center text-white pt-5 s-42">Giving</p>
+              <p class="text-center mt-n3 sub-main-font d-none d-md-block">
+                Give, and it will be given to you. A good measure, pressed down, shaken together and running over,<br />
+                will be poured into your lap. For with the measure you use, it will be measured to you.”
+              </p>
+              <p class="text-white text-center d-none d-md-block">- Luke 6:38 NIV</p>
+            </div>
 
             <!-- form area -->
             <div class="container">
@@ -82,7 +82,8 @@
                         <label class="hfont">Purpose</label>
                         <el-select-v2 v-model="selectedContributionTypeId"
                           :options="purposeList.map((i) => ({ label: i.financialContribution.name, value: i.financialContribution.id }))"
-                          placeholder="Select purpose" @change="setSelectedContributionType" class="w-100" size="large" />
+                          placeholder="Select purpose" @change="setSelectedContributionType" class="w-100"
+                          size="large" />
                       </div>
                       <div class="col-sm-4 col-md-4 my-3 pl-md-0">
                         <label class="hfont">Amount</label>
@@ -259,12 +260,13 @@
                         <!-- button section -->
                         <div class="row my-3">
                           <div class="col-md-12 text-center mt-4">
-                            <el-button class="px-4" data-toggle="modal" data-target="#PaymentOptionModal" :color="primarycolor" round>Give now</el-button>
+                            <el-button class="px-4" data-toggle="modal" data-target="#PaymentOptionModal"
+                              :color="primarycolor" round>Give now</el-button>
                           </div>
                         </div>
                         <!--end of button section -->
                       </section>
-                
+
                       <!-- Modal -->
                       <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog"
                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -272,7 +274,8 @@
                           <div class="modal-content">
                             <div class="modal-header bg-modal">
                               <h5 class="modal-title" id="exampleModalLongTitle">Payment methods</h5>
-                              <button type="button" class="close" data-dismiss="modal" ref="closepaymentmodal" aria-label="Close">
+                              <button type="button" class="close" data-dismiss="modal" ref="closepaymentmodal"
+                                aria-label="Close">
                                 <span aria-hidden="true" ref="close">&times;</span>
                               </button>
                             </div>
@@ -282,7 +285,8 @@
                                 @payment-successful="successfulPayment" :currency="dfaultCurrency.shortCode"
                                 @selected-gateway="gatewaySelected" @transaction-reference="setTransactionReference"
                                 @paystack-amount="setPaystackAmount" :callPayment="callPayment"
-                                @resetcallpaymentprops="resetCallPayment" :initializePaymentResponse="initializePaymentResponse" />
+                                @resetcallpaymentprops="resetCallPayment"
+                                :initializePaymentResponse="initializePaymentResponse" />
                             </div>
                           </div>
                         </div>
@@ -356,6 +360,26 @@
               </div>
               <!--End of Footer area -->
               <!-- end of form area -->
+
+              <el-drawer v-model="checkoutDrawer" size="100%">
+                <div>
+                  <iframe :src="checkoutURL" width="100%" height="800" frameborder="0"></iframe>
+                </div>
+              </el-drawer>
+              <el-dialog v-model="paymentResponseDialog" title=""
+                :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center class="p-4">
+                <div class="row">
+                  <div class="s-18 font-weight-bold">{{ paymentStatusMessage }}</div>
+                </div>
+                <template #footer>
+                  <span class="dialog-footer">
+                    <el-button @click="paymentResponseDialog = false" class="secondary-button" round>Cancel</el-button>
+                    <el-button @click="paymentResponseDialog = false" :color="primarycolor" round>
+                      Okay
+                    </el-button>
+                  </span>
+                </template>
+              </el-dialog>
             </div>
           </div>
         </div>
@@ -374,6 +398,8 @@ import finish from "../../../services/progressbar/progress"
 import SignUp from "./SignUp"
 import supportedCurrencies from "../../../services/user/flutterwaveSupportedCurrency"
 import { ElLoading } from 'element-plus';
+import { ConfirmPaystackTransaction } from "../../../services/settings/integrations";
+import { paystackTransactionStatusEnum } from "../../../services/constant";
 export default {
   components: {
     PaymentOptionModal,
@@ -427,6 +453,10 @@ export default {
     const callPayment = ref(false)
     const initializePaymentResponse = ref({})
     const closepaymentmodal = ref(null)
+    const checkoutDrawer = ref(false)
+    const checkoutURL = ref("")
+    const paymentResponseDialog = ref(false)
+    const paymentStatusMessage = ref("")
 
 
 
@@ -570,8 +600,9 @@ export default {
         initializePaymentResponse.value = data;
 
         if (data.initializePaymentResponseDTO?.data?.authorization_url) {
-          window.open( 
-                data.initializePaymentResponseDTO?.data?.authorization_url, "_blank")
+          checkoutURL.value = data.initializePaymentResponseDTO?.data?.authorization_url
+          checkoutDrawer.value = true
+          checkTransactionStatus(data?.transactionReference)
         }
         if (data.status) {
           callPayment.value = true
@@ -746,6 +777,36 @@ export default {
       callPayment.value = payload
     }
 
+    const checkTransactionStatus = async (_ref) => {
+      try {
+        const response = await ConfirmPaystackTransaction(_ref)
+        console.log(response);
+        console.log(paystackTransactionStatusEnum[response?.status]?.toLowerCase(), 'status')
+        if (paystackTransactionStatusEnum[response?.status]?.toLowerCase() === 'success') {
+          console.log(response, 'successful')
+          checkoutDrawer.value = false;
+          paymentResponseDialog.value = true;
+          paymentStatusMessage.value = paystackTransactionStatusEnum[response?.status]
+        } else if (paystackTransactionStatusEnum[response?.status]?.toLowerCase() === 'failed') {
+          checkoutDrawer.value = false;
+          paymentResponseDialog.value = true;
+          paymentStatusMessage.value = paystackTransactionStatusEnum[response?.status]
+          console.log(response, 'failed')
+        } else if (paystackTransactionStatusEnum[response?.status]?.toLowerCase() === 'cancelled') {
+          checkoutDrawer.value = false;
+          paymentResponseDialog.value = true;
+          paymentStatusMessage.value = paystackTransactionStatusEnum[response?.status]
+          console.log(response, 'cancelled')
+        } else {
+          setTimeout(() => {
+            checkTransactionStatus(response?.transactionReference)
+          }, 4000);
+          console.log(paystackTransactionStatusEnum[response?.status], 'recall')
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
 
 
     return {
@@ -802,7 +863,11 @@ export default {
       callPayment,
       resetCallPayment,
       initializePaymentResponse,
-      closepaymentmodal
+      closepaymentmodal,
+      checkoutDrawer,
+      checkoutURL,
+      paymentResponseDialog,
+      paymentStatusMessage
     };
   },
 };
