@@ -361,8 +361,11 @@
               <!--End of Footer area -->
               <!-- end of form area -->
 
-              <el-drawer v-model="checkoutDrawer" size="100%">
+              <el-drawer v-model="checkoutDrawer" :show-close="false" size="100%">
                 <div>
+                  <div class="d-flex justify-content-end">
+                    <el-icon :size="30" class="c-pointer" color="red" @click="checkoutDrawer = false"><CircleClose /></el-icon>
+                  </div>
                   <iframe :src="checkoutURL" width="100%" height="800" frameborder="0"></iframe>
                 </div>
               </el-drawer>
