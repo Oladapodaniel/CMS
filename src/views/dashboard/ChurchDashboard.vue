@@ -85,6 +85,9 @@
             <div v-if="!isVerified">
               <UnverifiedAccount :triggerDialog="triggerDialog" @cleartrigger="clearTrigger" />
             </div>
+            <div>
+              <UpgradeToAccessNotification />
+            </div>
             <div class="col-md-12 text-dark mb-2 day3" v-if="notifiedDays === 10">
               <div>
                 <h4 class="font-weight-600">Subscription expires in 10 days</h4>
@@ -1228,6 +1231,7 @@ import { Search } from "@element-plus/icons-vue";
 import { useTheme } from "../../theme/ThemeProvider";
 import SubExpired from "@/components/expiredpages/ExpiredSubDialog.vue";
 import UnverifiedAccount from "../../components/membership/UnverifiedAccount.vue";
+import UpgradeToAccessNotification from "../../components/membership/UpgradeToAccessNotification.vue";
 
 export default {
   mixins: [mixin],
@@ -1238,7 +1242,8 @@ export default {
     Table,
     ImageForm,
     SubExpired,
-    UnverifiedAccount
+    UnverifiedAccount,
+    UpgradeToAccessNotification
   },
   data() {
     return {};

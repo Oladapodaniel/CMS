@@ -221,6 +221,11 @@
             </template>
           </el-dropdown>
         </div>
+        <div class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3">
+            <div class="small-text"
+              ><span class="font-weight-700">NB:</span> Only commercial banks are accepted, microfinance banks are not accepted.</div
+            >
+          </div>
         <div class="col-2 d-none d-sm-block"></div>
 
         <div
@@ -258,11 +263,9 @@
             class="w-100"
             disabled
           />
-          <div class="mt-1">
-            <em class="mt-1"
-              >This will automatically come up, kindly confirm before clicking on
-              save.</em
-            >
+          <div class="small-text mt-1">
+              This will automatically come up, kindly confirm before clicking on
+              save.
           </div>
         </div>
         <div class="col-sm-2 col-lg-3 align-self-center mt-4" v-if="loading">
@@ -886,6 +889,9 @@ export default {
                 "/api/PaymentForm/newpaymentform",
                 paymentForm
               );
+
+              // console.log(res)
+              // return;
               store.dispatch("contributions/paymentData", res.data);
               loadingSave.value = false;
 
