@@ -13,8 +13,7 @@
       </div>
     </div>
     <div
-      class="row mt-4 justify-content-center rounded-lg"
-      style="border: 1px solid #575353"
+      class="row mt-4 justify-content-center section-border rounded-lg"
     >
       <div class="col-md-12 px-0 mt-3 mb-4">
         <div class="fw-400 h5 p-4 my-0 text-dak">Attendance and Check-in Details</div>
@@ -95,7 +94,10 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12 mt-5 mb-2" style="border-bottom: 1px solid #575353"></div>
+      <div
+        class="col-md-12 mt-5 mb-2"
+        style="border-bottom: 1px solid #575353; opacity: 0.33"
+      ></div>
       <div class="col-md-12 mb-1 ml-2 py-3">
         <h5 class="fw-400 text-dak">Registration Options</h5>
       </div>
@@ -143,7 +145,7 @@
                       </el-button>
                     </template>
                   </el-input> -->
-                    <div class="d-flex justify-content-end mt-2 mt-lg-0">
+                    <div class="d-flex justify-content-end mt-2 mt-lg-0 pr-2">
                       <el-button
                         class="d-flex px-0"
                         style="border: 1px solid #7ddfdf; min-width: 90px !important"
@@ -208,7 +210,9 @@
                   <div class="ml-3 ml-sm-0 s-14" style="color: #6c6666">
                     Register your family members for this event
                   </div>
-                  <div class="col-md-12 px-0 d-flex flex-wrap justify-content-between">
+                  <div
+                    class="col-md-12 mt-2 px-0 d-flex flex-wrap justify-content-between"
+                  >
                     <div class="bg-white reg-link pl-3 pr-2">
                       <span class="s-12">{{ familyRegLink }}</span>
                     </div>
@@ -228,7 +232,7 @@
                       </el-button>
                     </template>
                   </el-input> -->
-                    <div class="d-flex justify-content-end mt-2 mt-lg-0">
+                    <div class="d-flex justify-content-end mt-2 mt-lg-0 pr-2">
                       <el-button
                         class="d-flex px-0"
                         style="border: 1px solid #7ddfdf; min-width: 90px !important"
@@ -309,7 +313,10 @@
           </div>
         </div>
       </div> -->
-      <div class="col-md-12 mt-5 mb-2" style="border-bottom: 1px solid #575353"></div>
+      <div
+        class="col-md-12 mt-5 mb-2"
+        style="border-bottom: 1px solid #575353; opacity: 0.33"
+      ></div>
       <div class="col-md-12 mb-1 ml-2 py-3">
         <h5 class="fw-400 text-dak">Check-in Options</h5>
       </div>
@@ -323,21 +330,23 @@
             }"
           >
             <div
-              class="col-md-12 rounded"
+              class="col-md-12 px-0 rounded py-4"
               style="background: #f8f8f8; border: 1px solid #c6eeff"
             >
               <div class="row">
                 <div class="col-md-12 d-flex flex-wrap">
-                  <div class="px-3 image mt-3">
+                  <div class="px-3 image">
                     <img
                       src="../../../assets/group1.svg"
                       style="width: 45px; height: 45px"
                       alt="marked Attendance image"
                     />
                   </div>
-                  <div class="mt-3">
-                    <h5 class="fw-400 text-dak">Manual Attendance Check-in ></h5>
-                    <p class="para">Manually check in registered members.</p>
+                  <div>
+                    <h5 class="fw-500 s-20 text-dak">Manual Attendance Check-in ></h5>
+                    <div class="ml-3 ml-sm-0 s-14" style="color: #6c6666">
+                      Manually check in registered members.
+                    </div>
                   </div>
                 </div>
               </div>
@@ -348,11 +357,11 @@
       <div class="col-md-12">
         <div class="row justify-content-center mt-3">
           <div
-            class="col-md-9 col-sm-11 col-11 px-0 rounded"
+            class="col-md-9 col-sm-11 col-11 px-0 py-4 rounded"
             style="background: #f8f8f8; border: 1px solid #c6c6c6"
           >
             <div class="row">
-              <div class="col-md-12 mt-3 d-flex flex-sm-nowrap flex-wrap">
+              <div class="col-md-12 d-flex flex-sm-nowrap flex-wrap">
                 <div class="px-3 d-flex align-self-center image">
                   <img
                     src="../../../assets/link.svg"
@@ -360,19 +369,18 @@
                     style="width: 50px; height: 50px"
                   />
                 </div>
-                <div class="para w-100 pb-4">
+                <div class="para w-100">
                   <div
-                    class="ml-3 ml-sm-0 s-20 fw-500 text-dak link-color c-pointer"
+                    class="ml-3 ml-sm-0 s-20 fw-500 text-dak c-pointer"
                     @click="copyLink"
                   >
                     Checkin Link
                   </div>
-
                   <div class="col-md-12 px-0 d-flex flex-wrap justify-content-between">
                     <div class="bg-white reg-link pl-3 pr-2">
                       <span class="s-12">{{ link }}</span>
                     </div>
-                    <div class="d-flex justify-content-end mt-2 mt-lg-0">
+                    <div class="d-flex justify-content-end mt-2 mt-lg-0 pr-2">
                       <el-button
                         class="d-flex px-0"
                         style="border: 1px solid #7ddfdf; min-width: 90px !important"
@@ -451,23 +459,25 @@
           @click="routeToChildCheckin"
         >
           <div
-            class="col-md-9 col-sm-11 col-11 px-0 rounded"
+            class="col-md-9 col-sm-11 col-11 px-0 py-4 rounded"
             style="background: #f8f8f8; border: 1px solid #c6eeff"
           >
             <div class="row">
               <div class="col-md-12 d-flex flex-wrap">
-                <div class="image mt-3 px-3">
+                <div class="image px-3">
                   <img
                     src="../../../assets/childcheckin.svg"
                     style="width: 45px; height: 45px"
                     alt="marked Attendance image"
                   />
                 </div>
-                <div class="mt-3">
+                <div>
                   <h5 class="fw-400 text-dak">
-                    <a class="text-decoration-none text-dak link-color">Child Checkin</a>
+                    <a class="text-decoration-none fw-500 s-20 text-dak">Child Checkin</a>
                   </h5>
-                  <p class="para">Click to checkin your children</p>
+                  <div class="ml-3 ml-sm-0 s-14" style="color: #6c6666">
+                    Click to checkin your children
+                  </div>
                 </div>
               </div>
             </div>
@@ -527,56 +537,64 @@
           </div>
         </router-link>
       </div> -->
-      <div class="col-md-12 mt-5 mb-2" style="border-bottom: 1px solid #575353"></div>
-      <div class="row justify-content-center mt-4">
-        <div
-          class="col-md-9 col-sm-11 col-11 px-0 cursor-pointer rounded"
-          @click="showAdditionalField"
-          style="background: #f8f8f8; border: 1px solid #c6eeff"
-        >
-          <div class="row">
-            <div class="col-md-12 d-flex flex-wrap">
-              <div class="px-3 image mt-3">
-                <img
-                  src="../../../assets/group1.svg"
-                  style="width: 45px; height: 45px"
-                  alt="marked Attendance image"
-                />
-              </div>
-              <div class="mt-3">
-                <h5 class="fw-400 text-dak mt-3 text-primary cursor-pointer">
-                  Additional Custom Field
-                </h5>
+      <div
+        class="col-md-12 mt-5 mb-2"
+        style="border-bottom: 1px solid #575353; opacity: 0.33"
+      ></div>
+      <div class="col-md-12">
+        <div class="row justify-content-center mt-4">
+          <div
+            class="col-md-9 col-sm-11 col-11 px-0 py-4 cursor-pointer rounded"
+            @click="showAdditionalField"
+            style="background: #f8f8f8; border: 1px solid #c6eeff"
+          >
+            <div class="row">
+              <div class="col-md-12 d-flex flex-wrap">
+                <div class="px-3 image">
+                  <img
+                    src="../../../assets/group1.svg"
+                    style="width: 45px; height: 45px"
+                    alt="marked Attendance image"
+                  />
+                </div>
+                <div>
+                  <h5 class="fw-500 s-20 text-dak text-primary cursor-pointer">
+                    Additional Custom Field
+                  </h5>
+                  <div class="ml-3 ml-sm-0 s-14" style="color: #6c6666">
+                    Add a custom field
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div
-            class="row d-flex justify-content-start mb-3"
-            :class="{ 'dd-hide-list': !showMoreField }"
-          >
             <div
-              class="col-md-10 col-sm-10 mt-3 d-flex flex-wrap"
-              v-for="(showfieldList, index) in showFormList"
-              :key="index"
+              class="row d-flex justify-content-start"
+              :class="{ 'dd-hide-list': !showMoreField }"
             >
-              <div class="col-md-3">
-                <el-checkbox
-                  v-model="showfieldList.value"
-                  @change="customFieldValue(showfieldList)"
-                  :binary="true"
-                  size="large"
-                />
-                <!-- <input type="checkbox" name="" > -->
-                <!-- <Checkbox
+              <div
+                class="col-md-10 col-sm-10 mt-3 d-flex flex-wrap"
+                v-for="(showfieldList, index) in showFormList"
+                :key="index"
+              >
+                <div class="col-md-3">
+                  <el-checkbox
+                    v-model="showfieldList.value"
+                    @change="customFieldValue(showfieldList)"
+                    :binary="true"
+                    size="large"
+                  />
+                  <!-- <input type="checkbox" name="" > -->
+                  <!-- <Checkbox
                     id="binary"
                     v-model="showfieldList.value"
                     :binary="true"
                     @change="customFieldValue(showfieldList)"
                   /> -->
-              </div>
-              <div class="col-md-8">
-                <div class="">{{ showfieldList.label }}</div>
+                </div>
+                <div class="col-md-8">
+                  <div class="">{{ showfieldList.label }}</div>
+                </div>
               </div>
             </div>
           </div>
@@ -1064,6 +1082,10 @@ export default {
   height: 0;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
+}
+.section-border {
+  border: 1px solid #575353;
+  /* opacity: 0.33; */
 }
 .reg-link {
   width: 25rem;
