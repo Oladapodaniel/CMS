@@ -8,8 +8,7 @@
           </h2>
           <div @click="goBack">
             <span class="s-18 fw-400 cursor-pointer text-black">
-              <img src="../../assets/goback.png" alt="" /> Go back</span
-            >
+              <img src="../../assets/goback.png" alt="" /> Go back</span>
           </div>
         </div>
         <div v-if="!loadingEdit">
@@ -22,38 +21,23 @@
     </div>
     <form class="form mt-3">
       <div class="row">
-        <div
-          class="col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center"
-        >
+        <div class="col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center">
           <div class="text-head s-18 font-weight-600">Name</div>
         </div>
-        <div
-          class="pl-md-0 col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3"
-          style="height: 43px"
-        >
-          <el-input
-            class="w-100"
-            placeholder="Enter name"
-            v-model="newContribution.name"
-            type="text"
-            required
-          />
+        <div class="pl-md-0 col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3"
+          style="height: 43px">
+          <el-input class="w-100" placeholder="Enter name" v-model="newContribution.name" type="text" required />
         </div>
       </div>
       <div class="row mt-2" v-for="(item, index) in newContribution.payment" :key="index">
-        <div
-          class="col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center"
-        >
+        <div class="col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center">
           <div class="text-head s-18 font-weight-600">Contribution Item</div>
         </div>
 
         <div class="col-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3">
           <el-dropdown trigger="click" class="w-100">
             <span class="el-dropdown-link w-100">
-              <div
-                class="d-flex justify-content-between border-contribution w-100"
-                size="large"
-              >
+              <div class="d-flex justify-content-between border-contribution w-100" size="large">
                 <span class="text-secondary">{{
                   item && item.financialContribution
                     ? item.financialContribution.name
@@ -68,27 +52,17 @@
             </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item
-                  v-for="(itm, indx) in contributionItems"
-                  :key="indx"
-                  @click="selectContribution(itm, index)"
-                  >{{ itm.name }}
+                <el-dropdown-item v-for="(itm, indx) in contributionItems" :key="indx"
+                  @click="selectContribution(itm, index)">{{ itm.name }}
                 </el-dropdown-item>
-                <el-dropdown-item
-                  data-toggle="modal"
-                  data-target="#exampleModalCenter"
-                  class="text-center"
-                  divided
-                  ><a
+                <el-dropdown-item data-toggle="modal" data-target="#exampleModalCenter" class="text-center" divided><a
                     class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text"
-                    style="color: #136acd"
-                  >
+                    style="color: #136acd">
                     <el-icon size="large">
                       <CirclePlus />
                     </el-icon>
                     Create new contribution item
-                  </a></el-dropdown-item
-                >
+                  </a></el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -134,34 +108,20 @@
         </div>
 
         <!-- Modal -->
-        <div
-          class="modal fade"
-          id="exampleModalCenter"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalCenterTitle"
-          aria-hidden="true"
-        >
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
               <div class="modal-header" style="border: none">
                 <h5 class="modal-title" id="exampleModalLongTitle">Add Contribution</h5>
-                <el-button
-                  round
-                  class="close mt-0"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <el-button round class="close mt-0" data-dismiss="modal" aria-label="Close">
                   <el-icon :size="20">
                     <Close />
                   </el-icon>
                 </el-button>
               </div>
               <div class="modal-body">
-                <ContributionItems
-                  @item-name="newConItems"
-                  @show-update-modal="toggleDisplayModal"
-                />
+                <ContributionItems @item-name="newConItems" @show-update-modal="toggleDisplayModal" />
               </div>
             </div>
           </div>
@@ -175,13 +135,8 @@
         </div>
       </div>
       <div class="col-8 col-md-5 offset-sm-1 offset-md-3 pl-0 offset-lg-4 mt-3">
-        <el-button
-          style="margin-left: -3px"
-          round
-          :color="primarycolor"
-          v-on:click.prevent="addContribution"
-          class="text-white"
-        >
+        <el-button style="margin-left: -3px" round :color="primarycolor" v-on:click.prevent="addContribution"
+          class="text-white">
           <el-icon size="large">
             <CirclePlus />
           </el-icon>
@@ -195,74 +150,47 @@
           <hr class="mt-4" />
         </div>
 
-        <div
-          class="mt-3 col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center"
-        >
+        <div class="mt-3 col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center">
           <div class="text-head s-18 font-weight-600">Choose Bank</div>
         </div>
-        <div
-          class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3"
-          style="height: 43px"
-        >
+        <div class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px">
           <el-dropdown trigger="click" class="w-100">
             <span class="el-dropdown-link w-100">
               <el-input type="text" placeholder="Select Bank" v-model="bankSearchText" />
             </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item
-                  v-for="item in filteredBanks"
-                  :key="item.id"
-                  @click="setBank(item)"
-                >
+                <el-dropdown-item v-for="item in filteredBanks" :key="item.id" @click="setBank(item)">
                   {{ item ? item.name : "" }}
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
         </div>
+        <!-- <div class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3">
+            <div class="small-text"
+              ><span class="font-weight-700">NB:</span> Only commercial banks are accepted, microfinance banks are not accepted.</div
+            >
+          </div> -->
         <div class="col-2 d-none d-sm-block"></div>
 
-        <div
-          class="mt-3 col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center"
-        >
+        <div class="mt-3 col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center">
           <div class="text-head s-18 font-weight-600">Enter account number</div>
         </div>
-        <div
-          class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3"
-          style="height: 43px"
-        >
-          <el-input
-            class="w-100"
-            type="text"
-            v-model="accountNumber"
-            @blur="resolveCustomerDetail"
-          />
+        <div class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px">
+          <el-input class="w-100" type="text" v-model="accountNumber" @blur="resolveCustomerDetail" />
         </div>
         <div class="col-2 d-none d-sm-block"></div>
 
-        <div
-          class="mt-3 col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center"
-        >
+        <div class="mt-3 col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center">
           <div class="text-head s-18 font-weight-600">Account Name</div>
         </div>
-        <div
-          class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3"
-          style="height: 43px"
-        >
-          <el-input
-            type="text"
-            v-model="accountName"
-            placeholder="Account name"
-            ref="accNameRef"
-            class="w-100"
-            disabled
-          />
-          <div class="mt-1">
-            <em class="mt-1"
-              >This will automatically come up, kindly confirm before clicking on
-              save.</em
-            >
+        <div class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px">
+          <el-input type="text" v-model="accountName" placeholder="Account name" ref="accNameRef" class="w-100"
+            disabled />
+          <div class="small-text mt-1">
+            This will automatically come up, kindly confirm before clicking on
+            save.
           </div>
         </div>
         <div class="col-sm-2 col-lg-3 align-self-center mt-4" v-if="loading">
@@ -276,9 +204,7 @@
         <div class="col-10 col-md-12 mt-5">
           <hr class="mt-4" />
         </div>
-        <div
-          class="col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right mb-3 mb-md-0"
-        >
+        <div class="col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right mb-3 mb-md-0">
           <div class="text-head s-18 font-weight-600">Select Payment Gateway</div>
           <!-- <div v-if="gatewayNotification" class="text-danger small font-weight-bold">Please select <span class=""> one or two</span>  payment gateway</div> -->
         </div>
@@ -286,11 +212,7 @@
           <div class="row">
             <div class="col-sm-4 d-flex" v-for="(item, index) in gateways" :key="item.id">
               <i class="mr-2 check-box" @click="toggleCheckBox(item, index)">
-                <img
-                  v-if="item.isChecked"
-                  src="../../assets/check.png"
-                  class="child w-100"
-                />
+                <img v-if="item.isChecked" src="../../assets/check.png" class="child w-100" />
               </i>
               <h6>{{ item.name }}</h6>
             </div>
@@ -313,27 +235,15 @@
           <div class="d-flex">
             <h5 class="header-contri my-3">Choose the form template you desire</h5>
             <hr style="width: 60%" />
-            <el-icon
-              :class="{ rollIcon: templateDisplay, closeIcon: !templateDisplay }"
-              @click="toggleTemplate"
-            >
+            <el-icon :class="{ rollIcon: templateDisplay, closeIcon: !templateDisplay }" @click="toggleTemplate">
               <ArrowUp />
             </el-icon>
             <!-- <i class="pi pi-angle-up angle-icon mt-3" :class="{ 'rollIcon' : templateDisplay, 'closeIcon' : !templateDisplay }" @click="toggleTemplate" ></i> -->
           </div>
 
-          <div
-            class="row img-row hide-tem mt-4"
-            :class="{ 'show-tem': templateDisplay, 'hide-tem': !templateDisplay }"
-          >
+          <div class="row img-row hide-tem mt-4" :class="{ 'show-tem': templateDisplay, 'hide-tem': !templateDisplay }">
             <div class="col-sm-6 col-lg-4 mt-3">
-              <img
-                src="../../assets/giving1.png"
-                class="w-100"
-                ref="myImg"
-                id="myImg"
-                @click="togglePopup"
-              />
+              <img src="../../assets/giving1.png" class="w-100" ref="myImg" id="myImg" @click="togglePopup" />
               <div class="col-sm-12 d-flex justify-content-between mt-4">
                 <i class="check-it mr-2" @click="toggleFirstTemplate">
                   <span class="child" v-if="firstTemplate"></span>
@@ -341,25 +251,15 @@
                 <h6 class="preview" @click="togglePopup">Preview</h6>
               </div>
             </div>
-            <ImageModal
-              :src="sourceModal"
-              :booleanModal="booleanModal"
-              @close-modal="closeModal"
-            />
+            <ImageModal :src="sourceModal" :booleanModal="booleanModal" @close-modal="closeModal" />
             <!-- <div ref="modal" class="modal">
                             <span class="close">&times;</span>
                             <img class="modal-conent" ref="img01">
                             <div ref="caption"></div>
                         </div> -->
             <div class="col-sm-6 col-lg-4 mt-3">
-              <img
-                src="../../assets/giving2.png"
-                class="w-100"
-                style="height: 83%"
-                ref="myImg"
-                id="myImg"
-                @click="togglePopup"
-              />
+              <img src="../../assets/giving2.png" class="w-100" style="height: 83%" ref="myImg" id="myImg"
+                @click="togglePopup" />
               <div class="col-sm-12 d-flex justify-content-between mt-4">
                 <i class="check-it mr-2" @click="toggleSecondTemplate">
                   <span class="child" v-if="secondTemplate"></span>
@@ -368,13 +268,7 @@
               </div>
             </div>
             <div class="col-sm-6 col-lg-4 mt-3">
-              <img
-                src="../../assets/giving3.png"
-                class="w-100"
-                ref="myImg"
-                id="myImg"
-                @click="togglePopup"
-              />
+              <img src="../../assets/giving3.png" class="w-100" ref="myImg" id="myImg" @click="togglePopup" />
               <div class="col-sm-12 d-flex justify-content-between mt-4">
                 <i class="check-it mr-2" @click="toggleThirdTemplate">
                   <span class="child" v-if="thirdTemplate"></span>
@@ -392,9 +286,7 @@
       </div>
 
       <div class="row">
-        <div
-          class="col-12 col-sm-10 col-md-6 col-lg-5 offset-sm-1 offset-md-3 offset-lg-4 pl-0 mt-3"
-        >
+        <div class="col-12 col-sm-10 col-md-6 col-lg-5 offset-sm-1 offset-md-3 offset-lg-4 pl-0 mt-3">
           <div class="row">
             <div class="col-4">
               <img src="../../assets/paystack.png" class="w-100" />
@@ -407,30 +299,17 @@
             </div>
           </div>
         </div>
-        <div
-          class="col-12 col-sm-10 col-md-6 col-lg-5 offset-sm-1 offset-md-3 offset-lg-4 pl-0 mt-5"
-        >
-          <el-button
-            class="button border-0 py-4 w-100 text-white"
-            round
-            :loading="loadingSave"
-            :class="{
-              'disabled-bg': disabled,
-              'primary-bg': !disabled,
-            }"
-            @click.prevent="saveAndContinue"
-            style="margin-left: 2px"
-          >
+        <div class="col-12 col-sm-10 col-md-6 col-lg-5 offset-sm-1 offset-md-3 offset-lg-4 pl-0 mt-5">
+          <el-button class="button border-0 py-4 w-100 text-white" round :loading="loadingSave" :class="{
+            'disabled-bg': disabled,
+            'primary-bg': !disabled,
+          }" @click.prevent="saveAndContinue" style="margin-left: 2px">
             Save and Continue
           </el-button>
         </div>
       </div>
     </form>
-    <el-dialog
-      v-model="displayResponsive"
-      title=""
-      :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
-    >
+    <el-dialog v-model="displayResponsive" title="" :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`">
       <div class="row">
         <div class="col-md-12">
           <p>
@@ -441,13 +320,8 @@
       </div>
       <template #footer>
         <!-- <Button label="No" icon="pi pi-times" @click="closeResponsive" class="p-button-text"/> -->
-        <el-button
-          round
-          class="w-100 text-white primary-bg"
-          label="Go to Chart Of Accounts"
-          @click="closeResponsive"
-          autofocus
-          >Go to Chart Of Accounts<el-icon>
+        <el-button round class="w-100 text-white primary-bg" label="Go to Chart Of Accounts" @click="closeResponsive"
+          autofocus>Go to Chart Of Accounts<el-icon>
             <Check />
           </el-icon>
         </el-button>
@@ -748,12 +622,25 @@ export default {
             duration: 3000,
           });
         }
-        // }
       }
     };
 
     const toggleCheckBox = (item) => {
-      if (item.isChecked) {
+      item.isChecked = !item.isChecked;
+
+      if (
+        item.isChecked &&
+        paymentGateWays.value.findIndex((i) => i.id === item.id) < 0
+      ) {
+        paymentGateWays.value.push(item);
+      } else {
+        paymentGateWays.value = paymentGateWays.value.filter((i) => {
+          return i.id !== item.id;
+        });
+        removePaymentGatewayIDs.value.push(item.id);
+      }
+
+      if (paymentGateWays.value.length === 0) {
         gatewayNotification.value = true;
         disabled.value = true;
       } else {
@@ -761,65 +648,6 @@ export default {
         disabled.value = false;
       }
 
-      item.isChecked = !item.isChecked;
-
-      if (
-        item.isChecked &&
-        paymentGateWays.value.findIndex((i) => i.id === item.id) < 0
-      ) {
-        console.log(item.name, "kjjkkk");
-
-        if (item.name.toLowerCase().includes("flutterwave")) {
-          try {
-            axios
-              .get(`/api/PaymentForm/subaccounts?accountNumber=${accountNumber.value}`)
-              .then((res) => {
-                if (res.data.length > 0) {
-                  ElMessageBox.confirm(
-                    `This account details has been recorded with Flutterwave as ${res.data[0].meta[0].meta_name}, Do you want to use it?`,
-                    // "Confirm delete",
-                    {
-                      confirmButtonText: "OK",
-                      cancelButtonText: "Cancel",
-                      type: "info",
-                    }
-                  )
-                    .then(() => {
-                      ElMessage({
-                        type: "success",
-                        message: "Confirmed, The selected acount is now in use",
-                        duration: 3000,
-                      });
-                      item.subAccountID = res.data[0].subaccount_id;
-                      paymentGateWays.value.push(item);
-                    })
-                    .catch(() => {
-                      ElMessage({
-                        type: "info",
-                        message:
-                          "Please enter another bank account details to enable Flutterwave subaccount integration",
-                        duration: 3000,
-                      });
-                      accountNumber.value = "";
-                      accountName.value = "";
-                      selectedBank.value = new Object();
-                    });
-                } else {
-                  paymentGateWays.value.push(item);
-                }
-              });
-          } catch (err) {
-            console.log(err);
-          }
-        } else {
-          paymentGateWays.value.push(item);
-        }
-      } else {
-        paymentGateWays.value = paymentGateWays.value.filter((i) => {
-          return i.id !== item.id;
-        });
-        removePaymentGatewayIDs.value.push(item.id);
-      }
     };
 
     const filteredBanks = computed(() => {
