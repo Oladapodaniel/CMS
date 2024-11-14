@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-slim">
     <div class="row">
       <div class="col-md-12 col-sm-12 col-lg-12 px-0 mt-3 mb-4">
         <div class="text-head font-weight-bold h2 py-0 my-0 text-black">
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div
-      class="row mt-4 justify-content-center section-border rounded-lg"
+      class="row mt-4 justify-content-center section-bordr rounded-lg"
     >
       <div class="col-md-12 px-0 mt-3 mb-4">
         <div class="fw-400 h5 p-4 my-0 text-dak">Attendance and Check-in Details</div>
