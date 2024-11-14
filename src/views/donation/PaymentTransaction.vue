@@ -707,16 +707,13 @@ export default {
           }
 
           if (!route.params.editPayment) {
-            // loadingSave.value = true;
+            loadingSave.value = true;
 
             try {
               const res = await axios.post(
                 "/api/PaymentForm/newpaymentform",
                 paymentForm
               );
-
-              console.log(res)
-              return;
               store.dispatch("contributions/paymentData", res.data);
               loadingSave.value = false;
 
