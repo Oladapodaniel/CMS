@@ -34,7 +34,7 @@
                 <div class="text-white" href="#" style="cursor: pointer">{{
                   Object.keys(userData).length > 0 ?
                     userData.email ? userData.email : userData.name : "Sign In"
-                  }} <i class="fas fa-user text-white" v-if="signedIn"></i></div>
+                }} <i class="fas fa-user text-white" v-if="signedIn"></i></div>
               </li>
               <li class="nav-item lstyle ml-4" @click="signOut" v-if="signedIn">
                 <div class="text-white" href="#" style="cursor: pointer">
@@ -364,7 +364,9 @@
               <el-drawer v-model="checkoutDrawer" :show-close="false" size="100%">
                 <div>
                   <div class="d-flex justify-content-end">
-                    <el-icon :size="30" class="c-pointer" color="red" @click="checkoutDrawer = false"><CircleClose /></el-icon>
+                    <el-icon :size="30" class="c-pointer" color="red" @click="checkoutDrawer = false">
+                      <CircleClose />
+                    </el-icon>
                   </div>
                   <iframe :src="checkoutURL" width="100%" height="800" frameborder="0"></iframe>
                 </div>
@@ -559,9 +561,6 @@ export default {
           }
         ],
         contributionItem: selectedContributionType.value.financialContribution.id,
-        isPaymentConnected: formResponse.value?.isPaymentConnected,
-        paymentConnectedObject: formResponse.value?.paymentConnectedObject
-
       }
       return {}
     })
@@ -575,7 +574,6 @@ export default {
 
 
       if (localStorage.getItem('giverToken') === null || !signedIn.value) {
-
         if (name.value !== "" || phone.value !== "") {
           donationObj.value.isAnonymous = false
           donationObj.value.name = name.value,
@@ -595,6 +593,12 @@ export default {
           donationObj.value.isAnonymous = false
         }
       }
+      
+      if (formResponse.value?.isPaymentConnected) {
+        donationObj.value.isPaymentConnected = formResponse.value?.isPaymentConnected;
+        donationObj.value.paymentConnectedObject = formResponse.value?.paymentConnectedObject;
+      }
+
       try {
         const { data } = await axios.post('/initailizedonationpayment', donationObj.value)
         finish()

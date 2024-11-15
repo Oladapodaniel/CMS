@@ -176,16 +176,18 @@ export default {
       });
     }
 
-    // watchEffect(() => {
-      // if (props.callPayment && Object.keys(props.initializePaymentResponse).length > 0) {
-        // if (selectedGateway.value == 'Paystack') {
-        //   payWithPaystack(props.initializePaymentResponse);
-        // } else {
-        //   payWithFlutterwave(props.initializePaymentResponse);
-        // }
-        // emit('resetcallpaymentprops', false)
-      // }
-    // })
+    watchEffect(() => {
+      if (!props.formData?.isPaymentConnected) {
+        if (props.callPayment && Object.keys(props.initializePaymentResponse).length > 0) {
+          if (selectedGateway.value == 'Paystack') {
+            payWithPaystack(props.initializePaymentResponse);
+          } else {
+            payWithFlutterwave(props.initializePaymentResponse);
+          }
+          emit('resetcallpaymentprops', false)
+        }
+      }
+    })
 
     return {
       paystackGate, flutterwaveGate, paypalGate, stripe, selectedGateway, initializePayment
