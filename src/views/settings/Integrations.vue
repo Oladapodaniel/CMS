@@ -119,8 +119,8 @@ const connectProvider = async () => {
                 <div class="col-md-4 align-self-center body_text">{{ item.status }}</div>
                 <div class="col-md-4 align-self-center">
                     <!-- <el-button class="success_connect" @click="displayDialog = true">Connect</el-button> -->
-                    <el-button class="success_connect" v-if="item.status.toLowerCase() === 'connected'" @click="displayDialog = true">Connect</el-button>
-                    <el-button class="disconnect_btn" v-else>Disconnect</el-button>
+                    <el-button class="success_connect" v-if="item.status.toLowerCase() === 'connected'" @click="displayDialog = true">Disconnect</el-button>
+                    <el-button class="disconnect_btn" @click="displayDialog = true" v-else>Connect</el-button>
                 </div>
                 <el-divider class="m-0" />
             </div>

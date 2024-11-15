@@ -43,15 +43,14 @@ export default {
 
     const paystackGate = computed(() => {
       if (props.formData?.isPaymentConnected) return true
-      return false;
-      // if (!props.formData.paymentGateWays || props.currency !== 'NGN') return false
-      // return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "Paystack")
+      if (!props.formData.paymentGateWays || props.currency !== 'NGN') return false
+      return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "Paystack")
     })
-
+    
     const flutterwaveGate = computed(() => {
-      // if (!props.formData.paymentGateWays) return false
-      // return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "FlutterWave")
-      return false
+      if (props.formData?.isPaymentConnected) return false
+      if (!props.formData.paymentGateWays) return false
+      return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "FlutterWave")
     })
 
     const paypalGate = computed(() => {

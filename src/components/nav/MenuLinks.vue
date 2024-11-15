@@ -609,21 +609,21 @@ export default {
     }
     
     const disableNav = (id) => {
-      if (getUser?.value?.subStatus?.toLowerCase() === 'expired' && (id !== 3 && id !== 1)) {
-        return true
-      } else {
-        // If user is on free plan, disable some features
-        if (getUser.value?.subscriptionName?.toLowerCase() === 'free plan' && 
-            (id === 4 || id === 5 || id === 6 || id === 7)) {
-          return true
-        } else if (getUser.value?.subscriptionName?.toLowerCase() === 'starter plan' && 
-            (id === 10)) {
-              console.log('started plan')
-              return true;
-            } else {
-          return false
-        }
-      }
+      // if (getUser?.value?.subStatus?.toLowerCase() === 'expired' && (id !== 3 && id !== 1)) {
+      //   return true
+      // } else {
+      //   // If user is on free plan, disable some features
+      //   if (getUser.value?.subscriptionName?.toLowerCase() === 'free plan' && 
+      //       (id === 4 || id === 5 || id === 6 || id === 7)) {
+      //     return true
+      //   } else if (getUser.value?.subscriptionName?.toLowerCase() === 'starter plan' && 
+      //       (id === 10)) {
+      //         console.log('started plan')
+      //         return true;
+      //       } else {
+      //     return false
+      //   }
+      // }
     }
 
     watchEffect(() => {
