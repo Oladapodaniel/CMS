@@ -126,7 +126,7 @@
                   </div>
 
                   <div class="col-md-12 px-0 d-flex flex-wrap justify-content-between">
-                    <div class="bg-white reg-link pl-3 pr-2">
+                    <div class="bg-white reg-link mb-2 pl-3 pr-2">
                       <span class="s-12">{{ eventRegLink }}</span>
                     </div>
                     <!-- <el-input
@@ -145,7 +145,7 @@
                       </el-button>
                     </template>
                   </el-input> -->
-                    <div class="d-flex justify-content-end mt-2 mt-lg-0 pr-2">
+                    <div class="d-flex justify-content-end pr-2">
                       <el-button
                         class="d-flex px-0"
                         style="border: 1px solid #7ddfdf; min-width: 90px !important"
@@ -213,7 +213,7 @@
                   <div
                     class="col-md-12 mt-2 px-0 d-flex flex-wrap justify-content-between"
                   >
-                    <div class="bg-white reg-link pl-3 pr-2">
+                    <div class="bg-white reg-link mb-2 pl-3 pr-2">
                       <span class="s-12">{{ familyRegLink }}</span>
                     </div>
                     <!-- <el-input
@@ -232,7 +232,7 @@
                       </el-button>
                     </template>
                   </el-input> -->
-                    <div class="d-flex justify-content-end mt-2 mt-lg-0 pr-2">
+                    <div class="d-flex justify-content-end  pr-2">
                       <el-button
                         class="d-flex px-0"
                         style="border: 1px solid #7ddfdf; min-width: 90px !important"
@@ -377,10 +377,10 @@
                     Checkin Link
                   </div>
                   <div class="col-md-12 px-0 d-flex flex-wrap justify-content-between">
-                    <div class="bg-white reg-link pl-3 pr-2">
+                    <div class="bg-white reg-link mb-2 pl-3 pr-2">
                       <span class="s-12">{{ link }}</span>
                     </div>
-                    <div class="d-flex justify-content-end mt-2 mt-lg-0 pr-2">
+                    <div class="d-flex justify-content-end pr-2">
                       <el-button
                         class="d-flex px-0"
                         style="border: 1px solid #7ddfdf; min-width: 90px !important"
@@ -1087,17 +1087,17 @@ export default {
   border: 1px solid #575353;
   /* opacity: 0.33; */
 }
-.reg-link {
+/* .reg-link {
   width: 25rem;
-  max-width: 25rem; /* Limits the width to allow scrolling */
-  overflow-x: auto; /* Enables horizontal scrolling */
-  white-space: nowrap; /* Prevents text from wrapping to the next line */
-}
+  max-width: 25rem;
+  overflow-x: auto;
+   white-space: nowrap;
+} */
 
-.reg-link span {
-  display: inline-block; /* Necessary for the span to respect width */
-  min-width: 25rem; /* Ensures content is wider than the container */
-}
+/* .reg-link span {
+  display: inline-block;
+  min-width: 25rem; 
+} */
 
 .chip-container {
   /* width: 425px; */

@@ -888,7 +888,7 @@
             data-toggle="modal"
             data-target="#exampleModalNewConvert"
           >
-            Add New Comers
+            Add New Convert
           </div>
           <!-- First timer table -->
           <div class="col-sm-12 box-table" v-if="firstTimers.length > 0">
