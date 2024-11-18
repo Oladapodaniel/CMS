@@ -29,7 +29,7 @@
                     Whatsapp</router-link>
                 </div>
               </div>
-              <div class="row mb-3" style="border: 1px solid red" :class="{ 'show': menuShouldShow, 'links-menu': !menuShouldShow }">
+              <div class="row mb-3" :class="{ 'show': menuShouldShow, 'links-menu': !menuShouldShow }">
                 <div class="col-md-12">
                   <div
                     class="row menu-item-con py-2"

@@ -1316,3 +1316,7 @@ rect.highcharts-background[fill] {
     border-radius: 4px;
     padding: 11px 7px;
 }
+
+.text-underline {
+  text-decoration: underline;
+}

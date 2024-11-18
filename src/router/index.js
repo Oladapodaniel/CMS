@@ -1837,6 +1837,12 @@ const routes = [
                 component: () =>
                     import( /* webpackChunkName: "defaultmessage" */ '@/views/settings/DeleteTerms')
             },
+            {
+                path: 'integrations',
+                name: 'Integrations',
+                component: () =>
+                    import( /* webpackChunkName: "integrations" */ '@/views/settings/Integrations')
+            },
             ]
         },
         {
@@ -2215,6 +2221,15 @@ const routes = [
                     component: () =>
                         import( /* webpackChunkName: "remittance home" */ '../views/remittance/financial/PaymentRoute.vue')
                 },
+                {
+                    path: 'recipientpaymentsetup',
+                    name: "RecipientPaymentSetup",
+                    meta: {
+                        title: 'Churchplus - Remittance Recipient Setup',
+                    },
+                    component: () =>
+                        import( /* webpackChunkName: "remittance payment setup" */ '../views/remittance/financial/RecipientPaymentSetup.vue')
+                },
             ]
         },
         {
@@ -2227,7 +2242,7 @@ const routes = [
                 import( /* webpackChunkName: "internal store" */ '../views/ecommerce/internal/StoreDashboard.vue'),
         },
         {
-            path: 'store/add',
+            path: 'store/add/:id?',
             name: 'AddProduct',
             meta: {
                 title: 'Churchplus - Add Product',
@@ -2270,6 +2285,15 @@ const routes = [
             },
             component: () =>
                 import( /* webpackChunkName: "addstoreproduct" */ '../views/ecommerce/internal/ArchivedProducts.vue')
+        },
+        {
+            path: 'store/setup/:id',
+            name: 'StoreSetup',
+            meta: {
+                title: 'Churchplus - Store Setup',
+            },
+            component: () =>
+                import( /* webpackChunkName: "setupstore" */ '../views/ecommerce/internal/StoreSetup.vue')
         },
 
         ],
@@ -2664,6 +2688,12 @@ const routes = [
             import( /* webpackChunkName: "mobile app deep link" */ '@/views/MobileAppDeepLink.vue'),
 
     },
+    {
+        path: '/verification',
+        name: 'VerifyAccount',
+        component: () =>
+            import( /* webpackChunkName: "verify churchplus account" */ '@/components/verification/VerifyAccount.vue'),
+    },
 ]
 
 const router = createRouter({
@@ -2712,7 +2742,8 @@ router.beforeEach((to, from, next) => {
             to.name === "CartItem" ||
             to.name === "CheckOut" ||
             to.name === "BookDetails" ||
-            to.name === "MobileAppDeepLink"
+            to.name === "MobileAppDeepLink" ||
+            to.name === "VerifyAccount"
         ) && !tokenIsValid
     ) {
         return next(true);

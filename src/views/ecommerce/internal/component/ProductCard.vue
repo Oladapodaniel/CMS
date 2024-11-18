@@ -1,12 +1,13 @@
 <script setup>
 import router from '../../../../router';
+import converter from '../../../../services/currency-converter/currencyConverter';
 
 const { item } = defineProps(['item'])
 </script>
 <template>
     <div class="fit-content">
-        <div class="card-bg" @click="router.push(`/tenant/store/product/${item.name}`)">
-            <img :src="item.url" width="150" />
+        <div class="card-bg" @click="router.push(`/tenant/store/product/${item.id}`)">
+            <img :src="item.imageURL" class="product-image" />
         </div>
         <div class="mt-2 d-flex justify-content-between">
             <div class="stock-text">In-stock</div>
@@ -16,7 +17,7 @@ const { item } = defineProps(['item'])
             </div>
         </div>
         <div class="weight-500 s-18 mt-1">{{ item.name }}</div>
-        <div class="s-14">{{ item.price }}</div>
+        <div class="s-14">{{ converter.numberWithCommas(item.price) }}</div>
     </div>
 </template>
 
@@ -47,5 +48,12 @@ const { item } = defineProps(['item'])
 
 .gap-5 {
     gap: 5px
+}
+
+.product-image {
+  width: 150px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 3px;
 }
 </style>

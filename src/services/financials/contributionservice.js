@@ -35,4 +35,22 @@ const getContributionItem = async () => {
             })
     })
 }
-export default { getContributionList, getContributionItem };
+
+const getBanks = async () => {
+    return new Promise((resolve, reject) => {
+        axios.get("/api/Financials/GetBanks")
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(error => {
+                 /*eslint no-undef: "warn"*/
+                 NProgress.done();
+                if (error.response) {
+                    reject(error.response);
+                } else {
+                    reject(error);
+                }
+            })
+    })
+}
+export default { getContributionList, getContributionItem, getBanks };
