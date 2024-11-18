@@ -68,7 +68,10 @@
                 <div class="col-md-3 d-sm-none"></div>
                 <transition name="move" mode="out-in">
                   <div class="col-sm-10 col-md-8 mx-auto form-area shadow p-md-5 mb-5 bg-white rounded MIDDLE"
-                    v-if="!paymentSuccessful" key="form">
+                    v-loading="paymentStatusLoading"
+                    element-loading-text="Please wait while we confirm your payment ..." 
+                    v-if="!paymentSuccessful"
+                    key="form">
                     <div class="row">
                       <div class="col-sm-4 col-md-3 my-3 pr-md-0">
 
@@ -372,11 +375,10 @@
                 </div>
               </el-drawer>
               <el-dialog v-model="paymentResponseDialog" title=""
-                :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center class="QRCodeDialog p-4">
-                <PaymentStatusDialog 
-                  :paymentStatusMessage="'success'" 
-                  @closestatusdialog="paymentResponseDialog = false"
-                />
+                :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center
+                class="QRCodeDialog p-4">
+                <PaymentStatusDialog :paymentStatusMessage="paymentStatusMessage"
+                  @closestatusdialog="paymentResponseDialog = false" />
               </el-dialog>
             </div>
           </div>
@@ -459,6 +461,7 @@ export default {
     const paymentResponseDialog = ref(false)
     const paymentStatusMessage = ref("")
     const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
+    const paymentStatusLoading = ref(false)
 
 
 
@@ -590,7 +593,7 @@ export default {
           donationObj.value.isAnonymous = false
         }
       }
-      
+
       if (formResponse.value?.isPaymentConnected) {
         donationObj.value.isPaymentConnected = formResponse.value?.isPaymentConnected;
         donationObj.value.paymentConnectedObject = formResponse.value?.paymentConnectedObject;
@@ -606,6 +609,7 @@ export default {
         if (data.initializePaymentResponseDTO?.data?.authorization_url) {
           checkoutURL.value = data.initializePaymentResponseDTO?.data?.authorization_url
           checkoutDrawer.value = true
+          paymentStatusLoading.value = true;
           checkTransactionStatus(data?.transactionReference)
         }
         if (data.status) {
@@ -784,30 +788,28 @@ export default {
     const checkTransactionStatus = async (_ref) => {
       try {
         const response = await ConfirmPaystackTransaction(_ref)
-        console.log(response);
-        console.log(paystackTransactionStatusEnum[response?.status]?.toLowerCase(), 'status')
         if (paystackTransactionStatusEnum[response?.status]?.toLowerCase() === 'success') {
-          console.log(response, 'successful')
+          paymentStatusLoading.value = false;
           checkoutDrawer.value = false;
           paymentResponseDialog.value = true;
           paymentStatusMessage.value = paystackTransactionStatusEnum[response?.status]
         } else if (paystackTransactionStatusEnum[response?.status]?.toLowerCase() === 'failed') {
+          paymentStatusLoading.value = false;
           checkoutDrawer.value = false;
           paymentResponseDialog.value = true;
           paymentStatusMessage.value = paystackTransactionStatusEnum[response?.status]
-          console.log(response, 'failed')
         } else if (paystackTransactionStatusEnum[response?.status]?.toLowerCase() === 'cancelled') {
+          paymentStatusLoading.value = false;
           checkoutDrawer.value = false;
           paymentResponseDialog.value = true;
           paymentStatusMessage.value = paystackTransactionStatusEnum[response?.status]
-          console.log(response, 'cancelled')
         } else {
           setTimeout(() => {
             checkTransactionStatus(response?.transactionReference)
           }, 4000);
-          console.log(paystackTransactionStatusEnum[response?.status], 'recall')
         }
       } catch (error) {
+        paymentStatusLoading.value = false;
         console.error(error)
       }
     }
@@ -875,7 +877,8 @@ export default {
       mdAndUp,
       lgAndUp,
       xsOnly,
-      xlAndUp
+      xlAndUp,
+      paymentStatusLoading
     };
   },
 };
