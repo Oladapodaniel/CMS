@@ -618,7 +618,6 @@ export default {
           return true
         } else if (getUser.value?.subscriptionName?.toLowerCase() === 'starter plan' && 
             (id === 10)) {
-              console.log('started plan')
               return true;
             } else {
           return false
