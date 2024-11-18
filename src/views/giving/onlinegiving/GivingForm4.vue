@@ -372,18 +372,11 @@
                 </div>
               </el-drawer>
               <el-dialog v-model="paymentResponseDialog" title=""
-                :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center class="p-4">
-                <div class="row">
-                  <div class="s-18 font-weight-bold">{{ paymentStatusMessage }}</div>
-                </div>
-                <template #footer>
-                  <span class="dialog-footer">
-                    <el-button @click="paymentResponseDialog = false" class="secondary-button" round>Cancel</el-button>
-                    <el-button @click="paymentResponseDialog = false" :color="primarycolor" round>
-                      Okay
-                    </el-button>
-                  </span>
-                </template>
+                :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center class="QRCodeDialog p-4">
+                <PaymentStatusDialog 
+                  :paymentStatusMessage="'success'" 
+                  @closestatusdialog="paymentResponseDialog = false"
+                />
               </el-dialog>
             </div>
           </div>
@@ -405,10 +398,13 @@ import supportedCurrencies from "../../../services/user/flutterwaveSupportedCurr
 import { ElLoading } from 'element-plus';
 import { ConfirmPaystackTransaction } from "../../../services/settings/integrations";
 import { paystackTransactionStatusEnum } from "../../../services/constant";
+import deviceBreakpoint from "../../../mixins/deviceBreakpoint";
+import PaymentStatusDialog from "../../../components/payment/PaymentStatusDialog.vue";
 export default {
   components: {
     PaymentOptionModal,
     SignUp,
+    PaymentStatusDialog
   },
   setup() {
     const route = useRoute()
@@ -462,6 +458,7 @@ export default {
     const checkoutURL = ref("")
     const paymentResponseDialog = ref(false)
     const paymentStatusMessage = ref("")
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint()
 
 
 
@@ -874,7 +871,11 @@ export default {
       checkoutDrawer,
       checkoutURL,
       paymentResponseDialog,
-      paymentStatusMessage
+      paymentStatusMessage,
+      mdAndUp,
+      lgAndUp,
+      xsOnly,
+      xlAndUp
     };
   },
 };
