@@ -88,7 +88,6 @@ const getCurrencies = () => {
     return new Promise((resolve, reject) => {
         axios.get("/api/lookup/getallcurrencies")
             .then(res => {
-                console.log(res, "CURRENCY");
                 resolve(res.data);
             })
             .catch(err => {

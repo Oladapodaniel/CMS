@@ -18,7 +18,7 @@
                 <div class="texttop">{{ item.textbottom }}</div>
                 <div class="bottomvalue">{{ item.bottomvalue }}</div>
             </div>
-            <div class="trend" v-html="item.trend"></div>
+            <!-- <div class="trend" v-html="item.trend"></div> -->
         </div>
     </div>
 </template>

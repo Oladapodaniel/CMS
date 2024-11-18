@@ -31,7 +31,6 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from "vue";
 import StarBoldIcon from "../../../../assets/ecommerce/starBoldIcon.png";
 import truckIcon from "../../../../assets/ecommerce/Truck.png";
 import ShoppingCartIcon from "../../../../assets/ecommerce/ShoppingCartBlack.png";

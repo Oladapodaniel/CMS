@@ -63,13 +63,13 @@ export default {
           }
     },
     actions: {
-        setContributionList ({ commit }) {
+        async setContributionList ({ commit }) {
             return contributionservice.getContributionList().then(response => {  
                 commit('SET_CONTRIBUTION', response)
                 return response
             })
         },
-        setContributionItem ({ commit }) {
+        async setContributionItem ({ commit }) {
             return contributionservice.getContributionItem().then(response => {  
                 commit('SET_CONTRIBUTIONITEM', response)
                 return response

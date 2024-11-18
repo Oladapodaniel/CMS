@@ -33,7 +33,8 @@ const manualPayment = () => {
   showBankDetail.value = true;
 };
 const payOnline = () => {
-  paymentDialog.value = true;
+  // paymentDialog.value = true;
+  router.push("/tenant/remittance/recipientpaymentsetup")
 };
 
 const paymentStatus = ["NotPaid", "FullyPaid", "PartialPayment"];

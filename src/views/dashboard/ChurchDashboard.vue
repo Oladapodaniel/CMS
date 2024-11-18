@@ -30,10 +30,6 @@
                       {{ planUserIs }}
                     </div>
                     <div>
-                      <router-link
-                        :to="{ name: 'Subscription' }"
-                        class="mt-1 no-decoration"
-                      >
                         <el-button
                           :color="!buttonTextCheck.color ? primarycolor : ''"
                           :class="[
@@ -43,13 +39,13 @@
                               'border-0  bg-danger': notifiedDays <= 4,
                             },
                           ]"
+                          @click="checkIfVerified"
                           round
                         >
                           <p class="mb-0" :class="[buttonTextCheck.color]">
                             {{ buttonTextCheck.text }}
                           </p>
                         </el-button>
-                      </router-link>
                     </div>
                   </div>
                 </div>
@@ -86,181 +82,167 @@
         </div>
         <div class="row mb-4">
           <div class="col-12">
-            <!-- VERIFY EMAIL CODE -->
-            <!-- <div class="col-md-12 py-3 mb-1 day1">
-              <div class="">
-                You are required to verify your email to have access to ChurchPlus
-              </div>
-              <div class="cursor-pointer" @click="subscribeNow">
-                <el-button round>Verify now</el-button>
-              </div>
-            </div> -->
-            <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 10">
-              <div class="">
-                10 days remaining before your subscription expires, kindly subscribe
-                before
-                {{
+            <div v-if="!isVerified">
+              <UnverifiedAccount :triggerDialog="triggerDialog" @cleartrigger="clearTrigger" />
+            </div>
+            <div>
+              <UpgradeToAccessNotification />
+            </div>
+            <div class="col-md-12 text-dark mb-2 day3" v-if="notifiedDays === 10">
+              <div>
+                <h4 class="font-weight-600">Subscription expires in 10 days</h4>
+              <div class="s-14" style="color: #242424">Subscribe before {{
                   moment
                     .parseZone(
                       new Date(getRenewalDate).toDateString(),
                       "YYYY MM DD HH ZZ"
                     )
                     ._i.substr(4, 11)
-                }}
+                }}</div>
+              </div>
+              <div class="cursor-pointer" @click="subscribeNow">
+                <el-button size="large" round>Subscribe now</el-button>
+              </div>
+            </div>
+            <div class="col-md-12 text-dark mb-2 day3" v-if="notifiedDays === 9">
+              <div>
+                <h4 class="font-weight-600">Subscription expires in 9 days</h4>
+              <div class="s-14" style="color: #242424">Subscribe before {{
+                  moment
+                    .parseZone(
+                      new Date(getRenewalDate).toDateString(),
+                      "YYYY MM DD HH ZZ"
+                    )
+                    ._i.substr(4, 11)
+                }}</div>
               </div>
               <div class="cursor-pointer" @click="subscribeNow">
                 <el-button round>Subscribe now</el-button>
               </div>
             </div>
-            <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 9">
-              <div class="">
-                9 days remaining before your subscription expires, kindly subscribe before
-                {{
+            <div class="col-md-12 text-dark mb-2 day3" v-if="notifiedDays === 8">
+              <div>
+                <h4 class="font-weight-600">Subscription expires in 8 days</h4>
+              <div class="s-14" style="color: #242424">Subscribe before {{
                   moment
                     .parseZone(
                       new Date(getRenewalDate).toDateString(),
                       "YYYY MM DD HH ZZ"
                     )
                     ._i.substr(4, 11)
-                }}
-              </div>
-              <div class="cursor-pointer" @click="subscribeNow">
-                <el-button round>Subscribe now</el-button>
-              </div>
-              <!-- <a href="https://churchplus.co/awoofwebsite/" target="_blank" class="no-decoration">
-                <el-button class="mt-1" round>Get one now</el-button>
-              </a> -->
-              <a
-                href="https://my.churchplus.co/forms/9ab06eed-c8fc-4257-2968-08dc652324f2"
-                target="_blank"
-                class="no-decoration"
-              >
-                <el-button class="mt-1" round>Get one now</el-button>
-              </a>
-            </div>
-            <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 8">
-              <div class="">
-                8 days remaining before your subscription expires, kindly subscribe before
-                {{
-                  moment
-                    .parseZone(
-                      new Date(getRenewalDate).toDateString(),
-                      "YYYY MM DD HH ZZ"
-                    )
-                    ._i.substr(4, 11)
-                }}
+                }}</div>
               </div>
               <div class="cursor-pointer" @click="subscribeNow">
                 <el-button round>Subscribe now</el-button>
               </div>
             </div>
-            <div class="col-md-12 text-dark py-3 mb-2 day3" v-if="notifiedDays === 7">
-              <div class="">
-                7 days remaining before your subscription expires, kindly subscribe before
-                {{
+            <div class="col-md-12 text-dark mb-2 day3" v-if="notifiedDays === 7">
+              <div>
+                <h4 class="font-weight-600">Subscription expires in 7 days</h4>
+              <div class="s-14" style="color: #242424">Subscribe before {{
                   moment
                     .parseZone(
                       new Date(getRenewalDate).toDateString(),
                       "YYYY MM DD HH ZZ"
                     )
                     ._i.substr(4, 11)
-                }}
+                }}</div>
               </div>
               <div class="cursor-pointer" @click="subscribeNow">
                 <el-button round>Subscribe now</el-button>
               </div>
             </div>
-            <div class="col-md-12 py-3 mb-1 day2" v-if="notifiedDays === 6">
-              <div class="">
-                6 days remaining before your subscription expires, kindly subscribe before
-                {{
+            <div class="col-md-12 mb-1 day2" v-if="notifiedDays === 6">
+              <div>
+                <h4 class="font-weight-600">Subscription expires in 6 days</h4>
+              <div class="s-14" style="color: #242424">Subscribe before {{
                   moment
                     .parseZone(
                       new Date(getRenewalDate).toDateString(),
                       "YYYY MM DD HH ZZ"
                     )
                     ._i.substr(4, 11)
-                }}
+                }}</div>
               </div>
               <div class="cursor-pointer" @click="subscribeNow">
                 <el-button round>Subscribe now</el-button>
               </div>
             </div>
-            <div class="col-md-12 py-3 mb-1 day2" v-if="notifiedDays === 5">
-              <div class="">
-                5 days remaining before your subscription expires, kindly subscribe before
-                {{
+            <div class="col-md-12 mb-1 day2" v-if="notifiedDays === 5">
+              <div>
+                <h4 class="font-weight-600">Subscription expires in 5 days</h4>
+              <div class="s-14" style="color: #242424">Subscribe before {{
                   moment
                     .parseZone(
                       new Date(getRenewalDate).toDateString(),
                       "YYYY MM DD HH ZZ"
                     )
                     ._i.substr(4, 11)
-                }}
+                }}</div>
               </div>
               <div class="cursor-pointer" @click="subscribeNow">
                 <el-button round>Subscribe now</el-button>
               </div>
             </div>
-            <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 4">
-              <div class="">
-                4 days remaining before your subscription expires, kindly subscribe before
-                {{
+            <div class="col-md-12 mb-1 day1" v-if="notifiedDays === 4">
+              <div>
+                <h4 class="font-weight-600">Subscription expires in 4 days</h4>
+              <div class="s-14" style="color: #242424">Subscribe before {{
                   moment
                     .parseZone(
                       new Date(getRenewalDate).toDateString(),
                       "YYYY MM DD HH ZZ"
                     )
                     ._i.substr(4, 11)
-                }}
+                }}</div>
               </div>
               <div class="cursor-pointer" @click="subscribeNow">
                 <el-button round>Subscribe now</el-button>
               </div>
             </div>
-            <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 3">
-              <div class="">
-                3 days remaining before your subscription expires, kindly subscribe before
-                {{
+            <div class="col-md-12 mb-1 day1" v-if="notifiedDays === 3">
+              <div>
+                <h4 class="font-weight-600">Subscription expires in 3 days</h4>
+              <div class="s-14" style="color: #242424">Subscribe before {{
                   moment
                     .parseZone(
                       new Date(getRenewalDate).toDateString(),
                       "YYYY MM DD HH ZZ"
                     )
                     ._i.substr(4, 11)
-                }}
+                }}</div>
               </div>
               <div class="cursor-pointer" @click="subscribeNow">
                 <el-button round>Subscribe now</el-button>
               </div>
             </div>
-            <div class="col-md-12 py-3 mb-1 day1" v-if="notifiedDays === 2">
-              <div class="">
-                2 days remaining before your subscription expires, kindly subscribe before
-                {{
+            <div class="col-md-12 mb-1 day1" v-if="notifiedDays === 2">
+              <div>
+                <h4 class="font-weight-600">Subscription expires in 2 days</h4>
+              <div class="s-14" style="color: #242424">Subscribe before {{
                   moment
                     .parseZone(
                       new Date(getRenewalDate).toDateString(),
                       "YYYY MM DD HH ZZ"
                     )
                     ._i.substr(4, 11)
-                }}
+                }}</div>
               </div>
               <div class="cursor-pointer" @click="subscribeNow">
                 <el-button round>Subscribe now</el-button>
               </div>
             </div>
-            <div class="col-md-12 py-3 m-0 day1" v-if="notifiedDays === 1">
-              <div class="mt-0">
-                1 day remaining before your subscription expires, kindly subscribe before
-                {{
+            <div class="col-md-12 m-0 day1" v-if="notifiedDays === 1">
+              <div>
+                <h4 class="font-weight-600">Subscription expires in 1 day</h4>
+              <div class="s-14" style="color: #242424">Subscribe before {{
                   moment
                     .parseZone(
                       new Date(getRenewalDate).toDateString(),
                       "YYYY MM DD HH ZZ"
                     )
                     ._i.substr(4, 11)
-                }}
+                }}</div>
               </div>
               <div class="cursor-pointer" @click="subscribeNow">
                 <el-button round>Subscribe now</el-button>
@@ -1322,6 +1304,8 @@ import { ElMessage } from "element-plus";
 import { Search } from "@element-plus/icons-vue";
 import { useTheme } from "../../theme/ThemeProvider";
 import SubExpired from "@/components/expiredpages/ExpiredSubDialog.vue";
+import UnverifiedAccount from "../../components/membership/UnverifiedAccount.vue";
+import UpgradeToAccessNotification from "../../components/membership/UpgradeToAccessNotification.vue";
 
 export default {
   mixins: [mixin],
@@ -1332,6 +1316,8 @@ export default {
     Table,
     ImageForm,
     SubExpired,
+    UnverifiedAccount,
+    UpgradeToAccessNotification
   },
   data() {
     return {};
@@ -1425,6 +1411,7 @@ export default {
     ]);
 
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
+    const triggerDialog = ref(false);
 
     const celebHeaders = ref([
       { name: "NAME", value: "name" },
@@ -1842,6 +1829,29 @@ export default {
       router.push("/tenant/payments");
     };
 
+    const isVerified = computed(() => {
+      const getVerifiedValue = localStorage.getItem('isVerified');
+      if  (getVerifiedValue) {
+        const parseIsVerifiedValue = JSON.parse(getVerifiedValue);
+        return parseIsVerifiedValue
+      } else {
+        return false
+      }
+    })
+
+    const checkIfVerified = () => {
+      if (!isVerified.value) {
+        triggerDialog.value = true;
+      } else {
+        router.push({ name: 'Subscription' })
+        triggerDialog.value = false;
+      }
+    }
+
+    const clearTrigger = () => {
+      triggerDialog.value = false
+    }
+
     return {
       celebrations,
       attendanceBooleanMont,
@@ -1927,6 +1937,10 @@ export default {
       routeToTransaction,
       routeToWelcomeOnboard,
       routeToPayment,
+      isVerified,
+      triggerDialog,
+      checkIfVerified,
+      clearTrigger
     };
   },
 };
@@ -1935,12 +1949,15 @@ export default {
 <style scoped>
 .day3 {
   background-color: #ecf4ff;
-  border-left: solid #136acd 5px;
+  border-left: solid #0B55D4 7px;
   border-top-left-radius: 5px 5px;
   border-bottom-left-radius: 5px 5px;
-  font-weight: 700;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding: 30px 20px;
+  border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
 .day2 {
@@ -1948,21 +1965,26 @@ export default {
   border-left: solid yellow 5px;
   border-top-left-radius: 5px 5px;
   border-bottom-left-radius: 5px 5px;
-  font-weight: 700;
-  display: flex;
-  justify-content: space-between;
-}
-
-.day1 {
-  background-color: #fef8f8;
-  color: #e09579;
-  border-left: solid #b3282d 5px;
-  border-top-left-radius: 5px 5px;
-  border-bottom-left-radius: 5px 5px;
-  font-weight: 700;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 30px 20px;
+  border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.day1 {
+  background-color: #F8F0E7;
+  color: #171717;
+  border-left: solid #FF4B4B 7px;
+  border-top-left-radius: 5px 5px;
+  border-bottom-left-radius: 5px 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 20px;
+  border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
 .renew-btn-color {

@@ -159,6 +159,13 @@
                       >Custom Field Setup</router-link
                     >
                   </div>
+                  <div class="col-md-12 my-2">
+                    <router-link
+                      class="font-weight-bold primary--text dd-list-item"
+                      to="/tenant/settings/integrations"
+                      >Integrations</router-link
+                    >
+                  </div>
                 </div>
                 <div class="row mb-3">
                   <div class="col-md-12 my-2">
