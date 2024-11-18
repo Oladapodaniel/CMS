@@ -381,13 +381,13 @@ export default {
         submenu: []
       }
 
-      const ecommerce = {
-        id: 10,
-        name: 'E-commerce',
-        logo: require('../../assets/dashboardlinks/dashboard-icon/Cart.svg'),
-        route: '/tenant/store',
-        submenu: []
-      }
+      // const ecommerce = {
+      //   id: 10,
+      //   name: 'E-commerce',
+      //   logo: require('../../assets/dashboardlinks/dashboard-icon/Cart.svg'),
+      //   route: '/tenant/store',
+      //   submenu: []
+      // }
       // const report = {
       //   id: 6,
       //   name: 'Reports',
