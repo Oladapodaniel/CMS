@@ -1,11 +1,13 @@
 <template>
   <div class="container-fluid container-top">
     <div class="row">
-      <div class="col-12 my-2 text-head h2 font-weight-bold text-black">Archived People</div>
+      <div class="col-12 my-2 text-head h2 font-weight-bold text-black">
+        Archived People
+      </div>
     </div>
     <div class="row">
       <div class="col-md-12">
-        <div class="table-top p-3 mt-5">
+        <div class="table-top p-3 mt-5" v-if="searchArchive && searchArchive.length > 0">
           <div class="d-flex flex-column flex-sm-row justify-content-sm-between">
             <div>
               <!-- <el-tooltip
@@ -23,13 +25,21 @@
               <User />
             </el-icon>
           </el-tooltip> -->
-              <el-tooltip class="box-item" effect="dark" v-if="marked.length > 0" content="Unarchive member(s)"
-                placement="top-start">
-                <el-icon class="c-pointer" :size="20" @click="displayPositionArchive = true" v-if="marked.length > 0">
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                v-if="marked.length > 0"
+                content="Unarchive member(s)"
+                placement="top-start"
+              >
+                <el-icon
+                  class="c-pointer"
+                  :size="20"
+                  @click="displayPositionArchive = true"
+                  v-if="marked.length > 0"
+                >
                   <DocumentAdd />
                 </el-icon>
-
-
               </el-tooltip>
               <!-- <el-tooltip
             class="box-item"
@@ -49,11 +59,18 @@
           </el-tooltip> -->
             </div>
             <div class="d-flex flex-column flex-sm-row justify-content-sm-end">
-
-              <el-input size="small" v-model="searchText" placeholder="Search..." @keyup.enter.prevent="searchArchiveInDB"
-                class="input-with-select">
+              <el-input
+                size="small"
+                v-model="searchText"
+                placeholder="Search..."
+                @keyup.enter.prevent="searchArchiveInDB"
+                class="input-with-select"
+              >
                 <template #suffix>
-                  <el-button style="padding: 5px; height: 22px" @click.prevent="searchText = ''">
+                  <el-button
+                    style="padding: 5px; height: 22px"
+                    @click.prevent="searchText = ''"
+                  >
                     <el-icon :size="13">
                       <Close />
                     </el-icon>
@@ -68,15 +85,18 @@
                 </template>
               </el-input>
             </div>
-
           </div>
         </div>
-        <Table :data="searchArchive" :headers="archivedHeaders" :checkMultipleItem="true"
-          @checkedrow="handleSelectionChange" v-loading="paginatedTableLoading" v-if="searchArchive.length > 0">
+        <Table
+          :data="searchArchive"
+          :headers="archivedHeaders"
+          :checkMultipleItem="true"
+          @checkedrow="handleSelectionChange"
+          v-loading="paginatedTableLoading"
+          v-if="searchArchive.length > 0"
+        >
           <template v-slot:firstName="{ item }">
-            <div class="c-pointer">
-              {{ item.firstName }} {{ item.lastName }}
-            </div>
+            <div class="c-pointer">{{ item.firstName }} {{ item.lastName }}</div>
           </template>
           <template v-slot:mobilePhone="{ item }">
             <div class="c-pointer">
@@ -106,15 +126,21 @@
                     </div>
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <router-link class="text-color text-decoration-none" :to="{
-                      name: 'AddPerson',
-                      params: { personId: item.id },
-                    }">
+                    <router-link
+                      class="text-color text-dak text-decoration-none"
+                      :to="{
+                        name: 'AddPerson',
+                        params: { personId: item.id },
+                      }"
+                    >
                       Edit
                     </router-link>
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <div @click.prevent="showConfirmModal(item.id, index)" class="text-color">
+                    <div
+                      @click.prevent="showConfirmModal(item.id, index)"
+                      class="text-color"
+                    >
                       Delete
                     </div>
                   </el-dropdown-item>
@@ -123,16 +149,39 @@
             </el-dropdown>
           </template>
         </Table>
+        <div
+          class="no-person"
+          v-if="searchArchive && searchArchive.length <= 0 && !paginatedTableLoading"
+        >
+          <div class="empty-img">
+            <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
+            <p class="tip">No one has been Archive yet </p>
+          </div>
+        </div>
       </div>
-      <el-dialog v-model="displayPositionArchive" title="Archive member(s)"
-        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`" align-center>
+      <el-dialog
+        v-model="displayPositionArchive"
+        title="Archive member(s)"
+        :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : `90%`"
+        align-center
+      >
         <p class="p-m-0">
           You are about to archive your member(s). Do you want to continue ?
         </p>
         <template #footer>
           <span class="dialog-footer">
-            <el-button class="secondary-button" @click="displayPositionArchive = false" round>No</el-button>
-            <el-button :color="primarycolor" :loading="archiveLoading" @click="unArchiveAll" round>
+            <el-button
+              class="secondary-button"
+              @click="displayPositionArchive = false"
+              round
+              >No</el-button
+            >
+            <el-button
+              :color="primarycolor"
+              :loading="archiveLoading"
+              @click="unArchiveAll"
+              round
+            >
               Yes
             </el-button>
           </span>
@@ -323,8 +372,8 @@ export default {
     // };
 
     const handleSelectionChange = (val) => {
-      console.log(val, 'jjjjj');
-      marked.value = val
+      console.log(val, "jjjjj");
+      marked.value = val;
       // marked.value = val.map((i) => {
       //   i.mobilePhone =
       //     i.mobilePhone && i.mobilePhone.substring(0, 1) == "0"
@@ -354,9 +403,7 @@ export default {
       if (searchText.value !== "" && archivedMember.value.length > 0) {
         return archivedMember.value.filter((i) => {
           if (i.firstName)
-            return i.firstName
-              .toLowerCase()
-              .includes(searchText.value.toLowerCase());
+            return i.firstName.toLowerCase().includes(searchText.value.toLowerCase());
         });
       } else {
         return archivedMember.value;
@@ -367,9 +414,7 @@ export default {
       if (searchText.value !== "" && archivedMember.value.length > 0) {
         return archivedMember.value.filter((i) => {
           if (i.firstName)
-            return i.firstName
-              .toLowerCase()
-              .includes(searchText.value.toLowerCase());
+            return i.firstName.toLowerCase().includes(searchText.value.toLowerCase());
         });
       } else {
         return archivedMember.value;
@@ -403,36 +448,28 @@ export default {
     };
 
     const showConfirmModall = (id, index) => {
-      ElMessageBox.confirm(
-        "Are you sure you want to proceed?",
-        "Confirm delete",
-        {
-          confirmButtonText: "OK",
-          cancelButtonText: "Cancel",
-          type: "error",
-        }
-      )
+      ElMessageBox.confirm("Are you sure you want to proceed to Unarchive Member", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "warning",
+      })
         .then(() => {
           unarchiveMember(id, index);
         })
         .catch(() => {
           ElMessage({
             type: "info",
-            message: "Delete canceled",
+            message: "Unarchive canceled",
             duration: 5000,
           });
         });
     };
     const showConfirmModal = (id, index) => {
-      ElMessageBox.confirm(
-        "Are you sure you want to proceed?",
-        "Confirm delete",
-        {
-          confirmButtonText: "OK",
-          cancelButtonText: "Cancel",
-          type: "error",
-        }
-      )
+      ElMessageBox.confirm("Are you sure you want to proceed?", "Confirm delete", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "error",
+      })
         .then(() => {
           deleteMember(id, index);
         })
@@ -450,9 +487,7 @@ export default {
         .delete(`/api/People/DeleteOnePerson/${id}`)
         .then((res) => {
           console.log(res);
-          archivedMember.value = archivedMember.value.filter(
-            (item) => item.id !== id
-          );
+          archivedMember.value = archivedMember.value.filter((item) => item.id !== id);
           if (res.data.response.includes("@")) {
             let disRes = res.data.response.split("@");
             ElMessage({
@@ -473,7 +508,7 @@ export default {
           });
         })
         .catch((err) => {
-          stopProgressBar();
+          // stopProgressBar();
           ElMessage({
             type: "error",
             message: "Deleting member failed",
@@ -487,9 +522,7 @@ export default {
         .post(`/api/People/unarchive/${id}`)
         .then((res) => {
           console.log(res);
-          archivedMember.value = archivedMember.value.filter(
-            (item) => item.id !== id
-          );
+          archivedMember.value = archivedMember.value.filter((item) => item.id !== id);
           ElMessage({
             type: "success",
             message: "Member Unarchive",
@@ -497,7 +530,7 @@ export default {
           });
         })
         .catch((err) => {
-          stopProgressBar();
+          // stopProgressBar();
           ElMessage({
             type: "error",
             message: "Delete Error",
@@ -550,6 +583,22 @@ export default {
   font-size: 11px !important;
   text-align: left !important;
   /* box-shadow: 0px 3px 6px #2c28281c!important; */
+}
+.no-person {
+  height: 80vh;
+  display: flex;
+  text-align: center;
+}
+
+.empty-img {
+  width: 85%;
+  /* min-width: 397px; */
+  margin: auto;
+}
+
+.empty-img img {
+  width: 100%;
+  max-width: 200px;
 }
 
 .heading-text {
