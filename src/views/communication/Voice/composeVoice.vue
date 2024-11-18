@@ -132,14 +132,14 @@
 
             <!-- Start TEst -->
             <div class="row mb-2" v-if="groupSelectionTab">
-              <div class="col-md-2"></div>
-              <div class="col-md-10 px-0 grey-rounded-border mt-3">
+              <div class="col-md-3 col-md-3"></div>
+              <div class="col-md-9 col-lg-9 mt-3">
                 <ul
-                  class="d-flex flex-wrap pl-1 mb-0 dd-item small-text"
+                  class="d-flex flex-wrap pl-1 mb-0 dd-item small-text grey-rounded-border"
                   @click="() => groupSelectInput.focus()"
                 >
                   <li
-                    style="list-style: none; min-width: 100px"
+                    style="list-style: none"
                     v-for="(group, index) in selectedGroups"
                     :key="index"
                     class="email-destination d-flex justify-content-between m-1"
@@ -212,12 +212,12 @@
               </div>
             </div>
 
-            <div class="col-12 my-1 px-0">
-              <div class="row" v-if="membershipSelectionTab">
-                <div class="col-12 col-md-2"></div>
-                <div class="col-12 col-md-10 grey-rounded-border">
+            <div class="col-12 mb-1 mt-3 px-0" v-if="membershipSelectionTab">
+              <div class="row">
+                <div class="col-md-3 col-lg-3"></div>
+                <div class="col-md-9 col-lg-9">
                   <ul
-                    class="d-flex flex-wrap px-1 mb-0 m-dd-item"
+                    class="d-flex flex-wrap px-1 mb-0 m-dd-item grey-rounded-border"
                     @click="() => memberSelectInput.focus()"
                   >
                     <li
@@ -300,10 +300,10 @@
             </div>
 
             <!-- Enter phone numbers -->
-            <div class="col-12 my-1 px-0" v-if="phoneNumberSelectionTab">
+            <div class="col-12 mb-1 mt-3 px-0" v-if="phoneNumberSelectionTab">
               <div class="row">
-                <div class="col-12 col-md-2"></div>
-                <div class="col-12 col-md-10 px-0">
+                <div class="col-md-3 col-lg-3"></div>
+                <div class="col-md-9 col-lg-9">
                   <textarea
                     class="form-control w-100 px-1 grey-rounded-border"
                     placeholder="Enter phone number(s)"
@@ -336,25 +336,27 @@
             </div>
 
             <!-- Start upload contact -->
-            <div v-if="contactUpload" class="row my-1">
-              <div class="col-12 col-md-2"></div>
-              <div class="col-12 col-md-10 grey-rounded-border p-2">
-                <div class="d-flex justify-content-between">
-                  <input type="file" class="form-control-file" @change="uploadFile" />
-                  <div>
-                    <i
-                      class="pi pi-times mr-2 c-pointer"
-                      @click="() => (contactUpload = false)"
-                    ></i>
+            <div v-if="contactUpload" class="row mb-1 mt-3">
+              <div class="col-md-3 col-lg-3"></div>
+              <div class="col-md-9 col-lg-9">
+                <div class="grey-rounded-border p-2">
+                  <div class="d-flex">
+                    <input type="file" class="form-control-file" @change="uploadFile" />
+                    <div>
+                      <i
+                        class="pi pi-times mr-2 c-pointer"
+                        @click="() => (contactUpload = false)"
+                      ></i>
+                    </div>
                   </div>
-                </div>
-                <div class="mt-1">
-                  <a
-                    href="/files/Upload_Contact Template.csv"
-                    class="template-text text-decoration-none font-weight-bold"
-                    download
-                    >Download template</a
-                  >
+                  <div class="mt-1">
+                    <a
+                      href="/files/Upload_Contact Template.csv"
+                      class="template-text text-decoration-none font-weight-bold"
+                      download
+                      >Download template</a
+                    >
+                  </div>
                 </div>
               </div>
             </div>
@@ -463,16 +465,17 @@
                   <div class="el-upload__text">
                     Drop file here or <em>click to upload</em>
                   </div>
-                  <template #tip>
+                  <!-- <template #tip>
                     <div class="el-upload__tip">
+                      only 
                       {{
-                        [".m4a", ".mp2", ".mp3", ".ogg", ".wav", ".wma", ".webm"].join(
+                        [".mp3"].join(
                           ", "
                         )
                       }}
-                      files are accepted
+                       files are accepted and must not be longer than 30 seconds.
                     </div>
-                  </template>
+                  </template> -->
                 </el-upload>
                 <audio
                   controls
@@ -483,6 +486,9 @@
                   <source src="" type="audio/mpeg" />
                   Your browser does not support the audio element.
                 </audio>
+                <div class="small mt-1">
+                  only .mp3 files are accepted and must not be longer than 30 seconds
+                </div>
               </div>
 
               <!-- <div class="col-md-10 mb-0 px-0" style="background: #ffffff">

@@ -1,7 +1,7 @@
 <template>
     <div class="container container-top">
         <div class="row d-flex justify-content-center justify-content-sm-between">
-          <div class="col-12 col-sm-6 page-header text-center text-sm-left">Attendance and report</div>
+            <div class="text-head col-12 font-weight-bold text-black h2 text-center text-sm-left">Attendance and Report</div>
           <!-- <div class="default-btn mt-3 mt-sm-0">Add event</div> -->
         </div>
         <div class="row border mt-5">

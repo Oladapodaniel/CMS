@@ -179,6 +179,9 @@ rect.highcharts-background[fill] {
     border-radius: 60px !important;
     /* border: 1px solid #C9C9C9 !important; */
   }
+  .border-radius-40{
+    border-radius: 40px !important;
+  }
   .border-botom{
     border-bottom: 1px solid #B0B0B0 !important;
   }
@@ -1312,4 +1315,8 @@ rect.highcharts-background[fill] {
     border: 1.6px solid rgb(229, 232, 237);
     border-radius: 4px;
     padding: 11px 7px;
+}
+
+.text-underline {
+  text-decoration: underline;
 }

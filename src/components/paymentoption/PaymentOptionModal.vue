@@ -42,23 +42,27 @@ export default {
 
 
     const paystackGate = computed(() => {
+      if (props.formData?.isPaymentConnected) return true
       if (!props.formData.paymentGateWays || props.currency !== 'NGN') return false
       return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "Paystack")
     })
-
+    
     const flutterwaveGate = computed(() => {
+      if (props.formData?.isPaymentConnected) return false
       if (!props.formData.paymentGateWays) return false
       return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "FlutterWave")
     })
 
     const paypalGate = computed(() => {
-      if (!props.formData.paymentGateWays) return false
-      return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "PayPal")
+      // if (!props.formData.paymentGateWays) return false
+      // return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "PayPal")
+      return false
     })
 
     const stripe = computed(() => {
-      if (!props.formData.paymentGateWays) return false
-      return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "Stripe")
+      // if (!props.formData.paymentGateWays) return false
+      // return props.formData.paymentGateWays.find(i => i.paymentGateway.name === "Stripe")
+      return false
     })
 
     const initializePayment = (paymentType) => {
@@ -173,13 +177,15 @@ export default {
     }
 
     watchEffect(() => {
-      if (props.callPayment && Object.keys(props.initializePaymentResponse).length > 0) {
-        if (selectedGateway.value == 'Paystack') {
-          payWithPaystack(props.initializePaymentResponse);
-        } else {
-          payWithFlutterwave(props.initializePaymentResponse);
+      if (!props.formData?.isPaymentConnected) {
+        if (props.callPayment && Object.keys(props.initializePaymentResponse).length > 0) {
+          if (selectedGateway.value == 'Paystack') {
+            payWithPaystack(props.initializePaymentResponse);
+          } else {
+            payWithFlutterwave(props.initializePaymentResponse);
+          }
+          emit('resetcallpaymentprops', false)
         }
-        emit('resetcallpaymentprops', false)
       }
     })
 

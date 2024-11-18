@@ -17,9 +17,9 @@ import router from '../../../../router';
                 <el-dropdown-item class="text-black" @click="router.push('/tenant/branchremittance/remittancesetup')">
                     Remittance setup
                 </el-dropdown-item>
-                <!-- <el-dropdown-item class="text-black" @click="router.push('/tenant/branchremittance/bankinfosetup')">
+                <el-dropdown-item class="text-black" @click="router.push('/tenant/branchremittance/bankinfosetup')">
                     Bank info setup
-                </el-dropdown-item> -->
+                </el-dropdown-item>
             </el-dropdown-menu>
         </template>
     </el-dropdown>

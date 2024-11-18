@@ -70,7 +70,7 @@ const lookupService = {
                     const activityType = res.data.find(
                         (i) => i.type.toLowerCase() === "activitytype"
                     ).lookUps;
-                    resolve({ genders, maritalStatus, outcome, activityType})
+                    resolve({ genders, maritalStatus, outcome, activityType })
                 })
                 .catch((err) => {
                     console.log(err)
@@ -82,14 +82,47 @@ const lookupService = {
     getAgeGroups() {
         return new Promise((resolve, reject) => {
             axios.get("/api/Settings/GetTenantAgeGroups").then((res) => {
-                    resolve(res.data);
-                    store.dispatch("lookups/setAgeGroups", res.data);
-                }).catch((err) => {
-                    console.log(err.response)
-                    if (err.response) reject(err.response)
-                    if (!err.response) reject(err)
-                });
-                })
+                resolve(res.data);
+                store.dispatch("lookups/setAgeGroups", res.data);
+            }).catch((err) => {
+                console.log(err.response)
+                if (err.response) reject(err.response)
+                if (!err.response) reject(err)
+            });
+        })
+    },
+    getAllBanks() {
+        return new Promise((resolve, reject) => {
+            axios.get("/api/Financials/GetBanks").then((res) => {
+                resolve(res.data);
+            }).catch((err) => {
+                console.log(err.response)
+                if (err.response) reject(err.response)
+                if (!err.response) reject(err)
+            });
+        })
+    },
+    createTenantBanks(payload) {
+        return new Promise((resolve, reject) => {
+            axios.post("/saveTenantBank", payload).then((res) => {
+                resolve(res.data);
+            }).catch((err) => {
+                console.log(err.response)
+                if (err.response) reject(err.response)
+                if (!err.response) reject(err)
+            });
+        })
+    },
+    getTenantBanks() {
+        return new Promise((resolve, reject) => {
+            axios.get("/getAllChurchBanks").then((res) => {
+                resolve(res.data);
+            }).catch((err) => {
+                console.log(err.response)
+                if (err.response) reject(err.response)
+                if (!err.response) reject(err)
+            });
+        })
     }
 }
 
