@@ -1,6 +1,9 @@
 <template>
   <div class="container-fluid">
-    <div class="row">
+    <div class="row" 
+      v-loading="paymentStatusLoading"
+      element-loading-text="Please wait while we confirm your payment ..." 
+      >
       <div class="col-md-6">
         <!-- top Address -->
         <div class="row vh-100 justify-content-center align-items-md-center align-items-start">
@@ -24,9 +27,9 @@
             </div>
 
             <div class="row d-flex justify-content-center" v-if="fullEventData.registrationCutOffTime &&
-                  new Date().toISOString() >=
-                  new Date(fullEventData.registrationCutOffTime).toISOString()
-                  ">
+              new Date().toISOString() >=
+              new Date(fullEventData.registrationCutOffTime).toISOString()
+            ">
               <img src="../../assets/registration_closed.jpeg" class="event-closed" />
             </div>
 
@@ -43,16 +46,16 @@
                   !showLoading &&
                   loaded &&
                   !fetchingFailed
-                  ">
+                ">
                   Please fill the form and confirm the registration
                 </p>
               </div>
             </div>
 
             <div class="row" v-if="!fullEventData.registrationCutOffTime ||
-                  new Date().toISOString() <=
-                  new Date(fullEventData.registrationCutOffTime).toISOString()
-                  ">
+              new Date().toISOString() <=
+              new Date(fullEventData.registrationCutOffTime).toISOString()
+            ">
               <div class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700">
                 <label for="">Phone Number</label>
               </div>
@@ -116,7 +119,7 @@
                 <div class="row" v-if="selectedCustomField.find(
                   (i) => i.toLowerCase() == 'card/checkin number'
                 )
-                  ">
+                ">
                   <div
                     class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
                     <label for="">Card number</label>
@@ -152,16 +155,17 @@
                   </div>
                   <div class="col-md-7">
                     <span class="p-input-icon-left w-100 my-md-3">
-                      <el-input class="w-100" :class="{'border border-warning' : emailNotification }" type="text" v-model="person.email" aria-required="" :disabled="(person.personId && personData.email) ||
-                  (personData.email !== '' && personData.email !== null)
-                  " placeholder="Email">
+                      <el-input class="w-100" :class="{ 'border border-warning': emailNotification }" type="text"
+                        v-model="person.email" aria-required="" :disabled="(person.personId && personData.email) ||
+                          (personData.email !== '' && personData.email !== null)
+                          " placeholder="Email">
                         <template #prefix>
                           <el-icon class="el-input__icon">
                             <Message />
                           </el-icon>
                         </template>
                       </el-input>
-                      <div class="small-text notify-text" v-if="emailNotification" >{{emailNotification}}</div>
+                      <div class="small-text notify-text" v-if="emailNotification">{{ emailNotification }}</div>
                     </span>
                   </div>
                 </div>
@@ -169,7 +173,7 @@
                 <div class="row my-2" v-if="selectedCustomField.find(
                   (i) => i.toLowerCase() == 'address'
                 )
-                  ">
+                ">
                   <div
                     class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
                     <label for="">Address</label>
@@ -191,7 +195,7 @@
                 <div class="row my-3" v-if="selectedCustomField.find(
                   (i) => i.toLowerCase() == 'birthday'
                 )
-                  ">
+                ">
                   <div
                     class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
                     <label for="">Birthday</label>
@@ -200,15 +204,15 @@
                     <div class="row">
                       <div class="col-6">
                         <el-select-v2 v-model="birthDay" class="w-100" placeholder="Day" :options="[
-                  { label: 'Day', value: 0 },
-                  ...days.map((i) => ({ label: i, value: i })),
-                ]" size="large" />
+                          { label: 'Day', value: 0 },
+                          ...days.map((i) => ({ label: i, value: i })),
+                        ]" size="large" />
                       </div>
                       <div class="col-6">
                         <el-select-v2 v-model="birthMonth" class="w-100" placeholder="Month" :options="[
-                  { label: 'Month', value: 0 },
-                  ...months.map((i) => ({ label: i, value: i })),
-                ]" size="large" />
+                          { label: 'Month', value: 0 },
+                          ...months.map((i) => ({ label: i, value: i })),
+                        ]" size="large" />
                       </div>
                     </div>
                   </div>
@@ -216,7 +220,7 @@
                 <div class="row my-3" v-if="selectedCustomField.find(
                   (i) => i.toLowerCase() == 'wedding'
                 )
-                  ">
+                ">
                   <div
                     class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
                     <label for="">Wedding</label>
@@ -225,24 +229,24 @@
                     <div class="row">
                       <div class="col-4">
                         <el-select-v2 v-model="dayOfWedding" class="w-100" placeholder="Day" :options="[
-                  { label: 'Day', value: 0 },
-                  ...days.map((i) => ({ label: i, value: i })),
-                ]" size="large" />
+                          { label: 'Day', value: 0 },
+                          ...days.map((i) => ({ label: i, value: i })),
+                        ]" size="large" />
                       </div>
                       <div class="col-4">
                         <el-select-v2 v-model="monthOfWedding" class="w-100" placeholder="Month" :options="[
-                  { label: 'Month', value: 0 },
-                  ...months.map((i) => ({ label: i, value: i })),
-                ]" size="large" />
+                          { label: 'Month', value: 0 },
+                          ...months.map((i) => ({ label: i, value: i })),
+                        ]" size="large" />
                       </div>
                       <div class="col-4">
                         <el-select-v2 v-model="yearOfWedding" class="w-100" placeholder="Year" :options="[
-                  { label: 'Year', value: 0 },
-                  ...weddingYearsArr.map((i) => ({
-                    label: i,
-                    value: i,
-                  })),
-                ]" size="large" />
+                          { label: 'Year', value: 0 },
+                          ...weddingYearsArr.map((i) => ({
+                            label: i,
+                            value: i,
+                          })),
+                        ]" size="large" />
                       </div>
                     </div>
                   </div>
@@ -250,30 +254,30 @@
                 <div class="row my-3" v-if="selectedCustomField.find(
                   (i) => i.toLowerCase() == 'marital status'
                 )
-                  ">
+                ">
                   <div
                     class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
                     <label for="">Marital Status</label>
                   </div>
                   <div class="col-md-7">
                     <el-select-v2 v-model="maritalStatusId" @change="setSelectedMaritalStatus" :options="maritalStatus.map((i) => ({
-                  label: i.value,
-                  value: i.id,
-                }))
-                  " placeholder="Marital status" size="large" class="w-100" />
+                      label: i.value,
+                      value: i.id,
+                    }))
+                      " placeholder="Marital status" size="large" class="w-100" />
                   </div>
                 </div>
                 <div class="row my-3" v-if="selectedCustomField.find((i) => i.toLowerCase() == 'gender')
-                  ">
+                ">
                   <div
                     class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700">
                     <label for="">Gender</label>
                   </div>
                   <div class="col-md-7">
                     <el-select-v2 v-model="genderId" @change="setSelectedGender" :options="gender && gender.length > 0
-                  ? gender.map((i) => ({ label: i.value, value: i.id }))
-                  : []
-                  " placeholder="Gender" size="large" class="w-100" />
+                      ? gender.map((i) => ({ label: i.value, value: i.id }))
+                      : []
+                      " placeholder="Gender" size="large" class="w-100" />
                   </div>
                 </div>
                 <div class="row my-3" v-for="item in dynamicCustomFields" :key="item.id">
@@ -285,9 +289,9 @@
                     <el-input v-if="item.controlType == 0" class="w-100" type="text" aria-required=""
                       v-model="item.data" />
                     <el-select-v2 v-else-if="item.controlType == 1" v-model="item.data" :options="item.parameterValues
-                  .split(',')
-                  .map((i) => ({ label: i, value: i }))
-                  " placeholder="Select option" size="large" class="w-100" />
+                      .split(',')
+                      .map((i) => ({ label: i, value: i }))
+                      " placeholder="Select option" size="large" class="w-100" />
                     <el-checkbox v-else-if="item.controlType == 2" v-model="item.data" />
                     <el-date-picker v-if="item.controlType == 3" v-model="item.data" type="datetime"
                       format="DD/MM/YYYY hh:mm:ss" size="large" class="w-100" />
@@ -325,17 +329,17 @@
                       <div class="col-md-6">
                         <el-button data-toggle="modal" class="w-100" data-target="#PaymentOptionModal"
                           :color="primarycolor" @click="confirmCheck()" v-if="fullEventData.paymentFormId" :disabled="!person.name ||
-                  person.name.length < 1 ||
-                  !person.email ||
-                  disableClick
-                  " round>
+                            person.name.length < 1 ||
+                            !person.email ||
+                            disableClick
+                            " round>
                           Make payment to register
                         </el-button>
                         <el-button size="large" class="mt-3 w-100 mt-sm-0 text-white" :color="primarycolor"
                           @click="confirmToRegister" :disabled="!person.name ||
-                  person.name.length < 1 ||
-                  disableClick
-                  " round v-else>
+                            person.name.length < 1 ||
+                            disableClick
+                            " round v-else>
                           Confirm to register
                         </el-button>
                       </div>
@@ -345,21 +349,21 @@
               </div>
             </div>
             <div class="row justify-content-center" v-if="fullEventData.registrationCutOffTime &&
-                  new Date().toISOString() <=
-                  new Date(fullEventData.registrationCutOffTime).toISOString()
-                  ">
+              new Date().toISOString() <=
+              new Date(fullEventData.registrationCutOffTime).toISOString()
+            ">
               <div class="col-10  col-md-5 text-center ">
                 <!-- Button code -->
                 <div title="Add to Calendar" class="addeventatc w-100">
                   Add to Calendar
                   <span class="start">{{ fullEventData.eventDate }}</span>
                   <span class="timezone">{{
-                  Intl.DateTimeFormat().resolvedOptions().timeZone
-                }}</span>
+                    Intl.DateTimeFormat().resolvedOptions().timeZone
+                  }}</span>
                   <span class="title">{{ eventData.name }}</span>
                   <span class="description">{{
-                  fullEventData.eventDetails
-                }}</span>
+                    fullEventData.eventDetails
+                  }}</span>
                 </div>
               </div>
             </div>
@@ -369,7 +373,8 @@
               </div>
               <div class="col-md-7 mt-2">
                 <p class="text-center fw-normal" style="color: #136acd">
-                 <a href="https://churchplus.co" class="text-decoration-none primary--text" target="_blank">Powered by CHURCHPLUS</a>
+                  <a href="https://churchplus.co" class="text-decoration-none primary--text" target="_blank">Powered by
+                    CHURCHPLUS</a>
                 </p>
               </div>
               <!-- Modal -->
@@ -389,7 +394,8 @@
                       <PaymentOptionModal :formData="eventPaymentForm" :close="close" :donation="donationObj"
                         @selectedgateway="setGateway" :currency="paymentFormCurrency"
                         @donationconfirmed="setConfirmDonation" :initializePaymentResponse="initializePaymentResponse"
-                        :callPayment="callPayment" @resetcallpaymentprops="resetCallPayment" />
+                        :callPayment="callPayment" @resetcallpaymentprops="resetCallPayment"
+                        :isPaymentConnected="isPaymentConnected" />
                     </div>
                   </div>
                 </div>
@@ -407,7 +413,21 @@
       </div>
     </div>
   </div>
-
+  <el-drawer v-model="checkoutDrawer" :show-close="false" size="100%">
+    <div>
+      <div class="d-flex justify-content-end">
+        <el-icon :size="30" class="c-pointer" color="red" @click="checkoutDrawer = false">
+          <CircleClose />
+        </el-icon>
+      </div>
+      <iframe :src="checkoutURL" width="100%" height="800" frameborder="0"></iframe>
+    </div>
+  </el-drawer>
+  <el-dialog v-model="paymentResponseDialog" title=""
+    :width="mdAndUp || lgAndUp || xlAndUp ? `50%` : xsOnly ? `90%` : `70%`" align-center class="QRCodeDialog p-4">
+    <PaymentStatusDialog :paymentStatusMessage="paymentStatusMessage"
+      @closestatusdialog="paymentResponseDialog = false" />
+  </el-dialog>
   <pre ref="content" style="white-space: pre-wrap"></pre>
 </template>
 
@@ -426,10 +446,15 @@ import store from "../../store/store";
 import FamilyWards from "./component/EventRegFamilyWards.vue";
 import { ElMessage } from "element-plus";
 import { ElLoading } from "element-plus";
+import deviceBreakpoint from "../../mixins/deviceBreakpoint";
+import PaymentStatusDialog from "../../components/payment/PaymentStatusDialog.vue";
+import { ConfirmPaystackTransaction } from "../../services/settings/integrations";
+import { paystackTransactionStatusEnum } from "../../services/constant";
 export default {
   components: {
     PaymentOptionModal,
     FamilyWards,
+    PaymentStatusDialog
   },
   setup() {
     const primarycolor = inject("primarycolor");
@@ -495,6 +520,13 @@ export default {
     const callPayment = ref(false);
     const initializePaymentResponse = ref({});
     const paymentFormCurrency = ref({});
+    const isPaymentConnected = ref(false);
+    const checkoutURL = ref("");
+    const checkoutDrawer = ref(false);
+    const paymentStatusLoading = ref(false);
+    const { mdAndUp, lgAndUp, xlAndUp, xsOnly } = deviceBreakpoint();
+    const paymentResponseDialog = ref(false);
+    const paymentStatusMessage = ref("");
 
     const setSelectedMaritalStatus = () => {
       selectedMaritalStatus.value = maritalStatus.value.find((i) => {
@@ -565,8 +597,6 @@ export default {
           paymentFormCurrency.value = res.data.find(
             (i) => i.id == fullEventData.value.currencyID
           );
-
-          console.log(paymentFormCurrency.value);
         })
         .catch((err) => console.log(err.response));
     };
@@ -725,7 +755,6 @@ export default {
       axios
         .post("/EventRegistration", newPerson)
         .then((res) => {
-          console.log(res);
           loading.value = false;
           autosearch.value = false;
           disableClick.value = false;
@@ -814,6 +843,11 @@ export default {
             }),
         },
       };
+
+      if (isPaymentConnected.value) {
+        donationObj.value.isPaymentConnected = fullEventData.value?.isPaymentConnected;
+        donationObj.value.paymentConnectedObject = fullEventData.value?.paymentConnectedObject;
+      }
     };
 
     const initializePayment = async () => {
@@ -827,6 +861,14 @@ export default {
           "/initializeEventRegistrationPayment",
           donationObj.value
         );
+
+        if (data.initializePaymentResponseDTO?.data?.authorization_url) {
+          checkoutURL.value = data.initializePaymentResponseDTO?.data?.authorization_url
+          checkoutDrawer.value = true
+          paymentStatusLoading.value = true;
+          checkTransactionStatus(data?.transactionReference)
+        }
+
         if (data.status) {
           initializePaymentResponse.value = data;
           callPayment.value = true;
@@ -846,6 +888,35 @@ export default {
         console.log(error);
       }
     };
+
+    const checkTransactionStatus = async (_ref) => {
+      try {
+        const response = await ConfirmPaystackTransaction(_ref)
+        if (paystackTransactionStatusEnum[response?.status]?.toLowerCase() === 'success') {
+          paymentStatusLoading.value = false;
+          checkoutDrawer.value = false;
+          paymentResponseDialog.value = true;
+          paymentStatusMessage.value = paystackTransactionStatusEnum[response?.status]
+        } else if (paystackTransactionStatusEnum[response?.status]?.toLowerCase() === 'failed') {
+          paymentStatusLoading.value = false;
+          checkoutDrawer.value = false;
+          paymentResponseDialog.value = true;
+          paymentStatusMessage.value = paystackTransactionStatusEnum[response?.status]
+        } else if (paystackTransactionStatusEnum[response?.status]?.toLowerCase() === 'cancelled') {
+          paymentStatusLoading.value = false;
+          checkoutDrawer.value = false;
+          paymentResponseDialog.value = true;
+          paymentStatusMessage.value = paystackTransactionStatusEnum[response?.status]
+        } else {
+          setTimeout(() => {
+            checkTransactionStatus(response?.transactionReference)
+          }, 4000);
+        }
+      } catch (error) {
+        paymentStatusLoading.value = false;
+        console.error(error)
+      }
+    }
 
     const confirmToRegister = () => {
       disableClick.value = true;
@@ -1125,6 +1196,7 @@ export default {
           bannerUrl.value = res.data.bannerUrl;
           fullEventData.value = res.data;
           eventPaymentForm.value = fullEventData.value.paymentForm;
+          isPaymentConnected.value = fullEventData.value.isPaymentConnected;
           getTenantCurrency();
           getCustomFields();
           GetAllCurrencies();
@@ -1356,18 +1428,29 @@ export default {
       callPayment,
       initializePaymentResponse,
       resetCallPayment,
+      isPaymentConnected,
+      checkoutURL,
+      checkoutDrawer,
+      paymentStatusLoading,
+      paymentResponseDialog,
+      mdAndUp,
+      lgAndUp,
+      xlAndUp,
+      xsOnly,
+      paymentStatusMessage
     };
   },
 };
 </script>
 
 <style scoped>
-.notify-text{
-  color: #E6A23C; 
+.notify-text {
+  color: #E6A23C;
   /* background-color: #778593;  */
-  font-style: italic; 
+  font-style: italic;
   font-weight: 100 !important;
 }
+
 .add-btn {
   /* background: #6aa5e9; */
   background: #136acd;

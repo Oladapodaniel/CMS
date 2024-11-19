@@ -1,4 +1,3 @@
-
 <template>
   <div class="container">
     <div class="row">
@@ -24,18 +23,20 @@ import { ref, watchEffect, computed } from 'vue'
 import axios from "@/gateway/backendapi";
 import { ElMessage } from 'element-plus';
 export default {
-  props: ['formData', 'close', 'donation', 'donorEmail', 'currency', 'initializePaymentResponse', 'callPayment'],
+  props: ['formData', 'close', 'donation', 'donorEmail', 'currency', 'initializePaymentResponse', 'callPayment', 'isPaymentConnected'],
   emits: ['selectedgateway', 'paymentsuccessful', 'donationconfirmed', 'resetcallpaymentprops'],
   setup(props, { emit }) {
     const email = ref("info@churchplus.com")
     const selectedGateway = ref("")
 
     const paystackGate = computed(() => {
-      if ((!props.donation || !props.donation.donation || !props.donation.donation.paymentGateWays)  || (props.currency && props.currency.shortCode !== 'NGN')) return false
+      if (props.isPaymentConnected) return true
+      if ((!props.donation || !props.donation.donation || !props.donation.donation.paymentGateWays) || (props.currency && props.currency.shortCode !== 'NGN')) return false
       return props.donation.donation.paymentGateWays.find(i => i.paymentGateway.name === "Paystack")
     })
 
     const flutterwaveGate = computed(() => {
+      if (props.isPaymentConnected) return false
       if (!props.donation || !props.donation.donation || !props.donation.donation.paymentGateWays) return false
       return props.donation.donation.paymentGateWays.find(i => i.paymentGateway.name === "FlutterWave")
     })
@@ -154,14 +155,15 @@ export default {
     }
 
     watchEffect(() => {
-      console.log(props.donation)
-      if (props.callPayment && Object.keys(props.initializePaymentResponse).length > 0) {
-        if (selectedGateway.value == 'Paystack') {
-          payWithPaystack(props.initializePaymentResponse);
-        } else {
-          payWithFlutterwave(props.initializePaymentResponse);
+      if (!props.isPaymentConnected) {
+        if (props.callPayment && Object.keys(props.initializePaymentResponse).length > 0) {
+          if (selectedGateway.value == 'Paystack') {
+            payWithPaystack(props.initializePaymentResponse);
+          } else {
+            payWithFlutterwave(props.initializePaymentResponse);
+          }
+          emit('resetcallpaymentprops', false)
         }
-        emit('resetcallpaymentprops', false)
       }
     })
 

@@ -854,7 +854,7 @@
       <div class="row">
         <div class="col-md-12 col-12">
           <div class="row justify-content-center">
-            <div class="col-md-8 fw-500 s-32">Set up Payment Gateway</div>
+            <div class="col-md-8 fw-500 s-30">Set up Payment Gateway</div>
             <div class="col-md-8 col-11 mt-4">
               <label class="fw-500 text-head s-18" for="">Select Bank</label>
               <div class="dropdown w-100">
@@ -951,7 +951,7 @@
               </div>
               
             </div> -->
-            <!-- <div class="col-md-8 col-11 mt-3">
+            <div class="col-md-8 col-11 mt-3">
               <label class="fw-500 text-head s-18" for=""> Income Account </label>
               <el-dropdown trigger="click" class="w-100">
                 <span class="el-dropdown-link w-100">
@@ -1015,7 +1015,7 @@
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
-            </div> -->
+            </div> 
             <div class="col-md-8 col-11 mt-3">
               <el-button
                 @click="Contiue"
