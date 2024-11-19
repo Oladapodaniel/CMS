@@ -1377,7 +1377,8 @@ export default {
       selectedEvent.value
         ? formData.append("activityDate", getCorrectDate(selectedEvent.value.date))
         : "";
-      formData.append("isPaidFor", addPaidClass.value);
+      // formData.append("isPaidFor", addPaidClass.value);
+      formData.append("isPaidFor", markAsPaid.value);
       amount.value ? formData.append("amount", amount.value) : "";
       selectedEvent.value ? formData.append("activityId", selectedEvent.value.id) : "";
 
