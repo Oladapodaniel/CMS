@@ -83,7 +83,7 @@
         <div class="row mb-4">
           <div class="col-12">
             <div v-if="!isVerified">
-              <UnverifiedAccount :triggerDialog="triggerDialog" @cleartrigger="clearTrigger" />
+              <UnverifiedAccount ref="unverifiedAccountRef" />
             </div>
             <div>
               <UpgradeToAccessNotification />
@@ -1411,7 +1411,7 @@ export default {
     ]);
 
     const { mdAndUp, lgAndUp, xlAndUp } = deviceBreakpoint();
-    const triggerDialog = ref(false);
+    const unverifiedAccountRef = ref(null);
 
     const celebHeaders = ref([
       { name: "NAME", value: "name" },
@@ -1841,15 +1841,10 @@ export default {
 
     const checkIfVerified = () => {
       if (!isVerified.value) {
-        triggerDialog.value = true;
+        unverifiedAccountRef.value?.updateDisplayDialog()
       } else {
         router.push({ name: 'Subscription' })
-        triggerDialog.value = false;
       }
-    }
-
-    const clearTrigger = () => {
-      triggerDialog.value = false
     }
 
     return {
@@ -1938,9 +1933,8 @@ export default {
       routeToWelcomeOnboard,
       routeToPayment,
       isVerified,
-      triggerDialog,
       checkIfVerified,
-      clearTrigger
+      unverifiedAccountRef
     };
   },
 };

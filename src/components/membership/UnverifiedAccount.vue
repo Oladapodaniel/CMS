@@ -18,9 +18,6 @@ const email = computed(() => {
     return "";
 })
 
-const { triggerDialog } = defineProps(['triggerDialog']);
-const emit = defineEmits(['cleartrigger'])
-
 const getUser = computed(() => {
       if (
         !store.getters.currentUser ||
@@ -44,12 +41,12 @@ const verifyEmail = async () => {
     }
 }
 
-watchEffect(() => {
-    console.log(triggerDialog, 'ee')
-    if (triggerDialog) {
-        displayDialog.value = true;
-        emit('cleartrigger')
-    }
+const updateDisplayDialog = () => {
+    displayDialog.value = !displayDialog.value
+}
+
+defineExpose({
+    updateDisplayDialog
 })
 </script>
 
