@@ -366,7 +366,7 @@ export default {
     const accountName = ref("");
     const accNameRef = ref("");
     const loading = ref(false);
-    const disabled = ref(true);
+    const disabled = ref(false);
     const gatewayNotification = ref(false);
     const route = useRoute();
     const firstTemplate = ref(true);
@@ -662,7 +662,6 @@ export default {
     };
 
     const saveAndContinue = async () => {
-      if (accountName.value) {
         if (
           gateways.value &&
           gateways.value[0].isChecked === false &&
@@ -758,9 +757,6 @@ export default {
             }
           }
         }
-      } else {
-        disabled.value = true;
-      }
     };
     const selectContribution = (item, index) => {
       newContribution.value.payment[index].financialContribution = item;
