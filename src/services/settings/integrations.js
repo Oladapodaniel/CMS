@@ -37,6 +37,24 @@ export const ConnectWithPaymentProvider = (payload) => {
 }
 
 
+export const DetachFromPaymentProvider = (Id) => {
+    return new Promise((resolve, reject) => {
+        axios.get(`/api/ThirdpartyIntegration/Payments/Paystack/Accounts/DetachConnectedSubAccount/${Id}`)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            stopProgressBar();
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
+
 export const ConfirmPaystackTransaction = (payload) => {
     return new Promise((resolve, reject) => {
         axios.post(`/PaystackTransactionCheck?reference=${payload}`)

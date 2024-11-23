@@ -2,8 +2,8 @@
 import { inject, ref } from 'vue';
 import deviceBreakpoint from '../../mixins/deviceBreakpoint';
 import transaction_service from '../../services/financials/transaction_service';
-import { ConnectWithPaymentProvider, GetAllProviders } from '../../services/settings/integrations';
-import { ElMessage } from 'element-plus';
+import { ConnectWithPaymentProvider, DetachFromPaymentProvider, GetAllProviders } from '../../services/settings/integrations';
+import { ElMessageBox, ElMessage } from 'element-plus';
 
 const { lgAndUp, xlAndUp, mdAndUp, xsOnly } = deviceBreakpoint();
 const displayDialog = ref(false);
@@ -72,6 +72,53 @@ const connectProvider = async () => {
     }
     console.log(payload)
 }
+
+
+const disconnectPaymentProvider = async (id) => {
+
+    try {
+        const response = await DetachFromPaymentProvider(id);
+        console.log(response, 'here')
+        if (response.status) {
+            ElMessage({
+                type: "success",
+                message: "Payment service disconnected successfully",
+                duration: 5000,
+            });
+            getProviders();
+        } else {
+            ElMessage({
+                type: "error",
+                message: "Failed to disconnect, try again",
+                duration: 5000,
+            });
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+const showConfirmModal = (id) => {
+    ElMessageBox.confirm(
+        "Are you sure you want to proceed?",
+        "Confirm disconnection",
+        {
+            confirmButtonText: "OK",
+            cancelButtonText: "Cancel",
+            type: "error",
+        }
+    )
+        .then(() => {
+            disconnectPaymentProvider(id);
+        })
+        .catch(() => {
+            ElMessage({
+                type: "info",
+                message: "Closed",
+                duration: 5000,
+            });
+        });
+};
 </script>
 
 <template>
@@ -119,7 +166,8 @@ const connectProvider = async () => {
                 <div class="col-md-4 align-self-center body_text">{{ item.status }}</div>
                 <div class="col-md-4 align-self-center">
                     <!-- <el-button class="success_connect" @click="displayDialog = true">Connect</el-button> -->
-                    <el-button class="disconnect_btn" v-if="item.status.toLowerCase() === 'connected'" @click="displayDialog = true">Disconnect</el-button>
+                    <el-button class="disconnect_btn" v-if="item.status.toLowerCase() === 'connected'"
+                        @click="showConfirmModal(item.id)">Disconnect</el-button>
                     <el-button class="success_connect" @click="displayDialog = true" v-else>Connect</el-button>
                 </div>
                 <el-divider class="m-0" />
@@ -139,7 +187,8 @@ const connectProvider = async () => {
                     </div>
                 </div>
                 <div class="col-12 offset-md-3 col-md-6">
-                    <el-button :color="primarycolor" class="w-100 confirm_button" size="large" @click="displayDialog = false" round>Close</el-button>
+                    <el-button :color="primarycolor" class="w-100 confirm_button" size="large"
+                        @click="displayDialog = false" round>Close</el-button>
                 </div>
             </div>
             <div class="p-md-4" v-else>
@@ -269,7 +318,7 @@ const connectProvider = async () => {
     -moz-ms-shadow: 10px 7px 27px -8px rgba(0, 0, 0, 0.61);
 }
 
-div.text-dark.text-center > a {
+div.text-dark.text-center>a {
     text-decoration: underline;
 }
 </style>
