@@ -366,7 +366,7 @@ export default {
     const accountName = ref("");
     const accNameRef = ref("");
     const loading = ref(false);
-    const disabled = ref(false);
+    const disabled = ref(true);
     const gatewayNotification = ref(false);
     const route = useRoute();
     const firstTemplate = ref(true);
@@ -551,25 +551,26 @@ export default {
     };
 
     const resolveCustomerDetail = async () => {
-      console.log(accountNumber.value);
       loading.value = true;
-      try {
-        let header = {
-          headers: { Authorization: `Bearer ${process.env.VUE_APP_PAYSTACK_SECRET_KEY}` },
-        };
-        console.log(header, "header");
+      // Resolve customer detials with paystack
+      // try {
+      //   let header = {
+      //     headers: { Authorization: `Bearer ${process.env.VUE_APP_PAYSTACK_SECRET_KEY}` },
+      //   };
+      //   console.log(header, "header");
 
-        let { data } = await axio.get(
-          `https://api.paystack.co/bank/resolve?account_number=${accountNumber.value}&bank_code=${selectedBank.value.code}`,
-          header
-        );
-        console.log(data);
-      } catch (error) {
-        finish();
-        console.log(error);
-        loading.value = false;
-      }
+      //   let { data } = await axio.get(
+      //     `https://api.paystack.co/bank/resolve?account_number=${accountNumber.value}&bank_code=${selectedBank.value.code}`,
+      //     header
+      //   );
+      //   console.log(data);
+      // } catch (error) {
+      //   finish();
+      //   console.log(error);
+      //   loading.value = false;
+      // }
 
+      // Resolve customer details with flutterwave
       try {
         let { data } = await axio.post(
           `https://api.ravepay.co/flwv3-pug/getpaidx/api/resolve_account`,
@@ -579,10 +580,7 @@ export default {
             PBFPubKey: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
           }
         );
-        console.log(data);
         accountName.value = data.data.data.accountname;
-        disabled.value = false;
-
         loading.value = false;
 
         if (data.data.data.responsemessage.toLowerCase().includes("sorry")) {
@@ -642,12 +640,9 @@ export default {
 
       if (paymentGateWays.value.length === 0) {
         gatewayNotification.value = true;
-        disabled.value = true;
       } else {
         gatewayNotification.value = false;
-        disabled.value = false;
       }
-
     };
 
     const filteredBanks = computed(() => {
@@ -662,101 +657,101 @@ export default {
     };
 
     const saveAndContinue = async () => {
-        if (
-          gateways.value &&
-          gateways.value[0].isChecked === false &&
-          gateways.value &&
-          gateways.value[1].isChecked === false
-        ) {
-          gatewayNotification.value = true;
-          disabled.value = true;
-        } else {
-          gatewayNotification.value = false;
-          disabled.value = false;
+      if (
+        gateways.value &&
+        gateways.value[0].isChecked === false &&
+        gateways.value &&
+        gateways.value[1].isChecked === false
+      ) {
+        gatewayNotification.value = true;
+        disabled.value = true;
+      } else {
+        gatewayNotification.value = false;
+        disabled.value = false;
 
-          let removeEmptyObj = newContribution.value.payment.filter((i) => {
-            return Object.keys(i.financialContribution).length > 0;
-          });
+        let removeEmptyObj = newContribution.value.payment.filter((i) => {
+          return Object.keys(i.financialContribution).length > 0;
+        });
 
-          loadingSave.value = false;
+        loadingSave.value = false;
 
-          let paymentForm = {
-            name: newContribution.value.name,
-            bankCode: selectedBank.value.code,
-            accountName: accountName.value,
-            accountNumber: accountNumber.value,
-            isActive: isActive.value,
-            contributionItems: removeEmptyObj.map((i) => {
-              let id = i.financialContribution.id;
-              return { financialContributionID: id };
-            }),
-            paymentGateWays: paymentGateWays.value.map((i) => {
-              return {
-                paymentGateWayID: i.id,
-                subAccountID: i.subAccountID,
-                updateId: i.updateId,
-              };
-            }),
-          };
-          emit("form-details", paymentForm);
-          console.log(newContribution.value.payments);
-          if (route.fullPath === "/donationsetup") {
-            console.log("PaymentCreated");
-            emit("payment-form", true);
+        let paymentForm = {
+          name: newContribution.value.name,
+          bankCode: selectedBank.value.code,
+          accountName: accountName.value,
+          accountNumber: accountNumber.value,
+          isActive: isActive.value,
+          contributionItems: removeEmptyObj.map((i) => {
+            let id = i.financialContribution.id;
+            return { financialContributionID: id };
+          }),
+          paymentGateWays: paymentGateWays.value.map((i) => {
+            return {
+              paymentGateWayID: i.id,
+              subAccountID: i.subAccountID,
+              updateId: i.updateId,
+            };
+          }),
+        };
+        emit("form-details", paymentForm);
+        console.log(newContribution.value.payments);
+        if (route.fullPath === "/donationsetup") {
+          console.log("PaymentCreated");
+          emit("payment-form", true);
+        }
+
+        if (!route.params.editPayment) {
+          loadingSave.value = true;
+
+          try {
+            const res = await axios.post(
+              "/api/PaymentForm/newpaymentform",
+              paymentForm
+            );
+            store.dispatch("contributions/paymentData", res.data);
+            loadingSave.value = false;
+
+            if (route.fullPath === "/tenant/payments") {
+              store.dispatch("payment/getPayments").then(() => {
+                router.push({
+                  name: "PaymentOption",
+                  params: { paymentId: res.data.id },
+                });
+              });
+              // router.push({ name: 'PaymentOption', params: { paymentId: res.data.id } })
+            } else if (route.fullPath === "/donationsetup") {
+              store.dispatch("payment/getPayments").then(() => {
+                router.push({ name: "OnboardingSuccessful" });
+              });
+              // router.push({ name: 'OnboardingSuccessful' })
+            }
+            finish();
+          } catch (err) {
+            finish();
+            console.log(err);
+            loadingSave.value = false;
           }
-
-          if (!route.params.editPayment) {
-            loadingSave.value = true;
-
-            try {
-              const res = await axios.post(
-                "/api/PaymentForm/newpaymentform",
-                paymentForm
-              );
-              store.dispatch("contributions/paymentData", res.data);
-              loadingSave.value = false;
-
-              if (route.fullPath === "/tenant/payments") {
-                store.dispatch("payment/getPayments").then(() => {
-                  router.push({
-                    name: "PaymentOption",
-                    params: { paymentId: res.data.id },
-                  });
-                });
-                // router.push({ name: 'PaymentOption', params: { paymentId: res.data.id } })
-              } else if (route.fullPath === "/donationsetup") {
-                store.dispatch("payment/getPayments").then(() => {
-                  router.push({ name: "OnboardingSuccessful" });
-                });
-                // router.push({ name: 'OnboardingSuccessful' })
-              }
-              finish();
-            } catch (err) {
-              finish();
-              console.log(err);
-              loadingSave.value = false;
-            }
-          } else {
-            (paymentForm.contributionItems = newContribution.value.payment.map((i) => {
-              return { financialContributionID: i.financialContribution.id };
-            })),
-              (paymentForm.id = route.params.editPayment);
-            paymentForm.removeContributionIDs = removeContributionIDs.value;
-            paymentForm.removePaymentGatewayIDs = removePaymentGatewayIDs.value;
-            try {
-              const res = await axios.put(`/api/PaymentForm/update`, paymentForm);
-              console.log(res);
-              loadingSave.value = false;
-              store.dispatch("contributions/paymentData", res.data);
-              router.push({ name: "PaymentOption", params: { paymentId: res.data.id } });
-              finish();
-            } catch (err) {
-              console.log(err);
-              loadingSave.value = false;
-              finish();
-            }
+        } else {
+          (paymentForm.contributionItems = newContribution.value.payment.map((i) => {
+            return { financialContributionID: i.financialContribution.id };
+          })),
+            (paymentForm.id = route.params.editPayment);
+          paymentForm.removeContributionIDs = removeContributionIDs.value;
+          paymentForm.removePaymentGatewayIDs = removePaymentGatewayIDs.value;
+          try {
+            const res = await axios.put(`/api/PaymentForm/update`, paymentForm);
+            console.log(res);
+            loadingSave.value = false;
+            store.dispatch("contributions/paymentData", res.data);
+            router.push({ name: "PaymentOption", params: { paymentId: res.data.id } });
+            finish();
+          } catch (err) {
+            console.log(err);
+            loadingSave.value = false;
+            finish();
           }
         }
+      }
     };
     const selectContribution = (item, index) => {
       newContribution.value.payment[index].financialContribution = item;
@@ -898,17 +893,40 @@ export default {
       router.push({ name: "ChartOfAccount" });
     };
 
-    const getSubAccounts = async () => {
-      try {
-        let { data } = await axios.get("/api/PaymentForm/subaccounts");
-        console.log(data);
-        subAccounts.value = data.filter((i) => i.meta[0].meta_value !== null);
-        console.log(subAccounts.value);
-      } catch (err) {
-        console.log(err);
+    // const getSubAccounts = async () => {
+    //   try {
+    //     let { data } = await axios.get("/api/PaymentForm/subaccounts");
+    //     console.log(data);
+    //     subAccounts.value = data.filter((i) => i.meta[0].meta_value !== null);
+    //     console.log(subAccounts.value);
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // };
+    // getSubAccounts();
+
+    const getUser = computed(() => {
+      if (
+        !store.getters.currentUser ||
+        (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)
+      )
+        return "";
+      return store.getters.currentUser;
+    });
+
+    watchEffect(() => {
+      if (getUser.value) {
+        if (getUser.value?.country?.toLowerCase() === 'nigeria' &&
+          (paymentGateWays.value?.length > 0 && accountName.value)) {
+          disabled.value = false
+        }
+
+        if (getUser.value?.country?.toLowerCase() !== 'nigeria' &&
+            (paymentGateWays.value?.length > 0)) {
+          disabled.value = false
+        }
       }
-    };
-    getSubAccounts();
+    })
 
     return {
       contributionItems,
@@ -965,6 +983,7 @@ export default {
       subAccounts,
       goBack,
       primarycolor,
+      getUser
     };
   },
 };
