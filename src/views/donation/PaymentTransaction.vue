@@ -18,6 +18,14 @@
           <ToggleButton @is-active="active" :active="isActive" />
         </div>
       </div>
+     <div v-if="displayNotification" class="mt-4 w-100">
+      <Notification 
+        header="No payment connected"
+        body="To create a payment form for online donation, connect your payment method first"
+        buttonText="Connect"
+        @triggeraction="routeToIntegrations"
+      />
+     </div>
     </div>
     <form class="form mt-3">
       <div class="row">
@@ -145,7 +153,7 @@
           &nbsp; Add
         </el-button>
       </div>
-      <div class="row">
+      <div class="row" v-if="displayBankAccountDetails">
         <div class="col-12">
           <hr class="mt-4" />
         </div>
@@ -286,7 +294,7 @@
       </div>
 
       <div class="row">
-        <div class="col-12 col-sm-10 col-md-6 col-lg-5 offset-sm-1 offset-md-3 offset-lg-4 pl-0 mt-3">
+        <div class="col-12 col-sm-10 col-md-6 col-lg-5 offset-sm-1 offset-md-3 offset-lg-4 pl-0 mt-3" v-if="displayBankAccountDetails">
           <div class="row">
             <div class="col-4">
               <img src="../../assets/paystack.png" class="w-100" />
@@ -346,12 +354,15 @@ import ContributionItems from "@/components/firsttimer/contributionItemModal";
 import ImageModal from "./ImageModal";
 import ToggleButton from "./toggleButton";
 import { ElMessage, ElMessageBox } from "element-plus";
+import { GetAllProviders } from "../../services/settings/integrations";
+import Notification from "../../components/ui/Notification.vue";
 
 export default {
   components: {
     ContributionItems,
     ImageModal,
     ToggleButton,
+    Notification
   },
   props: ["header"],
   setup(prop, { emit }) {
@@ -366,7 +377,7 @@ export default {
     const accountName = ref("");
     const accNameRef = ref("");
     const loading = ref(false);
-    const disabled = ref(true);
+    const disabled = ref(false);
     const gatewayNotification = ref(false);
     const route = useRoute();
     const firstTemplate = ref(true);
@@ -387,6 +398,9 @@ export default {
     const displayResponsive = ref(false);
     const primarycolor = inject("primarycolor");
     const subAccounts = ref([]);
+    const paymentProviders = ref([]);
+    const displayBankAccountDetails = ref(false)
+    const displayNotification = ref(false)
 
     const addContribution = () => {
       newContribution.value.payment.push({
@@ -582,6 +596,7 @@ export default {
         );
         accountName.value = data.data.data.accountname;
         loading.value = false;
+        disabled.value = false
 
         if (data.data.data.responsemessage.toLowerCase().includes("sorry")) {
           ElMessage({
@@ -661,7 +676,8 @@ export default {
         gateways.value &&
         gateways.value[0].isChecked === false &&
         gateways.value &&
-        gateways.value[1].isChecked === false
+        gateways.value[1].isChecked === false &&
+        getUser.value?.country?.toLowerCase() === 'nigeria'
       ) {
         gatewayNotification.value = true;
         disabled.value = true;
@@ -873,7 +889,6 @@ export default {
         booleanModal.value = true;
         sourceModal.value = e.target.parentElement.previousElementSibling.currentSrc;
       }
-      // console.log(e)
     };
 
     const closeModal = (payload) => {
@@ -893,18 +908,6 @@ export default {
       router.push({ name: "ChartOfAccount" });
     };
 
-    // const getSubAccounts = async () => {
-    //   try {
-    //     let { data } = await axios.get("/api/PaymentForm/subaccounts");
-    //     console.log(data);
-    //     subAccounts.value = data.filter((i) => i.meta[0].meta_value !== null);
-    //     console.log(subAccounts.value);
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // };
-    // getSubAccounts();
-
     const getUser = computed(() => {
       if (
         !store.getters.currentUser ||
@@ -914,19 +917,35 @@ export default {
       return store.getters.currentUser;
     });
 
-    watchEffect(() => {
-      if (getUser.value) {
-        if (getUser.value?.country?.toLowerCase() === 'nigeria' &&
-          (paymentGateWays.value?.length > 0 && accountName.value)) {
-          disabled.value = false
-        }
+    const getProviders = async () => {
+    try {
+        const response = await GetAllProviders();
+        paymentProviders.value = response;
+    } catch (error) {
+        console.error(error)
+    }
+}
+getProviders();
 
-        if (getUser.value?.country?.toLowerCase() !== 'nigeria' &&
-            (paymentGateWays.value?.length > 0)) {
-          disabled.value = false
+    watchEffect(() => {
+      if (getUser.value && paymentProviders.value) {
+        const paymentStatus = paymentProviders.value?.find(i => i.name?.toLowerCase() === 'paystack');
+        const connected = paymentStatus?.status?.toLowerCase() === 'connected';
+        const nigerian = getUser.value?.country?.toLowerCase() === 'nigeria'
+        if (connected && !nigerian) {
+          displayBankAccountDetails.value = false
+        } else if (!connected && !nigerian) {
+          displayNotification.value = true
+          disabled.value = true
+        } else {
+          displayBankAccountDetails.value = true
         }
       }
     })
+
+    const routeToIntegrations = () => {
+      router.push('/tenant/settings/integrations')
+    }
 
     return {
       contributionItems,
@@ -983,7 +1002,11 @@ export default {
       subAccounts,
       goBack,
       primarycolor,
-      getUser
+      getUser,
+      paymentProviders,
+      displayBankAccountDetails,
+      displayNotification,
+      routeToIntegrations
     };
   },
 };

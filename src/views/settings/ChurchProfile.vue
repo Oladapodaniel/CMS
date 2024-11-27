@@ -138,6 +138,7 @@
                 class="w-100"
                 size="large"
                 style="width: 100%"
+                filterable
               />
             </div>
             <div class="col-md-4"></div>

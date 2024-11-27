@@ -117,7 +117,7 @@ defineExpose({
 }
 
 .line-height{
-    line-height: 14px
+    line-height: 24px
 }
 
 

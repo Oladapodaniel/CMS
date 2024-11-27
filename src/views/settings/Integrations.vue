@@ -64,6 +64,12 @@ const connectProvider = async () => {
         connecting.value = false;
         if (status) {
             connectionResponse.value = data;
+        } else {
+            ElMessage({
+                type: 'error',
+                message: 'Failed. Please try again',
+                duration: 4000
+            })   
         }
         getProviders();
     } catch (error) {

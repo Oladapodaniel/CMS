@@ -3,30 +3,19 @@ import { computed } from 'vue';
 import router from '../../router';
 import store from '../../store/store';
 
-const getUser = computed(() => {
-      if (
-        !store.getters.currentUser ||
-        (store.getters.currentUser && Object.keys(store.getters.currentUser).length == 0)
-      )
-        return "";
-      return store.getters.currentUser;
-    });
+const { header, body, buttonText } = defineProps(['header', 'body', 'buttonText']);
+const emit = defineEmits(['triggeraction']);
 
-    const check = computed(() => {
-        if (getUser.value?.subscriptionName?.toLowerCase() === 'free plan' || 
-            getUser.value?.subscriptionName?.toLowerCase() === 'starter plan') return true
-        return false
-    })
 </script>
 
 <template>
-    <div class="col-md-12 mb-1 verify_email" v-if="check">
+    <div class="col-md-12 mb-1 verify_email">
         <div>
-            <h4 class="font-weight-600 line-height">Limited feature</h4>
-            <div class="s-14">Upgrade to access all features<span class="font-weight-600"> Today!</span></div>
+            <h4 class="font-weight-600 line-height">{{ header }}</h4>
+            <div class="s-14">{{ body }}</div>
         </div>
-        <div class="cursor-pointer" @click="router.push('/tenant/subscription')">
-            <el-button size="large" class="verify_button" round>Upgrade now</el-button>
+        <div class="cursor-pointer" @click="emit('triggeraction')">
+            <el-button size="large" class="verify_button" round>{{ buttonText }}</el-button>
         </div>
     </div>
 </template>
